@@ -9,10 +9,8 @@
 import Foundation
 
 /**
-    Configuration object for Tealium instances.
+    Public Configuration object for Tealium instances.
  
-    - Author:
-        Jason Koo, Merritt Tidwell, Chad Hartman, Karen Tamayo, Chris Anderberg
  */
 class TealiumConfig {
     

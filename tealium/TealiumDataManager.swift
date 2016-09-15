@@ -21,14 +21,11 @@ func ==(lhs: [String: AnyObject], rhs: [String: AnyObject] ) -> Bool {
 }
 
 /**
-    Configuration object for Tealium instances.
+    Public Tealium Universal Data processing class.
  
-    - Author:
-        Jason Koo, Merritt Tidwell, Chad Hartman, Karen Tamayo, Chris Anderberg
  */
 class TealiumDataManager {
     
-//    private var _config : TealiumConfig
     private let _account : String
     private let _profile : String
     private let _environment : String
@@ -43,8 +40,9 @@ class TealiumDataManager {
         Initializer.
      
         - Parameters:
-     //TODO:
-            - config: Tealium configuration object used to init the library.
+            - account: Required Tealium account name
+            - profile: Required Tealium profile name (use 'main' if unsure)
+            - environment: Required environment (usually dev/qa/prod)
      */
     init?(account: String, profile: String, environment: String){
         

@@ -8,6 +8,10 @@
 
 import Foundation
 
+/**
+    Public interface for the Tealium library.
+ 
+ */
 class Tealium {
     
     let dataManager : TealiumDataManager

@@ -8,6 +8,10 @@
 
 import Foundation
 
+/**
+    Internal persistent data handler.
+ 
+ */
 class TealiumIOManager {
     
     private let persistenceFilePath: String

@@ -32,6 +32,7 @@ AudienceStream allows you to create a unified view of your customers, correlatin
 ## Change Log
 
 - 1.0.0 Initial Release
+    - 2.x Swift support. In XCode 8, can safely update to syntax 2.3 (no code changes will be suggested + will be usable in a 3.x app)
     - Tealium universal data sources added for all dispatches:
         - event_name (transitionary - will be deprecated)
         - tealium_account
@@ -40,10 +41,11 @@ AudienceStream allows you to create a unified view of your customers, correlatin
         - tealium_library_name
         - tealium_library_version
         - tealium_profile
-        - tealium_random (different 16 digit long number for each track event)
+        - tealium_random
         - tealium_session_id
-        - tealium_timestamp_epoch (previously timestamp_unix)
-        - tealium_visitor_id (previously tealium_vid)
+        - tealium_timestamp_epoch
+        - tealium_visitor_id
+        - tealium_vid (legacy support - will be deprecated)
 
 
 ## License

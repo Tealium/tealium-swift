@@ -41,6 +41,10 @@ enum LogLevel {
     }
 }
 
+/**
+    Internal console logger for library debugging.
+ 
+ */
 class TealiumLogger {
     
     let idString : String

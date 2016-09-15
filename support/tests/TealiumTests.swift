@@ -29,7 +29,9 @@ class TealiumTests: XCTestCase {
             return
         }
         
-        tealium.track("test", data: ["cool": "story"], completion: { (success : Bool, encodedURLString: String, error: NSError?) in
+        let expectation = self.expectationWithDescription("testTrackEncodedURL")
+
+        tealium.track("test", data: ["cool": ["a", "b", "c and d", "\n\t"]], completion: { (success : Bool, encodedURLString: String, error: NSError?) in
             
             XCTAssert(success)
             
@@ -37,8 +39,10 @@ class TealiumTests: XCTestCase {
                 XCTFail()
             }
             
+            expectation.fulfill()
         })
         
+        self.waitForExpectationsWithTimeout(1.0, handler: nil)
         
     }
     

@@ -8,9 +8,15 @@
 
 import Foundation
 
+/**
+    Internal class for processing data dispatches to delivery endpoint.
+ 
+ */
 class TealiumCollect {
 
     private var _baseURL : String
+    
+    // MARK: PUBLIC METHODS
     
     /**
      Initializer for creating an Instance of Tealium Collect
@@ -18,7 +24,6 @@ class TealiumCollect {
      - Parameters:
         - baseURL: Base url for collect end point
      */
-    
     init(baseURL: String){
         
         self._baseURL = baseURL
@@ -45,35 +50,16 @@ class TealiumCollect {
             - Data: dictionary of all key-values to bve sent with dispatch.
             - completion: passes a completion to send function
      */
-    
     func dispatch(data: [String: AnyObject], completion:((success:Bool, encodedURLString: String, error: NSError?) -> Void)?){
     
-        let dispatchString: String = _baseURL + encodeDictionaryToString(data)
+        let sanitizedData = sanitized(data)
+        let dispatchString: String = _baseURL + encodeDictionaryToString(sanitizedData)
         send(dispatchString, completion: completion)
+        
     }
- 
-    /**
-     Encodes a string based on Vdata specs
-     
-        - Parameters:
-            - Dictionary: The dictionary of data sources to be encoded
-     
-        - Returns:
-            - String:  encoded string
-     */
     
     
-    func encodeDictionaryToString(dictionary: [String: AnyObject]) -> String {
-
-        let encodedString = (dictionary.flatMap({ (key, value) -> String in
-            let encodedKey = key.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
-            let encodedValue = value.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
-            return "\(encodedKey)=\(encodedValue)"
-        }) as Array).joinWithSeparator("&")
-
-        return encodedString
-    
-    }
+    // MARK: INTERNAL METHODS
     
     /**
      Sends final dispatch to its endpoint
@@ -83,7 +69,6 @@ class TealiumCollect {
             - completion: Depending on network responses the completion will pass a success/failure, the string sent, and an error if it exists.
 
      */
-    
     func send(finalStringWithParams : String , completion:((success:Bool, encodedURLString: String, error: NSError?) -> Void)?) {
         let url = NSURL(string: finalStringWithParams)
         let request = NSMutableURLRequest(URL: url!)
@@ -140,6 +125,33 @@ class TealiumCollect {
     
     }
     
+    // MARK: INTERNAL HELPERS
+    
+    /**
+     Encodes a string based on Vdata specs
+     
+     - Parameters:
+     - Dictionary: The dictionary of data sources to be encoded
+     
+     - Returns:
+     - String:  encoded string
+     */
+    func encodeDictionaryToString(dictionary: [String: AnyObject]) -> String {
+        
+        let encodedString = (dictionary.flatMap({ (key, value) -> String in
+            let encodedKey = key.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+            var value = value
+            if let stringArray = value as? [String]{
+                value = "\(stringArray)"
+            }
+            let encodedValue = value.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+            return "\(encodedKey)=\(encodedValue)"
+        }) as Array).joinWithSeparator("&")
+        
+        return encodedString
+        
+    }
+    
     /**
     Helper Function for unit testing
      
@@ -149,5 +161,24 @@ class TealiumCollect {
     */
     func getBaseURLString() -> String {
         return _baseURL
+    }
+    
+    func sanitized(dictionary:[String:AnyObject]) -> [String:AnyObject]{
+    
+        var clean = [String: AnyObject]()
+        
+        for (key, value) in dictionary {
+         
+            if value is String ||
+                value is [String] {
+
+                clean[key] = value
+                
+            }
+
+        }
+        
+        return clean
+        
     }
 }
