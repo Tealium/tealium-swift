@@ -40,15 +40,19 @@ class TealiumCollectTests: XCTestCase {
     
     func testEncodeDictionaryToString() {
         
-        let expectedString = "key=%5B%22foo%22,%20%22bar%22%5D"
-        let dictionary = ["key": ["foo", "bar"]]
+        let expectedString = "buzz=chi&key=%5B%22foo%22,%20%22bar%22,%20%22alpha%22,%20%22segment%22,%20%22sigma%22%5D&gamma=fizz&lambda=closure"
+        
+        let dictionary = ["key": ["foo", "bar", "alpha", "segment", "sigma"],
+                          "gamma": "fizz",
+                          "buzz" : "chi",
+                          "lambda": "closure"]
+        
         let collect = TealiumCollect(baseURL: TealiumCollect.defaultBaseURLString())
         let testString = collect.encodeDictionaryToString(dictionary)
         
         XCTAssertTrue(expectedString == testString, "test string \(testString) is not encoded properly: expected \(expectedString).")
-    
+        
     }
-
     
     func testInitWithBaseURLString() {
         
