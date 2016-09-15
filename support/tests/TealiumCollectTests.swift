@@ -38,6 +38,18 @@ class TealiumCollectTests: XCTestCase {
         
     }
     
+    func testEncodeDictionaryToString() {
+        
+        let expectedString = "key=%5B%22foo%22,%20%22bar%22%5D"
+        let dictionary = ["key": ["foo", "bar"]]
+        let collect = TealiumCollect(baseURL: TealiumCollect.defaultBaseURLString())
+        let testString = collect.encodeDictionaryToString(dictionary)
+        
+        XCTAssertTrue(expectedString == testString, "test string \(testString) is not encoded properly: expected \(expectedString).")
+    
+    }
+
+    
     func testInitWithBaseURLString() {
         
         let string = "http://www.blingbling.com"

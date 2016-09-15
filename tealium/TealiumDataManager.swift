@@ -191,8 +191,6 @@ class TealiumDataManager {
 
         let ts = NSDate().timeIntervalSince1970
         
-        print("here's the ts:: \(ts)")
-
         return "\(ts)"
     }
     
