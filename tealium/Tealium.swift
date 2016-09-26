@@ -15,9 +15,9 @@ import Foundation
 class Tealium {
     
     let dataManager : TealiumDataManager
-    private let logger : TealiumLogger
-    private let config : TealiumConfig
-    private let collect : TealiumCollect
+    fileprivate let logger : TealiumLogger
+    fileprivate let config : TealiumConfig
+    fileprivate let collect : TealiumCollect
     
     // MARK: PUBLIC
     
@@ -35,7 +35,7 @@ class Tealium {
         
         // Data Manager
         guard let dataManager = TealiumDataManager(account: config.account, profile: config.profile, environment: config.environment) else {
-            self.logger.log("Problem initializing the Data Manager: Check to that NSFileManager can write to disk", logLevel: .Errors)
+            self.logger.log("Problem initializing the Data Manager: Check to that NSFileManager can write to disk", logLevel: .errors)
             return nil
         }
         self.dataManager = dataManager
@@ -61,12 +61,12 @@ class Tealium {
         - Data: Optional dictionary for additional data sources to pass with call
         - Completion: Optional callback
      */
-    func track(title: String,
+    func track(_ title: String,
                data: [String: AnyObject]?,
-               completion: ((successful:Bool, encodedURLString: String, error: NSError?) -> Void)?) {
+               completion: ((_ successful:Bool, _ encodedURLString: String, _ error: NSError?) -> Void)?) {
         
-        var dataDictionary: [String : AnyObject] = [tealiumKey_event: title,
-                                                    tealiumKey_event_name: title]
+        var dataDictionary: [String : AnyObject] = [tealiumKey_event: title as AnyObject,
+                                                    tealiumKey_event_name: title as AnyObject]
         
         
         dataDictionary += dataManager.getVolatileData()
@@ -87,8 +87,8 @@ class Tealium {
         - encodedURLString: Encoded string that will be used for the end point for the request
         - Completion: Optional callback
      */
-    func track(encodedURLString: String,
-               completion: ((success:Bool, encodedURLString: String, error: NSError?) -> Void)?) {
+    func track(_ encodedURLString: String,
+               completion: ((_ success:Bool, _ encodedURLString: String, _ error: NSError?) -> Void)?) {
     
         collect.send(encodedURLString, completion: completion)
         

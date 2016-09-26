@@ -29,9 +29,11 @@ class TealiumTests: XCTestCase {
             return
         }
         
-        let expectation = self.expectationWithDescription("testTrackEncodedURL")
+        let expectation = self.expectation(description: "testTrackEncodedURL")
 
-        tealium.track("test", data: ["cool": ["a", "b", "c and d", "\n\t"]], completion: { (success : Bool, encodedURLString: String, error: NSError?) in
+        let testDict = ["cool": ["a", "b", "c and d", "\n\t"]]
+        
+        tealium.track("test", data: testDict as [String : AnyObject]?, completion: { (success : Bool, encodedURLString: String, error: NSError?) in
             
             XCTAssert(success)
             
@@ -41,8 +43,8 @@ class TealiumTests: XCTestCase {
             
             expectation.fulfill()
         })
-        
-        self.waitForExpectationsWithTimeout(1.0, handler: nil)
+
+        self.waitForExpectations(timeout: 1.0, handler: nil)
         
     }
     
@@ -51,7 +53,7 @@ class TealiumTests: XCTestCase {
         let tealium = Tealium(config: getConfig())
         let arrayDataSources : [String] = [tealiumKey_account, tealiumKey_profile, tealiumKey_environment, tealiumKey_event, tealiumKey_event_name, tealiumKey_library_version, tealiumKey_library_name, tealiumKey_random, tealiumKey_session_id, tealiumKey_timestamp_epoch, tealiumKey_visitor_id, tealiumKey_legacy_vid]
         
-        let expectation = self.expectationWithDescription("testTrackEncodedURL")
+        let expectation = self.expectation(description: "testTrackEncodedURL")
         
         
         
@@ -61,7 +63,7 @@ class TealiumTests: XCTestCase {
             expectation.fulfill()
         }
         
-        self.waitForExpectationsWithTimeout(1.0, handler: nil)
+        self.waitForExpectations(timeout: 1.0, handler: nil)
     }
     
     
@@ -76,11 +78,11 @@ class TealiumTests: XCTestCase {
         return config
     }
     
-    func stringDoesContainKeys(string: String, arrayOfKeys: [String])-> Bool{
+    func stringDoesContainKeys(_ string: String, arrayOfKeys: [String])-> Bool{
         
         for key in arrayOfKeys{
             
-            if (string.lowercaseString.rangeOfString(key) != nil){
+            if (string.lowercased().range(of: key) != nil){
                 continue
             }else {
                 print("stringDoesContainKeys: \(key) is missing")

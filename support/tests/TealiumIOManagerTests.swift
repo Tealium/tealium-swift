@@ -35,8 +35,10 @@ class TealiumIOManagerTests: XCTestCase {
             return
         }
         
-        let data = ["foo": "foo string value", "bar": ["alpha", "beta", "gamma"]]
-        ioManager.saveData(data);
+        let data : [String: AnyObject] = ["foo": "foo string value" as AnyObject,
+                                          "bar": ["alpha", "beta", "gamma"] as AnyObject]
+   
+        ioManager.saveData(data as [String : AnyObject]);
         
         if let loaded = ioManager.loadData() {
             XCTAssertTrue(loaded == data)
@@ -48,15 +50,15 @@ class TealiumIOManagerTests: XCTestCase {
     func testLoadCorruptedData() {
         let parentDir = "\(NSHomeDirectory())/.tealium/swift/"
         do {
-            try NSFileManager.defaultManager().createDirectoryAtPath(parentDir, withIntermediateDirectories: true, attributes: nil)
+            try FileManager.default.createDirectory(atPath: parentDir, withIntermediateDirectories: true, attributes: nil)
         } catch  {
             XCTFail()
         }
         let persistenceFilePath = "\(parentDir)/\(account)_\(profile)_\(env).data"
         
-        let data:NSData = "S*D&(*#@J".dataUsingEncoding(NSUTF8StringEncoding)!
+        let data:Data = "S*D&(*#@J".data(using: String.Encoding.utf8)!
         
-        NSFileManager.defaultManager().createFileAtPath(persistenceFilePath,
+        FileManager.default.createFile(atPath: persistenceFilePath,
                                                         contents:  data,
                                                         attributes: nil)
         
@@ -74,14 +76,14 @@ class TealiumIOManagerTests: XCTestCase {
             return
         }
         
-        let data = ["foo": "foo string value", "bar": ["alpha", "beta", "gamma"]]
-        ioManager.saveData(data)
+        let data = ["foo": "foo string value", "bar": ["alpha", "beta", "gamma"]] as [String : Any]
+        ioManager.saveData(data as [String : AnyObject])
         ioManager.deleteData()
         XCTAssertTrue(ioManager.loadData() == nil)
         XCTAssertTrue(!ioManager.persistedDataExists())
     }
     
-    private func createTestInstance() -> TealiumIOManager? {
+    fileprivate func createTestInstance() -> TealiumIOManager? {
         
         return TealiumIOManager(account: account, profile: profile, env: env)
         

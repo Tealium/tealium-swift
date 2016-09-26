@@ -14,7 +14,7 @@ import Foundation
  */
 class TealiumCollect {
 
-    private var _baseURL : String
+    fileprivate var _baseURL : String
     
     // MARK: PUBLIC METHODS
     
@@ -50,7 +50,7 @@ class TealiumCollect {
             - Data: dictionary of all key-values to bve sent with dispatch.
             - completion: passes a completion to send function
      */
-    func dispatch(data: [String: AnyObject], completion:((success:Bool, encodedURLString: String, error: NSError?) -> Void)?){
+    func dispatch(_ data: [String: AnyObject], completion:((_ success:Bool, _ encodedURLString: String, _ error: NSError?) -> Void)?){
     
         let sanitizedData = sanitized(data)
         let dispatchString: String = _baseURL + encode(sanitizedData)
@@ -69,18 +69,18 @@ class TealiumCollect {
             - completion: Depending on network responses the completion will pass a success/failure, the string sent, and an error if it exists.
 
      */
-    func send(finalStringWithParams : String , completion:((success:Bool, encodedURLString: String, error: NSError?) -> Void)?) {
-        let url = NSURL(string: finalStringWithParams)
-        let request = NSMutableURLRequest(URL: url!)
+    func send(_ finalStringWithParams : String , completion:((_ success:Bool, _ encodedURLString: String, _ error: NSError?) -> Void)?) {
+        let url = URL(string: finalStringWithParams)
+        let request = URLRequest(url: url!)
         
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { data, response, error in
+        let task = URLSession.shared.dataTask(with: request , completionHandler: { data, response, error in
             if  (error != nil) {
         
-                completion?(success: false, encodedURLString: finalStringWithParams, error: error)
+                completion?(false, finalStringWithParams, error as NSError?)
                 return
             }
             
-            guard let httpResponse = response as? NSHTTPURLResponse else {
+            guard let httpResponse = response as? HTTPURLResponse else {
                
                 let userInfo = [NSLocalizedDescriptionKey : "Response object was not converted correctly to type    NSHTTPURLResponse",
                                 NSLocalizedRecoverySuggestionErrorKey: "Consult Tealium Engineering"]
@@ -88,7 +88,7 @@ class TealiumCollect {
                 
                 let err = NSError(domain: "Tealium", code: 1, userInfo: userInfo)
      
-                completion?(success: false, encodedURLString: finalStringWithParams, error: err)
+                completion?(false, finalStringWithParams, err)
                 return
             }
             
@@ -100,7 +100,7 @@ class TealiumCollect {
                     
                 let err = NSError(domain: "Tealium", code: 2, userInfo: userInfo)
                     
-                completion?(success: false, encodedURLString: finalStringWithParams, error: err)
+                completion?(false, finalStringWithParams, err)
                     return
             }
                 
@@ -108,18 +108,18 @@ class TealiumCollect {
                 
                 let userInfo = [NSLocalizedDescriptionKey : httpResponse.statusCode,
                                 NSLocalizedFailureReasonErrorKey : "Status code is not the expected 200",
-                                NSLocalizedRecoverySuggestionErrorKey: "Check Base URL to ensure its validity"]
+                                NSLocalizedRecoverySuggestionErrorKey: "Check Base URL to ensure its validity"] as [String : Any]
 
                 
-                let err = NSError(domain: "Tealium", code: httpResponse.statusCode, userInfo: userInfo as [NSObject : AnyObject])
+                let err = NSError(domain: "Tealium", code: httpResponse.statusCode, userInfo: userInfo as [AnyHashable: Any])
                 
-                completion?(success: false, encodedURLString:finalStringWithParams, error: err)
+                completion?(false, finalStringWithParams, err)
                 return
             }
             
-            completion?(success: true, encodedURLString: finalStringWithParams, error: error )
+            completion?(true, finalStringWithParams, error as NSError? )
             
-        }
+        }) 
        
         task.resume()
     
@@ -136,31 +136,31 @@ class TealiumCollect {
      - Returns:
         - String:  encoded string
      */
-    func encode(dictionary:[String:AnyObject])-> String {
+    func encode(_ dictionary:[String:AnyObject])-> String {
         
         let keys = dictionary.keys
-        let sortedKeys = keys.sort { $0 < $1 }
+        let sortedKeys = keys.sorted { $0 < $1 }
         var encodedArray = [String]()
         
         for key in sortedKeys {
             
-            let encodedKey = key.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+            let encodedKey = key.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
             var value = dictionary[key]
                 
             if let valueString = value as? String{
-                value = valueString
+                value = valueString as AnyObject?
             } else if let stringArray = value as? [String]{
-                value = "\(stringArray)"
+                value = "\(stringArray)" as AnyObject?
             } else {
                 continue
             }
             
-            let encodedValue = value!.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+            let encodedValue = value!.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
             let encodedElement = "\(encodedKey)=\(encodedValue)"
             encodedArray.append(encodedElement)
         }
         
-        return encodedArray.joinWithSeparator("&")
+        return encodedArray.joined(separator: "&")
     }
     
     /**
@@ -177,7 +177,7 @@ class TealiumCollect {
     /**
         Clears dictionary of any value types not supported by collect
      */
-    func sanitized(dictionary:[String:AnyObject]) -> [String:AnyObject]{
+    func sanitized(_ dictionary:[String:AnyObject]) -> [String:AnyObject]{
     
         var clean = [String: AnyObject]()
         
@@ -191,7 +191,7 @@ class TealiumCollect {
             } else {
             
                 let stringified = "\(value)"
-                clean[key] = stringified
+                clean[key] = stringified as AnyObject?
             }
 
         }

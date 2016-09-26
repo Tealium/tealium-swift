@@ -24,16 +24,16 @@ class TealiumCollectTests: XCTestCase {
     func testDataDictionary() -> [String:AnyObject] {
         
         return [
-            tealiumKey_event_name : "eventName",
-            tealiumKey_account : "account",
-            tealiumKey_profile : "profile",
-            tealiumKey_environment : "environment",
-            tealiumKey_library_name : "swift",
-            tealiumKey_library_version : "1.0.0",
-            tealiumKey_session_id : "someSessionId",
-            tealiumKey_visitor_id :"someVisitorId",
-            tealiumKey_legacy_vid : "someVID",
-            tealiumKey_random :"someRandomNumber"
+            tealiumKey_event_name : "eventName" as AnyObject,
+            tealiumKey_account : "account" as AnyObject,
+            tealiumKey_profile : "profile" as AnyObject,
+            tealiumKey_environment : "environment" as AnyObject,
+            tealiumKey_library_name : "swift" as AnyObject,
+            tealiumKey_library_version : "1.0.0" as AnyObject,
+            tealiumKey_session_id : "someSessionId" as AnyObject,
+            tealiumKey_visitor_id :"someVisitorId" as AnyObject,
+            tealiumKey_legacy_vid : "someVID" as AnyObject,
+            tealiumKey_random :"someRandomNumber" as AnyObject
         ]
         
     }
@@ -45,9 +45,9 @@ class TealiumCollectTests: XCTestCase {
         let dictionary = ["key": ["foo", "bar", "alpha", "segment", "sigma"],
                           "gamma": "fizz",
                           "buzz" : "chi",
-                          "lambda": "closure"]
+                          "lambda": "closure"] as [String : Any]
         let collect = TealiumCollect(baseURL: TealiumCollect.defaultBaseURLString())
-        let testString = collect.encode(dictionary)
+        let testString = collect.encode(dictionary as [String : AnyObject])
         
         XCTAssertTrue(expectedString == testString, "test string \(testString) is not encoded properly: expected \(expectedString).")
         
@@ -72,7 +72,7 @@ class TealiumCollectTests: XCTestCase {
         let expectedURL = "https://collect.tealiumiq.com/vdata/i.gif?event_name=eventName&tealium_account=account&tealium_environment=environment&tealium_library_name=swift&tealium_library_version=1.0.0&tealium_profile=profile&tealium_random=someRandomNumber&tealium_session_id=someSessionId&tealium_vid=someVID&tealium_visitor_id=someVisitorId"
         
         let collect = TealiumCollect(baseURL: TealiumCollect.defaultBaseURLString())
-        let expectation = self.expectationWithDescription("dispatch")
+        let expectation = self.expectation(description: "dispatch")
         
         collect.dispatch(testDataDictionary()) { (success, encodedURLString, error) in
             
@@ -80,7 +80,7 @@ class TealiumCollectTests: XCTestCase {
             expectation.fulfill()
         }
         
-        self.waitForExpectationsWithTimeout(1.0, handler: nil)
+        self.waitForExpectations(timeout: 1.0, handler: nil)
 
     }
 
@@ -89,7 +89,7 @@ class TealiumCollectTests: XCTestCase {
         // Fire off to a non-existent URL
         let invalidURL = "https://this.site.doesnotexist"
         let collect = TealiumCollect(baseURL: "thisURLdoesntMatter")
-        let expectation = self.expectationWithDescription("invalidSend")
+        let expectation = self.expectation(description: "invalidSend")
         
         collect.send(invalidURL) { (success, encodedURLString, error) in
             print (success)
@@ -97,7 +97,7 @@ class TealiumCollectTests: XCTestCase {
             expectation.fulfill()
         }
         
-        self.waitForExpectationsWithTimeout(1.0, handler: nil)
+        self.waitForExpectations(timeout: 1.0, handler: nil)
         
     }
     
@@ -106,7 +106,7 @@ class TealiumCollectTests: XCTestCase {
         let validURL = "https://collect.tealiumiq.com/vdata/i.gif?tealium_library_version=1.0.0&tealium_session_id=someSessionId&tealium_library_name=swift&tealium_vid=someVID&tealium_random=someRandomNumber&event_name=eventName&tealium_account=account&tealium_profile=profile&tealium_environment=environment&tealium_visitor_id=someVisitorId"
         
         let collect = TealiumCollect(baseURL: "thisURLdoesntMatter")
-        let expectation = self.expectationWithDescription("validSend")
+        let expectation = self.expectation(description: "validSend")
         
         collect.send(validURL) { (success, encodedURLString, error) in
             
@@ -115,7 +115,7 @@ class TealiumCollectTests: XCTestCase {
             
         }
         
-        self.waitForExpectationsWithTimeout(1.0, handler: nil)
+        self.waitForExpectations(timeout: 1.0, handler: nil)
 
     }
 

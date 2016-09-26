@@ -39,7 +39,7 @@ class TealiumConfigTests: XCTestCase {
     
     func testSetLogLevel() {
         
-        let logLevelSet = LogLevel.Verbose
+        let logLevelSet = LogLevel.verbose
         config.setLogLevel(logLevelSet)
 
         let logLevel = config.getLogLevel()
@@ -54,7 +54,7 @@ class TealiumConfigTests: XCTestCase {
         // TODO: Update this to read from a json file of various options
         let key = "key"
         let value = "value"
-        config.setOptionalData(key, value: value)
+        config.setOptionalData(key, value: value as AnyObject)
         
         if let retrievedValue = config.getOptionalData(key) as? String {
             XCTAssertTrue(retrievedValue == value)

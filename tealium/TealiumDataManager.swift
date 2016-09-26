@@ -9,7 +9,7 @@
 import Foundation
 
 // Extend the use of += operators to dictionaries
-func += <K, V> (inout left: [K:V], right: [K:V]) {
+func += <K, V> (left: inout [K:V], right: [K:V]) {
     for (k, v) in right {
         left.updateValue(v, forKey: k)
     }
@@ -17,7 +17,7 @@ func += <K, V> (inout left: [K:V], right: [K:V]) {
 
 // Extend use of == to dictionaries
 func ==(lhs: [String: AnyObject], rhs: [String: AnyObject] ) -> Bool {
-    return NSDictionary(dictionary: lhs).isEqualToDictionary(rhs)
+    return NSDictionary(dictionary: lhs).isEqual(to: rhs)
 }
 
 /**
@@ -26,12 +26,12 @@ func ==(lhs: [String: AnyObject], rhs: [String: AnyObject] ) -> Bool {
  */
 class TealiumDataManager {
     
-    private let _account : String
-    private let _profile : String
-    private let _environment : String
-    private var _persistentData : [String:AnyObject]?
-    private var _volatileData = [String:AnyObject]()
-    private var _ioManager  : TealiumIOManager
+    fileprivate let _account : String
+    fileprivate let _profile : String
+    fileprivate let _environment : String
+    fileprivate var _persistentData : [String:AnyObject]?
+    fileprivate var _volatileData = [String:AnyObject]()
+    fileprivate var _ioManager  : TealiumIOManager
     
     
     // MARK: PUBLIC
@@ -54,7 +54,7 @@ class TealiumDataManager {
         }
         
         self._ioManager = ioManager
-        self.addVolatileData([tealiumKey_session_id: resetSessionId()])        
+        self.addVolatileData([tealiumKey_session_id: resetSessionId() as AnyObject])        
         self._persistentData = getPersistentData()
     
     }
@@ -65,7 +65,7 @@ class TealiumDataManager {
         - Parameters:
             - data: A [String:AnyObject] dictionary. Values should be of type String or [String]
      */
-    func addPersistentData(data : [String:AnyObject]){
+    func addPersistentData(_ data : [String:AnyObject]){
         
         guard var persistentData = _persistentData else {return}
         persistentData += data
@@ -100,10 +100,10 @@ class TealiumDataManager {
         - Parameters:
             - keys: An array of String keys to remove from the internal persistent data store.
      */
-    func deletePersistentData(keys:[String]){
+    func deletePersistentData(_ keys:[String]){
         
         for key in keys {
-            _persistentData?.removeValueForKey(key)
+           let _ = _persistentData?.removeValue(forKey: key)
         }
         
     }
@@ -114,7 +114,7 @@ class TealiumDataManager {
         - Parameters:
             - data: A [String:AnyObject] dictionary. Values should be of type String or [String]
      */
-    func addVolatileData(data : [String:AnyObject]){
+    func addVolatileData(_ data : [String:AnyObject]){
         
         _volatileData += data
         
@@ -128,8 +128,8 @@ class TealiumDataManager {
     func getVolatileData() -> [String:AnyObject]{
         
         var data = [String:AnyObject]()
-        data[tealiumKey_random] = getRandom()
-        data[tealiumKey_timestamp_epoch] = getTimestampInSeconds()
+        data[tealiumKey_random] = getRandom() as AnyObject?
+        data[tealiumKey_timestamp_epoch] = getTimestampInSeconds() as AnyObject?
         data += _volatileData
         
         return data
@@ -141,10 +141,10 @@ class TealiumDataManager {
         - Parameters:
             - keys: An array of String keys to remove from the internal volatile data store.
     */
-    func deleteVolatileData(keys:[String]){
+    func deleteVolatileData(_ keys:[String]){
         
         for key in keys {
-            _volatileData.removeValueForKey(key)
+            _volatileData.removeValue(forKey: key)
         }
         
     }
@@ -156,9 +156,9 @@ class TealiumDataManager {
         let info = [tealiumKey_library_name : tealiumValue_library_name,
                     tealiumKey_library_version : tealiumValue_library_version
                     ]
-        self.addPersistentData(info)
+        self.addPersistentData(info as [String : AnyObject])
 
-        return info
+        return info as [String : AnyObject]
     }
     
     func getAccountInfo() -> [String:AnyObject]{
@@ -167,7 +167,7 @@ class TealiumDataManager {
                     tealiumKey_profile : _profile,
                      tealiumKey_environment : _environment
                    ]
-        return info
+        return info as [String : AnyObject]
     }
 
     func getRandom() -> String {
@@ -189,7 +189,7 @@ class TealiumDataManager {
     
     func getTimestampInSeconds() -> String {
 
-        let ts = NSDate().timeIntervalSince1970
+        let ts = Date().timeIntervalSince1970
         
         return "\(ts)"
     }
@@ -197,7 +197,7 @@ class TealiumDataManager {
     
     func getTimestampInMilliseconds() -> String {
         
-        let ts = NSDate().timeIntervalSince1970 * 1000
+        let ts = Date().timeIntervalSince1970 * 1000
         
         return "\(ts)"
     }
@@ -205,8 +205,8 @@ class TealiumDataManager {
     
     func newVisitorId() -> String {
         
-        var vid = NSUUID.init().UUIDString
-        vid = vid.stringByReplacingOccurrencesOfString( "-" , withString: "")
+        var vid = UUID.init().uuidString
+        vid = vid.replacingOccurrences( of: "-" , with: "")
         
         return vid
     }
@@ -223,7 +223,7 @@ class TealiumDataManager {
                     tealiumKey_visitor_id: vid,
                     tealiumKey_legacy_vid: vid]
         
-        return data
+        return data as [String : AnyObject]
     }
     
 }
