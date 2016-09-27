@@ -1,4 +1,4 @@
-# Tealium Swift Library 1.0.0
+# Tealium Swift Library 1.0.1
 
 This library leverages the power of Tealium's [AudienceStream™](http://tealium.com/products/audiencestream/) making them natively available to Swift applications. Please contact your Account Manager first to verify your agreement(s) for licensed products.
 
@@ -30,7 +30,8 @@ AudienceStream allows you to create a unified view of your customers, correlatin
 
 
 ## Change Log
-
+- 1.0.1 Swift 3 Syntax Update 
+    - Support for Swift 3.0
 - 1.0.0 Initial Release
     - 2.x Swift support. In XCode 8, can safely update to syntax 2.3 (no code changes will be suggested + will be usable in a 3.x app)
     - Tealium universal data sources added for all dispatches:

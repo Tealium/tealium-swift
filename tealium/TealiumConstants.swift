@@ -22,6 +22,6 @@ let tealiumKey_legacy_vid = "tealium_vid"
 let tealiumKey_overrideCollectURL = "tealium_override_collect_url"
 
 let tealiumValue_library_name = "swift"
-let tealiumValue_library_version = "1.0.0"
+let tealiumValue_library_version = "1.0.1"
 
 

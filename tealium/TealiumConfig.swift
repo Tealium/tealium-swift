@@ -17,9 +17,9 @@ class TealiumConfig {
     var account : String!
     var profile : String!
     var environment : String!
-    private let logLevelDefault : LogLevel = .Verbose
-    private let logLevelKey = "logLevel"
-    private var _optionalData : [ String : AnyObject ]?
+    fileprivate let logLevelDefault : LogLevel = .verbose
+    fileprivate let logLevelKey = "logLevel"
+    fileprivate var _optionalData : [ String : AnyObject ]?
 
     // MARK: PUBLIC
     
@@ -45,8 +45,8 @@ class TealiumConfig {
         - Paramaters:
             - logLevel: The level to use (None/Errors/Warnings/Verbose)
      */
-    func setLogLevel(logLevel: LogLevel){
-        self.setOptionalData(logLevelKey, value: logLevel.description)
+    func setLogLevel(_ logLevel: LogLevel){
+        self.setOptionalData(logLevelKey, value: logLevel.description as AnyObject)
     }
     
     /**
@@ -69,7 +69,7 @@ class TealiumConfig {
             - key: Unique string identifier for data
             - value: Data to be stored
      */
-    func setOptionalData(key: String, value: AnyObject) {
+    func setOptionalData(_ key: String, value: AnyObject) {
         if self._optionalData == nil {
             self._optionalData = [String: AnyObject]()
         }
@@ -82,14 +82,14 @@ class TealiumConfig {
         - Parameters:
             - key: String identifier for the data value desired
     */
-    func getOptionalData( key : String) -> AnyObject? {
+    func getOptionalData( _ key : String) -> AnyObject? {
         return self.optionalData()[key]
     }
     
     
     // MARK: PRIVATE
     
-    private func optionalData() -> [String : AnyObject]{
+    fileprivate func optionalData() -> [String : AnyObject]{
         guard let extData = self._optionalData else {
             return [String: AnyObject]()
         }

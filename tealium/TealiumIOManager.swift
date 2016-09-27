@@ -14,7 +14,7 @@ import Foundation
  */
 class TealiumIOManager {
     
-    private let persistenceFilePath: String
+    fileprivate let persistenceFilePath: String
     
     /**
      Initializer.
@@ -29,7 +29,7 @@ class TealiumIOManager {
         
         let parentDir = "\(NSHomeDirectory())/.tealium/swift/"
         do {
-            try NSFileManager.defaultManager().createDirectoryAtPath(parentDir, withIntermediateDirectories: true, attributes: nil)
+            try FileManager.default.createDirectory(atPath: parentDir, withIntermediateDirectories: true, attributes: nil)
         } catch _ as NSError {
             // Leaveing above as stub for more complex error handling if desired.
             return nil
@@ -44,7 +44,7 @@ class TealiumIOManager {
      - Returns: true if the file exists.
      */
     func persistedDataExists() -> Bool {
-        return NSFileManager.defaultManager().fileExistsAtPath(persistenceFilePath)
+        return FileManager.default.fileExists(atPath: persistenceFilePath)
     }
     
     /**
@@ -53,7 +53,7 @@ class TealiumIOManager {
      - Parameters:
      - data: The desired data to persist, clobbers the previously saved file.
      */
-    func saveData(data:[String:AnyObject]) {
+    func saveData(_ data:[String:AnyObject]) {
         NSKeyedArchiver.archiveRootObject(data, toFile: persistenceFilePath)
     }
     
@@ -64,7 +64,7 @@ class TealiumIOManager {
      */
     func loadData() -> [String:AnyObject]? {
         if persistedDataExists() {
-            return NSKeyedUnarchiver.unarchiveObjectWithFile(persistenceFilePath) as? [String:AnyObject]
+            return NSKeyedUnarchiver.unarchiveObject(withFile: persistenceFilePath) as? [String:AnyObject]
         }
         
         return nil
@@ -83,7 +83,7 @@ class TealiumIOManager {
         }
         
         do {
-            try NSFileManager.defaultManager().removeItemAtPath(persistenceFilePath)
+            try FileManager.default.removeItem(atPath: persistenceFilePath)
         
         }
         catch _ as NSError {

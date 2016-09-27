@@ -20,6 +20,20 @@
                ReferencedContainer = "container:tealium-swift.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "711B6E4B1D787BEC00A4B13D"
+               BuildableName = "tealium-swift-tests.xctest"
+               BlueprintName = "tealium-swift-tests"
+               ReferencedContainer = "container:tealium-swift.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction

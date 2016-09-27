@@ -22,7 +22,7 @@ class TealiumLoggerTests: XCTestCase {
 
     func testLogLevelErrors() {
         
-        let logLevel = LogLevel.Errors
+        let logLevel = LogLevel.errors
         let logger = TealiumLogger(loggerId: "test", logLevel: logLevel)
         let message = "test"
         let string = logger.log(message, logLevel: logLevel)
@@ -33,7 +33,7 @@ class TealiumLoggerTests: XCTestCase {
     
     func testLogLevelWarnings() {
         
-        let logLevel = LogLevel.Warnings
+        let logLevel = LogLevel.warnings
         let logger = TealiumLogger(loggerId: "test",logLevel: logLevel)
         let message = "test"
         let string = logger.log(message, logLevel: logLevel)
@@ -44,7 +44,7 @@ class TealiumLoggerTests: XCTestCase {
     
     func testLogLevelVerbose () {
         
-        let logLevel = LogLevel.Verbose
+        let logLevel = LogLevel.verbose
         let logger = TealiumLogger(loggerId: "test",logLevel: logLevel)
         let message = "test"
         let string = logger.log(message, logLevel: logLevel)
@@ -53,7 +53,7 @@ class TealiumLoggerTests: XCTestCase {
     
     func testLogLevelNone () {
         
-        let logLevel = LogLevel.None
+        let logLevel = LogLevel.none
         let logger = TealiumLogger(loggerId: "test",logLevel: logLevel)
         let message = "test"
         let string = logger.log(message, logLevel: logLevel)

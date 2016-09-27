@@ -15,9 +15,9 @@ import XCTest
         - smallerDictionary: A [String:AnyObject] dictionary
     - Returns: Boolean answer
  */
-extension Dictionary where Key:StringLiteralConvertible, Value:AnyObject{
+extension Dictionary where Key:ExpressibleByStringLiteral, Value:AnyObject{
     
-    func contains(smallerDictionary:[String:AnyObject])-> Bool {
+    func contains(_ smallerDictionary:[String:AnyObject])-> Bool {
         
         // Should use generics here
         
@@ -86,18 +86,18 @@ class TealiumDataManagerTests: XCTestCase {
         ]
         
         
-        dataManager.addVolatileData(testData)
+        dataManager.addVolatileData(testData as [String : AnyObject])
         let volatileData = dataManager.getVolatileData()
         
         print("VolatileData: \(volatileData)")
         
-        XCTAssertTrue(volatileData.contains(testData), "VolatileData: \(volatileData)")
+        XCTAssertTrue(volatileData.contains(testData as [String : AnyObject]), "VolatileData: \(volatileData)")
 
         dataManager.deleteVolatileData(["a","b"])
         
         let volatileDataPostDelete = dataManager.getVolatileData()
         
-        XCTAssertFalse(volatileDataPostDelete.contains(testData), "VolatileData: \(volatileDataPostDelete)")
+        XCTAssertFalse(volatileDataPostDelete.contains(testData as [String : AnyObject]), "VolatileData: \(volatileDataPostDelete)")
     }
     
     // This test passes individually, not always as part of full test run.
@@ -110,14 +110,14 @@ class TealiumDataManagerTests: XCTestCase {
             "b":"2"
         ]
         
-        dataManager.addPersistentData(testData)
+        dataManager.addPersistentData(testData as [String : AnyObject])
         
         guard let persistentData = dataManager.getPersistentData() else {
             XCTFail()
             return
         }
         
-        XCTAssertTrue(persistentData.contains(testData), "PersistentData: \(persistentData)")
+        XCTAssertTrue(persistentData.contains(testData as [String : AnyObject]), "PersistentData: \(persistentData)")
         
         dataManager.deletePersistentData(["a","b"])
         
@@ -126,18 +126,18 @@ class TealiumDataManagerTests: XCTestCase {
             return
         }
         
-        XCTAssertFalse(persistentDataPostDelete.contains(testData), "PersistentData: \(persistentDataPostDelete)")
+        XCTAssertFalse(persistentDataPostDelete.contains(testData as [String : AnyObject]), "PersistentData: \(persistentDataPostDelete)")
         
     }
     
     func testNewPersistentData() {
         
         var expected = [String:AnyObject]()
-        expected[tealiumKey_library_name] = "swift"
-        expected[tealiumKey_library_version] = "1.0.0"
-        expected[tealiumKey_account] = account
-        expected[tealiumKey_profile] = profile
-        expected[tealiumKey_environment] = env
+        expected[tealiumKey_library_name] = "swift" as AnyObject?
+        expected[tealiumKey_library_version] = "1.0.1" as AnyObject?
+        expected[tealiumKey_account] = account as AnyObject?
+        expected[tealiumKey_profile] = profile as AnyObject?
+        expected[tealiumKey_environment] = env as AnyObject?
         
         // Not testing tealium_visitor_id or tealium_vid
         
@@ -172,8 +172,8 @@ class TealiumDataManagerTests: XCTestCase {
         
         XCTAssertNotEqual(random, otherRandom)
         
-        let matches = regex.numberOfMatchesInString(random, options: [], range: NSRange(location: 0, length: random.characters.count))
-        let matches2 = regex.numberOfMatchesInString(otherRandom, options: [], range: NSRange(location: 0, length: otherRandom.characters.count))
+        let matches = regex.numberOfMatches(in: random, options: [], range: NSRange(location: 0, length: random.characters.count))
+        let matches2 = regex.numberOfMatches(in: otherRandom, options: [], range: NSRange(location: 0, length: otherRandom.characters.count))
         
         XCTAssertTrue(matches == 1)
         XCTAssertTrue(matches2 == 1)
@@ -188,7 +188,7 @@ class TealiumDataManagerTests: XCTestCase {
             if randomNumbers.contains(random) == true {
                 XCTFail("Duplicate random number")
             } else {
-                let matches = regex.numberOfMatchesInString(random, options: [], range: NSRange(location: 0, length: random.characters.count))
+                let matches = regex.numberOfMatches(in: random, options: [], range: NSRange(location: 0, length: random.characters.count))
                 print("matches here is : \(matches)")
                 if (matches != 1){
                     print ("random number is :::: \(random)")

@@ -9,34 +9,34 @@
 import Foundation
 
 enum LogLevel {
-    case None
-    case Errors
-    case Warnings
-    case Verbose
+    case none
+    case errors
+    case warnings
+    case verbose
     
     var description : String {
         switch self {
-        case .Errors:
+        case .errors:
             return "Errors"
-        case .Warnings:
+        case .warnings:
             return "Warnings"
-        case .Verbose:
+        case .verbose:
             return "Verbose"
         default:
             return "None"
         }
     }
     
-    static func fromString(string: String) -> LogLevel {
-        switch string.lowercaseString {
+    static func fromString(_ string: String) -> LogLevel {
+        switch string.lowercased() {
         case "errors":
-            return .Errors
+            return .errors
         case "warnings":
-            return .Warnings
+            return .warnings
         case "verbose":
-            return .Verbose
+            return .verbose
         default:
-            return .None
+            return .none
         }
     }
 }
@@ -57,11 +57,11 @@ class TealiumLogger {
         
     }
     
-    class func logNSError(error:NSError) {
+    class func logNSError(_ error:NSError) {
         print("\(error.localizedDescription)")
     }
     
-    func log( message: String, logLevel: LogLevel) -> String? {
+    func log( _ message: String, logLevel: LogLevel) -> String? {
 
         if logThreshold.hashValue >= logLevel.hashValue {
             print("Tealium instance \(idString): \(message)")
