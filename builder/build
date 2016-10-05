@@ -1,0 +1,102 @@
+#!/bin/bash
+
+##########################
+# FUNCTIONS
+##########################
+function moduleFolderPaths {
+
+	path=$1
+
+	for dir in $1/*/
+	do
+		moduleFolderPath+=$dir
+		printf "Directory found: %s\n" "$dir"
+	done
+
+	echo $moduleFolderPath
+}
+
+function copyModuleSourceFiles {
+
+	sourcePath=$1
+	targetPath=$2
+
+	# Copy all files (recursively) to targetPath
+
+	# TODO:
+
+}
+
+
+##########################
+# GET ARGS
+##########################
+while getopts ":m:o:s:t:" opt; do
+  case $opt in
+    m) modules+=("$OPTARG")
+    ;;
+    o) output_filename="$OPTARG"
+    ;;
+    s) source_path="$OPTARG"
+	;;
+	t) temp_path="$OPTARG"
+	;;
+    \?) echo "Invalid option -$OPTARG"
+    ;;
+  esac
+done
+
+##########################
+# MISSING ARGS Check
+##########################
+if [ -z $modules ]
+then
+	echo "No modules passed in, use -m command to assign"
+	exit 1
+fi
+
+if [ -z $output_filename ]
+then
+	echo "No output filename passed in, use -o command to assign"
+	exit 1
+fi
+
+if [ -z $source_path ]
+then
+	echo "No path for source files passed in, use -s command to assign"
+	exit 1
+fi
+
+if [ -z $temp_path ]
+then
+	echo "No temp path for source copies passed in, use -t command to assign"
+	exit 1
+fi
+
+##########################
+# PRINT ARGS - Debug Check
+##########################
+for module in "${modules[@]}"
+do
+  printf "Include module: %s\n" "${module}"
+done
+printf "Temp Path (copy to location for source files): %s\n" "$temp_path"
+printf "Source Path (root of module folders): %s\n" "$source_path"
+printf "Output Filename (name of output framework if applicable): %s\n" "$output_filename"
+
+
+##########################
+# MAIN
+##########################
+
+# Clear temp
+# Verify / add protections prior
+#echo "Clearing Temp folder..."
+#rm -rfv $temp_path/*
+
+# Copy all Module Source files to temp
+echo "Copying all source files to $temp_path"
+
+
+
+
