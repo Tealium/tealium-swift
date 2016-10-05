@@ -1,0 +1,51 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "C45592CEF2CCAA7230D4D18AF8A84C72AA12972E+++2003FF1",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "C45592CEF2CCAA7230D4D18AF8A84C72AA12972E+++84A848A" : 9223372036854775807,
+    "C3DD9A73BCF96A15C34F59E559734F9488124485+++50AFD69" : 9223372036854775807,
+    "C45592CEF2CCAA7230D4D18AF8A84C72AA12972E+++2003FF1" : 9223372036854775807,
+    "C45592CEF2CCAA7230D4D18AF8A84C72AA12972E+++9E5B04D" : 9223372036854775807,
+    "C45592CEF2CCAA7230D4D18AF8A84C72AA12972E+++87775E1" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "8BDED19B-059D-42F3-B72E-164CD341DFC9",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "C45592CEF2CCAA7230D4D18AF8A84C72AA12972E+++84A848A" : "Tealium-Repos\/tealium-swift\/",
+    "C3DD9A73BCF96A15C34F59E559734F9488124485+++50AFD69" : "..\/tealium-er-ipad-answers",
+    "C45592CEF2CCAA7230D4D18AF8A84C72AA12972E+++2003FF1" : "tealium-swift\/",
+    "C45592CEF2CCAA7230D4D18AF8A84C72AA12972E+++9E5B04D" : "Desktop\/Tealium-Repos\/tealium-swift\/",
+    "C45592CEF2CCAA7230D4D18AF8A84C72AA12972E+++87775E1" : "Desktop\/Tealium-Repos\/tealium-swift\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "SegueCatalog",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "samples\/iOSSegueCatalog+tealium\/SegueCatalog.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/bitbucket.org\/tealiummobile\/tealium-er-ipad-answers.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "C3DD9A73BCF96A15C34F59E559734F9488124485+++50AFD69"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/jalakoo\/tealium-swift.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "C45592CEF2CCAA7230D4D18AF8A84C72AA12972E+++2003FF1"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/mertid\/tealium-swift.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "C45592CEF2CCAA7230D4D18AF8A84C72AA12972E+++84A848A"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/jalakoo\/tealium-swift.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "C45592CEF2CCAA7230D4D18AF8A84C72AA12972E+++87775E1"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/mertid\/tealium-swift.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "C45592CEF2CCAA7230D4D18AF8A84C72AA12972E+++9E5B04D"
+    }
+  ]
+}
