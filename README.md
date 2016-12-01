@@ -1,16 +1,13 @@
-# Tealium Swift Library 1.0.1
+# Tealium Swift Library
 
-This library leverages the power of Tealium's [AudienceStream™](http://tealium.com/products/audiencestream/) making them natively available to Swift applications. Please contact your Account Manager first to verify your agreement(s) for licensed products.
+This library leverages the power of Tealium's [AudienceStream™](http://tealium.com/products/audiencestream/) making them natively available to Swift applications. 
 
-
-## What does Tealium do?
-
-Tealium provides the platform for crafting a modern, scalable and flexible marketing technology stack so you can easily connect and integrate all of your best-in-class solutions.
+Please contact your Account Manager first to verify your agreement(s) for licensed products.
 
 
 ### What is Audience Stream ?
 
-Tealium AudienceStream is the leading omnichannel customer segmentation and action engine, combining robust audience management and profile enrichment capabilities with the ability to take immediate, relevant action.
+Tealium AudienceStream™ is the leading omnichannel customer segmentation and action engine, combining robust audience management and profile enrichment capabilities with the ability to take immediate, relevant action.
 
 AudienceStream allows you to create a unified view of your customers, correlating data across every customer touchpoint, and then leverage that comprehensive customer profile across your entire digital marketing stack.
 
@@ -22,6 +19,51 @@ AudienceStream allows you to create a unified view of your customers, correlatin
 * There are many other useful articles on our [community site](https://community.tealiumiq.com).
 
 
+## Tealium Swift Library Modules
+
+This library employs a drag-and-drop modular architecture when the source files are referenced directly (vs. using a dependency manager).
+
+### What is a module?
+
+Each subfolder within this Tealium folder contains all the files related to one module. Each folder is made up of one or more files, where at least one is a subclass of TealiumModule. 
+
+The core module looks for these module files at init time.  So module folders can be added and removed (or referenced and derefenced) without requiring code updates (unless module specific APIs are used).
+
+
+### Required Modules
+
+The core module is the only required component of the library.  Howevever, no dispatch calls will be made without a dispatch service module, ie the 'collect' module.
+
+
+### Optionally Auto-included Modules
+
+These modules are included with .framework builds of the library for dependency managers (ie Carthage):
+
+- appdata
+- collect
+- logger
+- persistentdata
+- volatiledata
+
+
+### Optionally Manual-include Modules
+
+These modules may be added manually to projects but are NOT included with .framework builds for dependency managers, because they require additional entitlements, services, or are not necessary in the majority of use cases.
+
+- attribution
+
+
+### Default Module Priority List
+Module chaining goes from lower-to-higher priority value. The following is the order by which modules will spin up and process track calls based on the default priority setting in their TealiumModuleConfigs:
+
+- 100 Logger (provides debug logging)
+- 400 Attribution (adds IDFA to track data)
+- 500 AppData (add app_uuid to track data)
+- 600 PersistentData (adds ability to add persistent data to all track data)
+- 700 VolatileData (adds ability to add session persistent data to all track data - clears upon app termination)
+- 1000 Collect (packages and delivers track call to Tealium or custom endpoint)
+
+
 ## Contact Us
 
 * If you have **code questions** or have experienced **errors** please post an issue in the [issues page](../../issues)
@@ -30,6 +72,18 @@ AudienceStream allows you to create a unified view of your customers, correlatin
 
 
 ## Change Log
+
+- 1.1.0
+    - New track with type API added
+    - New auto Tealium variable added:
+        - app_uuid
+        - tealium_event_type
+    - Drag & Drop Module Architecture implemented
+    - iOS Sample app added
+    - macOS Sample app added
+    - tvOS Sample app added
+    - watchOS Sample app added
+    - Additional Tests added
 - 1.0.1 Swift 3 Syntax Update 
     - Support for Swift 3.0
 - 1.0.0 Initial Release
@@ -53,6 +107,6 @@ AudienceStream allows you to create a unified view of your customers, correlatin
 
 Use of this software is subject to the terms and conditions of the license agreement contained in the file titled "LICENSE.txt".  Please read the license before downloading or using any of the files contained in this repository. By downloading or using any of these files, you are agreeing to be bound by and comply with the license agreement.
 
-
+ 
 ---
 Copyright (C) 2012-2016, Tealium Inc.
