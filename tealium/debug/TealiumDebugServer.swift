@@ -26,30 +26,8 @@ class TealiumDebugServer {
                  "environment"   : "c"] as Dictionary
     
     
-    func start(config : TealiumConfig)  {
-        
-        server["/info"] = { r in
-            
-            do {
-                let jsonData = try self.encode(parameters: config.asDictionary() as [String : AnyObject])
-                
-                let jsonObject = try JSONSerialization.jsonObject(with: jsonData!, options: [])
-                
-                if let castedDict = jsonObject as? [String: AnyObject]{
-                    return HttpResponse.ok(.json(castedDict as AnyObject))
-                }  
-                
-            }catch{
-                
-                print("error")
-                
-            }
-            // probably want to pass some sort of message here
-            return HttpResponse.internalServerError
-            
-        }
-        
-        
+    func start()  {
+
         server["/websocket-echo/"] = websocket({ (session, text) in
             session.writeText("connection success")
             

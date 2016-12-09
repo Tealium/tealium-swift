@@ -1,5 +1,5 @@
  //
-//  TealiumModule_Debug.swift
+//  TealiumDebugModule.swift
 //  tealium-swift
 //
 //  Created by Jason Koo on 10/5/16.

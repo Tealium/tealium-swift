@@ -6,4 +6,7 @@
 //  Copyright © 2016 tealium. All rights reserved.
 //
 
-import Foundation
+
+enum TealiumDebugKey {
+    static let moduleName = "debug"
+}

@@ -11,7 +11,7 @@ import Foundation
 class TealiumDebugServer {
     
     let server = HttpServer()
-    
+    var debugQueue = [[String:AnyObject]]()
     
     var mps =   ["mps"          : ["collect": "true",
                                    "tagmangement": false],
@@ -30,8 +30,13 @@ class TealiumDebugServer {
 
         server["/websocket-echo/"] = websocket({ (session, text) in
             session.writeText("connection success")
+           
+            if (!self.debugQueue.isEmpty){
+                session.writeText(self.debugQueue.description)
+                self.debugQueue.removeAll()
+            }
             
-            }, { (session, binary) in
+        }, { (session, binary) in
                 session.writeBinary(binary)
         })
         do {
@@ -41,6 +46,11 @@ class TealiumDebugServer {
             print("Unable to start server.")
         }
         
+    }
+    
+    func addToDebugQueue(_ trackData: [String: AnyObject]) {
+        
+        debugQueue.append(trackData)
     }
     
     func stop() {

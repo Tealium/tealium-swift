@@ -15,15 +15,16 @@ class TealiumDebugModule : TealiumModule {
     override func moduleConfig() -> TealiumModuleConfig {
         
         return TealiumModuleConfig(name: TealiumDebugKey.moduleName,
-                                   priority: 200,
+                                   priority: 2000,
                                    build: 1,
                                    enabled: true)
         
     }
     
     override func enable(config:TealiumConfig) {
+        //was passing config
         
-        server.start(config: config)
+        server.start()
         
         super.enable(config: config)
 
@@ -39,28 +40,25 @@ class TealiumDebugModule : TealiumModule {
     
     override func track(_ track: TealiumTrack) {
         
-        var newData = [String:AnyObject]()
+        var debugData = [String:AnyObject]()
+       
+        debugData += track.data
         
-        if let volatileData = self.volatileData?.getData() {
-            newData += volatileData
+        if let trackInfo = track.info {
+            debugData += trackInfo
         }
-        
-        newData += track.data
-        
-        let newTrack = TealiumTrack(data: newData,
-                                    info: track.info,
-                                    completion: track.completion)
-        
-        didFinishTrack(newTrack)
     
+        server.addToDebugQueue(debugData)
+    
+    }
 }
 
- extension TealiumModuleConfig : CustomStringConvertible {
-    var description: String{
-        return "name: \(self.name) priority: \(self.priority) enabled: \(self.enabled)" as String
-    }
-
- }
+// extension TealiumModuleConfig : CustomStringConvertible {
+//    var description: String{
+//        return "name: \(self.name) priority: \(self.priority) enabled: \(self.enabled)" as String
+//    }
+//
+// }
  
  extension TealiumConfig {
     func asDictionary() -> [String : AnyObject] {
@@ -75,7 +73,6 @@ class TealiumDebugModule : TealiumModule {
         if self.optionalData != nil {
             dictionary["optionalData"] = self.optionalData as AnyObject?
         }
-        
         
         
     return dictionary
