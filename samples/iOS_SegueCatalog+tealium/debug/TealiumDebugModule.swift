@@ -1,5 +1,5 @@
  //
-//  TealiumModule_Debug.swift
+//  TealiumDebugModule.swift
 //  tealium-swift
 //
 //  Created by Jason Koo on 10/5/16.
@@ -8,14 +8,15 @@
 
 import Foundation
 
-class TealiumModule_Debug : TealiumModule {
+class TealiumDebugModule : TealiumModule {
     
     let server = TealiumDebugServer()
     
     override func moduleConfig() -> TealiumModuleConfig {
         
-        return TealiumModuleConfig(name: "debug",
+        return TealiumModuleConfig(name: TealiumDebugKey.moduleName,
                                    priority: 200,
+                                   build: 1,
                                    enabled: true)
         
     }
@@ -36,17 +37,21 @@ class TealiumModule_Debug : TealiumModule {
 
     }
     
-    override func track(data: [String : AnyObject],
-                        info: [String : AnyObject]?,
-                        completion: ((Bool, [String:AnyObject]?, Error?) -> Void)?) {
+    override func track(_ track: TealiumTrack) {
         
-        // TODO: send track calls to debug server
+        var newData = [String:AnyObject]()
         
-        super.track(data: data,
-                    info: info,
-                    completion: completion)
+        if let volatileData = self.volatileData?.getData() {
+            newData += volatileData
+        }
         
-    }
+        newData += track.data
+        
+        let newTrack = TealiumTrack(data: newData,
+                                    info: track.info,
+                                    completion: track.completion)
+        
+        didFinishTrack(newTrack)
     
 }
 
