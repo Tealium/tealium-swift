@@ -147,7 +147,6 @@
 		22F6F0DD1DFB27A1001592F9 /* debug */ = {
 			isa = PBXGroup;
 			children = (
-				22F6F0DE1DFB27A1001592F9 /* Sources */,
 				22F6F0F21DFB27A1001592F9 /* Swifter */,
 				22F6F0F31DFB27A1001592F9 /* TealiumDebugConstants.swift */,
 				22F6F0F41DFB27A1001592F9 /* TealiumDebugModule.swift */,
@@ -180,12 +179,14 @@
 				22F6F0F01DFB27A1001592F9 /* String+SHA1.swift */,
 				22F6F0F11DFB27A1001592F9 /* WebSockets.swift */,
 			);
-			path = Sources;
+			name = Sources;
+			path = ../Sources;
 			sourceTree = "<group>";
 		};
 		22F6F0F21DFB27A1001592F9 /* Swifter */ = {
 			isa = PBXGroup;
 			children = (
+				22F6F0DE1DFB27A1001592F9 /* Sources */,
 			);
 			path = Swifter;
 			sourceTree = "<group>";

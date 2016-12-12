@@ -48,8 +48,8 @@ class TealiumDebugModule : TealiumModule {
             debugData += trackInfo
         }
     
-        server.addToDebugQueue(debugData)
-    
+      //  server.addToDebugQueue(debugData)
+        server.serveTrack()
     }
 }
 

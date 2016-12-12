@@ -9,6 +9,16 @@
 import UIKit
 
 class NestedViewController: UIViewController {
+   
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let extraData : [String:AnyObject] = ["Key" : "value" as AnyObject]
+        
+        TealiumHelper.sharedInstance().track(title: "test",
+                                             data: extraData)
+    }
+    
     @IBAction func unwindToNested(_ segue: UIStoryboardSegue) {
         /* 
             Empty. Exists solely so that "unwind to nested" segues can find instances
@@ -27,6 +37,14 @@ class NestedViewController: UIViewController {
 }
 
 class OuterViewController: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let extraData : [String:AnyObject] = ["Key" : "value" as AnyObject]
+        
+        TealiumHelper.sharedInstance().track(title: "test",
+                                             data: extraData)
+    }
     @IBAction func unwindToOuter(_ segue: UIStoryboardSegue) {
         /*
             Empty. Exists solely so that "unwind to outer" segues can find 

@@ -13,34 +13,31 @@ class TealiumDebugServer {
     let server = HttpServer()
     var debugQueue = [[String:AnyObject]]()
     
-    var mps =   ["mps"          : ["collect": "true",
-                                   "tagmangement": false],
-                 "libconfig"     : ["collect": "true",
-                                    "priority": 1],
-                 "collect_url"   : "test",
-                 "tag_mgmt_url"  : "test",
-                 "mps_url"       : "test",
-                 "instance_name" : "tealium1",
-                 "account"       : "a",
-                 "profile"       : "b",
-                 "environment"   : "c"] as Dictionary
-    
+
     
     func start()  {
 
-        server["/websocket-echo/"] = websocket({ (session, text) in
-            session.writeText("connection success")
-           
-            if (!self.debugQueue.isEmpty){
-                session.writeText(self.debugQueue.description)
-                self.debugQueue.removeAll()
+
+      server[""] =  websocket({ (session, text ) in
+            session.writeText("blah")
+            do {
+            let socket = try session.socket.acceptClientSocket()
+                
+                //set a bool here?
+                print(socket)
+            } catch {
+                print(SocketError.listenFailed("bummer"))
             }
-            
+        
         }, { (session, binary) in
-                session.writeBinary(binary)
+            session.writeBinary(binary)
         })
+        
+        
         do {
+            
             try server.start()
+            
             print("Server started.")
         } catch {
             print("Unable to start server.")
@@ -48,9 +45,37 @@ class TealiumDebugServer {
         
     }
     
+
+    func clientDidConnect() -> Bool {
+
+    
+        return true
+    }
+    
+    
+    func serveTrack() {
+
+        //.write
+        server[""] = websocket({ (session, text) in
+            session.writeText("connection success")
+         //   let socketSession =  try? session.socket.acceptClientSocket()
+            
+//            if (!self.debugQueue.isEmpty){
+//              
+//                session.writeText(self.debugQueue.description)
+//                //self.debugQueue.removeAll()
+//            }
+            
+        }, { (session, binary) in
+            session.writeBinary(binary)
+        })
+    }
+    
+
     func addToDebugQueue(_ trackData: [String: AnyObject]) {
         
         debugQueue.append(trackData)
+        
     }
     
     func stop() {
@@ -63,7 +88,7 @@ class TealiumDebugServer {
             withJSONObject: parameters,
             options: JSONSerialization.WritingOptions())
         
-        return data
+         return data
     }
     
 }
