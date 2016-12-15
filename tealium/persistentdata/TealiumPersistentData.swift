@@ -12,7 +12,7 @@ open class TealiumPersistentData {
     
     var persistenceMode = TealiumPersistentMode.file
     var uniqueId : String?
-    var persistentDataCache = [String:AnyObject]()
+    var persistentDataCache = [String:Any]()
     
     // MARK:
     // MARK: PUBLIC
@@ -69,8 +69,8 @@ open class TealiumPersistentData {
     /// Add additional volatile data that will be available to all track calls
     /// until app termination.
     ///
-    /// - Parameter data: [String:AnyObject] of additional data to add.
-    public func add(data: [String:AnyObject]) {
+    /// - Parameter data: [String:Any] of additional data to add.
+    public func add(data: [String:Any]) {
         
         persistentDataCache += data
         
@@ -114,9 +114,9 @@ open class TealiumPersistentData {
     /**
      Returns persistent data.
      
-     - returns: [String:AnyObject] dictionary of saved data.
+     - returns: [String:Any] dictionary of saved data.
      */
-    public func getData() -> [String:AnyObject] {
+    public func getData() -> [String:Any] {
         
         // Use cache if available.
         if persistentDataCache.isEmpty == false {
@@ -139,13 +139,13 @@ open class TealiumPersistentData {
     // MARK: INTERNAL
     
     /**
-     Persists a [String:AnyObject].
+     Persists a [String:Any].
      
      - parameters:
      - data: The desired data to persist, clobbers the previously saved file.
      - returns:
      */
-    internal func save(data:[String:AnyObject]) -> Bool {
+    internal func save(data:[String:Any]) -> Bool {
         
         guard let uniqueId = self.uniqueId else {
             // Unique Id has gone missing.
@@ -162,9 +162,9 @@ open class TealiumPersistentData {
     /**
      Loads persisted data from ~/.tealium/swift/{account}_{profile}_{env}.data if it exists.
      
-     - Returns: [String:AnyObject] data if exists, otherwise null if not present or corrupted.
+     - Returns: [String:Any] data if exists, otherwise null if not present or corrupted.
      */
-    internal func loadData() -> [String:AnyObject]? {
+    internal func loadData() -> [String:Any]? {
         
         guard let uniqueId = self.uniqueId else {
             // Unique Id has gone missing.

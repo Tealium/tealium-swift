@@ -32,6 +32,6 @@ public func += <K, V> (left: inout [K:V], right: [K:V]) {
 /**
  Extend use of == to dictionaries.
 */
-public func ==(lhs: [String: AnyObject], rhs: [String: AnyObject] ) -> Bool {
+public func ==(lhs: [String: Any], rhs: [String: Any] ) -> Bool {
     return NSDictionary(dictionary: lhs).isEqual(to: rhs)
 }

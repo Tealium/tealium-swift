@@ -57,8 +57,8 @@ open class Tealium {
         - error: Error encountered, if any.
      */
     open func track(title: String,
-               data: [String: AnyObject]?,
-               completion: ((_ successful:Bool, _ info:[String:AnyObject]?, _ error: Error?) -> Void)?) {
+               data: [String: Any]?,
+               completion: ((_ successful:Bool, _ info:[String:Any]?, _ error: Error?) -> Void)?) {
         
         // Default type is .activity
         modulesManager.track(type: TealiumTrackType.activity,
@@ -83,8 +83,8 @@ open class Tealium {
      */
     open func track(type: TealiumTrackType,
                title: String,
-               data: [String: AnyObject]?,
-               completion: ((_ successful:Bool, _ info:[String:AnyObject]?, _ error: Error?) -> Void)?) {
+               data: [String: Any]?,
+               completion: ((_ successful:Bool, _ info:[String:Any]?, _ error: Error?) -> Void)?) {
         
         modulesManager.track(type: type,
                              title: title,

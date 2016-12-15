@@ -11,7 +11,7 @@ import Foundation
 extension Tealium {
     
     /**
-     Deprecated - use the track(title: String, data: [String:AnyObject]?, completion:((_ success: Bool, _ error: Error?)->Void) function instead. Convience method to track event with optional data.
+     Deprecated - use the track(title: String, data: [String:Any]?, completion:((_ success: Bool, _ error: Error?)->Void) function instead. Convience method to track event with optional data.
      
      - parameters:
         - encodedURLString: Encoded string that will be used for the end point for the request
@@ -92,6 +92,8 @@ class TealiumCollectModule : TealiumModule {
         collect?.dispatch(data: track.data, completion: { (success, info, error) in
             
             track.completion?(success, info, error)
+            self.didFinishTrack(track)
+
         })
         
         // Completion handed off to collect dispatch service - forward track to any subsequent modules for any remaining processing.

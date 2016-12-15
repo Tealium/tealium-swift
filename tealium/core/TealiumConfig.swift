@@ -14,7 +14,7 @@
 
 let defaultTealiumConfig = TealiumConfig(account:"tealiummobile",
                                                 profile:"demo",
-                                                environment:"dev_qa_or_prod",
+                                                environment:"dev",
                                                 optionalData:nil)
 
 
@@ -31,7 +31,7 @@ open class TealiumConfig {
     let account : String
     let profile : String
     let environment : String
-    open var optionalData : [String:AnyObject]?
+    open var optionalData : [String:Any]?
     
     /**
      Primary constructor.
@@ -40,12 +40,12 @@ open class TealiumConfig {
         - account: Tealium account name string to use.
         - profile: Tealium profile string.
         - environment: Tealium environment string.
-        - optionalData: Optional [String:AnyObject] dictionary meant primarily for module use.
+        - optionalData: Optional [String:Any] dictionary meant primarily for module use.
      */
     public init(account: String,
               profile: String,
               environment: String,
-              optionalData: [String: AnyObject]?)  {
+              optionalData: [String: Any]?)  {
         
         self.account = account
         self.environment = environment
@@ -58,7 +58,7 @@ open class TealiumConfig {
          1.0.1 Support
      */
     @available(*, deprecated, message:"Access optional data property directly.")
-    public func getOptionalData(key: String) -> AnyObject? {
+    public func getOptionalData(key: String) -> Any? {
         return optionalData?[key]
     }
     
@@ -66,9 +66,9 @@ open class TealiumConfig {
         1.0.1 Support
      */
     @available(*, deprecated, message:"Set optional data property directly.")
-    public func setOptionalData(key: String, value: AnyObject) {
+    public func setOptionalData(key: String, value: Any) {
         if optionalData == nil {
-            optionalData = [String: AnyObject]()
+            optionalData = [String: Any]()
         }
         optionalData?[key] = value
     }

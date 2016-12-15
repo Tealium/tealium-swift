@@ -27,13 +27,13 @@ class TealiumHelper : NSObject {
         tealium = Tealium(config: defaultTealiumConfig)
     }
     
-    func track(title: String, data:[String:AnyObject]?) {
+    func track(title: String, data:[String:Any]?) {
     
         tealium.track(title: title,
                       data: data,
                       completion: { (success, info, error) in
                         
-            print("*** TRACK COMPLETION HANDLER *** Track finished.\nSuccessful:\(success) \nCall info:\(info)")
+            print("\n*** TRACK COMPLETION HANDLER *** Track finished. Was successful:\(success)\n\n Info:\(info as AnyObject)")
                         
         })
     }

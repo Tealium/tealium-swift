@@ -67,7 +67,9 @@ class TealiumAttributionModule : TealiumModule {
         
         // Module enabled - add IDFA info to data
         
-        var newData = [TealiumAttributionKey.advertisingId : advertisingId as AnyObject]
+        var newData = [String: Any]()
+            
+        newData[TealiumAttributionKey.advertisingId] = advertisingId
         
         newData += track.data
         
