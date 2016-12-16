@@ -47,6 +47,7 @@ The core module is the only required component of the library.  Howevever, no di
 These modules are included with .framework builds of the library for dependency managers (ie Carthage):
 
 - appdata
+- async
 - collect
 - logger
 - persistentdata
@@ -64,6 +65,7 @@ These modules may be added manually to projects but are NOT included with .frame
 Module chaining goes from lower-to-higher priority value. The following is the order by which modules will spin up and process track calls based on the default priority setting in their TealiumModuleConfigs:
 
 - 100 Logger (provides debug logging)
+- 200 Async (moves all library processing to a background thread)
 - 400 Attribution (adds IDFA to track data)
 - 500 AppData (add app_uuid to track data)
 - 600 PersistentData (adds ability to add persistent data to all track data)
@@ -80,6 +82,13 @@ Module chaining goes from lower-to-higher priority value. The following is the o
 
 ## Change Log
 
+- 1.1.1
+    - Async module added
+    - [String:AnyObject] dictionary usage replaced with more convenient [String:Any]
+    - iOS Sample app updated
+    - macOS Sample app updated
+    - tvOS Sample app updated
+    - watchOS Sample app updated
 - 1.1.0
     - New track with type API added
     - New auto Tealium variable added:

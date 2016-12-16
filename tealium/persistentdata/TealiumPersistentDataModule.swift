@@ -70,7 +70,7 @@ class TealiumPersistentDataModule : TealiumModule {
             return
         }
         
-        var dataDictionary = [String:AnyObject]()
+        var dataDictionary = [String:Any]()
         
         dataDictionary += persistentData.getData()
         dataDictionary += track.data

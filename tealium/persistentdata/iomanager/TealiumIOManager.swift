@@ -18,12 +18,12 @@ class TealiumIOManager {
         return false
     }
     
-    class func loadData(forUniqueId: String) -> [String:AnyObject]? {
+    class func loadData(forUniqueId: String) -> [String:Any]? {
         
         return nil
     }
     
-    class func save(data:[String:AnyObject], forUniqueId: String) -> Bool {
+    class func save(data:[String:Any], forUniqueId: String) -> Bool {
         
         return false
     }

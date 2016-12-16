@@ -64,9 +64,9 @@ class TealiumModulesManager : NSObject {
      */
     func track(type: TealiumTrackType,
                title: String,
-               data: [String: AnyObject]?,
-               info: [String: AnyObject]?,
-               completion: ((_ successful:Bool, _ info: [String:AnyObject]?, _ error: Error?) -> Void)?) {
+               data: [String: Any]?,
+               info: [String: Any]?,
+               completion: ((_ successful:Bool, _ info: [String:Any]?, _ error: Error?) -> Void)?) {
         
         if isEnabled == false {
             completion?(false, nil, TealiumModulesManagerError.isDisabled)
@@ -74,9 +74,9 @@ class TealiumModulesManager : NSObject {
         }
         
         // Convert convience title to dictionary payload
-        var dataDictionary: [String : AnyObject] = [TealiumKey.event: title as AnyObject,
-                                                    TealiumKey.eventName: title as AnyObject,
-                                                    TealiumKey.eventType: type.description() as AnyObject]
+        var dataDictionary: [String : Any] = [TealiumKey.event: title ,
+                                                    TealiumKey.eventName: title ,
+                                                    TealiumKey.eventType: type.description() ]
         
         if let additionalData = data {
             dataDictionary += additionalData

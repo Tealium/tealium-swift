@@ -21,26 +21,26 @@ class TealiumCollectTests: XCTestCase {
         super.tearDown()
     }
 
-    func validTestDataDictionary() -> [String:AnyObject] {
+    func validTestDataDictionary() -> [String:Any] {
         
         return [
-            TealiumKey.account : "account" as AnyObject,
-            TealiumKey.profile : "profile" as AnyObject,
-            TealiumKey.environment : "environment" as AnyObject,
-            TealiumKey.event : "test" as AnyObject,
-            TealiumKey.eventName : "eventName" as AnyObject,
-            TealiumKey.eventType : TealiumTrackType.activity.description() as AnyObject,
-            TealiumKey.libraryName : TealiumValue.libraryName as AnyObject,
-            TealiumKey.libraryVersion : TealiumValue.libraryVersion as AnyObject,
-            TealiumVolatileDataKey.sessionId : "someSessionId" as AnyObject,
-            TealiumAppDataKey.visitorId :"someVisitorId" as AnyObject,
-            TealiumAppDataKey.legacyVid : "someVID" as AnyObject,
-            TealiumVolatileDataKey.random :"someRandomNumber" as AnyObject
+            TealiumKey.account : "account",
+            TealiumKey.profile : "profile" ,
+            TealiumKey.environment : "environment" ,
+            TealiumKey.event : "test" ,
+            TealiumKey.eventName : "eventName" ,
+            TealiumKey.eventType : TealiumTrackType.activity.description() ,
+            TealiumKey.libraryName : TealiumValue.libraryName ,
+            TealiumKey.libraryVersion : TealiumValue.libraryVersion ,
+            TealiumVolatileDataKey.sessionId : "someSessionId" ,
+            TealiumAppDataKey.visitorId :"someVisitorId" ,
+            TealiumAppDataKey.legacyVid : "someVID" ,
+            TealiumVolatileDataKey.random :"someRandomNumber" 
         ]
         
     }
     
-    func isValidCollectDictionary(dictionary: [String:AnyObject]) -> Bool {
+    func isValidCollectDictionary(dictionary: [String:Any]) -> Bool {
         
         for (key, value) in dictionary {
             
@@ -93,12 +93,12 @@ class TealiumCollectTests: XCTestCase {
         let set : Set<String> = ["value1", "value2"]
         
         let data = [
-            "string" : "value" as AnyObject,
-            "stringArray" : ["v1", "v2"] as AnyObject,
-            "dictionary":["key":"value" as AnyObject] as AnyObject,
-            "set": set as AnyObject,
-            "number": 15 as AnyObject
-        ]
+            "string" : "value",
+            "stringArray" : ["v1", "v2"],
+            "dictionary":["key":"value"],
+            "set": set,
+            "number": 15
+        ] as [String : Any]
         
         XCTAssertFalse(isValidCollectDictionary(dictionary: data))
         
@@ -135,7 +135,7 @@ class TealiumCollectTests: XCTestCase {
         // Check to see that encoding with dispatch was correctly converted to expected URL
         
 //        let expectedURL = "https://collect.tealiumiq.com/vdata/i.gif?event_name=eventName&tealium_account=account&tealium_environment=environment&tealium_library_name=swift&tealium_library_version=1.0.0&tealium_profile=profile&tealium_random=someRandomNumber&tealium_session_id=someSessionId&tealium_vid=someVID&tealium_visitor_id=someVisitorId"
-        let expectedURL = "https://collect.tealiumiq.com/vdata/i.gif?event_name=eventName&tealium_account=account&tealium_environment=environment&tealium_event=test&tealium_event_type=activity&tealium_library_name=swift&tealium_library_version=1.1.0&tealium_profile=profile&tealium_random=someRandomNumber&tealium_session_id=someSessionId&tealium_vid=someVID&tealium_visitor_id=someVisitorId"
+        let expectedURL = "https://collect.tealiumiq.com/vdata/i.gif?event_name=eventName&tealium_account=account&tealium_environment=environment&tealium_event=test&tealium_event_type=activity&tealium_library_name=swift&tealium_library_version=1.1.1&tealium_profile=profile&tealium_random=someRandomNumber&tealium_session_id=someSessionId&tealium_vid=someVID&tealium_visitor_id=someVisitorId"
 
         
         let collect = TealiumCollect(baseURL: TealiumCollect.defaultBaseURLString())
@@ -148,7 +148,7 @@ class TealiumCollectTests: XCTestCase {
                 return
             }
             
-            XCTAssertTrue(expectedURL == encodedURLString, "Unexpected encoded url string used by dispatch: \(encodedURLString)")
+            XCTAssertTrue(expectedURL == encodedURLString, "\n\nUnexpected encoded url string used by dispatch: \(encodedURLString) \n\n expectedURL: \(expectedURL)")
             expectation.fulfill()
         }
         

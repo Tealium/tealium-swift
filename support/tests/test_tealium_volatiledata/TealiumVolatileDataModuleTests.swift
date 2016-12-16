@@ -43,7 +43,7 @@ class TealiumVolatileDataModuleTests: XCTestCase {
         let config = TealiumConfig(account:TealiumTestValue.account,
                                    profile:TealiumTestValue.profile,
                                    environment:TealiumTestValue.environment,
-                                   optionalData:[String:AnyObject]() as [String : AnyObject])
+                                   optionalData:[String:Any]() as [String : Any])
         
         module?.enable(config: config)
         

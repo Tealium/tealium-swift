@@ -271,6 +271,8 @@ class InterfaceController: WKInterfaceController {
         gameNodes.objectMaterial.transparency = 0.0
         
         SCNTransaction.commit()
+        
+        TealiumHelper.sharedInstance().track(title: "Game complete", data: nil)
     }
     
     // MARK: Convenience

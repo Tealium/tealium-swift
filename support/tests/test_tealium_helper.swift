@@ -123,7 +123,7 @@ class test_tealium_helper {
     }
     
     // Didn't work as an extension for some reason.
-    class func missingKeys(fromDictionary: [String:AnyObject], keys:[String])-> [String] {
+    class func missingKeys(fromDictionary: [String:Any], keys:[String])-> [String] {
         
         var missingKeys = [String]()
         
@@ -184,7 +184,7 @@ extension test_tealium_helper : TealiumModuleDelegate {
 }
 
 
-extension Dictionary where Key:ExpressibleByStringLiteral, Value:AnyObject{
+extension Dictionary where Key:ExpressibleByStringLiteral, Value:Any{
     
     /**
      Allows dictionary to check if it contains keys and values from a smaller library
@@ -193,7 +193,7 @@ extension Dictionary where Key:ExpressibleByStringLiteral, Value:AnyObject{
      - smallerDictionary: A [String:AnyObject] dictionary
      - Returns: Boolean answer
      */
-    func contains(smallerDictionary:[String:AnyObject])-> Bool {
+    func contains(smallerDictionary:[String:Any])-> Bool {
         
         // Should use generics here
         

@@ -10,7 +10,7 @@ import Foundation
 
 public class TealiumVolatileData {
     
-    fileprivate var _volatileData = [String:AnyObject]()
+    fileprivate var _volatileData = [String:Any]()
 
     // MARK
     // MARK: PUBLIC
@@ -19,16 +19,16 @@ public class TealiumVolatileData {
      Constructor.
      */
     required public init() {
-        self.add(data:[TealiumVolatileDataKey.sessionId: newSessionId() as AnyObject])
+        self.add(data:[TealiumVolatileDataKey.sessionId: newSessionId() ])
     }
     
     /**
      Add data to all dispatches for the remainder of an active session.
      
      - parameters:
-     - data: A [String:AnyObject] dictionary. Values should be of type String or [String]
+     - data: A [String:Any] dictionary. Values should be of type String or [String]
      */
-    public func add(data : [String:AnyObject]){
+    public func add(data : [String:Any]){
         
         _volatileData += data
         
@@ -39,11 +39,11 @@ public class TealiumVolatileData {
      
      - returns: A dictionary
      */
-    public func getData() -> [String:AnyObject]{
+    public func getData() -> [String:Any]{
         
-        var data = [String:AnyObject]()
-        data[TealiumVolatileDataKey.random] = getRandom() as AnyObject?
-        data[TealiumVolatileDataKey.timestampEpoch] = getTimestampInSeconds() as AnyObject?
+        var data = [String:Any]()
+        data[TealiumVolatileDataKey.random] = getRandom()
+        data[TealiumVolatileDataKey.timestampEpoch] = getTimestampInSeconds()
         data += _volatileData
         
         return data
@@ -65,14 +65,14 @@ public class TealiumVolatileData {
     
     /// Auto reset the session id now.
     public func resetSessionId() {
-        self.add(data:[TealiumVolatileDataKey.sessionId: newSessionId() as AnyObject])
+        self.add(data:[TealiumVolatileDataKey.sessionId: newSessionId() ])
     }
     
     /// Manually set session id to a specified string
     ///
     /// - Parameter sessionId: String id to set session id to.
     public func setSessionId(sessionId: String) {
-        self.add(data:[TealiumVolatileDataKey.sessionId: sessionId as AnyObject])
+        self.add(data:[TealiumVolatileDataKey.sessionId: sessionId ])
     }
     
     // MARK

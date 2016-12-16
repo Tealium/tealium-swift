@@ -14,11 +14,23 @@ class MasterViewController: UITableViewController {
         super.viewDidLoad()
         
 
-        let extraData : [String:AnyObject] = ["Key" : "value" as AnyObject]
+        let extraData : [String:Any] = ["Key" : "value"]
 
         TealiumHelper.sharedInstance().track(title: "test",
                                              data: extraData)
     
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        
+        let extraData : [String:Any] = ["screen_title" : "masterViewController",
+                                        "tealium_event_type" : "view"]
+        
+        TealiumHelper.sharedInstance().track(title: "view",
+                                             data: extraData)
         
     }
     

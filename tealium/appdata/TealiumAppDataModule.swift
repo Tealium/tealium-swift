@@ -49,7 +49,7 @@ class TealiumAppDataModule : TealiumModule {
     
     override func track(_ track: TealiumTrack) {
         
-        var newData = [String:AnyObject]()
+        var newData = [String:Any]()
         if let appData = persistentDataManager?.persistentDataCache {
             newData += appData
         }
@@ -85,8 +85,8 @@ class TealiumAppDataModule : TealiumModule {
     /// is set here as it based off app_uuid.
     ///
     /// - Parameter forUuid: The uuid string to use for new persistent data.
-    /// - Returns: A [String:AnyObject] dictionary.
-    func newPersistentData(forUuid: String) -> [String:AnyObject]{
+    /// - Returns: A [String:Any] dictionary.
+    func newPersistentData(forUuid: String) -> [String:Any]{
         
         let vid = visitorId(fromUuid: forUuid)
         
@@ -96,7 +96,7 @@ class TealiumAppDataModule : TealiumModule {
             TealiumAppDataKey.legacyVid: vid
         ]
         
-        return data as [String : AnyObject]
+        return data as [String : Any]
     }
     
     

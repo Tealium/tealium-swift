@@ -13,7 +13,7 @@ class TealiumAttributionModuleTests: XCTestCase {
     
     var module : TealiumAttributionModule?
     var expectation : XCTestExpectation?
-    var payload : [String:AnyObject]?
+    var payload : [String:Any]?
     
     override func setUp() {
         super.setUp()

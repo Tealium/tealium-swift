@@ -48,7 +48,7 @@ public enum TealiumModuleProcessType {
 
 public enum TealiumValue {
     static let libraryName = "swift"
-    static let libraryVersion = "1.1.0"
+    static let libraryVersion = "1.1.1"
 }
 
 public enum TealiumTrackType {
@@ -75,11 +75,11 @@ public enum TealiumTrackType {
     
 }
 
-public typealias tealiumTrackCompletion = ((_ successful: Bool, _ info: [String:AnyObject]?, _ error: Error?)-> Void)
+public typealias tealiumTrackCompletion = ((_ successful: Bool, _ info: [String:Any]?, _ error: Error?)-> Void)
 
 public struct TealiumTrack {
-    var data: [String:AnyObject]
-    var info: [String:AnyObject]?
+    var data: [String:Any]
+    var info: [String:Any]?
     var completion: tealiumTrackCompletion?
 }
 
