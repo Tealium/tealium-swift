@@ -8,11 +8,17 @@
 import Foundation
 import Dispatch
 
+protocol HttpServerIODelegate {
+    func socketConnectionReceived(socket: Socket)
+}
+
 public class HttpServerIO {
     
     private var socket = Socket(socketFileDescriptor: -1)
     private var sockets = Set<Socket>()
 
+    var delegate : HttpServerIODelegate?
+    
     public enum HttpServerIOState: Int32 {
         case starting
         case running
@@ -76,6 +82,7 @@ public class HttpServerIO {
             }
             self.stop()
         }
+        print("Swift HTTPServerIO Running.")
         self.state = .running
     }
     
@@ -115,12 +122,14 @@ public class HttpServerIO {
                 break
             }
             if let session = response.socketSession() {
+                delegate?.socketConnectionReceived(socket: socket)
                 session(socket)
                 break
             }
-            if !keepConnection { break }
+//            if !keepConnection { break }
         }
         socket.close()
+        
     }
     
     private struct InnerWriteContext: HttpResponseBodyWriter {
@@ -149,6 +158,7 @@ public class HttpServerIO {
     }
     
     private func respond(_ socket: Socket, response: HttpResponse, keepAlive: Bool) throws -> Bool {
+        
         guard self.operating else { return false }
 
         try socket.writeUTF8("HTTP/1.1 \(response.statusCode()) \(response.reasonPhrase())\r\n")

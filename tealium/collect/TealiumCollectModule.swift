@@ -58,7 +58,7 @@ class TealiumCollectModule : TealiumModule {
     override func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumCollectKey.moduleName,
                                    priority: 1000,
-                                   build: 1,
+                                   build: 2,
                                    enabled: true)
     }
     
@@ -89,14 +89,23 @@ class TealiumCollectModule : TealiumModule {
 
     override func track(_ track: TealiumTrack) {
         
+        
         collect?.dispatch(data: track.data, completion: { (success, info, error) in
             
+            let newTrack = TealiumTrack(data: track.data,
+                             info: info,
+                       completion: track.completion)
+            
+
             track.completion?(success, info, error)
+            
+            self.didFinishTrack(newTrack)
+
         })
+        
         
         // Completion handed off to collect dispatch service - forward track to any subsequent modules for any remaining processing.
         
-        didFinishTrack(track)
     }
 
 }

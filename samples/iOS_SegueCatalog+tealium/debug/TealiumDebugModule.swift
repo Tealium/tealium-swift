@@ -25,7 +25,7 @@ class TealiumDebugModule : TealiumModule {
         //was passing config
         
         server.start()
-        
+        server.addToDebugQueue(config.asDictionary())
         super.enable(config: config)
 
     }
@@ -40,25 +40,42 @@ class TealiumDebugModule : TealiumModule {
     
     override func track(_ track: TealiumTrack) {
         
-        var debugData = [String:AnyObject]()
+        var trackData = [String:AnyObject]()
        
-        debugData += track.data
+        
+        trackData += (track.data)
         
         if let trackInfo = track.info {
-            debugData += trackInfo
+          
+            trackData =  buildDebugTrackData(trackData, trackInfo: trackInfo)
+            
         }
-    
-      //  server.addToDebugQueue(debugData)
+        
+        
+        server.addToDebugQueue(trackData)
         server.serveTrack()
     }
+
+    
+
+    func buildDebugTrackData(_ trackData:[String: AnyObject], trackInfo: [String: AnyObject]?) -> [String: AnyObject] {
+        var debugData = [String: AnyObject]()
+        
+        debugData["type"] = "track" as AnyObject?
+        debugData["data"] = trackData as AnyObject
+      
+        guard let trackInfo = trackInfo else{
+            return debugData
+        }
+        
+        debugData["info"] = trackInfo as AnyObject
+
+        return debugData
+        
+    }
+ 
 }
 
-// extension TealiumModuleConfig : CustomStringConvertible {
-//    var description: String{
-//        return "name: \(self.name) priority: \(self.priority) enabled: \(self.enabled)" as String
-//    }
-//
-// }
  
  extension TealiumConfig {
     func asDictionary() -> [String : AnyObject] {

@@ -12,66 +12,62 @@ class TealiumDebugServer {
     
     let server = HttpServer()
     var debugQueue = [[String:AnyObject]]()
-    
-
+    var currentSession : WebSocketSession?
     
     func start()  {
-
-
-      server[""] =  websocket({ (session, text ) in
-            session.writeText("blah")
-            do {
-            let socket = try session.socket.acceptClientSocket()
-                
-                //set a bool here?
-                print(socket)
-            } catch {
-                print(SocketError.listenFailed("bummer"))
-            }
-        
-        }, { (session, binary) in
-            session.writeBinary(binary)
-        })
-        
         
         do {
             
             try server.start()
             
-            print("Server started.")
+            server.delegate = self
+            
+            self.setupSockets()
+            
         } catch {
             print("Unable to start server.")
         }
         
     }
     
-
-    func clientDidConnect() -> Bool {
-
-    
-        return true
-    }
-    
-    
-    func serveTrack() {
-
-        //.write
-        server[""] = websocket({ (session, text) in
-            session.writeText("connection success")
-         //   let socketSession =  try? session.socket.acceptClientSocket()
+    func setupSockets() {
             
-//            if (!self.debugQueue.isEmpty){
-//              
-//                session.writeText(self.debugQueue.description)
-//                //self.debugQueue.removeAll()
+        server[""] =  websocket({ (session, text ) in
+//            
+//            do {
+//                let socket = try session.socket.acceptClientSocket()
+//                
+//                self.currentSession = session
+//                
+//                session.writeText("Socket connection made.")
+//
+//                print(socket)
+//            } catch {
+////                print(SocketError.listenFailed("bummer"))
 //            }
             
         }, { (session, binary) in
             session.writeBinary(binary)
         })
+        
+    }
+
+    
+    
+    func serveTrack() {
+
+        guard let currentSession = currentSession else{
+            return
+        }
+        
+        for item in debugQueue {
+            currentSession.writeText(item.description)
+      
+        }
+        
+        debugQueue.removeAll()
     }
     
-
     func addToDebugQueue(_ trackData: [String: AnyObject]) {
         
         debugQueue.append(trackData)
@@ -79,6 +75,7 @@ class TealiumDebugServer {
     }
     
     func stop() {
+        currentSession = nil
         server.stop()
     }
     
@@ -93,3 +90,18 @@ class TealiumDebugServer {
     
 }
 
+extension TealiumDebugServer : HttpServerIODelegate {
+    
+    func socketConnectionReceived(socket: Socket) {
+        
+        if currentSession == nil {
+            
+            let newSession = WebSocketSession.init(socket)
+            currentSession = newSession
+            
+            
+        }
+        
+    }
+    
+}
