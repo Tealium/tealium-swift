@@ -51,7 +51,7 @@ public class TealiumCollect {
      - Data: dictionary of all key-values to bve sent with dispatch.
      - completion: passes a completion to send function
      */
-    public func dispatch(data: [String: AnyObject], completion:((_ success:Bool, _ info:[String:AnyObject]?, _ error: Error?) -> Void)?){
+    public func dispatch(data: [String: Any], completion:((_ success:Bool, _ info:[String:Any]?, _ error: Error?) -> Void)?){
         
         let sanitizedData = TealiumCollect.sanitized(dictionary: data)
         let encodedURLString: String = _baseURL + encode(dictionary: sanitizedData)
@@ -63,7 +63,7 @@ public class TealiumCollect {
                 return
             }
             
-            var aggregateInfo = [TealiumCollectKey.payload:sanitizedData as AnyObject] as [String:AnyObject]
+            var aggregateInfo = [TealiumCollectKey.payload:sanitizedData as Any] as [String:Any]
             if let info = info {
                 aggregateInfo += info
             }
@@ -86,14 +86,14 @@ public class TealiumCollect {
      
      */
     
-    internal func send(finalStringWithParams : String , completion:((_ success:Bool, _ info:[String:AnyObject]?, _ error: Error?) -> Void)?) {
+    internal func send(finalStringWithParams : String , completion:((_ success:Bool, _ info:[String:Any]?, _ error: Error?) -> Void)?) {
         let url = URL(string: finalStringWithParams)
         let request = URLRequest(url: url!)
         
         let task = URLSession.shared.dataTask(with: request , completionHandler: { data, response, error in
 
-            var info = [TealiumCollectKey.encodedURLString: finalStringWithParams as AnyObject,
-                        TealiumCollectKey.dispatchService: TealiumCollectKey.moduleName as AnyObject] as [String: AnyObject]
+            var info = [TealiumCollectKey.encodedURLString: finalStringWithParams as Any,
+                        TealiumCollectKey.dispatchService: TealiumCollectKey.moduleName as Any] as [String: Any]
             
             if  (error != nil) {
                 completion?(false, info, error as Error?)
@@ -105,7 +105,7 @@ public class TealiumCollect {
                 return
             }
             
-            info += [TealiumCollectKey.responseHeader: self.headerResponse(response: httpResponse) as AnyObject]
+            info += [TealiumCollectKey.responseHeader: self.headerResponse(response: httpResponse) as Any]
             
             if let _ = (httpResponse.allHeaderFields["X-Error"] as? String) {
                 completion?(false, info, TealiumCollectError.xErrorDetected)
@@ -125,21 +125,21 @@ public class TealiumCollect {
 
     }
     
-    internal func headerResponse(response: HTTPURLResponse) -> [String:AnyObject] {
+    internal func headerResponse(response: HTTPURLResponse) -> [String:Any] {
         
-        guard let dict = response.allHeaderFields as? [String:AnyObject] else {
+        guard let dict = response.allHeaderFields as? [String:Any] else {
             
             // Go through each field and populate manually
             
             let headerFields = response.allHeaderFields
             let keys = headerFields.keys
-            var mDict = [String:AnyObject]()
+            var mDict = [String:Any]()
             
             for key in keys {
                 guard let stringKey = key as? String else {
                     continue
                 }
-                let value = headerFields[key] as AnyObject
+                let value = headerFields[key] as Any
                 mDict[stringKey] = value
             }
             
@@ -162,7 +162,7 @@ public class TealiumCollect {
      - Returns:
         - String:  encoded string
      */
-    internal func encode(dictionary:[String:AnyObject])-> String {
+    internal func encode(dictionary:[String:Any])-> String {
         
         let keys = dictionary.keys
         let sortedKeys = keys.sorted { $0 < $1 }
@@ -174,14 +174,14 @@ public class TealiumCollect {
             var value = dictionary[key]
                 
             if let valueString = value as? String{
-                value = valueString as AnyObject?
+                value = valueString as Any?
             } else if let stringArray = value as? [String]{
-                value = "\(stringArray)" as AnyObject?
+                value = "\(stringArray)" as Any?
             } else {
                 continue
             }
             
-            let encodedValue = value!.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
+            let encodedValue = (value! as AnyObject).addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
             let encodedElement = "\(encodedKey)=\(encodedValue)"
             encodedArray.append(encodedElement)
         }
@@ -203,9 +203,9 @@ public class TealiumCollect {
     /**
         Clears dictionary of any value types not supported by collect
      */
-    class func sanitized(dictionary:[String:AnyObject]) -> [String:AnyObject]{
+    class func sanitized(dictionary:[String:Any]) -> [String:Any]{
     
-        var clean = [String: AnyObject]()
+        var clean = [String: Any]()
         
         for (key, value) in dictionary {
          
@@ -217,7 +217,7 @@ public class TealiumCollect {
             } else {
             
                 let stringified = "\(value)"
-                clean[key] = stringified as AnyObject?
+                clean[key] = stringified as Any?
             }
 
         }

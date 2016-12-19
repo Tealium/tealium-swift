@@ -11,7 +11,7 @@ import Foundation
 class TealiumDebugServer {
     
     let server = HttpServer()
-    var debugQueue = [[String:AnyObject]]()
+    var debugQueue = [[String:Any]]()
     var currentSession : WebSocketSession?
     
     func start()  {
@@ -68,7 +68,7 @@ class TealiumDebugServer {
         debugQueue.removeAll()
     }
     
-    func addToDebugQueue(_ trackData: [String: AnyObject]) {
+    func addToDebugQueue(_ trackData: [String: Any]) {
         
         debugQueue.append(trackData)
         
@@ -80,7 +80,7 @@ class TealiumDebugServer {
     }
     
     
-    func encode(parameters: [String: AnyObject]) throws -> Data? {
+    func encode(parameters: [String: Any]) throws -> Data? {
         let data = try JSONSerialization.data(
             withJSONObject: parameters,
             options: JSONSerialization.WritingOptions())

@@ -39,12 +39,12 @@ class TealiumVolatileDataModule : TealiumModule {
         
         if volatileData == nil {
             volatileData = TealiumVolatileData()
-            let currentStaticData = [TealiumKey.account:config.account as AnyObject,
-                                     TealiumKey.profile:config.profile as AnyObject,
-                                     TealiumKey.environment:config.environment as AnyObject,
-                                     TealiumKey.libraryName:TealiumValue.libraryName as AnyObject,
-                                     TealiumKey.libraryVersion:TealiumValue.libraryVersion as AnyObject
-            ] as [String:AnyObject]
+            let currentStaticData = [TealiumKey.account:config.account as Any,
+                                     TealiumKey.profile:config.profile as Any,
+                                     TealiumKey.environment:config.environment as Any,
+                                     TealiumKey.libraryName:TealiumValue.libraryName as Any,
+                                     TealiumKey.libraryVersion:TealiumValue.libraryVersion as Any
+            ] as [String:Any]
             volatileData?.add(data: currentStaticData)
         }
         
@@ -59,7 +59,7 @@ class TealiumVolatileDataModule : TealiumModule {
     }
     
     override func track(_ track: TealiumTrack) {
-        var newData = [String:AnyObject]()
+        var newData = [String:Any]()
         
         if let volatileData = self.volatileData?.getData() {
             newData += volatileData

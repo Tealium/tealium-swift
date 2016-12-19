@@ -14,7 +14,7 @@ class MasterViewController: UITableViewController {
         super.viewDidLoad()
         
 
-        let extraData : [String:AnyObject] = ["Key" : "value" as AnyObject]
+        let extraData : [String:Any] = ["Key" : "value" as Any]
 
         TealiumHelper.sharedInstance().track(title: "test",
                                              data: extraData)

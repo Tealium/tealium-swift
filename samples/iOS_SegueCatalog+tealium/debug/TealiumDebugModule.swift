@@ -40,7 +40,7 @@ class TealiumDebugModule : TealiumModule {
     
     override func track(_ track: TealiumTrack) {
         
-        var trackData = [String:AnyObject]()
+        var trackData = [String:Any]()
        
         
         trackData += (track.data)
@@ -58,17 +58,17 @@ class TealiumDebugModule : TealiumModule {
 
     
 
-    func buildDebugTrackData(_ trackData:[String: AnyObject], trackInfo: [String: AnyObject]?) -> [String: AnyObject] {
-        var debugData = [String: AnyObject]()
+    func buildDebugTrackData(_ trackData:[String: Any], trackInfo: [String: Any]?) -> [String: Any] {
+        var debugData = [String: Any]()
         
-        debugData["type"] = "track" as AnyObject?
-        debugData["data"] = trackData as AnyObject
+        debugData["type"] = "track" as Any?
+        debugData["data"] = trackData as Any
       
         guard let trackInfo = trackInfo else{
             return debugData
         }
         
-        debugData["info"] = trackInfo as AnyObject
+        debugData["info"] = trackInfo as Any
 
         return debugData
         
@@ -78,17 +78,17 @@ class TealiumDebugModule : TealiumModule {
 
  
  extension TealiumConfig {
-    func asDictionary() -> [String : AnyObject] {
+    func asDictionary() -> [String : Any] {
     
         
-        var dictionary : [String:AnyObject] = [
-            "account": self.account as AnyObject,
-            "profile": self.profile as AnyObject,
-            "environment": self.environment as AnyObject
+        var dictionary : [String:Any] = [
+            "account": self.account as Any,
+            "profile": self.profile as Any,
+            "environment": self.environment as Any
         ]
         
         if self.optionalData != nil {
-            dictionary["optionalData"] = self.optionalData as AnyObject?
+            dictionary["optionalData"] = self.optionalData as Any?
         }
         
         

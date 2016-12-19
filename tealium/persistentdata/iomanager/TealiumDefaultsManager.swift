@@ -12,7 +12,7 @@ class TealiumDefaultsManager : TealiumIOManager {
     
     override class func dataExists(forUniqueId: String) -> Bool {
         
-        guard let _ = UserDefaults.standard.object(forKey: forUniqueId) as? [String:AnyObject] else {
+        guard let _ = UserDefaults.standard.object(forKey: forUniqueId) as? [String:Any] else {
             return false
         }
         
@@ -20,9 +20,9 @@ class TealiumDefaultsManager : TealiumIOManager {
     
     }
     
-    override class func loadData(forUniqueId: String) -> [String:AnyObject]? {
+    override class func loadData(forUniqueId: String) -> [String:Any]? {
         
-        guard let data = UserDefaults.standard.object(forKey: forUniqueId) as? [String:AnyObject] else {
+        guard let data = UserDefaults.standard.object(forKey: forUniqueId) as? [String:Any] else {
             // No saved data
             return nil
         }
@@ -31,12 +31,12 @@ class TealiumDefaultsManager : TealiumIOManager {
     
     }
     
-    override class func save(data:[String:AnyObject], forUniqueId: String) -> Bool {
+    override class func save(data:[String:Any], forUniqueId: String) -> Bool {
         
         UserDefaults.standard.set(data, forKey: forUniqueId)
         UserDefaults.standard.synchronize()
     
-        guard let defaultsCheck = UserDefaults.standard.object(forKey: forUniqueId) as? [String:AnyObject] else {
+        guard let defaultsCheck = UserDefaults.standard.object(forKey: forUniqueId) as? [String:Any] else {
             return false
         }
         

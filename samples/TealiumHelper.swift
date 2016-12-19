@@ -27,7 +27,7 @@ class TealiumHelper : NSObject {
         tealium = Tealium(config: defaultTealiumConfig)
     }
     
-    func track(title: String, data:[String:AnyObject]?) {
+    func track(title: String, data:[String:Any]?) {
     
         tealium.track(title: title,
                       data: data,

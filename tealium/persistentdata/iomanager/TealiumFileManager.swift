@@ -39,17 +39,17 @@ class TealiumFileManager : TealiumIOManager {
         
     }
 
-    override class func loadData(forUniqueId: String) -> [String:AnyObject]? {
+    override class func loadData(forUniqueId: String) -> [String:Any]? {
         
         if dataExists(forUniqueId: forUniqueId) {
-            return NSKeyedUnarchiver.unarchiveObject(withFile: forUniqueId) as? [String:AnyObject]
+            return NSKeyedUnarchiver.unarchiveObject(withFile: forUniqueId) as? [String:Any]
         }
         
         return nil
         
     }
     
-    override class func save(data: [String:AnyObject],
+    override class func save(data: [String:Any],
                              forUniqueId: String) -> Bool {
         
         return NSKeyedArchiver.archiveRootObject(data, toFile: forUniqueId)
