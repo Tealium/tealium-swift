@@ -69,6 +69,8 @@ class TealiumAttributionModule : TealiumModule {
         
         var newData = [TealiumAttributionKey.advertisingId : advertisingId as Any]
         
+        newData[TealiumAttributionKey.advertisingId] = advertisingId
+        
         newData += track.data
         
         let newTrack = TealiumTrack(data: newData,

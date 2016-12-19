@@ -43,8 +43,8 @@ class TealiumVolatileDataModule : TealiumModule {
                                      TealiumKey.profile:config.profile as Any,
                                      TealiumKey.environment:config.environment as Any,
                                      TealiumKey.libraryName:TealiumValue.libraryName as Any,
-                                     TealiumKey.libraryVersion:TealiumValue.libraryVersion as Any
-            ] as [String:Any]
+                                     TealiumKey.libraryVersion:TealiumValue.libraryVersion]
+          
             volatileData?.add(data: currentStaticData)
         }
         

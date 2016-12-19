@@ -75,7 +75,7 @@ class TealiumVolatileDataTests: XCTestCase {
         let testData = [
             "a":"1",
             "b":"2"
-        ]
+        ] as [String:Any]
         
         guard let volatileData = self.volatileData else {
             XCTFail("TealiumVolatileData did not spin up unexpectedly.")
@@ -86,13 +86,13 @@ class TealiumVolatileDataTests: XCTestCase {
         
         let data = volatileData.getData()
         
-        XCTAssertTrue(data.contains(smallerDictionary: testData as [String : AnyObject]), "VolatileData: \(volatileData)")
+        XCTAssertTrue(data.contains(smallerDictionary: testData), "VolatileData: \(volatileData)")
         
         volatileData.deleteData(forKeys:["a","b"])
         
         let volatileDataPostDelete = volatileData.getData()
         
-        XCTAssertFalse(volatileDataPostDelete.contains(smallerDictionary: testData as [String : AnyObject]), "VolatileData: \(volatileDataPostDelete)")
+        XCTAssertFalse(volatileDataPostDelete.contains(smallerDictionary: testData), "VolatileData: \(volatileDataPostDelete)")
     }
     
 }

@@ -74,9 +74,10 @@ class TealiumModulesManager : NSObject {
         }
         
         // Convert convience title to dictionary payload
-        var dataDictionary: [String : Any] = [TealiumKey.event: title as Any,
-                                                    TealiumKey.eventName: title as Any,
-                                                    TealiumKey.eventType: type.description() as Any]
+
+        var dataDictionary: [String : Any] = [TealiumKey.event: title ,
+                                                    TealiumKey.eventName: title ,
+                                                    TealiumKey.eventType: type.description() ]
         
         if let additionalData = data {
             dataDictionary += additionalData

@@ -14,7 +14,7 @@
 
 let defaultTealiumConfig = TealiumConfig(account:"tealiummobile",
                                                 profile:"demo",
-                                                environment:"dev_qa_or_prod",
+                                                environment:"dev",
                                                 optionalData:nil)
 
 

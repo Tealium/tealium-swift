@@ -32,21 +32,8 @@ class ViewController: NSViewController, NSTextViewDelegate {
         
         // Do any additional setup after loading the view.
         
-        let tealium = Tealium(config: defaultTealiumConfig)
-        
-        tealium.track(type: TealiumTrackType.activity,
-                       title: "test",
-                       data: nil,
-                       completion: { (success, info, error) in
-                        
-                        guard let info = info else {
-                            print("Tealium Test track complete with no callback info returned.")
-                            return
-                        }
-                        
-                        print("Tealium Test track complete with callback info: \n \(info)")
-
-        })
+        TealiumHelper.sharedInstance().track(title: "viewDidLoad", data: ["someKey":"someValue"])
+    
     }
 
     override var representedObject: Any?
