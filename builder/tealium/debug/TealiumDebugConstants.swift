@@ -8,5 +8,6 @@
 
 
 enum TealiumDebugKey {
+
     static let moduleName = "debug"
 }

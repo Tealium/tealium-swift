@@ -25,7 +25,9 @@ class TealiumDebugModule : TealiumModule {
         //was passing config
         
         server.start()
-        server.addToDebugQueue(config.asDictionary())
+        
+        server.addToDebugQueue(getConfigInfo(config))
+
         super.enable(config: config)
 
     }
@@ -47,18 +49,25 @@ class TealiumDebugModule : TealiumModule {
         
         if let trackInfo = track.info {
           
-            trackData =  buildDebugTrackData(trackData, trackInfo: trackInfo)
-            
+            trackData =  getDebugTrackInfo(trackData, trackInfo: trackInfo)            
         }
-        
         
         server.addToDebugQueue(trackData)
         server.serveTrack()
     }
 
-    
 
-    func buildDebugTrackData(_ trackData:[String: Any], trackInfo: [String: Any]?) -> [String: Any] {
+    func getConfigInfo(_ config: TealiumConfig ) -> [String: Any] {
+        
+        let configDict = ["type":"config_update",
+                         "data":config.asDictionary(),
+                         "info": ""] as [String : Any]
+
+        return configDict
+        
+    }
+
+    func getDebugTrackInfo(_ trackData:[String: Any], trackInfo: [String: Any]?) -> [String: Any] {
         var debugData = [String: Any]()
         
         debugData["type"] = "track" as Any?

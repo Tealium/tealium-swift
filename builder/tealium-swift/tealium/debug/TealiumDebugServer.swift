@@ -11,7 +11,7 @@ import Foundation
 class TealiumDebugServer {
     
     let server = HttpServer()
-    var debugQueue = [[String:Any]]()
+    var debugQueue = [[String: Any]]()
     var currentSession : WebSocketSession?
     
     func start()  {
@@ -33,18 +33,7 @@ class TealiumDebugServer {
     func setupSockets() {
             
         server[""] =  websocket({ (session, text ) in
-//            
-//            do {
-//                let socket = try session.socket.acceptClientSocket()
-//                
-//                self.currentSession = session
-//                
-//                session.writeText("Socket connection made.")
-//
-//                print(socket)
-//            } catch {
-////                print(SocketError.listenFailed("bummer"))
-//            }
+
             
         }, { (session, binary) in
             session.writeBinary(binary)
@@ -61,8 +50,19 @@ class TealiumDebugServer {
         }
         
         for item in debugQueue {
-            currentSession.writeText(item.description)
-      
+         
+            guard let encodedItem = try? encode(parameters: item) else {
+            
+                return
+            }
+           
+            guard let jsonText = NSString(data: encodedItem!,
+                                         encoding: String.Encoding.ascii.rawValue) else {
+            return
+                                            
+            }
+          
+            currentSession.writeText(jsonText as String)
         }
         
         debugQueue.removeAll()

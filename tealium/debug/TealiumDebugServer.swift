@@ -11,7 +11,7 @@ import Foundation
 class TealiumDebugServer {
     
     let server = HttpServer()
-    var debugQueue = [[String:AnyObject]]()
+    var debugQueue = [[String: Any]]()
     var currentSession : WebSocketSession?
     
     func start()  {
@@ -31,20 +31,9 @@ class TealiumDebugServer {
     }
     
     func setupSockets() {
-        
-        server[""] =  websocket({ (session, text ) in
             
-            do {
-                let socket = try session.socket.acceptClientSocket()
-                
-                self.currentSession = session
-                
-                session.writeText("Socket connection made.")
+        server[""] =  websocket({ (session, text ) in
 
-                print(socket)
-            } catch {
-//                print(SocketError.listenFailed("bummer"))
-            }
             
         }, { (session, binary) in
             session.writeBinary(binary)
@@ -52,37 +41,72 @@ class TealiumDebugServer {
         
     }
 
-    func clientDidConnect() -> Bool {
-
-    
-        return true
-    }
     
     
     func serveTrack() {
 
-        currentSession?.writeText("connection success")
+        guard let currentSession = currentSession else{
+            return
+        }
+        
+        for item in debugQueue {
+    
+            do {
+                let encodedText = try encode(dictionary: item)
+                currentSession.writeText(encodedText as String)
 
+            } catch {
+                print("Error when trying to encode the dictionary")
+            }
+
+        }
+        
+        debugQueue.removeAll()
     }
     
-
-    func addToDebugQueue(_ trackData: [String: AnyObject]) {
+    func addToDebugQueue(_ trackData: [String: Any]) {
         
         debugQueue.append(trackData)
         
     }
     
     func stop() {
+        currentSession = nil
         server.stop()
     }
     
     
-    func encode(parameters: [String: AnyObject]) throws -> Data? {
-        let data = try JSONSerialization.data(
-            withJSONObject: parameters,
-            options: JSONSerialization.WritingOptions())
+    func encode(dictionary: [String: Any]) -> String {
+       
+        let keys = dictionary.keys
+        let sortedKeys = keys.sorted { $0 < $1 }
+        var encodedArray = [String]()
         
-         return data
+        for key in sortedKeys {
+            
+            let encodedKey = key.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
+            var value = dictionary[key]
+            
+            if let valueString = value as? String{
+                
+                value = valueString
+            } else if let stringArray = value as? [String]{
+                value = "\(stringArray)"
+            } else {
+                continue
+            }
+            
+            guard let valueString = value as? String else {
+                continue
+            }
+            let encodedValue = valueString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
+            
+            let encodedElement = "\(encodedKey)=\(encodedValue)"
+            encodedArray.append(encodedElement)
+        }
+        
+        return encodedArray.joined(separator: "&")
+
     }
     
 }
