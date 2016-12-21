@@ -36,6 +36,21 @@ class TealiumDebugServerTests: XCTestCase {
     
     func testAddToDebugQueue () {
     
+        let testQueue = [["foo": "bar"], ["gamma": "delta"], ["kappa": ["omega": "omnicron"]]]
+        
+        let debugServer = TealiumDebugServer()
+        
+        debugServer.addToDebugQueue(["foo" : "bar"])
+        debugServer.addToDebugQueue(["gamma": "delta"])
+        debugServer.addToDebugQueue(["kappa": ["omega": "omnicron"]])
+        
+//apparently my queue is empty?
+        for i in 0..<debugServer.debugQueue.count {
+            
+            XCTAssertTrue(debugServer.debugQueue[i] == testQueue[i], "test queue \(testQueue[i])was not added to debugQueue as expected \(debugServer.debugQueue[i]).")
+        }
+        
+        
     }
     
     func testStop() {
