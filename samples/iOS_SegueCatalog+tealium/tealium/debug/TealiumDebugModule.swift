@@ -59,8 +59,8 @@ class TealiumDebugModule : TealiumModule {
     func getConfigInfo(_ config: TealiumConfig  ) -> [String: Any] {
         
         let configDict = ["type":"config_update",
-                         "data":config.asDictionary(),
-                         "info": ""] as [String : Any]
+                          "data": config.asDictionary(),
+                          "info": ""] as [String : Any]
 
         return configDict
         

@@ -17,11 +17,10 @@ class TealiumDebugServer {
     func start()  {
         
         do {
-            
             try server.start()
             
             server.delegate = self
-            
+
             self.setupSockets()
             
         } catch {

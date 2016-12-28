@@ -41,11 +41,10 @@ class TealiumDebugServer {
         
     }
     
-    
-    
     func serveTrack() {
         
         guard let currentSession = currentSession else{
+         
             return
         }
         
