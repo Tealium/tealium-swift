@@ -27,7 +27,7 @@ class TealiumDebugServerTests: XCTestCase {
     }
     
     func testSetupSockets() {
-    
+        
     }
     
     func testServeTrack() {
@@ -78,8 +78,6 @@ class TealiumDebugServerTests: XCTestCase {
             XCTFail("Error when trying to encode")
 
         }
-
-
     
     }
 }
