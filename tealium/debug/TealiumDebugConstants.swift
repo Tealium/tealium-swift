@@ -11,3 +11,9 @@ enum TealiumDebugKey {
 
     static let moduleName = "debug"
 }
+
+enum TealiumDebugError: Error {
+    
+    case couldNotStartServer
+    
+}

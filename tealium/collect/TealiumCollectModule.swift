@@ -89,8 +89,13 @@ class TealiumCollectModule : TealiumModule {
 
     override func track(_ track: TealiumTrack) {
         
+        guard let collect = self.collect else {
+            // TODO: Queueing system
+            self.didFinishTrack(track)
+            return
+        }
         
-        collect?.dispatch(data: track.data, completion: { (success, info, error) in
+        collect.dispatch(data: track.data, completion: { (success, info, error) in
             
             let newTrack = TealiumTrack(data: track.data,
                              info: info,

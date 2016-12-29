@@ -15,7 +15,10 @@ class TealiumConfigTests: XCTestCase {
     override func setUp() {
         
         super.setUp()
-        config = testTealiumConfig
+        config = TealiumConfig(account: TealiumTestValue.account,
+                               profile: TealiumTestValue.profile,
+                               environment: TealiumTestValue.environment,
+                               optionalData: testOptionalData)
 
     }
     

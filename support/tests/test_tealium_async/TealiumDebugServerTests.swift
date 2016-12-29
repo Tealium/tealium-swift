@@ -20,21 +20,11 @@ class TealiumDebugServerTests: XCTestCase {
         super.tearDown()
     }
     
-    func testStartServer() {
-        
-        
-    
-    }
-    
-    func testSetupSockets() {
-        
-    }
-    
     func testServeTrack() {
         
         let debugServer = TealiumDebugServer()
         debugServer.debugQueue = [["foo": "bar"], ["gamma": "delta"], ["kappa": ["omega": "omnicron"]]]
-        debugServer.serveTrack()
+        debugServer.sendQueue()
         let when = DispatchTime.now() + 2
         DispatchQueue.main.asyncAfter(deadline: when) {
             XCTAssertTrue(debugServer.debugQueue.isEmpty)
@@ -48,28 +38,21 @@ class TealiumDebugServerTests: XCTestCase {
         
         let debugServer = TealiumDebugServer()
         
-        debugServer.addToDebugQueue(["foo" : "bar"])
-        debugServer.addToDebugQueue(["gamma": "delta"])
-        debugServer.addToDebugQueue(["kappa": ["omega": "omnicron"]])
+        debugServer.add(["foo" : "bar"])
+        debugServer.add(["gamma": "delta"])
+        debugServer.add(["kappa": ["omega": "omnicron"]])
         
         for i in 0..<debugServer.debugQueue.count {
             
             XCTAssertTrue(debugServer.debugQueue[i] == testQueue[i], "test queue \(testQueue[i])was not added to debugQueue as expected \(debugServer.debugQueue[i]).")
         }
         
-        
     }
     
-    
-    
-    func testStop() {
-    
-    }
     
     func testEncodeDictToJson() {
         
         let expectedString = "{\"type\":\"foo\",\"info\":\"\",\"data\":{\"dev\":\"bar\"}}"
-
         
         let dictionary = ["type": "foo",
                           "info": "",

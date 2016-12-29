@@ -14,7 +14,7 @@ protocol HttpServerIODelegate {
 
 public class HttpServerIO {
     
-    private var socket = Socket(socketFileDescriptor: -1)
+    public var socket = Socket(socketFileDescriptor: -1)
     private var sockets = Set<Socket>()
 
     var delegate : HttpServerIODelegate?
@@ -54,6 +54,10 @@ public class HttpServerIO {
         return try socket.isIPv4()
     }
     
+    public func getSocket() -> Socket {
+        return self.socket
+    }
+    
     deinit {
         stop()
     }
@@ -82,7 +86,6 @@ public class HttpServerIO {
             }
             self.stop()
         }
-        print("Swift HTTPServerIO Running.")
         self.state = .running
     }
     

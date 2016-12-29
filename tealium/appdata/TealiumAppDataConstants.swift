@@ -14,5 +14,3 @@ public enum TealiumAppDataKey {
     static let legacyVid = "tealium_vid"        // deprecating
     static let visitorId = "tealium_visitor_id" // deprecating
 }
-
- lah

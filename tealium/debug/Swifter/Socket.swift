@@ -50,6 +50,7 @@ open class Socket: Hashable, Equatable {
         var addr = sockaddr_in()
         return try withUnsafePointer(to: &addr) { pointer in
             var len = socklen_t(MemoryLayout<sockaddr_in>.size)
+            
             if getsockname(socketFileDescriptor, UnsafeMutablePointer(OpaquePointer(pointer)), &len) != 0 {
                 throw SocketError.getSockNameFailed(Errno.description())
             }

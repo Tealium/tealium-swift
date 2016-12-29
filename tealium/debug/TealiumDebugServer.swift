@@ -14,7 +14,7 @@ class TealiumDebugServer {
     var debugQueue = [[String: Any]]()
     var currentSession : WebSocketSession?
     
-    func start()  {
+    public func start() throws {
         
         do {
             
@@ -25,88 +25,71 @@ class TealiumDebugServer {
             self.setupSockets()
             
         } catch {
-            print("Unable to start server.")
+            
+            throw TealiumDebugError.couldNotStartServer
+            
         }
         
     }
     
-    func setupSockets() {
-            
+    public func stop() {
+        currentSession = nil
+        server.stop()
+    }
+    
+    public func add(_ data: [String:Any]) {
+        debugQueue.append(data)
+        
+        sendQueue()
+    }
+    
+    internal func setupSockets() {
+        
         server[""] =  websocket({ (session, text ) in
-
             
         }, { (session, binary) in
             session.writeBinary(binary)
         })
         
     }
-
     
-    
-    func serveTrack() {
-
-        guard let currentSession = currentSession else{
+    internal func sendQueue() {
+        
+        if currentSession == nil{
             return
         }
         
         for item in debugQueue {
-    
-            do {
-                let encodedText = try encode(dictionary: item)
-                currentSession.writeText(encodedText as String)
-
-            } catch {
-                print("Error when trying to encode the dictionary")
-            }
-
+            
+            send(item)
+            
         }
         
         debugQueue.removeAll()
-    }
-    
-    func addToDebugQueue(_ trackData: [String: Any]) {
-        
-        debugQueue.append(trackData)
         
     }
     
-    func stop() {
-        currentSession = nil
-        server.stop()
-    }
-    
-    
-    func encode(dictionary: [String: Any]) -> String {
-       
-        let keys = dictionary.keys
-        let sortedKeys = keys.sorted { $0 < $1 }
-        var encodedArray = [String]()
+    internal func send(_ data: [String:Any]) {
         
-        for key in sortedKeys {
+        guard let jsonItem = try? encodeDictToJson(dict: data) else {
             
-            let encodedKey = key.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
-            var value = dictionary[key]
-            
-            if let valueString = value as? String{
-                
-                value = valueString
-            } else if let stringArray = value as? [String]{
-                value = "\(stringArray)"
-            } else {
-                continue
-            }
-            
-            guard let valueString = value as? String else {
-                continue
-            }
-            let encodedValue = valueString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
-            
-            let encodedElement = "\(encodedKey)=\(encodedValue)"
-            encodedArray.append(encodedElement)
+            return
         }
         
-        return encodedArray.joined(separator: "&")
-
+        currentSession?.writeText(jsonItem as String)
+        
+    }
+    
+    
+    internal func encodeDictToJson(dict: [String: Any]) throws -> String {
+        let data = try JSONSerialization.data(withJSONObject: dict,
+                                              options: JSONSerialization.WritingOptions())
+        
+        let jsonString = NSString(data: data,
+                                  encoding: String.Encoding.ascii.rawValue)
+        
+        return jsonString as! String
+        
     }
     
 }
@@ -122,6 +105,8 @@ extension TealiumDebugServer : HttpServerIODelegate {
             
             
         }
+        
+        self.sendQueue()
         
     }
     
