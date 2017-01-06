@@ -24,7 +24,7 @@ class TealiumHelper : NSObject {
     }
     
     override init() {
-
+       
         tealium = Tealium(config: defaultTealiumConfig)
     }
     

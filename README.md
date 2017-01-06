@@ -1,8 +1,8 @@
 # Tealium Swift Library
 
 [![License](https://img.shields.io/badge/license-Proprietary-blue.svg?style=flat
-            )](http://mit-license.org)
-[![Platform](http://img.shields.io/badge/platform-ios_osx_tvos_watchos-lightgrey.svg?style=flat
+           )](https://github.com/Tealium/tealium-swift/blob/master/LICENSE.txt)
+[![Platform](https://img.shields.io/badge/platform-ios%20osx%20tvos%20watchos-lightgrey.svg?style=flat
              )](https://developer.apple.com/resources/)
 [![Language](http://img.shields.io/badge/language-swift-orange.svg?style=flat
              )](https://developer.apple.com/swift)
@@ -59,7 +59,7 @@ These modules are included with .framework builds of the library for dependency 
 These modules may be added manually to projects but are NOT included with .framework builds for dependency managers, because they require additional entitlements, services, or are not necessary in the majority of use cases.
 
 - attribution
-- debug
+- [debug](https://community.tealiumiq.com/t5/Mobile-Libraries/Tealium-Swift-Module-Debug/ta-p/16849)
 
 
 ### Default Module Priority List
@@ -131,4 +131,4 @@ Use of this software is subject to the terms and conditions of the license agree
 
  
 ---
-Copyright (C) 2012-2016, Tealium Inc.
+Copyright (C) 2012-2017, Tealium Inc.

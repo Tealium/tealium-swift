@@ -8,6 +8,7 @@
 
 import XCTest
 
+
 class TealiumDebugServerTests: XCTestCase {
     
     override func setUp() {
@@ -49,6 +50,25 @@ class TealiumDebugServerTests: XCTestCase {
         
     }
     
+    func testQueueMaxLimit () {
+      
+        let debugServer = TealiumDebugServer()
+        debugServer.queueMax = 50
+        
+        for i in 1..<53 {
+            debugServer.add(["\(i)": "\(i)"])
+        }
+      
+        XCTAssertTrue(debugServer.debugQueue.count == debugServer.queueMax, " expected count of  \(debugServer.queueMax) does not match queue count:  \(debugServer.debugQueue.count)")
+
+        XCTAssertFalse(debugServer.debugQueue.contains { $0 == ["1":"1"] }, "queue is not compliant with FIFO \(debugServer.debugQueue.description)")
+        
+        XCTAssertTrue(debugServer.debugQueue[49] == ["52":"52"], "Last item in debugQueue \(debugServer.debugQueue[49]) is not expected")
+        
+        XCTAssertTrue(debugServer.debugQueue[0] == ["3":"3"], "First item in debugQueue \(debugServer.debugQueue[0]) is not expected")
+
+    }
+    
     
     func testEncodeDictToJson() {
         
@@ -72,4 +92,20 @@ class TealiumDebugServerTests: XCTestCase {
         }
     
     }
+    
+    func testSetQueueMax () {
+        
+        let debugServer = TealiumDebugServer()
+
+        debugServer.queueMax = -1
+        XCTAssertTrue(debugServer.queueMax == TealiumDebugKey.defaultQueueMax, "Debug fails to set to expected value\(TealiumDebugKey.defaultQueueMax) and instead is \(debugServer.queueMax)")
+        
+        debugServer.queueMax = 1020
+        XCTAssertTrue(debugServer.queueMax == TealiumDebugKey.overrideQueueSizeLimit, "Debug fails to set to expected value\(TealiumDebugKey.overrideQueueSizeLimit) and instead is \(debugServer.queueMax)")
+        
+        debugServer.queueMax = 50
+        XCTAssertTrue(debugServer.queueMax == 50, "Debug fails to set to expected value\(50) and instead is \(debugServer.queueMax)")
+
+    }
+    
 }

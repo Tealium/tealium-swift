@@ -34,7 +34,7 @@ class TealiumDebugModuleTests: XCTestCase {
         XCTAssertTrue(tuple.success, "Not all protocols returned. Failing protocols: \(tuple.protocolsFailing)")
         
     }
-
+    
     func testEnable () {
         
         expectationFinished = expectation(description: "startup")
@@ -68,6 +68,36 @@ class TealiumDebugModuleTests: XCTestCase {
         
     }
 
+    func testEnableWithPortOverride () {
+        
+        expectationFinished = expectation(description: "startup-override")
+        
+        guard let module = self.debugModule else {
+            XCTFail()
+            return
+        }
+        
+        module.delegate = self
+        
+        let testPort = 8090
+        testOptionalData += ["debug_port": testPort]
+        
+        module.enable(config: testTealiumConfig)
+        
+        waitForExpectations(timeout: 1.0, handler: nil)
+        
+        let httpServer = module.server.server
+        
+        do {
+            let port = try httpServer.port()
+            XCTAssertTrue(port == testPort, "Expected port\(port) didn't match port override\(testPort)")
+            
+        } catch let error {
+            XCTFail("couldn't find a port", file: error as! StaticString)
+        }
+        
+    }
+    
     func testDisable () {
         
         debugModule?.disable()

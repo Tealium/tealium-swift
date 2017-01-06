@@ -30,7 +30,7 @@ enum TealiumTestError : Error {
 }
 
 let testStringArrayValue = ["value1", "value2"]
-let testOptionalData = [TealiumTestKey.stringKey: TealiumTestValue.stringValue,
+var testOptionalData = [TealiumTestKey.stringKey: TealiumTestValue.stringValue,
                         TealiumTestKey.stringArrayKey: testStringArrayValue] as [String : Any]
 let testTealiumConfig = TealiumConfig(account:TealiumTestValue.account,
                                       profile:TealiumTestValue.profile,
