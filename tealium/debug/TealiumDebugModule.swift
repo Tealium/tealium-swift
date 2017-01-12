@@ -7,6 +7,34 @@
 //
 
 import Foundation
+
+extension TealiumConfig {
+    
+    func asDictionary() -> [String : Any] {
+        
+        var dictionary : [String:Any] = [
+            "account": self.account as Any,
+            "profile": self.profile as Any,
+            "environment": self.environment as Any
+        ]
+        
+        dictionary["optionalData"] = self.optionalData
+        
+        return dictionary
+    }
+    
+    func setDebugQueueSize(_ size: Int) {
+       
+        self.optionalData += [TealiumDebugKey.debugQueueSize: size]
+   
+    }
+    
+    func setDebugPort(_ port: Int) {
+     
+        self.optionalData += [TealiumDebugKey.debugPort: port]
+    }
+}
+
  
 class TealiumDebugModule : TealiumModule {
     
@@ -22,24 +50,34 @@ class TealiumDebugModule : TealiumModule {
     }
     
     override func enable(config:TealiumConfig) {
+    
+        var _port = 8080
+        
+        if let threshold = config.optionalData[TealiumDebugKey.debugQueueSize] {
+            server.queueMax = threshold as! Int
+        
+        }
+        
+        if let port = config.optionalData[TealiumDebugKey.debugPort] {
+            
+            _port = port as! Int
+        }
         
         do {
-            try server.start()
-            
+            try server.startWithPort(port: _port)
             server.add(getConfigInfo(config))
-            
             printAddress()
             
             self.didFinishEnable(config: config)
             
         } catch let e {
-         
+            
             self.didFailToEnable(config: config,
                                  error: e)
         }
-
+        
     }
-    
+
     func printAddress() {
         
         var message = "For Debugging use port: "
@@ -74,6 +112,8 @@ class TealiumDebugModule : TealiumModule {
         
         let trackData = getDebugTrackInfo(process.track!.info!)
         server.add(trackData)
+        
+        self.didFinishReport(fromModule: fromModule, process: process)
 
     }
 
@@ -96,26 +136,7 @@ class TealiumDebugModule : TealiumModule {
         return debugData
         
     }
-    
 }
  
- extension TealiumConfig {
-    
-    func asDictionary() -> [String : Any] {
-    
-        var dictionary : [String:Any] = [
-            "account": self.account as Any,
-            "profile": self.profile as Any,
-            "environment": self.environment as Any
-        ]
-        
-        if self.optionalData != nil {
-            dictionary["optionalData"] = self.optionalData as Any?
-        }
-        
-        return dictionary
-    }
-    
- }
- 
+
  

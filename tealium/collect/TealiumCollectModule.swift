@@ -67,7 +67,7 @@ class TealiumCollectModule : TealiumModule {
         if self.collect == nil {
             // Collect dispatch service
             var urlString : String
-            if let collectURLString = config.optionalData?[TealiumCollectKey.overrideCollectUrl] as? String{
+            if let collectURLString = config.optionalData[TealiumCollectKey.overrideCollectUrl] as? String{
                 urlString = collectURLString
             } else {
                 urlString = TealiumCollect.defaultBaseURLString()

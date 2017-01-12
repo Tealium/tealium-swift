@@ -13,12 +13,28 @@ class TealiumDebugServer {
     let server = HttpServer()
     var debugQueue = [[String: Any]]()
     var currentSession : WebSocketSession?
+    var queueMax = 100 {
+        didSet {
+            if queueMax < 1 {
+                queueMax = TealiumDebugKey.defaultQueueMax
+                return
+            }
+           
+            if queueMax > TealiumDebugKey.overrideQueueSizeLimit {
+                queueMax = TealiumDebugKey.overrideQueueSizeLimit
+                return
+            
+            }
+            
+        }
+    }
+  
     
-    public func start() throws {
+    public func startWithPort(port: Int) throws {
         
         do {
             
-            try server.start()
+            try server.start(in_port_t(port))
             
             server.delegate = self
             
@@ -38,9 +54,17 @@ class TealiumDebugServer {
     }
     
     public func add(_ data: [String:Any]) {
-        debugQueue.append(data)
+
+        if debugQueue.count < queueMax {
+            debugQueue.append(data)
         
+        }else {
+            debugQueue.removeFirst()
+            self.add(data)
+        
+        }
         sendQueue()
+
     }
     
     internal func setupSockets() {
@@ -60,9 +84,7 @@ class TealiumDebugServer {
         }
         
         for item in debugQueue {
-            
-            send(item)
-            
+            send(item)            
         }
         
         debugQueue.removeAll()
@@ -102,7 +124,6 @@ extension TealiumDebugServer : HttpServerIODelegate {
             
             let newSession = WebSocketSession.init(socket)
             currentSession = newSession
-            
             
         }
         
