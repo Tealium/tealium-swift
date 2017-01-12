@@ -69,7 +69,7 @@ class WindowController: NSWindowController, NSToolbarDelegate {
         let font = NSFont(name: "Helvetica", size: CGFloat(DefaultFontSize))
         self.contentTextView().font = font
         
-        if #available(OSX 10.12.1, *) {
+        if #available(OSX 10.12.2, *) {
             if ((NSClassFromString("NSTouchBar")) != nil) {
                 let fontSizeTouchBarItem = self.touchBar!.item(forIdentifier: .popover) as! NSPopoverTouchBarItem
                 let sliderTouchBar = fontSizeTouchBarItem.popoverTouchBar
@@ -342,7 +342,7 @@ class WindowController: NSWindowController, NSToolbarDelegate {
     
     // MARK: - NSTouchBar
     
-    @available(OSX 10.12.1, *)
+    @available(OSX 10.12.2, *)
     override func makeTouchBar() -> NSTouchBar? {
         
         let touchBar = NSTouchBar()
@@ -358,7 +358,7 @@ class WindowController: NSWindowController, NSToolbarDelegate {
 
 extension WindowController: NSTouchBarDelegate {
     
-    @available(OSX 10.12.1, *)
+    @available(OSX 10.12.2, *)
     func touchBar(_ touchBar: NSTouchBar, makeItemForIdentifier identifier: NSTouchBarItemIdentifier) -> NSTouchBarItem? {
         
         switch identifier {

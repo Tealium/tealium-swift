@@ -19,7 +19,9 @@ public class TealiumVolatileData {
      Constructor.
      */
     required public init() {
+
         self.add(data:[TealiumVolatileDataKey.sessionId: newSessionId() ])
+
     }
     
     /**
@@ -42,6 +44,7 @@ public class TealiumVolatileData {
     public func getData() -> [String:Any]{
         
         var data = [String:Any]()
+
         data[TealiumVolatileDataKey.random] = getRandom()
         data[TealiumVolatileDataKey.timestampEpoch] = getTimestampInSeconds()
         data += _volatileData
@@ -65,14 +68,18 @@ public class TealiumVolatileData {
     
     /// Auto reset the session id now.
     public func resetSessionId() {
+
         self.add(data:[TealiumVolatileDataKey.sessionId: newSessionId() ])
     }
     
-    /// Manually set session id to a specified string
-    ///
-    /// - Parameter sessionId: String id to set session id to.
+    /** Manually set session id to a specified string
+     - Parameter sessionId: String id to set session id to.
+    **/
+    
     public func setSessionId(sessionId: String) {
+
         self.add(data:[TealiumVolatileDataKey.sessionId: sessionId ])
+
     }
     
     // MARK

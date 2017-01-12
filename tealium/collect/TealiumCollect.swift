@@ -62,7 +62,7 @@ public class TealiumCollect {
                 // No callback requested
                 return
             }
-            
+
             var aggregateInfo = [TealiumCollectKey.payload:sanitizedData ] as [String:Any]
             if let info = info {
                 aggregateInfo += info
@@ -105,6 +105,7 @@ public class TealiumCollect {
                 return
             }
             
+
             info += [TealiumCollectKey.responseHeader: self.headerResponse(response: httpResponse) ]
             
             if let _ = (httpResponse.allHeaderFields["X-Error"] as? String) {
@@ -127,8 +128,8 @@ public class TealiumCollect {
     
     internal func headerResponse(response: HTTPURLResponse) -> [String:Any] {
         
-        guard let dict = response.allHeaderFields as? [String: Any ] else {
-            
+        guard let dict = response.allHeaderFields as? [String:Any] else {
+        
             // Go through each field and populate manually
             
             let headerFields = response.allHeaderFields
@@ -174,17 +175,19 @@ public class TealiumCollect {
             var value = dictionary[key]
                 
             if let valueString = value as? String{
+
                 value = valueString
             } else if let stringArray = value as? [String]{
                 value = "\(stringArray)"
             } else {
                 continue
             }
-            
+
             guard let valueString = value as? String else {
                 continue
             }
             let encodedValue = valueString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
+
             let encodedElement = "\(encodedKey)=\(encodedValue)"
             encodedArray.append(encodedElement)
         }
@@ -220,6 +223,7 @@ public class TealiumCollect {
             } else {
             
                 let stringified = "\(value)"
+
                 clean[key] = stringified
             }
 

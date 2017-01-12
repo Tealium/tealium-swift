@@ -30,27 +30,27 @@ enum TealiumTestError : Error {
 }
 
 let testStringArrayValue = ["value1", "value2"]
-let testOptionalData = [TealiumTestKey.stringKey: TealiumTestValue.stringValue as AnyObject,
-                        TealiumTestKey.stringArrayKey: testStringArrayValue as AnyObject] as [String : AnyObject]
+var testOptionalData = [TealiumTestKey.stringKey: TealiumTestValue.stringValue,
+                        TealiumTestKey.stringArrayKey: testStringArrayValue] as [String : Any]
 let testTealiumConfig = TealiumConfig(account:TealiumTestValue.account,
                                       profile:TealiumTestValue.profile,
                                       environment:TealiumTestValue.environment,
-                                      optionalData:testOptionalData as [String : AnyObject])
+                                      optionalData:testOptionalData as [String : Any])
 
-let testDataDictionary : [String:AnyObject]  =
+let testDataDictionary : [String:Any]  =
     [
-        TealiumKey.account : TealiumTestValue.account as AnyObject,
-        TealiumKey.profile : TealiumTestValue.profile as AnyObject,
-        TealiumKey.environment : TealiumTestValue.environment as AnyObject,
-        TealiumKey.event : TealiumTestValue.title as AnyObject,
-        TealiumKey.eventName : TealiumTestValue.title as AnyObject,
-        TealiumKey.eventType :  TealiumTestValue.eventType as AnyObject,
-        TealiumKey.libraryName : TealiumValue.libraryName as AnyObject,
-        TealiumKey.libraryVersion : TealiumValue.libraryVersion as AnyObject,
-        TealiumVolatileDataKey.sessionId : TealiumTestValue.sessionId as AnyObject,
-        TealiumAppDataKey.visitorId :TealiumTestValue.visitorID as AnyObject,
-        TealiumAppDataKey.legacyVid : TealiumTestValue.visitorID as AnyObject,
-        TealiumVolatileDataKey.random : TealiumTestValue.random as AnyObject
+        TealiumKey.account : TealiumTestValue.account,
+        TealiumKey.profile : TealiumTestValue.profile,
+        TealiumKey.environment : TealiumTestValue.environment,
+        TealiumKey.event : TealiumTestValue.title,
+        TealiumKey.eventName : TealiumTestValue.title,
+        TealiumKey.eventType :  TealiumTestValue.eventType,
+        TealiumKey.libraryName : TealiumValue.libraryName,
+        TealiumKey.libraryVersion : TealiumValue.libraryVersion,
+        TealiumVolatileDataKey.sessionId : TealiumTestValue.sessionId,
+        TealiumAppDataKey.visitorId :TealiumTestValue.visitorID,
+        TealiumAppDataKey.legacyVid : TealiumTestValue.visitorID,
+        TealiumVolatileDataKey.random : TealiumTestValue.random
     ]
 
 class test_tealium_helper {
@@ -82,6 +82,7 @@ class test_tealium_helper {
         var succeedingProtocols = [String]()
         
         didReceiveCallBack { (module, protocolName) in
+            
             succeedingProtocols.append(protocolName)
         }
                 
@@ -95,6 +96,8 @@ class test_tealium_helper {
                                      info: nil,
                                      completion: nil)
         module.track(testTrack)
+        
+        usleep(100000) // Millionth of seconds - Delay Since we arent using XCTest waitForExpectations directly
         
         let failingProtocols = failingMininmumProtocols(succeedingProtocols: succeedingProtocols)
         
@@ -148,17 +151,6 @@ extension test_tealium_helper : TealiumModuleDelegate {
     
     func tealiumModuleFinishedReport(fromModule: TealiumModule, module: TealiumModule, process: TealiumProcess) {
         
-//        switch process {
-//        case .error:
-//            callBack?(module, TestTealiumModuleProtocolKey.processError)
-//        case .track:
-//            if error != nil {
-//                callBack?(module, TestTealiumModuleProtocolKey.processFailedTrack)
-//            }
-//        default:
-//            return
-//        }
-        
     }
     
     func tealiumModuleFinished(module: TealiumModule, process: TealiumProcess) {
@@ -170,9 +162,6 @@ extension test_tealium_helper : TealiumModuleDelegate {
             callBack?(module, TestTealiumModuleProtocolKey.disable)
         case .track:
             callBack?(module, TestTealiumModuleProtocolKey.track)
-        default:
-            // Do nothing at this time.
-            return
         }
         
     }

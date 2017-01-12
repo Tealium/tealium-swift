@@ -74,9 +74,10 @@ class TealiumModulesManager : NSObject {
         }
         
         // Convert convience title to dictionary payload
+
         var dataDictionary: [String : Any] = [TealiumKey.event: title ,
-                                                    TealiumKey.eventName: title ,
-                                                    TealiumKey.eventType: type.description() ]
+                                              TealiumKey.eventName: title ,
+                                              TealiumKey.eventType: type.description() ]
         
         if let additionalData = data {
             dataDictionary += additionalData
@@ -147,9 +148,14 @@ class TealiumModulesManager : NSObject {
         }
         
         let module = type.init(delegate: self)
+       
+        if module.moduleConfig().enabled == false {
+            return
+        }
         
         modules.append(module)
-    
+        
+       
     }
     
     // MARK:
