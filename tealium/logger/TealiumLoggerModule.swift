@@ -50,7 +50,7 @@ class TealiumLoggerModule : TealiumModule {
     override func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumLoggerKey.moduleName,
                                    priority: 100,
-                                   build: 1,
+                                   build: 2,
                                    enabled: true)
     }
     
@@ -100,6 +100,8 @@ class TealiumLoggerModule : TealiumModule {
         }
         
         guard let error = process.error else {
+            didFinishReport(fromModule: fromModule,
+                            process: process)
             return
         }
         
@@ -107,6 +109,8 @@ class TealiumLoggerModule : TealiumModule {
                       message: error.localizedDescription,
                       logLevel: .errors)
         
+        didFinishReport(fromModule: fromModule,
+                        process: process)
         
     }
     

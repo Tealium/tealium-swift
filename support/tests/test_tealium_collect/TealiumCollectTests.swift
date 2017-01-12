@@ -61,8 +61,6 @@ class TealiumCollectTests: XCTestCase {
         
     }
     
-    
-    
     func testEncodeDictionaryToString() {
         
         let expectedString = "buzz=chi&gamma=fizz&key=%5B%22foo%22,%20%22bar%22,%20%22alpha%22,%20%22segment%22,%20%22sigma%22%5D&lambda=closure"

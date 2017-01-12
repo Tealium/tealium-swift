@@ -13,7 +13,6 @@ class MasterViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
         let extraData : [String:Any] = ["Key" : "value"]
 
         TealiumHelper.sharedInstance().track(title: "test",
