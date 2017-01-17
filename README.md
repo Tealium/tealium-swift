@@ -1,8 +1,8 @@
 # Tealium Swift Library
 
 [![License](https://img.shields.io/badge/license-Proprietary-blue.svg?style=flat
-            )](http://mit-license.org)
-[![Platform](http://img.shields.io/badge/platform-ios_osx_tvos_watchos-lightgrey.svg?style=flat
+           )](https://github.com/Tealium/tealium-swift/blob/master/LICENSE.txt)
+[![Platform](https://img.shields.io/badge/platform-ios%20osx%20tvos%20watchos-lightgrey.svg?style=flat
              )](https://developer.apple.com/resources/)
 [![Language](http://img.shields.io/badge/language-swift-orange.svg?style=flat
              )](https://developer.apple.com/swift)
@@ -59,19 +59,20 @@ These modules are included with .framework builds of the library for dependency 
 These modules may be added manually to projects but are NOT included with .framework builds for dependency managers, because they require additional entitlements, services, or are not necessary in the majority of use cases.
 
 - attribution
+- [debug](https://community.tealiumiq.com/t5/Mobile-Libraries/Tealium-Swift-Module-Debug/ta-p/16849)
 
 
 ### Default Module Priority List
 Module chaining goes from lower-to-higher priority value. The following is the order by which modules will spin up and process track calls based on the default priority setting in their TealiumModuleConfigs:
 
 - 100 Logger (provides debug logging)
+- 150 Debug (allows a browser to monitor library configuration and dispatch data)
 - 200 Async (moves all library processing to a background thread)
 - 400 Attribution (adds IDFA to track data)
 - 500 AppData (add app_uuid to track data)
 - 600 PersistentData (adds ability to add persistent data to all track data)
 - 700 VolatileData (adds ability to add session persistent data to all track data - clears upon app termination)
 - 1000 Collect (packages and delivers track call to Tealium or custom endpoint)
-
 
 ## Contact Us
 
@@ -82,6 +83,11 @@ Module chaining goes from lower-to-higher priority value. The following is the o
 
 ## Change Log
 
+- 1.1.2
+    - Optional Debug module added
+    - Logger module updated to properly continue reporting chain
+    - Collect module fix: didFinish pushes updated track data
+    - Minor Unit Test updates
 - 1.1.1
     - Async module added
     - [String:AnyObject] dictionary usage replaced with more convenient [String:Any]
@@ -125,4 +131,4 @@ Use of this software is subject to the terms and conditions of the license agree
 
  
 ---
-Copyright (C) 2012-2016, Tealium Inc.
+Copyright (C) 2012-2017, Tealium Inc.

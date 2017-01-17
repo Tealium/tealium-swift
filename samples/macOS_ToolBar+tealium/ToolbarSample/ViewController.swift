@@ -19,7 +19,7 @@ class ViewController: NSViewController, NSTextViewDelegate {
         super.viewDidLoad()
         
         self.textView.delegate = self
-        if #available(OSX 10.12.1, *) {
+        if #available(OSX 10.12.2, *) {
             // Opt-out of text completion in this simplified version.
             if ((NSClassFromString("NSTouchBar")) != nil) {
                 self.textView?.isAutomaticTextCompletionEnabled = false
