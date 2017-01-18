@@ -4,7 +4,7 @@
            )](https://github.com/Tealium/tealium-swift/blob/master/LICENSE.txt)
 [![Platform](https://img.shields.io/badge/platform-ios%20osx%20tvos%20watchos-lightgrey.svg?style=flat
              )](https://developer.apple.com/resources/)
-[![Language](http://img.shields.io/badge/language-swift-orange.svg?style=flat
+[![Language](https://img.shields.io/badge/language-swift-orange.svg?style=flat
              )](https://developer.apple.com/swift)
 
 This library leverages the power of Tealium's [AudienceStream™](http://tealium.com/products/audiencestream/) making them natively available to Swift applications. 
