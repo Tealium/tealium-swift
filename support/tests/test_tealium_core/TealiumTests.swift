@@ -8,7 +8,7 @@
 
 import XCTest
 
-
+// These are really integration tests that depend on dispatch service also being spun up.
 
 class TealiumTests: XCTestCase {
     
@@ -56,47 +56,7 @@ class TealiumTests: XCTestCase {
         XCTAssertFalse(modulesManager.isEnabled)
         
     }
-    
-    func testConvenienceTrack() {
-        
-        // Only testing that call triggers expected behavior - data content checked by other module unit tests.
-        
-        let tealium = Tealium(config: defaultTealiumConfig)
-        
-        let expectation = self.expectation(description: "testConvenienceCall")
-        
-        tealium.track(title: "testTrack", data: nil, completion: { (success, info, error) in
-            
-            let message = "Tealium dispatch test successful: \(success) info: \(info) error:\(error)"
-            
-            XCTAssertTrue(success, message)
-            
-            expectation.fulfill()
-        })
-        
-        waitForExpectations(timeout: 1.5, handler: nil)
-        
-    }
-    
-    func testPrimaryTrack() {
-        
-        // Only testing that call triggers expected behavior - data content checked by other module unit tests.
-        
-        let tealium = Tealium(config: defaultTealiumConfig)
-        
-        let expectation = self.expectation(description: "testPrimaryCall")
-        
-        tealium.track(type: TealiumTrackType.activity , title: "testPrimaryTrack", data: nil, completion: { (success, info, error) in
-            
-            let message = "Tealium dispatch test successful: \(success) info: \(info) error:\(error)"
-            
-            XCTAssertTrue(success, message)
-            
-            expectation.fulfill()
-        })
-        
-        waitForExpectations(timeout: 3.0, handler: nil)
-        
-    }
+
+    // Not tests track calls any longer, calls are only fascades, module track calls should be tested directly.
     
 }

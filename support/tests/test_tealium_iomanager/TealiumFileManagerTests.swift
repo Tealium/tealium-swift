@@ -41,6 +41,8 @@ class TealiumFileManagerTests: XCTestCase {
     
     func testLoadCorruptedData() {
         
+        let _ = TealiumFileManager.deleteAllData(forUniqueId: uniqueId)
+        
         let parentDir = "\(NSHomeDirectory())/.tealium/swift/"
         do {
             try FileManager.default.createDirectory(atPath: parentDir, withIntermediateDirectories: true, attributes: nil)
@@ -55,7 +57,9 @@ class TealiumFileManagerTests: XCTestCase {
                                        contents:  data,
                                        attributes: nil)
         
-        XCTAssertTrue(TealiumFileManager.loadData(forUniqueId: uniqueId) == nil)
+        let corruptData = TealiumFileManager.loadData(forUniqueId: uniqueId)
+        
+        XCTAssertTrue(corruptData == nil, "CorruptData not nil: \(corruptData)")
     }
     
     func testDelete() {

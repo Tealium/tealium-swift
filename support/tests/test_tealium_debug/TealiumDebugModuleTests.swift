@@ -20,6 +20,7 @@ class TealiumDebugModuleTests: XCTestCase {
     }
     
     override func tearDown() {
+        debugModule?.server.stop()
         debugModule = nil
         expectationFinished = nil
         // Put teardown code here. This method is called after the invocation of each test method in the class.
@@ -39,18 +40,24 @@ class TealiumDebugModuleTests: XCTestCase {
         
         expectationFinished = expectation(description: "startup")
         
-        guard let module = self.debugModule else {
-            XCTFail()
-            return
-        }
+        let module = TealiumDebugModule(delegate: self)
         
-        module.delegate = self
-        module.enable(config: testTealiumConfig)
-     
+        let config = TealiumConfig(account:TealiumTestValue.account,
+                                   profile:TealiumTestValue.profile,
+                                   environment:TealiumTestValue.environment,
+                                   optionalData:[:] as [String : Any])
+        
+        module.enable(config: config)
+        
         waitForExpectations(timeout: 1.0, handler: nil)
 
         let httpServer = module.server.server
+        
         let state = httpServer.state
+        
+//        while httpServer.state == .starting {
+            // Wait for server to finalize
+//        }
 
         // Check Swifter server up and running
         XCTAssertTrue(state == .running, "Server state: \(state)")
@@ -80,9 +87,13 @@ class TealiumDebugModuleTests: XCTestCase {
         module.delegate = self
         
         let testPort = 8090
-        testOptionalData += ["debug_port": testPort]
         
-        module.enable(config: testTealiumConfig)
+        let config = TealiumConfig(account:TealiumTestValue.account,
+                                   profile:TealiumTestValue.profile,
+                                   environment:TealiumTestValue.environment,
+                                   optionalData:["debug_port": testPort])
+        
+        module.enable(config: config)
         
         waitForExpectations(timeout: 1.0, handler: nil)
         
@@ -143,6 +154,48 @@ class TealiumDebugModuleTests: XCTestCase {
         XCTAssertTrue(configInfo == testConfigInfo, "Mismatch between config:\n\(configInfo) \nAnd manualConfigInfo:\n\(testConfigInfo)")
     
     }
+    
+    // Verifying performance presumptions
+//    func testPerformanceDictionaryAddByDictionary() {
+//        
+//        self.measure {
+//            
+//            self.addByDictionary()
+//
+//        }
+//    }
+//    
+//    func testPerformanceDictionaryAddBySubscript() {
+//        
+//        self.measure {
+//            
+//            self.addByInsertion()
+//            
+//        }
+//     
+//    }
+//    
+//    func addByDictionary() {
+//        
+//        let loops = 10000
+//        var dict = [String:Any]()
+//        for i in 0..<loops {
+//            
+//            dict += ["testKey_\(i)":"testValue_\(i)"]
+//            
+//        }
+//    }
+//    
+//    func addByInsertion() {
+//        
+//        let loops = 10000
+//        var dict = [String:Any]()
+//        for i in 0..<loops {
+//            
+//            dict["testKey_\(i)"] = "testValue_\(i)"
+//            
+//        }
+//    }
 
 }
 

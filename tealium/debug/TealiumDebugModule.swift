@@ -7,6 +7,28 @@
 //
 
 import Foundation
+#if TEST
+#else
+import UIKit
+    
+extension UIApplication {
+    class func topViewController(controller: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+        if let navigationController = controller as? UINavigationController {
+            return topViewController(controller: navigationController.visibleViewController)
+        }
+        if let tabController = controller as? UITabBarController {
+            if let selected = tabController.selectedViewController {
+                return topViewController(controller: selected)
+            }
+        }
+        if let presented = controller?.presentedViewController {
+            return topViewController(controller: presented)
+        }
+        return controller
+    }
+}
+    
+#endif
 
 extension TealiumConfig {
     
@@ -33,6 +55,7 @@ extension TealiumConfig {
      
         self.optionalData += [TealiumDebugKey.debugPort: port]
     }
+    
 }
 
  
@@ -44,7 +67,7 @@ class TealiumDebugModule : TealiumModule {
         
         return TealiumModuleConfig(name: TealiumDebugKey.moduleName,
                                    priority: 150,
-                                   build: 1,
+                                   build: 2,
                                    enabled: true)
         
     }
@@ -67,6 +90,7 @@ class TealiumDebugModule : TealiumModule {
             try server.startWithPort(port: _port)
             server.add(getConfigInfo(config))
             printAddress()
+            displayWarning(port: _port)
             
             self.didFinishEnable(config: config)
             
@@ -75,6 +99,25 @@ class TealiumDebugModule : TealiumModule {
             self.didFailToEnable(config: config,
                                  error: e)
         }
+        
+    }
+    
+    func displayWarning(port: Int) {
+        
+        #if TEST
+        #else
+            DispatchQueue.main.async {
+                let okAction = UIAlertAction(title: "OK", style: .destructive, handler: { (action) in
+                })
+                
+                let alert = UIAlertController(title: "Tealium Debug", message: "Use port \(port). Disable the Debug module prior to release.", preferredStyle: .alert)
+                alert.addAction(okAction)
+                
+                let viewController = UIApplication.topViewController()
+                
+                viewController?.present(alert, animated: true, completion: nil)
+            }
+        #endif
         
     }
 
@@ -87,6 +130,7 @@ class TealiumDebugModule : TealiumModule {
         } catch {
             
         }
+        message += "\nFor more information, visit: https://community.tealiumiq.com/t5/Mobile-Libraries/Tealium-Swift-Module-Debug/ta-p/16849"
         print(message)
         
     }
