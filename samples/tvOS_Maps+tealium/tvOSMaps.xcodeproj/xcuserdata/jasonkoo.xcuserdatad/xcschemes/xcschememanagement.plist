@@ -9,9 +9,34 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>tvOSMaps_autotracking.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>tvOSMaps_debug.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>717897181E31488500CB5B5A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7178974C1E316BBD00CB5B5A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>71F881071E3147FA00C89CB5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>B5CD80BC1CAABD9C000C8750</key>
 		<dict>
 			<key>primary</key>

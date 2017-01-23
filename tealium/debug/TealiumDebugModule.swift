@@ -33,6 +33,7 @@ extension TealiumConfig {
      
         self.optionalData += [TealiumDebugKey.debugPort: port]
     }
+    
 }
 
  
@@ -44,7 +45,7 @@ class TealiumDebugModule : TealiumModule {
         
         return TealiumModuleConfig(name: TealiumDebugKey.moduleName,
                                    priority: 150,
-                                   build: 1,
+                                   build: 2,
                                    enabled: true)
         
     }
