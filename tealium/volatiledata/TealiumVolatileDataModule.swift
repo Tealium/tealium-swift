@@ -39,11 +39,11 @@ class TealiumVolatileDataModule : TealiumModule {
         
         if volatileData == nil {
             volatileData = TealiumVolatileData()
-            let currentStaticData = [TealiumKey.account:config.account as Any,
-                                     TealiumKey.profile:config.profile as Any,
-                                     TealiumKey.environment:config.environment as Any,
-                                     TealiumKey.libraryName:TealiumValue.libraryName as Any,
-                                     TealiumKey.libraryVersion:TealiumValue.libraryVersion]
+            let currentStaticData : [String:Any] = [TealiumKey.account:config.account,
+                                                    TealiumKey.profile:config.profile,
+                                                    TealiumKey.environment:config.environment,
+                                                    TealiumKey.libraryName:TealiumValue.libraryName,
+                                                    TealiumKey.libraryVersion:TealiumValue.libraryVersion]
           
             volatileData?.add(data: currentStaticData)
         }

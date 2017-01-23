@@ -19,8 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             tabController.viewControllers?.append(packagedSearchController())
         }
         
-        let extraData : [String:AnyObject] = ["Key" : "value" as AnyObject]
+        let extraData : [String:AnyObject] = ["customKey" : "customValue" as AnyObject]
         
+        TealiumHelper.sharedInstance().start()
         TealiumHelper.sharedInstance().track(title: "testLaunch",
                                              data: extraData)
         return true

@@ -10,6 +10,7 @@
 enum TealiumDebugKey {
 
     static let moduleName = "debug"
+    static let debugPasskey = "debug_passkey"
     static let debugPort = "debug_port"
     static let debugQueueSize = "debug_queue_size"
     static let overrideQueueSizeLimit = 1000

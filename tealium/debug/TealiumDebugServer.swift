@@ -70,11 +70,11 @@ class TealiumDebugServer {
     internal func setupSockets() {
         
         server[""] =  websocket({ (session, text ) in
-            
+
         }, { (session, binary) in
+            
             session.writeBinary(binary)
         })
-        
     }
     
     internal func sendQueue() {
@@ -93,25 +93,73 @@ class TealiumDebugServer {
     
     internal func send(_ data: [String:Any]) {
         
-        guard let jsonItem = try? encodeDictToJson(dict: data) else {
-            
+        let filteredData = TealiumDebugServer.stringOnly(dictionary: data)
+        
+        guard let jsonItem = TealiumDebugServer.encodeToJsonString(dict: filteredData) else {
+            // Data failed encoding attempt
             return
         }
         
-        currentSession?.writeText(jsonItem as String)
+        currentSession?.writeText(jsonItem)
         
     }
     
+    internal class func stringOnly(dictionary: [String:Any]) -> [String:Any] {
+        
+        var filteredDictionary = [String:Any]()
+        
+        for key in dictionary.keys {
+            
+            if key == TealiumDebugKey.debugPasskey {
+                continue
+            }
+            
+            var value = dictionary[key]
+            
+            // Recursively filter dictionary [String:Any] values
+            if value is [String:Any] {
+                value = TealiumDebugServer.stringOnly(dictionary: value as! [String:Any])
+            }
+            
+            // Going to only pass strings in for safety
+            if value is String {
+                // No change
+            } else if value is [String] {
+                // No change
+            } else {
+                // Convert to string value
+                value = "\(value!)"
+            }
+            
+            filteredDictionary[key] = value
+            
+        }
+
+        return filteredDictionary
+    }
     
-    internal func encodeDictToJson(dict: [String: Any]) throws -> String {
-        let data = try JSONSerialization.data(withJSONObject: dict,
-                                              options: JSONSerialization.WritingOptions())
+    
+    internal class func encodeToJsonString(dict: [String: Any]) -> String? {
         
-        let jsonString = NSString(data: data,
-                                  encoding: String.Encoding.ascii.rawValue)
+        // Need to check dictionary here or even the try-catch will fail
+        //  with an invalid object
+        if JSONSerialization.isValidJSONObject(dict) == false {
+            return nil
+        }
         
-        return jsonString as! String
-        
+        do {
+            let data = try JSONSerialization.data(withJSONObject: dict,
+                                                  options: JSONSerialization.WritingOptions())
+            
+            let jsonString = NSString(data: data,
+                                      encoding: String.Encoding.ascii.rawValue)
+            
+            return (jsonString as! String)
+            
+        } catch  {
+            return nil
+        }
+
     }
     
 }

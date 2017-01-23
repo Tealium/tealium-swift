@@ -82,6 +82,7 @@ class test_tealium_helper {
         var succeedingProtocols = [String]()
         
         didReceiveCallBack { (module, protocolName) in
+            
             succeedingProtocols.append(protocolName)
         }
                 
@@ -95,6 +96,8 @@ class test_tealium_helper {
                                      info: nil,
                                      completion: nil)
         module.track(testTrack)
+        
+        usleep(100000) // Millionth of seconds - Delay Since we arent using XCTest waitForExpectations directly
         
         let failingProtocols = failingMininmumProtocols(succeedingProtocols: succeedingProtocols)
         
@@ -147,17 +150,6 @@ enum TestTealiumModuleProtocolKey {
 extension test_tealium_helper : TealiumModuleDelegate {
     
     func tealiumModuleFinishedReport(fromModule: TealiumModule, module: TealiumModule, process: TealiumProcess) {
-        
-//        switch process {
-//        case .error:
-//            callBack?(module, TestTealiumModuleProtocolKey.processError)
-//        case .track:
-//            if error != nil {
-//                callBack?(module, TestTealiumModuleProtocolKey.processFailedTrack)
-//            }
-//        default:
-//            return
-//        }
         
     }
     
