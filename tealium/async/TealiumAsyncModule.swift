@@ -10,6 +10,18 @@ import Foundation
 enum TealiumAsyncKey {
     static let moduleName = "async"
     static let queueName = "com.tealium.background"
+    static let completion = "async_init_completion"
+}
+
+extension Tealium {
+    
+    convenience init(config: TealiumConfig, completion:@escaping (()->Void)){
+        
+        config.optionalData[TealiumAsyncKey.completion] = completion
+        
+        self.init(config: config)
+        
+    }
 }
 
 /// Module to send all calls to a Tealium only background thread
@@ -20,7 +32,7 @@ class TealiumAsyncModule : TealiumModule {
     override func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumAsyncKey.moduleName,
                                    priority: 200,
-                                   build: 1,
+                                   build: 2,
                                    enabled: true)
     }
     
@@ -52,6 +64,18 @@ class TealiumAsyncModule : TealiumModule {
         }
     }
     
+    override func handleReport(fromModule: TealiumModule, process: TealiumProcess) {
+        
+        dispatchQueue().async {
+            
+            self.didFinishReport(fromModule: fromModule, process: process)
+            
+            if let completion = self.completionInit(fromModule: fromModule, process: process){
+                completion()
+            }
+            
+        }
+    }
     
     /// Override the default Tealium background queue.
     ///
@@ -69,6 +93,35 @@ class TealiumAsyncModule : TealiumModule {
         }
         
         return _dispatchQueue!
+        
+    }
+    
+    
+    /// Return an init completion block from the last module, if it exists.
+    ///
+    /// - Parameters:
+    ///   - fromModule: The module to check.
+    ///   - process: The process to inspect.
+    /// - Returns: Optional init completion block.
+    internal func completionInit(fromModule: TealiumModule, process: TealiumProcess) -> (()->Void)? {
+        
+        if process.type != .enable {
+            return nil
+        }
+        
+        guard let moduleManager = self.delegate as? TealiumModulesManager else {
+            return nil
+        }
+        
+        if fromModule != moduleManager.modules.last {
+            return nil
+        }
+        
+        guard let completion = moduleManager.config.optionalData[TealiumAsyncKey.completion] as? (()->Void) else {
+            return nil
+        }
+        
+        return completion
         
     }
     

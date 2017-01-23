@@ -70,27 +70,63 @@ class TealiumDebugServerTests: XCTestCase {
     }
     
     
-    func testEncodeDictToJson() {
+    func testEncodeDictToJsonWithAcceptableDictionary() {
         
-        let expectedString = "{\"type\":\"foo\",\"info\":\"\",\"data\":{\"dev\":\"bar\"}}"
+        let expectedString = "{\"info\":\"\",\"data\":{\"dev\":\"bar\"},\"int\":15,\"type\":\"foo\",\"float\":10,\"bool\":true}"
         
-        let dictionary = ["type": "foo",
-                          "info": "",
-                          "data" : ["dev" : "bar"]] as [String : Any]
-    
-        let debugServer = TealiumDebugServer()
-      
-        do {
-            let testString  = try debugServer.encodeDictToJson(dict: dictionary)
-            
-            XCTAssertTrue(expectedString == testString, "test string \(testString) is not encoded properly: expected \(expectedString).")
-    
-        } catch {
-    
-            XCTFail("Error when trying to encode")
+        let dictionary : [String:Any] = ["type": "foo",
+                                         "info": "",
+                                         "data" : ["dev" : "bar"],
+                                         "bool": true,
+                                         "int" : 15,
+                                         "float" : 10.0
+                                        ]
+        
+        let testString  = TealiumDebugServer.encodeToJsonString(dict: dictionary)
+        
+        XCTAssertTrue(expectedString == testString, "test string \(testString) is not encoded properly: expected \(expectedString).")
 
-        }
     
+    }
+    
+    func testEncodeDictToJsonWithUnacceptableDictionary() {
+        
+        // Functions aren't JSON encodable
+        let function = {() in
+            print("empty test function")
+        }
+        
+        let dictionary : [String:Any] = ["type": "foo",
+                                         "function":function
+        ]
+        
+        let testString  = TealiumDebugServer.encodeToJsonString(dict: dictionary)
+        
+        XCTAssertTrue(testString == nil, "Returned json string should have been nil")
+        
+    }
+    
+    func testStringFilter() {
+        
+        let function = {() in
+            print("empty test function")
+        }
+        
+        let dictionary : [String:Any] = ["type": true,
+                                         "info": 15,
+                                         "data":["dev":10.0],
+                                         "function": function
+        ]
+        
+        let testDict  = TealiumDebugServer.stringOnly(dictionary: dictionary)
+
+        let expectedDictionary : [String:Any] = ["type":"true",
+                                                 "info":"15",
+                                                 "data":"[\"dev\": \"10.0\"]", // Why is a space appended here?
+                                                 "function":"(Function)"
+        ]
+        XCTAssertTrue(expectedDictionary == testDict, "Mismatch between expected dict: \(expectedDictionary) and returned: \(testDict)")
+
     }
     
     func testSetQueueMax () {
