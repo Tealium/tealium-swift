@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0810"
+   LastUpgradeVersion = "0820"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B5CD80BC1CAABD9C000C8750"
-               BuildableName = "tvOSMaps.app"
-               BlueprintName = "tvOSMaps"
-               ReferencedContainer = "container:tvOSMaps.xcodeproj">
+               BlueprintIdentifier = "5341010C1AFD23B2003BC1D6"
+               BuildableName = "ToolbarSample.app"
+               BlueprintName = "ToolbarSample"
+               ReferencedContainer = "container:ToolbarSample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,10 +32,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B5CD80BC1CAABD9C000C8750"
-            BuildableName = "tvOSMaps.app"
-            BlueprintName = "tvOSMaps"
-            ReferencedContainer = "container:tvOSMaps.xcodeproj">
+            BlueprintIdentifier = "5341010C1AFD23B2003BC1D6"
+            BuildableName = "ToolbarSample.app"
+            BlueprintName = "ToolbarSample"
+            ReferencedContainer = "container:ToolbarSample.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -55,10 +55,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B5CD80BC1CAABD9C000C8750"
-            BuildableName = "tvOSMaps.app"
-            BlueprintName = "tvOSMaps"
-            ReferencedContainer = "container:tvOSMaps.xcodeproj">
+            BlueprintIdentifier = "5341010C1AFD23B2003BC1D6"
+            BuildableName = "ToolbarSample.app"
+            BlueprintName = "ToolbarSample"
+            ReferencedContainer = "container:ToolbarSample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -74,10 +74,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B5CD80BC1CAABD9C000C8750"
-            BuildableName = "tvOSMaps.app"
-            BlueprintName = "tvOSMaps"
-            ReferencedContainer = "container:tvOSMaps.xcodeproj">
+            BlueprintIdentifier = "5341010C1AFD23B2003BC1D6"
+            BuildableName = "ToolbarSample.app"
+            BlueprintName = "ToolbarSample"
+            ReferencedContainer = "container:ToolbarSample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

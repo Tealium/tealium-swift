@@ -32,6 +32,15 @@ class TealiumAsyncModuleTests: XCTestCase {
         super.tearDown()
     }
     
+    func testMinimumProtocolsReturn() {
+        
+        let helper = test_tealium_helper()
+        let module = TealiumAsyncModule(delegate: nil)
+        let tuple = helper.modulesReturnsMinimumProtocols(module: module)
+        XCTAssertTrue(tuple.success, "Not all protocols returned. Failing protocols: \(tuple.protocolsFailing)")
+        
+    }
+    
     func testEnable() {
         
         delegateExpectationSuccess = self.expectation(description: "asyncEnable")

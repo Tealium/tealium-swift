@@ -13,25 +13,23 @@ class MasterViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
-        let extraData : [String:Any] = ["Key" : "value"]
-
-        TealiumHelper.sharedInstance().track(title: "test",
-                                             data: extraData)
+        #if AUTOTRACKING
+            TealiumAutotracking.addCustom(data: ["customAutotrackingKey":"customAutotrackingValue"], toObject: self)
+        #endif
     
         
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        
-        let extraData : [String:Any] = ["screen_title" : "masterViewController",
-                                        "tealium_event_type" : "view"]
-        
-        TealiumHelper.sharedInstance().track(title: "view",
-                                             data: extraData)
-        
+        TealiumHelper.sharedInstance().trackView(title: "MasterViewController",
+                                                 data: ["someManuallyAddedKey":"someManuallyAddedValue"])
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+    
     }
     
     @IBAction func unwindInMaster(_ segue: UIStoryboardSegue)  {

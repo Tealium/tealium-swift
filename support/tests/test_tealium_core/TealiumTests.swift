@@ -8,7 +8,7 @@
 
 import XCTest
 
-
+// These are really integration tests that depend on dispatch service also being spun up.
 
 class TealiumTests: XCTestCase {
     
@@ -23,20 +23,21 @@ class TealiumTests: XCTestCase {
         super.tearDown()
     }
     
-    func testInitPerformance() {
-        
-        let iterations = 100
-        
-        self.measure {
-        
-            for _ in 0...iterations {
-                
-                let _ = Tealium(config: defaultTealiumConfig)
-            }
-            
-        }
-        
-    }
+    // Not useful - save for automated UI testing
+//    func testInitPerformance() {
+//        
+//        let iterations = 100
+//        
+//        self.measure {
+//        
+//            for _ in 0...iterations {
+//                
+//                let _ = Tealium(config: defaultTealiumConfig)
+//            }
+//            
+//        }
+//        
+//    }
     
     // MARK:
     // MARK: INTEGRATION TESTS as Tealium is more-or-less a public fascade
@@ -55,43 +56,7 @@ class TealiumTests: XCTestCase {
         XCTAssertFalse(modulesManager.isEnabled)
         
     }
-    
-    func testConvenienceTrack() {
-        
-        // Only testing that call triggers expected behavior - data content checked by other module unit tests.
-        
-        let tealium = Tealium(config: defaultTealiumConfig)
-        
-        let expectation = self.expectation(description: "testCall")
-        
-        tealium.track(title: "testTrack", data: nil, completion: { (success, info, error) in
-            
-            print("Tealium dispatch test successful: \(success) info: \(info) error:\(error)")
-            
-            expectation.fulfill()
-        })
-        
-        waitForExpectations(timeout: 1.5, handler: nil)
-        
-    }
-    
-    func testPrimaryTrack() {
-        
-        // Only testing that call triggers expected behavior - data content checked by other module unit tests.
-        
-        let tealium = Tealium(config: defaultTealiumConfig)
-        
-        let expectation = self.expectation(description: "testCall")
-        
-        tealium.track(type: TealiumTrackType.conversion , title: "testTrack", data: nil, completion: { (success, info, error) in
-            
-            print("Tealium dispatch test successful: \(success) info: \(info) error:\(error)")
-            
-            expectation.fulfill()
-        })
-        
-        waitForExpectations(timeout: 3.0, handler: nil)
-        
-    }
+
+    // Not tests track calls any longer, calls are only fascades, module track calls should be tested directly.
     
 }

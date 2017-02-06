@@ -13,9 +13,9 @@
 // *****************************************
 
 let defaultTealiumConfig = TealiumConfig(account:"tealiummobile",
-                                                profile:"demo",
-                                                environment:"dev",
-                                                optionalData:nil)
+                                         profile:"demo",
+                                         environment:"dev",
+                                         optionalData:nil)
 
 
 // *****************************************
@@ -31,45 +31,45 @@ open class TealiumConfig {
     let account : String
     let profile : String
     let environment : String
-    open var optionalData : [String:Any]?
+    lazy var optionalData = [String:Any]()
     
     /**
      Primary constructor.
      
      - parameters:
-        - account: Tealium account name string to use.
-        - profile: Tealium profile string.
-        - environment: Tealium environment string.
-        - optionalData: Optional [String:Any] dictionary meant primarily for module use.
+     - account: Tealium account name string to use.
+     - profile: Tealium profile string.
+     - environment: Tealium environment string.
+     - optionalData: Optional [String:Any] dictionary meant primarily for module use.
      */
     public init(account: String,
-              profile: String,
-              environment: String,
-              optionalData: [String: Any]?)  {
+                profile: String,
+                environment: String,
+                optionalData: [String: Any]?)  {
         
         self.account = account
         self.environment = environment
         self.profile = profile
-        self.optionalData = optionalData
+        
+        if let optionalData = optionalData {
+            self.optionalData = optionalData
+        }
         
     }
     
     /**
-         1.0.1 Support
+     1.0.1 Support
      */
     @available(*, deprecated, message:"Access optional data property directly.")
     public func getOptionalData(key: String) -> Any? {
-        return optionalData?[key]
+        return optionalData[key]
     }
     
     /**
-        1.0.1 Support
+     1.0.1 Support
      */
     @available(*, deprecated, message:"Set optional data property directly.")
     public func setOptionalData(key: String, value: Any) {
-        if optionalData == nil {
-            optionalData = [String: Any]()
-        }
-        optionalData?[key] = value
+        optionalData[key] = value
     }
 }

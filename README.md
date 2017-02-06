@@ -1,10 +1,10 @@
 # Tealium Swift Library
 
 [![License](https://img.shields.io/badge/license-Proprietary-blue.svg?style=flat
-            )](http://mit-license.org)
-[![Platform](http://img.shields.io/badge/platform-ios_osx_tvos_watchos-lightgrey.svg?style=flat
+           )](https://github.com/Tealium/tealium-swift/blob/master/LICENSE.txt)
+[![Platform](https://img.shields.io/badge/platform-iOS%20macOS%20tvOS%20watchOS-lightgrey.svg?style=flat
              )](https://developer.apple.com/resources/)
-[![Language](http://img.shields.io/badge/language-swift-orange.svg?style=flat
+[![Language](https://img.shields.io/badge/language-Swift-orange.svg?style=flat
              )](https://developer.apple.com/swift)
 
 This library leverages the power of Tealium's [AudienceStream™](http://tealium.com/products/audiencestream/) making them natively available to Swift applications. 
@@ -59,6 +59,7 @@ These modules are included with .framework builds of the library for dependency 
 These modules may be added manually to projects but are NOT included with .framework builds for dependency managers, because they require additional entitlements, services, or are not necessary in the majority of use cases.
 
 - attribution
+- [autotracking](https://community.tealiumiq.com/t5/Mobile-Libraries/Tealium-Swift-Module-Autotracking/ta-p/16856)
 
 
 ### Default Module Priority List
@@ -66,12 +67,12 @@ Module chaining goes from lower-to-higher priority value. The following is the o
 
 - 100 Logger (provides debug logging)
 - 200 Async (moves all library processing to a background thread)
+- 300 Autotracking (prepares & sends dispatches for most UI & viewDidAppear events)
 - 400 Attribution (adds IDFA to track data)
 - 500 AppData (add app_uuid to track data)
 - 600 PersistentData (adds ability to add persistent data to all track data)
 - 700 VolatileData (adds ability to add session persistent data to all track data - clears upon app termination)
 - 1000 Collect (packages and delivers track call to Tealium or custom endpoint)
-
 
 ## Contact Us
 
@@ -82,6 +83,13 @@ Module chaining goes from lower-to-higher priority value. The following is the o
 
 ## Change Log
 
+- 1.1.2
+    - Optional Autotracking module (build 1) added. Additional variables with module:
+           - autotracked : true/false
+    - Async module updated (build 2). Adds following convenience method:
+        - init(config: TealiumConfig, completion:((_)->Void))
+    - Logger module updated (build 2). Reporting chain fix.
+    - Collect module updated (build 2): didFinish pushes updated track data fix.
 - 1.1.1
     - Async module added
     - [String:AnyObject] dictionary usage replaced with more convenient [String:Any]
@@ -125,4 +133,4 @@ Use of this software is subject to the terms and conditions of the license agree
 
  
 ---
-Copyright (C) 2012-2016, Tealium Inc.
+Copyright (C) 2012-2017, Tealium Inc.

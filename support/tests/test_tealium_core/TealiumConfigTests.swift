@@ -15,7 +15,10 @@ class TealiumConfigTests: XCTestCase {
     override func setUp() {
         
         super.setUp()
-        config = testTealiumConfig
+        config = TealiumConfig(account: TealiumTestValue.account,
+                               profile: TealiumTestValue.profile,
+                               environment: TealiumTestValue.environment,
+                               optionalData: testOptionalData)
 
     }
     
@@ -39,15 +42,15 @@ class TealiumConfigTests: XCTestCase {
         // TODO: Update this to read from a json file of various options
         let key = "key"
         let value = "value"
-        config.setOptionalData(key: key, value: value as AnyObject)
+        config.optionalData[key] = value
         
-        if let retrievedValue = config.getOptionalData(key: key) as? String {
+        if let retrievedValue = config.optionalData[key] as? String {
             XCTAssertTrue(retrievedValue == value)
             return
         }
         
         // Value was not as expected
-        print("testSetOptionalData: retrievedValue: \(config.getOptionalData(key: key))")
+        print("testSetOptionalData: retrievedValue: \(config.optionalData[key])")
         XCTFail()
         
     }

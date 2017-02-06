@@ -58,7 +58,7 @@ class TealiumCollectModule : TealiumModule {
     override func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumCollectKey.moduleName,
                                    priority: 1000,
-                                   build: 1,
+                                   build: 2,
                                    enabled: true)
     }
     
@@ -67,7 +67,7 @@ class TealiumCollectModule : TealiumModule {
         if self.collect == nil {
             // Collect dispatch service
             var urlString : String
-            if let collectURLString = config.optionalData?[TealiumCollectKey.overrideCollectUrl] as? String{
+            if let collectURLString = config.optionalData[TealiumCollectKey.overrideCollectUrl] as? String{
                 urlString = collectURLString
             } else {
                 urlString = TealiumCollect.defaultBaseURLString()
@@ -89,16 +89,28 @@ class TealiumCollectModule : TealiumModule {
 
     override func track(_ track: TealiumTrack) {
         
-        collect?.dispatch(data: track.data, completion: { (success, info, error) in
-            
-            track.completion?(success, info, error)
+        guard let collect = self.collect else {
+            // TODO: Queueing system
             self.didFinishTrack(track)
+            return
+        }
+        
+        collect.dispatch(data: track.data, completion: { (success, info, error) in
+            
+            let newTrack = TealiumTrack(data: track.data,
+                             info: info,
+                       completion: track.completion)
+            
+
+            track.completion?(success, info, error)
+            
+            self.didFinishTrack(newTrack)
 
         })
         
+        
         // Completion handed off to collect dispatch service - forward track to any subsequent modules for any remaining processing.
         
-        didFinishTrack(track)
     }
 
 }
