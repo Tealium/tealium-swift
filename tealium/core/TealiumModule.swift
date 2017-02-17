@@ -5,6 +5,7 @@
 //  Created by Jason Koo on 10/5/16.
 //  Copyright © 2016 tealium. All rights reserved.
 //
+//  Build 2
 
 import Foundation
 
@@ -46,6 +47,7 @@ public protocol TealiumModuleDelegate : class {
 open class TealiumModule {
     
     weak var delegate : TealiumModuleDelegate?
+    var isEnabled : Bool = false
     
     /// Constructor.
     ///
@@ -158,6 +160,7 @@ open class TealiumModule {
     
     open func didFinishEnable(config:TealiumConfig) {
         
+        isEnabled = true
         let process = TealiumProcess(type: .enable,
                                      successful: true,
                                      track: nil,

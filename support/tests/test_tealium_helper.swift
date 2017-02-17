@@ -139,6 +139,7 @@ class test_tealium_helper {
         
         return missingKeys
     }
+    
 }
 
 enum TestTealiumModuleProtocolKey {
@@ -155,6 +156,7 @@ extension test_tealium_helper : TealiumModuleDelegate {
     
     func tealiumModuleFinished(module: TealiumModule, process: TealiumProcess) {
         
+        // NOTE: Don't leave a breakpoint in here, can throw off the test
         switch process.type {
         case .enable:
             callBack?(module, TestTealiumModuleProtocolKey.enable)
@@ -163,7 +165,6 @@ extension test_tealium_helper : TealiumModuleDelegate {
         case .track:
             callBack?(module, TestTealiumModuleProtocolKey.track)
         }
-        
     }
     
     func tealiumModuleRequests(module: TealiumModule, process: TealiumProcess) {
@@ -179,34 +180,31 @@ extension Dictionary where Key:ExpressibleByStringLiteral, Value:Any{
      Allows dictionary to check if it contains keys and values from a smaller library
      
      - Paramaters:
-     - smallerDictionary: A [String:AnyObject] dictionary
+     - otherDictionary: A [String:AnyObject] dictionary
      - Returns: Boolean answer
      */
-    func contains(smallerDictionary:[String:Any])-> Bool {
+    func contains(otherDictionary:[String:Any])-> Bool {
         
         // Should use generics here
         
-        for (key, value) in smallerDictionary {
-            guard let largeValue = self[(key as? Key)!] else {
-                print("No entry in source dictionary for key: \(key)")
+        for (key, value) in self {
+            guard let smallValue = otherDictionary[key as! String] else {
+                print("Key missing from smaller dictionary: \(key)")
                 return false
             }
-            if largeValue as? String != value as? String {
-                print("Values as String mismatch for key: \(key)")
+            if String(describing:value) != String(describing:smallValue) {
+                print("Values as String mismatch for key:\(key). Expected:\(value) returned:\(smallValue)")
                 return false
             }
-            if let largeValue = largeValue as? [String] {
-                if let smallValue = value as? [String] {
-                    if largeValue != smallValue {
-                        print("Values as [String] mismatch for key: \(key) ")
-                        return false
-                    }
-                }
+            if String(describing:value) != String(describing:smallValue) {
+                print("Values as [String] mismatch for key:\(key). Expected:\(value) returned:\(smallValue)")
+                return false
             }
+
         }
         
         return true
     }
-    
+
 }
 

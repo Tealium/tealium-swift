@@ -26,7 +26,7 @@ class TealiumAttributionModule : TealiumModule {
     override func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumAttributionKey.moduleName,
                                    priority: 400,
-                                   build: 1,
+                                   build: 2,
                                    enabled: true)
     }
     
@@ -68,8 +68,6 @@ class TealiumAttributionModule : TealiumModule {
         // Module enabled - add IDFA info to data
         
         var newData = [TealiumAttributionKey.advertisingId : advertisingId as Any]
-        
-        newData[TealiumAttributionKey.advertisingId] = advertisingId
         
         newData += track.data
         

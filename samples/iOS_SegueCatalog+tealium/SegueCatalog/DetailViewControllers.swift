@@ -13,10 +13,14 @@ class NestedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let extraData : [String:Any] = ["Key" : "value" as Any]
-        
-        TealiumHelper.sharedInstance().track(title: "test",
+        #if AUTOTRACKING
+        #else
+            let extraData : [String:Any] = ["CustomKey" : "Customvalue" as Any]
+            
+            TealiumHelper.sharedInstance().track(title: "NestedViewController:viewDidLoad",
                                              data: extraData)
+        
+        #endif
     }
     
     @IBAction func unwindToNested(_ segue: UIStoryboardSegue) {
@@ -40,10 +44,13 @@ class OuterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let extraData : [String:Any] = ["Key" : "value" as Any]
-        
-        TealiumHelper.sharedInstance().track(title: "test",
+        #if AUTOTRACKING
+        #else
+            let extraData : [String:Any] = ["CustomKey" : "Customvalue" as Any]
+            
+            TealiumHelper.sharedInstance().track(title: "DetailViewController:viewDidLoad",
                                              data: extraData)
+        #endif
     }
     @IBAction func unwindToOuter(_ segue: UIStoryboardSegue) {
         /*

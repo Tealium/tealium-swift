@@ -32,7 +32,7 @@ class ViewController: NSViewController, NSTextViewDelegate {
         
         // Do any additional setup after loading the view.
         
-        TealiumHelper.sharedInstance().track(title: "viewDidLoad", data: ["someKey":"someValue"])
+        TealiumHelper.sharedInstance().track(title: "ViewController:viewDidLoad", data: ["customKey":"customValue"])
     
     }
 

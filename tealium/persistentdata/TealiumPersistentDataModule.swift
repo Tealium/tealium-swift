@@ -44,7 +44,7 @@ class TealiumPersistentDataModule : TealiumModule {
         
         let uniqueId = "\(config.account).\(config.profile).\(config.environment)"
         
-        persistentData = TealiumPersistentData(uniqueId: uniqueId)
+        self.persistentData = TealiumPersistentData(uniqueId: uniqueId)
 
         didFinishEnable(config: config)
         
@@ -59,7 +59,7 @@ class TealiumPersistentDataModule : TealiumModule {
     
     override func track(_ track: TealiumTrack) {
         
-        guard let persistentData = persistentData else {
+        guard let persistentData = self.persistentData else {
             
             didFailToTrack(track,
                            error: TealiumPersistentDataModuleError.didNotInitialize)

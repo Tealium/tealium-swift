@@ -58,7 +58,7 @@ class TealiumCollectModule : TealiumModule {
     override func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumCollectKey.moduleName,
                                    priority: 1000,
-                                   build: 2,
+                                   build: 3,
                                    enabled: true)
     }
     
@@ -101,8 +101,16 @@ class TealiumCollectModule : TealiumModule {
                              info: info,
                        completion: track.completion)
             
-
+            // Notify call specific callback
             track.completion?(success, info, error)
+            
+            // Let the modules manager know we had a failure.
+            if success == false {
+                var localError = error
+                if localError == nil { localError = TealiumCollectError.unknownIssueWithSend }
+                self.didFailToTrack(newTrack, error: localError!)
+                return
+            }
             
             self.didFinishTrack(newTrack)
 

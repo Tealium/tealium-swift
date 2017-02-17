@@ -19,5 +19,5 @@ enum TealiumCollectError : Error {
     case unknownResponseType
     case xErrorDetected
     case non200Response
-    
+    case unknownIssueWithSend
 }
