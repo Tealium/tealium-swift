@@ -23,8 +23,12 @@ class MasterViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        #if AUTOTRACKING
+        #else
         TealiumHelper.sharedInstance().trackView(title: "MasterViewController",
                                                  data: ["someManuallyAddedKey":"someManuallyAddedValue"])
+        #endif
+        
     }
 
     override func viewWillDisappear(_ animated: Bool) {

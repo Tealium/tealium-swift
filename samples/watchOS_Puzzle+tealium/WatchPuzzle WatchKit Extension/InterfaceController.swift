@@ -80,6 +80,8 @@ class InterfaceController: WKInterfaceController {
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         
+        TealiumHelper.sharedInstance().track(title: "InterfaceController:awake", data: nil)
+        
         setupGame()
     }
 

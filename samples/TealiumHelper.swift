@@ -15,7 +15,7 @@ import Foundation
 class TealiumHelper : NSObject {
     
     static let _sharedInstance = TealiumHelper()
-    fileprivate var tealium : Tealium?
+    var tealium : Tealium?
     
     class func sharedInstance() -> TealiumHelper {
         
@@ -29,12 +29,13 @@ class TealiumHelper : NSObject {
         
             tealium = Tealium(config: config,
                               completion:{ () in
-                #if AUTOTRACKING
-                    self.tealium?.autotracking()?.delegate = self
-                #endif
+                                
+                // Adding the helper as a delegate to access TealiumDelegate
+                //  protocols (see extension below).
+                self.tealium?.delegates()?.add(delegate: self)
         
             })
-            
+                    
     }
     
     func track(title: String, data:[String:Any]?) {
@@ -43,8 +44,7 @@ class TealiumHelper : NSObject {
                       data: data,
                       completion: { (success, info, error) in
                         
-            print("\n*** TRACK COMPLETION HANDLER *** Event Track finished. Was successful:\(success)\n\n Info:\(info as AnyObject)")
-                        
+                // Optional post processing
         })
     }
     
@@ -55,27 +55,22 @@ class TealiumHelper : NSObject {
                        data: data,
                        completion: { (success, info, error) in
                         
-                print("\n*** TRACK COMPLETION HANDLER *** View Track finished. Was successful:\(success)\n\n Info:\(info as AnyObject)")
+                // Optional post processing
         })
     
     }
     
 }
 
-#if AUTOTRACKING
-extension TealiumHelper : TealiumAutotrackingDelegate {
-    
-    func tealiumAutotrackShouldTrack(data: [String : Any]) -> Bool {
-        
-        // Can add logic to suppress track events for calls with particular data payloads
-        
+extension TealiumHelper : TealiumDelegate {
+
+    func tealiumShouldTrack(data: [String : Any]) -> Bool {
         return true
     }
     
-    func tealiumAutotrackCompleted(success: Bool, info: [String : Any]?, error: Error?) {
+    func tealiumTrackCompleted(success: Bool, info: [String : Any]?, error: Error?) {
         
-        print("\n*** AUTO TRACK COMPLETION HANDLER *** Track finished. Was successful:\(success)\n\n Info:\(info as AnyObject)")
-
+        print("\n*** TEALIUM DELEGATE : TRACK COMPLETION HANDLER *** Track finished. Was successful:\(success)\n\n Info:\(info as AnyObject)")
+        
     }
 }
-#endif

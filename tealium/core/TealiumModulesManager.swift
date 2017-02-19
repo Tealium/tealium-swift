@@ -5,6 +5,7 @@
 //  Created by Jason Koo on 10/5/16.
 //  Copyright © 2016 tealium. All rights reserved.
 //
+//  Build 2
 
 import Foundation
 import ObjectiveC
@@ -73,20 +74,29 @@ class TealiumModulesManager : NSObject {
             return
         }
         
-        // Convert convience title to dictionary payload
-
-        var dataDictionary: [String : Any] = [TealiumKey.event: title ,
-                                              TealiumKey.eventName: title ,
+        // Dereference incoming args
+        let newTitle = title
+        let newInfo = info
+        
+        // Convert convenience title to dictionary payload
+        var dataDictionary: [String : Any] = [TealiumKey.event: newTitle ,
+                                              TealiumKey.eventName: newTitle ,
                                               TealiumKey.eventType: type.description() ]
+        if let newData = data { dataDictionary += newData }
         
-        if let additionalData = data {
-            dataDictionary += additionalData
-        }
-        
+        // Create a more convenient track object to pass data and callback info with.
         let newTrack = TealiumTrack(data: dataDictionary,
-                                    info: info,
+                                    info: newInfo,
                                     completion: completion)
 
+        // Modules are still spinning up, delay track call
+        if self.allModulesReady() == false {
+            DispatchQueue.main.async {
+                self.track(newTrack)
+            }
+            return
+        }
+        
         track(newTrack)
         
     }
@@ -95,6 +105,16 @@ class TealiumModulesManager : NSObject {
         
         return modules.first(where: {$0.moduleConfig().name == forName})
 
+    }
+    
+    func allModulesReady() -> Bool {
+        
+        for module in modules {
+            if module.isEnabled == false {
+                return false
+            }
+        }
+        return true
     }
 
     // MARK:
@@ -155,7 +175,6 @@ class TealiumModulesManager : NSObject {
         
         modules.append(module)
         
-       
     }
     
     // MARK:

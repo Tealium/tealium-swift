@@ -44,11 +44,13 @@ The core module is the only required component of the library.  Howevever, no di
 
 ### Optionally Auto-included Modules
 
-These modules are included with .framework builds of the library for dependency managers (ie Carthage):
+These modules are included with current .framework builds of the library for dependency managers (ie Carthage):
 
 - appdata
 - async
 - collect
+- delegate
+- [lifecycle](https://community.tealiumiq.com/t5/Mobile-Libraries/Tealium-Swift-Module-Lifecycle/ta-p/16916)
 - logger
 - persistentdata
 - volatiledata
@@ -66,12 +68,14 @@ These modules may be added manually to projects but are NOT included with .frame
 Module chaining goes from lower-to-higher priority value. The following is the order by which modules will spin up and process track calls based on the default priority setting in their TealiumModuleConfigs:
 
 - 100 Logger (provides debug logging)
+- 175 Lifecycle (tracks launches, wakes, sleeps, and crash instances)
 - 200 Async (moves all library processing to a background thread)
 - 300 Autotracking (prepares & sends dispatches for most UI & viewDidAppear events)
 - 400 Attribution (adds IDFA to track data)
 - 500 AppData (add app_uuid to track data)
 - 600 PersistentData (adds ability to add persistent data to all track data)
 - 700 VolatileData (adds ability to add session persistent data to all track data - clears upon app termination)
+- 900 Delegate (adds multicast delegates to filter or monitor dispatches)
 - 1000 Collect (packages and delivers track call to Tealium or custom endpoint)
 
 ## Contact Us
@@ -82,6 +86,44 @@ Module chaining goes from lower-to-higher priority value. The following is the o
 
 
 ## Change Log
+
+- 1.1.3
+    - Added Lifecycle module (build 1) added. Adds the following auto variables:
+        - lifecycle_diddetectcrash
+        - lifecycle_dayofweek_local
+        - lifecycle_dayssincelaunch
+        - lifecycle_dayssinceupdate
+        - lifecycle_dayssincelastwake
+        - lifecycle_firstlaunchdate
+        - lifecycle_firstlaunchdate_MMDDYYYY
+        - lifecycle_hourofday_local
+        - lifecycle_isfirstlaunch
+        - lifecycle_isfirstlaunchupdate
+        - lifecycle_isfirstwakemonth
+        - lifecycle_isfirstwaketoday
+        - lifecycle_lastlaunchdate
+        - lifecycle_lastsleepdate
+        - lifecycle_lastwakedate
+        - lifecycle_lastupdatedate
+        - lifecycle_launchcount
+        - lifecycle_priorsecondsawake
+        - lifecycle_secondsawake
+        - lifecycle_sleepcount
+        - lifecycle_type
+        - lifecycle_totalcrashcount
+        - lifecycle_totallaunchcount
+        - lifecycle_totalwakecount
+        - lifecycle_totalsleepcount
+        - lifecycle_totalsecondsawake
+        - lifecycle_updatelaunchdate
+        - lifecycle_wakecount
+    - Added Delegate module (build 1)
+    - Fix Collect module (build 3) to correctly report problematic sends
+    - Updated Attribution module (build 2) with minor refactor
+    - Updated Autotracking module (build 2) by deprecating autotrackingDelegate protocols - use the Delegate module instead
+    - Updated Logger module (build 3) with cleaner error output.
+    - Updated Module base (build 2) with a isEnabled property
+    - Updated ModuleManager (build 2) with an internal allModulesEnabled() function
 
 - 1.1.2
     - Optional Autotracking module (build 1) added. Additional variables with module:

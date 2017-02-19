@@ -27,7 +27,11 @@ public class TealiumLogger {
     public func log(message: String, logLevel: LogLevel) -> String? {
 
         if logThreshold.hashValue >= logLevel.hashValue {
-            print("*** TEALIUM SWIFT \(TealiumValue.libraryVersion) *** Instance \(idString): \(message)")
+            var verbosity = ""
+            if logLevel == .errors { verbosity = "ERROR: "}
+            if logLevel == .warnings { verbosity = "WARNING: "}
+            
+            print("*** TEALIUM SWIFT \(TealiumValue.libraryVersion) *** Instance \(idString): \(verbosity)\(message)")
             return message
         }
         return nil

@@ -86,13 +86,13 @@ class TealiumVolatileDataTests: XCTestCase {
         
         let data = volatileData.getData()
         
-        XCTAssertTrue(data.contains(smallerDictionary: testData), "VolatileData: \(volatileData)")
+        XCTAssertTrue(testData.contains(otherDictionary: data), "VolatileData: \(volatileData)")
         
         volatileData.deleteData(forKeys:["a","b"])
         
         let volatileDataPostDelete = volatileData.getData()
         
-        XCTAssertFalse(volatileDataPostDelete.contains(smallerDictionary: testData), "VolatileData: \(volatileDataPostDelete)")
+        XCTAssertFalse(volatileDataPostDelete.contains(otherDictionary: testData), "VolatileData: \(volatileDataPostDelete)")
     }
     
 }

@@ -111,7 +111,7 @@ class TealiumCollectTests: XCTestCase {
         
         // Check to see that encoding with dispatch was correctly converted to expected URL
         
-        let expectedURL = "https://collect.tealiumiq.com/vdata/i.gif?event_name=eventName&tealium_account=account&tealium_environment=environment&tealium_event=test&tealium_event_type=activity&tealium_library_name=swift&tealium_library_version=1.1.2&tealium_profile=profile&tealium_random=someRandomNumber&tealium_session_id=someSessionId&tealium_vid=someVID&tealium_visitor_id=someVisitorId"
+        let expectedURL = "https://collect.tealiumiq.com/vdata/i.gif?event_name=eventName&tealium_account=account&tealium_environment=environment&tealium_event=test&tealium_event_type=activity&tealium_library_name=swift&tealium_library_version=1.1.3&tealium_profile=profile&tealium_random=someRandomNumber&tealium_session_id=someSessionId&tealium_vid=someVID&tealium_visitor_id=someVisitorId"
 
         
         let collect = TealiumCollect(baseURL: TealiumCollect.defaultBaseURLString())
@@ -149,7 +149,7 @@ class TealiumCollectTests: XCTestCase {
         
     }
     
-    // TODO: Replace with mock object testing
+    // TODO: Replace with mock object testing - This will fail if the test is run without wifi and responding server.
     func testValidSend() {
         
         let validURL = "https://collect.tealiumiq.com/vdata/i.gif?tealium_library_version=1.1.2&tealium_session_id=someSessionId&tealium_library_name=swift&tealium_vid=someVID&tealium_random=someRandomNumber&event_name=eventName&tealium_account=account&tealium_profile=profile&tealium_environment=environment&tealium_visitor_id=someVisitorId&tealium_firstparty_visitor_id=someVisitorId"

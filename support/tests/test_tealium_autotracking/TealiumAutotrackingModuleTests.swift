@@ -91,13 +91,13 @@ class TealiumAutotrackingModuleTests: XCTestCase {
             XCTFail("Process was unavailable.")
             return
         }
-        guard let recievedData = process.track?.data else {
+        guard let receivedData = process.track?.data else {
             
             XCTFail("No track data retured with request: \(process)")
             return
         }
         
-        XCTAssertTrue(recievedData == data, "Mismatch between data expected: \n \(data as AnyObject) and data received post processing: \n \(recievedData as AnyObject)")
+        XCTAssertTrue(receivedData == data, "Mismatch between data expected: \n \(data as AnyObject) and data received post processing: \n \(receivedData as AnyObject)")
         
         
     }
@@ -142,18 +142,18 @@ class TealiumAutotrackingModuleTests: XCTestCase {
                                     "autotracked" : "true"
         ]
         
-        guard let recievedData = requestProcess?.track?.data else {
+        guard let receivedData = requestProcess?.track?.data else {
             XCTFail("No track data retured with request: \(requestProcess!)")
             return
         }
         
-        XCTAssertTrue(recievedData == data, "Mismatch between data expected: \n \(data as AnyObject) and data received post processing: \n \(recievedData as AnyObject)")
+        XCTAssertTrue(receivedData == data, "Mismatch between data expected: \n \(data as AnyObject) and data received post processing: \n \(receivedData as AnyObject)")
         
     }
     
     func testRequestEventTrackDelegate() {
         
-        module?.autotracking.delegate = self
+        module?.delegate = self
         
         let testObject = TestObject()
         
@@ -161,8 +161,7 @@ class TealiumAutotrackingModuleTests: XCTestCase {
                                         object: testObject,
                                         userInfo: nil)
         
-        expectationShouldTrack = expectation(description: "autotrackShouldTrack")
-        expectationDidComplete = expectation(description: "autotrackDidComplete")
+        expectationRequest = expectation(description: "NotificationBasedTrack")
         
         module?.requestEventTrack(sender: notification)
         
@@ -190,12 +189,12 @@ class TealiumAutotrackingModuleTests: XCTestCase {
         
         waitForExpectations(timeout: 1.0, handler: nil)
         
-        guard let recievedData = requestProcess?.track?.data else {
+        guard let receivedData = requestProcess?.track?.data else {
             XCTFail("No track data retured with request: \(requestProcess!)")
             return
         }
         
-        XCTAssertTrue(recievedData.contains(smallerDictionary: customData), "Custom data: \(customData) missing from track payload: \(recievedData)")
+        XCTAssertTrue(customData.contains(otherDictionary: receivedData), "Custom data: \(customData) missing from track payload: \(receivedData)")
         
     }
     
@@ -221,12 +220,12 @@ class TealiumAutotrackingModuleTests: XCTestCase {
         
         waitForExpectations(timeout: 1.0, handler: nil)
         
-        guard let recievedData = requestProcess?.track?.data else {
+        guard let receivedData = requestProcess?.track?.data else {
             XCTFail("No track data retured with request: \(requestProcess!)")
             return
         }
         
-        XCTAssertFalse(recievedData.contains(smallerDictionary: customData), "Custom data: \(customData) was unexpectedly found in track payload: \(recievedData)")
+        XCTAssertFalse(receivedData.contains(otherDictionary: customData), "Custom data: \(customData) was unexpectedly found in track payload: \(receivedData)")
         
         
     }
@@ -257,17 +256,17 @@ extension TealiumAutotrackingModuleTests : TealiumModuleDelegate {
     }
 }
 
-extension TealiumAutotrackingModuleTests : TealiumAutotrackingDelegate {
-    
-    func tealiumAutotrackShouldTrack(data: [String : Any]) -> Bool {
-        expectationShouldTrack?.fulfill()
-        return true
-    }
-    
-    func tealiumAutotrackCompleted(success: Bool, info: [String : Any]?, error: Error?) {
-        expectationDidComplete?.fulfill()
-    }
-}
+//extension TealiumAutotrackingModuleTests : TealiumAutotrackingDelegate {
+//    
+//    func tealiumAutotrackShouldTrack(data: [String : Any]) -> Bool {
+//        expectationShouldTrack?.fulfill()
+//        return true
+//    }
+//    
+//    func tealiumAutotrackCompleted(success: Bool, info: [String : Any]?, error: Error?) {
+//        expectationDidComplete?.fulfill()
+//    }
+//}
 
 class TestObject: NSObject {
     

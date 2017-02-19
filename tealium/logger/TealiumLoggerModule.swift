@@ -50,7 +50,7 @@ class TealiumLoggerModule : TealiumModule {
     override func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumLoggerKey.moduleName,
                                    priority: 100,
-                                   build: 2,
+                                   build: 3,
                                    enabled: true)
     }
     
@@ -91,7 +91,7 @@ class TealiumLoggerModule : TealiumModule {
                           logLevel: .verbose)
         case .track:
             if process.successful == false {
-                let message = "FAILED TRACK: \(process.track)"
+                let message = "FAILED TRACK: \(process.track?.data) \(process.error)"
                 logWithPrefix(fromModule: fromModule,
                               message: message,
                               logLevel: .warnings)
@@ -120,7 +120,7 @@ class TealiumLoggerModule : TealiumModule {
         
         let moduleConfig = fromModule.moduleConfig()
         let newMessage = "\(moduleConfig.name) module.\(moduleConfig.build): \(message)"
-        let _ = logger?.log(message: newMessage, logLevel: .verbose)
+        let _ = logger?.log(message: newMessage, logLevel: logLevel)
         
     }
     

@@ -32,18 +32,18 @@ extension Tealium {
     
 }
 
-public protocol TealiumAutotrackingDelegate : class {
-    
-    func tealiumAutotrackShouldTrack(data: [String:Any]) -> Bool
-    func tealiumAutotrackCompleted(success:Bool, info:[String:Any]?, error:Error?)
-    
-}
+//public protocol TealiumAutotrackingDelegate : class {
+//    
+//    func tealiumAutotrackShouldTrack(data: [String:Any]) -> Bool
+//    func tealiumAutotrackCompleted(success:Bool, info:[String:Any]?, error:Error?)
+//    
+//}
 
 var tealiumAssociatedObjectHandle : UInt8 = 0
 
 public class TealiumAutotracking {
     
-    weak var delegate : TealiumAutotrackingDelegate?
+//    weak var delegate : TealiumAutotrackingDelegate?
     
     /// Add custom data to an object, to be included with an autotracked event.
     ///
@@ -99,7 +99,7 @@ class TealiumAutotrackingModule : TealiumModule {
     override func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumAutotrackingKey.moduleName,
                                    priority: 300,
-                                   build: 1,
+                                   build: 2,
                                    enabled: true)
     }
     
@@ -189,17 +189,17 @@ class TealiumAutotrackingModule : TealiumModule {
     /// - Parameter data: [String:Any] additional variable data.
     internal func requestTrack(data: [String:Any]) {
         
-        if autotracking.delegate?.tealiumAutotrackShouldTrack(data: data) == false {
-            return
-        }
-        
-        let completion : tealiumTrackCompletion = {(success, info, error) in
-            self.autotracking.delegate?.tealiumAutotrackCompleted(success:success, info:info, error:error)
-        }
+//        if autotracking.delegate?.tealiumAutotrackShouldTrack(data: data) == false {
+//            return
+//        }
+//        
+//        let completion : tealiumTrackCompletion = {(success, info, error) in
+//            self.autotracking.delegate?.tealiumAutotrackCompleted(success:success, info:info, error:error)
+//        }
         
         let track = TealiumTrack(data: data,
                                  info: [:],
-                                 completion: completion)
+                                 completion: nil)
         
         let process = TealiumProcess(type: .track,
                                      successful: true,

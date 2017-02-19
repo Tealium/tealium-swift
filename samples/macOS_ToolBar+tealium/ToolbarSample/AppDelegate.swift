@@ -20,6 +20,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 NSApplication.shared().isAutomaticCustomizeTouchBarMenuItemEnabled = true
             }
         }
+        
+        TealiumHelper.sharedInstance().start()
+
+        TealiumHelper.sharedInstance().track(title: "AppDelegate:didFinishLaunching", data: ["customKey":"customValue"])
+
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
