@@ -49,7 +49,7 @@ These modules are included with current .framework builds of the library for dep
 - appdata
 - async
 - collect
-- delegate
+- [delegate](https://community.tealiumiq.com/t5/Mobile-Libraries/Tealium-Swift-Module-Delegate/ta-p/17300)
 - [lifecycle](https://community.tealiumiq.com/t5/Mobile-Libraries/Tealium-Swift-Module-Lifecycle/ta-p/16916)
 - logger
 - persistentdata
