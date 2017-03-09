@@ -25,7 +25,11 @@ class TealiumHelper : NSObject {
     
     func start() {
         
-            let config = defaultTealiumConfig
+        let config = TealiumConfig(account:"tealiummobile",
+                                   profile:"demo",
+                                   environment:"dev",
+                                   datasource:"testDatasource",
+                                   optionalData:nil)
         
             tealium = Tealium(config: config,
                               completion:{ () in

@@ -73,6 +73,7 @@ Module chaining goes from lower-to-higher priority value. The following is the o
 - 300 Autotracking (prepares & sends dispatches for most UI & viewDidAppear events)
 - 400 Attribution (adds IDFA to track data)
 - 500 AppData (add app_uuid to track data)
+- 550 Datasource (adds datasource arg to config)
 - 600 PersistentData (adds ability to add persistent data to all track data)
 - 700 VolatileData (adds ability to add session persistent data to all track data - clears upon app termination)
 - 900 Delegate (adds multicast delegates to filter or monitor dispatches)
