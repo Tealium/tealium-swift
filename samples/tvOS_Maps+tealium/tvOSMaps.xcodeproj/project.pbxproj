@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7153ADF61E7716810020CDA5 /* TealiumDatasourceModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7153ADF51E7716810020CDA5 /* TealiumDatasourceModule.swift */; };
+		7153ADF71E7717130020CDA5 /* TealiumDatasourceModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7153ADF51E7716810020CDA5 /* TealiumDatasourceModule.swift */; };
 		7178971A1E31488500CB5B5A /* TealiumPersistentDataConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A28E561DE6145A006B6F0D /* TealiumPersistentDataConstants.swift */; };
 		7178971B1E31488500CB5B5A /* TealiumAttributionConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A28E3E1DE6145A006B6F0D /* TealiumAttributionConstants.swift */; };
 		7178971C1E31488500CB5B5A /* SearchableItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CD80D01CAABE41000C8750 /* SearchableItem.swift */; };
@@ -95,9 +97,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7153ADF51E7716810020CDA5 /* TealiumDatasourceModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumDatasourceModule.swift; sourceTree = "<group>"; };
 		717897461E31488500CB5B5A /* tvOSMaps_with_autotracking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tvOSMaps_with_autotracking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		717897471E31488500CB5B5A /* tvOSMaps copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "tvOSMaps copy2-Info.plist"; path = "/Users/jasonkoo/Jason/tealium-swift/samples/tvOS_Maps+tealium/tvOSMaps copy2-Info.plist"; sourceTree = "<absolute>"; };
-		717897781E316BBD00CB5B5A /* tvOSMaps copy3-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "tvOSMaps copy3-Info.plist"; path = "/Users/jasonkoo/Jason/tealium-swift/samples/tvOS_Maps+tealium/tvOSMaps copy3-Info.plist"; sourceTree = "<absolute>"; };
 		718D6BBE1E560B2B0095DFED /* TealiumLifecycle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumLifecycle.swift; sourceTree = "<group>"; };
 		718D6BBF1E560B2B0095DFED /* TealiumLifecycleModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumLifecycleModule.swift; sourceTree = "<group>"; };
 		718D6BC01E560B2B0095DFED /* TealiumLifecyclePersistentData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumLifecyclePersistentData.swift; sourceTree = "<group>"; };
@@ -169,6 +171,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7153ADF41E7716810020CDA5 /* datasource */ = {
+			isa = PBXGroup;
+			children = (
+				7153ADF51E7716810020CDA5 /* TealiumDatasourceModule.swift */,
+			);
+			path = datasource;
+			sourceTree = "<group>";
+		};
 		718D6BBD1E560B2B0095DFED /* lifecycle */ = {
 			isa = PBXGroup;
 			children = (
@@ -197,6 +207,7 @@
 				71A28E3D1DE6145A006B6F0D /* attribution */,
 				71A28E401DE6145A006B6F0D /* collect */,
 				71A28E441DE6145A006B6F0D /* core */,
+				7153ADF41E7716810020CDA5 /* datasource */,
 				718D6BCA1E560B460095DFED /* delegate */,
 				718D6BBD1E560B2B0095DFED /* lifecycle */,
 				71A28E4C1DE6145A006B6F0D /* logger */,
@@ -320,7 +331,6 @@
 				B5CD80BE1CAABD9C000C8750 /* Products */,
 				71F881361E3147FA00C89CB5 /* tvOSMaps copy-Info.plist */,
 				717897471E31488500CB5B5A /* tvOSMaps copy2-Info.plist */,
-				717897781E316BBD00CB5B5A /* tvOSMaps copy3-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -463,6 +473,7 @@
 				717897201E31488500CB5B5A /* TealiumLoggerConstants.swift in Sources */,
 				717897211E31488500CB5B5A /* TealiumPersistentDataModule.swift in Sources */,
 				717897221E31488500CB5B5A /* TealiumFileManager.swift in Sources */,
+				7153ADF71E7717130020CDA5 /* TealiumDatasourceModule.swift in Sources */,
 				717897231E31488500CB5B5A /* MapViewController.swift in Sources */,
 				717897241E31488500CB5B5A /* TealiumVolatileDataModule.swift in Sources */,
 				717897251E31488500CB5B5A /* TealiumModule.swift in Sources */,
@@ -512,6 +523,7 @@
 				71A28E731DE6145A006B6F0D /* TealiumPersistentDataModule.swift in Sources */,
 				718D6BC61E560B2B0095DFED /* TealiumLifecyclePersistentData.swift in Sources */,
 				71A28E6F1DE6145A006B6F0D /* TealiumFileManager.swift in Sources */,
+				7153ADF61E7716810020CDA5 /* TealiumDatasourceModule.swift in Sources */,
 				B5CD80C31CAABD9C000C8750 /* MapViewController.swift in Sources */,
 				718D6BC21E560B2B0095DFED /* TealiumLifecycle.swift in Sources */,
 				71A28E771DE6145A006B6F0D /* TealiumVolatileDataModule.swift in Sources */,
@@ -691,6 +703,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				DEVELOPMENT_TEAM = XC939GDC9P;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = tvOSMaps/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.tvOSMaps";
@@ -707,6 +723,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				DEVELOPMENT_TEAM = XC939GDC9P;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = tvOSMaps/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.tvOSMaps";

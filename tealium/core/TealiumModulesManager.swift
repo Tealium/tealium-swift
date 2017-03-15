@@ -63,43 +63,45 @@ class TealiumModulesManager : NSObject {
     /**
         Convenience track method that converts title to an standardized variable.
      */
-    func track(type: TealiumTrackType,
-               title: String,
-               data: [String: Any]?,
-               info: [String: Any]?,
-               completion: ((_ successful:Bool, _ info: [String:Any]?, _ error: Error?) -> Void)?) {
-        
-        if isEnabled == false {
-            completion?(false, nil, TealiumModulesManagerError.isDisabled)
-            return
-        }
-        
-        // Dereference incoming args
-        let newTitle = title
-        let newInfo = info
-        
-        // Convert convenience title to dictionary payload
-        var dataDictionary: [String : Any] = [TealiumKey.event: newTitle ,
-                                              TealiumKey.eventName: newTitle ,
-                                              TealiumKey.eventType: type.description() ]
-        if let newData = data { dataDictionary += newData }
-        
-        // Create a more convenient track object to pass data and callback info with.
-        let newTrack = TealiumTrack(data: dataDictionary,
-                                    info: newInfo,
-                                    completion: completion)
-
-        // Modules are still spinning up, delay track call
-        if self.allModulesReady() == false {
-            DispatchQueue.main.async {
-                self.track(newTrack)
-            }
-            return
-        }
-        
-        track(newTrack)
-        
-    }
+//    func track(type: TealiumTrackType,
+//               title: String,
+//               data: [String: Any]?,
+//               info: [String: Any]?,
+//               completion: ((_ successful:Bool, _ info: [String:Any]?, _ error: Error?) -> Void)?) {
+//        
+//        if isEnabled == false {
+//            completion?(false, nil, TealiumModulesManagerError.isDisabled)
+//            return
+//        }
+//        
+//        // Dereference incoming args
+//        let newTitle = title
+//        let newInfo = info
+//        
+//        // TODO: Add this to lifecycle?
+//        
+//        // Convert convenience title to dictionary payload
+//        var dataDictionary: [String : Any] = [TealiumKey.event: newTitle ,
+//                                              TealiumKey.eventName: newTitle ,
+//                                              TealiumKey.eventType: type.description() ]
+//        if let newData = data { dataDictionary += newData }
+//        
+//        // Create a more convenient track object to pass data and callback info with.
+//        let newTrack = TealiumTrack(data: dataDictionary,
+//                                    info: newInfo,
+//                                    completion: completion)
+//
+//        // Modules are still spinning up, delay track call
+//        if self.allModulesReady() == false {
+//            DispatchQueue.main.async {
+//                self.track(newTrack)
+//            }
+//            return
+//        }
+//        
+//        track(newTrack)
+//        
+//    }
     
     func getModule(forName: String) -> TealiumModule? {
         
@@ -173,6 +175,9 @@ class TealiumModulesManager : NSObject {
             return
         }
         
+        if module.moduleConfig().enabled == false {
+            return
+        }
         modules.append(module)
         
     }
@@ -181,6 +186,19 @@ class TealiumModulesManager : NSObject {
     // MARK: INTERNAL TRACK HANDLING
     
     func track(_ track: TealiumTrack) {
+        
+        if isEnabled == false {
+            track.completion?(false, nil, TealiumModulesManagerError.isDisabled)
+            return
+        }
+        
+        // Modules still spinning up, delay track call
+        if self.allModulesReady() == false {
+            DispatchQueue.main.async {
+                self.track(track)
+            }
+            return
+        }
         
         guard let firstModule = modules.first else {
             track.completion?(false, nil, TealiumModulesManagerError.noModules)

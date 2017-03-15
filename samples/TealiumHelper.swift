@@ -24,21 +24,34 @@ class TealiumHelper : NSObject {
     }
     
     func start() {
-        
+
+        #if os(iOS)
+        let remoteCommand = TealiumRemoteCommand(commandId: "logger",
+                                                 description: "test",
+                                                 queue: DispatchQueue.main) { (response) in
+                                                    
+            print("*** TealiumHelper: Remote Command Executed: response:\(response)")
+                                                    
+        }
+        #endif
+
         let config = TealiumConfig(account:"tealiummobile",
                                    profile:"demo",
                                    environment:"dev",
                                    datasource:"testDatasource",
                                    optionalData:nil)
-        
-            tealium = Tealium(config: config,
-                              completion:{ () in
-                                
-                // Adding the helper as a delegate to access TealiumDelegate
-                //  protocols (see extension below).
-                self.tealium?.delegates()?.add(delegate: self)
-        
-            })
+    
+        tealium = Tealium(config: config,
+                          completion:{ () in
+                            
+            // Adding the helper as a delegate to access TealiumDelegate
+            //  protocols (see extension below).
+            self.tealium?.delegates()?.add(delegate: self)
+            self.tealium?.volatileData()?.add(data: ["link_id":"testCommand"])
+            #if os(iOS)
+                self.tealium?.remoteCommands()?.add(remoteCommand)
+            #endif
+        })
                     
     }
     
@@ -74,7 +87,7 @@ extension TealiumHelper : TealiumDelegate {
     
     func tealiumTrackCompleted(success: Bool, info: [String : Any]?, error: Error?) {
         
-        print("\n*** TEALIUM DELEGATE : TRACK COMPLETION HANDLER *** Track finished. Was successful:\(success)\n\n Info:\(info as AnyObject)")
+        print("\n*** Tealium Helper: Tealium Delegate : tealiumTrackCompleted *** Track finished. Was successful:\(success)\nInfo:\(info as AnyObject)\((error != nil) ? "\nError:\(String(describing:error))":"")")
         
     }
 }

@@ -16,7 +16,6 @@ class MasterViewController: UITableViewController {
         #if AUTOTRACKING
             TealiumAutotracking.addCustom(data: ["customAutotrackingKey":"customAutotrackingValue"], toObject: self)
         #endif
-    
         
     }
 
@@ -28,12 +27,6 @@ class MasterViewController: UITableViewController {
         TealiumHelper.sharedInstance().trackView(title: "MasterViewController",
                                                  data: ["someManuallyAddedKey":"someManuallyAddedValue"])
         #endif
-        
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-    
     }
     
     @IBAction func unwindInMaster(_ segue: UIStoryboardSegue)  {
