@@ -97,4 +97,27 @@ class TealiumRemoteCommandsTests: XCTestCase {
         
     }
     
+    func testCommandForId() {
+        
+        let commandId = "test"
+        let remoteCommand = TealiumRemoteCommand(commandId: commandId,
+                                                 description: "test",
+                                                 queue: DispatchQueue.main) { (response) in
+                //
+        }
+        
+        let array = [remoteCommand]
+        
+        let nonexistentCommandId = "nonexistentTest"
+        let noCommand = array.commandForId(nonexistentCommandId)
+        
+        XCTAssertTrue(noCommand == nil, "Actual command returned for unused command id: \(nonexistentCommandId)")
+        
+        let returnCommand = array.commandForId(commandId)
+        XCTAssertTrue(returnCommand != nil, "Expected command for id: \(commandId) missing from array: \(array)")
+    }
+    
+    
+
+    
 }

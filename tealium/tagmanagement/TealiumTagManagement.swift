@@ -12,6 +12,10 @@ protocol TealiumTagManagementDelegate : class {
     func tagManagementWebViewFinishedLoading()
 }
 
+enum TealiumTagManagementNotificationKey {
+    static let urlRequestMade = "com.tealium.tagmanagement.urlrequest"
+}
+
 /// TIQ Supported dispatch service Module. Utlizies older but simpler UIWebView vs. newer WKWebView.  
 public class TealiumTagManagement : NSObject {
     
@@ -143,6 +147,13 @@ extension TealiumTagManagement : UIWebViewDelegate {
     public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         
         var shouldStart = true
+        
+        // Broadcast request for any listeners (Remote command module)
+        let notification = Notification(name: Notification.Name.init(TealiumTagManagementNotificationKey.urlRequestMade),
+                                        object: webView,
+                                        userInfo: [TealiumTagManagementNotificationKey.urlRequestMade:request])
+        NotificationCenter.default.post(notification)
+        
         // Look for false from any delegate
         delegates.invoke{ if $0.webView?(webView,
                                          shouldStartLoadWith: request,
@@ -163,6 +174,10 @@ extension TealiumTagManagement : UIWebViewDelegate {
     public func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
         
         delegates.invoke{ $0.webView?(webView, didFailLoadWithError: error)}
+        if didWebViewFinishLoading == true {
+            return
+        }
+        didWebViewFinishLoading = true
         self.completion?(false, error)
     }
     

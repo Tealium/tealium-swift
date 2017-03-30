@@ -113,7 +113,7 @@ class TealiumTagManagementModule : TealiumModule {
 
     override func enable(config: TealiumConfig) {
     
-        if config.optionalData[TealiumTagManagementKeys.disable] as? Bool == true {
+        if config.optionalData[TealiumTagManagementKey.disable] as? Bool == true {
             DispatchQueue.main.async {
                 self.tagManagement.disable()
             }
@@ -135,9 +135,9 @@ class TealiumTagManagementModule : TealiumModule {
                                  environment: environment,
                                  completion: {(success, error) in
             
-                if success == false {
+                if let e = error {
                     self.didFailToEnable(config: config,
-                                    error: TealiumTagManagementError.couldNotLoadURL)
+                                         error: e)
                     return
                 }
                 self.didFinishEnable(config: config)

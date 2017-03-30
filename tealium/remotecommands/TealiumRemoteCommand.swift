@@ -19,11 +19,20 @@ enum TealiumRemoteCommandStatusCode : Int {
 class TealiumRemoteCommand {
     
     let commandId : String
-    let queue : DispatchQueue
+    let queue : DispatchQueue?
     var description : String?
     
     internal let _completion : ((_ response:TealiumRemoteCommandResponse)->Void)
 
+    /// Constructor for a Tealium Remote Command.
+    ///
+    /// - Parameters:
+    ///   - commandId: String identifier for command block.
+    ///   - description: Optional string description of command.
+    ///   - queue: Optional target queue to run command block on. Nil to specify
+    ///         running on the existing thread.
+    ///   - completion: The completion block to run when this remote command is
+    ///         triggered.
     init(commandId: String,
          description : String?,
          queue: DispatchQueue?,
@@ -32,11 +41,21 @@ class TealiumRemoteCommand {
         self.commandId = commandId
         self.description = description
         self._completion = completion
-        self.queue = (queue != nil) ? queue! : DispatchQueue.main
+        self.queue = queue
     }
     
     func completeWith(response: TealiumRemoteCommandResponse) {
-        self._completion(response)
+        
+        // Run completion on current queue
+        if queue == nil {
+            self._completion(response)
+            return
+        }
+        
+        // Run completion on a specified queue
+        queue?.async {
+            self._completion(response)
+        }
     }
     
 }

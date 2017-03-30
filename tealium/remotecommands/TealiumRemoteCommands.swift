@@ -33,10 +33,9 @@ protocol TealiumRemoteCommandsDelegate : class {
     func tealiumRemoteCommandCompleted(jsString:String, response:TealiumRemoteCommandResponse)
 }
 
-public class TealiumRemoteCommands {
+public class TealiumRemoteCommands : NSObject {
     
     var commands = [TealiumRemoteCommand]()
-    var commandCompletionCallback : ((_ jsCommand:String)->Void)?
     var isEnabled = false
     var schemeProtocol = "tealium"
     
@@ -60,9 +59,7 @@ public class TealiumRemoteCommands {
     }
     
     func enable() {
-        
         isEnabled = true
-        
     }
     
     func disable() {
@@ -98,13 +95,10 @@ public class TealiumRemoteCommands {
     /// Trigger an associated remote command from a url request.
     ///
     /// - Parameter request: URLRequest to check for a remote command.
-    /// - Returns: Error if unable to trigger a remote command. Can ignore if the request was not
-    ///     intended for remote command triggering.
+    /// - Returns: Error if unable to trigger a remote command. If nil is returned,
+    ///     then call was a successfully triggered remote command.
     func triggerCommandFrom(request : URLRequest) -> TealiumRemoteCommandsError? {
         
-        if isEnabled == false {
-            return TealiumRemoteCommandsError.remoteCommandsDisabled
-        }
         if request.url?.scheme != self.schemeProtocol{
             return TealiumRemoteCommandsError.invalidScheme
         }
@@ -117,16 +111,13 @@ public class TealiumRemoteCommands {
         guard let response = TealiumRemoteCommandResponse(request: request) else {
             return TealiumRemoteCommandsError.requestNotProperlyFormatted
         }
-        // TODO: Defer here?
-//        defer{
+        if isEnabled == false {
+            // Was valid remote command, but we're disabled at the moment.
+            return nil
+        }
         command.completeWith(response: response)
-//        }
         return nil
         
-    }
-    
-    func setCompletion(callback: @escaping ((_ jsCommand:String)->Void)){
-        self.commandCompletionCallback = callback
     }
     
 }

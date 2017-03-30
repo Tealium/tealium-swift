@@ -48,8 +48,13 @@ class TealiumHelper : NSObject {
             //  protocols (see extension below).
             self.tealium?.delegates()?.add(delegate: self)
             self.tealium?.volatileData()?.add(data: ["link_id":"testCommand"])
+            
             #if os(iOS)
-                self.tealium?.remoteCommands()?.add(remoteCommand)
+                guard let remoteCommands = self.tealium?.remoteCommands() else {
+                    return
+                }
+                remoteCommands.add(remoteCommand)
+//                self.tealium?.tagManagement()?.delegates.add(remoteCommands)
             #endif
         })
                     

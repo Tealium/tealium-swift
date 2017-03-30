@@ -16,15 +16,27 @@ enum TealiumRemoteHTTPCommandKey {
 
 let TealiumHTTPRemoteCommandQueue = DispatchQueue(label: "com.tealium.remotecommand.http")
 
+//extension TealiumRemoteCommands : UIWebViewDelegate {
+// 
+//    public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+//        
+//        if self.triggerCommandFrom(request: request) != nil {
+//            // TODO: Error reporting
+//            return false
+//        }
+//        return true
+//        
+//    }
+//}
+
 class TealiumRemoteHTTPCommand : TealiumRemoteCommand {
     
-
     class func httpCommand(forQueue: DispatchQueue) -> TealiumRemoteCommand {
         return TealiumRemoteCommand(commandId: TealiumRemoteHTTPCommandKey.commandId,
                                     description: "For processing tag-triggered HTTP requests",
                                     queue: forQueue) { (response) in
                                         
-            guard response is TealiumHTTPRemoteCommandResponse else {
+            guard response is TealiumRemoteHTTPCommandResponse else {
                 // Response not formatted for HTTP Calls
                 return
             }
@@ -113,15 +125,25 @@ class TealiumRemoteHTTPCommand : TealiumRemoteCommand {
     }
     
     class func sendCompletionNotificationFor(commandId:String, response:TealiumRemoteCommandResponse) {
-        guard let response = response as? TealiumHTTPRemoteCommandResponse else {
+        
+        guard let response = response as? TealiumRemoteHTTPCommandResponse else {
             return
         }
         
+        let notification = TealiumRemoteHTTPCommand.completionNotificationFor(commandId: commandId,
+                                                                              response: response)
+        NotificationCenter.default.post(notification)
+    }
+    
+    class func completionNotificationFor(commandId:String,
+                                         response:TealiumRemoteHTTPCommandResponse) -> Notification {
+        
         let jsString = "try { utag.mobile.remote_api.response[\(commandId)][\(response.responseId())](\(response.status),\(response.body()))} catch(err) {console.error(err}}"
         let notificationName = Notification.Name(rawValue: TealiumRemoteHTTPCommandKey.notificationName)
-        NotificationCenter.default.post(name: notificationName,
+        let notification = Notification(name: notificationName,
                                         object: self,
                                         userInfo: [TealiumRemoteHTTPCommandKey.jsCommand:jsString])
+        return notification
     }
     
     override func completeWith(response: TealiumRemoteCommandResponse) {
@@ -132,7 +154,7 @@ class TealiumRemoteHTTPCommand : TealiumRemoteCommand {
 
 }
 
-class TealiumHTTPRemoteCommandResponse : TealiumRemoteCommandResponse {
+class TealiumRemoteHTTPCommandResponse : TealiumRemoteCommandResponse {
     
     override var description: String {
         return "<TealiumRemoteCommandResponse: config:\(config), responseId:\(responseId), status:\(status), body:\(body), payload:\(payload), error:\(error)>"
