@@ -11,23 +11,11 @@ import Foundation
 enum TealiumRemoteHTTPCommandKey {
     static let commandId = "_http"
     static let jsCommand = "js"
-    static let notificationName = "com.tealium.remotecommand.http"
+    static let jsNotificationName = "com.tealium.tagmanagement.jscommand"
 }
 
 let TealiumHTTPRemoteCommandQueue = DispatchQueue(label: "com.tealium.remotecommand.http")
 
-//extension TealiumRemoteCommands : UIWebViewDelegate {
-// 
-//    public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-//        
-//        if self.triggerCommandFrom(request: request) != nil {
-//            // TODO: Error reporting
-//            return false
-//        }
-//        return true
-//        
-//    }
-//}
 
 class TealiumRemoteHTTPCommand : TealiumRemoteCommand {
     
@@ -35,11 +23,6 @@ class TealiumRemoteHTTPCommand : TealiumRemoteCommand {
         return TealiumRemoteCommand(commandId: TealiumRemoteHTTPCommandKey.commandId,
                                     description: "For processing tag-triggered HTTP requests",
                                     queue: forQueue) { (response) in
-                                        
-            guard response is TealiumRemoteHTTPCommandResponse else {
-                // Response not formatted for HTTP Calls
-                return
-            }
                 
             let requestInfo = TealiumRemoteHTTPCommand.httpRequest(payload: response.payload)
                                         
@@ -91,7 +74,12 @@ class TealiumRemoteHTTPCommand : TealiumRemoteCommand {
         }
         if let body = payload["body"] as? String {
             request.httpBody = body.data(using: .utf8)
-            request.addValue("\([UInt8](body.utf8))", forHTTPHeaderField: "content-length")
+            request.addValue("\([UInt8](body.utf8))", forHTTPHeaderField: "Content-Length")
+        }
+        if let body = payload["body"] as? Dictionary<String, Any> {
+            let jsonData = try? JSONSerialization.data(withJSONObject: body)
+            request.httpBody = jsonData
+            request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         }
         
         if let authenticationData = payload[TealiumRemoteCommandsHTTPKey.authenticate] as? [String:Any] {
@@ -111,13 +99,16 @@ class TealiumRemoteHTTPCommand : TealiumRemoteCommand {
         
     }
     
+    /// Returns sorted queryItems from a dictionary.
+    ///
+    /// - Parameter dictionary: Dictionary of type [String:Any]
+    /// - Returns: Sorted [URLQueryItem] array by dictionary keys
     class func paramItemsFrom(dictionary: [String:Any]) -> [URLQueryItem] {
         var queryItems = [URLQueryItem]()
         let sortedKeys = Array(dictionary.keys).sorted(by: <)
         for key in sortedKeys {
-            guard let value = dictionary[key] as? String else {
-                continue
-            }
+            // Convert all values to string
+            let value = String(describing: dictionary[key]!)
             let queryItem = URLQueryItem(name: key, value: value)
             queryItems.append(queryItem)
         }
@@ -139,7 +130,7 @@ class TealiumRemoteHTTPCommand : TealiumRemoteCommand {
                                          response:TealiumRemoteHTTPCommandResponse) -> Notification {
         
         let jsString = "try { utag.mobile.remote_api.response[\(commandId)][\(response.responseId())](\(response.status),\(response.body()))} catch(err) {console.error(err}}"
-        let notificationName = Notification.Name(rawValue: TealiumRemoteHTTPCommandKey.notificationName)
+        let notificationName = Notification.Name(rawValue: TealiumRemoteHTTPCommandKey.jsNotificationName)
         let notification = Notification(name: notificationName,
                                         object: self,
                                         userInfo: [TealiumRemoteHTTPCommandKey.jsCommand:jsString])

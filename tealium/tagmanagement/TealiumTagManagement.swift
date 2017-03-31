@@ -14,6 +14,9 @@ protocol TealiumTagManagementDelegate : class {
 
 enum TealiumTagManagementNotificationKey {
     static let urlRequestMade = "com.tealium.tagmanagement.urlrequest"
+    static let jsCommandRequested = "com.tealium.tagmanagement.jscommand"
+    static let jsCommand = "js"
+
 }
 
 /// TIQ Supported dispatch service Module. Utlizies older but simpler UIWebView vs. newer WKWebView.  
@@ -75,8 +78,32 @@ public class TealiumTagManagement : NSObject {
         self.webView?.delegate = self
         self.webView?.loadRequest(request)
         
+        self.enableNotifications()
+        
         self.completion = completion
 
+    }
+    
+    
+    func enableNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(processRequest),
+                                               name: Notification.Name.init(TealiumTagManagementNotificationKey.jsCommandRequested),
+                                               object: nil)
+    }
+    
+    func processRequest(sender: Notification){
+        
+        guard let jsCommandString = sender.userInfo?[TealiumTagManagementNotificationKey.jsCommand] as? String else {
+            return
+        }
+        // Error reporting?
+        let _ = self.webView?.stringByEvaluatingJavaScript(from: jsCommandString)
+        
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     /// Disable the webview system.

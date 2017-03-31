@@ -35,8 +35,8 @@ class TealiumHelper : NSObject {
         }
         #endif
 
-        let config = TealiumConfig(account:"tealiummobile",
-                                   profile:"demo",
+        let config = TealiumConfig(account:"services-crouse",
+                                   profile:"adobe-acq-test",
                                    environment:"dev",
                                    datasource:"testDatasource",
                                    optionalData:nil)
@@ -54,7 +54,6 @@ class TealiumHelper : NSObject {
                     return
                 }
                 remoteCommands.add(remoteCommand)
-//                self.tealium?.tagManagement()?.delegates.add(remoteCommands)
             #endif
         })
                     

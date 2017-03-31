@@ -22,16 +22,19 @@ class TealiumRemoteHTTPCommandTests: XCTestCase {
     
     func testHTTPRequestGET() {
         
-        let host = "tealium"
+        // TODO: Make this test a more dynamic
+        
+        let scheme = "tealium"
         let commandId = "test"
-        let url = "\(host)://\(commandId)"
+        let url = "\(scheme)://\(commandId)"
         let method = "GET"
         let username = "testUsername"
         let password = "testPassword"
         let headers = ["a":"b",
                        "c":"d"]
         let params = ["1":"2",
-                      "3":"4"]
+                      "3":"4",
+                      "a":["a1", "a2", "a3"]] as [String : Any]
         let body = ["a1k":"a1v"]
         let payload : [String:Any] = ["authenticate": ["username":username,
                                                        "password":password],
@@ -51,23 +54,55 @@ class TealiumRemoteHTTPCommandTests: XCTestCase {
             XCTFail("No url from process.")
             return
         }
-        XCTAssertTrue(requestUrl.scheme == host, "Unexpected scheme: \(requestUrl.scheme)")
         
-        XCTFail()
-//        XCTAssertTrue(requestUrl.path == commandId, "Unexpected commandId:\(requestUrl.path)")
-//        XCTAssertTrue(requestUrl.user == username, "Unexpected user returned.")
-//        XCTAssertTrue(requestUrl.password == password, "Unexpected password returned.")
+        
+        // request
+        //  allHTTPHeaderFields=["Authorization":"Basic (hash)", "Content-Type":"applciation/json; charset=utf-8", "a":"b", "c":"d"]
+        //  httpbody = nil
+        //  httpMethod = GET
+        //  url = tealium://test?1=2&3=4
+        
+        let expectedHeaderFields : [String:String] = ["Authorization":"Basic dGVzdFVzZXJuYW1lOnRlc3RQYXNzd29yZA==",
+                                    "Content-Type":"application/json; charset=utf-8",
+                                    "a":"b",
+                                    "c":"d"]
+        let returnedHeaderFields = request.allHTTPHeaderFields!
+        
+        XCTAssertTrue(expectedHeaderFields == returnedHeaderFields, "Unexpected result from returned header fields: \(returnedHeaderFields)")
+        XCTAssertTrue(request.httpMethod == method, "Unexpected method type:\(request.httpMethod)")
+        let expectedUrl = "\(scheme)://\(commandId)?1=2&3=4&a=%5B%22a1%22,%20%22a2%22,%20%22a3%22%5D"   // Being lazy here
+        XCTAssertTrue(expectedUrl == request.url?.absoluteString, "Unexpected request url: \(request.url?.absoluteString)")
+        
+        // requestUrl
+        //  scheme = tealium
+        //  host = test
+        //  password=nil
+        //  user=nil,
+        
+        XCTAssertTrue(requestUrl.scheme == scheme, "Unexpected scheme: \(requestUrl.scheme)")
+        XCTAssertTrue(requestUrl.host == commandId, "Unexpected commandId:\(requestUrl.host)")
+
         
     }
     
     func testParamItemsFromDictionary() {
         
-        XCTFail()
-
-    }
-    
-    func testCompletionNotification() {
-        XCTFail()
+        let params : [String:Any] = ["1":2,
+                                    "a":"b",
+                                    "array":["x","y","z"]
+                                    ]
+        
+        let queryItems = TealiumRemoteHTTPCommand.paramItemsFrom(dictionary: params)
+        
+        let itemA = URLQueryItem(name: "1", value: "2")
+        let itemB = URLQueryItem(name: "a", value: "b")
+        let itemC = URLQueryItem(name: "array", value: "[\"x\", \"y\", \"z\"]")
+        
+        let expectedQueryItems = [itemA,
+                                  itemB,
+                                  itemC]
+        
+        XCTAssertTrue(expectedQueryItems == queryItems, "Unexpected query items returned: \(queryItems), expected: \(expectedQueryItems)")
 
     }
     
