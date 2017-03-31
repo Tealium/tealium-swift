@@ -52,7 +52,7 @@ public class TealiumLifecycleModule : TealiumModule {
     override public func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumLifecycleModuleKey.moduleName,
                                    priority: 175,
-                                   build: 1,
+                                   build: 2,
                                    enabled: true)
     }
     
@@ -89,6 +89,7 @@ public class TealiumLifecycleModule : TealiumModule {
             self.didFinishTrack(track)
             return
         }
+        
         
         var newData = lifecycle.newTrack(atDate: Date())
         newData += track.data
@@ -251,7 +252,16 @@ public class TealiumLifecycleModule : TealiumModule {
     
     internal func requestTrack(data: [String:Any]) {
         
-        let track = TealiumTrack(data: data,
+        guard let title = data[TealiumLifecycleKey.type] as? String else {
+            // Should not happen
+            return
+        }
+        
+        // Conforming to universally available Tealium data variables
+        let trackData = Tealium.trackDataFor(type: .activity,
+                                             title: title,
+                                             optionalData: data)
+        let track = TealiumTrack(data: trackData,
                                  info: [:],
                                  completion: nil)
         let process = TealiumProcess(type: .track,

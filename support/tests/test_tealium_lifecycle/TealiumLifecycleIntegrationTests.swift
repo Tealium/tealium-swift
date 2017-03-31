@@ -10,13 +10,9 @@ import XCTest
 
 class TealiumLifecycleIntegrationTests: XCTestCase {
     
-//    var cachedTimeZone : TimeZone?
-    
     override func setUp() {
         super.setUp()
-        
-//        cachedTimeZone = TimeZone.current
-//        TimeZone.current.set
+
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     

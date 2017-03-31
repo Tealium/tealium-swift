@@ -73,10 +73,13 @@ Module chaining goes from lower-to-higher priority value. The following is the o
 - 300 Autotracking (prepares & sends dispatches for most UI & viewDidAppear events)
 - 400 Attribution (adds IDFA to track data)
 - 500 AppData (add app_uuid to track data)
+- 550 Datasource (adds datasource arg to config)
 - 600 PersistentData (adds ability to add persistent data to all track data)
 - 700 VolatileData (adds ability to add session persistent data to all track data - clears upon app termination)
 - 900 Delegate (adds multicast delegates to filter or monitor dispatches)
 - 1000 Collect (packages and delivers track call to Tealium or custom endpoint)
+- 1100 TagManagement (webview based dispatch service for supporting utag.js)
+- 1200 RemoteCommands (permit remote code block execution via webview instances)
 
 ## Contact Us
 
@@ -87,8 +90,18 @@ Module chaining goes from lower-to-higher priority value. The following is the o
 
 ## Change Log
 
+- 1.2.0
+    - Added Datasource module (build 1), which makes available:
+        - tealium_datasource
+    - Added RemoteCommands module (build 1).
+    - Added TagManagement module (build 1).
+    - Added TealiumUtils to core module.
+    - Refactor of TealiumDelegateModule (build 2) to use generic mulitcast delegate.
+    - Refactored TealiumModuleManager (build 3) removed track pre-processing.
+    - Updated Tealium.swift (build 2) added class function to do track pre-processing.
+    - Updated Lifecycle module (build 2) to properly return tealium_event & tealium_event_type with auto triggered lifecycle calls.
 - 1.1.3
-    - Added Lifecycle module (build 1) added. Adds the following auto variables:
+    - Added Lifecycle module (build 1). Adds the following auto variables:
         - lifecycle_diddetectcrash
         - lifecycle_dayofweek_local
         - lifecycle_dayssincelaunch
