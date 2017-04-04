@@ -98,7 +98,10 @@ public class TealiumTagManagement : NSObject {
             return
         }
         // Error reporting?
-        let _ = self.webView?.stringByEvaluatingJavaScript(from: jsCommandString)
+        DispatchQueue.main.async {
+            
+            let _ = self.webView?.stringByEvaluatingJavaScript(from: jsCommandString)
+        }
         
     }
     

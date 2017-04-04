@@ -24,7 +24,7 @@ class TealiumRemoteHTTPCommand : TealiumRemoteCommand {
                                     description: "For processing tag-triggered HTTP requests",
                                     queue: forQueue) { (response) in
                 
-            let requestInfo = TealiumRemoteHTTPCommand.httpRequest(payload: response.payload)
+            let requestInfo = TealiumRemoteHTTPCommand.httpRequest(payload: response.payload())
                                         
             // TODO: Error handling?
             guard let request = requestInfo.request else {
@@ -33,7 +33,21 @@ class TealiumRemoteHTTPCommand : TealiumRemoteCommand {
                                         
             let task = URLSession.shared.dataTask(with: request,
                                                   completionHandler: { (data, urlResponse, error) in
-                                                    
+                                        
+                    // Gross legacy status reporting
+                    if let e = error {
+                        response.error = e
+                        response.status = .failure
+                    } else {
+                        response.status = .success
+                    }
+                    if data == nil {
+                        response.status = .noContent
+                    }
+                    if urlResponse == nil {
+                        response.status = .failure
+                    }
+                    response.urlResponse = urlResponse
                     TealiumRemoteHTTPCommand.sendCompletionNotificationFor(commandId: TealiumRemoteHTTPCommandKey.commandId,
                                                                            response: response)
             })
@@ -117,19 +131,20 @@ class TealiumRemoteHTTPCommand : TealiumRemoteCommand {
     
     class func sendCompletionNotificationFor(commandId:String, response:TealiumRemoteCommandResponse) {
         
-        guard let response = response as? TealiumRemoteHTTPCommandResponse else {
-            return
+        guard let notification = TealiumRemoteHTTPCommand.completionNotificationFor(commandId: commandId,
+                                                                                    response: response) else {
+                return
         }
-        
-        let notification = TealiumRemoteHTTPCommand.completionNotificationFor(commandId: commandId,
-                                                                              response: response)
         NotificationCenter.default.post(notification)
     }
     
     class func completionNotificationFor(commandId:String,
-                                         response:TealiumRemoteHTTPCommandResponse) -> Notification {
+                                         response:TealiumRemoteCommandResponse) -> Notification? {
         
-        let jsString = "try { utag.mobile.remote_api.response[\(commandId)][\(response.responseId())](\(response.status),\(response.body()))} catch(err) {console.error(err}}"
+        guard let responseId = response.responseId() else {
+            return nil
+        }
+        let jsString = "try { utag.mobile.remote_api.response[\(commandId)][\(responseId)](\(response.status),\(response.body()))} catch(err) {console.error(err}}"
         let notificationName = Notification.Name(rawValue: TealiumRemoteHTTPCommandKey.jsNotificationName)
         let notification = Notification(name: notificationName,
                                         object: self,
@@ -145,21 +160,17 @@ class TealiumRemoteHTTPCommand : TealiumRemoteCommand {
 
 }
 
-class TealiumRemoteHTTPCommandResponse : TealiumRemoteCommandResponse {
-    
-    override var description: String {
-        return "<TealiumRemoteCommandResponse: config:\(config), responseId:\(responseId), status:\(status), body:\(body), payload:\(payload), error:\(error)>"
-    }
+extension TealiumRemoteCommandResponse {
     
     func responseId() -> String? {
-        guard let responseId = config["response"] as? String else {
+        guard let responseId = config()["response_id"] as? String else {
             return nil
         }
         return responseId
     }
     
     func body() -> String? {
-        if let body = payload["body"] as? String {
+        if let body = payload()["body"] as? String {
             return body
         }
         return nil

@@ -17,13 +17,13 @@ enum TealiumRemoteCommandResponseError : Error {
 
 class TealiumRemoteCommandResponse : CustomStringConvertible {
     
-    let config : [String:Any]
     var status : TealiumRemoteCommandStatusCode = .unknown
-    var payload : [String:Any]
+    var urlRequest : URLRequest
+    var urlResponse : URLResponse?
     var error : Error?
     
     var description : String {
-        return "<TealiumRemoteCommandResponse: config:\(config), status:\(status), payload:\(payload), error:\(error)>"
+        return "<TealiumRemoteCommandResponse: config:\(config()), status:\(status), payload:\(payload()), response: \(urlResponse), error:\(error)>"
     }
     
     convenience init?(urlString: String) {
@@ -42,6 +42,22 @@ class TealiumRemoteCommandResponse : CustomStringConvertible {
      */
     init?(request: URLRequest) {
         
+        self.urlRequest = request
+
+        guard let requestData = requestDataFrom(request: request) else {
+            return nil
+        }
+        guard let _ = configFrom(requestData: requestData) else {
+            return nil
+        }
+        guard let _ = payloadFrom(requestData: requestData) else {
+            return nil
+        }
+        
+    }
+    
+    func requestDataFrom(request: URLRequest) -> [String:Any]? {
+        
         guard let paramData = TealiumRemoteCommandResponse.paramDataFrom(request) else {
             return nil
         }
@@ -51,15 +67,35 @@ class TealiumRemoteCommandResponse : CustomStringConvertible {
         guard let requestData = TealiumRemoteCommandResponse.convertToDictionary(text: requestDataString) else {
             return nil
         }
+        return requestData
+    }
+    
+    func configFrom(requestData:[String:Any]) -> [String:Any]? {
+        
         guard let config = requestData["config"] as? [String:Any] else {
             return nil
         }
+        return config
+        
+    }
+    
+    func payloadFrom(requestData:[String:Any]) -> [String:Any]? {
         guard let payload = requestData["payload"] as? [String:Any] else {
             return nil
         }
-        self.config = config
-        self.payload = payload
-        
+        return payload
+    }
+    
+    func config() -> [String:Any] {
+        let requestData = requestDataFrom(request: self.urlRequest)!
+        let config = configFrom(requestData: requestData)!
+        return config
+    }
+    
+    func payload() -> [String:Any] {
+        let requestData = requestDataFrom(request: self.urlRequest)!
+        let payload = payloadFrom(requestData: requestData)!
+        return payload
     }
     
     class func convertToDictionary(text: String) -> [String: Any]? {
