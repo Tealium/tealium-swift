@@ -59,49 +59,7 @@ class TealiumModulesManager : NSObject {
         isEnabled = false
         self.modules.prioritized()[0].disable()
     }
-    
-    /**
-        Convenience track method that converts title to an standardized variable.
-     */
-//    func track(type: TealiumTrackType,
-//               title: String,
-//               data: [String: Any]?,
-//               info: [String: Any]?,
-//               completion: ((_ successful:Bool, _ info: [String:Any]?, _ error: Error?) -> Void)?) {
-//        
-//        if isEnabled == false {
-//            completion?(false, nil, TealiumModulesManagerError.isDisabled)
-//            return
-//        }
-//        
-//        // Dereference incoming args
-//        let newTitle = title
-//        let newInfo = info
-//        
-//        // TODO: Add this to lifecycle?
-//        
-//        // Convert convenience title to dictionary payload
-//        var dataDictionary: [String : Any] = [TealiumKey.event: newTitle ,
-//                                              TealiumKey.eventName: newTitle ,
-//                                              TealiumKey.eventType: type.description() ]
-//        if let newData = data { dataDictionary += newData }
-//        
-//        // Create a more convenient track object to pass data and callback info with.
-//        let newTrack = TealiumTrack(data: dataDictionary,
-//                                    info: newInfo,
-//                                    completion: completion)
-//
-//        // Modules are still spinning up, delay track call
-//        if self.allModulesReady() == false {
-//            DispatchQueue.main.async {
-//                self.track(newTrack)
-//            }
-//            return
-//        }
-//        
-//        track(newTrack)
-//        
-//    }
+
     
     func getModule(forName: String) -> TealiumModule? {
         
@@ -122,7 +80,6 @@ class TealiumModulesManager : NSObject {
     // MARK:
     // MARK: INTERNAL AUTO MODULE DETECTION
     
-    
     /// Retrieve an array of all subclasses of a given class.
     ///
     /// - Parameter c: Target parent class.
@@ -141,7 +98,18 @@ class TealiumModulesManager : NSObject {
     
     func getClassList() -> [AnyClass] {
         let expectedClassCount = objc_getClassList(nil, 0)
+        
+        if expectedClassCount == 0 {
+            // No classes found to initialize
+            return []
+        }
+        
         let allClasses = UnsafeMutablePointer<AnyClass?>.allocate(capacity: Int(expectedClassCount))
+        defer {
+            allClasses.deinitialize()
+            allClasses.deallocate(capacity: Int(expectedClassCount))
+        }
+        
         let autoreleasingAllClasses = AutoreleasingUnsafeMutablePointer<AnyClass?>(allClasses)
         let actualClassCount:Int32 = objc_getClassList(autoreleasingAllClasses, expectedClassCount)
         
@@ -151,8 +119,6 @@ class TealiumModulesManager : NSObject {
                 classes.append(currentClass)
             }
         }
-        
-        allClasses.deallocate(capacity: Int(expectedClassCount))
         
         return classes
     }

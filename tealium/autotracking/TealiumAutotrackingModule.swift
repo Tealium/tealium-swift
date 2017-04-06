@@ -8,7 +8,10 @@
 #if TEST
     import Foundation
 #else
-    import UIKit
+    #if os(macOS)
+    #else
+        import UIKit
+    #endif
 #endif
 
 enum TealiumAutotrackingKey {

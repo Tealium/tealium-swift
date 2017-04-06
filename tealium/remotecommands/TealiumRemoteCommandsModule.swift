@@ -16,11 +16,8 @@ enum TealiumRemoteCommandsKey {
     static let tagmanagementNotification = "com.tealium.tagmanagement.urlrequest"
 }
 
-enum TealiumRemoteCommandsModuleError: Error {
+enum TealiumRemoteCommandsModuleError: LocalizedError {
     case wasDisabled
-}
-
-extension TealiumRemoteCommandsModuleError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .wasDisabled:
@@ -97,6 +94,7 @@ class TealiumRemoteCommandsModule : TealiumModule {
             self.updateReserveCommands(config: config)
             self.didFinishEnable(config: config)
         }
+        
 
     }
     
@@ -130,6 +128,8 @@ class TealiumRemoteCommandsModule : TealiumModule {
             remoteCommands?.add(httpCommand)
             enableNotifications()
         }
+        // No further processing required - HTTP remote command already up.
+
     }
     
     override func disable() {

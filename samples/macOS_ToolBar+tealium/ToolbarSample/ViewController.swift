@@ -31,8 +31,9 @@ class ViewController: NSViewController, NSTextViewDelegate {
         self.view.window?.makeFirstResponder(self.textView)
         
         // Do any additional setup after loading the view.
-        
-        TealiumHelper.sharedInstance().track(title: "ViewController:viewDidLoad", data: ["customKey":"customValue"])
+
+        // Sample track of a view did load. Though a similar track in a viewDidAppear call would generally be more useful.
+//        TealiumHelper.sharedInstance().track(title: "ViewController:viewDidLoad", data: ["customKey":"customValue"])
     
     }
 

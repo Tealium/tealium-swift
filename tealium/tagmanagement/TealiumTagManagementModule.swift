@@ -9,15 +9,17 @@ import Foundation
 
 enum TealiumTagManagementKey {
     static let dispatchService = "dispatch_service"
-    static let estimatedProgress = "estimatedProgress"
-    static let disable = "disable_tag_management"
     static let jsCommand = "js_command"
     static let jsResult = "js_result"
-    static let maxQueueSize = "tagmanagement_queue_size"
     static let moduleName = "tagmanagement"
     static let responseHeader = "response_headers"
-    static let overrideURL = "tagmanagement_override_url"
     static let payload = "payload"
+}
+
+enum TealiumTagManagementConfigKey {
+    static let disable = "disable_tag_management"
+    static let maxQueueSize = "tagmanagement_queue_size"
+    static let overrideURL = "tagmanagement_override_url"
 }
 
 enum TealiumTagManagementValue {
@@ -36,19 +38,19 @@ extension TealiumConfig {
     
     func disableTagManagement() {
         
-        optionalData[TealiumTagManagementKey.disable] = true
+        optionalData[TealiumTagManagementConfigKey.disable] = true
         
     }
   
     func setTagManagementQueueSize(to: Int) {
 
-        optionalData[TealiumTagManagementKey.maxQueueSize] = to
+        optionalData[TealiumTagManagementConfigKey.maxQueueSize] = to
         
     }
     
     func setTagManagementOverrideURL(string: String) {
         
-        optionalData[TealiumTagManagementKey.overrideURL] = string
+        optionalData[TealiumTagManagementConfigKey.overrideURL] = string
     }
     
 }
@@ -113,7 +115,7 @@ class TealiumTagManagementModule : TealiumModule {
 
     override func enable(config: TealiumConfig) {
     
-        if config.optionalData[TealiumTagManagementKey.disable] as? Bool == true {
+        if config.optionalData[TealiumTagManagementConfigKey.disable] as? Bool == true {
             DispatchQueue.main.async {
                 self.tagManagement.disable()
             }
@@ -124,15 +126,15 @@ class TealiumTagManagementModule : TealiumModule {
         let account = config.account
         let profile = config.profile
         let environment = config.environment
-        let overrideURL = config.optionalData[TealiumTagManagementKey.overrideURL] as? String
+        let overrideUrl = config.optionalData[TealiumTagManagementConfigKey.overrideURL] as? String
     
         DispatchQueue.main.async {
 
             self.tagManagement.internalDelegate = self
-            if (overrideURL != nil) { self.tagManagement.urlString = overrideURL! }
             self.tagManagement.enable(forAccount: account,
                                  profile: profile,
                                  environment: environment,
+                                 overrideUrl: overrideUrl,
                                  completion: {(success, error) in
             
                 if let e = error {

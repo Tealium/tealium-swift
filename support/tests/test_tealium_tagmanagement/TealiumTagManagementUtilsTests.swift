@@ -46,11 +46,16 @@ class TealiumTagManagementUtilsTests: XCTestCase {
     
     func testJSONEncode(){
         
-        let data = TealiumTagManagementUtils.jsonEncode(sanitizedDictionary: ["abc":"123"])
+        let dict : [String:String] = ["xyz":"2",
+                                      "abc":"123",
+                                      "1":"end"]
+        let data =
+            TealiumTagManagementUtils
+                .jsonEncode(sanitizedDictionary:dict)
         
         let dataString = "\(data!)"
         
-        XCTAssertTrue(dataString == "{\"abc\":\"123\"}", "Unexpected dataString: \(dataString)")
+        XCTAssertTrue(dataString == "{\"abc\":\"123\",\"xyz\":\"2\",\"1\":\"end\"}", "Unexpected dataString: \(dataString)")
     }
     
     func testSanitized() {

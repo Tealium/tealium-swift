@@ -79,7 +79,7 @@ public class TealiumLifecycleSession : NSObject, NSCoding {
     }
     
     public override var debugDescription: String {
-        return "<TealiumLifecycleSession: appVersion:\(appVersion): wake:\(wakeDate) sleep:\(sleepDate) secondsElapsed: \(secondsElapsed) wasLaunch: \(wasLaunch)>"
+        return "<TealiumLifecycleSession: appVersion:\(appVersion): wake:\(String(describing: wakeDate)) sleep:\(String(describing: sleepDate)) secondsElapsed: \(secondsElapsed) wasLaunch: \(wasLaunch)>"
     }
 }
 

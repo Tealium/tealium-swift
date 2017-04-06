@@ -48,16 +48,20 @@ public class TealiumTagManagement : NSObject {
     
     // MARK: PUBLIC
     
+    // TODO: Add overrideURL optional arg
+    
     /// Enable webview system.
     ///
     /// - Parameters:
     ///   - forAccount: Tealium account.
     ///   - profile: Tealium profile.
     ///   - environment: Tealium environment.
+    ///   - overridUrl : Optional alternate url to load utag/tealium from.
     /// - Returns: Boolean if a webview is ready to start.
     func enable(forAccount: String,
                 profile: String,
                 environment: String,
+                overrideUrl : String?,
                 completion: ((_ success:Bool, _ error: Error?)-> Void)?) {
         
 
@@ -69,6 +73,11 @@ public class TealiumTagManagement : NSObject {
         self.account = forAccount
         self.profile = profile
         self.environment = environment
+        if let overrideUrl = overrideUrl {
+            self.urlString = overrideUrl
+        } else {
+            self.urlString = defaultUrlString
+        }
         
         guard let request = self.urlRequest else {
             completion?(false, TealiumTagManagementError.couldNotCreateURL)
@@ -165,7 +174,6 @@ public class TealiumTagManagement : NSObject {
             info += [TealiumTagManagementKey.jsResult : result]
         }
 
-        // TODO: These track calls are NOT appearing 
         completion?(true, info, nil)
         
     }
@@ -179,6 +187,10 @@ extension TealiumTagManagement : UIWebViewDelegate {
         var shouldStart = true
         
         // Broadcast request for any listeners (Remote command module)
+        // NOTE: Remote command calls are prefixed with 'tealium://'
+        //  Because there is no direct link between Remote Command
+        //  and Tag Management, such a call would appear as a failed call
+        //  in any web console for this webview.
         let notification = Notification(name: Notification.Name.init(TealiumTagManagementNotificationKey.urlRequestMade),
                                         object: webView,
                                         userInfo: [TealiumTagManagementNotificationKey.urlRequestMade:request])
