@@ -37,17 +37,18 @@ class TealiumRemoteHTTPCommand : TealiumRemoteCommand {
                     // Gross legacy status reporting
                     if let e = error {
                         response.error = e
-                        response.status = .failure
+                        response.status = TealiumRemoteCommandStatusCode.failure.rawValue
                     } else {
-                        response.status = .success
+                        response.status = TealiumRemoteCommandStatusCode.success.rawValue
                     }
                     if data == nil {
-                        response.status = .noContent
+                        response.status = TealiumRemoteCommandStatusCode.noContent.rawValue
                     }
                     if urlResponse == nil {
-                        response.status = .failure
+                        response.status = TealiumRemoteCommandStatusCode.failure.rawValue
                     }
                     response.urlResponse = urlResponse
+                    response.data = data
                     TealiumRemoteHTTPCommand.sendCompletionNotificationFor(commandId: TealiumRemoteHTTPCommandKey.commandId,
                                                                            response: response)
             })
@@ -144,7 +145,16 @@ class TealiumRemoteHTTPCommand : TealiumRemoteCommand {
         guard let responseId = response.responseId() else {
             return nil
         }
-        let jsString = "try { utag.mobile.remote_api.response[\(commandId)][\(responseId)](\(response.status),\(response.body()))} catch(err) {console.error(err}}"
+        
+        var responseStr: String
+        if let responseData = response.data {
+            responseStr = String(data: responseData, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))!
+        } else {
+            // keep previous behavior from obj-c library
+            responseStr = "(null)"
+        }
+        
+        let jsString = "try { utag.mobile.remote_api.response['\(commandId)']['\(responseId)']('\(response.status)','\(responseStr)')} catch(err) {console.error(err)}"
         let notificationName = Notification.Name(rawValue: TealiumRemoteHTTPCommandKey.jsNotificationName)
         let notification = Notification(name: notificationName,
                                         object: self,

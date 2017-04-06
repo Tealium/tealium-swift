@@ -17,13 +17,14 @@ enum TealiumRemoteCommandResponseError : Error {
 
 class TealiumRemoteCommandResponse : CustomStringConvertible {
     
-    var status : TealiumRemoteCommandStatusCode = .unknown
+    var status : Int = TealiumRemoteCommandStatusCode.noContent.rawValue
     var urlRequest : URLRequest
     var urlResponse : URLResponse?
+    var data: Data?
     var error : Error?
     
     var description : String {
-        return "<TealiumRemoteCommandResponse: config:\(config()), status:\(status), payload:\(payload()), response: \(urlResponse), error:\(error)>"
+        return "<TealiumRemoteCommandResponse: config:\(config()), status:\(status), payload:\(payload()), response: \(urlResponse), data:\(data) error:\(error)>"
     }
     
     convenience init?(urlString: String) {
