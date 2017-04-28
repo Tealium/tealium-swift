@@ -32,7 +32,7 @@ class TealiumTagManagementUtils {
     }
     
     class func sanitized(dictionary:[String:Any]) -> [String:String]{
-        
+                
         var clean = [String: String]()
         
         for (key, value) in dictionary {

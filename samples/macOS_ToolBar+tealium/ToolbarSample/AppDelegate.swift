@@ -23,7 +23,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         TealiumHelper.sharedInstance().start()
 
-        TealiumHelper.sharedInstance().track(title: "AppDelegate:didFinishLaunching", data: ["customKey":"customValue"])
+        // Sample of a manual launch type call.
+//        TealiumHelper.sharedInstance().track(title: "AppDelegate:didFinishLaunching", data: ["customKey":"customValue"])
 
     }
 

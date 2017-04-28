@@ -16,6 +16,58 @@ enum TealiumRemoteHTTPCommandKey {
 
 let TealiumHTTPRemoteCommandQueue = DispatchQueue(label: "com.tealium.remotecommand.http")
 
+extension URL {
+    
+    public var queryItems: [String: Any] {
+        var params = [String: Any]()
+        return URLComponents(url: self, resolvingAgainstBaseURL: false)?
+            .queryItems?
+            .reduce([:], { (_, item) -> [String: Any] in
+                params[item.name] = item.value
+                return params
+            }) ?? [:]
+    }
+    
+}
+
+extension URLRequest {
+    
+    func asDictionary() -> [String : Any] {
+        
+        var result = [String:Any]()
+        
+        result["allowsCellularAccess"] = self.allowsCellularAccess ? "true" : "false"
+        result["allHTTPHeaderFields"] = self.allHTTPHeaderFields
+        result["cachePolicy"] = self.cachePolicy
+        result["url"] = self.url?.absoluteString
+        result["timeoutInterval"] = self.timeoutInterval
+        result["httpMethod"] = self.httpMethod
+        result["httpShouldHandleCookies"] = self.httpShouldHandleCookies
+        result["httpShouldUsePipelining"] = self.httpShouldUsePipelining
+        
+        return result
+    }
+    
+    mutating func assignHeadersFrom(dictionary: [String:Any]) {
+        let sortedKeys = Array(dictionary.keys).sorted(by: <)
+        for key in sortedKeys {
+            guard let value = dictionary[key] as? String else {
+                continue
+            }
+            self.addValue(value, forHTTPHeaderField: key)
+        }
+    }
+}
+
+extension URLQueryItem {
+    var dictionaryRepresentation: [String: Any]? {
+        if let value = value {
+            return [name: value]
+        }
+        return nil
+    }
+    
+}
 
 class TealiumRemoteHTTPCommand : TealiumRemoteCommand {
     
@@ -194,7 +246,7 @@ extension TealiumRemoteCommandResponse {
  SAMPLE CALL
  ===========
  
- tealium://_http?request:{"config":{"response_id":"custom_command_14894356495341715"},"payload":{"command_id":"_http","debug":"true","url":"https://c00.adobe.com/v3/910238aa8bbbaf10a7559297f8a0ef7db78ca04841a35477573d78e64091e834/end?a_ugid=https://tags.tiqcdn.com/utag/services-crouse/adobe-acq-test/dev/mobile.html","method":"GET","headers":{"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36"}}}
+ tealium://_http?request:{"config":{"response_id":"custom_command_12894358495341215"},"payload":{"command_id":"_http","debug":"true","url":"https://c00.adobe.com/v3/980238aa8dbbaf10a7559297f8x0ef7db78ca04841a35277573d78e64091e834/end?a_ugid=https://tags.tiqcdn.com/utag/services-test/adobe-acq-test/dev/mobile.html","method":"GET","headers":{"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36"}}}
  
  =============
  CALL TEMPLATE

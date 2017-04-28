@@ -34,15 +34,9 @@ class TealiumHelper : NSObject {
                                                     
         }
         #endif
-
-//        let config = TealiumConfig(account:"tealiummobile",
-//                                   profile:"demo",
-//                                   environment:"dev",
-//                                   datasource:"testDatasource",
-//                                   optionalData:nil)
         
-        let config = TealiumConfig(account:"services-crouse",
-                                   profile:"adobe-acq-test",
+        let config = TealiumConfig(account:"tealiummobile",
+                                   profile:"demo",
                                    environment:"dev",
                                    datasource:"testDatasource",
                                    optionalData:nil)
