@@ -76,6 +76,7 @@ class TealiumModulesManagerTests: XCTestCase {
         
     }
     
+    // NOTE: This integration test will fail if no dispatch services enabled
     func testPublicTrackWithDefaultModules() {
         
         let manager = TealiumModulesManager(config: testTealiumConfig)
@@ -88,13 +89,23 @@ class TealiumModulesManagerTests: XCTestCase {
                                      info: nil,
                                      completion: {(success, info, error) in
                         
+                if error != nil {
+                    XCTFail("Track error detected:\(error)")
+                }
+                                        
                 expectation.fulfill()
+
         })
+        
+        // Waiting for the manager to be ready
+        while manager.allModulesReady() == false {
+            sleep(1)
+        }
         
         manager.track(testTrack)
         
         // Only testing that the completion handler is called.
-        self.waitForExpectations(timeout: 1.0, handler: nil)
+        self.waitForExpectations(timeout: 3.0, handler: nil)
         
     }
 

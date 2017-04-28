@@ -56,7 +56,12 @@ open class TealiumLifecyclePersistentData {
         }
         
         let checkPassed = (defaultsCheck == lifecycle) ? true : false
-        return ((checkPassed == true) ? (true, nil) : (false, TealiumLifecyclePersistentDataError.archivedDataMismatchWithOriginalData))
+        
+        if checkPassed == true {
+            return (true, nil)
+        }
+        
+        return (false, TealiumLifecyclePersistentDataError.archivedDataMismatchWithOriginalData)
     }
     
     class func deleteAllData(forUniqueId: String) -> Bool {

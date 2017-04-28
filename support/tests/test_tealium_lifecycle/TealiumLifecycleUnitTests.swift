@@ -60,6 +60,40 @@ class TealiumLifecycleUnitTests: XCTestCase {
         
     }
     
+    func testAllExpectedRegularTrackRequestKeys() {
+        
+        let _ = lifecycle?.newLaunch(atDate: Date(),
+                                     overrideSession:nil)
+        guard let data = lifecycle?.asDictionary(forDate: Date()) else {
+            XCTFail("Lifecycle object missing")
+            return
+        }
+        
+        let expectedKeys = ["lifecycle_dayofweek_local",
+                            "lifecycle_dayssincelaunch",
+                            "lifecycle_dayssincelastwake",
+                            "lifecycle_firstlaunchdate",
+                            "lifecycle_firstlaunchdate_MMDDYYYY",
+                            "lifecycle_hourofday_local",
+                            "lifecycle_launchcount",
+                            "lifecycle_priorsecondsawake",
+                            "lifecycle_secondsawake",
+                            "lifecycle_sleepcount",
+                            "lifecycle_totalcrashcount",
+                            "lifecycle_totallaunchcount",
+                            "lifecycle_totalsecondsawake",
+                            "lifecycle_totalsleepcount",
+                            "lifecycle_totalwakecount",
+                            "lifecycle_type",
+                            "lifecycle_wakecount"
+        ]
+        
+        let missingKeys = test_tealium_helper.missingKeys(fromDictionary: data, keys: expectedKeys)
+        
+        XCTAssertTrue(missingKeys.count == 0, "Unexpected keys missing:\(missingKeys)")
+        
+    }
+    
     func testDayOfWeekLocal() {
         
         let date = Date(timeIntervalSince1970: 1)

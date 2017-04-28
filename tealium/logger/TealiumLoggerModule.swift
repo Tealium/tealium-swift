@@ -91,7 +91,7 @@ class TealiumLoggerModule : TealiumModule {
                           logLevel: .verbose)
         case .track:
             if process.successful == false {
-                let message = "FAILED TRACK: \(process.track?.data) \(process.error)"
+                let message = "FAILED TRACK: \(String(describing: process.track?.data)) \(String(describing: process.error))"
                 logWithPrefix(fromModule: fromModule,
                               message: message,
                               logLevel: .warnings)

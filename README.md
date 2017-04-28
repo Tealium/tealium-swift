@@ -7,17 +7,22 @@
 [![Language](https://img.shields.io/badge/language-Swift-orange.svg?style=flat
              )](https://developer.apple.com/swift)
 
-This library leverages the power of Tealium's [AudienceStream™](http://tealium.com/products/audiencestream/) making them natively available to Swift applications. 
+This library leverages the power of Tealium's [AudienceStream™](http://tealium.com/products/audiencestream/) and [Tealium iQ™](http://tealium.com/products/tealium-iq-tag-management-system/) making them natively available to Swift applications. 
 
 Please contact your Account Manager first to verify your agreement(s) for licensed products.
 
 
-### What is Audience Stream ?
+### What is AudienceStream?
 
 Tealium AudienceStream™ is the leading omnichannel customer segmentation and action engine, combining robust audience management and profile enrichment capabilities with the ability to take immediate, relevant action.
 
 AudienceStream allows you to create a unified view of your customers, correlating data across every customer touchpoint, and then leverage that comprehensive customer profile across your entire digital marketing stack.
 
+### What is Tag Management?
+
+Tealium iQ™ powers more web experiences than any other enterprise tag management provider.  
+
+As the foundation of Tealium’s real-time customer data platform, the Tealium iQ tag management solution enables marketing organizations to unify disparate data sources and drive more consistent visitor interactions. Equipped with an ecosystem of hundreds of turnkey vendor integrations, you can easily deploy and manage vendor tags, test new technologies, and finally take control of your marketing technology stack.
 
 ## How To Get Started
 
@@ -32,51 +37,41 @@ This library employs a drag-and-drop modular architecture when the source files 
 
 ### What is a module?
 
-Each subfolder within this Tealium folder contains all the files related to one module. Each folder is made up of one or more files, where at least one is a subclass of TealiumModule. 
+Each subfolder within the *Tealium/* folder is a module, each contains at least a subclass of the TealiumModule class and any additional classes to provide a given feature set to the library. 
 
-The core module looks for these module files at init time.  So module folders can be added and removed (or referenced and derefenced) without requiring code updates (unless module specific APIs are used).
+The core module provides the base public APIs and coordinates all other modules. It  automatically initializes each of these modules if they are referenced in a target build.
 
 
 ### Required Modules
 
-The core module is the only required component of the library.  Howevever, no dispatch calls will be made without a dispatch service module, ie the 'collect' module.
+The core module is the only required component of the library.  Howevever, no dispatch calls will be made without a dispatch service module, ie the collect or [tag management](https://community.tealiumiq.com/t5/Mobile-Libraries/Tealium-Swift-Module-TagManagement/ta-p/16857) module.
 
+### Modules List
 
-### Optionally Auto-included Modules
+The following table lists the currently available modules and related details.  
+* *Name:* of Module.
+* *Feature:* What enhancement the module provides.
+* *Priority:* Modules initialization and processing order. Currently goes from lowest to highest value (this will be flipped in a future release for clarity).
+* *Included:* Is the module part of the default .framework build for dependency managers (ie [Carthage](https://github.com/Carthage/Carthage)).
+* *Platforms:* Which platforms the module is compatible with.
+* *Notes:* Any additional information.
 
-These modules are included with current .framework builds of the library for dependency managers (ie Carthage):
+**Name**  | **Feature** | **Priority** | **Included** | **Platforms**|**Notes**
+--------- | ----------- | ------------ | ------------ | ---------- | ---------- 
+Logger | Debug logging | 100 | Yes | iOS, macOs, tvOS, watchOs | - 
+[Lifecycle](https://community.tealiumiq.com/t5/Mobile-Libraries/Tealium-Swift-Module-Lifecycle/ta-p/16916) | Tracks launches, wakes, sleeps, and crash instances. Auto or manually. | 175 | Yes | iOS, macOS, tvOS, watchOS | -
+Async | Moves all library processing to a background thread | 200 | Yes | iOS, macOS, tvOS, watchOS | -
+[Autotracking](https://community.tealiumiq.com/t5/Mobile-Libraries/Tealium-Swift-Module-Autotracking/ta-p/16856) | Prepares & sends dispatches for most UI, including viewDidAppear, events| 300 | Yes | iOS, tvOS | -
+Attribution | Adds IDFA to track data | 400 | No | iOS, tvOS | Requires additional entitlements from Apple
+AppData | Adds app_uuid to track data | 500 | Yes | iOS, macOS, tvOS, watchOS | -
+Datasource | Adds an additional config init option for datasource ids | 550 | Yes | iOS, macOS, tvOS, watchOS | -
+PersistentData | Adds ability to add persistent data to all track data | 600 | Yes | iOS, macOS, tvOS, watchOS | -
+VolatileData | Adds ability to add session persistent data to all track data - clears upon app termination/close | 700 | Yes | iOS, macOS, tvOS, watchOS | Will supercede any Persistent value with the same key(s)
+[Delegate](https://community.tealiumiq.com/t5/Mobile-Libraries/Tealium-Swift-Module-Delegate/ta-p/17300) | Adds multicast delegates to monitor or suppress track dispatches | 900 | Yes | iOS, macOS, tvOS, watchOS | -
+Collect | Packages and delivers track call to Tealium Collect or other custom URL endpoint | 1000 | Yes | iOS, macOS, tvOS, watchOS | -
+[TagManagement](https://community.tealiumiq.com/t5/Mobile-Libraries/Tealium-Swift-Module-TagManagement/ta-p/16857) | UIWebview based dispatch service that permits library to run TIQ/utag.js | 1100 | Yes | iOS | -
+[RemoteCommands](https://community.tealiumiq.com/t5/Mobile-Libraries/Tealium-Swift-Module-Remote-Commands/ta-p/17523) | Permits configurable remote code block execution via URLScheme, UIWebView, or TagManagement | 1200 | Yes | iOS, macOS, tvOS, watchOS | -
 
-- appdata
-- async
-- collect
-- [delegate](https://community.tealiumiq.com/t5/Mobile-Libraries/Tealium-Swift-Module-Delegate/ta-p/17300)
-- [lifecycle](https://community.tealiumiq.com/t5/Mobile-Libraries/Tealium-Swift-Module-Lifecycle/ta-p/16916)
-- logger
-- persistentdata
-- volatiledata
-
-
-### Optionally Manual-include Modules
-
-These modules may be added manually to projects but are NOT included with .framework builds for dependency managers, because they require additional entitlements, services, or are not necessary in the majority of use cases.
-
-- attribution
-- [autotracking](https://community.tealiumiq.com/t5/Mobile-Libraries/Tealium-Swift-Module-Autotracking/ta-p/16856)
-
-
-### Default Module Priority List
-Module chaining goes from lower-to-higher priority value. The following is the order by which modules will spin up and process track calls based on the default priority setting in their TealiumModuleConfigs:
-
-- 100 Logger (provides debug logging)
-- 175 Lifecycle (tracks launches, wakes, sleeps, and crash instances)
-- 200 Async (moves all library processing to a background thread)
-- 300 Autotracking (prepares & sends dispatches for most UI & viewDidAppear events)
-- 400 Attribution (adds IDFA to track data)
-- 500 AppData (add app_uuid to track data)
-- 600 PersistentData (adds ability to add persistent data to all track data)
-- 700 VolatileData (adds ability to add session persistent data to all track data - clears upon app termination)
-- 900 Delegate (adds multicast delegates to filter or monitor dispatches)
-- 1000 Collect (packages and delivers track call to Tealium or custom endpoint)
 
 ## Contact Us
 
@@ -87,8 +82,18 @@ Module chaining goes from lower-to-higher priority value. The following is the o
 
 ## Change Log
 
+- 1.2.0
+    - Added Datasource module (build 1), which makes available:
+        - tealium_datasource
+    - Added RemoteCommands module (build 1).
+    - Added TagManagement module (build 1).
+    - Added TealiumUtils to core module.
+    - Refactor of TealiumDelegateModule (build 2) to use generic mulitcast delegate.
+    - Refactored TealiumModuleManager (build 3) removed track pre-processing and added a defer block protection within the getClassList() method.
+    - Updated Tealium.swift (build 2) added class function to do track pre-processing.
+    - Updated Lifecycle module (build 2) to properly return tealium_event & tealium_event_type with auto triggered lifecycle calls.
 - 1.1.3
-    - Added Lifecycle module (build 1) added. Adds the following auto variables:
+    - Added Lifecycle module (build 1). Adds the following auto variables:
         - lifecycle_diddetectcrash
         - lifecycle_dayofweek_local
         - lifecycle_dayssincelaunch

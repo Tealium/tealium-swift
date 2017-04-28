@@ -152,7 +152,7 @@ public class TealiumLifecycle : NSObject, NSCoding {
     ///
     /// - Parameters:
     ///   - atDate: Date to trigger launch from.
-    ///   - overrideSession: Optional override session.
+    ///   - overrideSession: Optional override session. For testing main use case.
     /// - Returns: Dictionary of variables in a [String:Any] object
     public func newLaunch(atDate: Date,
                           overrideSession: TealiumLifecycleSession?) -> [String:Any] {

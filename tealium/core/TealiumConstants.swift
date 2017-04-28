@@ -48,7 +48,7 @@ public enum TealiumModuleProcessType {
 
 public enum TealiumValue {
     static let libraryName = "swift"
-    static let libraryVersion = "1.1.3"
+    static let libraryVersion = "1.2.0"
 }
 
 public enum TealiumTrackType {

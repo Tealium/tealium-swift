@@ -41,7 +41,7 @@ class TealiumDelegateModule : TealiumModule {
     override func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumDelegateKey.moduleName,
                                    priority: 900,
-                                   build: 1,
+                                   build: 2,
                                    enabled: true)
     }
     
@@ -69,6 +69,7 @@ class TealiumDelegateModule : TealiumModule {
             self.didFinishReport(fromModule: fromModule, process: process)
             return
         }
+        // TODO: Support multiple dispatch services
         if fromModule == modulesManager.modules.last &&
             process.type == .track  {
             
@@ -92,18 +93,14 @@ class TealiumDelegateModule : TealiumModule {
 
 public class TealiumDelegates {
     
-    // Unable to limit the weak array to just classes conforming to the
-    //  TealiumDelegate protocol.  So the add & remove functions will
-    //  do the type safety checking.
-    private var weakDelegates = [Weak<AnyObject>]()
+    private var _delegates = TealiumMulticastDelegate<TealiumDelegate>()
 
-    
     /// Add a weak pointer to a class conforming to the TealiumDelegate protocol.
     ///
     /// - Parameter delegate: Class conforming to the TealiumDelegate protocols.
     public func add(delegate: TealiumDelegate) {
         
-        weakDelegates.append(Weak(value: delegate))
+        _delegates.add(delegate)
         
     }
     
@@ -113,20 +110,15 @@ public class TealiumDelegates {
     /// - Parameter delegate: Class conforming to the TealiumDelegate protocols.
     public func remove(delegate: TealiumDelegate) {
         
-        for (index, delegateInArray) in weakDelegates.enumerated().reversed() {
-            // If we have a match, remove the delegate from our array
-            if delegateInArray.value === delegate {
-                weakDelegates.remove(at: index)
-            }
-        }
+        _delegates.remove(delegate)
         
     }
-    
     
     /// Remove all weak pointer references to classes conforming to the TealiumDelegate
     ///   protocols from the multicast delgate handler.
     public func removeAll() {
-        weakDelegates.removeAll()
+        
+        _delegates.removeAll()
     }
     
     /// Query all delegates if the data should be tracked or suppressed.
@@ -135,18 +127,13 @@ public class TealiumDelegates {
     /// - Returns: True if all delegates approve
     public func invokeShouldTrack(data: [String:Any])-> Bool {
         
-        for (_, delegateInArray) in weakDelegates.enumerated().reversed() {
-            guard let delegate = delegateInArray.value as? TealiumDelegate else {
-                // Should never happen
-                continue
-            }
-            if delegate.tealiumShouldTrack(data: data) == false {
-                
-                return false
+        var shouldTrack = true
+        _delegates.invoke{ if $0.tealiumShouldTrack(data: data) == false {
+                shouldTrack = false
             }
         }
         
-        return true
+        return shouldTrack
     }
     
     /// Inform all delegates that a track call has completed.
@@ -154,16 +141,8 @@ public class TealiumDelegates {
     /// - Parameter forTrackProcess: TealiumProcess that was completed
     public func invokeTrackCompleted(forTrackProcess: TealiumProcess) {
         
-        for (_, delegateInArray) in weakDelegates.enumerated().reversed() {
-
-            guard let delegate = delegateInArray.value as? TealiumDelegate else {
-                // Should never happen
-                continue
-            }
-            delegate.tealiumTrackCompleted(success: forTrackProcess.successful, info: forTrackProcess.track?.info, error: forTrackProcess.error)
-            
-        }
-        
+        _delegates.invoke{ $0.tealiumTrackCompleted(success: forTrackProcess.successful, info: forTrackProcess.track?.info, error: forTrackProcess.error)}
+    
     }
 }
 
@@ -174,15 +153,4 @@ public func += <T: TealiumDelegate> (left: TealiumDelegates, right: T) {
 
 public func -= <T: TealiumDelegate> (left: TealiumDelegates, right: T) {
     left.remove(delegate:right)
-}
-
-// Permits weak pointer collections
-// Example Collection setup: var playerViewPointers = [String:Weak<PlayerView>]()
-// Example Set: playerViewPointers[someKey] = Weak(value: playerView)
-// Example Get: let x = playerViewPointers[user.uniqueId]?.value
-class Weak<T: AnyObject> {
-    weak var value : T?
-    init (value: T) {
-        self.value = value
-    }
 }

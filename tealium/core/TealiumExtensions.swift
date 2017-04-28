@@ -21,18 +21,10 @@ extension String {
 }
 
 /**
- Extend the use of += operators to dictionaries.
-*/
-public func += <K, V> (left: inout [K:V], right: [K:V]) {
-    for (k, v) in right {
-        left.updateValue(v, forKey: k)
-    }
+ Allows use of plus operator for array reduction calls.
+ */
+fileprivate func +<Key, Value> (lhs: [Key: Value], rhs: [Key: Value]) -> [Key: Value] {
+    var result = lhs
+    rhs.forEach{ result[$0] = $1 }
+    return result
 }
-
-/**
- Extend use of == to dictionaries.
-*/
-public func ==(lhs: [String: Any], rhs: [String: Any] ) -> Bool {
-    return NSDictionary(dictionary: lhs).isEqual(to: rhs)
-}
-
