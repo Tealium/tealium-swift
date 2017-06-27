@@ -2,43 +2,11 @@
 //  TealiumUtils.swift
 //  SegueCatalog
 //
-//  Created by Jason Koo on 3/14/17.
+//  Created by Jason Koo on 6/26/17.
 //  Copyright © 2017 Apple, Inc. All rights reserved.
 //
 
 import Foundation
-
-class TealiumMulticastDelegate<T> {
-    
-    private var _weakDelegates = [Weak]()
-    
-    func add(_ delegate: T) {
-        if Mirror(reflecting: delegate).subjectType is AnyClass {
-            _weakDelegates.append(Weak(value: delegate as AnyObject))
-        } else {
-            fatalError("MulticastDelegate does not support value types")
-        }
-    }
-    
-    func remove(_ delegate: T) {
-        if type(of: delegate).self is AnyClass {
-            _weakDelegates.remove(Weak(value: delegate as AnyObject))
-        }
-    }
-    
-    func removeAll() {
-        _weakDelegates.removeAll()
-    }
-    
-    func invoke(_ invocation: (T) -> ()) {
-        for (_, delegate) in _weakDelegates.enumerated() {
-            if let delegate = delegate.value {
-                invocation(delegate as! T)
-            }
-        }
-    }
-
-}
 
 extension RangeReplaceableCollection where Iterator.Element : Equatable {
     @discardableResult
@@ -50,26 +18,18 @@ extension RangeReplaceableCollection where Iterator.Element : Equatable {
     }
 }
 
-private class Weak: Equatable {
-    weak var value: AnyObject?
-    
-    init(value: AnyObject) {
-        self.value = value
-    }
-}
-
 // Permits weak pointer collections
 // Example Collection setup: var playerViewPointers = [String:Weak<PlayerView>]()
 // Example Set: playerViewPointers[someKey] = Weak(value: playerView)
 // Example Get: let x = playerViewPointers[user.uniqueId]?.value
-//class Weak<T: AnyObject> {
-//    weak var value : T?
-//    init (value: T) {
-//        self.value = value
-//    }
-//}
+public class Weak<T: AnyObject> : Equatable {
+    weak var value : T?
+    init (value: T) {
+        self.value = value
+    }
+}
 
-private func ==(lhs: Weak, rhs: Weak) -> Bool {
+public func == <T> (lhs: Weak<T>, rhs: Weak<T>) -> Bool {
     return lhs.value === rhs.value
 }
 

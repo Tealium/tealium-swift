@@ -39,7 +39,7 @@ class TealiumRemoteCommandsTests: XCTestCase {
         let urlString = "tealium://\(commandId)?request={\"config\":{},\"payload\":{}}"
         let error = remoteCommands.triggerCommandFrom(urlString:urlString)
         if error != nil {
-            XCTFail("Error detected: \(error)")
+            XCTFail("Error detected: \(String(describing: error))")
         }
         
         self.waitForExpectations(timeout: 1.0, handler: nil)
@@ -68,7 +68,7 @@ class TealiumRemoteCommandsTests: XCTestCase {
         
         let error = remoteCommands.triggerCommandFrom(urlString:escapedString!)
         if error != nil {
-            XCTFail("Error detected: \(error)")
+            XCTFail("Error detected: \(String(describing: error))")
         }
         
         self.waitForExpectations(timeout: 1.0, handler: nil)

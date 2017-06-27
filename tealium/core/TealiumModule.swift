@@ -5,7 +5,7 @@
 //  Created by Jason Koo on 10/5/16.
 //  Copyright © 2016 tealium. All rights reserved.
 //
-//  Build 2
+//  Build 3
 
 import Foundation
 
@@ -15,21 +15,9 @@ public protocol TealiumModuleDelegate : class {
     ///
     /// - Parameters:
     ///   - module: Module that finished processing.
-    ///   - process: The TealiumProcess completed.
+    ///   - process: The TealiumRequest completed.
     func tealiumModuleFinished(module: TealiumModule,
-                               process: TealiumProcess)
-    
-    /// Called by module after finished processing a request originating from
-    ///   a request from another module.
-    ///
-    /// - Parameters:
-    ///   - fromOriginatingModule: Original sender.
-    ///   - module: Module just finished processing.
-    ///   - process: TealiumModuleProcessType completed.
-    ///   - track: Possible related track.
-    func tealiumModuleFinishedReport(fromModule: TealiumModule,
-                                     module: TealiumModule,
-                                     process: TealiumProcess)
+                               process: TealiumRequest)
     
     /// Called by module requesting an library operation.
     ///
@@ -38,13 +26,19 @@ public protocol TealiumModuleDelegate : class {
     ///   - process: TealiumModuleProcessType requested.
     ///   - track: Optional track.
     func tealiumModuleRequests(module: TealiumModule,
-                               process: TealiumProcess)
+                               process: TealiumRequest)
+    
+}
+
+// Function(s) required by every subclass of the TealiumModule
+public protocol TealiumModuleProtocol {
+    func handle(_ request: TealiumRequest)
 }
 
 /**
     Base class for all Tealium feature modules.
  */
-open class TealiumModule {
+open class TealiumModule : TealiumModuleProtocol {
     
     weak var delegate : TealiumModuleDelegate?
     var isEnabled : Bool = false
@@ -58,192 +52,161 @@ open class TealiumModule {
     
     // MARK:
     // MARK: OVERRIDABLE FUNCTIONS
-    open func moduleConfig() -> TealiumModuleConfig {
+    class open func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: "default",
                                    priority: 0,
                                    build: 0,
                                    enabled: false)
     }
-    
-    /// Should only be called by the ModulesManager.
-    ///
-    /// - Parameter config: TealiumConfig used to initialize this instance of Tealium.
-    open func update(config: TealiumConfig) {
-        
-        if moduleConfig().enabled == false {
-            disable()
-            return
-        }
-        
-        enable(config: config)
-    }
-    
+
     // MARK:
     // MARK: PUBLIC OVERRIDES
     
-    // These methods are meant to be overwritten by module subclasses. DidFinish
-    // methods should be called when complete unless module is specifically
-    // designed to prevent handling of chainable calls by modules further
-    // down the chain of responsibility.
-    
-    /**
-     Start the module.
-     
-     - parameters:
-        - config: The TealiumConfig object used for the instance this module is associated with.
-     */
-    open func enable(config: TealiumConfig) {
-        
-        didFinishEnable(config: config)
-        
-    }
-    
-    /**
-     Stop the module from futher running.
-     */
-    open func disable() {
-        
-        didFinishDisable()
-
-    }
-
-    /// Handle track requests - usually adding or editing data,
-    /// adding info, or dispatching formatted data.
+    /// Generic handling of requests from ModulesManager.Individual modules will
+    ///   need to determine how to handle various request types. If a module does
+    ///   not do anything for a given request type, then it should execute the
+    ///   didFinishWithNoReponse() method. Typically all modules will handle
+    ///   at least the minimum enable & disable functions.
     ///
-    /// - Parameter track: The TealiumTrack object to process.
-    open func track(_ track: TealiumTrack) {
+    /// - Parameter request: TealiumRequest type to be processed.
+    open func handle(_ request: TealiumRequest) {
         
-        didFinishTrack(track)
+        if let r = request as? TealiumEnableRequest{
+            enable(r)
+        }
+        else if let r = request as? TealiumDisableRequest {
+            disable(r)
+        }
+        else if let r = request as? TealiumTrackRequest {
+            track(r)
+        }
+        else {
+            didFinishWithNoResponse(request)
+        }
     }
     
     /// Handle enable completion by another module (ie logging).
     ///
     /// - Parameter fromModule: Module originally reporting enable.
-    /// - Parameter process: Related TealiumProcess
-    open func handleReport(fromModule: TealiumModule,
-                      process: TealiumProcess) {
-        
-        didFinishReport(fromModule: fromModule,
-                        process: process)
+    /// - Parameter process: Related TealiumRequest
+    open func handleReport(_ request: TealiumRequest){
+
+        // If received - then all modules have finished processing the given request.
+        // No need to report back to ModuleManager as this is a one way notification
+        //  from the ModulesManager to the module.
+
     }
     
-    // MARK:
-    // MARK: PACKAGE PUBLIC - No need to override
     
-    /// Convenience method for auto routing processing requests by modulesManager.
+    /// Most modules will want to be able to be enabled.
     ///
-    /// - Parameters:
-    ///   - type: TealiumModuleProcessType of call.
-    ///   - config: Possible TealiumConfig used to init this instance of Tealium.
-    ///   - track: Possible track related to request.
-    open func auto(_ process: TealiumProcess,
-              config: TealiumConfig){
+    /// - Parameter request: TealiumEnableRequest.
+    open func enable(_ request: TealiumEnableRequest){
         
-        switch process.type {
-        case .enable:
-            self.enable(config: config)
-        case .disable:
-            self.disable()
-        case .track:
-            guard let track = process.track else {
-                self.didFailToTrack(process.track,
-                                    error: TealiumModuleError.missingTrackData)
-                return
-            }
-            self.track(track)
-        }
+        isEnabled = true
+        didFinish(request)
         
     }
+    
+    
+    /// Most modules will want to be able to be disabled.
+    ///
+    /// - Parameter request: TealiumDisableRequest.
+    open func disable(_ request: TealiumDisableRequest){
+    
+        isEnabled = false
+        didFinish(request)
+        
+    }
+    
     
     // MARK:
     // MARK: SUBCLASS CONVENIENCE METHODS
     
-    open func didFinishEnable(config:TealiumConfig) {
+
+    /// Should be called by modules after processing requests, unless needing to
+    ///     halt further processing by other modules down the priority chain.
+    ///     This method auto updates the request's moduleResponse list with
+    ///     the subclass's module name & success = true. No need to override.
+    ///
+    /// - Parameter request: Any TealiumRequest to pass back to the ModulesManager.
+    func didFinish(_ request: TealiumRequest) {
+
+        var newRequest = request
+        let response = TealiumModuleResponse(moduleName: type(of:self).moduleConfig().name,
+                                             success: true,
+                                             error: nil)
+        newRequest.moduleResponses.append(response)
         
-        isEnabled = true
-        let process = TealiumProcess(type: .enable,
-                                     successful: true,
-                                     track: nil,
-                                     error: nil)
         delegate?.tealiumModuleFinished(module: self,
-                                        process: process)
+                                        process: newRequest)
         
     }
     
-    open func didFailToEnable(config:TealiumConfig,
-                         error: Error)
-    {
-        let process = TealiumProcess(type: .enable,
-                                     successful: false,
-                                     track: nil,
-                                     error: error)
-        delegate?.tealiumModuleFinished(module: self,
-                                        process: process)
-    }
     
-    open func didFinishDisable() {
-        let process = TealiumProcess(type: .disable,
-                                     successful: true,
-                                     track: nil,
-                                     error: nil)
-        delegate?.tealiumModuleFinished(module: self,
-                                        process: process)
-    }
-    
-    open func didFailToDisable(error:Error){
+    /// Called by a module that did not process a request, or will process 
+    ///     asynchronously and can pass the request down the priority chain at time of
+    ///     call. Does not amend the request's moduleResponse with the sub classed
+    ///     module's info. No need to override.
+    ///
+    /// - Parameter request: The original TealiumRequest.
+    func didFinishWithNoResponse(_ request: TealiumRequest) {
         
-        let process = TealiumProcess(type: .disable,
-                                     successful: false,
-                                     track: nil,
-                                     error: error)
         delegate?.tealiumModuleFinished(module: self,
-                                        process: process)
+                                        process: request)
     }
     
-    open func didFinishTrack(_ track: TealiumTrack){
+    
+    /// Called by a module that has encountered an error when processing a request.
+    ///     No need to override.
+    ///
+    /// - Parameters:
+    ///   - request: TealiumRequest to send back to the ModulesManager for futher processing.
+    ///   - error: Error associated with the failure.
+    func didFailToFinish(_ request: TealiumRequest,
+                              error: Error){
         
-        let process = TealiumProcess(type: .track,
-                                     successful: true,
-                                     track: track,
-                                     error: nil)
+        var newRequest = request
+        let response = TealiumModuleResponse(moduleName: type(of:self).moduleConfig().name,
+                                             success: false,
+                                             error: error)
+        newRequest.moduleResponses.append(response)
         delegate?.tealiumModuleFinished(module: self,
-                                        process: process)
+                                        process: newRequest)
         
     }
     
-    open func didFailToTrack(_ track: TealiumTrack?,
-                        error: Error){
+    /// Majority of modules will want to manipulate or deliver track events - but
+    ///     not all, so default behavior is to disregard. Override in subclasses
+    ///     to process.
+    ///
+    /// - Parameter request: TealiumTrackRequest to process.
+    open func track(_ request: TealiumTrackRequest) {
         
-        let process = TealiumProcess(type: .track,
-                                     successful: false,
-                                     track: track,
-                                     error: error)
-        delegate?.tealiumModuleFinished(module: self,
-                                        process: process)
+        didFinishWithNoResponse(request)
         
-    }
-    
-    open func didFinishReport(fromModule: TealiumModule,
-                         process: TealiumProcess){
-        
-        delegate?.tealiumModuleFinishedReport(fromModule: fromModule,
-                                              module: self,
-                                              process: process)
     }
 
-    
 }
 
 extension TealiumModule : CustomStringConvertible {
     public var description : String {
-        return "\(moduleConfig().name).module"
+        return "\(type(of:self).moduleConfig().name).module"
     }
 }
 
 extension TealiumModule : Equatable {
     
     public static func == (lhs: TealiumModule, rhs: TealiumModule ) -> Bool {
-        return lhs.moduleConfig() == rhs.moduleConfig()
+        return type(of: lhs).moduleConfig() == type(of: rhs).moduleConfig()
+    }
+    
+}
+
+extension TealiumModule : Hashable {
+    
+    public var hashValue : Int {
+        return type(of:self).moduleConfig().name.hash
     }
     
 }

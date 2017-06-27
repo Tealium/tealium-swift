@@ -14,7 +14,7 @@ class TealiumModuleTests: XCTestCase {
     var defaultModule : TealiumModule?
     var expectationSuccess: XCTestExpectation?
     var expectationFailure: XCTestExpectation?
-    var returnedProcess: TealiumProcess?
+    var returnedProcess: TealiumRequest?
     
     override func setUp() {
         super.setUp()
@@ -46,11 +46,18 @@ class TealiumModuleTests: XCTestCase {
     
     func testMinimumProtocolsReturn() {
         
+        let expectation = self.expectation(description: "minimumProtocolsReturned")
         let helper = test_tealium_helper()
         let module = TealiumModule(delegate: nil)
-        let tuple = helper.modulesReturnsMinimumProtocols(module: module)
-        XCTAssertTrue(tuple.success, "Not all protocols returned. Failing protocols: \(tuple.protocolsFailing)")
+        helper.modulesReturnsMinimumProtocols(module: module) { (success, failingProtocols) in
+            
+            expectation.fulfill()
+            XCTAssertTrue(success, "Not all protocols returned. Failing protocols: \(failingProtocols)")
+            
+        }
         
+        self.waitForExpectations(timeout: 1.0, handler: nil)
+
     }
 
     // TODO: Expand auto process checks to subclasses
@@ -59,103 +66,85 @@ class TealiumModuleTests: XCTestCase {
         
         // Send various process options into auto process function to make sure routing is correct.
         expectationSuccess = self.expectation(description: "testSuccess")
+        
         // Enable process
-        let processSuccess = TealiumProcess(type: .enable,
-                                            successful: true,
-                                            track: nil,
-                                            error: nil)
+        var processSuccess = TealiumEnableRequest(config: testTealiumConfig)
+        let successResponse = TealiumModuleResponse(moduleName: "testModule",
+                                                    success: true,
+                                                    error: nil)
+        processSuccess.moduleResponses.append(successResponse)
         
-        
-        defaultModule?.auto(processSuccess,
-                            config: testTealiumConfig)
+        defaultModule?.handle(processSuccess)
         
         self.waitForExpectations(timeout: 1.0, handler: nil)
         
         
     }
     
-    func testAutoProcessDisable() {
-        
-        expectationSuccess = self.expectation(description: "testSuccess")
-
-        let processSuccess = TealiumProcess(type: .disable,
-                                            successful: true,
-                                            track: nil,
-                                            error: nil)
-        
-        
-        defaultModule?.auto(processSuccess,
-                            config: testTealiumConfig)
-        
-        self.waitForExpectations(timeout: 1.0, handler: nil)
-    }
+//    func testAutoProcessDisable() {
+//        
+//        expectationSuccess = self.expectation(description: "testSuccess")
+//
+//        let processSuccess = TealiumDisableRequest()
+//        processSuccess.successful = true
+//        
+//        defaultModule?.auto(processSuccess)
+//        
+//        self.waitForExpectations(timeout: 1.0, handler: nil)
+//    }
     
     func testAutoProcessTrackSucceed() {
         
         expectationSuccess = self.expectation(description: "testSuccess")
         
-        let track = TealiumTrack(data: [String:AnyObject](),
-                                 info: nil,
-                                 completion: nil)
+        var track = TealiumTrackRequest(data: [String:AnyObject](),
+                                        info: nil,
+                                        completion: nil)
+        let successResponse = TealiumModuleResponse(moduleName: "testModule",
+                                                    success: true,
+                                                    error: nil)
+        track.moduleResponses.append(successResponse)
         
-        let processSuccess = TealiumProcess(type: .track,
-                                            successful: true,
-                                            track: track,
-                                            error: nil)
-        
-        
-        defaultModule?.auto(processSuccess,
-                            config: testTealiumConfig)
+        defaultModule?.handle(track)
         
         self.waitForExpectations(timeout: 1.0, handler: nil)
     }
-    
-    func testAutoProcessTrackFail() {
-        
-        expectationFailure = self.expectation(description: "testFail")
-        
-        // No track data!
-        let processSuccess = TealiumProcess(type: .track,
-                                            successful: true,
-                                            track: nil,
-                                            error: nil)
-        
-        
-        defaultModule?.auto(processSuccess,
-                            config: testTealiumConfig)
-        
-        self.waitForExpectations(timeout: 1.0, handler: nil)
-    }
+
+    // Nil data not accepted by system.
+//    func testAutoProcessTrackFail() {
+//        
+//        expectationFailure = self.expectation(description: "testFail")
+//        
+//        // No track data!
+//        let processSuccess = TealiumTrackRequest(data: [String:Any](),
+//                                                 completion: nil)
+//        processSuccess.successful = false
+//        
+//        defaultModule?.auto(processSuccess)
+//        
+//        self.waitForExpectations(timeout: 1.0, handler: nil)
+//    }
     
 }
 
 extension TealiumModuleTests : TealiumModuleDelegate {
     
     
-    func tealiumModuleFinished(module: TealiumModule, process: TealiumProcess) {
+    func tealiumModuleFinished(module: TealiumModule, process: TealiumRequest) {
         
         returnedProcess = process
-        
-        if process.successful == true {
-            expectationSuccess?.fulfill()
-        } else {
-            expectationFailure?.fulfill()
+
+        for response in process.moduleResponses {
+            if response.success == false {
+                expectationFailure?.fulfill()
+            }
         }
-    }
-    
-    func tealiumModuleFinishedReport(fromModule: TealiumModule, module: TealiumModule, process: TealiumProcess) {
         
-        returnedProcess = process
-        
-        if process.successful == true {
-            expectationSuccess?.fulfill()
-        } else {
-            expectationFailure?.fulfill()
-        }
+        expectationSuccess?.fulfill()
         
     }
     
-    func tealiumModuleRequests(module: TealiumModule, process: TealiumProcess) {
+    func tealiumModuleRequests(module: TealiumModule, process: TealiumRequest) {
         
     }
     

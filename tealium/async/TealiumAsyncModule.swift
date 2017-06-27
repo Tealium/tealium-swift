@@ -11,17 +11,7 @@ enum TealiumAsyncKey {
     static let moduleName = "async"
     static let queueName = "com.tealium.background"
     static let completion = "async_init_completion"
-}
-
-extension Tealium {
-    
-    convenience init(config: TealiumConfig, completion:@escaping (()->Void)){
-        
-        config.optionalData[TealiumAsyncKey.completion] = completion
-        
-        self.init(config: config)
-        
-    }
+    static let disableCompletion = "async_disable_completion"
 }
 
 /// Module to send all calls to a Tealium only background thread
@@ -29,50 +19,47 @@ class TealiumAsyncModule : TealiumModule {
     
     var _dispatchQueue : DispatchQueue?
     
-    override func moduleConfig() -> TealiumModuleConfig {
+    override class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumAsyncKey.moduleName,
                                    priority: 200,
-                                   build: 2,
+                                   build: 3,
                                    enabled: true)
     }
     
-    override func enable(config: TealiumConfig) {
+    override func handle(_ request: TealiumRequest) {
         
-        dispatchQueue().async {
-        
-            self.didFinishEnable(config: config)
-
-        }
-        
-    }
-    
-    override func disable() {
-        
-        dispatchQueue().async {
-
-            self.didFinishDisable()
-            
-        }
-    }
-    
-    override func track(_ track: TealiumTrack) {
-    
-        dispatchQueue().async {
-
-            self.didFinishTrack(track)
-        
-        }
-    }
-    
-    override func handleReport(fromModule: TealiumModule, process: TealiumProcess) {
-        
-        dispatchQueue().async {
-            
-            self.didFinishReport(fromModule: fromModule, process: process)
-            
-            if let completion = self.completionInit(fromModule: fromModule, process: process){
-                completion()
+        switch request {
+        case is TealiumEnableRequest:
+            enable(request as! TealiumEnableRequest)
+        case is TealiumDisableRequest:
+            disable(request as! TealiumDisableRequest)
+        default:
+            // Send everything else to the background thread
+            dispatchQueue().async {
+                self.didFinish(request)
             }
+        }
+    }
+    
+    override func enable(_ request: TealiumEnableRequest) {
+        
+        isEnabled = true
+        
+        dispatchQueue().async {
+        
+            self.didFinish(request)
+
+        }
+        
+    }
+    
+    override func disable(_ request: TealiumDisableRequest) {
+        
+        isEnabled = false
+        
+        dispatchQueue().async {
+            
+            self.didFinish(request)
             
         }
     }
@@ -89,39 +76,11 @@ class TealiumAsyncModule : TealiumModule {
     func dispatchQueue() -> DispatchQueue {
         
         if _dispatchQueue == nil {
-            _dispatchQueue = DispatchQueue(label: TealiumAsyncKey.queueName)
+//            _dispatchQueue = DispatchQueue(label: TealiumAsyncKey.queueName)
+            _dispatchQueue = DispatchQueue.global(qos: .background)
         }
         
         return _dispatchQueue!
-        
-    }
-    
-    
-    /// Return an init completion block from the last module, if it exists.
-    ///
-    /// - Parameters:
-    ///   - fromModule: The module to check.
-    ///   - process: The process to inspect.
-    /// - Returns: Optional init completion block.
-    internal func completionInit(fromModule: TealiumModule, process: TealiumProcess) -> (()->Void)? {
-        
-        if process.type != .enable {
-            return nil
-        }
-        
-        guard let moduleManager = self.delegate as? TealiumModulesManager else {
-            return nil
-        }
-        
-        if fromModule != moduleManager.modules.last {
-            return nil
-        }
-        
-        guard let completion = moduleManager.config.optionalData[TealiumAsyncKey.completion] as? (()->Void) else {
-            return nil
-        }
-        
-        return completion
         
     }
     

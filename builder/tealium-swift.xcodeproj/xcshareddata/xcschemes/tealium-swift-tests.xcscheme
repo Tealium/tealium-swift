@@ -22,6 +22,11 @@
                BlueprintName = "tealium-swift-tests"
                ReferencedContainer = "container:tealium-swift.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "TealiumDefaultsManagerTests">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <AdditionalOptions>

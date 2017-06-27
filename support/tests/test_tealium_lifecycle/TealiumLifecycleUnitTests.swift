@@ -100,7 +100,7 @@ class TealiumLifecycleUnitTests: XCTestCase {
         let day = lifecycle?.dayOfWeekLocal(forDate: date)
         
         let expectedDay = "4"
-        XCTAssertTrue(day == expectedDay, "Mismatch in dayOfWeekLocal, returned: \(day), expected: \(expectedDay)")
+        XCTAssertTrue(day == expectedDay, "Mismatch in dayOfWeekLocal, returned: \(String(describing: day)), expected: \(expectedDay)")
     }
     
     // TODO: Refactor take test inputs and provided expected outputs
@@ -112,7 +112,7 @@ class TealiumLifecycleUnitTests: XCTestCase {
         let days = lifecycle?.daysFrom(earlierDate: date1, laterDate: date2)
         let expectedDays = "0"
         
-        XCTAssertTrue(days == expectedDays, "Mismatch between returned days:\(days) and expected:\(expectedDays)")
+        XCTAssertTrue(days == expectedDays, "Mismatch between returned days:\(String(describing: days)) and expected:\(expectedDays)")
     }
     
     func testDaysBetweenDates1() {
@@ -123,7 +123,7 @@ class TealiumLifecycleUnitTests: XCTestCase {
         let days = lifecycle?.daysFrom(earlierDate: date1, laterDate: date2)
         let expectedDays = "1"
         
-        XCTAssertTrue(days == expectedDays, "Mismatch between returned days:\(days) and expected:\(expectedDays)")
+        XCTAssertTrue(days == expectedDays, "Mismatch between returned days:\(String(describing: days)) and expected:\(expectedDays)")
     }
     
     func testDaysBetweenDates2() {
@@ -134,7 +134,7 @@ class TealiumLifecycleUnitTests: XCTestCase {
         let days = lifecycle?.daysFrom(earlierDate: date1, laterDate: date2)
         let expectedDays = "2"
         
-        XCTAssertTrue(days == expectedDays, "Mismatch between returned days:\(days) and expected:\(expectedDays)")
+        XCTAssertTrue(days == expectedDays, "Mismatch between returned days:\(String(describing: days)) and expected:\(expectedDays)")
     }
     
     
@@ -144,7 +144,7 @@ class TealiumLifecycleUnitTests: XCTestCase {
         let day = lifecycle?.hourOfDayLocal(forDate: date)
         
         let expectedDay = "16"
-        XCTAssertTrue(day == expectedDay, "Mismatch in hourOfDayLocal, returned:\(day), expected:\(expectedDay)")
+        XCTAssertTrue(day == expectedDay, "Mismatch in hourOfDayLocal, returned:\(String(describing: day)), expected:\(expectedDay)")
     }
     
     func testIsFirstWakeTodayOneWake() {
@@ -153,7 +153,7 @@ class TealiumLifecycleUnitTests: XCTestCase {
         let _ = lifecycle?.newWake(atDate: date1, overrideSession: nil)
         let isFirstWake = lifecycle?.isFirstWakeToday()
         
-        XCTAssertTrue(isFirstWake == "true", "FirstWakeToday returned:\(isFirstWake), expected:(nil)")
+        XCTAssertTrue(isFirstWake == "true", "FirstWakeToday returned:\(String(describing: isFirstWake)), expected:(nil)")
         
     }
     
@@ -166,7 +166,7 @@ class TealiumLifecycleUnitTests: XCTestCase {
         let _ = lifecycle?.newWake(atDate: date2, overrideSession: nil)
         let isFirstWake = lifecycle?.isFirstWakeToday()
         
-        XCTAssertFalse(isFirstWake == "true", "FirstWakeToday returned:\(isFirstWake), expected:(nil)")
+        XCTAssertFalse(isFirstWake == "true", "FirstWakeToday returned:\(String(describing: isFirstWake)), expected:(nil)")
         
     }
     
@@ -181,7 +181,7 @@ class TealiumLifecycleUnitTests: XCTestCase {
 
         let isFirstWake = lifecycle?.isFirstWakeToday()
         
-        XCTAssertTrue(isFirstWake! == "true", "FirstWakeToday returned:\(isFirstWake), expected:\"true\"")
+        XCTAssertTrue(isFirstWake! == "true", "FirstWakeToday returned:\(String(describing: isFirstWake)), expected:\"true\"")
         
     }
     
@@ -194,7 +194,7 @@ class TealiumLifecycleUnitTests: XCTestCase {
 
         let isFirstWake = lifecycle?.isFirstWakeThisMonth()
         
-        XCTAssertTrue(isFirstWake == nil, "FirstWakeToday returned:\(isFirstWake), expected:(nil)")
+        XCTAssertTrue(isFirstWake == nil, "FirstWakeToday returned:\(String(describing: isFirstWake)), expected:(nil)")
         
     }
     
@@ -207,7 +207,7 @@ class TealiumLifecycleUnitTests: XCTestCase {
 
         let isFirstWake = lifecycle?.isFirstWakeThisMonth()
 
-        XCTAssertTrue(isFirstWake == "true", "FirstWakeThisMonth returned:\(isFirstWake), expected:\"true\"")
+        XCTAssertTrue(isFirstWake == "true", "FirstWakeThisMonth returned:\(String(describing: isFirstWake)), expected:\"true\"")
         
     }
     
@@ -282,7 +282,7 @@ class TealiumLifecycleUnitTests: XCTestCase {
         
         let secondsBetween = lifecycle?.secondsFrom(earlierDate: date1, laterDate: date2)
         
-        XCTAssertTrue(secondsBetween == expectedSeconds, "Mismatch between returned seconds:\(secondsBetween) and expected seconds:\(expectedSeconds)")
+        XCTAssertTrue(secondsBetween == expectedSeconds, "Mismatch between returned seconds:\(String(describing: secondsBetween)) and expected seconds:\(expectedSeconds)")
         
     }
     

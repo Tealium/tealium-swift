@@ -25,17 +25,20 @@ class TealiumVolatileDataModuleTests: XCTestCase {
         super.tearDown()
     }
     
-    func testProtocols() {
+    func testMinimumProtocolsReturn() {
         
-        guard let module = module else {
-            XCTFail("Module did not spin up.")
-            return
+        let expectation = self.expectation(description: "minimumProtocolsReturned")
+        let helper = test_tealium_helper()
+        let module = TealiumVolatileDataModule(delegate: nil)
+        helper.modulesReturnsMinimumProtocols(module: module) { (success, failingProtocols) in
+            
+            expectation.fulfill()
+            XCTAssertTrue(success, "Not all protocols returned. Failing protocols: \(failingProtocols)")
+            
         }
         
-        let helper = test_tealium_helper()
-        let tuple = helper.modulesReturnsMinimumProtocols(module: module)
-        XCTAssertTrue(tuple.success, "Not all protocols returned. Failing protocols: \(tuple.protocolsFailing)")
-        
+        self.waitForExpectations(timeout: 1.0, handler: nil)
+
     }
     
     func testVolatileDataKeysAvailable() {
@@ -45,7 +48,7 @@ class TealiumVolatileDataModuleTests: XCTestCase {
                                    environment:TealiumTestValue.environment,
                                    optionalData:[String:Any]() as [String : Any])
         
-        module?.enable(config: config)
+        module?.enable(TealiumEnableRequest(config: config))
         
         let volatileDataKeysExpected = [
             "tealium_account",
@@ -59,7 +62,7 @@ class TealiumVolatileDataModuleTests: XCTestCase {
             ]
         
         guard let volatileDataReturned = module?.volatileData?.getData() else {
-            XCTFail("No volatile data returned from test module: \(module)")
+            XCTFail("No volatile data returned from test module: \(String(describing: module))")
             return
         }
         

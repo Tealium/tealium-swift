@@ -85,10 +85,10 @@ class TealiumLifecycleIntegrationTests: XCTestCase {
         
         // Check if first launch session resulted in a crash on subsequent launch
         let _ = lifecycle.newLaunch(atDate: start, overrideSession: nil)
-        XCTAssert(lifecycle.newCrashDetected() == "true", "Should have logged crash as initial launch did not have sleep data. FirstSession: \(lifecycle.sessions.first)")
+        XCTAssert(lifecycle.newCrashDetected() == "true", "Should have logged crash as initial launch did not have sleep data. FirstSession: \(String(describing: lifecycle.sessions.first))")
         
         lifecycle.sessions.first?.sleepDate = end
-        XCTAssert(lifecycle.newCrashDetected() == nil, "Should not have logged crash as initial launch has sleep data. SessionFirst: \(lifecycle.sessions.first) \nall sessions:\(lifecycle.sessions)")
+        XCTAssert(lifecycle.newCrashDetected() == nil, "Should not have logged crash as initial launch has sleep data. SessionFirst: \(String(describing: lifecycle.sessions.first)) \nall sessions:\(lifecycle.sessions)")
         
         
         lifecycle.sessions.append(sessionCrashed)

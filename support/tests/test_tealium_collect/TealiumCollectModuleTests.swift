@@ -22,11 +22,18 @@ class TealiumCollectModuleTests: XCTestCase {
 
     func testMinimumProtocolsReturn() {
         
+        let expectation = self.expectation(description: "minimumProtocolsReturned")
         let helper = test_tealium_helper()
         let module = TealiumCollectModule(delegate: nil)
-        let tuple = helper.modulesReturnsMinimumProtocols(module: module)
-        XCTAssertTrue(tuple.success, "Not all protocols returned. Failing protocols: \(tuple.protocolsFailing)")
+        helper.modulesReturnsMinimumProtocols(module: module) { (success, failingProtocols) in
+            
+            expectation.fulfill()
+            XCTAssertTrue(success, "Not all protocols returned. Failing protocols: \(failingProtocols)")
+            
+        }
         
+        self.waitForExpectations(timeout: 1.0, handler: nil)
+
     }
     
     func testEnableDisable(){
@@ -35,13 +42,13 @@ class TealiumCollectModuleTests: XCTestCase {
         
         let collectModule = TealiumCollectModule(delegate: nil)
         
-        collectModule.enable(config: testTealiumConfig)
+        collectModule.enable(TealiumEnableRequest(config: testTealiumConfig))
         
         XCTAssertTrue(collectModule.collect != nil, "TealiumCollect did not initialize.")
         XCTAssertTrue(collectModule.collect?.getBaseURLString().isEmpty == false, "No base URL was provided or auto-initialized.")
         
         
-        collectModule.disable()
+        collectModule.disable(TealiumDisableRequest())
         
         XCTAssertTrue(collectModule.collect == nil, "TealiumCollect instance did not nil out.")
     }

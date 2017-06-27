@@ -26,40 +26,18 @@ class TealiumTagManagementModuleTests: XCTestCase {
     }
     
     func testMinimumProtocolsReturn() {
-        
+
+        let expectation = self.expectation(description: "minimumProtocolsReturned")
         let helper = test_tealium_helper()
         let module = TealiumTagManagementModule(delegate: nil)
-        let tuple = helper.modulesReturnsMinimumProtocols(module: module)
-        XCTAssertTrue(tuple.success, "Not all protocols returned. Failing protocols: \(tuple.protocolsFailing)")
-        
-    }
-
-    func testQueue() {
-        
-        module = TealiumTagManagementModule(delegate: self)
-
-        let expectationQueueSend = expectation(description: "queueSend")
-        
-        let testTrack = TealiumTrack(data: [:],
-                                     info: nil,
-                                     completion: {(success, info, error) in
-        
-                expectationQueueSend.fulfill()
-        })
-        
-        module?.sendCompletion = {(module, track) in
-        
-            track.completion?(true, nil, nil)
+        helper.modulesReturnsMinimumProtocols(module: module) { (success, failingProtocols) in
+            
+            expectation.fulfill()
+            XCTAssertTrue(success, "Not all protocols returned. Failing protocols: \(failingProtocols)")
             
         }
         
-        module?.addToQueue(track: testTrack)
-        
-        module?.sendQueue()
-        
-        waitForExpectations(timeout: 1.0, handler: nil)
-
-        XCTAssertTrue(module?.queue.isEmpty == true)
+        self.waitForExpectations(timeout: 1.0, handler: nil)
 
     }
     
@@ -68,7 +46,7 @@ class TealiumTagManagementModuleTests: XCTestCase {
 
 extension TealiumTagManagementModuleTests : TealiumModuleDelegate {
     
-    func tealiumModuleFinished(module: TealiumModule, process: TealiumProcess) {
+    func tealiumModuleFinished(module: TealiumModule, process: TealiumRequest) {
         
         delegateExpectationSuccess?.fulfill()
         
@@ -76,7 +54,7 @@ extension TealiumTagManagementModuleTests : TealiumModuleDelegate {
         
     }
     
-    func tealiumModuleRequests(module: TealiumModule, process: TealiumProcess) {
+    func tealiumModuleRequests(module: TealiumModule, process: TealiumRequest) {
         
         delegateExpectationSuccess?.fulfill()
         
@@ -84,7 +62,7 @@ extension TealiumTagManagementModuleTests : TealiumModuleDelegate {
         
     }
     
-    func tealiumModuleFinishedReport(fromModule: TealiumModule, module: TealiumModule, process: TealiumProcess) {
+    func tealiumModuleFinishedReport(fromModule: TealiumModule, module: TealiumModule, process: TealiumRequest) {
         
         delegateExpectationSuccess?.fulfill()
         

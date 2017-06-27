@@ -18,6 +18,16 @@ import Foundation
     #endif
 #endif
 
+// MARK:
+// MARK: CONSTANTS
+public enum TealiumAttributionKey {
+    static let moduleName = "attribution"
+    static let advertisingId = "device_advertising_id"
+}
+
+
+// MARK:
+// MARK: MODULE SUBCLASS
 /**
  Module to automatically add IDFA vendor identifier to track calls. Does NOT work with watchOS.
  */
@@ -25,15 +35,16 @@ class TealiumAttributionModule : TealiumModule {
     
     var advertisingId : String?
     
-    override func moduleConfig() -> TealiumModuleConfig {
+    override class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumAttributionKey.moduleName,
                                    priority: 400,
-                                   build: 2,
+                                   build: 3,
                                    enabled: true)
     }
     
-    override func enable(config: TealiumConfig) {
+    override func enable(_ request: TealiumEnableRequest) {
         
+        isEnabled = true
         // UIKit is not available for testing
         #if TEST
         #else
@@ -43,17 +54,19 @@ class TealiumAttributionModule : TealiumModule {
                 advertisingId = UIDevice.current.identifierForVendor?.uuidString
             #endif
         #endif
-        didFinishEnable(config: config)
+        didFinish(request)
     }
     
-    override func disable() {
+    override func disable(_ request: TealiumDisableRequest) {
+        
+        isEnabled = false
         
         advertisingId = nil
         
-        didFinishDisable()
+        didFinish(request)
     }
     
-    override func track(_ track: TealiumTrack) {
+    override func track(_ track: TealiumTrackRequest) {
      
         // Add idfa to data - NOTE: This requires additional requirements when
         // submitting to Apple's App Review process, see -
@@ -63,7 +76,7 @@ class TealiumAttributionModule : TealiumModule {
             
             // Module disabled - ignore IDFA request
             
-            didFinishTrack(track)
+            didFinish(track)
             return
         }
         
@@ -73,11 +86,11 @@ class TealiumAttributionModule : TealiumModule {
         
         newData += track.data
         
-        let newTrack = TealiumTrack(data: newData,
-                                    info: track.info,
-                                    completion: track.completion)
+        let newTrack = TealiumTrackRequest(data: newData,
+                                           info: track.info,
+                                           completion: track.completion)
         
-        didFinishTrack(newTrack)
+        didFinish(newTrack)
         
     }
 
