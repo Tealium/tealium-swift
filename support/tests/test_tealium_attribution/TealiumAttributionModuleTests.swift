@@ -36,13 +36,13 @@ class TealiumAttributionModuleTests: XCTestCase {
         // Manually set a string for the advertiser ID
         module?.advertisingId = testID
         
-        module?.enable(config: testTealiumConfig)
+        module?.enable(TealiumEnableRequest(config: testTealiumConfig))
         
         expectation = self.expectation(description: "testAID")
         
-        let testTrack = TealiumTrack(data: [String:AnyObject](),
-                                     info: nil,
-                                     completion: {(success, info, error) in
+        let testTrack = TealiumTrackRequest(data: [String:AnyObject](),
+                                            info: nil,
+                                            completion: {(success, info, error) in
         
                 XCTAssertTrue(success, "Test track call did not return success.")
 
@@ -62,42 +62,56 @@ class TealiumAttributionModuleTests: XCTestCase {
         
     }
     
-    func testProtocolsSupported() {
+    func testMinimumProtocolsReturn() {
         
+        let expectation = self.expectation(description: "minimumProtocolsReturned")
         let helper = test_tealium_helper()
-        let protocolsTest = helper.modulesReturnsMinimumProtocols(module: module!)
-        XCTAssertTrue(protocolsTest.success, "Failing protocols: \(protocolsTest.protocolsFailing)")
+        let module = TealiumAttributionModule(delegate: nil)
+        helper.modulesReturnsMinimumProtocols(module: module) { (success, failingProtocols) in
+            
+            expectation.fulfill()
+            XCTAssertTrue(success, "Not all protocols returned. Failing protocols: \(failingProtocols)")
+            
+        }
+        
+        self.waitForExpectations(timeout: 1.0, handler: nil)
+
     }
     
 }
 
 extension TealiumAttributionModuleTests : TealiumModuleDelegate {
     
-    func tealiumModuleFinished(module: TealiumModule, process: TealiumProcess) {
+    func tealiumModuleFinished(module: TealiumModule, process: TealiumRequest) {
         
-        if process.type == .track && process.error == nil {
-            
-            payload = process.track?.data
-            
-            expectation?.fulfill()
-            
-            process.track?.completion?(true, nil, nil)
-            
+        if process is TealiumEnableRequest {
+            return
         }
         
-        if process.type == .track && process.error != nil {
-            
-            process.track?.completion?(false, nil, nil)
+        guard let trackRequest = process as? TealiumTrackRequest else {
+            XCTFail("Process not of track type.")
+            return
+        }
+        
+        // Look through responses for any errors
+        for response in trackRequest.moduleResponses {
+            if response.error != nil {
+                trackRequest.completion?(false, trackRequest.info, response.error)
+                return
+            }
             
         }
+        payload = trackRequest.data
+        expectation?.fulfill()
+        trackRequest.completion?(true, nil, nil)
         
     }
     
-    func tealiumModuleFinishedReport(fromModule: TealiumModule, module: TealiumModule, process: TealiumProcess) {
+    func tealiumModuleFinishedReport(fromModule: TealiumModule, module: TealiumModule, process: TealiumRequest) {
         
     }
     
-    func tealiumModuleRequests(module: TealiumModule, process: TealiumProcess) {
+    func tealiumModuleRequests(module: TealiumModule, process: TealiumRequest) {
         
     }
 

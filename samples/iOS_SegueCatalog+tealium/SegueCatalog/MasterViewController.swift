@@ -14,6 +14,7 @@ class MasterViewController: UITableViewController {
         super.viewDidLoad()
         
         #if AUTOTRACKING
+            print("Autotracking Enabled for MasterViewController")
             TealiumAutotracking.addCustom(data: ["customAutotrackingKey":"customAutotrackingValue"], toObject: self)
         #endif
         
@@ -23,9 +24,12 @@ class MasterViewController: UITableViewController {
         super.viewWillAppear(animated)
         
         #if AUTOTRACKING
+            print("Autotracking detected for MasterViewController")
         #else
-        TealiumHelper.sharedInstance().trackView(title: "MasterViewController",
-                                                 data: ["someManuallyAddedKey":"someManuallyAddedValue"])
+            
+            let helper = TealiumHelper.sharedInstance()
+            helper.trackView(title: "MasterViewController",
+                             data: ["autotracked":"false"])
         #endif
     }
     

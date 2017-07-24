@@ -9,18 +9,31 @@ import Foundation
 
 public enum TealiumDelegateKey {
     static let moduleName = "delegate"
+    static let multicastDelegates = "com.tealium.delegate.delegates"
+    static let completion = "com.tealium.delegate.completion"
 }
 
 public enum TealiumDelegateError : Error {
     case suppressedByShouldTrackDelegate
 }
 
+typealias tealiumEnableCompletion = ((_ modulesResponses: [TealiumModuleResponse])-> Void )
+
 public protocol TealiumDelegate : class {
+
     func tealiumShouldTrack(data: [String:Any]) -> Bool
     func tealiumTrackCompleted(success:Bool, info:[String:Any]?, error:Error?)
 }
 
 extension Tealium {
+    
+    convenience init(config: TealiumConfig,
+                     completion: @escaping tealiumEnableCompletion ) {
+    
+        config.optionalData[TealiumDelegateKey.completion] = completion
+        self.init(config: config)
+        
+    }
     
     public func delegates() -> TealiumDelegates? {
         
@@ -34,58 +47,92 @@ extension Tealium {
     
 }
 
+extension TealiumConfig {
+    
+    func delegates() -> TealiumDelegates {
+        
+        if let delegates = self.optionalData[TealiumDelegateKey.multicastDelegates] as? TealiumDelegates {
+            return delegates
+        }
+        
+        // Default
+        return TealiumDelegates()
+        
+    }
+    
+    func addDelegate(_ delegate: TealiumDelegate) {
+        
+        let delegates = self.delegates()
+        
+        delegates.add(delegate: delegate)
+        
+        self.optionalData[TealiumDelegateKey.multicastDelegates] = delegates
+        
+    }
+    
+}
+
 class TealiumDelegateModule : TealiumModule {
     
     var delegates : TealiumDelegates?
+    var enableCompletion : tealiumEnableCompletion?
     
-    override func moduleConfig() -> TealiumModuleConfig {
+    override class  func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumDelegateKey.moduleName,
                                    priority: 900,
                                    build: 2,
                                    enabled: true)
     }
     
-    override func enable(config: TealiumConfig) {
+    override func enable(_ request: TealiumEnableRequest) {
         
-        delegates = TealiumDelegates()
-        self.didFinishEnable(config: config)
+        isEnabled = true
+        
+        delegates = request.config.delegates()
+        delegate?.tealiumModuleRequests(module: self,
+                                        process: TealiumReportNotificationsRequest())
+        
+        if let completion = request.config.optionalData[TealiumDelegateKey.completion] as? tealiumEnableCompletion {
+                enableCompletion = completion
+        }
+        
+        didFinish(request)
         
     }
     
-    override func track(_ track: TealiumTrack) {
+    override func handleReport(_  request: TealiumRequest) {
+        
+        if let request = request as? TealiumEnableRequest {
+            enableCompletion?(request.moduleResponses)
+        }
+        if let request = request as? TealiumDisableRequest {
+//            delegates?.multicastDelegate.invoke {}
+        }
+        if let request = request as? TealiumTrackRequest {
+            delegates?.invokeTrackCompleted(forTrackProcess: request)
+        }
+        
+        
+    }
+    
+    override func disable(_ request: TealiumDisableRequest) {
+        
+        delegates?.removeAll()
+        delegates = nil
+        didFinish(request)
+        
+    }
+    
+    override func track(_ track: TealiumTrackRequest) {
         
         if delegates?.invokeShouldTrack(data: track.data) == false {
             // Suppress the event from further processing
             track.completion?(false, nil, TealiumDelegateError.suppressedByShouldTrackDelegate)
+            didFailToFinish(track,
+                            error: TealiumDelegateError.suppressedByShouldTrackDelegate)
             return
         }
-        self.didFinishTrack(track)
-        
-    }
-    
-    override func handleReport(fromModule: TealiumModule, process: TealiumProcess) {
-        
-        guard let modulesManager = self.delegate as? TealiumModulesManager else {
-            self.didFinishReport(fromModule: fromModule, process: process)
-            return
-        }
-        // TODO: Support multiple dispatch services
-        if fromModule == modulesManager.modules.last &&
-            process.type == .track  {
-            
-            // Report to delegates that track was completed
-            delegates?.invokeTrackCompleted(forTrackProcess: process)
-            
-        }
-        self.didFinishReport(fromModule: fromModule, process: process)
-        
-    }
-    
-    override func disable() {
-        
-        delegates?.removeAll()
-        delegates = nil
-        self.didFinishDisable()
+        didFinish(track)
         
     }
     
@@ -93,14 +140,14 @@ class TealiumDelegateModule : TealiumModule {
 
 public class TealiumDelegates {
     
-    private var _delegates = TealiumMulticastDelegate<TealiumDelegate>()
+    var multicastDelegate = TealiumMulticastDelegate<TealiumDelegate>()
 
     /// Add a weak pointer to a class conforming to the TealiumDelegate protocol.
     ///
     /// - Parameter delegate: Class conforming to the TealiumDelegate protocols.
     public func add(delegate: TealiumDelegate) {
         
-        _delegates.add(delegate)
+        multicastDelegate.add(delegate)
         
     }
     
@@ -110,7 +157,7 @@ public class TealiumDelegates {
     /// - Parameter delegate: Class conforming to the TealiumDelegate protocols.
     public func remove(delegate: TealiumDelegate) {
         
-        _delegates.remove(delegate)
+        multicastDelegate.remove(delegate)
         
     }
     
@@ -118,8 +165,12 @@ public class TealiumDelegates {
     ///   protocols from the multicast delgate handler.
     public func removeAll() {
         
-        _delegates.removeAll()
+        multicastDelegate.removeAll()
     }
+    
+//    public func invokeEnabled(request: TealiumEnableRequest) {
+//        multicastDelegate.invoke{ $0.tealiumEnabled(withConfig: request.config) }
+//    }
     
     /// Query all delegates if the data should be tracked or suppressed.
     ///
@@ -128,7 +179,7 @@ public class TealiumDelegates {
     public func invokeShouldTrack(data: [String:Any])-> Bool {
         
         var shouldTrack = true
-        _delegates.invoke{ if $0.tealiumShouldTrack(data: data) == false {
+        multicastDelegate.invoke{ if $0.tealiumShouldTrack(data: data) == false {
                 shouldTrack = false
             }
         }
@@ -138,10 +189,25 @@ public class TealiumDelegates {
     
     /// Inform all delegates that a track call has completed.
     ///
-    /// - Parameter forTrackProcess: TealiumProcess that was completed
-    public func invokeTrackCompleted(forTrackProcess: TealiumProcess) {
+    /// - Parameter forTrackProcess: TealiumRequest that was completed
+    public func invokeTrackCompleted(forTrackProcess: TealiumTrackRequest) {
         
-        _delegates.invoke{ $0.tealiumTrackCompleted(success: forTrackProcess.successful, info: forTrackProcess.track?.info, error: forTrackProcess.error)}
+        for response in forTrackProcess.moduleResponses {
+            let success = response.success
+            let error = response.error
+            guard let info = forTrackProcess.info else {
+                // Track call was not processed by any dispatch manager.
+                // TODO: Better error reporting in this above instance.
+                continue
+            }
+            
+            if info.isEmpty {
+                continue
+            }
+            
+            multicastDelegate.invoke{ $0.tealiumTrackCompleted(success: success, info: info, error: error)}
+
+        }
     
     }
 }

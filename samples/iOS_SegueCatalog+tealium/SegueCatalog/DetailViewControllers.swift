@@ -15,12 +15,13 @@ class NestedViewController: UIViewController {
         
         #if AUTOTRACKING
         #else
-            let extraData : [String:Any] = ["CustomKey" : "Customvalue" as Any]
+            let extraData : [String:Any] = ["autotracked" : "false" as Any]
             
             TealiumHelper.sharedInstance().track(title: "NestedViewController:viewDidLoad",
                                              data: extraData)
         
         #endif
+        
     }
     
     @IBAction func unwindToNested(_ segue: UIStoryboardSegue) {
@@ -46,7 +47,7 @@ class OuterViewController: UIViewController {
         
         #if AUTOTRACKING
         #else
-            let extraData : [String:Any] = ["CustomKey" : "Customvalue" as Any]
+            let extraData : [String:Any] = ["autotracked" : "false" as Any]
             
             TealiumHelper.sharedInstance().track(title: "DetailViewController:viewDidLoad",
                                              data: extraData)
@@ -57,6 +58,10 @@ class OuterViewController: UIViewController {
             Empty. Exists solely so that "unwind to outer" segues can find 
             instances of this class.
         */
+    }
+    
+    @IBAction func CrashTest(_ sender: Any) {
+//        TealiumHelper.sharedInstance().crash()
     }
 }
 

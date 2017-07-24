@@ -12,7 +12,7 @@ class TealiumDatasourceModuleTests: XCTestCase {
     
     var delegateExpectationSuccess : XCTestExpectation?
     var delegateExpectationFail : XCTestExpectation?
-    var process : TealiumProcess?
+    var process : TealiumRequest?
     
     override func setUp() {
         super.setUp()
@@ -26,11 +26,18 @@ class TealiumDatasourceModuleTests: XCTestCase {
     
     func testMinimumProtocolsReturn() {
         
+        let expectation = self.expectation(description: "minimumProtocolsReturned")
         let helper = test_tealium_helper()
         let module = TealiumDatasourceModule(delegate: nil)
-        let tuple = helper.modulesReturnsMinimumProtocols(module: module)
-        XCTAssertTrue(tuple.success, "Not all protocols returned. Failing protocols: \(tuple.protocolsFailing)")
+        helper.modulesReturnsMinimumProtocols(module: module) { (success, failingProtocols) in
+            
+            expectation.fulfill()
+            XCTAssertTrue(success, "Not all protocols returned. Failing protocols: \(failingProtocols)")
+            
+        }
         
+        self.waitForExpectations(timeout: 1.0, handler: nil)
+
     }
     
     func testConfigExtension() {
@@ -75,17 +82,18 @@ class TealiumDatasourceModuleTests: XCTestCase {
                                datasource: datasourceString,
                                optionalData: nil)
         let module = TealiumDatasourceModule(delegate: self)
-        module.enable(config: config)
+        module.enable(TealiumEnableRequest(config: config))
         
         delegateExpectationSuccess = self.expectation(description: "datasourceTrack")
-        let tealiumTrack = TealiumTrack(data: [:],
-                                        info: [:],
-                                        completion: nil)
+        let tealiumTrack = TealiumTrackRequest(data: [:],
+                                               info: [:],
+                                               completion: nil)
         module.track(tealiumTrack)
     
         self.waitForExpectations(timeout: 1.0, handler: nil)
         
-        guard let track = self.process?.track else {
+        
+        guard let track = self.process as? TealiumTrackRequest else {
             XCTFail("No track data returned from delegate.")
             return
         }
@@ -107,21 +115,21 @@ class TealiumDatasourceModuleTests: XCTestCase {
 
 extension TealiumDatasourceModuleTests : TealiumModuleDelegate {
     
-    func tealiumModuleFinished(module: TealiumModule, process: TealiumProcess) {
+    func tealiumModuleFinished(module: TealiumModule, process: TealiumRequest) {
         
         delegateExpectationSuccess?.fulfill()
         
         self.process = process
     }
     
-    func tealiumModuleRequests(module: TealiumModule, process: TealiumProcess) {
+    func tealiumModuleRequests(module: TealiumModule, process: TealiumRequest) {
         
         delegateExpectationSuccess?.fulfill()
         
         self.process = process
     }
     
-    func tealiumModuleFinishedReport(fromModule: TealiumModule, module: TealiumModule, process: TealiumProcess) {
+    func tealiumModuleFinishedReport(fromModule: TealiumModule, module: TealiumModule, process: TealiumRequest) {
         
         delegateExpectationSuccess?.fulfill()
         

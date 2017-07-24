@@ -36,6 +36,16 @@ let testTealiumConfig = TealiumConfig(account:TealiumTestValue.account,
                                       profile:TealiumTestValue.profile,
                                       environment:TealiumTestValue.environment,
                                       optionalData:testOptionalData as [String : Any])
+let testDeleteRequest = TealiumDeleteRequest(name: "testDelete")
+let testDisableRequest = TealiumDisableRequest()
+let testEnableRequest = TealiumEnableRequest(config: testTealiumConfig)
+let testLoadRequest = TealiumLoadRequest(name: "test") { (success, data, error) in
+    // Future processing... maybe
+}
+let testReportNotificationRequest = TealiumReportNotificationsRequest()
+let testSaveRequest = TealiumSaveRequest(name: "test", data: ["key":"value"])
+let testTrackRequest = TealiumTrackRequest(data: [:],
+                                           completion: nil)
 
 let testDataDictionary : [String:Any]  =
     [
@@ -43,7 +53,6 @@ let testDataDictionary : [String:Any]  =
         TealiumKey.profile : TealiumTestValue.profile,
         TealiumKey.environment : TealiumTestValue.environment,
         TealiumKey.event : TealiumTestValue.title,
-        TealiumKey.eventName : TealiumTestValue.title,
         TealiumKey.eventType :  TealiumTestValue.eventType,
         TealiumKey.libraryName : TealiumValue.libraryName,
         TealiumKey.libraryVersion : TealiumValue.libraryVersion,
@@ -56,11 +65,13 @@ let testDataDictionary : [String:Any]  =
 class test_tealium_helper {
     
     var callBack : ((TealiumModule, String)->Void)?
+    var succeedingProtocols = [String]()
+    var successfulRequests = [TealiumRequest]()
     
-    class func testTrack() -> TealiumTrack {
-        return TealiumTrack(data: [String:AnyObject](),
-                            info: nil,
-                            completion: nil)
+    class func testTrack() -> TealiumTrackRequest {
+        return TealiumTrackRequest(data: [String:AnyObject](),
+                                   info: nil,
+                                   completion: nil)
     }
     
     // Any subclass of the TealiumModule must eventually trigger it's protocol
@@ -70,60 +81,169 @@ class test_tealium_helper {
         callBack = completion
     }
     
-    /**
-     All modules should callback to their delegate a success or failure for the following functions:
-        - enable
-        - disable
-        - track
-        - process
-     */
-    func modulesReturnsMinimumProtocols(module: TealiumModule) -> (success: Bool, protocolsFailing: [String]){
-        
+    func modulesProcessRequests(module: TealiumModule,
+                                protocolsList: [String],
+                                execution: (()-> Void),
+                                completion: ((_ success:Bool, _ protocolsFailing:[String])->Void)?){
+     
         var succeedingProtocols = [String]()
         
         didReceiveCallBack { (module, protocolName) in
             
             succeedingProtocols.append(protocolName)
+            
+            if succeedingProtocols.count == protocolsList.count {
+                let failing = test_tealium_helper.failingProtocols(testingList: protocolsList,
+                                                                   passedList: succeedingProtocols)
+                completion?(true, failing)
+            }
+            
         }
-                
+        
         module.delegate = self
-        
-        // The 4 standard calls
-        module.enable(config: testTealiumConfig)
-        module.disable()
-        
-        let testTrack = TealiumTrack(data: [String:AnyObject](),
-                                     info: nil,
-                                     completion: nil)
-        module.track(testTrack)
-        
-        usleep(100000) // Millionth of seconds - Delay Since we arent using XCTest waitForExpectations directly
-        
-        let failingProtocols = failingMininmumProtocols(succeedingProtocols: succeedingProtocols)
-        
-        return (failingProtocols.count == 0, failingProtocols)
+        execution()
         
     }
     
-    /**
-     Returns names of any protocols not properly implemented
-     */
-    private func failingMininmumProtocols(succeedingProtocols: [String]) -> [String] {
+    class func allTealiumModuleNames() -> [String] {
+        return [
+                "async",
+                "appdata",
+                "attribution",
+                "autotracking",
+                "collect",
+                "connectivity",
+                "datasource",
+                "defaultsstorage",
+                "delegate",
+                "filestorage",
+                "lifecycle",
+                "logger",
+                "persistentdata",
+                "remotecommands",
+                "tagmanagement",
+                "volatiledata"
+        ]
+    }
+    
+    class func allTealiumRequestNames() -> [String] {
         
-        let minimumProtocols = [TestTealiumModuleProtocolKey.enable,
-                                 TestTealiumModuleProtocolKey.disable,
-                                 TestTealiumModuleProtocolKey.track]
+        return [
+            TealiumEnableRequest.instanceTypeId(),
+            TealiumDeleteRequest.instanceTypeId(),
+            TealiumDisableRequest.instanceTypeId(),
+            TealiumLoadRequest.instanceTypeId(),
+            TealiumReportNotificationsRequest.instanceTypeId(),
+            TealiumSaveRequest.instanceTypeId(),
+            TealiumTrackRequest.instanceTypeId(),
+        ]
+        
+    }
+    
+    class func allTestTealiumRequests() -> [TealiumRequest] {
+        return [
+            testDeleteRequest,
+            testDisableRequest,
+            testEnableRequest,
+            testLoadRequest,
+            testReportNotificationRequest,
+            testSaveRequest,
+            testTrackRequest,
+        ]
+    }
+    
+    class func executeAllKnownTealiumRequests(forModule: TealiumModule){
+        
+        forModule.handle(testDeleteRequest)
+        forModule.handle(testDisableRequest)
+        forModule.handle(testEnableRequest)
+        forModule.handle(testLoadRequest)
+        forModule.handle(testReportNotificationRequest)
+        forModule.handle(testSaveRequest)
+        forModule.handle(testTrackRequest)
+        
+    }
+    
+
+    // Will not work for async modules
+    func failingRequestsFor(module: TealiumModule) -> [TealiumRequest]{
+        
+        successfulRequests.removeAll()
+        let allTestRequests = test_tealium_helper.allTestTealiumRequests()
+        var failing = [TealiumRequest]()
+        module.delegate = self
+        
+        for request in allTestRequests {
+            
+            // fire
+            module.handle(request)
+            
+            // check callback
+            if request.typeId != successfulRequests.last?.typeId {
+                failing.append(request)
+            }
+            
+        }
+        return failing
+    }
+    
+    /// Checks that module will return from all standard tealium request types
+    ///
+    /// - Parameters:
+    ///   - module: Module to test
+    ///   - completion: Completion called when checks finished.
+    func modulesReturnsMinimumProtocols(module: TealiumModule,
+                                        completion: @escaping ((_ success:Bool, _ protocolsFailing:[String])->Void)){
+        
+        successfulRequests.removeAll()
+        let allTestRequests = test_tealium_helper.allTestTealiumRequests()
+        var failing = [String]()
+        module.delegate = self
+        
+        for request in allTestRequests {
+            
+            // fire
+            module.handle(request)
+            
+            // check callback
+            if request.typeId != successfulRequests.last?.typeId {
+                failing.append(request.typeId)
+            }
+            
+        }
+        
+        completion(failing.isEmpty ? true : false, failing)
+        
+    }
+    
+    class func failingProtocols(testingList: [String],
+                                        passedList: [String]) -> [String] {
         
         var failingProtocols = [String]()
         
-        for minimumProtocol in minimumProtocols {
-            if succeedingProtocols.contains(minimumProtocol) == false {
-                failingProtocols.append(minimumProtocol)
+        for protocolName in testingList {
+            if passedList.contains(protocolName) == false {
+                failingProtocols.append(protocolName)
             }
         }
         
         return failingProtocols
     }
+    
+    class func missingStrings(fromArray: [String],
+                              anotherArray: [String]) -> [String] {
+        
+        var missingStrings = [String]()
+        
+        for string in fromArray {
+            if anotherArray.contains(string) == false {
+                missingStrings.append(string)
+            }
+        }
+        
+        return missingStrings
+    }
+    
     
     // Didn't work as an extension for some reason.
     class func missingKeys(fromDictionary: [String:Any], keys:[String])-> [String] {
@@ -142,32 +262,17 @@ class test_tealium_helper {
     
 }
 
-enum TestTealiumModuleProtocolKey {
-    static let enable = "enable"
-    static let disable = "disable"
-    static let track = "track"
-}
-
 extension test_tealium_helper : TealiumModuleDelegate {
     
-    func tealiumModuleFinishedReport(fromModule: TealiumModule, module: TealiumModule, process: TealiumProcess) {
-        
-    }
-    
-    func tealiumModuleFinished(module: TealiumModule, process: TealiumProcess) {
+    func tealiumModuleFinished(module: TealiumModule, process: TealiumRequest) {
         
         // NOTE: Don't leave a breakpoint in here, can throw off the test
-        switch process.type {
-        case .enable:
-            callBack?(module, TestTealiumModuleProtocolKey.enable)
-        case .disable:
-            callBack?(module, TestTealiumModuleProtocolKey.disable)
-        case .track:
-            callBack?(module, TestTealiumModuleProtocolKey.track)
-        }
+        callBack?(module, process.typeId)
+        successfulRequests.append(process)
+        
     }
     
-    func tealiumModuleRequests(module: TealiumModule, process: TealiumProcess) {
+    func tealiumModuleRequests(module: TealiumModule, process: TealiumRequest) {
         
     }
     

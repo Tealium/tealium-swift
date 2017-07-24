@@ -11,7 +11,7 @@ import XCTest
 class TealiumLifecycleModuleTests: XCTestCase {
     
     var expectationRequest : XCTestExpectation?
-    var requestProcess : TealiumProcess?
+    var requestProcess : TealiumRequest?
     
     override func setUp() {
         super.setUp()
@@ -27,11 +27,18 @@ class TealiumLifecycleModuleTests: XCTestCase {
     
     func testMinimumProtocolsReturn() {
         
+        let expectation = self.expectation(description: "minimumProtocolsReturned")
         let helper = test_tealium_helper()
         let module = TealiumLifecycleModule(delegate: nil)
-        let tuple = helper.modulesReturnsMinimumProtocols(module: module)
-        XCTAssertTrue(tuple.success, "Not all protocols returned. Failing protocols: \(tuple.protocolsFailing)")
+        helper.modulesReturnsMinimumProtocols(module: module) { (success, failingProtocols) in
+            
+            expectation.fulfill()
+            XCTAssertTrue(success, "Not all protocols returned. Failing protocols: \(failingProtocols)")
+            
+        }
         
+        self.waitForExpectations(timeout: 1.0, handler: nil)
+
     }
     
     func testProcessAcceptable() {
@@ -67,7 +74,7 @@ class TealiumLifecycleModuleTests: XCTestCase {
                                    profile: "",
                                    environment: "",
                                    optionalData: nil)
-        lifecycleModule.enable(config: config)
+        lifecycleModule.enable(TealiumEnableRequest(config: config))
         let date = Date(timeIntervalSince1970: 0)
         guard let data = lifecycleModule.lifecycle?.newLaunch(atDate: date,
                                                               overrideSession: nil) else {
@@ -77,14 +84,15 @@ class TealiumLifecycleModuleTests: XCTestCase {
         lifecycleModule.requestTrack(data: data)
         self.waitForExpectations(timeout: 1.0, handler: nil)
         
-        guard let returnData = requestProcess?.track?.data else {
-            XCTFail("No data returned with completed track.")
+        guard let request = requestProcess as? TealiumTrackRequest else {
+            XCTFail("Process not a track request.")
             return
         }
+        let returnData = request.data
         
-        let expectedKeys = ["tealium_event",
+        let expectedKeys = ["tealium_event"
 //                            "non_existent_key_to_test_for_fail",
-                            "tealium_event_type"
+//                            "tealium_event_type"
                             ]
         
         
@@ -97,17 +105,17 @@ class TealiumLifecycleModuleTests: XCTestCase {
 
 extension TealiumLifecycleModuleTests : TealiumModuleDelegate {
     
-    func tealiumModuleFinished(module: TealiumModule, process: TealiumProcess) {
+    func tealiumModuleFinished(module: TealiumModule, process: TealiumRequest) {
         
     }
     
-    func tealiumModuleRequests(module: TealiumModule, process: TealiumProcess) {
+    func tealiumModuleRequests(module: TealiumModule, process: TealiumRequest) {
         
         expectationRequest?.fulfill()
         requestProcess = process
     }
     
-    func tealiumModuleFinishedReport(fromModule: TealiumModule, module: TealiumModule, process: TealiumProcess) {
+    func tealiumModuleFinishedReport(fromModule: TealiumModule, module: TealiumModule, process: TealiumRequest) {
         
     }
 }

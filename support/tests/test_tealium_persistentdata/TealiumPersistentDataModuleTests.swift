@@ -30,65 +30,75 @@ class TealiumPersistentDataModuleTests: XCTestCase {
     
     func testMinimumProtocolsReturn() {
         
+        let expectation = self.expectation(description: "minimumProtocolsReturned")
         let helper = test_tealium_helper()
         let module = TealiumPersistentDataModule(delegate: nil)
-        let tuple = helper.modulesReturnsMinimumProtocols(module: module)
-        XCTAssertTrue(tuple.success, "Not all protocols returned. Failing protocols: \(tuple.protocolsFailing)")
+        helper.modulesReturnsMinimumProtocols(module: module) { (success, failingProtocols) in
+            
+            expectation.fulfill()
+            XCTAssertTrue(success, "Not all protocols returned. Failing protocols: \(failingProtocols)")
+            
+        }
         
+        self.waitForExpectations(timeout: 1.0, handler: nil)
+
     }
     
     func testEnableDisable(){
         
         let module = TealiumPersistentDataModule(delegate: nil)
         
-        module.enable(config: testTealiumConfig)
+        module.enable(TealiumEnableRequest(config: testTealiumConfig))
         
         XCTAssertTrue(module.persistentData != nil, "Persistent Data did not init.")
         
-        module.disable()
+        module.disable(TealiumDisableRequest())
         
         XCTAssertTrue(module.persistentData == nil, "Persistent Data did not nil out.")
         
         
     }
- 
-    func testTrackWhileEnabledDisabled(){
-        
-        delegateExpectationSuccess = self.expectation(description: "trackWhenEnabled")
-        
-        let module = TealiumPersistentDataModule(delegate: self)
-        
-        module.enable(config: testTealiumConfig)
-        
-        let testTrack = TealiumTrack(data: [String:AnyObject](),
-                                     info: nil,
-                                     completion: {(success, info, error) in
 
-                    XCTAssertTrue(success, "Track mock did not return success.")
-
-                                        
-        })
-        
-        module.track(testTrack)
-        
-        delegateExpectationFail = self.expectation(description: "trackWhenDisabled")
-        
-        module.disable()
-        
-        let testTrackAfter = TealiumTrack(data: [String:AnyObject](),
-                                     info: nil,
-                                     completion: {(success, info, error) in
-                                        
-            XCTAssertFalse(success, "Track mock did unexpectedly returned success.")
-                                        
-        })
-        
-        module.track(testTrackAfter)
-        
-        self.waitForExpectations(timeout: 1.0, handler: nil)
-        
-        
-    }
+    // TODO: Decide if we want persistence to report ok even if unable to load persistence
+    //  rather than blocking further processing.
+    
+//    func testTrackWhileEnabledDisabled(){
+//        
+//        delegateExpectationSuccess = self.expectation(description: "trackWhenEnabled")
+//        
+//        let module = TealiumPersistentDataModule(delegate: self)
+//        
+//        module.enable(config: testTealiumConfig)
+//        
+//        let testTrack = TealiumTrack(data: [String:AnyObject](),
+//                                     info: nil,
+//                                     completion: {(success, info, error) in
+//
+//                XCTAssertTrue(success, "Track mock did not return success.")
+//
+//                                        
+//        })
+//        
+//        module.track(testTrack)
+//        
+//        delegateExpectationFail = self.expectation(description: "trackWhenDisabled")
+//        
+//        module.disable()
+//        
+//        let testTrackAfter = TealiumTrack(data: [String:AnyObject](),
+//                                     info: nil,
+//                                     completion: {(success, info, error) in
+//                                        
+//            XCTAssertFalse(success, "Track mock did unexpectedly returned success.")
+//                                        
+//        })
+//        
+//        module.track(testTrackAfter)
+//        
+//        self.waitForExpectations(timeout: 1.0, handler: nil)
+//        
+//        
+//    }
     
     func testBasicTrackCall() {
         
@@ -97,11 +107,11 @@ class TealiumPersistentDataModuleTests: XCTestCase {
         
         let module = TealiumPersistentDataModule(delegate: self)
         
-        module.enable(config: testTealiumConfig)
+        module.enable(TealiumEnableRequest(config: testTealiumConfig))
         
-        let testTrack = TealiumTrack(data: testDataDictionary,
-                                     info: nil,
-                                     completion: {(success, info, error) in
+        let testTrack = TealiumTrackRequest(data: testDataDictionary,
+                                            info: nil,
+                                            completion: {(success, info, error) in
         
                 XCTAssertTrue(success, "Track mock did not return success.")
                 
@@ -111,11 +121,9 @@ class TealiumPersistentDataModuleTests: XCTestCase {
                 }
                 
                 let event = payload[TealiumKey.event] as! String
-                let eventName = payload[TealiumKey.eventName] as! String
                 let eventType = payload[TealiumKey.eventType] as! String
                 
                 XCTAssertTrue(event == TealiumTestValue.title)
-                XCTAssertTrue(eventName == TealiumTestValue.title)
                 XCTAssertTrue(eventType == TealiumTestValue.eventType)
                                         
         })
@@ -131,26 +139,32 @@ class TealiumPersistentDataModuleTests: XCTestCase {
 extension TealiumPersistentDataModuleTests : TealiumModuleDelegate {
     
     
-    func tealiumModuleFinished(module: TealiumModule, process: TealiumProcess) {
+    func tealiumModuleFinished(module: TealiumModule, process: TealiumRequest) {
         
-        if process.type == .track && process.error == nil {
-            let payload = testDataDictionary
-            process.track?.completion?(true, [PersistantDataModuleTestKey.payload: payload as AnyObject], nil)
-            delegateExpectationSuccess?.fulfill()
-        }
-        if process.type == .track && process.error != nil {
-            process.track?.completion?(false, nil, nil)
-            delegateExpectationFail?.fulfill()
+        guard let trackRequest = process as? TealiumTrackRequest else {
+            return
         }
         
+        // Look through responses for any errors
+        for response in trackRequest.moduleResponses {
+            if response.error != nil {
+                delegateExpectationFail?.fulfill()
+                trackRequest.completion?(false, trackRequest.info, response.error)
+                return
+            }
+            
+        }
+        let payload = trackRequest.data
+        delegateExpectationSuccess?.fulfill()
+        trackRequest.completion?(true, [PersistantDataModuleTestKey.payload: payload as AnyObject], nil)
         
     }
     
-    func tealiumModuleFinishedReport(fromModule: TealiumModule, module: TealiumModule, process: TealiumProcess) {
+    func tealiumModuleFinishedReport(fromModule: TealiumModule, module: TealiumModule, process: TealiumRequest) {
         
     }
     
-    func tealiumModuleRequests(module: TealiumModule, process: TealiumProcess) {
+    func tealiumModuleRequests(module: TealiumModule, process: TealiumRequest) {
         
     }
     

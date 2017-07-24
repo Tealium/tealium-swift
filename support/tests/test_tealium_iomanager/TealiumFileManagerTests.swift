@@ -59,7 +59,7 @@ class TealiumFileManagerTests: XCTestCase {
         
         let corruptData = TealiumFileManager.loadData(forUniqueId: uniqueId)
         
-        XCTAssertTrue(corruptData == nil, "CorruptData not nil: \(corruptData)")
+        XCTAssertTrue(corruptData == nil, "CorruptData not nil: \(String(describing: corruptData))")
     }
     
     func testDelete() {

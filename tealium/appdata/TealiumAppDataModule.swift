@@ -8,58 +8,96 @@
 
 import Foundation
 
+// MARK:
+// MARK: CONSTANTS
+public enum TealiumAppDataKey {
+    static let moduleName = "appdata"
+    static let name = "app_name"
+    static let rdns = "app_rdns"
+    static let uuid = "app_uuid"
+    static let version = "app_version"
+    static let legacyVid = "tealium_vid"        // deprecating
+    static let visitorId = "tealium_visitor_id" // deprecating
+}
+
+// MARK:
+// MARK: MODULE SUBCLASS
 
 /// Module to add app related data to track calls.
 class TealiumAppDataModule : TealiumModule {
     
-    var persistentDataManager : TealiumPersistentData?
+    var appData = [String:Any]()
     
-    override func moduleConfig() -> TealiumModuleConfig {
+    override class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumAppDataKey.moduleName,
                                    priority: 500,
-                                   build: 1,
+                                   build: 2,
                                    enabled: true)
     }
     
-    override func enable(config: TealiumConfig) {
-        
-        let uniqueId = TealiumPersistentData.uniqueId(forConfig: config,
-                                                      module: self,
-                                                      additionalIdentifier: nil)
-        
-        persistentDataManager = TealiumPersistentData.init(uniqueId: uniqueId)
-        
-        // Load new persistent data
-        if persistentDataManager?.persistentDataCache.isEmpty == true {
-            let uuid = newUuid()
-            let newData = newPersistentData(forUuid: uuid)
-            persistentDataManager?.add(data: newData)
+     override func enable(_ request: TealiumEnableRequest) {
+
+        let loadRequest = TealiumLoadRequest(name: TealiumAppDataModule.moduleConfig().name) { [weak self] (success, data, error) in
+         
+            // No prior saved data
+            guard let loadedData = data else {
+                self?.setNewAppData()
+                return
+            }
+            
+            // Loaded data does not contain expected keys
+            if TealiumAppDataModule.isMissingPersistentKeys(loadedData) == true {
+                self?.setNewAppData()
+                return
+            }
+            
+            self?.setLoadedAppData(loadedData)
         }
         
-        didFinishEnable(config: config)
+        delegate?.tealiumModuleRequests(module: self,
+                                        process: loadRequest)
+
+        // Little wonky here because what if a persistence modules is still in the
+        //  process of returning data?
+        isEnabled = true
+        
+        // We're not going to wait for the loadrequest to return because it may never
+        //  if there are no persistence modules enabled.
+        didFinish(request)
         
     }
     
-    override func disable() {
+    override func disable(_ request: TealiumDisableRequest) {
         
-        persistentDataManager = nil
+        self.appData.removeAll()
+        self.isEnabled = false
+        didFinish(request)
         
-        didFinishDisable()
     }
     
-    override func track(_ track: TealiumTrack) {
+    override func track(_ track: TealiumTrackRequest) {
         
+        if isEnabled == false {
+            // Ignore this module
+            didFinishWithNoResponse(track)
+            return
+        }
+        
+        // If no persistence modules enabled.
+        if TealiumAppDataModule.isMissingPersistentKeys(appData) {            
+            self.setNewAppData()
+        }
+    
+        // Populate data stream
         var newData = [String:Any]()
-        if let appData = persistentDataManager?.persistentDataCache {
-            newData += appData
-        }
+        newData += appData
         newData += track.data
         
-        let newTrack = TealiumTrack(data: newData,
-                                    info: track.info,
-                                    completion: track.completion)
+        let newTrack = TealiumTrackRequest(data: newData,
+                                           info: track.info,
+                                           completion: track.completion)
         
-        didFinishTrack(newTrack)
+        didFinish(newTrack)
         
     }
     
@@ -67,6 +105,14 @@ class TealiumAppDataModule : TealiumModule {
     // MARK: INTERNAL
     // TODO: Migrate to it's own class when additiona data variables are added.
     
+    class func isMissingPersistentKeys(_ data: [String:Any]) -> Bool {
+        
+        if data[TealiumAppDataKey.uuid] == nil {return true}
+        if data[TealiumAppDataKey.visitorId] == nil {return true}
+        if data[TealiumAppDataKey.legacyVid] == nil {return true}
+        return false
+        
+    }
     
     func newUuid() -> String {
         
@@ -99,5 +145,48 @@ class TealiumAppDataModule : TealiumModule {
         return data as [String : Any]
     }
     
+    func newVolatileData() -> [String:Any] {
+        var result : [String:Any] = [:]
+        let main = Bundle.main
+        
+        // Check & add
+        if let name = main.infoDictionary?[kCFBundleNameKey as String] as? String {
+            result[TealiumAppDataKey.name] = name
+        }
+        
+        if let rdns = main.bundleIdentifier {
+            result[TealiumAppDataKey.rdns] = rdns
+        }
+        
+        if let version = main.infoDictionary?[kCFBundleVersionKey as String] as? String {
+            result[TealiumAppDataKey.version] = version
+        }
+        
+        return result
+        
+    }
+    
+    func savePersistentData(_ data: [String:Any]) {
+        
+        let saveRequest = TealiumSaveRequest(name: TealiumAppDataModule.moduleConfig().name,
+                                             data: data)
+        
+        delegate?.tealiumModuleRequests(module: self,
+                                        process: saveRequest)
+    }
+    
+    func setNewAppData() {
+        
+        let newUuid = self.newUuid()
+        self.appData = self.newPersistentData(forUuid: newUuid)
+        self.appData += newVolatileData()
+        self.savePersistentData(self.appData)
+        
+    }
+    
+    func setLoadedAppData( _ data: [String:Any]) {
+        self.appData = data
+        self.appData += newVolatileData()
+    }
     
 }

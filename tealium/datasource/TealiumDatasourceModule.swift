@@ -15,12 +15,24 @@ enum TealiumDatasourceKey {
 }
 
 extension TealiumConfig {
+    
+    convenience init(account:String,
+                     profile:String,
+                     environment:String,
+                     datasource:String?) {
+        self.init(account: account,
+                  profile: profile,
+                  environment: environment,
+                  datasource: datasource,
+                  optionalData: nil)
+        
+    }
 
     convenience init(account:String,
                      profile:String,
                      environment:String,
                      datasource:String?,
-                     optionalData:[String:Any]?) {
+                     optionalData:[String:Any]?){
         
         var newOptionalData = [String:Any]()
         if let initialOptionalData = optionalData {
@@ -33,7 +45,6 @@ extension TealiumConfig {
                   profile:profile,
                   environment:environment,
                   optionalData:newOptionalData)
-        
     }
     
 }
@@ -42,36 +53,38 @@ class TealiumDatasourceModule : TealiumModule {
     
     var datasource : String?
     
-    override func moduleConfig() -> TealiumModuleConfig {
+    override class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumDatasourceKey.moduleName,
                                    priority: 550,
-                                   build: 1,
+                                   build: 2,
                                    enabled: true)
     }
     
-    override func enable(config: TealiumConfig) {
+    override func enable(_ request: TealiumEnableRequest) {
         
-        if let datasourceString = config.optionalData[TealiumDatasourceKey.config] as? String {
+        isEnabled = true
+        
+        if let datasourceString = request.config.optionalData[TealiumDatasourceKey.config] as? String {
             datasource = datasourceString
         }
         
-        didFinishEnable(config: config)
+        didFinish(request)
     }
     
-    override func track(_ track: TealiumTrack) {
+    override func track(_ track: TealiumTrackRequest) {
         
         guard let datasource = self.datasource else {
-            didFinishTrack(track)
+            didFinish(track)
             return
         }
         
         var newData : [String:Any] = [TealiumDatasourceKey.variable:datasource]
         newData += track.data
-        let newTrack = TealiumTrack(data: newData,
-                                    info: track.info,
-                                    completion: track.completion)
+        let newTrack = TealiumTrackRequest(data: newData,
+                                           info: track.info,
+                                           completion: track.completion)
         
-        didFinishTrack(newTrack)
+        didFinish(newTrack)
     }
 
     

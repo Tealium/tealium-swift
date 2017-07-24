@@ -20,6 +20,16 @@ extension String {
     }
 }
 
+extension Dictionary where Key == String, Value == Any {
+    
+    mutating func safelyAdd(key: String, value: Any?) {
+        if let v = value {
+            self += [key:v]
+        }
+    }
+
+}
+
 /**
  Allows use of plus operator for array reduction calls.
  */

@@ -50,7 +50,7 @@ class TealiumConfigTests: XCTestCase {
         }
         
         // Value was not as expected
-        print("testSetOptionalData: retrievedValue: \(config.optionalData[key])")
+        print("testSetOptionalData: retrievedValue: \(String(describing: config.optionalData[key]))")
         XCTFail()
         
     }

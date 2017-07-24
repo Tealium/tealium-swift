@@ -27,7 +27,6 @@ class TealiumCollectTests: XCTestCase {
             TealiumKey.profile : "profile" ,
             TealiumKey.environment : "environment" ,
             TealiumKey.event : "test" ,
-            TealiumKey.eventName : "eventName" ,
             TealiumKey.eventType : TealiumTrackType.activity.description() ,
             TealiumKey.libraryName : TealiumValue.libraryName ,
             TealiumKey.libraryVersion : TealiumValue.libraryVersion ,
@@ -111,7 +110,7 @@ class TealiumCollectTests: XCTestCase {
         
         // Check to see that encoding with dispatch was correctly converted to expected URL
         // NOTE: We'll always need to update this expected URL with the current lib version. This is fine, sort of an extra layer of check on that value prior to production release.
-        let expectedURL = "https://collect.tealiumiq.com/vdata/i.gif?event_name=eventName&tealium_account=account&tealium_environment=environment&tealium_event=test&tealium_event_type=activity&tealium_library_name=swift&tealium_library_version=1.2.0&tealium_profile=profile&tealium_random=someRandomNumber&tealium_session_id=someSessionId&tealium_vid=someVID&tealium_visitor_id=someVisitorId"
+        let expectedURL = "https://collect.tealiumiq.com/vdata/i.gif?tealium_account=account&tealium_environment=environment&tealium_event=test&tealium_event_type=activity&tealium_library_name=swift&tealium_library_version=1.3.0&tealium_profile=profile&tealium_random=someRandomNumber&tealium_session_id=someSessionId&tealium_vid=someVID&tealium_visitor_id=someVisitorId"
 
         
         let collect = TealiumCollect(baseURL: TealiumCollect.defaultBaseURLString())
@@ -120,11 +119,11 @@ class TealiumCollectTests: XCTestCase {
         collect.dispatch(data: validTestDataDictionary()) { (success, info, error) in
             
             guard let encodedURLString = info?[TealiumCollectKey.encodedURLString] as? String else {
-                XCTFail("Could not retrieve encoded url from info dictionary: \(info)")
+                XCTFail("Could not retrieve encoded url from info dictionary: \(String(describing: info))")
                 return
             }
             
-            XCTAssertTrue(expectedURL == encodedURLString, "\n\nUnexpected encoded url string used by dispatch: \(encodedURLString) \n\n expectedURL: \(expectedURL)")
+            XCTAssertTrue(expectedURL == encodedURLString, "\n\nUnexpected encoded url string used by dispatch: \(encodedURLString) \n\nexpectedURL: \(expectedURL)")
             expectation.fulfill()
         }
         
@@ -152,7 +151,7 @@ class TealiumCollectTests: XCTestCase {
     // TODO: Replace with mock object testing - This will fail if the test is run without wifi and responding server.
     func testValidSend() {
         
-        let validURL = "https://collect.tealiumiq.com/vdata/i.gif?tealium_library_version=1.1.2&tealium_session_id=someSessionId&tealium_library_name=swift&tealium_vid=someVID&tealium_random=someRandomNumber&event_name=eventName&tealium_account=account&tealium_profile=profile&tealium_environment=environment&tealium_visitor_id=someVisitorId&tealium_firstparty_visitor_id=someVisitorId"
+        let validURL = "https://collect.tealiumiq.com/vdata/i.gif?tealium_library_version=1.1.2&tealium_session_id=someSessionId&tealium_library_name=swift&tealium_vid=someVID&tealium_random=someRandomNumber&tealium_account=account&tealium_profile=profile&tealium_environment=environment&tealium_visitor_id=someVisitorId&tealium_firstparty_visitor_id=someVisitorId"
         
         let collect = TealiumCollect(baseURL: "thisURLdoesntMatter")
         let expectation = self.expectation(description: "validSend")

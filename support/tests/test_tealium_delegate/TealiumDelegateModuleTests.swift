@@ -24,11 +24,18 @@ class TealiumDelegateModuleTests: XCTestCase {
     
     func testMinimumProtocolsReturn() {
         
+        let expectation = self.expectation(description: "minimumProtocolsReturned")
         let helper = test_tealium_helper()
         let module = TealiumDelegateModule(delegate: nil)
-        let tuple = helper.modulesReturnsMinimumProtocols(module: module)
-        XCTAssertTrue(tuple.success, "Not all protocols returned. Failing protocols: \(tuple.protocolsFailing)")
+        helper.modulesReturnsMinimumProtocols(module: module) { (success, failingProtocols) in
+            
+            expectation.fulfill()
+            XCTAssertTrue(success, "Not all protocols returned. Failing protocols: \(failingProtocols)")
+            
+        }
         
+        self.waitForExpectations(timeout: 1.0, handler: nil)
+
     }
     
     // Bit of a clunky test
@@ -40,7 +47,7 @@ class TealiumDelegateModuleTests: XCTestCase {
                                    profile: "test",
                                    environment: "test",
                                    optionalData: nil)
-        module!.enable(config: config)
+        module!.enable(TealiumEnableRequest(config: config))
         
         // Create an array of delegate objects
         let numberOfDelegates = 100
@@ -52,9 +59,9 @@ class TealiumDelegateModuleTests: XCTestCase {
         }
         
         // Run a track call through the module
-        let track = TealiumTrack(data: ["key":"value"],
-                                 info: ["infoKey":"infoValue"],
-                                 completion: nil)
+        let track = TealiumTrackRequest(data: ["key":"value"],
+                                        info: ["infoKey":"infoValue"],
+                                        completion: nil)
         module!.track(track)
         
         // Check array
@@ -93,21 +100,24 @@ class TealiumDelegateModuleTests: XCTestCase {
 extension TealiumDelegateModuleTests : TealiumModuleDelegate {
     
     func tealiumModuleFinished(module: TealiumModule,
-                               process: TealiumProcess) {
+                               process: TealiumRequest) {
         
         // Simulate Module manager passing HandleReport call to delegateModule
-        self.module!.delegates?.invokeTrackCompleted(forTrackProcess: process)
+        
+        if let request = process as? TealiumTrackRequest {
+            self.module!.delegates?.invokeTrackCompleted(forTrackProcess: request)
+        }
         
     }
     
     func tealiumModuleRequests(module: TealiumModule,
-                               process: TealiumProcess) {
+                               process: TealiumRequest) {
         
     }
     
     func tealiumModuleFinishedReport(fromModule: TealiumModule,
                                      module: TealiumModule,
-                                     process: TealiumProcess) {
+                                     process: TealiumRequest) {
         
     }
     

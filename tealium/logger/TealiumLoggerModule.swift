@@ -5,8 +5,88 @@
 //  Created by Jason Koo on 10/5/16.
 //  Copyright © 2016 tealium. All rights reserved.
 //
+//  Build 2
 
 import Foundation
+
+// MARK:
+// MARK: CONSTANTS
+
+enum TealiumLoggerKey {
+    static let moduleName = "logger"
+    static let logLevelConfig = "com.tealium.logger.loglevel"
+    static let shouldEnable = "com.tealium.logger.enable"
+}
+
+public enum TealiumLogLevelValue {
+    static let errors = "errors"
+    static let none = "none"
+    static let verbose = "verbose"
+    static let warnings = "warnings"
+}
+
+public enum TealiumLoggerModuleError : Error {
+    
+    case moduleDisabled
+    case noAccount
+    case noProfile
+    case noEnvironment
+    
+}
+
+let defaultTealiumLogLevel : TealiumLogLevel = .verbose
+
+public enum TealiumLogLevel : Int, Comparable {
+    case none
+    case errors
+    case warnings
+    case verbose
+    
+    var description : String {
+        switch self {
+        case .errors:
+            return TealiumLogLevelValue.errors
+        case .warnings:
+            return TealiumLogLevelValue.warnings
+        case .verbose:
+            return TealiumLogLevelValue.verbose
+        default:
+            return TealiumLogLevelValue.none
+        }
+    }
+    
+    static func fromString(_ string: String) -> TealiumLogLevel {
+        switch string.lowercased() {
+        case TealiumLogLevelValue.errors:
+            return .errors
+        case TealiumLogLevelValue.warnings:
+            return .warnings
+        case TealiumLogLevelValue.verbose:
+            return .verbose
+        default:
+            return .none
+        }
+    }
+    
+    public static func < (a: TealiumLogLevel, b: TealiumLogLevel) -> Bool {
+        return a.rawValue < b.rawValue
+    }
+    
+    public static func > (a: TealiumLogLevel, b: TealiumLogLevel) -> Bool {
+        return a.rawValue > b.rawValue
+    }
+    
+    public static func <= (a: TealiumLogLevel, b: TealiumLogLevel) -> Bool {
+        return a.rawValue <= b.rawValue
+    }
+    
+    public static func >= (a: TealiumLogLevel, b: TealiumLogLevel) -> Bool {
+        return a.rawValue >= b.rawValue
+    }
+}
+
+// MARK:
+// MARK: EXTENSIONS
 
 extension Tealium {
     
@@ -24,104 +104,188 @@ extension Tealium {
 
 extension TealiumConfig {
     
-    @available(*, deprecated, message: "Use the Tealium.logger().getLogLevel() API instead.")
-    func getLogLevel() -> LogLevel {
+    func getLogLevel() -> TealiumLogLevel {
         
-        // Stub - Config can no longer access log levels.
-        return .none
+        if let level = self.optionalData[TealiumLoggerKey.logLevelConfig] as? TealiumLogLevel {
+            return level
+        }
+        
+        // Default
+        return defaultTealiumLogLevel
         
     }
     
-    @available(*, deprecated, message: "Use the Tealium.logger().setLogLevel() API instead.")
-    func setLogLevel(logLevel: LogLevel) {
+    func setLogLevel(logLevel: TealiumLogLevel) {
         
-        // Do nothing - Config can no longer manipulate log levels.
+        self.optionalData[TealiumLoggerKey.logLevelConfig] = logLevel
         
     }
     
 }
 
+// MARK:
+// MARK: MODULE
 
 /// Module for adding basic console log output.
 class TealiumLoggerModule : TealiumModule {
     
     var logger : TealiumLogger?
 
-    override func moduleConfig() -> TealiumModuleConfig {
+    override class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumLoggerKey.moduleName,
                                    priority: 100,
                                    build: 3,
                                    enabled: true)
     }
     
-    override func enable(config:TealiumConfig) {
+    override func enable(_ request: TealiumEnableRequest) {
         
+        isEnabled = true
         if logger == nil {
-
+            
+            let config = request.config
+            let logLevel = config.getLogLevel()
             let id = "\(config.account):\(config.profile):\(config.environment)"
-        
-            logger = TealiumLogger(loggerId: id, logLevel: .verbose)
+            logger = TealiumLogger(loggerId: id, logLevel: logLevel)
+            
         }
         
-        didFinishEnable(config: config)
+        delegate?.tealiumModuleRequests(module: self,
+                                        process: TealiumReportNotificationsRequest())
+        
+        didFinish(request)
 
     }
     
-    override func disable() {
+    override func disable(_ request: TealiumDisableRequest) {
         
+        isEnabled = false
         logger = nil
-        
-        didFinishDisable()
+        didFinish(request)
 
     }
     
-    override func handleReport(fromModule: TealiumModule,
-                               process: TealiumProcess) {
-        
-        switch process.type {
-        case .enable:
-            let message = process.successful == true ? "ENABLED" : "FAILED TO ENABLE"
-            logWithPrefix(fromModule: fromModule,
-                          message: message,
-                          logLevel: .verbose)
-        case .disable:
-            let message = process.successful == true ? "DISABLED" : "FAILED TO DISABLE"
-            logWithPrefix(fromModule: fromModule,
-                          message: message,
-                          logLevel: .verbose)
-        case .track:
-            if process.successful == false {
-                let message = "FAILED TRACK: \(String(describing: process.track?.data)) \(String(describing: process.error))"
-                logWithPrefix(fromModule: fromModule,
-                              message: message,
-                              logLevel: .warnings)
-            }
+    override func handleReport(_ request: TealiumRequest) {
 
+        let moduleResponses = request.moduleResponses
+        
+        if request is TealiumEnableRequest {
+            
+            for response in moduleResponses {
+                
+                let successMessage = response.success == true ? "ENABLED" : "FAILED TO ENABLE"
+                let message = "\(response.moduleName): \(successMessage)"
+                let _ = logger?.log(message: message,
+                                    logLevel: .verbose)
+                
+            }
+        }
+
+        else if request is TealiumDisableRequest {
+            
+            for response in moduleResponses {
+                
+                let successMessage = response.success == true ? "ENABLED" : "FAILED TO DISABLE"
+                let message = "\(response.moduleName): \(successMessage)"
+                let _ = logger?.log(message: message,
+                                    logLevel: .verbose)
+                
+            }
+        }
+
+        else if let request = request as? TealiumTrackRequest {
+            
+            guard let info = request.info else {
+                // No response data. This track call made it through the
+                //   chain but was not delivered by any dispatch service.
+                return
+            }
+            
+            if info.isEmpty {
+                // Info dict is empty - same issue as above
+                return
+            }
+            
+            guard let logger = self.logger else {
+                // Logger disabled?
+                return
+            }
+            
+            if logger.logThreshold < TealiumLogLevel.verbose {
+                // Track logging not requested.
+                return
+            }
+            
+            for response in moduleResponses {
+                
+                let successMessage = response.success == true ? "SUCCESSFUL TRACK" : "FAILED TO TRACK"
+                let message = "\(response.moduleName): \(successMessage)\nINFO:\n\(info as AnyObject)"
+                let _ = logger.log(message: message,
+                                    logLevel: .verbose)
+                
+            }
+            
         }
         
-        guard let error = process.error else {
-            didFinishReport(fromModule: fromModule,
-                            process: process)
-            return
+        else if let r = request as? TealiumReportRequest{
+            let message = "\(r.message)"
+            let _ = logger?.log(message: message,
+                               logLevel: .verbose)
         }
         
-        logWithPrefix(fromModule: fromModule,
-                      message: error.localizedDescription,
-                      logLevel: .errors)
-        
-        didFinishReport(fromModule: fromModule,
-                        process: process)
+        for response in moduleResponses {
+            guard let error = response.error else {
+                continue
+            }
+            let message = "\(response.moduleName): Encountered error: \(error)"
+            let _ = logger?.log(message: message,
+                                logLevel: .errors)
+            
+        }
         
     }
     
     func logWithPrefix(fromModule: TealiumModule,
                        message: String,
-                       logLevel: LogLevel) {
+                       logLevel: TealiumLogLevel) {
         
-        let moduleConfig = fromModule.moduleConfig()
+        let moduleConfig = type(of:fromModule).moduleConfig()
         let newMessage = "\(moduleConfig.name) module.\(moduleConfig.build): \(message)"
         let _ = logger?.log(message: newMessage, logLevel: logLevel)
         
+    }
+    
+}
+
+// MARK:
+// MARK: CLASSES
+/**
+ Internal console logger for library debugging.
+ 
+ */
+public class TealiumLogger {
+    
+    let idString : String
+    var logThreshold : TealiumLogLevel
+    
+    init(loggerId: String, logLevel: TealiumLogLevel) {
+        
+        self.idString = loggerId
+        self.logThreshold = logLevel
+        
+    }
+    
+    public func log(message: String, logLevel: TealiumLogLevel) -> String? {
+        
+        if logThreshold.hashValue >= logLevel.hashValue {
+            var verbosity = ""
+            if logLevel == .errors { verbosity = "ERROR: "}
+            if logLevel == .warnings { verbosity = "WARNING: "}
+            
+            print("*** TEALIUM SWIFT \(TealiumValue.libraryVersion) *** Instance \(idString): \(verbosity)\(message)")
+            return message
+        }
+        return nil
     }
     
 }

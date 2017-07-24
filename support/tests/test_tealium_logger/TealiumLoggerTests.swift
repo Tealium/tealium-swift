@@ -22,25 +22,25 @@ class TealiumLoggerTests: XCTestCase {
     
     func testDescriptions() {
         
-        XCTAssertTrue(LogLevel.errors.description == "errors")
-        XCTAssertTrue(LogLevel.none.description == "none")
-        XCTAssertTrue(LogLevel.warnings.description == "warnings")
-        XCTAssertTrue(LogLevel.verbose.description == "verbose")
+        XCTAssertTrue(TealiumLogLevel.errors.description == "errors")
+        XCTAssertTrue(TealiumLogLevel.none.description == "none")
+        XCTAssertTrue(TealiumLogLevel.warnings.description == "warnings")
+        XCTAssertTrue(TealiumLogLevel.verbose.description == "verbose")
         
     }
     
     func testFromString() {
         
-        XCTAssertTrue(LogLevel.fromString("errors") == LogLevel.errors)
-        XCTAssertTrue(LogLevel.fromString("none") == LogLevel.none)
-        XCTAssertTrue(LogLevel.fromString("warnings") == LogLevel.warnings)
-        XCTAssertTrue(LogLevel.fromString("verbose") == LogLevel.verbose)
+        XCTAssertTrue(TealiumLogLevel.fromString("errors") == TealiumLogLevel.errors)
+        XCTAssertTrue(TealiumLogLevel.fromString("none") == TealiumLogLevel.none)
+        XCTAssertTrue(TealiumLogLevel.fromString("warnings") == TealiumLogLevel.warnings)
+        XCTAssertTrue(TealiumLogLevel.fromString("verbose") == TealiumLogLevel.verbose)
         
     }
     
-    func testLogLevelErrors() {
+    func testTealiumLogLevelErrors() {
         
-        let logLevel = LogLevel.errors
+        let logLevel = TealiumLogLevel.errors
         let logger = TealiumLogger(loggerId: "test", logLevel: logLevel)
         let message = "test"
         let string = logger.log(message: message, logLevel: logLevel)
@@ -49,9 +49,9 @@ class TealiumLoggerTests: XCTestCase {
         
     }
     
-    func testLogLevelWarnings() {
+    func testTealiumLogLevelWarnings() {
         
-        let logLevel = LogLevel.warnings
+        let logLevel = TealiumLogLevel.warnings
         let logger = TealiumLogger(loggerId: "test",logLevel: logLevel)
         let message = "test"
         let string = logger.log(message: message, logLevel: logLevel)
@@ -60,18 +60,18 @@ class TealiumLoggerTests: XCTestCase {
         
     }
     
-    func testLogLevelVerbose () {
+    func testTealiumLogLevelVerbose () {
         
-        let logLevel = LogLevel.verbose
+        let logLevel = TealiumLogLevel.verbose
         let logger = TealiumLogger(loggerId: "test",logLevel: logLevel)
         let message = "test"
         let string = logger.log(message: message, logLevel: logLevel)
         
         XCTAssertTrue(message == string)    }
     
-    func testLogLevelNone () {
+    func testTealiumLogLevelNone () {
         
-        let logLevel = LogLevel.none
+        let logLevel = TealiumLogLevel.none
         let logger = TealiumLogger(loggerId: "test",logLevel: logLevel)
         let message = "test"
         let string = logger.log(message: message, logLevel: logLevel)
@@ -82,10 +82,10 @@ class TealiumLoggerTests: XCTestCase {
     
     func testLogMessageSuppressed() {
         
-        let logLevel = LogLevel.warnings
+        let logLevel = TealiumLogLevel.warnings
         let logger = TealiumLogger(loggerId: "test",logLevel: logLevel)
         let message = "test"
-        let string = logger.log(message: message, logLevel: LogLevel.verbose)
+        let string = logger.log(message: message, logLevel: TealiumLogLevel.verbose)
         
         XCTAssertTrue(string == nil)
     }

@@ -44,7 +44,7 @@ class TealiumRemoteHTTPCommandTests: XCTestCase {
                                       "body":body,
                                       "method":method]
         let result = TealiumRemoteHTTPCommand.httpRequest(payload: payload)
-        XCTAssertTrue(result.error == nil, "Unexpected error: \(result.error)")
+        XCTAssertTrue(result.error == nil, "Unexpected error: \(String(describing: result.error))")
 
         guard let request = result.request else {
             XCTFail("No request from process.")
@@ -69,9 +69,9 @@ class TealiumRemoteHTTPCommandTests: XCTestCase {
         let returnedHeaderFields = request.allHTTPHeaderFields!
         
         XCTAssertTrue(expectedHeaderFields == returnedHeaderFields, "Unexpected result from returned header fields: \(returnedHeaderFields)")
-        XCTAssertTrue(request.httpMethod == method, "Unexpected method type:\(request.httpMethod)")
+        XCTAssertTrue(request.httpMethod == method, "Unexpected method type:\(String(describing: request.httpMethod))")
         let expectedUrl = "\(scheme)://\(commandId)?1=2&3=4&a=%5B%22a1%22,%20%22a2%22,%20%22a3%22%5D"   // Being lazy here
-        XCTAssertTrue(expectedUrl == request.url?.absoluteString, "Unexpected request url: \(request.url?.absoluteString)")
+        XCTAssertTrue(expectedUrl == request.url?.absoluteString, "Unexpected request url: \(String(describing: request.url?.absoluteString))")
         
         // requestUrl
         //  scheme = tealium
@@ -79,8 +79,8 @@ class TealiumRemoteHTTPCommandTests: XCTestCase {
         //  password=nil
         //  user=nil,
         
-        XCTAssertTrue(requestUrl.scheme == scheme, "Unexpected scheme: \(requestUrl.scheme)")
-        XCTAssertTrue(requestUrl.host == commandId, "Unexpected commandId:\(requestUrl.host)")
+        XCTAssertTrue(requestUrl.scheme == scheme, "Unexpected scheme: \(String(describing: requestUrl.scheme))")
+        XCTAssertTrue(requestUrl.host == commandId, "Unexpected commandId:\(String(describing: requestUrl.host))")
 
         
     }

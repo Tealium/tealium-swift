@@ -5,6 +5,8 @@
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
+// TODO: Replace with new persistent request protocol
+
 import Foundation
 
 enum TealiumLifecyclePersistentDataError : Error {

@@ -14,12 +14,12 @@ class TealiumAutotrackingModuleTests: XCTestCase {
     var expectationRequest : XCTestExpectation?
     var expectationShouldTrack : XCTestExpectation?
     var expectationDidComplete : XCTestExpectation?
-    var requestProcess : TealiumProcess?
+    var requestProcess : TealiumRequest?
     
     override func setUp() {
         super.setUp()
         module = TealiumAutotrackingModule(delegate: self)
-        module?.enable(config: testTealiumConfig)
+        module?.enable(TealiumEnableRequest(config: testTealiumConfig))
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
@@ -34,18 +34,25 @@ class TealiumAutotrackingModuleTests: XCTestCase {
     
     func testMinimumProtocolsReturn() {
         
+        let expectation = self.expectation(description: "minimumProtocolsReturned")
         let helper = test_tealium_helper()
         let module = TealiumAutotrackingModule(delegate: nil)
-        let tuple = helper.modulesReturnsMinimumProtocols(module: module)
-        XCTAssertTrue(tuple.success, "Not all protocols returned. Failing protocols: \(tuple.protocolsFailing)")
+        helper.modulesReturnsMinimumProtocols(module: module) { (success, failingProtocols) in
+            
+            expectation.fulfill()
+            XCTAssertTrue(success, "Not all protocols returned. Failing protocols: \(failingProtocols)")
+            
+        }
         
+        self.waitForExpectations(timeout: 1.0, handler: nil)
+
     }
     
     func testEnableDisable() {
         
         XCTAssertTrue(module!.notificationsEnabled)
         
-        module!.disable()
+        module!.disable(TealiumDisableRequest())
         
         XCTAssertFalse(module!.notificationsEnabled)
         
@@ -82,20 +89,15 @@ class TealiumAutotrackingModuleTests: XCTestCase {
         XCTAssertTrue(requestProcess != nil, "Request process missing.")
         
         let data: [String : Any] = ["tealium_event": "TestObject",
-                                    "event_name": "TestObject" ,
                                     "tealium_event_type": "activity",
                                     "autotracked" : "true"
         ]
 
-        guard let process = requestProcess else {
-            XCTFail("Process was unavailable.")
+        guard let process = requestProcess as? TealiumTrackRequest else {
+            XCTFail("Process was unavailable or of wrong type: \(String(describing: requestProcess))")
             return
         }
-        guard let receivedData = process.track?.data else {
-            
-            XCTFail("No track data retured with request: \(process)")
-            return
-        }
+        let receivedData = process.data
         
         XCTAssertTrue(receivedData == data, "Mismatch between data expected: \n \(data as AnyObject) and data received post processing: \n \(receivedData as AnyObject)")
         
@@ -104,7 +106,7 @@ class TealiumAutotrackingModuleTests: XCTestCase {
     
     func testRequestEmptyEventTrackWhenDisabled() {
         
-        module?.disable()
+        module?.disable(TealiumDisableRequest())
         
         let notification = Notification(name: Notification.Name(rawValue: "com.tealium.autotracking.event"),
                                         object: nil,
@@ -137,15 +139,16 @@ class TealiumAutotrackingModuleTests: XCTestCase {
         XCTAssertTrue(requestProcess != nil)
         
         let data: [String : Any] = ["tealium_event": "TestObject",
-                                    "event_name": "TestObject" ,
                                     "tealium_event_type": "activity",
                                     "autotracked" : "true"
         ]
         
-        guard let receivedData = requestProcess?.track?.data else {
-            XCTFail("No track data retured with request: \(requestProcess!)")
+        guard let request = requestProcess as? TealiumTrackRequest else {
+            XCTFail("Process not of track type.")
             return
         }
+        
+        let receivedData = request.data
         
         XCTAssertTrue(receivedData == data, "Mismatch between data expected: \n \(data as AnyObject) and data received post processing: \n \(receivedData as AnyObject)")
         
@@ -189,10 +192,12 @@ class TealiumAutotrackingModuleTests: XCTestCase {
         
         waitForExpectations(timeout: 1.0, handler: nil)
         
-        guard let receivedData = requestProcess?.track?.data else {
-            XCTFail("No track data retured with request: \(requestProcess!)")
+        guard let request = requestProcess as? TealiumTrackRequest else {
+            XCTFail("Request not a track type.")
             return
         }
+        
+        let receivedData = request.data
         
         XCTAssertTrue(customData.contains(otherDictionary: receivedData), "Custom data: \(customData) missing from track payload: \(receivedData)")
         
@@ -220,10 +225,11 @@ class TealiumAutotrackingModuleTests: XCTestCase {
         
         waitForExpectations(timeout: 1.0, handler: nil)
         
-        guard let receivedData = requestProcess?.track?.data else {
-            XCTFail("No track data retured with request: \(requestProcess!)")
+        guard let request = requestProcess as? TealiumTrackRequest else {
+            XCTFail("Request of incorrect type.")
             return
         }
+        let receivedData = request.data
         
         XCTAssertFalse(receivedData.contains(otherDictionary: customData), "Custom data: \(customData) was unexpectedly found in track payload: \(receivedData)")
         
@@ -238,20 +244,20 @@ class TealiumAutotrackingModuleTests: XCTestCase {
 
 extension TealiumAutotrackingModuleTests : TealiumModuleDelegate {
     
-    func tealiumModuleFinished(module: TealiumModule, process: TealiumProcess) {
+    func tealiumModuleFinished(module: TealiumModule, process: TealiumRequest) {
         
     }
     
-    func tealiumModuleRequests(module: TealiumModule, process: TealiumProcess) {
+    func tealiumModuleRequests(module: TealiumModule, process: TealiumRequest) {
 
         // TODO: Info and error callback handling
-        process.track?.completion?(true, nil, nil)
+        process.completion?(true, nil, nil)
         requestProcess = process
         expectationRequest?.fulfill()
         
     }
     
-    func tealiumModuleFinishedReport(fromModule: TealiumModule, module: TealiumModule, process: TealiumProcess) {
+    func tealiumModuleFinishedReport(fromModule: TealiumModule, module: TealiumModule, process: TealiumRequest) {
         
     }
 }

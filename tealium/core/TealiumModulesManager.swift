@@ -5,65 +5,67 @@
 //  Created by Jason Koo on 10/5/16.
 //  Copyright © 2016 tealium. All rights reserved.
 //
-//  Build 2
+//  Build 3
 
 import Foundation
-import ObjectiveC
 
 /**
     Coordinates optional modules with primary Tealium class.
- 
  */
 class TealiumModulesManager : NSObject {
     
-    var config : TealiumConfig
+    var config : TealiumConfig?
     var modules = [TealiumModule]()
     var isEnabled = true
-
-    init(config:TealiumConfig) {
+    var modulesRequestingReport = [Weak<TealiumModule>]()
+    lazy var trackQueue = [TealiumTrackRequest]()
+    
+    func setupModulesFrom(config: TealiumConfig) {
         
-        self.config = config
-        
+        let modulesList = config.getModulesList()
+        let newModules = TealiumModules.allModulesFor(modulesList,
+                                                      assigningDelegate: self)
+        self.modules = newModules.prioritized()
     }
     
     // MARK:
     // MARK: PUBLIC
-    func updateAll() {
+    func update(config:TealiumConfig){
         
-        if self.modules.isEmpty {
-            let newModules = getClassesOfType(c: TealiumModule.self)
-            
-            // Create instances of each module
-            for module in newModules {
-                addModule(klass: module)
-            }
-            
-        }
-        self.modules = self.modules.prioritized()
-        
-        // Check for duplicate module configs which would result in runtime crash later.
-        let duplicates = self.modules.duplicateModuleConfigs()
-        if duplicates.count > 0 {
-            // Implementation Error
-            assertionFailure("*** Tealium-swift SDK ***: Modules with duplicate TealiumModuleConfigs found: \(duplicates). Continuing would result in eventual crash. Check to make sure all ModuleConfigs are using unique priority values and/or names.")
+        if config == self.config {
+            // Ignore - No change in configuration
+            return
         }
         
-        // Enable first module to start chain enabling
-        isEnabled = true
-        self.modules.first?.update(config:self.config)
+        self.modules.removeAll()
+        enable(config: config)
         
     }
     
     
-    func disableAll() {
+    func enable(config: TealiumConfig) {
+        
+        self.isEnabled = true
+        self.config = config
+        self.setupModulesFrom(config: config)
+        let request = TealiumEnableRequest(config: self.config!)
+        self.modules.first?.handle(request)
+        
+    }
+    
+    
+    func disable() {
+        
         isEnabled = false
-        self.modules.prioritized()[0].disable()
+        let request = TealiumDisableRequest()
+        self.modules.first?.handle(request)
+        
     }
 
     
     func getModule(forName: String) -> TealiumModule? {
         
-        return modules.first(where: {$0.moduleConfig().name == forName})
+        return modules.first(where: { type(of:$0).moduleConfig().name == forName})
 
     }
     
@@ -76,93 +78,11 @@ class TealiumModulesManager : NSObject {
         }
         return true
     }
-
-    // MARK:
-    // MARK: INTERNAL AUTO MODULE DETECTION
     
-    /// Retrieve an array of all subclasses of a given class.
-    ///
-    /// - Parameter c: Target parent class.
-    /// - Returns: Array of subclass types.
-    func getClassesOfType(c: AnyClass) -> [AnyClass] {
-        let classes = getClassList()
-        var ret = [AnyClass]()
-        
-        for cls in classes {
-            if (class_getSuperclass(cls) == c) {
-                ret.append(cls)
-            }
-        }
-        return ret
-    }
-    
-    func getClassList() -> [AnyClass] {
-        let expectedClassCount = objc_getClassList(nil, 0)
-        
-        if expectedClassCount == 0 {
-            // No classes found to initialize
-            return []
-        }
-        
-        let allClasses = UnsafeMutablePointer<AnyClass?>.allocate(capacity: Int(expectedClassCount))
-        defer {
-            allClasses.deinitialize()
-            allClasses.deallocate(capacity: Int(expectedClassCount))
-        }
-        
-        let autoreleasingAllClasses = AutoreleasingUnsafeMutablePointer<AnyClass?>(allClasses)
-        let actualClassCount:Int32 = objc_getClassList(autoreleasingAllClasses, expectedClassCount)
-        
-        var classes = [AnyClass]()
-        for i in 0 ..< actualClassCount {
-            if let currentClass: AnyClass = allClasses[Int(i)] {
-                classes.append(currentClass)
-            }
-        }
-        
-        return classes
-    }
-    
-    
-    /// Inits and adds an instance of a given type.
-    ///
-    /// - Parameter klass: Given class type.
-    func addModule(klass: AnyClass){
-    
-        // TODO: Break this method up and use type checking in argument.
-        guard let type = klass as? TealiumModule.Type else {
-            // Type does not exist - skip
-            return
-        }
-        
-        let module = type.init(delegate: self)
-       
-        if module.moduleConfig().enabled == false {
-            return
-        }
-        
-        if module.moduleConfig().enabled == false {
-            return
-        }
-        modules.append(module)
-        
-    }
-    
-    // MARK:
-    // MARK: INTERNAL TRACK HANDLING
-    
-    func track(_ track: TealiumTrack) {
+    func track(_ track: TealiumTrackRequest) {
         
         if isEnabled == false {
             track.completion?(false, nil, TealiumModulesManagerError.isDisabled)
-            return
-        }
-        
-        // Modules still spinning up, delay track call
-        if self.allModulesReady() == false {
-            DispatchQueue.main.async {
-                self.track(track)
-            }
             return
         }
         
@@ -171,10 +91,45 @@ class TealiumModulesManager : NSObject {
             return
         }
         
-        firstModule.track(track)
+        if self.allModulesReady() == false {
+            // System isn't ready, make a queue request if there's a module
+            //  that will handle track queuing.
+            trackQueue.append(track)
+            
+            return
+        }
         
+        releaseTrackQueue()
+        
+        firstModule.handle(track)
     }
 
+    // MARK:
+    // MARK: INTERNAL
+    
+    internal func releaseTrackQueue() {
+        if trackQueue.isEmpty == false {
+            trackQueue.emptyFIFO { (queuedTrack) in
+                modules.first?.handle(queuedTrack)
+            }
+        }
+    }
+    
+    internal func reportToModules(_ modules: [Weak<TealiumModule>],
+                                  request: TealiumRequest) {
+        
+        for moduleRef in modules {
+            
+            guard let module = moduleRef.value else {
+                // Module has been dereferenced
+                continue
+            }
+            
+            module.handleReport(request)
+
+        }
+        
+    }
 }
 
 // MARK:
@@ -183,42 +138,50 @@ class TealiumModulesManager : NSObject {
 extension TealiumModulesManager : TealiumModuleDelegate {
     
     func tealiumModuleFinished(module: TealiumModule,
-                               process: TealiumProcess) {
+                               process: TealiumRequest) {
         
-        modules.first?.handleReport(fromModule: module,
-                                    process: process)
+        guard let nextModule = modules.next(after: module) else {
+            
+            // Last module has finished processing
+            reportToModules(modulesRequestingReport,
+                            request: process)
+            
+            releaseTrackQueue()
+            
+            return
+        }
         
-        modules.next(after: module)?.auto(process,
-                                          config: self.config)
+        nextModule.handle(process)
     }
     
     func tealiumModuleRequests(module: TealiumModule,
-                               process: TealiumProcess) {
+                               process: TealiumRequest) {
         
-        switch process.type {
-        case .enable:
-            // Module requests entire library enable
-            updateAll()
-        case .disable:
-            // Module requests entire library disable
-            disableAll()
-        case .track:
-            guard let track = process.track else {
-                // Request made with no track info
-                return
-            }
-            // Send track request to front of chain.
-            modules.first?.track(track)
+        if isEnabled == false {
+            return
         }
-    }
-    
-    func tealiumModuleFinishedReport(fromModule: TealiumModule,
-                                     module: TealiumModule,
-                                     process: TealiumProcess) {
         
-        modules.next(after: module)?.handleReport(fromModule: fromModule,
-                                                  process: process)
+        // Module wants to be notified when last module has finished processing
+        //  any requests.
+        if process is TealiumReportNotificationsRequest {
+            
+            let existingRequestModule = modulesRequestingReport.filter{ $0.value == module }
+            if existingRequestModule.count == 0 {
+                modulesRequestingReport.append(Weak(value:module))
+            }
+            
+            return
+        }
         
+        // Module wants to notify any listening modules of status.
+        if process is TealiumReportRequest {
+            reportToModules(modulesRequestingReport,
+                            request: process)
+            return
+        }
+        
+        // Pass request to other modules - Regular behavior
+        modules.first?.handle(process)
     }
     
 }
@@ -226,30 +189,25 @@ extension TealiumModulesManager : TealiumModuleDelegate {
 // MARK: 
 // MARK: MODULEMANAGER EXTENSIONS
 extension Array where Element : TealiumModule {
-    
+
     /**
      Convenience for sorting Arrays of TealiumModules by priority number: Lower numbers going first.
      */
     func prioritized() -> [TealiumModule] {
         return self.sorted{
-            $0.moduleConfig().priority < $1.moduleConfig().priority
+            type(of:$0).moduleConfig().priority < type(of:$1).moduleConfig().priority
         }
         
     }
     
-    func duplicateModuleConfigs() -> [TealiumModuleConfig] {
-        var duplicateModuleConfigs = [TealiumModuleConfig]()
-        var checkArray = [TealiumModuleConfig]()
+    
+    /// Get all existing module names, in current order
+    ///
+    /// - Returns: Array of module names.
+    func moduleNames() -> [String] {
         
-        for module in self {
-            let moduleConfig = module.moduleConfig()
-            if checkArray.contains(moduleConfig) {
-                duplicateModuleConfigs.append(moduleConfig)
-                continue
-            }
-            checkArray.append(moduleConfig)
-        }
-        return duplicateModuleConfigs
+        return self.map { type(of:$0).moduleConfig().name }
+        
     }
     
 }

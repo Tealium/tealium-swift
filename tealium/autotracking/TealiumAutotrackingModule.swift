@@ -99,14 +99,28 @@ class TealiumAutotrackingModule : TealiumModule {
     // MARK:
     // MARK: SUBCLASS OVERIDES
     
-    override func moduleConfig() -> TealiumModuleConfig {
+    override class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumAutotrackingKey.moduleName,
                                    priority: 300,
                                    build: 2,
                                    enabled: true)
     }
     
-    override func enable(config: TealiumConfig) {
+    override func handle(_ request: TealiumRequest) {
+        if let r = request as? TealiumEnableRequest{
+            enable(r)
+        }
+        else if let r = request as? TealiumDisableRequest {
+            disable(r)
+        }
+        else {
+            didFinishWithNoResponse(request)
+        }
+    }
+    
+    override func enable(_ request: TealiumEnableRequest) {
+        
+        isEnabled = true
         
         let eventName = NSNotification.Name.init(TealiumAutotrackingKey.eventNotificationName)
         NotificationCenter.default.addObserver(self, selector: #selector(requestEventTrack(sender:)), name: eventName, object: nil)
@@ -115,19 +129,21 @@ class TealiumAutotrackingModule : TealiumModule {
         NotificationCenter.default.addObserver(self, selector: #selector(requestViewTrack(sender:)), name: viewName, object: nil)
         
         notificationsEnabled = true
-        self.didFinishEnable(config: config)
+        didFinish(request)
         
     }
     
-    override func disable() {
+    override func disable(_ request: TealiumDisableRequest) {
+        
+        isEnabled = false
         
         if notificationsEnabled == true {
             NotificationCenter.default.removeObserver(self)
             notificationsEnabled = false
         }
         
-        self.didFinishDisable()
-            
+        didFinish(request)
+        
     }
 
     // MARK:
@@ -146,7 +162,6 @@ class TealiumAutotrackingModule : TealiumModule {
         let title = String(describing: type(of: object))
         
         var data: [String : Any] = [TealiumKey.event: title ,
-                                    TealiumKey.eventName: title ,
                                     TealiumKey.eventType: TealiumTrackType.activity.description(),
                                     TealiumAutotrackingKey.autotracked : "true"]
         
@@ -172,7 +187,6 @@ class TealiumAutotrackingModule : TealiumModule {
         
         let title = viewController.title ?? String(describing: type(of: viewController))
         var data: [String : Any] = [TealiumKey.event: title ,
-                                    TealiumKey.eventName: title ,
                                     TealiumKey.eventType: TealiumTrackType.view.description(),
                                     TealiumAutotrackingKey.autotracked : "true",
                                     ]
@@ -192,24 +206,11 @@ class TealiumAutotrackingModule : TealiumModule {
     /// - Parameter data: [String:Any] additional variable data.
     internal func requestTrack(data: [String:Any]) {
         
-//        if autotracking.delegate?.tealiumAutotrackShouldTrack(data: data) == false {
-//            return
-//        }
-//        
-//        let completion : tealiumTrackCompletion = {(success, info, error) in
-//            self.autotracking.delegate?.tealiumAutotrackCompleted(success:success, info:info, error:error)
-//        }
+        let track = TealiumTrackRequest(data: data,
+                                        info: [:],
+                                        completion: nil)
         
-        let track = TealiumTrack(data: data,
-                                 info: [:],
-                                 completion: nil)
-        
-        let process = TealiumProcess(type: .track,
-                                     successful: true,
-                                     track: track,
-                                     error: nil)
-        
-        self.delegate?.tealiumModuleRequests(module: self, process: process)
+        self.delegate?.tealiumModuleRequests(module: self, process: track)
         
     }
     
