@@ -177,6 +177,14 @@ Collect | Packages and delivers track call to Tealium Collect or other custom UR
 
 
 # Change Log
+
+- 1.3.1
+    - Builder (used by Carthage) updated to include previously missing TealiumMulticastDelegate & TealiumLifecyclePersistentData classes in build target.
+    - AppData Module (build 3) fix for app_version & added new key-value:
+        - app_build (application build number)
+    - Async Module (build 4) added os x version check for dispatch queue assignment.
+    - Delegate Module (build 3) removed unused code.
+
 - 1.3.0
     - All modules updated to make use of simplified modules base class + new internal TealiumRequest structs that replaces the TealiumProcess & TealiumTrack structs
     - Most module related files have been aggregated into single module class files for faster reference & future removal of the module subfolders.
