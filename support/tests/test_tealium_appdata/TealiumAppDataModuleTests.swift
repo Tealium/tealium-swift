@@ -118,7 +118,7 @@ class TealiumAppDataModuleTests: XCTestCase {
         
     }
     
-    func testIsMissingKeys() {
+    func testIsMissingPersistentKeys() {
         
         let emptyDict = [String:Any]()
         let failingDict = ["blah":"hah"]
@@ -134,6 +134,28 @@ class TealiumAppDataModuleTests: XCTestCase {
         XCTAssertFalse(TealiumAppDataModule.isMissingPersistentKeys(passingDict))
         
     }
+
+    // Can only run within a sample app
+//    func testForMissingKeys() {
+//        
+//        let module = TealiumAppDataModule(delegate: nil)
+//        module.setNewAppData()
+//        let expectedKeys = ["app_build",
+//                            "app_name",
+//                            "app_rdns",
+//                            "app_version",
+//                            "app_uuid",
+//                            "tealium_visitor_id",
+//                            "tealium_vid"]
+//        
+//        let appData = module.appData
+//        for key in expectedKeys {
+//            if appData[key] == nil {
+//                XCTFail("Missing key: \(key). AppData: \(appData)")
+//            }
+//        }
+//        
+//    }
 }
 
 

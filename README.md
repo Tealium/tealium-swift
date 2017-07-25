@@ -88,9 +88,9 @@ Watch this video for an overview of the installation and setup of the code:
 * Use the TealiumModulesList property that may be assigned to a [TealiumConfig](/support/docs/swift_tealiumconfig.md) object to explicitly white or black list modules for enablement. This is the recommmended way to enable or disable modules. 
 ```swift
 // Sample
-// This will load all modules except the TagManagment module.
+// This will load all modules except the TagManagement module.
 let list = TealiumModulesList(isWhitelist: false, 
-moduleNames: ["TagManagment"])
+moduleNames: ["TagManagement"])
 let config = // See TealiumConfig example below
 config.setModulesList(list)
 ```
@@ -177,6 +177,14 @@ Collect | Packages and delivers track call to Tealium Collect or other custom UR
 
 
 # Change Log
+
+- 1.3.1
+    - Builder (used by Carthage) updated to include previously missing TealiumMulticastDelegate & TealiumLifecyclePersistentData classes in build target.
+    - AppData Module (build 3) fix for app_version & added new key-value:
+        - app_build (application build number)
+    - Async Module (build 4) added os x version check for dispatch queue assignment.
+    - Delegate Module (build 3) removed unused code.
+
 - 1.3.0
     - All modules updated to make use of simplified modules base class + new internal TealiumRequest structs that replaces the TealiumProcess & TealiumTrack structs
     - Most module related files have been aggregated into single module class files for faster reference & future removal of the module subfolders.

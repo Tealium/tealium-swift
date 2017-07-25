@@ -44,9 +44,9 @@ moduleNames | Set of module names. No white spaces. Case insensitive | ["Collect
     let config = // See TealiumConfig example above
     config.setModulesList(whitelist)
 
-    // Only disable the Logger and TagManagment modules - initialize all others.
+    // Only disable the Logger and TagManagement modules - initialize all others.
     let blacklist = TealiumModulesList(isWhitelist: false, 
-    moduleNames: ["Logger, TagManagment"])
+    moduleNames: ["Logger, TagManagement"])
     let anotherConfig = // See TealiumConfig example above
     anotherConfig.setModulesList(list)
 

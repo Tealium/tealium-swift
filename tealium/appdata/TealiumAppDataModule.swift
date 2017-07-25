@@ -12,6 +12,7 @@ import Foundation
 // MARK: CONSTANTS
 public enum TealiumAppDataKey {
     static let moduleName = "appdata"
+    static let build = "app_build"
     static let name = "app_name"
     static let rdns = "app_rdns"
     static let uuid = "app_uuid"
@@ -31,7 +32,7 @@ class TealiumAppDataModule : TealiumModule {
     override class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumAppDataKey.moduleName,
                                    priority: 500,
-                                   build: 2,
+                                   build: 3,
                                    enabled: true)
     }
     
@@ -158,8 +159,12 @@ class TealiumAppDataModule : TealiumModule {
             result[TealiumAppDataKey.rdns] = rdns
         }
         
-        if let version = main.infoDictionary?[kCFBundleVersionKey as String] as? String {
+        if let version = main.infoDictionary?["CFBundleShortVersionString"] as? String {
             result[TealiumAppDataKey.version] = version
+        }
+
+        if let build = main.infoDictionary?[kCFBundleVersionKey as String] as? String {
+            result[TealiumAppDataKey.build] = build
         }
         
         return result

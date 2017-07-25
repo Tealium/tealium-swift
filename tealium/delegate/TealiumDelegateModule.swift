@@ -80,7 +80,7 @@ class TealiumDelegateModule : TealiumModule {
     override class  func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumDelegateKey.moduleName,
                                    priority: 900,
-                                   build: 2,
+                                   build: 3,
                                    enabled: true)
     }
     
@@ -104,9 +104,6 @@ class TealiumDelegateModule : TealiumModule {
         
         if let request = request as? TealiumEnableRequest {
             enableCompletion?(request.moduleResponses)
-        }
-        if let request = request as? TealiumDisableRequest {
-//            delegates?.multicastDelegate.invoke {}
         }
         if let request = request as? TealiumTrackRequest {
             delegates?.invokeTrackCompleted(forTrackProcess: request)

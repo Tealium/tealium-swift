@@ -22,7 +22,7 @@ class TealiumAsyncModule : TealiumModule {
     override class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumAsyncKey.moduleName,
                                    priority: 200,
-                                   build: 3,
+                                   build: 4,
                                    enabled: true)
     }
     
@@ -76,8 +76,12 @@ class TealiumAsyncModule : TealiumModule {
     func dispatchQueue() -> DispatchQueue {
         
         if _dispatchQueue == nil {
-//            _dispatchQueue = DispatchQueue(label: TealiumAsyncKey.queueName)
-            _dispatchQueue = DispatchQueue.global(qos: .background)
+            if #available(OSX 10.10, *) {
+                _dispatchQueue = DispatchQueue.global(qos: .background)
+            } else {
+                // Fallback on earlier versions
+                _dispatchQueue = DispatchQueue.global(priority: .background)
+            }
         }
         
         return _dispatchQueue!
