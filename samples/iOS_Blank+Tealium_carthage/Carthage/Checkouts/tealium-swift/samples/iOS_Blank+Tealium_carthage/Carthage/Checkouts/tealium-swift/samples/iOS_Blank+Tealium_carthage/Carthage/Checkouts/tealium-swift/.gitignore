@@ -1,0 +1,7 @@
+*.xcuserstate
+*.xcbkptlist
+tealium/tealium_debug/Swifter
+*.xcuserdatad*
+*.wakello
+carthage/
+*Cartfile.resolved
