@@ -35,25 +35,16 @@ extension Tealium {
     
 }
 
-//public protocol TealiumAutotrackingDelegate : class {
-//    
-//    func tealiumAutotrackShouldTrack(data: [String:Any]) -> Bool
-//    func tealiumAutotrackCompleted(success:Bool, info:[String:Any]?, error:Error?)
-//    
-//}
-
 var tealiumAssociatedObjectHandle : UInt8 = 0
 
 public class TealiumAutotracking {
-    
-//    weak var delegate : TealiumAutotrackingDelegate?
     
     /// Add custom data to an object, to be included with an autotracked event.
     ///
     /// - Parameters:
     ///   - data: [String:Any] dictionary. Values should be String or [String]
     ///   - toObject: Object to add data for.
-    class func addCustom(data: [String:Any], toObject:NSObject) {
+    public class func addCustom(data: [String:Any], toObject:NSObject) {
         
         // Overwrites existing?
         objc_setAssociatedObject(toObject,
@@ -67,7 +58,7 @@ public class TealiumAutotracking {
     ///
     /// - Parameter forObject: NSObject to retrieve data for.
     /// - Returns: Optional [String:Any] dictionary
-    class func customData(forObject:NSObject) -> [String:Any]? {
+    public class func customData(forObject:NSObject) -> [String:Any]? {
         
         guard let associatedData = objc_getAssociatedObject(forObject, &tealiumAssociatedObjectHandle) as? [String:Any] else {
             return nil
@@ -80,7 +71,7 @@ public class TealiumAutotracking {
     /// Remove all custom Tealium data associated to an object.
     ///
     /// - Parameter fromObject: NSObject to disassociate data from.
-    class func removeCustomData(fromObject:NSObject) {
+    public class func removeCustomData(fromObject:NSObject) {
         
         objc_setAssociatedObject(fromObject,
                                  &tealiumAssociatedObjectHandle,
@@ -89,6 +80,39 @@ public class TealiumAutotracking {
         
     }
     
+    
+    /// Instance level addCustom data function - convenience for framework APIs.
+    ///
+    /// - Parameters:
+    ///   - data: [String:Any] dictionary. Values should be String or [String]
+    ///   - toObject: Object to add data for.
+    public func addCustom(data: [String:Any],
+                          toObject: NSObject) {
+        
+        TealiumAutotracking.addCustom(data: data,
+                                      toObject: toObject)
+        
+        
+    }
+    
+    /// Instance level customData function - convenience for framework APIs.
+    ///
+    /// - Parameter forObject: NSObject to retrieve data for.
+    /// - Returns: Optional [String:Any] dictionary
+    public func customData(forObject:NSObject) -> [String:Any]? {
+        
+        return TealiumAutotracking.customData(forObject: forObject)
+        
+    }
+    
+    /// Instance level removeCustomData function - convenience for framework APIs.
+    ///
+    /// - Parameter fromObject: NSObject to disassociate data from.
+    public func removeCustomData(fromObject: NSObject){
+        
+        TealiumAutotracking.removeCustomData(fromObject: fromObject)
+        
+    }
 }
 
 class TealiumAutotrackingModule : TealiumModule {
@@ -102,7 +126,7 @@ class TealiumAutotrackingModule : TealiumModule {
     override class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumAutotrackingKey.moduleName,
                                    priority: 300,
-                                   build: 2,
+                                   build: 4,
                                    enabled: true)
     }
     
@@ -207,7 +231,6 @@ class TealiumAutotrackingModule : TealiumModule {
     internal func requestTrack(data: [String:Any]) {
         
         let track = TealiumTrackRequest(data: data,
-                                        info: [:],
                                         completion: nil)
         
         self.delegate?.tealiumModuleRequests(module: self, process: track)

@@ -30,7 +30,8 @@ class TealiumLifecycleUnitTests: XCTestCase {
         
         let _ = lifecycle?.newLaunch(atDate: Date(),
                                      overrideSession:nil)
-        guard let data = lifecycle?.asDictionary(forDate: Date()) else {
+        guard let data = lifecycle?.asDictionary(type: "launch",
+                                                 forDate: Date()) else {
             XCTFail("Lifecycle object missing")
             return
         }
@@ -64,7 +65,8 @@ class TealiumLifecycleUnitTests: XCTestCase {
         
         let _ = lifecycle?.newLaunch(atDate: Date(),
                                      overrideSession:nil)
-        guard let data = lifecycle?.asDictionary(forDate: Date()) else {
+        guard let data = lifecycle?.asDictionary(type: "launch",
+                                                 forDate: Date()) else {
             XCTFail("Lifecycle object missing")
             return
         }

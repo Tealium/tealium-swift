@@ -41,7 +41,6 @@ class TealiumAttributionModuleTests: XCTestCase {
         expectation = self.expectation(description: "testAID")
         
         let testTrack = TealiumTrackRequest(data: [String:AnyObject](),
-                                            info: nil,
                                             completion: {(success, info, error) in
         
                 XCTAssertTrue(success, "Test track call did not return success.")
@@ -96,7 +95,7 @@ extension TealiumAttributionModuleTests : TealiumModuleDelegate {
         // Look through responses for any errors
         for response in trackRequest.moduleResponses {
             if response.error != nil {
-                trackRequest.completion?(false, trackRequest.info, response.error)
+                trackRequest.completion?(false, nil, response.error)
                 return
             }
             

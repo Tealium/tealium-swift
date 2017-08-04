@@ -29,16 +29,18 @@ open class TealiumLifecyclePersistentData {
     
      class func load(uniqueId: String) -> TealiumLifecycle? {
         
-        guard let data = UserDefaults.standard.object(forKey: uniqueId) as? Data else {
+        guard let data = UserDefaults.standard.object(forKey: uniqueId) as? NSData else {
             // No saved data
             return nil
         }
         
-        guard let lifecycle = NSKeyedUnarchiver.unarchiveObject(with: data) as? TealiumLifecycle else {
+        do {
+            let lifecycle = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? TealiumLifecycle
+            return lifecycle
+        } catch {
+            // invalidArchiveOperationException
             return nil
         }
-        
-        return lifecycle
         
     }
     
@@ -53,6 +55,7 @@ open class TealiumLifecyclePersistentData {
             return (false, TealiumLifecyclePersistentDataError.couldNotArchiveAsData)
         }
         
+        // If file corrupted this will fail: Switch to .unarchiveTopLevelObjectWithData
         guard let defaultsCheck = NSKeyedUnarchiver.unarchiveObject(with: defaultsCheckData) as? TealiumLifecycle else {
             return (false, TealiumLifecyclePersistentDataError.couldNotUnarchiveData)
         }

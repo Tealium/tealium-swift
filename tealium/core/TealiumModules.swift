@@ -5,6 +5,7 @@
 //  Created by Jason Koo on 6/8/17.
 //  Copyright © 2017 tealium. All rights reserved.
 //
+//  Build 2
 
 import Foundation
 import ObjectiveC
@@ -19,7 +20,7 @@ extension TealiumConfig {
     /// Get the existing modules list assigned to this config object.
     ///
     /// - Returns: TealiumModulesList as an optional.
-    func getModulesList() -> TealiumModulesList? {
+    public func getModulesList() -> TealiumModulesList? {
         
         guard let list = self.optionalData[TealiumModulesListKey.config] as? TealiumModulesList else {
             return nil
@@ -33,7 +34,7 @@ extension TealiumConfig {
     /// Set a net modules list to this config object.
     ///
     /// - Parameter list: The TealiumModulesList to assign.
-    func setModulesList(_ list: TealiumModulesList ) {
+    public func setModulesList(_ list: TealiumModulesList ) {
         
         self.optionalData[TealiumModulesListKey.config] = list
         

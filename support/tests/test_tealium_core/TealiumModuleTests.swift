@@ -98,7 +98,6 @@ class TealiumModuleTests: XCTestCase {
         expectationSuccess = self.expectation(description: "testSuccess")
         
         var track = TealiumTrackRequest(data: [String:AnyObject](),
-                                        info: nil,
                                         completion: nil)
         let successResponse = TealiumModuleResponse(moduleName: "testModule",
                                                     success: true,
