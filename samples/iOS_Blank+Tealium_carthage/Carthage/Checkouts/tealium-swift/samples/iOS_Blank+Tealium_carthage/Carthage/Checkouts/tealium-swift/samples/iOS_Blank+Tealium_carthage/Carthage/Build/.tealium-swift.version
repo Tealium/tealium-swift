@@ -1,0 +1,14 @@
+{
+  "xcodeVersion" : "Xcode 8.3.3\nBuild version 8E3004b",
+  "commitish" : "1.3.2",
+  "iOS" : [
+    {
+      "hash" : "2efdc3b002e25778d73dde5f919c51082288d7a9e14ff5631eca90d9302e2518",
+      "name" : "Tealium"
+    },
+    {
+      "hash" : "2efdc3b002e25778d73dde5f919c51082288d7a9e14ff5631eca90d9302e2518",
+      "name" : "Tealium"
+    }
+  ]
+}
