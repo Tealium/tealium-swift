@@ -110,7 +110,6 @@ class TealiumPersistentDataModuleTests: XCTestCase {
         module.enable(TealiumEnableRequest(config: testTealiumConfig))
         
         let testTrack = TealiumTrackRequest(data: testDataDictionary,
-                                            info: nil,
                                             completion: {(success, info, error) in
         
                 XCTAssertTrue(success, "Track mock did not return success.")
@@ -149,7 +148,7 @@ extension TealiumPersistentDataModuleTests : TealiumModuleDelegate {
         for response in trackRequest.moduleResponses {
             if response.error != nil {
                 delegateExpectationFail?.fulfill()
-                trackRequest.completion?(false, trackRequest.info, response.error)
+                trackRequest.completion?(false, nil, response.error)
                 return
             }
             

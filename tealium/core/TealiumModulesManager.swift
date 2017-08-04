@@ -14,11 +14,12 @@ import Foundation
  */
 class TealiumModulesManager : NSObject {
     
-    var config : TealiumConfig?
     var modules = [TealiumModule]()
     var isEnabled = true
     var modulesRequestingReport = [Weak<TealiumModule>]()
-    lazy var trackQueue = [TealiumTrackRequest]()
+    let timeoutMillisecondIncrement = 250
+    var timeoutMillisecondCurrent = 0
+    let timeoutMillisecondMax = 2000
     
     func setupModulesFrom(config: TealiumConfig) {
         
@@ -32,11 +33,6 @@ class TealiumModulesManager : NSObject {
     // MARK: PUBLIC
     func update(config:TealiumConfig){
         
-        if config == self.config {
-            // Ignore - No change in configuration
-            return
-        }
-        
         self.modules.removeAll()
         enable(config: config)
         
@@ -45,10 +41,8 @@ class TealiumModulesManager : NSObject {
     
     func enable(config: TealiumConfig) {
         
-        self.isEnabled = true
-        self.config = config
         self.setupModulesFrom(config: config)
-        let request = TealiumEnableRequest(config: self.config!)
+        let request = TealiumEnableRequest(config: config)
         self.modules.first?.handle(request)
         
     }
@@ -69,51 +63,53 @@ class TealiumModulesManager : NSObject {
 
     }
     
-    func allModulesReady() -> Bool {
-        
+    func modulesNotReady(_ modules: [TealiumModule]) -> [TealiumModule] {
+        var result = [TealiumModule]()
         for module in modules {
             if module.isEnabled == false {
-                return false
+                result.append(module)
             }
         }
-        return true
+        return result
     }
     
     func track(_ track: TealiumTrackRequest) {
-        
-        if isEnabled == false {
-            track.completion?(false, nil, TealiumModulesManagerError.isDisabled)
-            return
-        }
         
         guard let firstModule = modules.first else {
             track.completion?(false, nil, TealiumModulesManagerError.noModules)
             return
         }
         
-        if self.allModulesReady() == false {
-            // System isn't ready, make a queue request if there's a module
-            //  that will handle track queuing.
-            trackQueue.append(track)
-            
+        if isEnabled == false {
+            track.completion?(false, nil, TealiumModulesManagerError.isDisabled)
             return
         }
         
-        releaseTrackQueue()
+        let notReady = modulesNotReady(modules)
+        
+        if notReady.isEmpty == false {
+            
+            timeoutMillisecondCurrent += timeoutMillisecondIncrement
+            if timeoutMillisecondCurrent >= timeoutMillisecondMax {
+                print("*** Tealium library failed to enable module(s): \(notReady)")
+                return
+            }
+            let delay = DispatchTime.now() + .milliseconds(timeoutMillisecondCurrent)
+            DispatchQueue.global(qos: .background).asyncAfter(deadline: delay, execute: {
+                // Put call into end of queue until all modules ready.
+                self.track(track)
+            })
+            return
+            
+        }
+        
+        self.timeoutMillisecondCurrent = 0  // reset
         
         firstModule.handle(track)
     }
 
     // MARK:
     // MARK: INTERNAL
-    
-    internal func releaseTrackQueue() {
-        if trackQueue.isEmpty == false {
-            trackQueue.emptyFIFO { (queuedTrack) in
-                modules.first?.handle(queuedTrack)
-            }
-        }
-    }
     
     internal func reportToModules(_ modules: [Weak<TealiumModule>],
                                   request: TealiumRequest) {
@@ -142,11 +138,14 @@ extension TealiumModulesManager : TealiumModuleDelegate {
         
         guard let nextModule = modules.next(after: module) else {
             
+            // If enable call set isEnable
+            if let _ = process as? TealiumEnableRequest {
+                self.isEnabled = true
+            }
+            
             // Last module has finished processing
             reportToModules(modulesRequestingReport,
                             request: process)
-            
-            releaseTrackQueue()
             
             return
         }
@@ -156,14 +155,11 @@ extension TealiumModulesManager : TealiumModuleDelegate {
     
     func tealiumModuleRequests(module: TealiumModule,
                                process: TealiumRequest) {
-        
-        if isEnabled == false {
-            return
-        }
+
         
         // Module wants to be notified when last module has finished processing
         //  any requests.
-        if process is TealiumReportNotificationsRequest {
+        if let _ = process as? TealiumReportNotificationsRequest {
             
             let existingRequestModule = modulesRequestingReport.filter{ $0.value == module }
             if existingRequestModule.count == 0 {
@@ -174,9 +170,28 @@ extension TealiumModulesManager : TealiumModuleDelegate {
         }
         
         // Module wants to notify any listening modules of status.
-        if process is TealiumReportRequest {
+        if let process = process as? TealiumReportRequest {
             reportToModules(modulesRequestingReport,
                             request: process)
+            return
+        }
+        
+        if let track = process as? TealiumTrackRequest {
+            self.track(track)
+            return
+        }
+        
+        if let enable = process as? TealiumEnableRequest {
+            self.enable(config: enable.config)
+            return
+        }
+        
+        if let _ = process as? TealiumDisableRequest {
+            self.disable()
+            return
+        }
+        
+        if isEnabled == false {
             return
         }
         

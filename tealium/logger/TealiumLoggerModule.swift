@@ -5,7 +5,6 @@
 //  Created by Jason Koo on 10/5/16.
 //  Copyright © 2016 tealium. All rights reserved.
 //
-//  Build 2
 
 import Foundation
 
@@ -104,7 +103,7 @@ extension Tealium {
 
 extension TealiumConfig {
     
-    func getLogLevel() -> TealiumLogLevel {
+    public func getLogLevel() -> TealiumLogLevel {
         
         if let level = self.optionalData[TealiumLoggerKey.logLevelConfig] as? TealiumLogLevel {
             return level
@@ -115,7 +114,7 @@ extension TealiumConfig {
         
     }
     
-    func setLogLevel(logLevel: TealiumLogLevel) {
+    public func setLogLevel(logLevel: TealiumLogLevel) {
         
         self.optionalData[TealiumLoggerKey.logLevelConfig] = logLevel
         
@@ -193,18 +192,7 @@ class TealiumLoggerModule : TealiumModule {
             }
         }
 
-        else if let request = request as? TealiumTrackRequest {
-            
-            guard let info = request.info else {
-                // No response data. This track call made it through the
-                //   chain but was not delivered by any dispatch service.
-                return
-            }
-            
-            if info.isEmpty {
-                // Info dict is empty - same issue as above
-                return
-            }
+        else if let _ = request as? TealiumTrackRequest {
             
             guard let logger = self.logger else {
                 // Logger disabled?
@@ -218,8 +206,12 @@ class TealiumLoggerModule : TealiumModule {
             
             for response in moduleResponses {
                 
+                if response.info == nil {
+                    continue
+                }
+                
                 let successMessage = response.success == true ? "SUCCESSFUL TRACK" : "FAILED TO TRACK"
-                let message = "\(response.moduleName): \(successMessage)\nINFO:\n\(info as AnyObject)"
+                let message = "\(response.moduleName): \(successMessage)\nINFO:\n\(response.info as AnyObject)"
                 let _ = logger.log(message: message,
                                     logLevel: .verbose)
                 

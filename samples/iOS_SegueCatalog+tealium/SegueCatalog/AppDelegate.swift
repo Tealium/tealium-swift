@@ -13,10 +13,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: Properties
     
     var window: UIWindow?
+    var tealium: Tealium?
     
     func applicationDidFinishLaunching(_ application: UIApplication) {
         
-       TealiumHelper.sharedInstance().start()
+        TealiumHelper.sharedInstance().start()
         
+        print("Bundle: \(Bundle.main.infoDictionary)")
     }
+
 }

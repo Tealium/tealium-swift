@@ -23,11 +23,12 @@ class TealiumModulesTest: XCTestCase {
     }
     
     func testNilModulesList() {
-        
+        // If nil assigned will return defaults
         let modules = TealiumModules.allModulesFor(nil,
                                                    assigningDelegate: self)
         
-        XCTAssert(modules.count == numberOfCurrentModules, "Count detected: \(modules.count)")
+        XCTAssert(modules.count == numberOfCurrentModules, "Count detected: \(modules.count)\nExpected:\(numberOfCurrentModules)")
+        
     }
     
     func testBlacklistSingleModule(){
