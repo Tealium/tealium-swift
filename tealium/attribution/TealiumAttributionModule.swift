@@ -87,7 +87,6 @@ class TealiumAttributionModule : TealiumModule {
         newData += track.data
         
         let newTrack = TealiumTrackRequest(data: newData,
-                                           info: track.info,
                                            completion: track.completion)
         
         didFinish(newTrack)

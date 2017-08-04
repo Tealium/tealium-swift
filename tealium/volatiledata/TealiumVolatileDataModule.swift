@@ -43,12 +43,12 @@ extension Tealium {
 /// Module for adding session long (from wake until terminate) data varables to all track calls.
 class TealiumVolatileDataModule : TealiumModule {
     
-    var volatileData : TealiumVolatileData?
+    var volatileData = TealiumVolatileData()
     
     override class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumVolatileDataKey.moduleName,
                                    priority: 700,
-                                   build: 2,
+                                   build: 3,
                                    enabled: true)
     }
     
@@ -56,16 +56,14 @@ class TealiumVolatileDataModule : TealiumModule {
         
         isEnabled = true
         let config = request.config
-        if volatileData == nil {
-            volatileData = TealiumVolatileData()
-            let currentStaticData : [String:Any] = [TealiumKey.account:config.account,
-                                                    TealiumKey.profile:config.profile,
-                                                    TealiumKey.environment:config.environment,
-                                                    TealiumKey.libraryName:TealiumValue.libraryName,
-                                                    TealiumKey.libraryVersion:TealiumValue.libraryVersion]
-          
-            volatileData?.add(data: currentStaticData)
-        }
+        let currentStaticData : [String:Any] = [TealiumKey.account:config.account,
+                                                TealiumKey.profile:config.profile,
+                                                TealiumKey.environment:config.environment,
+                                                TealiumKey.libraryName:TealiumValue.libraryName,
+                                                TealiumKey.libraryVersion:TealiumValue.libraryVersion,
+                                                TealiumVolatileDataKey.sessionId: volatileData.newSessionId()]
+      
+        volatileData.add(data: currentStaticData)
         
         didFinish(request)
         
@@ -74,7 +72,7 @@ class TealiumVolatileDataModule : TealiumModule {
     override func disable(_ request: TealiumDisableRequest) {
         
         isEnabled = false
-        volatileData = nil
+        // TODO: Clear volatileData here?
         didFinish(request)
         
     }
@@ -82,14 +80,10 @@ class TealiumVolatileDataModule : TealiumModule {
     override func track(_ track: TealiumTrackRequest) {
         var newData = [String:Any]()
         
-        if let volatileData = self.volatileData?.getData() {
-            newData += volatileData
-        }
-        
+        newData += volatileData.getData()
         newData += track.data
         
         let newTrack = TealiumTrackRequest(data: newData,
-                                           info: track.info,
                                            completion: track.completion)
         
         didFinish(newTrack)
@@ -100,7 +94,7 @@ class TealiumVolatileDataModule : TealiumModule {
 // MARK:
 // MARK: VOLATILE DATA
 
-public class TealiumVolatileData {
+public class TealiumVolatileData : NSObject {
     
     fileprivate var _volatileData = [String:Any]()
     
@@ -109,10 +103,16 @@ public class TealiumVolatileData {
     /**
      Constructor.
      */
-    required public init() {
-        
-        self.add(data:[TealiumVolatileDataKey.sessionId: newSessionId() ])
-        
+//    required public override init() {
+//        
+//        self.add(data:[TealiumVolatileDataKey.sessionId: newSessionId() ])
+//        
+//    }
+    
+    func sync(lock: NSObject, closure: () -> Void) {
+        objc_sync_enter(lock)
+        closure()
+        objc_sync_exit(lock)
     }
     
     /**
@@ -122,9 +122,9 @@ public class TealiumVolatileData {
      - data: A [String:Any] dictionary. Values should be of type String or [String]
      */
     public func add(data : [String:Any]){
-        
-        _volatileData += data
-        
+        sync(lock: self) {
+            _volatileData += data
+        }
     }
     
     /**
@@ -150,9 +150,10 @@ public class TealiumVolatileData {
      - keys: An array of String keys to remove from the internal volatile data store.
      */
     public func deleteData(forKeys:[String]){
-        
-        for key in forKeys {
-            _volatileData.removeValue(forKey: key)
+        sync(lock: self) {
+            for key in forKeys {
+                _volatileData.removeValue(forKey: key)
+            }
         }
         
     }
