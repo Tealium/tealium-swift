@@ -26,12 +26,4 @@ extension Array where Element : TealiumRequest {
         
     }
     
-    mutating func appendWithWasQueue(_ request: TealiumRequest) {
-        
-        // TODO:
-        
-        // Add data was_queued = true
-        
-    }
-    
 }

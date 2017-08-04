@@ -16,7 +16,7 @@ enum TealiumDatasourceKey {
 
 extension TealiumConfig {
     
-    convenience init(account:String,
+    public convenience init(account:String,
                      profile:String,
                      environment:String,
                      datasource:String?) {
@@ -28,7 +28,7 @@ extension TealiumConfig {
         
     }
 
-    convenience init(account:String,
+    public convenience init(account:String,
                      profile:String,
                      environment:String,
                      datasource:String?,
@@ -56,7 +56,7 @@ class TealiumDatasourceModule : TealiumModule {
     override class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumDatasourceKey.moduleName,
                                    priority: 550,
-                                   build: 2,
+                                   build: 3,
                                    enabled: true)
     }
     
@@ -81,7 +81,6 @@ class TealiumDatasourceModule : TealiumModule {
         var newData : [String:Any] = [TealiumDatasourceKey.variable:datasource]
         newData += track.data
         let newTrack = TealiumTrackRequest(data: newData,
-                                           info: track.info,
                                            completion: track.completion)
         
         didFinish(newTrack)

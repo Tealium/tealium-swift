@@ -16,6 +16,7 @@ Before you begin, here's a video introduction to the platform:
 # Features
 The following [features](https://community.tealiumiq.com/t5/Mobile-Libraries/Installation-Libraries-Feature-List/ta-p/18159) are available with the Swift library:
 * App Data
+* Device Data
 * Collect Dispatch Service
 * TagManagement Dispatch Service
 * Lifecycle autotracking
@@ -88,9 +89,9 @@ Watch this video for an overview of the installation and setup of the code:
 * Use the TealiumModulesList property that may be assigned to a [TealiumConfig](/support/docs/swift_tealiumconfig.md) object to explicitly white or black list modules for enablement. This is the recommmended way to enable or disable modules. 
 ```swift
 // Sample
-// This will load all modules except the TagManagement module.
+// This will load all modules except the TagManagment module.
 let list = TealiumModulesList(isWhitelist: false, 
-moduleNames: ["TagManagement"])
+moduleNames: ["TagManagment"])
 let config = // See TealiumConfig example below
 config.setModulesList(list)
 ```
@@ -152,12 +153,12 @@ NOTE: The order modules are enabled and process events are listed in order below
 --------- | ----------- | ------------ | ----------
 Logger | Debug logging | iOS, macOs, tvOS, watchOs | - 
 [Lifecycle](https://community.tealiumiq.com/t5/Mobile-Libraries/Tealium-Swift-Module-Lifecycle/ta-p/16916) | Tracks launches, wakes, sleeps, and crash instances. Auto or manually. | iOS, macOS, tvOS, watchOS | -
-Async | Moves all library processing to a background thread.  | iOS, macOS, tvOS, watchOS | -
 [Autotracking](https://community.tealiumiq.com/t5/Mobile-Libraries/Tealium-Swift-Module-Autotracking/ta-p/16856) | Prepares & sends dispatches for most UI, including viewDidAppear, events. | iOS, tvOS | -
 FileStorage | Adds general persistence capability for any module. Replaces the PersistenData module. | iOS, macOS, watchOS
-Attribution | Adds IDFA to track data.  | iOS, tvOS | Requires additional entitlements from Apple
+Attribution | Adds IDFA to track data.  | - | Requires additional entitlements from Apple. Manual import option only.
 AppData | Adds app_uuid to track data. | iOS, macOS, tvOS, watchOS | -
 Datasource | Adds an additional config init option for datasource ids. | iOS, macOS, tvOS, watchOS | -
+DeviceData | Add as additional device info to all track data. | iOS | -
 PersistentData | Adds ability to add persistent data to all track data. | iOS, macOS, tvOS, watchOS | -
 VolatileData | Adds ability to add session persistent data to all track data - clears upon app termination/close. | iOS, macOS, tvOS, watchOS | Will supercede any Persistent value with the same key(s)
 [Delegate](https://community.tealiumiq.com/t5/Mobile-Libraries/Tealium-Swift-Module-Delegate/ta-p/17300) | Adds multicast delegates to monitor or suppress track dispatches. | iOS, macOS, tvOS, watchOS | -
@@ -177,6 +178,53 @@ Collect | Packages and delivers track call to Tealium Collect or other custom UR
 
 
 # Change Log
+
+- 1.3.2
+    - Builder project update - Carthage support fix
+    - Access control updates:
+        - Tealium (build 4)
+        - TealiumAutotracking (build 4)
+        - TealiumDatasource (build 3)
+        - TealiumDelegate (build 4)
+        - TealiumModules  (build 2)
+        - TealiumMulticastDelegate (build 3)
+        - TealiumRemoteCommands (build 3)
+        - TealiumTagManagement (build 3)
+    - Tealium (build 4) now handles dispatch queue assignment (replacing need for async module) and added new function:
+        - trackView(title:data:completion)
+    - Autotracking Module (build 4) instance level custom data access & editing functions added.
+    - Async Module removed. Background queue support moved to Config and Tealium.
+    - Collect Module (build 4). TrackRequest .wasSent suppression check removed. New didFinish & didFailToFinish with info functions added.
+    - Core Constants (build 3). TrackRequest .wasSent property removed. ModuleResponse .info property added. .info property removed from track related functions in modules:
+        - AppData
+        - Attribution
+        - Autotracking
+        - Connectivity
+        - Datasource
+        - Delegate
+        - Lifecycle
+        - PersistentData
+        - VolatileData
+    - Core ModulesManager (build 4) updated to report track failures due to library enable fail.
+    - DeviceData Module added (build 1) for iOS builds. Adds following data stream values for keys:
+            - device_architecture
+            - device_battery_percent
+            - device_build
+            - device_cputype
+            - device_ischarging
+            - device_language
+            - device_model
+            - device_orientation
+            - device_os_version
+    - Lifecycle (build 3). Initial launch call detection fix. Unarchive fix to handle lifecycle data from different app builds.
+    - Logger (build 3) Updated to log new track data in moduleResponse instead of request info. Logs failed save and load requests. Default log level changed from .verbose to .errors.
+    - RemoteCommands Module (build 3) reserved HTTP command now default OFF - due to small memory leak when enabled.
+    - Tag Management Module (build 3) updates:
+            - Removed webview isLoading check. 
+            - Auto set call type to value of data stream key: "call_type". 
+            - TrackRequest .wasSent suppression check removed. 
+            - Added new internal didFinish & didFailToFinish with info functions added.
+            - Update to dictionary sanitization function to permit [String] array values.
 
 - 1.3.1
     - Builder (used by Carthage) updated to include previously missing TealiumMulticastDelegate & TealiumLifecyclePersistentData classes in build target.

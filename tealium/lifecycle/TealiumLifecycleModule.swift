@@ -50,7 +50,7 @@ extension Tealium {
 
 public class TealiumLifecycleModule : TealiumModule {
     
-    fileprivate var _dispatchQueue : DispatchQueue?
+    fileprivate weak var _dispatchQueue : DispatchQueue?
     var areListenersActive = false
     var enabledPrior = false    // To differentiate between new launches and re-enables.
     var lifecycle : TealiumLifecycle?
@@ -64,26 +64,33 @@ public class TealiumLifecycleModule : TealiumModule {
     override public class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumLifecycleModuleKey.moduleName,
                                    priority: 175,
-                                   build: 2,
+                                   build: 3,
                                    enabled: true)
     }
     
     override public func enable(_ request: TealiumEnableRequest) {
         
-        isEnabled = true
         if areListenersActive == false {
             addListeners()
+            
+            delegate?.tealiumModuleRequests(module: self,
+                                            process: TealiumReportNotificationsRequest())
         }
+        
+        _dispatchQueue = request.config.dispatchQueue()
         let config = request.config
         uniqueId = "\(config.account).\(config.profile).\(config.environment)"
         lifecycle = savedOrNewLifeycle(uniqueId: uniqueId)
-        
         let save = TealiumLifecyclePersistentData.save(lifecycle!, usingUniqueId: uniqueId)
+        
         if save.success == false {
             self.didFailToFinish(request,
                                  error: save.error!)
             return
         }
+
+        isEnabled = true
+
         didFinish(request)
         
     }
@@ -99,12 +106,19 @@ public class TealiumLifecycleModule : TealiumModule {
         
     override public func handleReport(_ request: TealiumRequest) {
         
-        if let modulesManager = self.delegate as? TealiumModulesManager,
-            modulesManager.allModulesReady(),
-            request is TealiumEnableRequest {
+        if isEnabled == false {
+            return
+        }
+        
+        
+        if let _ = request as? TealiumEnableRequest {
             
             launchDetected()
         }
+
+        // NOTE: This type of check will fail.
+//        if request is TealiumEnableRequest {
+//        }
         
     }
     
@@ -119,7 +133,6 @@ public class TealiumLifecycleModule : TealiumModule {
         var newData = lifecycle.newTrack(atDate: Date())
         newData += track.data
         let newTrack = TealiumTrackRequest(data: newData,
-                                           info: track.info,
                                            completion: track.completion)
         didFinish(newTrack)
         
@@ -169,15 +182,6 @@ public class TealiumLifecycleModule : TealiumModule {
         
     }
     
-    internal func dispatchQueue() -> DispatchQueue {
-        
-        if _dispatchQueue == nil {
-            _dispatchQueue = DispatchQueue(label: TealiumLifecycleModuleKey.queueName)
-        }
-        return _dispatchQueue!
-        
-    }
-    
     internal func processDetected(type: TealiumLifecycleType) {
         
         if processAcceptable(type: type) == false {
@@ -185,8 +189,11 @@ public class TealiumLifecycleModule : TealiumModule {
         }
         
         lastProcess = type
-        dispatchQueue().async {
-            self.process(type: type)
+        _dispatchQueue?.async { [weak self] in
+            guard let s = self else {
+                return
+            }
+            s.process(type: type)
         }
         
     }
@@ -273,7 +280,6 @@ public class TealiumLifecycleModule : TealiumModule {
         let trackData = Tealium.trackDataFor(title: title,
                                              optionalData: data)
         let track = TealiumTrackRequest(data: trackData,
-                                        info: [:],
                                         completion: nil)
         self.delegate?.tealiumModuleRequests(module: self,
                                              process: track)
@@ -401,7 +407,6 @@ public class TealiumLifecycle : NSObject, NSCoding {
             }
         }
     }
-    var type : String? = TealiumLifecycleType.launch.description
     
     /// Constructor. Should only be called at first init after install.
     ///
@@ -468,7 +473,6 @@ public class TealiumLifecycle : NSObject, NSCoding {
                           overrideSession: TealiumLifecycleSession?) -> [String:Any] {
         
         autotracked = TealiumLifecycleValue.yes
-        type = "launch"
         countLaunch += 1
         countLaunchTotal += 1
         countWake += 1
@@ -484,7 +488,8 @@ public class TealiumLifecycle : NSObject, NSCoding {
             resetCountsForNewVersion(forDate: atDate)
         }
         
-        return self.asDictionary(forDate: atDate)
+        return self.asDictionary(type: TealiumLifecycleType.launch.description,
+                                 forDate: atDate)
         
     }
     
@@ -497,7 +502,6 @@ public class TealiumLifecycle : NSObject, NSCoding {
     public func newWake(atDate: Date, overrideSession: TealiumLifecycleSession?) -> [String:Any] {
         
         autotracked = TealiumLifecycleValue.yes
-        type = "wake"
         countWake += 1
         countWakeTotal += 1
         
@@ -508,7 +512,8 @@ public class TealiumLifecycle : NSObject, NSCoding {
             countCrashTotal += 1
         }
         
-        return self.asDictionary(forDate:atDate)
+        return self.asDictionary(type: TealiumLifecycleType.wake.description,
+                                 forDate:atDate)
         
     }
     
@@ -520,7 +525,6 @@ public class TealiumLifecycle : NSObject, NSCoding {
     public func newSleep(atDate: Date) -> [String:Any] {
         
         autotracked = TealiumLifecycleValue.yes
-        type = "sleep"
         countSleep += 1
         countSleepTotal += 1
         
@@ -531,7 +535,8 @@ public class TealiumLifecycle : NSObject, NSCoding {
         
         currentSession.sleepDate = atDate
         self.totalSecondsAwake += currentSession.secondsElapsed
-        return self.asDictionary(forDate:atDate)
+        return self.asDictionary(type: TealiumLifecycleType.sleep.description,
+                                 forDate:atDate)
         
     }
     
@@ -543,8 +548,8 @@ public class TealiumLifecycle : NSObject, NSCoding {
         }
         
         autotracked = nil
-        self.type = nil
-        return self.asDictionary(forDate:atDate)
+        return self.asDictionary(type: nil,
+                                 forDate:atDate)
         
     }
     
@@ -562,7 +567,8 @@ public class TealiumLifecycle : NSObject, NSCoding {
     // MARK:
     // MARK: INTERNAL HELPERS
     
-    internal func asDictionary(forDate: Date) -> [String:Any] {
+    internal func asDictionary(type: String?,
+                               forDate: Date) -> [String:Any] {
         
         var dict = [String:Any]()
         
@@ -573,7 +579,7 @@ public class TealiumLifecycle : NSObject, NSCoding {
         dict[TealiumLifecycleKey.dayOfWeek] = dayOfWeekLocal(forDate: forDate)
         dict[TealiumLifecycleKey.daysSinceFirstLaunch] = daysFrom(earlierDate: firstSession?.wakeDate, laterDate: forDate)
         dict[TealiumLifecycleKey.daysSinceLastUpdate] = daysFrom(earlierDate: dateLastUpdate, laterDate: forDate)
-        dict[TealiumLifecycleKey.daysSinceLastWake] = daysSinceLastWake(toDate: forDate)
+        dict[TealiumLifecycleKey.daysSinceLastWake] = daysSinceLastWake(type:type, toDate: forDate)
         dict[TealiumLifecycleKey.firstLaunchDate] = firstSession?.wakeDate?.iso8601String
         dict[TealiumLifecycleKey.firstLaunchDate_MMDDYYYY] = firstSession?.wakeDate?.mmDDYYYYString
         dict[TealiumLifecycleKey.hourOfDayLocal] = hourOfDayLocal(forDate: forDate)
@@ -581,8 +587,8 @@ public class TealiumLifecycle : NSObject, NSCoding {
         dict[TealiumLifecycleKey.isFirstLaunchUpdate] = isFirstLaunchAfterUpdate()
         dict[TealiumLifecycleKey.isFirstWakeThisMonth] = isFirstWakeThisMonth()
         dict[TealiumLifecycleKey.isFirstWakeToday] = isFirstWakeToday()
-        dict[TealiumLifecycleKey.lastLaunchDate] = lastLaunchDate()?.iso8601String
-        dict[TealiumLifecycleKey.lastWakeDate] = lastWakeDate()?.iso8601String
+        dict[TealiumLifecycleKey.lastLaunchDate] = lastLaunchDate(type:type)?.iso8601String
+        dict[TealiumLifecycleKey.lastWakeDate] = lastWakeDate(type:type)?.iso8601String
         dict[TealiumLifecycleKey.lastSleepDate] = lastSleepDate()?.iso8601String
         dict[TealiumLifecycleKey.launchCount] = String(countLaunch)
         dict[TealiumLifecycleKey.priorSecondsAwake] = priorSecondsAwake()
@@ -681,7 +687,8 @@ public class TealiumLifecycle : NSObject, NSCoding {
         
     }
     
-    internal func daysSinceLastWake(toDate: Date) -> String? {
+    internal func daysSinceLastWake(type: String?,
+                                    toDate: Date) -> String? {
         
         if type == TealiumLifecycleType.sleep.description {
             let earlierDate = sessions.last!.wakeDate
@@ -717,7 +724,7 @@ public class TealiumLifecycle : NSObject, NSCoding {
         return String(hour)
     }
     
-    internal func lastLaunchDate() -> Date? {
+    internal func lastLaunchDate(type: String?) -> Date? {
         
         guard let lastSession = sessions.last else {
             return nil
@@ -753,7 +760,7 @@ public class TealiumLifecycle : NSObject, NSCoding {
         
     }
     
-    internal func lastWakeDate() -> Date? {
+    internal func lastWakeDate(type: String?) -> Date? {
         
         guard let lastSession = sessions.last else {
             return nil

@@ -5,7 +5,7 @@
 //  Created by Jason Koo, Merritt Tidwell, Chad Hartman, Karen Tamayo, Chris Anderberg  on 8/31/16.
 //  Copyright © 2016 tealium. All rights reserved.
 //
-//  Build 3
+//  Build 4
 
 import Foundation
 
@@ -14,6 +14,7 @@ import Foundation
  */
 public class Tealium {
     
+    let config : TealiumConfig
     /// Mediator for all Tealium modules.
     let modulesManager : TealiumModulesManager
     
@@ -24,11 +25,12 @@ public class Tealium {
      - parameters:
         - tealiumConfig: Object created with Tealium account, profile, environment, optional loglevel)
      */
-    init(config: TealiumConfig){
+    public init(config: TealiumConfig){
         
+        self.config = config
         modulesManager = TealiumModulesManager()
         modulesManager.setupModulesFrom(config: config)
-        modulesManager.enable(config: config)
+        self.enable()
         
     }
     
@@ -36,12 +38,15 @@ public class Tealium {
       Enablement call used after disable() to re-enable library activites. Unnecessary to call after
      initial init. Does NOT override individual module enabled flags.
      */
-    func enable(){
-        guard let currentConfig = modulesManager.config else {
-            // No pre-existing configuration available.
-            return
+    public func enable(){
+        
+        config.dispatchQueue().async { [weak self] in
+            guard let s = self else {
+                return
+            }
+            s.modulesManager.enable(config: s.config)
         }
-        modulesManager.enable(config: currentConfig)
+        
     }
     
     /**
@@ -49,23 +54,32 @@ public class Tealium {
      
         - Parameter config: TealiumConfiguration to update library with.
      **/
-    func update(config: TealiumConfig){
-        modulesManager.update(config: config)
+    public func update(config: TealiumConfig){
+        config.dispatchQueue().async { [weak self] in
+            guard let s = self else {
+                return
+            }
+            s.modulesManager.update(config: config)
+        }
     }
     
     /**
      Suspends all library activity, may release internal objects.
      */
-    func disable(){
-        modulesManager.disable()
+    public func disable(){
+        config.dispatchQueue().async { [weak self] in
+            guard let s = self else {
+                return
+            }
+            s.modulesManager.disable()
+        }
     }
    
     
     /// Convenience track method with only a title argument.
     ///
     /// - Parameter title: String name of the event. This converts to 'tealium_event'
-    
-    func track(title: String) {
+    public func track(title: String) {
         
         self.track(title: title,
                    data: nil,
@@ -74,7 +88,7 @@ public class Tealium {
     }
     
     /**
-     Primary track method specifying tealium event type.
+     Primary track method - equivalent to utag.track('link',{}) call.
      
     - parameters:
         - event Title: Required title of event.
@@ -84,7 +98,7 @@ public class Tealium {
             - info: Optional dictionary of data from call (ie encoded URL string, response headers, etc.).
             - error: Error encountered, if any.
      */
-    func track(title: String,
+    public func track(title: String,
                data: [String: Any]?,
                completion: ((_ successful:Bool, _ info:[String:Any]?, _ error: Error?) -> Void)?) {
         
@@ -93,7 +107,41 @@ public class Tealium {
         let track = TealiumTrackRequest(data: trackData,
                                         completion: completion)
         
-        modulesManager.track(track)
+        config.dispatchQueue().async { [weak self] in
+            guard let s = self else {
+                return
+            }
+            s.modulesManager.track(track)
+        }
+    }
+    
+    /**
+     Track method for specifying view appearances - equivalent to a utag.track('view',{}) call.
+     
+     - parameters:
+     - event Title: Required title of event.
+     - data: Optional dictionary for additional data sources to pass with call.
+     - completion: Optional callback that is returned IF a dispatch service has delivered a call. Note this callback will be returned for every dispatch service module enabled.
+     - successful: Wether completion succeeded or encountered a failure.
+     - info: Optional dictionary of data from call (ie encoded URL string, response headers, etc.).
+     - error: Error encountered, if any.
+     */
+    public func trackView(title: String,
+                      data: [String: Any]?,
+                      completion: ((_ successful:Bool, _ info:[String:Any]?, _ error: Error?) -> Void)?) {
+        
+        var newData = [String:Any]()
+        
+        if let d = data {
+            newData += d
+        }
+        
+        newData["call_type"] = "view"
+        
+        self.track(title: title,
+                   data: newData,
+                   completion: completion)
+
     }
     
     /**
@@ -109,7 +157,7 @@ public class Tealium {
              - error: Error encountered, if any.
      */
     @available(*, deprecated, message: "Track Type no longer necessary. This method will be removed next version.")
-    func track(type: TealiumTrackType,
+    public func track(type: TealiumTrackType,
                title: String,
                data: [String: Any]?,
                completion: ((_ successful:Bool, _ info:[String:Any]?, _ error: Error?) -> Void)?) {
@@ -131,7 +179,7 @@ public class Tealium {
     ///   - title: String description for track name.
     ///   - optionalData: Optional key-values for TIQ variables / UDH attributes
     /// - Returns: Dictionary of type [String:Any]
-    class func trackDataFor(title: String,
+    public class func trackDataFor(title: String,
                             optionalData: [String:Any]?) -> [String:Any] {
         
         // ? Needed derefencing to incoming args.
@@ -146,6 +194,7 @@ public class Tealium {
         
         return trackData
     }
+    
 }
 
 

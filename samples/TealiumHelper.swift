@@ -41,7 +41,7 @@ class TealiumHelper : NSObject {
 
         // OPTIONALLY disable a particular module by name
 //        let list = TealiumModulesList(isWhitelist: false,
-//                                      moduleNames: ["logger"])
+//                                      moduleNames: ["filestorage","defaultsstorage"])
 //        config.setModulesList(list)
 
         // REQUIRED Initialization
@@ -51,6 +51,8 @@ class TealiumHelper : NSObject {
                     // Optional processing post init.
                             
         })
+        
+        tealium?.track(title: "HelperReady")
         
         // OPTIONALLY implement Dynamic Triggers.
         #if os(iOS)
@@ -79,7 +81,10 @@ class TealiumHelper : NSObject {
                       completion: { (success, info, error) in
                         
                 // Optional post processing
-                print("*** TealiumHelper: track completed:\n\(success)\n\(info)\n\(error)")
+                if self.enableHelperLogs == false {
+                    return
+                }
+                print("*** TealiumHelper: track completed:\n\(success)\n\(String(describing: info))\n\(String(describing: error))")
         })
     }
     
@@ -91,7 +96,10 @@ class TealiumHelper : NSObject {
                         
                 // Optional post processing
                 // Alternatively, monitoring track completions can be done here vs. using the delegate module's callbacks.
-                print("*** TealiumHelper: view completed:\n\(success)\n\(info)\n\(error)")
+                if self.enableHelperLogs == false {
+                    return
+                }
+                print("*** TealiumHelper: view completed:\n\(success)\n\(String(describing: info))\n\(String(describing: error))")
     
                         
         })
@@ -113,9 +121,10 @@ extension TealiumHelper : TealiumDelegate {
     
     func tealiumTrackCompleted(success: Bool, info: [String : Any]?, error: Error?) {
         
-        if enableHelperLogs {
-            print("\n*** Tealium Helper: Tealium Delegate : tealiumTrackCompleted *** Track finished. Was successful:\(success)\nInfo:\(info as AnyObject)\((error != nil) ? "\nError:\(String(describing:error))":"")")
+        if enableHelperLogs == false {
+            return
         }
+        print("\n*** Tealium Helper: Tealium Delegate : tealiumTrackCompleted *** Track finished. Was successful:\(success)\nInfo:\(info as AnyObject)\((error != nil) ? "\nError:\(String(describing:error))":"")")
         
     }
 }
