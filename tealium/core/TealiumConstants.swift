@@ -5,14 +5,14 @@
 //  Created by Jason Koo on 9/1/16.
 //  Copyright © 2016 tealium. All rights reserved.
 //
-//  Build 2
+//  Build 3
 
 
 // MARK: VALUES
 
 public enum TealiumValue {
     static let libraryName = "swift"
-    static let libraryVersion = "1.3.0"
+    static let libraryVersion = "1.3.2"
 }
 
 // MARK:
@@ -76,15 +76,31 @@ public enum TealiumTrackType {
 ///     with this list which will be read by internal components to determine
 ///     which modules to spin up, if they are included with the existing build.
 public struct TealiumModulesList {
-    let isWhitelist: Bool
-    let moduleNames: Set<String>
+    public let isWhitelist: Bool
+    public let moduleNames: Set<String>
+    
+    public init(isWhitelist: Bool,
+         moduleNames: Set<String>) {
+        self.isWhitelist = isWhitelist
+        self.moduleNames = moduleNames
+    }
 }
 
 /// Feedback from modules for internal requests (such as an enabling).
 public struct TealiumModuleResponse {
-    let moduleName: String
-    let success: Bool
-    var error: Error?
+    public let moduleName: String
+    public let success: Bool
+    public var info: [String:Any]?
+    public var error: Error?
+    
+    init(moduleName: String,
+         success: Bool,
+         error: Error?) {
+        self.moduleName = moduleName
+        self.success = success
+        self.error = error
+        self.info = nil
+    }
 }
 
 // MARK:
@@ -246,26 +262,22 @@ public struct TealiumTrackRequest : TealiumRequest {
     public var completion: TealiumCompletion?
     
     let data: [String:Any]
-    var info: [String:Any]?
-    // Can be notated by system monitoring modules or special configs
-    var wasSent: Bool
+//    var info: [String:Any]?
     
     init(data: [String:Any],
          completion: TealiumCompletion?) {
         self.data = data
         self.completion = completion
-        self.wasSent = false
         
     }
     
-    init(data: [String:Any],
-         info: [String:Any]?,
-         completion: TealiumCompletion?){
-        self.data = data
-        self.info = info
-        self.completion = completion
-        self.wasSent = false
-    }
+//    init(data: [String:Any],
+//         info: [String:Any]?,
+//         completion: TealiumCompletion?){
+//        self.data = data
+//        self.info = info
+//        self.completion = completion
+//    }
     
     public static func instanceTypeId() -> String {
         return "track"

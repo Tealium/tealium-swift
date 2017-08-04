@@ -82,7 +82,6 @@ class TealiumConnectivityModule : TealiumModule {
         var newData = track.data
         newData[TealiumConnectivityKey.wasQueued] = "true"
         let newTrack = TealiumTrackRequest(data: newData,
-                                           info: track.info,
                                            completion: track.completion)
         queue.append(newTrack)
         

@@ -130,7 +130,7 @@ open class TealiumModule : TealiumModuleProtocol {
     ///     the subclass's module name & success = true. No need to override.
     ///
     /// - Parameter request: Any TealiumRequest to pass back to the ModulesManager.
-    func didFinish(_ request: TealiumRequest) {
+    open func didFinish(_ request: TealiumRequest) {
 
         var newRequest = request
         let response = TealiumModuleResponse(moduleName: type(of:self).moduleConfig().name,
@@ -138,9 +138,8 @@ open class TealiumModule : TealiumModuleProtocol {
                                              error: nil)
         newRequest.moduleResponses.append(response)
         
-        delegate?.tealiumModuleFinished(module: self,
-                                        process: newRequest)
-        
+        self.delegate?.tealiumModuleFinished(module: self,
+                                    process: newRequest)
     }
     
     
@@ -150,9 +149,9 @@ open class TealiumModule : TealiumModuleProtocol {
     ///     module's info. No need to override.
     ///
     /// - Parameter request: The original TealiumRequest.
-    func didFinishWithNoResponse(_ request: TealiumRequest) {
+    open func didFinishWithNoResponse(_ request: TealiumRequest) {
         
-        delegate?.tealiumModuleFinished(module: self,
+        self.delegate?.tealiumModuleFinished(module: self,
                                         process: request)
     }
     
@@ -163,7 +162,7 @@ open class TealiumModule : TealiumModuleProtocol {
     /// - Parameters:
     ///   - request: TealiumRequest to send back to the ModulesManager for futher processing.
     ///   - error: Error associated with the failure.
-    func didFailToFinish(_ request: TealiumRequest,
+    open func didFailToFinish(_ request: TealiumRequest,
                               error: Error){
         
         var newRequest = request
@@ -171,9 +170,9 @@ open class TealiumModule : TealiumModuleProtocol {
                                              success: false,
                                              error: error)
         newRequest.moduleResponses.append(response)
-        delegate?.tealiumModuleFinished(module: self,
+
+        self.delegate?.tealiumModuleFinished(module: self,
                                         process: newRequest)
-        
     }
     
     /// Majority of modules will want to manipulate or deliver track events - but

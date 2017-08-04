@@ -60,7 +60,6 @@ class TealiumDelegateModuleTests: XCTestCase {
         
         // Run a track call through the module
         let track = TealiumTrackRequest(data: ["key":"value"],
-                                        info: ["infoKey":"infoValue"],
                                         completion: nil)
         module!.track(track)
         

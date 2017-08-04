@@ -86,7 +86,6 @@ class TealiumDatasourceModuleTests: XCTestCase {
         
         delegateExpectationSuccess = self.expectation(description: "datasourceTrack")
         let tealiumTrack = TealiumTrackRequest(data: [:],
-                                               info: [:],
                                                completion: nil)
         module.track(tealiumTrack)
     

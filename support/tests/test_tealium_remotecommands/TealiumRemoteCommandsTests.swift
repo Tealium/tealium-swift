@@ -25,14 +25,14 @@ class TealiumRemoteCommandsTests: XCTestCase {
         let commandId = "test"
         let testExpectation = expectation(description: "addRemove")
         let command = TealiumRemoteCommand(commandId: commandId,
-                                           description: "",
-                                           queue: nil) { (reponse) in
+                                           description: "") { (reponse) in
             
             testExpectation.fulfill()
             
         }
         
         let remoteCommands = TealiumRemoteCommands()
+        remoteCommands.queue = OperationQueue.current?.underlyingQueue
         remoteCommands.enable()
         remoteCommands.add(command)
 
@@ -51,14 +51,14 @@ class TealiumRemoteCommandsTests: XCTestCase {
         let commandId = "test"
         let testExpectation = expectation(description: "addRemove")
         let command = TealiumRemoteCommand(commandId: commandId,
-                                           description: "",
-                                           queue: nil) { (reponse) in
+                                           description: "") { (reponse) in
                                             
                     testExpectation.fulfill()
                                             
         }
         
         let remoteCommands = TealiumRemoteCommands()
+        remoteCommands.queue = OperationQueue.current?.underlyingQueue
         remoteCommands.enable()
         remoteCommands.add(command)
 
@@ -79,13 +79,13 @@ class TealiumRemoteCommandsTests: XCTestCase {
         
         let commandId = "test"
         let command = TealiumRemoteCommand(commandId: commandId,
-                                           description: "",
-                                           queue: nil) { (reponse) in
+                                           description: "") { (reponse) in
                                             
                 // Unused
         }
         
         let remoteCommands = TealiumRemoteCommands()
+        remoteCommands.queue = OperationQueue.current?.underlyingQueue
         remoteCommands.enable()
         remoteCommands.add(command)
         

@@ -44,19 +44,19 @@ enum TealiumTagManagementError : Error {
 
 extension TealiumConfig {
     
-    func disableTagManagement() {
+    public func disableTagManagement() {
         
         optionalData[TealiumTagManagementConfigKey.disable] = true
         
     }
   
-    func setTagManagementQueueSize(to: Int) {
+    public func setTagManagementQueueSize(to: Int) {
 
         optionalData[TealiumTagManagementConfigKey.maxQueueSize] = to
         
     }
     
-    func setTagManagementOverrideURL(string: String) {
+    public func setTagManagementOverrideURL(string: String) {
         
         optionalData[TealiumTagManagementConfigKey.overrideURL] = string
     }
@@ -85,43 +85,18 @@ extension Tealium {
 // MARK: MODULE SUBCLASS
 
 class TealiumTagManagementModule : TealiumModule {
-    
-    // Queue for staging calls to this dispatch service, as initial calls
-    // likely to incoming before webView is ready.
-    
-    /// Overridable completion handler for module send command.
-    var sendCompletion : (TealiumTagManagementModule, TealiumTrackRequest) -> Void = { (_ module:TealiumTagManagementModule, _ track:TealiumTrackRequest) in
-    
-        #if TEST
-        #else
-            // Default behavior
-            module.tagManagement.track(track.data,
-                       completion:{(success, info, error) in
-                        
-                let newTrack = TealiumTrackRequest(data: track.data,
-                                                   info: info,
-                                                   completion: track.completion)
-                if error != nil {
-                    module.didFailToFinish(newTrack,
-                                           error:error!)
-                    return
-                }
-                module.didFinish(newTrack)
-                        
-            })
-        #endif
-        
-    }
 
     override class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumTagManagementKey.moduleName,
                                    priority: 1100,
-                                   build: 2,
+                                   build: 3,
                                    enabled: true)
     }
     
     #if TEST
     #else
+    
+    fileprivate weak var dispatchQueue : DispatchQueue?
     var tagManagement = TealiumTagManagement()
     
     override func enable(_ request: TealiumEnableRequest) {
@@ -131,7 +106,8 @@ class TealiumTagManagementModule : TealiumModule {
             DispatchQueue.main.async {
                 self.tagManagement.disable()
             }
-            self.didFinish(request)
+            self.didFinish(request,
+                           info: nil)
             return
         }
     
@@ -140,21 +116,31 @@ class TealiumTagManagementModule : TealiumModule {
         let environment = config.environment
         let overrideUrl = config.optionalData[TealiumTagManagementConfigKey.overrideURL] as? String
         
-        DispatchQueue.main.async {
+        dispatchQueue = config.dispatchQueue()
+        
+        DispatchQueue.main.async { [weak self] in
 
-            self.tagManagement.enable(forAccount: account,
+            guard let s = self else {
+                return
+            }
+            s.tagManagement.enable(forAccount: account,
                                  profile: profile,
                                  environment: environment,
                                  overrideUrl: overrideUrl,
                                  completion: {(success, error) in
-            
-                if let e = error {
-                    self.didFailToFinish(request,
-                                         error: e)
-                    return
-                }
-                self.isEnabled = true
-                self.didFinish(request)
+                        
+                                    s.dispatchQueue?.async {
+                                        
+                                        if let e = error {
+                                            s.didFailToFinish(request,
+                                                              error: e)
+                                            return
+                                        }
+                                        s.isEnabled = true
+                                        s.didFinish(request)
+                                        
+                                    }
+
                                     
             })
         }
@@ -169,7 +155,8 @@ class TealiumTagManagementModule : TealiumModule {
             self.tagManagement.disable()
 
         }
-        didFinish(request)
+        didFinish(request,
+                  info: nil)
     }
 
     override func track(_ track: TealiumTrackRequest) {
@@ -180,32 +167,81 @@ class TealiumTagManagementModule : TealiumModule {
             return
         }
         
-        if track.wasSent == true {
-            didFinishWithNoResponse(track)
-            return
-        }
+        dispatchTrack(track)
         
-        var newTrack = TealiumTrackRequest(data: track.data,
-                                           info: nil,
-                                           completion: track.completion)
-        newTrack.wasSent = true
+    }
+    
+    func didFinish(_ request: TealiumRequest,
+                   info: [String:Any]?) {
+        
+        var newRequest = request
+        var response = TealiumModuleResponse(moduleName: type(of:self).moduleConfig().name,
+                                             success: true,
+                                             error: nil)
+        response.info = info
+        newRequest.moduleResponses.append(response)
+        
+        self.delegate?.tealiumModuleFinished(module: self,
+                                              process: newRequest)
+    }
+    
+    func didFailToFinish(_ request: TealiumRequest,
+                         info: [String:Any]?,
+                         error: Error) {
+        
+        var newRequest = request
+        var response = TealiumModuleResponse(moduleName: type(of:self).moduleConfig().name,
+                                             success: false,
+                                             error: error)
+        response.info = info
+        newRequest.moduleResponses.append(response)
+        
+        self.delegate?.tealiumModuleFinished(module: self,
+                                             process: newRequest)
+    }
+    
+    func dispatchTrack(_ track: TealiumTrackRequest){
         
         // Dispatch to main thread since webview requires main thread.
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
             
-            // Webview has failed for some reason
-            if self.tagManagement.isWebViewReady() == false {
-                self.didFailToFinish(newTrack,
-                                     error: TealiumTagManagementError.webViewNotYetReady)
+            guard let s = self else {
                 return
             }
+            // Webview has failed for some reason
+            if s.tagManagement.isWebViewReady() == false {
+                s.didFailToFinish(track,
+                                  info: nil,
+                                  error: TealiumTagManagementError.webViewNotYetReady)
+                return
+            }
+            
+            #if TEST
+            #else
+                s.tagManagement.track(track.data,
+                                      completion:{(success, info, error) in
+                        
+                                        s.dispatchQueue?.async {
+                                            
+                                            track.completion?(success, info, error)
+                                            
+                                            if error != nil {
+                                                s.didFailToFinish(track,
+                                                                  info: info,
+                                                                  error:error!)
+                                                return
+                                            }
+                                            s.didFinish(track,
+                                                        info: info)
+                                            
+                                        }
+                                        
 
-            self.sendCompletion(self, newTrack)
-
+                                        
+                })
+            #endif
         }
         
-        didFinishWithNoResponse(track)
-
     }
     #endif
 
@@ -341,8 +377,7 @@ public class TealiumTagManagement : NSObject {
     /// - Returns: Bool indicating whether or not the internal webview is ready for dispatching.
     func isWebViewReady() -> Bool {
         
-        if self.webView == nil { return false }
-        if self.webView!.isLoading == true { return false }
+        guard let _ = self.webView else  { return false }
         if didWebViewFinishLoading == false { return false }
         
         return true
@@ -353,7 +388,7 @@ public class TealiumTagManagement : NSObject {
     /// - Parameters:
     ///   - data: [String:Any] Dictionary of preferrably String or [String] values.
     ///   - completion: Optional completion handler to call when call completes.
-    func track(_ data: [String:Any],
+    public func track(_ data: [String:Any],
                completion: ((_ success:Bool, _ info: [String:Any], _ error: Error?)->Void)?) {
         
         var appendedData = data
@@ -431,7 +466,11 @@ extension TealiumTagManagement : UIWebViewDelegate {
         
         didWebViewFinishLoading = true
         delegates.invoke{ $0.webViewDidFinishLoad?(webView) }
+        
+        DispatchQueue.global(qos: .background).async {
+
         self.completion?(true, nil)
+        }
     }
     
 }
@@ -448,10 +487,13 @@ class TealiumTagManagementUtils {
         if fromData[TealiumKey.eventType] as? String == TealiumTrackType.view.description() {
             legacyType = "view"
         }
+        if let callType = fromData["call_type"] as? String {
+            legacyType = callType
+        }
         return legacyType
     }
     
-    class func jsonEncode(sanitizedDictionary:[String:String]) -> String? {
+    class func jsonEncode(sanitizedDictionary:[String:Any]) -> String? {
         
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: sanitizedDictionary,
@@ -464,20 +506,21 @@ class TealiumTagManagementUtils {
         }
     }
     
-    class func sanitized(dictionary:[String:Any]) -> [String:String]{
+    class func sanitized(dictionary:[String:Any]) -> [String:Any]{
         
-        var clean = [String: String]()
+        var clean = [String: Any]()
         
         for (key, value) in dictionary {
             
-            if value is String {
+            if value is String ||
+                value is [String] {
                 
-                clean[key] = value as? String
+                clean[key] = value
                 
             } else {
                 
                 let stringified = "\(value)"
-                clean[key] = stringified as String?
+                clean[key] = stringified
             }
             
         }

@@ -63,7 +63,6 @@ class TealiumModulesManagerTests: XCTestCase {
         let expectation = self.expectation(description: "testPublicTrack")
         
         let testTrack = TealiumTrackRequest(data: [:],
-                                            info: nil,
                                             completion: {(success, info, error) in
         
                 guard let error = error else {
@@ -141,7 +140,6 @@ class TealiumModulesManagerTests: XCTestCase {
         let expectation = self.expectation(description: "testPublicTrackOneModule")
         
         let testTrack = TealiumTrackRequest(data: [:],
-                                            info: nil,
                                             completion: {(success, info, error) in
                 
                 guard let error = error else {
@@ -233,9 +231,9 @@ class TealiumModulesManagerTests: XCTestCase {
         let manager = TealiumModulesManager()
         manager.setupModulesFrom(config: config)
         
-        let module = manager.getModule(forName: "async")
+        let module = manager.getModule(forName: "logger")
         
-        XCTAssert((module is TealiumAsyncModule), "Incorrect module received: \(String(describing: module))")
+        XCTAssert((module is TealiumLoggerModule), "Incorrect module received: \(String(describing: module))")
     }
     
     

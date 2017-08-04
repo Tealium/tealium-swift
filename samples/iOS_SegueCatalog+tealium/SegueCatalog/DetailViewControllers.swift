@@ -15,10 +15,10 @@ class NestedViewController: UIViewController {
         
         #if AUTOTRACKING
         #else
-            let extraData : [String:Any] = ["autotracked" : "false" as Any]
-            
-            TealiumHelper.sharedInstance().track(title: "NestedViewController:viewDidLoad",
-                                             data: extraData)
+//            let extraData : [String:Any] = ["autotracked" : "false" as Any]
+//            
+//            TealiumHelper.sharedInstance().track(title: "NestedViewController:viewDidLoad",
+//                                             data: extraData)
         
         #endif
         
@@ -47,10 +47,10 @@ class OuterViewController: UIViewController {
         
         #if AUTOTRACKING
         #else
-            let extraData : [String:Any] = ["autotracked" : "false" as Any]
-            
-            TealiumHelper.sharedInstance().track(title: "DetailViewController:viewDidLoad",
-                                             data: extraData)
+//            let extraData : [String:Any] = ["autotracked" : "false" as Any]
+//            
+//            TealiumHelper.sharedInstance().track(title: "DetailViewController:viewDidLoad",
+//                                             data: extraData)
         #endif
     }
     @IBAction func unwindToOuter(_ segue: UIStoryboardSegue) {
