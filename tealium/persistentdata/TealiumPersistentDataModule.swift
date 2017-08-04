@@ -93,7 +93,6 @@ class TealiumPersistentDataModule : TealiumModule {
         dataDictionary += persistentData.persistentDataCache
         dataDictionary += track.data
         let newTrack = TealiumTrackRequest(data: dataDictionary,
-                                           info: track.info,
                                            completion: track.completion)
         
         didFinish(newTrack)

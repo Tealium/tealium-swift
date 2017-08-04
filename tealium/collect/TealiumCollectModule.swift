@@ -128,25 +128,45 @@ class TealiumCollectModule : TealiumModule {
             return
         }
         
-        if track.wasSent == true {
-            didFinishWithNoResponse(track)
-            return
-        }
-        
         guard let collect = self.collect else {
-            // TODO: Send to queue instead?
+            // TODO: Queue instead?
             didFailToFinish(track,
                             error: TealiumCollectError.collectNotInitialized)
             return
         }
-
+        
         // Send the current track call
         dispatch(track,
                  collect: collect)
         
-        // Completion handed off to collect dispatch service - forward original track 
-        //  request to any subsequent modules for any remaining processing.
-        didFinishWithNoResponse(track)
+    }
+    
+    func didFinish(_ request: TealiumRequest,
+                   info: [String:Any]?) {
+        
+        var newRequest = request
+        var response = TealiumModuleResponse(moduleName: type(of:self).moduleConfig().name,
+                                             success: true,
+                                             error: nil)
+        response.info = info
+        newRequest.moduleResponses.append(response)
+        
+        delegate?.tealiumModuleFinished(module: self,
+                                        process: newRequest)
+    }
+    
+    func didFailToFinish(_ request: TealiumRequest,
+                         info: [String:Any]?,
+                         error: Error) {
+        
+        var newRequest = request
+        var response = TealiumModuleResponse(moduleName: type(of:self).moduleConfig().name,
+                                             success: false,
+                                             error: error)
+        response.info = info
+        newRequest.moduleResponses.append(response)
+        delegate?.tealiumModuleFinished(module: self,
+                                        process: newRequest)
         
     }
     
@@ -155,34 +175,30 @@ class TealiumCollectModule : TealiumModule {
     
         var newData = track.data
         newData[TealiumCollectKey.dispatchService] = TealiumCollectKey.moduleName
+
         collect.dispatch(data: newData, completion: { [weak self] (success, info, error) in
-            
+
             // if self deallocated, stop further track processing
             guard let _ = self else {
                 return
             }
-            
-            // Need new track as this is modified from the original request -
-            //  contains response in the info property.
-            var newTrack = TealiumTrackRequest(data: newData,
-                                               info: info,
-                                               completion: track.completion)
-            newTrack.completion?(success, info, error)
-            // prevents another dispatch service from sending
-            newTrack.wasSent = true
+
+            track.completion?(success, info, error)
 
             // Let the modules manager know we had a failure.
             if success == false {
                 var localError = error
                 if localError == nil { localError = TealiumCollectError.unknownIssueWithSend }
-                self?.didFailToFinish(newTrack,
+                self?.didFailToFinish(track,
+                                      info: info,
                                       error: localError!)
                 return
             }
             
             // Another message to moduleManager of completed track, this time of
             //  modified track data.
-            self?.didFinish(newTrack)
+            self?.didFinish(track,
+                            info: info)
             
         })
     }

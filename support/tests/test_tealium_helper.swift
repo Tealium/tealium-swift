@@ -67,10 +67,10 @@ class test_tealium_helper {
     var callBack : ((TealiumModule, String)->Void)?
     var succeedingProtocols = [String]()
     var successfulRequests = [TealiumRequest]()
+    var testCompletion : ((_ success:Bool, _ protocolsFailing:[String])->Void)?
     
     class func testTrack() -> TealiumTrackRequest {
         return TealiumTrackRequest(data: [String:AnyObject](),
-                                   info: nil,
                                    completion: nil)
     }
     
@@ -107,7 +107,6 @@ class test_tealium_helper {
     
     class func allTealiumModuleNames() -> [String] {
         return [
-                "async",
                 "appdata",
                 "attribution",
                 "autotracking",
@@ -195,9 +194,10 @@ class test_tealium_helper {
     func modulesReturnsMinimumProtocols(module: TealiumModule,
                                         completion: @escaping ((_ success:Bool, _ protocolsFailing:[String])->Void)){
         
+        testCompletion = completion
         successfulRequests.removeAll()
         let allTestRequests = test_tealium_helper.allTestTealiumRequests()
-        var failing = [String]()
+//        var failing = [String]()
         module.delegate = self
         
         for request in allTestRequests {
@@ -205,19 +205,37 @@ class test_tealium_helper {
             // fire
             module.handle(request)
             
-            // check callback
-            if request.typeId != successfulRequests.last?.typeId {
-                failing.append(request.typeId)
-            }
+//            // check callback
+//            if successfulRequests.last == nil {
+//                failing.append(request.typeId)
+//                continue
+//            }
+//            if request.typeId != successfulRequests.last!.typeId {
+//                failing.append(request.typeId)
+//            }
             
         }
         
-        completion(failing.isEmpty ? true : false, failing)
+//        completion(failing.isEmpty ? true : false, failing)
         
     }
     
+    func areTestsFinished() -> Bool {
+        
+        return successfulRequests.count >= test_tealium_helper.allTestTealiumRequests().count
+    }
+
+    func stringsFrom(_ array : [TealiumRequest]) -> [String] {
+        
+        var result = [String]()
+        for request in array {
+            result.append(request.typeId)
+        }
+        return result
+    }
+    
     class func failingProtocols(testingList: [String],
-                                        passedList: [String]) -> [String] {
+                                passedList: [String]) -> [String] {
         
         var failingProtocols = [String]()
         
@@ -269,6 +287,14 @@ extension test_tealium_helper : TealiumModuleDelegate {
         // NOTE: Don't leave a breakpoint in here, can throw off the test
         callBack?(module, process.typeId)
         successfulRequests.append(process)
+        
+        if areTestsFinished() {
+            let successStrings = stringsFrom(successfulRequests)
+            let failing = test_tealium_helper.failingProtocols(testingList: test_tealium_helper.allTealiumRequestNames(),
+                                                               passedList: successStrings)
+            testCompletion?(failing.isEmpty ? true : false, failing)
+
+        }
         
     }
     

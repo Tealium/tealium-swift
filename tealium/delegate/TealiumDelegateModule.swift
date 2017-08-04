@@ -17,17 +17,18 @@ public enum TealiumDelegateError : Error {
     case suppressedByShouldTrackDelegate
 }
 
-typealias tealiumEnableCompletion = ((_ modulesResponses: [TealiumModuleResponse])-> Void )
+public typealias tealiumEnableCompletion = ((_ modulesResponses: [TealiumModuleResponse])-> Void )
 
 public protocol TealiumDelegate : class {
-
+    
     func tealiumShouldTrack(data: [String:Any]) -> Bool
     func tealiumTrackCompleted(success:Bool, info:[String:Any]?, error:Error?)
+    
 }
 
 extension Tealium {
     
-    convenience init(config: TealiumConfig,
+    public convenience init(config: TealiumConfig,
                      completion: @escaping tealiumEnableCompletion ) {
     
         config.optionalData[TealiumDelegateKey.completion] = completion
@@ -49,7 +50,7 @@ extension Tealium {
 
 extension TealiumConfig {
     
-    func delegates() -> TealiumDelegates {
+    public func delegates() -> TealiumDelegates {
         
         if let delegates = self.optionalData[TealiumDelegateKey.multicastDelegates] as? TealiumDelegates {
             return delegates
@@ -60,7 +61,7 @@ extension TealiumConfig {
         
     }
     
-    func addDelegate(_ delegate: TealiumDelegate) {
+    public func addDelegate(_ delegate: TealiumDelegate) {
         
         let delegates = self.delegates()
         
@@ -80,7 +81,7 @@ class TealiumDelegateModule : TealiumModule {
     override class  func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumDelegateKey.moduleName,
                                    priority: 900,
-                                   build: 3,
+                                   build: 4,
                                    enabled: true)
     }
     
@@ -164,10 +165,7 @@ public class TealiumDelegates {
         
         multicastDelegate.removeAll()
     }
-    
-//    public func invokeEnabled(request: TealiumEnableRequest) {
-//        multicastDelegate.invoke{ $0.tealiumEnabled(withConfig: request.config) }
-//    }
+
     
     /// Query all delegates if the data should be tracked or suppressed.
     ///
@@ -192,15 +190,7 @@ public class TealiumDelegates {
         for response in forTrackProcess.moduleResponses {
             let success = response.success
             let error = response.error
-            guard let info = forTrackProcess.info else {
-                // Track call was not processed by any dispatch manager.
-                // TODO: Better error reporting in this above instance.
-                continue
-            }
-            
-            if info.isEmpty {
-                continue
-            }
+            let info = response.info
             
             multicastDelegate.invoke{ $0.tealiumTrackCompleted(success: success, info: info, error: error)}
 

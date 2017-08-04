@@ -5,7 +5,7 @@
 //  Created by Jason Koo, Merritt Tidwell, Chad Hartman, Karen Tamayo, Chris Anderberg  on 8/31/16.
 //  Copyright © 2016 tealium. All rights reserved.
 //
-//  Build 2
+//  Build 3
 
 
 // *****************************************
@@ -23,6 +23,8 @@ let defaultTealiumConfig = TealiumConfig(account:"tealiummobile",
 // *****************************************
 // MARK: No need to edit below this line
 // *****************************************
+
+import Foundation
 
 /*
  Configuration object for any Tealium instance.
@@ -82,6 +84,7 @@ open class TealiumConfig {
 extension TealiumConfig : Equatable {
     
     public static func == (lhs: TealiumConfig, rhs: TealiumConfig ) -> Bool {
+        
         if lhs.account != rhs.account { return false }
         if lhs.profile != rhs.profile { return false }
         if lhs.environment != rhs.environment { return false }
@@ -96,6 +99,41 @@ extension TealiumConfig : Equatable {
         }
         
         return true
+        
+    }
+    
+}
+
+enum TealiumConfigKey {
+    static let queue = "com.tealium.queue"
+}
+
+
+
+// MARK: - Future support for alternate queue assignments for library module processing.
+extension TealiumConfig {
+    
+    public func dispatchQueue() -> DispatchQueue {
+        
+        guard let queue = self.optionalData[TealiumConfigKey.queue] as? DispatchQueue else {
+            let defaultQueue = TealiumConfig.defaultDispatchQueue()
+            self.setDispatchQueue(defaultQueue)
+            return defaultQueue
+        }
+        return queue
+        
+    }
+    
+    
+    public func setDispatchQueue(_ queue: DispatchQueue ) {
+        
+        self.optionalData[TealiumConfigKey.queue] = queue
+        
+    }
+    
+    static func defaultDispatchQueue() -> DispatchQueue {
+        
+        return DispatchQueue.main
         
     }
     
