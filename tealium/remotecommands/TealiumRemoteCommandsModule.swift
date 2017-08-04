@@ -48,13 +48,12 @@ extension Tealium {
 extension TealiumConfig {
     
     @available(*, deprecated, message: "Use the new modulesList option in the TealiumConfig object to disable Remote Commands. This method will be removed in a future release.")
-    func disableRemoteCommands() {
+    public func disableRemoteCommands() {
         
-//        optionalData[TealiumRemoteCommandsKey.disable] = true
-        
+        // No effect
     }
     
-    func disableRemoteHTTPCommand() {
+    public func disableRemoteHTTPCommand() {
         
         optionalData[TealiumRemoteCommandsKey.disableHTTP] = true
     }
@@ -62,11 +61,10 @@ extension TealiumConfig {
     @available(*, deprecated, message: "Use the new modulesList option in the TealiumConfig object to explictly enable Remote Commands. This method will be removed in a future release.")
     func enableRemoteCommands() {
         
-//        optionalData[TealiumRemoteCommandsKey.disable] = false
-        
+        // No effect
     }
     
-    func enableRemoteHTTPCommand() {
+    public func enableRemoteHTTPCommand() {
         
         optionalData[TealiumRemoteCommandsKey.disableHTTP] = false
         
@@ -84,7 +82,7 @@ class TealiumRemoteCommandsModule : TealiumModule {
     override class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumRemoteCommandsKey.moduleName,
                                    priority: 1200,
-                                   build: 2,
+                                   build: 3,
                                    enabled: true)
     }
     
@@ -126,7 +124,8 @@ class TealiumRemoteCommandsModule : TealiumModule {
     
     func updateReserveCommands(config: TealiumConfig) {
         
-        var shouldDisable = false
+        var shouldDisable = true // Default
+        
         if let shouldDisableSetting = config.optionalData[TealiumRemoteCommandsKey.disableHTTP] as? Bool {
             shouldDisable = shouldDisableSetting
         }
@@ -159,10 +158,10 @@ enum TealiumRemoteCommandStatusCode : Int {
     case failure = 404
 }
 
-class TealiumRemoteCommand {
+public class TealiumRemoteCommand {
     
     let commandId : String
-    let queue : DispatchQueue?
+    weak var queue : DispatchQueue?
     var description : String?
     
     internal let _completion : ((_ response:TealiumRemoteCommandResponse)->Void)
@@ -176,7 +175,7 @@ class TealiumRemoteCommand {
     ///         running on the existing thread.
     ///   - completion: The completion block to run when this remote command is
     ///         triggered.
-    init(commandId: String,
+    public init(commandId: String,
          description : String?,
          queue: DispatchQueue?,
          completion : @escaping ((_ response:TealiumRemoteCommandResponse)->Void)){
@@ -196,8 +195,11 @@ class TealiumRemoteCommand {
         }
         
         // Run completion on a specified queue
-        queue?.async {
-            self._completion(response)
+        queue?.async { [weak self] in
+            guard let s = self else {
+                return
+            }
+            s._completion(response)
         }
     }
     
@@ -219,7 +221,7 @@ enum TealiumRemoteCommandsHTTPKey {
 }
 
 
-enum TealiumRemoteCommandsError : Error {
+public enum TealiumRemoteCommandsError : Error {
     case invalidScheme
     case noCommandIdFound
     case noCommandForCommandIdFound
@@ -246,13 +248,13 @@ public class TealiumRemoteCommands : NSObject {
         return false
     }
     
-    func add(_ remoteCommand : TealiumRemoteCommand) {
+    public func add(_ remoteCommand : TealiumRemoteCommand) {
         
         // NOTE: Multiple commands with the same command id are possible - OK
         commands.append(remoteCommand)
     }
     
-    func remove(commandWithId: String) {
+    public func remove(commandWithId: String) {
         commands.removeCommandForId(commandWithId)
     }
     
@@ -260,7 +262,9 @@ public class TealiumRemoteCommands : NSObject {
         isEnabled = true
     }
     
+    // NOTE: Will wipe out all existing commands. Will need to re-add after.
     func disable() {
+        commands.removeAll()
         isEnabled = false
     }
     
@@ -272,7 +276,7 @@ public class TealiumRemoteCommands : NSObject {
     /// - Parameter urlString: Url string including host, ie: tealium://commandId?request={}...
     /// - Returns: Error if unable to trigger a remote command. Can ignore if the url was not
     ///     intended for a remote command.
-    func triggerCommandFrom(urlString: String) -> TealiumRemoteCommandsError? {
+    public func triggerCommandFrom(urlString: String) -> TealiumRemoteCommandsError? {
         
         var urlInitial = URL(string: urlString)
         if urlInitial == nil {
@@ -295,7 +299,7 @@ public class TealiumRemoteCommands : NSObject {
     /// - Parameter request: URLRequest to check for a remote command.
     /// - Returns: Error if unable to trigger a remote command. If nil is returned,
     ///     then call was a successfully triggered remote command.
-    func triggerCommandFrom(request : URLRequest) -> TealiumRemoteCommandsError? {
+    public func triggerCommandFrom(request : URLRequest) -> TealiumRemoteCommandsError? {
         
         if request.url?.scheme != self.schemeProtocol{
             return TealiumRemoteCommandsError.invalidScheme
@@ -400,15 +404,15 @@ enum TealiumRemoteCommandResponseError : Error {
     case couldNotConvertDataToURL
 }
 
-class TealiumRemoteCommandResponse : CustomStringConvertible {
+public class TealiumRemoteCommandResponse : CustomStringConvertible {
     
-    var status : Int = TealiumRemoteCommandStatusCode.noContent.rawValue
-    var urlRequest : URLRequest
-    var urlResponse : URLResponse?
-    var data: Data?
-    var error : Error?
+    public var status : Int = TealiumRemoteCommandStatusCode.noContent.rawValue
+    public var urlRequest : URLRequest
+    public var urlResponse : URLResponse?
+    public var data: Data?
+    public var error : Error?
     
-    var description : String {
+    public var description : String {
         return "<TealiumRemoteCommandResponse: config:\(config()), status:\(status), payload:\(payload()), response: \(String(describing: urlResponse)), data:\(String(describing: data)) error:\(String(describing: error))>"
     }
     
@@ -580,36 +584,40 @@ class TealiumRemoteHTTPCommand : TealiumRemoteCommand {
                                     description: "For processing tag-triggered HTTP requests",
                                     queue: forQueue) { (response) in
                                         
-                                        let requestInfo = TealiumRemoteHTTPCommand.httpRequest(payload: response.payload())
-                                        
-                                        // TODO: Error handling?
-                                        guard let request = requestInfo.request else {
-                                            return
-                                        }
-                                        
-                                        let task = URLSession.shared.dataTask(with: request,
-                                                                              completionHandler: { (data, urlResponse, error) in
-                                                                                
-                                                                                // Gross legacy status reporting
-                                                                                if let e = error {
-                                                                                    response.error = e
-                                                                                    response.status = TealiumRemoteCommandStatusCode.failure.rawValue
-                                                                                } else {
-                                                                                    response.status = TealiumRemoteCommandStatusCode.success.rawValue
-                                                                                }
-                                                                                if data == nil {
-                                                                                    response.status = TealiumRemoteCommandStatusCode.noContent.rawValue
-                                                                                }
-                                                                                if urlResponse == nil {
-                                                                                    response.status = TealiumRemoteCommandStatusCode.failure.rawValue
-                                                                                }
-                                                                                response.urlResponse = urlResponse
-                                                                                response.data = data
-                                                                                TealiumRemoteHTTPCommand.sendCompletionNotificationFor(commandId: TealiumRemoteHTTPCommandKey.commandId,
-                                                                                                                                       response: response)
-                                        })
-                                        
-                                        task.resume()
+                let requestInfo = TealiumRemoteHTTPCommand.httpRequest(payload: response.payload())
+                
+                // TODO: Error handling?
+                guard let request = requestInfo.request else {
+                    return
+                }
+                
+                weak var weakResponse = response
+                let task = URLSession.shared.dataTask(with: request,
+                                                      completionHandler: { (data, urlResponse, error) in
+                                                      
+                            guard let r = weakResponse else {
+                                return
+                            }
+                            // Gross legacy status reporting
+                            if let e = error {
+                                r.error = e
+                                r.status = TealiumRemoteCommandStatusCode.failure.rawValue
+                            } else {
+                                r.status = TealiumRemoteCommandStatusCode.success.rawValue
+                            }
+                            if data == nil {
+                                r.status = TealiumRemoteCommandStatusCode.noContent.rawValue
+                            }
+                            if urlResponse == nil {
+                                r.status = TealiumRemoteCommandStatusCode.failure.rawValue
+                            }
+                            r.urlResponse = urlResponse
+                            r.data = data
+                            TealiumRemoteHTTPCommand.sendCompletionNotificationFor(commandId: TealiumRemoteHTTPCommandKey.commandId,
+                                                                                   response: r)
+                })
+                
+                task.resume()
                                         
         }
     }

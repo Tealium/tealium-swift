@@ -1,0 +1,26 @@
+{
+  "xcodeVersion" : "Xcode 8.3.3\nBuild version 8E3004b",
+  "commitish" : "e853d67d2f62bed00696c8d9107a9c7fb8105eff",
+  "iOS" : [
+    {
+      "hash" : "28d734a4fc5e7fcb4f377e27fa4ed3123abb8706f6244daf807c9373e63e9079",
+      "name" : "Tealium"
+    },
+    {
+      "hash" : "28d734a4fc5e7fcb4f377e27fa4ed3123abb8706f6244daf807c9373e63e9079",
+      "name" : "Tealium"
+    },
+    {
+      "hash" : "28d734a4fc5e7fcb4f377e27fa4ed3123abb8706f6244daf807c9373e63e9079",
+      "name" : "Tealium"
+    },
+    {
+      "hash" : "28d734a4fc5e7fcb4f377e27fa4ed3123abb8706f6244daf807c9373e63e9079",
+      "name" : "Tealium"
+    },
+    {
+      "hash" : "28d734a4fc5e7fcb4f377e27fa4ed3123abb8706f6244daf807c9373e63e9079",
+      "name" : "Tealium"
+    }
+  ]
+}
