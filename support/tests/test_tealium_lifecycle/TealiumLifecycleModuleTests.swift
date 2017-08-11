@@ -69,19 +69,13 @@ class TealiumLifecycleModuleTests: XCTestCase {
     func testAllAdditionalKeysPresent() {
         
         expectationRequest = expectation(description: "allKeysPresent")
+        
         let lifecycleModule = TealiumLifecycleModule(delegate: self)
         let config = TealiumConfig(account: "",
                                    profile: "",
                                    environment: "",
                                    optionalData: nil)
         lifecycleModule.enable(TealiumEnableRequest(config: config))
-        let date = Date(timeIntervalSince1970: 0)
-        guard let data = lifecycleModule.lifecycle?.newLaunch(atDate: date,
-                                                              overrideSession: nil) else {
-            XCTFail("Lifecycle module lifecycle object not available or could not return launch data")
-            return
-        }
-        lifecycleModule.requestTrack(data: data)
         self.waitForExpectations(timeout: 1.0, handler: nil)
         
         guard let request = requestProcess as? TealiumTrackRequest else {
@@ -90,11 +84,7 @@ class TealiumLifecycleModuleTests: XCTestCase {
         }
         let returnData = request.data
         
-        let expectedKeys = ["tealium_event"
-//                            "non_existent_key_to_test_for_fail",
-//                            "tealium_event_type"
-                            ]
-        
+        let expectedKeys = ["tealium_event"]
         
         let missingKeys = test_tealium_helper.missingKeys(fromDictionary: returnData, keys: expectedKeys)
         
@@ -107,15 +97,21 @@ extension TealiumLifecycleModuleTests : TealiumModuleDelegate {
     
     func tealiumModuleFinished(module: TealiumModule, process: TealiumRequest) {
         
+        // Lifecycle listening for all modules to finish enabling, since we're testing, mock all modules ready.
+        if let _ = process as? TealiumEnableRequest {
+            module.handleReport(testEnableRequest)
+            return
+        }
     }
     
     func tealiumModuleRequests(module: TealiumModule, process: TealiumRequest) {
         
-        expectationRequest?.fulfill()
-        requestProcess = process
+
+        
+        if let p = process as? TealiumTrackRequest {
+            expectationRequest?.fulfill()
+            requestProcess = p
+        }
     }
     
-    func tealiumModuleFinishedReport(fromModule: TealiumModule, module: TealiumModule, process: TealiumRequest) {
-        
-    }
 }

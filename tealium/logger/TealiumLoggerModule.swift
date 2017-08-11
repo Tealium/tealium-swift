@@ -5,7 +5,6 @@
 //  Created by Jason Koo on 10/5/16.
 //  Copyright © 2016 tealium. All rights reserved.
 //
-//  Build 2
 
 import Foundation
 
@@ -34,7 +33,7 @@ public enum TealiumLoggerModuleError : Error {
     
 }
 
-let defaultTealiumLogLevel : TealiumLogLevel = .verbose
+let defaultTealiumLogLevel : TealiumLogLevel = .errors
 
 public enum TealiumLogLevel : Int, Comparable {
     case none
@@ -104,7 +103,7 @@ extension Tealium {
 
 extension TealiumConfig {
     
-    func getLogLevel() -> TealiumLogLevel {
+    public func getLogLevel() -> TealiumLogLevel {
         
         if let level = self.optionalData[TealiumLoggerKey.logLevelConfig] as? TealiumLogLevel {
             return level
@@ -115,7 +114,7 @@ extension TealiumConfig {
         
     }
     
-    func setLogLevel(logLevel: TealiumLogLevel) {
+    public func setLogLevel(logLevel: TealiumLogLevel) {
         
         self.optionalData[TealiumLoggerKey.logLevelConfig] = logLevel
         
@@ -169,80 +168,108 @@ class TealiumLoggerModule : TealiumModule {
 
         let moduleResponses = request.moduleResponses
         
-        if request is TealiumEnableRequest {
-            
-            for response in moduleResponses {
-                
-                let successMessage = response.success == true ? "ENABLED" : "FAILED TO ENABLE"
-                let message = "\(response.moduleName): \(successMessage)"
-                let _ = logger?.log(message: message,
-                                    logLevel: .verbose)
-                
+            switch request {
+            case is TealiumEnableRequest:
+                moduleResponses.forEach ({ (response) in
+                    logEnable(response)
+                })
+            case is TealiumDisableRequest:
+                moduleResponses.forEach ({ (response) in
+                    logDisable(response)
+                })
+            case is TealiumLoadRequest:
+                logLoad(moduleResponses)
+            case is TealiumSaveRequest:
+                logSave(moduleResponses)
+            case is TealiumReportRequest:
+                moduleResponses.forEach({ (response) in
+                    logReport(request)
+                })
+            case is TealiumTrackRequest:
+                moduleResponses.forEach({ (response) in
+                    if response.info == nil {
+                        return
+                    }
+                    logTrack(response)
+                })
+            default:
+                // Only print errors if detected in module responses.
+                moduleResponses.forEach({ (response) in
+                    logError(response)
+                })
             }
-        }
-
-        else if request is TealiumDisableRequest {
-            
-            for response in moduleResponses {
-                
-                let successMessage = response.success == true ? "ENABLED" : "FAILED TO DISABLE"
-                let message = "\(response.moduleName): \(successMessage)"
-                let _ = logger?.log(message: message,
-                                    logLevel: .verbose)
-                
-            }
-        }
-
-        else if let request = request as? TealiumTrackRequest {
-            
-            guard let info = request.info else {
-                // No response data. This track call made it through the
-                //   chain but was not delivered by any dispatch service.
-                return
-            }
-            
-            if info.isEmpty {
-                // Info dict is empty - same issue as above
-                return
-            }
-            
-            guard let logger = self.logger else {
-                // Logger disabled?
-                return
-            }
-            
-            if logger.logThreshold < TealiumLogLevel.verbose {
-                // Track logging not requested.
-                return
-            }
-            
-            for response in moduleResponses {
-                
-                let successMessage = response.success == true ? "SUCCESSFUL TRACK" : "FAILED TO TRACK"
-                let message = "\(response.moduleName): \(successMessage)\nINFO:\n\(info as AnyObject)"
-                let _ = logger.log(message: message,
-                                    logLevel: .verbose)
-                
-            }
-            
-        }
         
-        else if let r = request as? TealiumReportRequest{
-            let message = "\(r.message)"
-            let _ = logger?.log(message: message,
-                               logLevel: .verbose)
+    }
+    
+    func logEnable(_ response : TealiumModuleResponse) {
+        let successMessage = response.success == true ? "ENABLED" : "FAILED TO ENABLE"
+        let message = "\(response.moduleName): \(successMessage)"
+        let _ = logger?.log(message: message,
+                            logLevel: .verbose)
+    }
+    
+    func logDisable(_ response : TealiumModuleResponse) {
+        let successMessage = response.success == true ? "ENABLED" : "FAILED TO DISABLE"
+        let message = "\(response.moduleName): \(successMessage)"
+        let _ = logger?.log(message: message,
+                            logLevel: .verbose)
+    }
+    
+    func logError(_ response : TealiumModuleResponse) {
+        guard let error = response.error else {
+            return
         }
-        
-        for response in moduleResponses {
-            guard let error = response.error else {
-                continue
+        let message = "\(response.moduleName): Encountered error: \(error)"
+        let _ = logger?.log(message: message,
+                            logLevel: .errors)
+    }
+    
+    func logLoad(_ responses: [TealiumModuleResponse]) {
+        var successes = 0
+        responses.forEach { (response) in
+            if response.success == true {
+                successes += 1
             }
-            let message = "\(response.moduleName): Encountered error: \(error)"
-            let _ = logger?.log(message: message,
-                                logLevel: .errors)
-            
         }
-        
+        if successes > 0 {
+            return
+        }
+        // Failed to load
+        let message = "FAILED to load data. Possibly no data storage modules enabled."
+        let _ = logger?.log(message: message,
+                            logLevel: .errors)
+    }
+    
+    func logReport(_ request: TealiumRequest) {
+        guard let r = request as? TealiumReportRequest else {
+            return
+        }
+        let message = "\(r.message)"
+        let _ = logger?.log(message: message,
+                            logLevel: .verbose)
+    }
+    
+    func logSave(_ responses: [TealiumModuleResponse]) {
+        var successes = 0
+        responses.forEach { (response) in
+            if response.success == true {
+                successes += 1
+            }
+        }
+        if successes > 0 {
+            return
+        }
+        // Failed to load
+        let message = "FAILED to save data. Possibly no storage persistence modules enabled."
+        let _ = logger?.log(message: message,
+                            logLevel: .errors)
+    }
+    
+    func logTrack(_ response : TealiumModuleResponse) {
+        let successMessage = response.success == true ? "SUCCESSFUL TRACK" : "FAILED TO TRACK"
+        let message = "\(response.moduleName): \(successMessage)\nINFO:\n\(response.info as AnyObject)"
+        let _ = logger?.log(message: message,
+                           logLevel: .verbose)
     }
     
     func logWithPrefix(fromModule: TealiumModule,
