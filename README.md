@@ -178,7 +178,9 @@ Collect | Packages and delivers track call to Tealium Collect or other custom UR
 
 
 # Change Log
-
+- 1.3.3
+	- Fixed a bug which caused unit tests to crash in some circumstances
+	- Optimized module detection to remove need to iterate through all loaded classes in app
 - 1.3.2
     - Builder project update - Carthage support fix
     - Access control updates:
