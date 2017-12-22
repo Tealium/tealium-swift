@@ -97,11 +97,21 @@ class TealiumLifecycleUnitTests: XCTestCase {
     }
     
     func testDayOfWeekLocal() {
+        let tz = TimeZone.current
+        var expectedDay = "0"
+        if tz.identifier.contains("London") {
+            // in 1970, the UK observed Daylight Savings (British Summer Time) for the whole year, hence local time at UTC 00:00:00 was 01:00:00
+            expectedDay = "5"
+        } else if tz.identifier.contains("Los_Angeles") {
+            expectedDay = "4"
+        } else if tz.identifier.contains("Berlin") {
+            expectedDay = "5"
+        }
         
         let date = Date(timeIntervalSince1970: 1)
-        let day = lifecycle?.dayOfWeekLocal(forDate: date)
         
-        let expectedDay = "4"
+        let day = lifecycle?.dayOfWeekLocal(forDate: date)
+        // Thursday 1st January 1970, 1-indexed, starting from Sunday as day 1
         XCTAssertTrue(day == expectedDay, "Mismatch in dayOfWeekLocal, returned: \(String(describing: day)), expected: \(expectedDay)")
     }
     
@@ -141,12 +151,21 @@ class TealiumLifecycleUnitTests: XCTestCase {
     
     
     func testHourOfDayLocal() {
-        
+        let tz = TimeZone.current
+        var expectedHour = "0"
+        if tz.identifier.contains("London") {
+            // in 1970, the UK observed Daylight Savings (British Summer Time) for the whole year, hence local time at UTC 00:00:00 was 01:00:00
+            expectedHour = "1"
+        } else if tz.identifier.contains("Los_Angeles") {
+            expectedHour = "16"
+        } else if tz.identifier.contains("Berlin") {
+            expectedHour = "1"
+        }
         let date = Date(timeIntervalSince1970: 1)
-        let day = lifecycle?.hourOfDayLocal(forDate: date)
+        // get local time from lifecycle module
+        let hour = lifecycle?.hourOfDayLocal(forDate: date)
         
-        let expectedDay = "16"
-        XCTAssertTrue(day == expectedDay, "Mismatch in hourOfDayLocal, returned:\(String(describing: day)), expected:\(expectedDay)")
+        XCTAssertTrue(hour == expectedHour, "Mismatch in hourOfDayLocal, returned:\(String(describing: hour)), expected:\(expectedHour)")
     }
     
     func testIsFirstWakeTodayOneWake() {

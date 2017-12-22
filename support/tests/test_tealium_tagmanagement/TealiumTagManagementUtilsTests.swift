@@ -24,7 +24,7 @@ class TealiumTagManagementUtilsTests: XCTestCase {
     
     func testGetLegacyTypeView() {
 
-        let eventType = "tealium_event_type"
+        let eventType = "call_type"
         let viewValue = "view"
         let viewDictionary = [eventType:viewValue]
         let viewResult = TealiumTagManagementUtils.getLegacyType(fromData: viewDictionary)
@@ -35,14 +35,26 @@ class TealiumTagManagementUtilsTests: XCTestCase {
     
     func testGetLegacyTypeEvent() {
         
-        let eventType = "tealium_event_type"
-        let anyValue = "any"
-        let eventDictionary = [eventType:anyValue]
+        let eventType = "call_type"
+        let linkValue = "link"
+        let eventDictionary = [eventType:linkValue]
         let eventResult = TealiumTagManagementUtils.getLegacyType(fromData: eventDictionary)
         
         XCTAssertTrue(eventResult == "link")
         
     }
+    
+    func testRandomEventType() {
+        
+        let eventType = "call_type"
+        let anyValue = "any"
+        let eventDictionary = [eventType:anyValue]
+        let eventResult = TealiumTagManagementUtils.getLegacyType(fromData: eventDictionary)
+        
+        XCTAssertTrue(eventResult == anyValue)
+        
+    }
+    
     
     func testJSONEncode(){
         

@@ -14,7 +14,7 @@ enum TealiumFileStorageKey {
 }
 
 enum TealiumFileStorageError : Error {
-
+    
     case cannotWriteOrLoadFromDisk
     case noDataToSave
     case noSavedData
@@ -24,8 +24,27 @@ enum TealiumFileStorageError : Error {
     
 }
 
-class TealiumFileStorageModule : TealiumModule {
+extension TealiumFileStorageError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .cannotWriteOrLoadFromDisk:
+            return NSLocalizedString("\(TealiumFileStorageKey.moduleName) Error: cannotWriteOrLoadFromDisk: Could not write to or load from disk.", comment: "")
+        case .noDataToSave:
+            return NSLocalizedString("\(TealiumFileStorageKey.moduleName) Error: noDataToSave", comment: "")
+        case .noSavedData:
+            return NSLocalizedString("\(TealiumFileStorageKey.moduleName) Error: noSavedData: Data could not be loaded from persistent storage. If this is a 1st launch, or no prior data has been set, then disregard this warning.", comment: "")
+        case .noFilename:
+            return NSLocalizedString("\(TealiumFileStorageKey.moduleName) Error: noFileName", comment: "")
+        case .malformedRequest:
+            return NSLocalizedString("\(TealiumFileStorageKey.moduleName) Error: malformedRequest", comment: "")
+        case .moduleNotEnabled:
+            return NSLocalizedString("\(TealiumFileStorageKey.moduleName) Error: moduleNotEnabled", comment: "")
+        }
+    }
+}
 
+class TealiumFileStorageModule : TealiumModule {
+    
     var filenamePrefix = ""
     
     override class func moduleConfig() -> TealiumModuleConfig {
@@ -84,7 +103,7 @@ class TealiumFileStorageModule : TealiumModule {
                                 TealiumFileStorageError.cannotWriteOrLoadFromDisk)
             // Pass load request back to module manager - perhaps another module
             //   can provide the requested data.
-            didFinish(request)
+            didFinish(request, TealiumFileStorageError.cannotWriteOrLoadFromDisk)
             return
         }
         
@@ -93,7 +112,8 @@ class TealiumFileStorageModule : TealiumModule {
             request.completion?(false,
                                 nil,
                                 TealiumFileStorageError.noSavedData)
-            didFinish(request)
+            
+            didFinish(request, TealiumFileStorageError.noSavedData)
             return
         }
         
@@ -102,7 +122,7 @@ class TealiumFileStorageModule : TealiumModule {
                             data,
                             nil)
         didFinish(request)
-
+        
     }
     
     // TODO: New requests aren't overwriting existing
@@ -116,7 +136,7 @@ class TealiumFileStorageModule : TealiumModule {
         let baseFilename = request.name
         
         let filename = self.filenamePrefix.appending(".\(baseFilename)")
-
+        
         guard let path = TealiumFileStorage.path(filename: filename) else {
             // Path could not be created. Let requesting module know.
             request.completion?(false,
@@ -127,7 +147,7 @@ class TealiumFileStorageModule : TealiumModule {
             didFinish(request)
             return
         }
-
+        
         let data = request.data
         
         let wasSuccessful = TealiumFileStorage.save(data: data,
@@ -140,16 +160,24 @@ class TealiumFileStorageModule : TealiumModule {
         didFinish(request)
     }
     
-    // TODO: Delete not working
     func delete(_ request: TealiumDeleteRequest) {
-
+        
         if self.isEnabled == false {
             didFinish(request)
             return
         }
         
-        let filepath = self.filenamePrefix.appending(".\(request.name)")
-
+        let fileName = self.filenamePrefix.appending(".\(request.name)")
+        
+        guard let filepath = TealiumFileStorage.path(filename: fileName) else {
+            request.completion?(false,
+                                nil,
+                                TealiumFileStorageError.cannotWriteOrLoadFromDisk)
+            // should never get here, but possible if permissions issues
+            didFailToFinish(request, error: TealiumFileStorageError.cannotWriteOrLoadFromDisk)
+            return
+        }
+        
         let success = TealiumFileStorage.deleteDataAt(path: filepath)
         
         request.completion?(success,
@@ -178,22 +206,22 @@ class TealiumFileStorage {
     /// - Parameter filename: Filename of data file.
     /// - Returns: String if path can be created. Nil otherwise.
     class func path(filename: String) -> String? {
-        
         // Using the same parent path as lib versions prior to 1.3.0. Updating this
         //  path with subfolders for specific configs more ideal. We're going
         //  to prefix the filename instead because we have to do that for legacy
         //  support anyways. As there are few modules requiring persistence
         //  and multiple library instances are uncommon, this should suffice.
-        let parentDir = "\(NSHomeDirectory())/.tealium/swift"
+        let parentDir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
+        let path = ".tealium/swift"
+        let dirURL = URL(fileURLWithPath: path, relativeTo: parentDir[0])
+        let fullPath = dirURL.path
         do {
-            try FileManager.default.createDirectory(atPath: parentDir, withIntermediateDirectories: true, attributes: nil)
+            try FileManager.default.createDirectory(at: dirURL, withIntermediateDirectories: true, attributes: nil)
         } catch _ as NSError {
-            
+            // could not create directory. check permissions
             return nil
-            
         }
-        
-        return "\(parentDir)/\(filename).data"
+        return "\(fullPath)/\(filename).data"
     }
     
     class func dataExists(atPath: String) -> Bool {
@@ -239,3 +267,4 @@ class TealiumFileStorage {
     }
     
 }
+

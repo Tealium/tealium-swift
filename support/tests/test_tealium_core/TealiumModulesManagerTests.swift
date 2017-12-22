@@ -258,7 +258,7 @@ class TealiumModulesManagerTests: XCTestCase {
         
     }
 
-    // TODO: Lib currentely designed to resubmit track request until all modules are ready
+    // TODO: Lib currently designed to resubmit track request until all modules are ready
     
 //    func testTrackWhenAModuleDisabled() {
 //        

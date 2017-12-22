@@ -13,11 +13,31 @@ enum TealiumConnectivityKey {
     static let moduleName = "connectivity"
     static let connectionType = "connection_type"
     static let wasQueued = "was_queued"
+    static let connectionTypeWifi = "wifi"
+    static let connectionTypeCell = "cellular"
+    static let connectionTypeNone = "none"
 }
 
 class TealiumConnectivityModule : TealiumModule {
     
     lazy var queue = [TealiumTrackRequest]()
+    static var connectionType: String?
+    static var isConnected: Bool?
+    // used to simulate connection status for unit tests
+    static var forceConnectionOverride: Bool?
+    
+    class func currentConnectionType() -> String {
+        let isConnected = TealiumConnectivityModule.isConnectedToNetwork()
+        if isConnected == true {
+            return self.connectionType!
+        }
+        return TealiumConnectivityKey.connectionTypeNone
+    }
+    
+    @available(*, deprecated, message: "Internal only. Used only for unit tests. Using this method will disable connectivity checks.")
+    public static func setConnectionOverride(shouldOverride override: Bool){
+        self.forceConnectionOverride = override
+    }
     
     override class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumConnectivityKey.moduleName,
@@ -67,7 +87,7 @@ class TealiumConnectivityModule : TealiumModule {
         }
         
         if queue.isEmpty == false {
-            let report = TealiumReportRequest(message: "Connectivity: Internet connection available.")
+            let report = TealiumReportRequest(message: "Connectivity: Sending queued track. Internet connection available.")
             delegate?.tealiumModuleRequests(module: self,
                                             process: report)
             release(queue)
@@ -97,6 +117,10 @@ class TealiumConnectivityModule : TealiumModule {
     
     // Nod to RAJAMOHAN-S
     class func isConnectedToNetwork() -> Bool {
+        // used only for unit testing
+        if forceConnectionOverride == true {
+            return true
+        }
         
         var zeroAddress = sockaddr_in(sin_len: 0, sin_family: 0, sin_port: 0, sin_addr: in_addr(s_addr: 0), sin_zero: (0, 0, 0, 0, 0, 0, 0, 0))
         zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
@@ -109,6 +133,16 @@ class TealiumConnectivityModule : TealiumModule {
         }
         
         var flags: SCNetworkReachabilityFlags = SCNetworkReachabilityFlags(rawValue: 0)
+        #if os(OSX)
+            self.connectionType = TealiumConnectivityKey.connectionTypeWifi
+        #else
+            if flags.contains(.isWWAN) == true {
+                self.connectionType = TealiumConnectivityKey.connectionTypeCell
+            } else if flags.contains(.connectionRequired) == false {
+                self.connectionType = TealiumConnectivityKey.connectionTypeWifi
+            }
+        #endif
+        
         if SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) == false {
             return false
         }
@@ -117,9 +151,11 @@ class TealiumConnectivityModule : TealiumModule {
         // Working for Cellular and WIFI
         let isReachable = (flags.rawValue & UInt32(kSCNetworkFlagsReachable)) != 0
         let needsConnection = (flags.rawValue & UInt32(kSCNetworkFlagsConnectionRequired)) != 0
-        let ret = (isReachable && !needsConnection)
-        
-        return ret
+        self.isConnected = (isReachable && !needsConnection)
+        if !self.isConnected! {
+            self.connectionType = TealiumConnectivityKey.connectionTypeNone
+        }
+        return self.isConnected!
         
     }
     

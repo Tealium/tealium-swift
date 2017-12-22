@@ -43,12 +43,6 @@ enum TealiumTagManagementError : Error {
 // MARK: EXTENSIONS
 
 extension TealiumConfig {
-    
-    public func disableTagManagement() {
-        
-        optionalData[TealiumTagManagementConfigKey.disable] = true
-        
-    }
   
     public func setTagManagementQueueSize(to: Int) {
 
@@ -275,7 +269,7 @@ public class TealiumTagManagement : NSObject {
     var webView : UIWebView?
     var completion : ((Bool, Error?)->Void)?
     lazy var defaultUrlString : String = {
-        let urlString = "\(defaultUrlStringPrefix)/\(self.account)/\(self.profile)/\(self.environment)/mobile.html?"
+        let urlString = "\(TealiumTagManagement.defaultUrlStringPrefix)/\(self.account)/\(self.profile)/\(self.environment)/mobile.html?"
         return urlString
     }()
     lazy var urlRequest : URLRequest? = {
@@ -287,8 +281,6 @@ public class TealiumTagManagement : NSObject {
     }()    
     
     // MARK: PUBLIC
-    
-    // TODO: Add overrideURL optional arg
     
     /// Enable webview system.
     ///
@@ -341,7 +333,7 @@ public class TealiumTagManagement : NSObject {
                                                object: nil)
     }
     
-    func processRequest(sender: Notification){
+    @objc func processRequest(sender: Notification){
         
         guard let jsCommandString = sender.userInfo?[TealiumTagManagementNotificationKey.jsCommand] as? String else {
             return
@@ -412,7 +404,6 @@ public class TealiumTagManagement : NSObject {
             info += [TealiumTagManagementKey.jsResult : result]
         }
         
-        // TODO: Check for response code prior to completion return
         completion?(true, info, nil)
         
     }
@@ -482,12 +473,9 @@ extension TealiumTagManagement : UIWebViewDelegate {
 class TealiumTagManagementUtils {
     
     class func getLegacyType(fromData: [String:Any]) -> String {
-        
+        // default to link. view will always pass call_type = "view"
         var legacyType = "link"
-        if fromData[TealiumKey.eventType] as? String == TealiumTrackType.view.description() {
-            legacyType = "view"
-        }
-        if let callType = fromData["call_type"] as? String {
+        if let callType = fromData[TealiumKey.callType] as? String {
             legacyType = callType
         }
         return legacyType

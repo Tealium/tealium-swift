@@ -38,3 +38,52 @@ fileprivate func +<Key, Value> (lhs: [Key: Value], rhs: [Key: Value]) -> [Key: V
     rhs.forEach{ result[$0] = $1 }
     return result
 }
+
+extension Date {
+    
+    struct Formatter {
+        static let iso8601 : DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.calendar = Calendar(identifier: .iso8601)
+            formatter.locale = Locale(identifier: "en_US_POSIX")
+            formatter.timeZone = TimeZone(secondsFromGMT: 0)
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+            return formatter
+        }()
+        static let MMDDYYYY : DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.calendar = Calendar(identifier: .iso8601)
+            formatter.locale = Locale(identifier: "en_US_POSIX")
+            formatter.timeZone = TimeZone(secondsFromGMT: 0)
+            formatter.dateFormat = "MM/dd/yyyy"
+            return formatter
+        }()
+        static let iso8601Local: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.calendar = Calendar(identifier: .iso8601)
+            formatter.locale = Locale(identifier: "en_US_POSIX")
+            formatter.timeZone = TimeZone(secondsFromGMT: TimeZone.current.secondsFromGMT())
+            // note that local time should NOT have a 'Z' after it, as the 'Z' indicates UTC (zero meridian)
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'"
+            return formatter
+        }()
+    }
+    
+    var iso8601String : String {
+        return Formatter.iso8601.string(from: self)
+    }
+    
+    var iso8601LocalString: String {
+        return Formatter.iso8601Local.string(from:self)
+    }
+    
+    var mmDDYYYYString : String {
+        return Formatter.MMDDYYYY.string(from: self)
+    }
+    
+    var unixTime: String {
+        let t = Int(self.timeIntervalSince1970 * 1000)
+        return String(describing: t)
+    }
+    
+}

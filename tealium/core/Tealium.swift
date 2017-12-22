@@ -123,36 +123,13 @@ public class Tealium {
             newData += d
         }
         
-        newData["call_type"] = "view"
+        newData[TealiumKey.callType] = TealiumTrackType.view.description()
+        newData[TealiumKey.screenTitle] = title // added for backwards-compatibility
         
         self.track(title: title,
                    data: newData,
                    completion: completion)
 
-    }
-    
-    /**
-     Deprecated track method specifying tealium event type.
-     
-     - parameters:
-         - type: TealiumTrackType - view/activity/interaction/derived/conversion.
-         - event Title: Required title of event.
-         - data: Optional dictionary for additional data sources to pass with call.
-         - completion: Optional callback that is returned IF a dispatch service has delivered a call.
-             - successful: Wether completion succeeded or encountered a failure.
-             - info: Optional dictionary of data from call (ie encoded URL string, response headers, etc.).
-             - error: Error encountered, if any.
-     */
-    @available(*, deprecated, message: "Track Type no longer necessary. This method will be removed next version.")
-    public func track(type: TealiumTrackType,
-               title: String,
-               data: [String: Any]?,
-               completion: ((_ successful:Bool, _ info:[String:Any]?, _ error: Error?) -> Void)?) {
-        
-        track(title: title,
-              data: data,
-              completion: completion)
-        
     }
     
     

@@ -1,0 +1,319 @@
+//
+//  TealiumDeviceDataModuleTests.swift
+//  tealium-swift
+//
+//  Created by Craig Rouse on 11/6/17.
+//  Copyright © 2017 tealium. All rights reserved.
+//
+
+import XCTest
+
+class TealiumDeviceDataModuleTests: XCTestCase {
+    
+    var delegateExpectationSuccess : XCTestExpectation?
+    var delegateExpectationFail : XCTestExpectation?
+    var deviceDataModule : TealiumDeviceDataModule?
+    var trackData : [String:Any]?
+    
+    override func setUp() {
+        super.setUp()
+        deviceDataModule = TealiumDeviceDataModule(delegate: nil)
+        // Put setup code here. This method is called before the invocation of each test method in the class.
+    }
+    
+    override func tearDown() {
+        
+        deviceDataModule = nil
+        trackData = nil
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        super.tearDown()
+    }
+    
+    func testForFailingRequests() {
+        
+        let helper = test_tealium_helper()
+        let module = TealiumDeviceDataModule(delegate: nil)
+        
+        let failing = helper.failingRequestsFor(module: module)
+        XCTAssert(failing.count == 0, "Unexpected failing requests: \(failing)")
+        
+    }
+    
+    func testMinimumProtocolsReturn() {
+        
+        let expectation = self.expectation(description: "allRequestsReturn")
+        let helper = test_tealium_helper()
+        let module = TealiumDeviceDataModule(delegate: nil)
+        
+        helper.modulesReturnsMinimumProtocols(module: module) { (success, failing) in
+            
+            expectation.fulfill()
+            XCTAssert(failing.count == 0, "Unexpected failing requests: \(failing)")
+        }
+        
+        self.waitForExpectations(timeout: 1.0, handler: nil)
+        
+        
+    }
+    
+    func testTrack() {
+        
+        let expectation = self.expectation(description: "deviceDataTrack")
+        let module = TealiumDeviceDataModule(delegate: self)
+        let request = TealiumEnableRequest(config: test_tealium_helper().getConfig())
+        module.enable(request)
+        module.isEnabled = true
+        
+        let track = TealiumTrackRequest(data: [:]) { (success, info, error) in
+            
+            expectation.fulfill()
+            
+            guard let trackData = self.trackData else {
+                XCTFail("No track data detected from test.")
+                return
+            }
+            #if os(iOS)
+            let expectedKeys = [
+                "cpu_architecture",
+                "os_build",
+                "cpu_type",
+                "model_name",
+                "model_variant",
+                "os_version",
+                "os_name",
+                "device_resolution",
+                "battery_percent",
+                "device_is_charging",
+                "user_locale",
+                "device_orientation",
+                "device_orientation_extended",
+                "network_name",
+                "network_mnc",
+                "network_mcc",
+                "network_iso_country_code",
+                "network_connection_type"
+            ]
+            #else
+                let expectedKeys = [
+                    "cpu_architecture",
+                    "os_build",
+                    "cpu_type",
+                    "model_name",
+                    "model_variant",
+                    "os_version",
+                    "os_name",
+                    "device_resolution",
+                    "battery_percent",
+                    "device_is_charging",
+                    "user_locale",
+                    "device_orientation",
+                    "device_orientation_extended",
+                    "network_connection_type",
+                ]
+            #endif
+            
+            let unexpectedKeys = [
+                "memory_free",
+                "memory_wired",
+                "memory_active",
+                "memory_inactive",
+                "memory_compressed",
+                "memory_physical",
+                "app_memory_usage"
+            ]
+            
+            for key in expectedKeys {
+                if trackData[key] == nil {
+                    XCTFail("\nKey:\(key) was missing from tracking call. Tracking data: \(trackData)\n")
+                }
+            }
+            
+            for key in unexpectedKeys {
+                if trackData[key] != nil {
+                    XCTFail("\nKey:\(key) was unexpectedly present in tracking call. Tracking data: \(trackData)\n")
+                }
+            }
+        }
+        
+        module.track(track)
+        
+        self.waitForExpectations(timeout: 1.0, handler: nil)
+        
+    }
+    
+    func testTrackWithMemory() {
+        
+        let expectation = self.expectation(description: "deviceDataTrack")
+        let module = TealiumDeviceDataModule(delegate: self)
+        let config = test_tealium_helper().getConfig()
+        config.setMemoryReportingEnabled(true)
+        let request = TealiumEnableRequest(config: config)
+        module.enable(request)
+        module.isEnabled = true
+        
+        let track = TealiumTrackRequest(data: [:]) { (success, info, error) in
+            
+            expectation.fulfill()
+            
+            guard let trackData = self.trackData else {
+                XCTFail("No track data detected from test.")
+                return
+            }
+            #if os(iOS)
+            let expectedKeys = [
+                "cpu_architecture",
+                "os_build",
+                "cpu_type",
+                "model_name",
+                "model_variant",
+                "os_version",
+                "os_name",
+                "device_resolution",
+                "battery_percent",
+                "device_is_charging",
+                "user_locale",
+                "device_orientation",
+                "device_orientation_extended",
+                "network_name",
+                "network_mnc",
+                "network_mcc",
+                "network_iso_country_code",
+                "network_connection_type",
+                "memory_free",
+                "memory_wired",
+                "memory_active",
+                "memory_inactive",
+                "memory_compressed",
+                "memory_physical",
+                "app_memory_usage"
+            ]
+            #else
+            let expectedKeys = [
+                "cpu_architecture",
+                "os_build",
+                "cpu_type",
+                "model_name",
+                "model_variant",
+                "os_version",
+                "os_name",
+                "device_resolution",
+                "battery_percent",
+                "device_is_charging",
+                "user_locale",
+                "device_orientation",
+                "device_orientation_extended",
+                "network_connection_type",
+                "memory_free",
+                "memory_wired",
+                "memory_active",
+                "memory_inactive",
+                "memory_compressed",
+                "memory_physical",
+                "app_memory_usage"
+            ]
+            #endif
+                
+            for key in expectedKeys {
+                if trackData[key] == nil {
+                    XCTFail("\nKey:\(key) was missing from tracking call. Tracking data: \(trackData)\n")
+                }
+            }
+        }
+        
+        module.track(track)
+        
+        self.waitForExpectations(timeout: 1.0, handler: nil)
+        
+    }
+    
+    // Can only run within a sample app
+    
+    func testEnableTimeData(){
+        let module = TealiumDeviceDataModule(delegate: nil)
+        let allData = module.enableTimeData()
+        let expectedKeys = [
+            "cpu_architecture",
+            "os_build",
+            "cpu_type",
+            "model_name",
+            "model_variant",
+            "os_version",
+            "os_name",
+            "device_resolution"
+        ]
+        for key in expectedKeys {
+            if allData[key] == nil {
+                XCTFail("Missing key: \(key). Device Data: \(allData)")
+            }
+        }
+    }
+    
+    func testTrackTimeDataKeys(){
+        let module = TealiumDeviceDataModule(delegate: nil)
+        let allData = module.trackTimeData()
+        #if os(iOS)
+            let expectedKeys = [
+                "battery_percent",
+                "device_is_charging",
+                "user_locale",
+                "device_orientation",
+                "device_orientation_extended",
+                "network_name",
+                "network_mnc",
+                "network_mcc",
+                "network_iso_country_code",
+                "network_connection_type",
+            ]
+        #else
+            let expectedKeys = [
+                "battery_percent",
+                "device_is_charging",
+                "user_locale",
+                "device_orientation",
+                "device_orientation_extended",
+                "network_connection_type"
+            ]
+        #endif
+        for key in expectedKeys {
+            if allData[key] == nil {
+                XCTFail("Missing key: \(key). Device Data: \(allData)")
+            }
+        }
+    }
+    
+    // note: will not work on simulator
+    func testBatteryPercentValid(){
+        let module = TealiumDeviceDataModule(delegate: nil)
+        let allData = module.trackTimeData()
+        if let batteryPercent = allData["battery_percent"] {
+            if let bpDouble = Double(batteryPercent as! String) {
+                XCTAssertTrue(bpDouble >= 0.0 && bpDouble <= 100.0, "Battery percentage is not valid")
+            }
+        } else {
+            XCTFail("Battery percentage missing from track call")
+        }
+        
+    }
+    
+}
+
+
+// For future tests
+extension TealiumDeviceDataModuleTests : TealiumModuleDelegate {
+    
+    func tealiumModuleFinished(module: TealiumModule, process: TealiumRequest) {
+        
+        if let process = process as? TealiumTrackRequest {
+            trackData = process.data
+            process.completion?(true,
+                                nil,
+                                nil)
+        }
+    }
+    
+    func tealiumModuleRequests(module: TealiumModule, process: TealiumRequest) {
+        
+    }
+    
+}
+

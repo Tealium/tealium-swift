@@ -22,7 +22,7 @@ class TealiumRemoteHTTPCommandTests: XCTestCase {
     
     func testHTTPRequestGET() {
         
-        // TODO: Make this test a more dynamic
+        // TODO: Make this test more dynamic
         
         let scheme = "tealium"
         let commandId = "test"

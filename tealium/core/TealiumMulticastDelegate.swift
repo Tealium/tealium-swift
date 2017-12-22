@@ -7,8 +7,6 @@
 //
 //  Build 3
 
-// TODO: Rename as TealiumMulticastDelegate
-
 import Foundation
 
 public class TealiumMulticastDelegate<T> {

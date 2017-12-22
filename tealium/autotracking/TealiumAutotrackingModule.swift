@@ -186,7 +186,6 @@ class TealiumAutotrackingModule : TealiumModule {
         let title = String(describing: type(of: object))
         
         var data: [String : Any] = [TealiumKey.event: title ,
-                                    TealiumKey.eventType: TealiumTrackType.activity.description(),
                                     TealiumAutotrackingKey.autotracked : "true"]
         
         if let customData = TealiumAutotracking.customData(forObject: object) {
@@ -211,7 +210,6 @@ class TealiumAutotrackingModule : TealiumModule {
         
         let title = viewController.title ?? String(describing: type(of: viewController))
         var data: [String : Any] = [TealiumKey.event: title ,
-                                    TealiumKey.eventType: TealiumTrackType.view.description(),
                                     TealiumAutotrackingKey.autotracked : "true",
                                     ]
             

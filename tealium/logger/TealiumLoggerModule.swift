@@ -153,7 +153,7 @@ class TealiumLoggerModule : TealiumModule {
                                         process: TealiumReportNotificationsRequest())
         
         didFinish(request)
-
+        
     }
     
     override func disable(_ request: TealiumDisableRequest) {
@@ -161,43 +161,43 @@ class TealiumLoggerModule : TealiumModule {
         isEnabled = false
         logger = nil
         didFinish(request)
-
+        
     }
     
     override func handleReport(_ request: TealiumRequest) {
-
+        
         let moduleResponses = request.moduleResponses
         
-            switch request {
-            case is TealiumEnableRequest:
-                moduleResponses.forEach ({ (response) in
-                    logEnable(response)
-                })
-            case is TealiumDisableRequest:
-                moduleResponses.forEach ({ (response) in
-                    logDisable(response)
-                })
-            case is TealiumLoadRequest:
-                logLoad(moduleResponses)
-            case is TealiumSaveRequest:
-                logSave(moduleResponses)
-            case is TealiumReportRequest:
-                moduleResponses.forEach({ (response) in
-                    logReport(request)
-                })
-            case is TealiumTrackRequest:
-                moduleResponses.forEach({ (response) in
-                    if response.info == nil {
-                        return
-                    }
-                    logTrack(response)
-                })
-            default:
-                // Only print errors if detected in module responses.
-                moduleResponses.forEach({ (response) in
-                    logError(response)
-                })
-            }
+        switch request {
+        case is TealiumEnableRequest:
+            moduleResponses.forEach ({ (response) in
+                logEnable(response)
+            })
+        case is TealiumDisableRequest:
+            moduleResponses.forEach ({ (response) in
+                logDisable(response)
+            })
+        case is TealiumLoadRequest:
+            logLoad(moduleResponses)
+        case is TealiumSaveRequest:
+            logSave(moduleResponses)
+        case is TealiumReportRequest:
+            moduleResponses.forEach({ (response) in
+                logReport(request)
+            })
+        case is TealiumTrackRequest:
+            moduleResponses.forEach({ (response) in
+                if response.info == nil {
+                    return
+                }
+                logTrack(response)
+            })
+        default:
+            // Only print errors if detected in module responses.
+            moduleResponses.forEach({ (response) in
+                logError(response)
+            })
+        }
         
     }
     
@@ -226,12 +226,24 @@ class TealiumLoggerModule : TealiumModule {
     
     func logLoad(_ responses: [TealiumModuleResponse]) {
         var successes = 0
+        // Swift's native Error type seems to be leaky. Using Any fixes the leak.
+        var errors = [Error]()
         responses.forEach { (response) in
             if response.success == true {
                 successes += 1
             }
+            if let error = response.error {
+                errors.append(error)
+            }
         }
-        if successes > 0 {
+        if successes > 0 && errors.count == 0 {
+            return
+        } else if successes > 0 && errors.count > 0 {
+            var message = ""
+            errors.forEach({ (e) in
+                message += "\(e.localizedDescription)\n"
+            })
+            let _ = logger?.log(message: message, logLevel: .verbose)
             return
         }
         // Failed to load
@@ -269,7 +281,7 @@ class TealiumLoggerModule : TealiumModule {
         let successMessage = response.success == true ? "SUCCESSFUL TRACK" : "FAILED TO TRACK"
         let message = "\(response.moduleName): \(successMessage)\nINFO:\n\(response.info as AnyObject)"
         let _ = logger?.log(message: message,
-                           logLevel: .verbose)
+                            logLevel: .verbose)
     }
     
     func logWithPrefix(fromModule: TealiumModule,
@@ -316,3 +328,4 @@ public class TealiumLogger {
     }
     
 }
+

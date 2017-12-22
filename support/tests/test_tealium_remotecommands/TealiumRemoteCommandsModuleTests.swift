@@ -98,8 +98,7 @@ class TealiumRemoteCommandsModuleTests: XCTestCase {
         let testExpectation = expectation(description: "triggerTest")
         let commandId = "test"
         let remoteCommand = TealiumRemoteCommand(commandId: commandId,
-                                                 description: "",
-                                                 queue: nil) { (reponse) in
+                                                 description: "") { (reponse) in
             
             testExpectation.fulfill()
                                                     

@@ -101,8 +101,7 @@ class TealiumRemoteCommandsTests: XCTestCase {
         
         let commandId = "test"
         let remoteCommand = TealiumRemoteCommand(commandId: commandId,
-                                                 description: "test",
-                                                 queue: DispatchQueue.main) { (response) in
+                                                 description: "test") { (response) in
                 //
         }
         

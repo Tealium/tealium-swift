@@ -102,6 +102,7 @@ class TealiumModulesManager : NSObject {
         if notReady.isEmpty == false {
             
             timeoutMillisecondCurrent += timeoutMillisecondIncrement
+            // TODO: queue events instead of dropping
             if timeoutMillisecondCurrent >= timeoutMillisecondMax {
                 print("*** Track call dropped: Tealium library module(s) not ready in time: \(notReady). Try making call at a later time.")
                 return

@@ -60,7 +60,7 @@ public class TealiumLifecycleModule : TealiumModule {
     // MARK:
     // MARK: MODULE OVERRIDES
     
-    // TODO: TEALIUM MODULE CONFIG
+    // MARK: TEALIUM MODULE CONFIG
     override public class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumLifecycleModuleKey.moduleName,
                                    priority: 175,
@@ -77,7 +77,7 @@ public class TealiumLifecycleModule : TealiumModule {
                                             process: TealiumReportNotificationsRequest())
         }
         _dispatchQueue = OperationQueue.current?.underlyingQueue
-//        _dispatchQueue = request.config.dispatchQueue()
+
         let config = request.config
         uniqueId = "\(config.account).\(config.profile).\(config.environment)"
         lifecycle = savedOrNewLifeycle(uniqueId: uniqueId)
@@ -167,12 +167,12 @@ public class TealiumLifecycleModule : TealiumModule {
                 #else
                     NotificationCenter.default.addObserver(self,
                                                            selector: #selector(wakeDetected),
-                                                           name: NSNotification.Name.UIApplicationWillEnterForeground,
+                                                           name: NSNotification.Name.UIApplicationDidBecomeActive,
                                                            object: nil)
                     
                     NotificationCenter.default.addObserver(self,
                                                            selector: #selector(sleepDetected),
-                                                           name: NSNotification.Name.UIApplicationDidEnterBackground,
+                                                           name: NSNotification.Name.UIApplicationWillResignActive,
                                                            object: nil)
                     
                 #endif
@@ -711,7 +711,7 @@ public class TealiumLifecycle : NSObject, NSCoding {
         let components = Calendar.autoupdatingCurrent.dateComponents([.second], from: earlyDate, to: laterDate)
         
         // NOTE: This is not entirely accurate as it does not adjust for Daylight Savings -
-        //  however this matches up with implmentation in Android, and is off by one day after about 172
+        //  however this matches up with implementation in Android, and is off by one day after about 172
         //  days have elapsed
         let days = components.second! / (60 * 60 * 24)
         return String(days)
@@ -869,36 +869,6 @@ extension Array where Element:TealiumLifecycleSession {
         }
         return self[index]
         
-    }
-    
-}
-extension Date {
-    
-    struct Formatter {
-        static let iso8601 : DateFormatter = {
-            let formatter = DateFormatter()
-            formatter.calendar = Calendar(identifier: .iso8601)
-            formatter.locale = Locale(identifier: "en_US_POSIX")
-            formatter.timeZone = TimeZone(secondsFromGMT: 0)
-            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
-            return formatter
-        }()
-        static let MMDDYYYY : DateFormatter = {
-            let formatter = DateFormatter()
-            formatter.calendar = Calendar(identifier: .iso8601)
-            formatter.locale = Locale(identifier: "en_US_POSIX")
-            formatter.timeZone = TimeZone(secondsFromGMT: 0)
-            formatter.dateFormat = "MM/dd/yyyy"
-            return formatter
-        }()
-    }
-    
-    var iso8601String : String {
-        return Formatter.iso8601.string(from: self)
-    }
-    
-    var mmDDYYYYString : String {
-        return Formatter.MMDDYYYY.string(from: self)
     }
     
 }

@@ -74,6 +74,15 @@ extension Tealium {
     
 }
 
+extension TealiumConfig {
+    
+    public func setCollectOverrideURL(string: String) {
+        
+        optionalData[TealiumCollectKey.overrideCollectUrl] = string
+    }
+    
+}
+
 
 // MARK:
 // MARK: MODULE SUBCLASS

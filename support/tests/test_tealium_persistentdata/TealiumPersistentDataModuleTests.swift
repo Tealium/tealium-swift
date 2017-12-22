@@ -8,7 +8,7 @@
 
 import XCTest
 
-enum PersistantDataModuleTestKey {
+enum PersistentDataModuleTestKey {
     static let payload = "payload"
 }
 
@@ -114,16 +114,14 @@ class TealiumPersistentDataModuleTests: XCTestCase {
         
                 XCTAssertTrue(success, "Track mock did not return success.")
                 
-                guard let payload = info?[PersistantDataModuleTestKey.payload] as? [String:AnyObject] else {
+                guard let payload = info?[PersistentDataModuleTestKey.payload] as? [String:AnyObject] else {
                     XCTFail()
                     return
                 }
                 
-                let event = payload[TealiumKey.event] as! String
-                let eventType = payload[TealiumKey.eventType] as! String
+                let event = payload[TealiumKey.event] as! String 
                 
                 XCTAssertTrue(event == TealiumTestValue.title)
-                XCTAssertTrue(eventType == TealiumTestValue.eventType)
                                         
         })
         
@@ -155,7 +153,7 @@ extension TealiumPersistentDataModuleTests : TealiumModuleDelegate {
         }
         let payload = trackRequest.data
         delegateExpectationSuccess?.fulfill()
-        trackRequest.completion?(true, [PersistantDataModuleTestKey.payload: payload as AnyObject], nil)
+        trackRequest.completion?(true, [PersistentDataModuleTestKey.payload: payload as AnyObject], nil)
         
     }
     

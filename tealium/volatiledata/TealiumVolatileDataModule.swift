@@ -16,6 +16,10 @@ enum TealiumVolatileDataKey {
     static let random = "tealium_random"
     static let sessionId = "tealium_session_id"
     static let timestampEpoch = "tealium_timestamp_epoch"
+    static let timestamp = "event_timestamp_iso"
+    static let timestampLocal = "event_timestamp_local_iso"
+    static let timestampOffset = "event_timestamp_offset_hours"
+    static let timestampUnix = "event_timestamp_unix_millis"
 }
 
 
@@ -72,7 +76,7 @@ class TealiumVolatileDataModule : TealiumModule {
     override func disable(_ request: TealiumDisableRequest) {
         
         isEnabled = false
-        // TODO: Clear volatileData here?
+        volatileData.deleteAllData()
         didFinish(request)
         
     }
@@ -137,7 +141,10 @@ public class TealiumVolatileData : NSObject {
         var data = [String:Any]()
         
         data[TealiumVolatileDataKey.random] = getRandom()
-        data[TealiumVolatileDataKey.timestampEpoch] = getTimestampInSeconds()
+        data.merge(currentTimeStamps()) { (_, new) -> Any in
+            new
+        }
+        data[TealiumVolatileDataKey.timestampOffset] = timezoneOffset()
         data += _volatileData
         
         return data
@@ -156,6 +163,16 @@ public class TealiumVolatileData : NSObject {
             }
         }
         
+    }
+    /**
+     Delete all volatile data.
+     */
+    public func deleteAllData() {
+        sync(lock: self) {
+            for key in _volatileData.keys {
+                    _volatileData.removeValue(forKey: key)
+            }
+        }
     }
     
     /// Auto reset the session id now.
@@ -189,27 +206,50 @@ public class TealiumVolatileData : NSObject {
         return randomNumber
     }
     
-    internal func getTimestampInSeconds() -> String {
+    internal func getTimestampInSeconds(_ date: Date) -> String {
         
-        let ts = Date().timeIntervalSince1970
+        let ts = date.timeIntervalSince1970
         
-        return "\(ts)"
+        return "\(Int(ts))"
     }
     
     
-    internal func getTimestampInMilliseconds() -> String {
+    internal func getTimestampInMilliseconds(_ date: Date) -> String {
         
-        let ts = Date().timeIntervalSince1970 * 1000
+        let ts = date.unixTime
         
-        return "\(ts)"
+        return ts
     }
     
     internal func newSessionId() -> String {
-        return getTimestampInMilliseconds()
+        return getTimestampInMilliseconds(Date())
     }
     
+    internal func currentTimeStamps() -> [String: Any] {
+        /** having this in a single function guarantees we're sending the exact same timestamp,
+            as the date object only gets created once **/
+        let date = Date()
+        return [
+            TealiumVolatileDataKey.timestampEpoch : getTimestampInSeconds(date),
+            TealiumVolatileDataKey.timestamp : getDate8601UTC(date),
+            TealiumVolatileDataKey.timestampLocal : getDate8601Local(date),
+            TealiumVolatileDataKey.timestampUnix: date.unixTime
+        ]
+    }
     
+    internal func getDate8601Local(_ date: Date) -> String {
+        return date.iso8601LocalString
+    }
     
+    internal func getDate8601UTC(_ date: Date) -> String {
+        return date.iso8601String
+    }
     
+    internal func timezoneOffset() -> String {
+        let tz = TimeZone.current
+        let offsetSeconds = tz.secondsFromGMT()
+        let offsetHours = offsetSeconds/3600
+        return String(format: "%i", offsetHours)
+    }
 }
 
