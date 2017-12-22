@@ -17,7 +17,7 @@ enum TealiumTestValue {
     static let account = "testAccount"
     static let profile = "testProfile"
     static let environment = "testEnviroment"
-    static let eventType = TealiumTrackType.activity.description()
+    static let eventType = TealiumTrackType.event.description()
     static let stringValue = "value"
     static let title = "testTitle"
     static let sessionId = "1234567890124"
@@ -36,6 +36,7 @@ let testTealiumConfig = TealiumConfig(account:TealiumTestValue.account,
                                       profile:TealiumTestValue.profile,
                                       environment:TealiumTestValue.environment,
                                       optionalData:testOptionalData as [String : Any])
+
 let testDeleteRequest = TealiumDeleteRequest(name: "testDelete")
 let testDisableRequest = TealiumDisableRequest()
 let testEnableRequest = TealiumEnableRequest(config: testTealiumConfig)
@@ -53,12 +54,11 @@ let testDataDictionary : [String:Any]  =
         TealiumKey.profile : TealiumTestValue.profile,
         TealiumKey.environment : TealiumTestValue.environment,
         TealiumKey.event : TealiumTestValue.title,
-        TealiumKey.eventType :  TealiumTestValue.eventType,
         TealiumKey.libraryName : TealiumValue.libraryName,
         TealiumKey.libraryVersion : TealiumValue.libraryVersion,
         TealiumVolatileDataKey.sessionId : TealiumTestValue.sessionId,
         TealiumAppDataKey.visitorId :TealiumTestValue.visitorID,
-        TealiumAppDataKey.legacyVid : TealiumTestValue.visitorID,
+        // TealiumAppDataKey.legacyVid : TealiumTestValue.visitorID,
         TealiumVolatileDataKey.random : TealiumTestValue.random
     ]
 
@@ -106,23 +106,46 @@ class test_tealium_helper {
     }
     
     class func allTealiumModuleNames() -> [String] {
+        // priority order
+        #if os(iOS)
         return [
-                "appdata",
-                "attribution",
-                "autotracking",
-                "collect",
-                "connectivity",
-                "datasource",
-                "defaultsstorage",
-                "delegate",
-                "filestorage",
-                "lifecycle",
-                "logger",
-                "persistentdata",
-                "remotecommands",
-                "tagmanagement",
-                "volatiledata"
+            "logger",
+            "lifecycle",
+            "autotracking",
+            "filestorage",
+            "defaultsstorage",
+            "attribution",
+            "appdata",
+            "datasource",
+            "devicedata",
+            "persistentdata",
+            "volatiledata",
+            "delegate",
+            "connectivity",
+            "collect",
+            "tagmanagement",
+            "remotecommands"
         ]
+        #else
+            return [
+                "logger",
+                "lifecycle",
+                // "autotracking",
+                "filestorage",
+                "defaultsstorage",
+                // "attribution",
+                "appdata",
+                "datasource",
+                "devicedata",
+                "persistentdata",
+                "volatiledata",
+                "delegate",
+                "connectivity",
+                "collect",
+                // "tagmanagement",
+                "remotecommands"
+            ]
+        #endif
     }
     
     class func allTealiumRequestNames() -> [String] {
@@ -137,6 +160,10 @@ class test_tealium_helper {
             TealiumTrackRequest.instanceTypeId(),
         ]
         
+    }
+    
+    func getConfig() -> TealiumConfig {
+        return testTealiumConfig
     }
     
     class func allTestTealiumRequests() -> [TealiumRequest] {

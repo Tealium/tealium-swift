@@ -8,6 +8,8 @@
 
 import XCTest
 
+// TODO: write test to fully test filestorage mechanism
+
 class TealiumFileStorageModuleTests: XCTestCase {
     
     override func setUp() {
@@ -36,9 +38,37 @@ class TealiumFileStorageModuleTests: XCTestCase {
         
     }
     
-    func testDelete() {
+    func testSaveLoad() {
+        let module = TealiumFileStorageModule(delegate: nil)
+        let helper = test_tealium_helper()
+        let req = TealiumEnableRequest(config: helper.getConfig())
+        module.enable(req)
+        let saveRequest = TealiumSaveRequest(name: "unittests", data: ["testing":  "123"])
+        module.save(saveRequest)
+        let loadRequest = TealiumLoadRequest(name: "unittests") { (success, info, error) in
+            guard let inf = info else {
+                XCTFail("dictionary not returned")
+                return
+            }
+            XCTAssertTrue(inf["testing"] as? String == "123")
+        }
+        module.load(loadRequest)
+    }
+    
+    func testDeleteAll() {
+        let module = TealiumFileStorageModule(delegate: nil)
+        let helper = test_tealium_helper()
+        let req = TealiumEnableRequest(config: helper.getConfig())
+        module.enable(req)
+        let saveRequest = TealiumSaveRequest(name: "unittests", data: ["testing":  "123"])
+        module.save(saveRequest)
         
-        
+        let deleteRequest = TealiumDeleteRequest(name: "unittests")
+        module.delete(deleteRequest)
+        let loadRequest = TealiumLoadRequest(name: "unittests") { (success, info, error) in
+            XCTAssertTrue(info == nil)
+        }
+        module.load(loadRequest)
     }
     
 }

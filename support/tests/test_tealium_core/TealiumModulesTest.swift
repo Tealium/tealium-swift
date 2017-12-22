@@ -244,7 +244,7 @@ class TealiumModulesTest: XCTestCase {
         
         // Updated setup
         let newModulesList = TealiumModulesList(isWhitelist: true,
-                                                moduleNames: ["appdata", "autotracking", "lifecycle"])
+                                                moduleNames: ["appdata", "devicedata", "lifecycle"])
         
         let newConfig = TealiumConfig(account: "test",
                                       profile: "test",

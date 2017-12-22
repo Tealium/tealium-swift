@@ -83,7 +83,6 @@ class TealiumAppDataModuleTests: XCTestCase {
         
         let checkData = [
                 "app_uuid":testUuid as AnyObject,
-                "tealium_vid":manualVid as AnyObject,
                 "tealium_visitor_id": manualVid as AnyObject
         ]
         
@@ -124,8 +123,7 @@ class TealiumAppDataModuleTests: XCTestCase {
         let failingDict = ["blah":"hah"]
         let numericDict = ["23": 56]
         let passingDict = ["app_uuid":"abc123",
-                           "tealium_visitor_id":"abc123",
-                           "tealium_vid":"abc123"]
+                           "tealium_visitor_id":"abc123"]
         
         XCTAssertTrue(TealiumAppDataModule.isMissingPersistentKeys(emptyDict))
         XCTAssertTrue(TealiumAppDataModule.isMissingPersistentKeys(failingDict))
@@ -136,26 +134,25 @@ class TealiumAppDataModuleTests: XCTestCase {
     }
 
     // Can only run within a sample app
-//    func testForMissingKeys() {
-//        
-//        let module = TealiumAppDataModule(delegate: nil)
-//        module.setNewAppData()
-//        let expectedKeys = ["app_build",
-//                            "app_name",
-//                            "app_rdns",
-//                            "app_version",
-//                            "app_uuid",
-//                            "tealium_visitor_id",
-//                            "tealium_vid"]
-//        
-//        let appData = module.appData
-//        for key in expectedKeys {
-//            if appData[key] == nil {
-//                XCTFail("Missing key: \(key). AppData: \(appData)")
-//            }
-//        }
-//        
-//    }
+    func testForMissingKeys() {
+        
+        let module = TealiumAppDataModule(delegate: nil)
+        module.setNewAppData()
+        let expectedKeys = ["app_build",
+                            "app_name",
+                            "app_rdns",
+                            "app_version",
+                            "app_uuid",
+                            "tealium_visitor_id"]
+        
+        let appData = module.appData
+        for key in expectedKeys {
+            if appData[key] == nil {
+                XCTFail("Missing key: \(key). AppData: \(appData)")
+            }
+        }
+        
+    }
 }
 
 

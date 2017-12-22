@@ -15,7 +15,12 @@ class TealiumVolatileDataTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        volatileData = TealiumVolatileData()
+        let helper = test_tealium_helper()
+        let enableRequest = TealiumEnableRequest(config: helper.getConfig())
+        let module = TealiumVolatileDataModule(delegate: nil)
+        module.enable(enableRequest)
+        // sleep(2)
+        volatileData = module.volatileData
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
@@ -40,7 +45,7 @@ class TealiumVolatileDataTests: XCTestCase {
             if randomNumbers.contains(random) == true {
                 XCTFail("Duplicate random number")
             } else {
-                let matches = regex.numberOfMatches(in: random, options: [], range: NSRange(location: 0, length: random.characters.count))
+                let matches = regex.numberOfMatches(in: random, options: [], range: NSRange(location: 0, length: random.count))
                 print("matches here is : \(matches)")
                 if (matches != 1){
                     print ("random number is :::: \(random)")
@@ -89,6 +94,32 @@ class TealiumVolatileDataTests: XCTestCase {
         XCTAssertTrue(testData.contains(otherDictionary: data), "VolatileData: \(volatileData)")
         
         volatileData.deleteData(forKeys:["a","b"])
+        
+        let volatileDataPostDelete = volatileData.getData()
+        
+        XCTAssertFalse(volatileDataPostDelete.contains(otherDictionary: testData), "VolatileData: \(volatileDataPostDelete)")
+    }
+    
+    func testDeleteAll(){
+        // TODO: test arrays and other value types
+
+        let testData = [
+            "a":"1",
+            "b":"2"
+            ] as [String:Any]
+        
+        guard let volatileData = self.volatileData else {
+            XCTFail("TealiumVolatileData did not spin up unexpectedly.")
+            return
+        }
+        
+        volatileData.add(data: testData as [String : AnyObject])
+        
+        let data = volatileData.getData()
+        
+        XCTAssertTrue(testData.contains(otherDictionary: data), "VolatileData: \(volatileData)")
+        
+        volatileData.deleteAllData()
         
         let volatileDataPostDelete = volatileData.getData()
         

@@ -12,7 +12,7 @@
 
 public enum TealiumValue {
     static let libraryName = "swift"
-    static let libraryVersion = "1.3.3"
+    static let libraryVersion = "1.4.0"
 }
 
 // MARK:
@@ -23,6 +23,8 @@ public enum TealiumKey {
     static let profile = "tealium_profile"
     static let environment = "tealium_environment"
     static let event = "tealium_event"
+    static let callType = "call_type"
+    static let screenTitle = "screen_title"
     static let eventType = "tealium_event_type"
     static let libraryName = "tealium_library_name"
     static let libraryVersion = "tealium_library_version"
@@ -47,23 +49,14 @@ public enum TealiumModuleError : Error {
 // NOTE: These will be deprecated in a future release.
 public enum TealiumTrackType {
     case view           // Whenever content is displayed to the user.
-    case activity       // Behavioral actions by the user such as a cart actions, or any other application-specific event.
-    case interaction    // Interaction between user and an external resource (ie other people). Usually offline activities such as a booth visit or phone call, but can be text sent to an online chat agent.
-    case derived        // Inferred user data or somehow provided without direct action by user, such as demographics, predictive data, campaign value relations, etc.
-    case conversion     // Desired goal has been reached.
+    case event
     
     func description() -> String {
         switch self {
         case .view:
             return "view"
-        case .interaction:
-            return "interaction"
-        case .derived:
-            return "derived"
-        case .conversion:
-            return "conversion"
-        default:
-            return "activity"
+        case .event:
+            return "event"
         }
     }
     

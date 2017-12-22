@@ -142,6 +142,25 @@ open class TealiumModule : TealiumModuleProtocol {
                                     process: newRequest)
     }
     
+    /// Should be called by modules after processing requests, unless needing to
+    ///     halt further processing by other modules down the priority chain.
+    ///     This method auto updates the request's moduleResponse list with
+    ///     the subclass's module name & success = true. No need to override.
+    ///
+    /// - Parameter request: Any TealiumRequest to pass back to the ModulesManager.
+    open func didFinish(_ request: TealiumRequest, _ error: Error?) {
+        
+        var newRequest = request
+        
+        let response = TealiumModuleResponse(moduleName: type(of:self).moduleConfig().name,
+                                             success: true,
+                                             error: error)
+        newRequest.moduleResponses.append(response)
+        
+        self.delegate?.tealiumModuleFinished(module: self,
+                                             process: newRequest)
+    }
+    
     
     /// Called by a module that did not process a request, or will process 
     ///     asynchronously and can pass the request down the priority chain at time of

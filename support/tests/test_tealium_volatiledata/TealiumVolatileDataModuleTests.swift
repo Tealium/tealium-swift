@@ -58,7 +58,11 @@ class TealiumVolatileDataModuleTests: XCTestCase {
             "tealium_library_version",
             "tealium_random",
             "tealium_session_id",
-            "tealium_timestamp_epoch"
+            "tealium_timestamp_epoch",
+            "event_timestamp_iso",
+            "event_timestamp_local_iso",
+            "event_timestamp_offset_hours",
+            "event_timestamp_unix_millis"
             ]
         
         guard let volatileDataReturned = module?.volatileData.getData() else {

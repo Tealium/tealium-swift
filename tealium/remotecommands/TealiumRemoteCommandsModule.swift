@@ -47,21 +47,9 @@ extension Tealium {
 
 extension TealiumConfig {
     
-    @available(*, deprecated, message: "Use the new modulesList option in the TealiumConfig object to disable Remote Commands. This method will be removed in a future release.")
-    public func disableRemoteCommands() {
-        
-        // No effect
-    }
-    
     public func disableRemoteHTTPCommand() {
         
         optionalData[TealiumRemoteCommandsKey.disableHTTP] = true
-    }
-    
-    @available(*, deprecated, message: "Use the new modulesList option in the TealiumConfig object to explictly enable Remote Commands. This method will be removed in a future release.")
-    func enableRemoteCommands() {
-        
-        // No effect
     }
     
     public func enableRemoteHTTPCommand() {
@@ -378,7 +366,7 @@ extension Array where Element: TealiumRemoteCommand {
  SAMPLE CALL
  ===========
  
- tealium://logger?request={"config":{},"payload":{"lifecycle_firstlaunchdate_MMDDYYYY":"02/16/2017","lifecycle_dayssincelastwake":"4","autotracked":"true","tealium_datasource":"testDatasource","lifecycle_diddetectcrash":"true","lifecycle_hourofday_local":"12","dispatch_service":"tagmanagement","app_uuid":"F6CB6C0A-0FC9-4719-9D32-B78EC495C788","lifecycle_totalcrashcount":"40","lifecycle_lastwakedate":"2017-03-09T00:51:39Z","tealium_timestamp_epoch":"1489432102.31095","tealium_session_id":"1489432096135.25","lifecycle_isfirstwaketoday":"true","lifecycle_totallaunchcount":"42","tealium_vid":"F7CB6B0A0FC947199D32B78EC495C789","lifecycle_lastlaunchdate":"2017-03-09T00:51:39Z","lifecycle_totalsleepcount":"41","device_advertising_id":"F86BE802-B42C-4C4C-8F7B-60A3F9EDA7B5","lifecycle_secondsawake":"0","tealium_library_name":"swift","lifecycle_dayofweek_local":"2","tealium_visitor_id":"F7CB6B0A0FC947199D32B78EC495C789","lifecycle_totalwakecount":"42","lifecycle_sleepcount":"0","lifecycle_firstlaunchdate":"2017-02-16T19:15:20Z","tealium_profile":"demo","tealium_account":"tealiummobile","tealium_random":"0896866425171567","tealium_environment":"dev","lifecycle_type":"launch","lifecycle_dayssincelaunch":"24","lifecycle_launchcount":"42","lifecycle_wakecount":"42","lifecycle_priorsecondsawake":"0","lifecycle_totalsecondsawake":"0","tealium_library_version":"1.1.3","cp.utag_main_v_id":"015a9327f11e001ef6deae7774340006c004006400432","cp.utag_main__sn":"5","cp.utag_main__ss":"0","cp.utag_main__st":"1489433902418","cp.utag_main_dc_visit":"3","cp.utag_main_ses_id":"1489432102230","cp.utag_main__pn":"1","cp.utag_main_dc_event":"7","cp.__utma":"142125879.850793584.1488990599.1488990599.1488997059.2","cp.__utmz":"142125879.1488990599.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)","dom.referrer":"","dom.title":"Tealium Mobile Webview","dom.domain":"tags.tiqcdn.com","dom.query_string":"","dom.hash":"","dom.url":"https://tags.tiqcdn.com/utag/tealiummobile/demo/dev/mobile.html?","dom.pathname":"/utag/tealiummobile/demo/dev/mobile.html","dom.viewport_height":667,"dom.viewport_width":667,"ut.domain":"tiqcdn.com","ut.version":"ut4.42.201703081911","ut.event":"link","ut.visitor_id":"015a9327f11e001ef6deae7774340006c004006400432","ut.session_id":"1489432102230","ut.account":"tealiummobile","ut.profile":"demo","ut.env":"dev","tealium_event":"link","tealium_timestamp_utc":"2017-03-13T19:08:22.418Z","tealium_timestamp_local":"2017-03-13T12:08:22.418"}}
+ tealium://logger?request={"config":{},"payload":{"lifecycle_firstlaunchdate_MMDDYYYY":"02/16/2017","lifecycle_dayssincelastwake":"4","autotracked":"true","tealium_datasource":"testDatasource","lifecycle_diddetectcrash":"true","lifecycle_hourofday_local":"12","dispatch_service":"tagmanagement","app_uuid":"F6CB6C0A-0FC9-4719-9D32-B78EC495C788","lifecycle_totalcrashcount":"40","lifecycle_lastwakedate":"2017-03-09T00:51:39Z","tealium_timestamp_epoch":"1489432102.31095","tealium_session_id":"1489432096135.25","lifecycle_isfirstwaketoday":"true","lifecycle_totallaunchcount":"42","lifecycle_lastlaunchdate":"2017-03-09T00:51:39Z","lifecycle_totalsleepcount":"41","device_advertising_id":"F86BE802-B42C-4C4C-8F7B-60A3F9EDA7B5","lifecycle_secondsawake":"0","tealium_library_name":"swift","lifecycle_dayofweek_local":"2","tealium_visitor_id":"F7CB6B0A0FC947199D32B78EC495C789","lifecycle_totalwakecount":"42","lifecycle_sleepcount":"0","lifecycle_firstlaunchdate":"2017-02-16T19:15:20Z","tealium_profile":"demo","tealium_account":"tealiummobile","tealium_random":"0896866425171567","tealium_environment":"dev","lifecycle_type":"launch","lifecycle_dayssincelaunch":"24","lifecycle_launchcount":"42","lifecycle_wakecount":"42","lifecycle_priorsecondsawake":"0","lifecycle_totalsecondsawake":"0","tealium_library_version":"1.1.3","cp.utag_main_v_id":"015a9327f11e001ef6deae7774340006c004006400432","cp.utag_main__sn":"5","cp.utag_main__ss":"0","cp.utag_main__st":"1489433902418","cp.utag_main_dc_visit":"3","cp.utag_main_ses_id":"1489432102230","cp.utag_main__pn":"1","cp.utag_main_dc_event":"7","cp.__utma":"142125879.850793584.1488990599.1488990599.1488997059.2","cp.__utmz":"142125879.1488990599.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)","dom.referrer":"","dom.title":"Tealium Mobile Webview","dom.domain":"tags.tiqcdn.com","dom.query_string":"","dom.hash":"","dom.url":"https://tags.tiqcdn.com/utag/tealiummobile/demo/dev/mobile.html?","dom.pathname":"/utag/tealiummobile/demo/dev/mobile.html","dom.viewport_height":667,"dom.viewport_width":667,"ut.domain":"tiqcdn.com","ut.version":"ut4.42.201703081911","ut.event":"link","ut.visitor_id":"015a9327f11e001ef6deae7774340006c004006400432","ut.session_id":"1489432102230","ut.account":"tealiummobile","ut.profile":"demo","ut.env":"dev","tealium_event":"link","tealium_timestamp_utc":"2017-03-13T19:08:22.418Z","tealium_timestamp_local":"2017-03-13T12:08:22.418"}}
  
  
  =============

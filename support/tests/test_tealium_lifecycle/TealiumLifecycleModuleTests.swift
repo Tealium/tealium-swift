@@ -76,10 +76,10 @@ class TealiumLifecycleModuleTests: XCTestCase {
                                    environment: "",
                                    optionalData: nil)
         lifecycleModule.enable(TealiumEnableRequest(config: config))
-        self.waitForExpectations(timeout: 1.0, handler: nil)
+        self.waitForExpectations(timeout: 20.0, handler: nil)
         
         guard let request = requestProcess as? TealiumTrackRequest else {
-            XCTFail("Process not a track request.")
+            XCTFail("\n\nFailure: Process not a track request.\n")
             return
         }
         let returnData = request.data

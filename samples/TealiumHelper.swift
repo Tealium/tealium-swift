@@ -1,9 +1,9 @@
 //
 //  TealiumHelper.swift
-//  WatchPuzzle
 //
 //  Created by Jason Koo on 11/22/16.
-//  Copyright © 2016 Apple. All rights reserved.
+//  Modified by Craig Rouse 22/11/17
+//  Copyright © 2017 Tealium. All rights reserved.
 //
 
 import Foundation
@@ -17,14 +17,14 @@ class TealiumHelper : NSObject {
     
     static let _sharedInstance = TealiumHelper()
     var tealium : Tealium?
-    var enableHelperLogs = false
-    class func sharedInstance() -> TealiumHelper {
+    var enableHelperLogs = true
+    @objc class func sharedInstance() -> TealiumHelper {
         
         return _sharedInstance
         
     }
     
-    func start() {
+    @objc func start() {
     
         // REQUIRED Config object for lib
         let config = TealiumConfig(account: "tealiummobile",
@@ -38,51 +38,55 @@ class TealiumHelper : NSObject {
         
         // OPTIONALLY add an external delegate
         config.addDelegate(self)
-
-        config.setDispatchQueue(DispatchQueue.global(qos: .background))
         
         // OPTIONALLY disable a particular module by name
-//        let list = TealiumModulesList(isWhitelist: false,
-//                                      moduleNames: ["tagmanagement"])
-//        config.setModulesList(list)
+        let list = TealiumModulesList(isWhitelist: false,
+                                      moduleNames: ["autotracking"])
+        config.setModulesList(list)
 
         // REQUIRED Initialization
         tealium = Tealium(config: config,
                           completion: { (responses) in
                         
-                    // Optional processing post init.
+                            // Optional processing post init.
+                            // OPTIONALLY implement Dynamic Triggers/Remote Commands.
+                            #if os(iOS)
+                                let remoteCommand = TealiumRemoteCommand(commandId: "logger",
+                                                                         description: "test") { (response) in
+                                                                            
+                                                                            if TealiumHelper.sharedInstance().enableHelperLogs {
+                                                                                print("*** TealiumHelper: Remote Command Executed: response:\(response)")
+                                                                            }
+                                                                            
+                                }
+                                
+                                // this must be done inside the Tealium init callback, otherwise remotecommands won't be avaialable
+                                if let remoteCommands = self.tealium?.remoteCommands() {
+                                    remoteCommands.add(remoteCommand)
+                                } else {
+                                    return
+                                }
+                                
+                            #endif
                             
         })
         
-        tealium?.persistentData()?.add(data: ["testPersistentKey":"testPersistentValue"])
+        // example showing persistent data
+        self.tealium?.persistentData()?.add(data: ["testPersistentKey":"testPersistentValue"])
+        // example showing volatile data
+        self.tealium?.volatileData()?.add(data: ["testVolatileKey":"testVolatileValue"])
         
-        tealium?.volatileData()?.add(data: ["testVolatileKey":"testVolatileValue"])
-        
+        // process a tracking call on the background queue
+        // example tracking call - not required in production
         DispatchQueue.global(qos: .background).async {
             self.tealium?.track(title: "HelperReady_BG_Queue")    
         }
-        tealium?.track(title: "HelperReady")
-        
-        // OPTIONALLY implement Dynamic Triggers.
-        #if os(iOS)
-            let remoteCommand = TealiumRemoteCommand(commandId: "logger",
-                                                     description: "test") { (response) in
-                                                        
-                if TealiumHelper.sharedInstance().enableHelperLogs {
-                    print("*** TealiumHelper: Remote Command Executed: response:\(response)")
-                }
-                                                        
-            }
-            guard let remoteCommands = tealium?.remoteCommands() else {
-                return
-            }
-            remoteCommands.add(remoteCommand)
-        #endif
-        
-
+        // example tracking call - not required in production
+        self.tealium?.track(title: "HelperReady")
     }
     
-    func track(title: String, data:[String:Any]?) {
+    // track an event
+    @objc func track(title: String, data:[String:Any]?) {
     
         tealium?.track(title: title,
                       data: data,
@@ -96,9 +100,10 @@ class TealiumHelper : NSObject {
         })
     }
     
-    func trackView(title: String, data:[String:Any]?) {
+    // track a screen view
+    @objc func trackView(title: String, data:[String:Any]?) {
         
-        tealium?.track(title: title,
+        tealium?.trackView(title: title,
                        data: data,
                        completion: { (success, info, error) in
                         
@@ -114,7 +119,7 @@ class TealiumHelper : NSObject {
     
     }
     
-    func crash() {
+    @objc func crash() {
         NSException.raise(NSExceptionName(rawValue: "Exception"), format:"This is a test exception", arguments:getVaList(["nil"]))
     }
     

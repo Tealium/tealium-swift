@@ -32,7 +32,7 @@ class TealiumCollectModuleTests: XCTestCase {
             
         }
         
-        self.waitForExpectations(timeout: 1.0, handler: nil)
+        self.waitForExpectations(timeout: 4.0, handler: nil)
 
     }
     

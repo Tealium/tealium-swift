@@ -17,8 +17,7 @@ public enum TealiumAppDataKey {
     static let rdns = "app_rdns"
     static let uuid = "app_uuid"
     static let version = "app_version"
-    static let legacyVid = "tealium_vid"        // deprecating
-    static let visitorId = "tealium_visitor_id" // deprecating
+    static let visitorId = "tealium_visitor_id"
 }
 
 // MARK:
@@ -103,13 +102,11 @@ class TealiumAppDataModule : TealiumModule {
     
     // MARK:
     // MARK: INTERNAL
-    // TODO: Migrate to it's own class when additiona data variables are added.
     
     class func isMissingPersistentKeys(_ data: [String:Any]) -> Bool {
         
         if data[TealiumAppDataKey.uuid] == nil {return true}
         if data[TealiumAppDataKey.visitorId] == nil {return true}
-        if data[TealiumAppDataKey.legacyVid] == nil {return true}
         return false
         
     }
@@ -138,8 +135,7 @@ class TealiumAppDataModule : TealiumModule {
         
         let data = [
             TealiumAppDataKey.uuid: forUuid,
-            TealiumAppDataKey.visitorId: vid,
-            TealiumAppDataKey.legacyVid: vid
+            TealiumAppDataKey.visitorId: vid
         ]
         
         return data as [String : Any]

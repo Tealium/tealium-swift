@@ -22,7 +22,7 @@ class TealiumLifecycleIntegrationTests: XCTestCase {
     }
     
     // Integration test so far as making sure all the api elements together produce the expected outputs
-    
+    // note: for this test to pass, your machine's timezone must be set to Los Angeles
     func testLongRunning() {
         
         // Load up the input/expected out put JSON file
