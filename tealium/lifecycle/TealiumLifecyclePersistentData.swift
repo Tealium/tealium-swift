@@ -9,24 +9,22 @@
 
 import Foundation
 
-enum TealiumLifecyclePersistentDataError : Error {
+enum TealiumLifecyclePersistentDataError: Error {
     case couldNotArchiveAsData
     case couldNotUnarchiveData
     case archivedDataMismatchWithOriginalData
 }
 
 open class TealiumLifecyclePersistentData {
-    
+
     class func dataExists(forUniqueId: String) -> Bool {
-        
-        guard let _ = UserDefaults.standard.object(forKey: forUniqueId) as? Data else {
+        guard UserDefaults.standard.object(forKey: forUniqueId) as? Data != nil else {
             return false
         }
-        
+
         return true
-        
     }
-    
+
      class func load(uniqueId: String) -> TealiumLifecycle? {
         #if swift(>=4.0)
         guard let data = UserDefaults.standard.object(forKey: uniqueId) as? Data else {
@@ -39,8 +37,7 @@ open class TealiumLifecyclePersistentData {
             return nil
         }
         #endif
-            
-        
+
         do {
             guard let lifecycle = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? TealiumLifecycle else {
                 return nil
@@ -50,13 +47,12 @@ open class TealiumLifecyclePersistentData {
             // invalidArchiveOperationException
             return nil
         }
-        
     }
-    
+
     class func save(_ lifecycle: TealiumLifecycle, usingUniqueId: String) -> (success: Bool, error: Error?) {
-        
+
         let data = NSKeyedArchiver.archivedData(withRootObject: lifecycle)
-        
+
         UserDefaults.standard.set(data, forKey: usingUniqueId)
         UserDefaults.standard.synchronize()
         #if swift(>=4.0)
@@ -68,40 +64,38 @@ open class TealiumLifecyclePersistentData {
             return (false, TealiumLifecyclePersistentDataError.couldNotArchiveAsData)
         }
         #endif
-        
+
         do {
             guard let defaultsCheck = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(defaultsCheckData) as? TealiumLifecycle else {
                 return (false, TealiumLifecyclePersistentDataError.couldNotUnarchiveData)
             }
-            
+
             let checkPassed = (defaultsCheck == lifecycle) ? true : false
-            
+
             if checkPassed == true {
                 return (true, nil)
             }
-            
+
             return (false, TealiumLifecyclePersistentDataError.archivedDataMismatchWithOriginalData)
         } catch {
             return (false, TealiumLifecyclePersistentDataError.couldNotUnarchiveData)
         }
     }
-    
+
     class func deleteAllData(forUniqueId: String) -> Bool {
-        
         // False option not yet implemented
         if dataExists(forUniqueId: forUniqueId) == false {
             return true
         }
-        
+
         UserDefaults.standard.removeObject(forKey: forUniqueId)
         UserDefaults.standard.synchronize()
-        
+
         if UserDefaults.standard.object(forKey: forUniqueId) == nil {
             return true
         }
-        
+
         return false
     }
-    
-}
 
+}
