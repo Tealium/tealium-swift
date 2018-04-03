@@ -322,7 +322,7 @@ public class TealiumRemoteCommandResponse: CustomStringConvertible {
         return config
     }
 
-    func payload() -> [String: Any] {
+    public func payload() -> [String: Any] {
         let requestData = requestDataFrom(request: self.urlRequest)!
         let payload = payloadFrom(requestData: requestData)!
         return payload
