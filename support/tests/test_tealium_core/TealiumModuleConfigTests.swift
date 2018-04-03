@@ -3,10 +3,11 @@
 //  tealium-swift
 //
 //  Created by Jason Koo on 10/11/16.
-//  Copyright © 2016 tealium. All rights reserved.
+//  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
 import XCTest
+@testable import Tealium
 
 class TealiumModuleConfigTests: XCTestCase {
 
@@ -20,42 +21,25 @@ class TealiumModuleConfigTests: XCTestCase {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
-    
+
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
-    func testEquitableOperatorPass() {
-        
-        XCTAssertTrue(configA == configA2)
-        
-    }
-    
-    func testEquitableOperatorFail() {
-        
-        XCTAssertFalse(configA == configB)
-        
-    }
-    
-    func testPriorityMismatch() {
-        
-        XCTAssertTrue(configA != configC)
 
+    func testEquitableOperatorPass() {
+        XCTAssertTrue(configA == configA2)
     }
-    
-    func testEnableMismatch(){
-        
+
+    func testEquitableOperatorFail() {
+        XCTAssertFalse(configA == configB)
+    }
+
+    func testPriorityMismatch() {
+        XCTAssertTrue(configA != configC)
+    }
+
+    func testEnableMismatch() {
         XCTAssertTrue(configA != configD)
     }
-    
-
-    
-//    func testPerformanceExample() {
-//        // This is an example of a performance test case.
-//        self.measure {
-//            // Put the code you want to measure the time of here.
-//        }
-//    }
-
 }
