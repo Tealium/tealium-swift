@@ -143,7 +143,7 @@ public class TealiumDeviceData: TealiumDeviceDataCollection {
         }
 
         // summary of used system memory
-        let PAGE_SIZE = vm_kernel_page_size
+        let pageSize = vm_kernel_page_size
         let machHost = mach_host_self()
         var size = HOST_VM_INFO64_COUNT
         let hostInfo = vm_statistics64_t.allocate(capacity: 1)
@@ -158,16 +158,16 @@ public class TealiumDeviceData: TealiumDeviceDataCollection {
         let data = hostInfo.move()
         hostInfo.deallocate(capacity: 1)
 
-        let free = Double(data.free_count) * Double(PAGE_SIZE)
+        let free = Double(data.free_count) * Double(pageSize)
             / Unit.megabyte.rawValue
-        let active = Double(data.active_count) * Double(PAGE_SIZE)
+        let active = Double(data.active_count) * Double(pageSize)
             / Unit.megabyte.rawValue
-        let inactive = Double(data.inactive_count) * Double(PAGE_SIZE)
+        let inactive = Double(data.inactive_count) * Double(pageSize)
             / Unit.megabyte.rawValue
-        let wired = Double(data.wire_count) * Double(PAGE_SIZE)
+        let wired = Double(data.wire_count) * Double(pageSize)
             / Unit.megabyte.rawValue
         // Result of the compression. This is what you see in Activity Monitor
-        let compressed = Double(data.compressor_page_count) * Double(PAGE_SIZE)
+        let compressed = Double(data.compressor_page_count) * Double(pageSize)
             / Unit.megabyte.rawValue
 
         let dict = [

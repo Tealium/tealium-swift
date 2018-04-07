@@ -208,12 +208,12 @@ extension Array where Element: Equatable {
      Convenience for getting the next object in a given array.
      */
     func next(after: Element) -> Element? {
-        for i in 0..<self.count {
-            let object = self[i]
+        for itr in 0..<self.count {
+            let object = self[itr]
             if object == after {
 
-                if i + 1 < self.count {
-                    return self[i + 1]
+                if itr + 1 < self.count {
+                    return self[itr + 1]
                 }
             }
         }

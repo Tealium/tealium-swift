@@ -427,26 +427,26 @@ class TealiumRemoteHTTPCommand: TealiumRemoteCommand {
                 weak var weakResponse = response
                 let task = URLSession.shared.dataTask(with: request,
                                                       completionHandler: { data, urlResponse, error in
-                            guard let r = weakResponse else {
+                            guard let response = weakResponse else {
                                 return
                             }
                             // Gross legacy status reporting
-                            if let e = error {
-                                r.error = e
-                                r.status = TealiumRemoteCommandStatusCode.failure.rawValue
+                            if let err = error {
+                                response.error = err
+                                response.status = TealiumRemoteCommandStatusCode.failure.rawValue
                             } else {
-                                r.status = TealiumRemoteCommandStatusCode.success.rawValue
+                                response.status = TealiumRemoteCommandStatusCode.success.rawValue
                             }
                             if data == nil {
-                                r.status = TealiumRemoteCommandStatusCode.noContent.rawValue
+                                response.status = TealiumRemoteCommandStatusCode.noContent.rawValue
                             }
                             if urlResponse == nil {
-                                r.status = TealiumRemoteCommandStatusCode.failure.rawValue
+                                response.status = TealiumRemoteCommandStatusCode.failure.rawValue
                             }
-                            r.urlResponse = urlResponse
-                            r.data = data
+                            response.urlResponse = urlResponse
+                            response.data = data
                             TealiumRemoteHTTPCommand.sendCompletionNotificationFor(commandId: TealiumRemoteHTTPCommandKey.commandId,
-                                                                                   response: r)
+                                                                                   response: response)
                 })
 
                 task.resume()

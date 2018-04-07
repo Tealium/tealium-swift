@@ -294,8 +294,8 @@ class TealiumAttributionModule: TealiumModule {
     }
 
     func setLoadedAttributionData(_ data: [String: Any]?) {
-        if let d = data {
-            self.attributionData += d
+        if let data = data {
+            self.attributionData += data
         }
 
         self.attributionData += self.newVolatileData()

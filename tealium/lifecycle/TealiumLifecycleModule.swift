@@ -176,10 +176,10 @@ public class TealiumLifecycleModule: TealiumModule {
 
         lastProcess = type
         _dispatchQueue?.async { [weak self] in
-            guard let s = self else {
+            guard let sel = self else {
                 return
             }
-            s.process(type: type)
+            sel.process(type: type)
         }
     }
 
@@ -671,8 +671,8 @@ public class TealiumLifecycle: NSObject, NSCoding {
             lastSession.wasLaunch == true {
             return lastSession.wakeDate
         }
-        for i in (0..<(sessions.count - 1)).reversed() {
-            let session = sessions[i]
+        for itr in (0..<(sessions.count - 1)).reversed() {
+            let session = sessions[itr]
             if session.wasLaunch == true {
                 return session.wakeDate
             }
@@ -685,8 +685,8 @@ public class TealiumLifecycle: NSObject, NSCoding {
         if sessions.last == sessions.first {
             return nil
         }
-        for i in (0..<(sessions.count - 1)).reversed() {
-            let session = sessions[i]
+        for itr in (0..<(sessions.count - 1)).reversed() {
+            let session = sessions[itr]
             if session.sleepDate != nil {
                 return session.sleepDate
             }
@@ -750,8 +750,8 @@ public class TealiumLifecycle: NSObject, NSCoding {
         var count = sessions.count - 1
         if count < 0 { count = 0 }
 
-        for i in (0..<count) {
-            let session = sessions[i]
+        for itr in (0..<count) {
+            let session = sessions[itr]
             if session.wasLaunch {
                 secondsAggregate = 0
             }

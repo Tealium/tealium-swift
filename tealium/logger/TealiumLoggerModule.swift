@@ -235,10 +235,10 @@ class TealiumLoggerModule: TealiumModule {
     }
 
     func logReport(_ request: TealiumRequest) {
-        guard let r = request as? TealiumReportRequest else {
+        guard let request = request as? TealiumReportRequest else {
             return
         }
-        let message = "\(r.message)"
+        let message = "\(request.message)"
         _ = logger?.log(message: message,
                         logLevel: .verbose)
     }

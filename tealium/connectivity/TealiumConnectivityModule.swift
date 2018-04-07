@@ -95,8 +95,8 @@ class TealiumConnectivityModule: TealiumModule {
     }
 
     func release(_ queue: [TealiumTrackRequest]) {
-        var q = queue
-        q.emptyFIFO { track in
+        var que = queue
+        que.emptyFIFO { track in
             self.didFinish(track)
         }
     }

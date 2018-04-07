@@ -107,22 +107,22 @@ class TealiumTagManagementModule: TealiumModule {
         dispatchQueue = config.dispatchQueue()
 
         DispatchQueue.main.async { [weak self] in
-            guard let s = self else {
+            guard let sel = self else {
                 return
             }
-            s.tagManagement.enable(forAccount: account,
-                                 profile: profile,
-                                 environment: environment,
-                                 overrideUrl: overrideUrl,
-                                 completion: { success, error in
-                                    s.dispatchQueue?.async {
-                                        if let e = error {
-                                            s.didFailToFinish(request,
-                                                              error: e)
+            sel.tagManagement.enable(forAccount: account,
+                                   profile: profile,
+                                   environment: environment,
+                                   overrideUrl: overrideUrl,
+                                   completion: { success, error in
+                                    sel.dispatchQueue?.async {
+                                        if let err = error {
+                                            sel.didFailToFinish(request,
+                                                              error: err)
                                             return
                                         }
-                                        s.isEnabled = true
-                                        s.didFinish(request)
+                                        sel.isEnabled = true
+                                        sel.didFinish(request)
                                     }
             })
         }
@@ -177,12 +177,12 @@ class TealiumTagManagementModule: TealiumModule {
     func dispatchTrack(_ track: TealiumTrackRequest) {
         // Dispatch to main thread since webview requires main thread.
         DispatchQueue.main.async { [weak self] in
-            guard let s = self else {
+            guard let sel = self else {
                 return
             }
             // Webview has failed for some reason
-            if s.tagManagement.isWebViewReady() == false {
-                s.didFailToFinish(track,
+            if sel.tagManagement.isWebViewReady() == false {
+                sel.didFailToFinish(track,
                                   info: nil,
                                   error: TealiumTagManagementError.webViewNotYetReady)
                 return
@@ -190,19 +190,19 @@ class TealiumTagManagementModule: TealiumModule {
 
             #if TEST
             #else
-                s.tagManagement.track(track.data,
+                sel.tagManagement.track(track.data,
                                       completion: { success, info, error in
-                                        s.dispatchQueue?.async {
+                                        sel.dispatchQueue?.async {
 
                                             track.completion?(success, info, error)
 
                                             if error != nil {
-                                                s.didFailToFinish(track,
+                                                sel.didFailToFinish(track,
                                                                   info: info,
                                                                   error:error!)
                                                 return
                                             }
-                                            s.didFinish(track,
+                                            sel.didFinish(track,
                                                         info: info)
                                         }
                 })

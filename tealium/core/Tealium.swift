@@ -104,8 +104,8 @@ public class Tealium {
                           completion: ((_ successful: Bool, _ info: [String: Any]?, _ error: Error?) -> Void)?) {
         var newData = [String: Any]()
 
-        if let d = data {
-            newData += d
+        if let data = data {
+            newData += data
         }
 
         newData[TealiumKey.callType] = TealiumTrackType.view.description()
