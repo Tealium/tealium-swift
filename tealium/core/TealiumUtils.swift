@@ -1,16 +1,16 @@
 //
 //  TealiumUtils.swift
-//  SegueCatalog
+//  tealium-swift
 //
 //  Created by Jason Koo on 6/26/17.
-//  Copyright © 2017 Apple, Inc. All rights reserved.
+//  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 
 import Foundation
 
 extension RangeReplaceableCollection where Iterator.Element : Equatable {
     @discardableResult
-    mutating func remove(_ element : Iterator.Element) -> Iterator.Element? {
+    mutating func remove(_ element: Iterator.Element) -> Iterator.Element? {
         if let index = self.index(of: element) {
             return self.remove(at: index)
         }
@@ -23,8 +23,9 @@ extension RangeReplaceableCollection where Iterator.Element : Equatable {
 // Example Set: playerViewPointers[someKey] = Weak(value: playerView)
 // Example Get: let x = playerViewPointers[user.uniqueId]?.value
 public class Weak<T: AnyObject> : Equatable {
-    weak var value : T?
-    init (value: T) {
+    weak var value: T?
+
+    init(value: T) {
         self.value = value
     }
 }
@@ -33,19 +34,18 @@ public func == <T> (lhs: Weak<T>, rhs: Weak<T>) -> Bool {
     return lhs.value === rhs.value
 }
 
-
 /**
  Extend the use of += operators to dictionaries.
  */
-public func += <K, V> (left: inout [K:V], right: [K:V]) {
-    for (k, v) in right {
-        left.updateValue(v, forKey: k)
+public func += <K, V> (left: inout [K: V], right: [K: V]) {
+    for (key, value) in right {
+        left.updateValue(value, forKey: key)
     }
 }
 
 /**
  Extend use of == to dictionaries.
  */
-public func ==(lhs: [String: Any], rhs: [String: Any] ) -> Bool {
+public func == (lhs: [String: Any], rhs: [String: Any] ) -> Bool {
     return NSDictionary(dictionary: lhs).isEqual(to: rhs)
 }
