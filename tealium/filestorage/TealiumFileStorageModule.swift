@@ -1,10 +1,11 @@
 //
 //  TealiumStorageModule.swift
-//  SegueCatalog
+//  tealium-swift
 //
 //  Created by Jason Koo on 4/26/17.
-//  Copyright © 2017 Apple, Inc. All rights reserved.
+//  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
+
 //  BRIEF: General purpose file persistence module using NSKeyedArchiver
 
 import Foundation
@@ -13,15 +14,15 @@ enum TealiumFileStorageKey {
     static let moduleName = "filestorage"
 }
 
-enum TealiumFileStorageError : Error {
-    
+enum TealiumFileStorageError: Error {
+
     case cannotWriteOrLoadFromDisk
     case noDataToSave
     case noSavedData
     case noFilename
     case malformedRequest
     case moduleNotEnabled
-    
+
 }
 
 extension TealiumFileStorageError: LocalizedError {
@@ -43,59 +44,54 @@ extension TealiumFileStorageError: LocalizedError {
     }
 }
 
-class TealiumFileStorageModule : TealiumModule {
-    
+class TealiumFileStorageModule: TealiumModule {
+
     var filenamePrefix = ""
-    
+
     override class func moduleConfig() -> TealiumModuleConfig {
         return  TealiumModuleConfig(name: TealiumFileStorageKey.moduleName,
                                     priority: 350,
                                     build: 1,
                                     enabled: true)
     }
-    
+
     override func handle(_ request: TealiumRequest) {
-        
-        if let r = request as? TealiumEnableRequest {
-            enable(r)
-        }
-        else if let r = request as? TealiumDisableRequest {
-            disable(r)
-        }
-        else if let r = request as? TealiumLoadRequest {
-            load(r)
-        }
-        else if let r = request as? TealiumSaveRequest {
-            save(r)
-        }
-        else if let r = request as? TealiumDeleteRequest {
-            delete(r)
-        }
-        else {
+
+        if let request = request as? TealiumEnableRequest {
+            enable(request)
+        } else if let request = request as? TealiumDisableRequest {
+            disable(request)
+        } else if let request = request as? TealiumLoadRequest {
+            load(request)
+        } else if let request = request as? TealiumSaveRequest {
+            save(request)
+        } else if let request = request as? TealiumDeleteRequest {
+            delete(request)
+        } else {
             didFinishWithNoResponse(request)
         }
     }
-    
+
     override func enable(_ request: TealiumEnableRequest) {
-        
+
         isEnabled = true
         filenamePrefix = TealiumFileStorageModule.filenamePrefix(config: request.config)
         didFinish(request)
-        
+
     }
-    
+
     func load(_ request: TealiumLoadRequest) {
-        
+
         if self.isEnabled == false {
             didFailToFinish(request,
                             error: TealiumFileStorageError.moduleNotEnabled)
             return
         }
-        
+
         let baseFilename = request.name
-        
+
         let filename = self.filenamePrefix.appending(".\(baseFilename)")
-        
+
         guard let path = TealiumFileStorage.path(filename: filename) else {
             // Path could not be created. Let requesting module know.
             request.completion?(false,
@@ -106,37 +102,37 @@ class TealiumFileStorageModule : TealiumModule {
             didFinish(request, TealiumFileStorageError.cannotWriteOrLoadFromDisk)
             return
         }
-        
+
         guard let data = TealiumFileStorage.loadData(fromPath: path) else {
             // Persistent data requested doesn't exist at this time.
             request.completion?(false,
                                 nil,
                                 TealiumFileStorageError.noSavedData)
-            
+
             didFinish(request, TealiumFileStorageError.noSavedData)
             return
         }
-        
+
         // Data available, pass it back to the requesting module.
         request.completion?(true,
                             data,
                             nil)
         didFinish(request)
-        
+
     }
-    
+
     // TODO: New requests aren't overwriting existing
     func save(_ request: TealiumSaveRequest) {
-        
+
         if self.isEnabled == false {
             didFinish(request)
             return
         }
-        
+
         let baseFilename = request.name
-        
+
         let filename = self.filenamePrefix.appending(".\(baseFilename)")
-        
+
         guard let path = TealiumFileStorage.path(filename: filename) else {
             // Path could not be created. Let requesting module know.
             request.completion?(false,
@@ -147,28 +143,28 @@ class TealiumFileStorageModule : TealiumModule {
             didFinish(request)
             return
         }
-        
+
         let data = request.data
-        
+
         let wasSuccessful = TealiumFileStorage.save(data: data,
                                                     toPath: path)
-        
+
         request.completion?(wasSuccessful,
                             data,
                             nil)
-        
+
         didFinish(request)
     }
-    
+
     func delete(_ request: TealiumDeleteRequest) {
-        
+
         if self.isEnabled == false {
             didFinish(request)
             return
         }
-        
+
         let fileName = self.filenamePrefix.appending(".\(request.name)")
-        
+
         guard let filepath = TealiumFileStorage.path(filename: fileName) else {
             request.completion?(false,
                                 nil,
@@ -177,16 +173,16 @@ class TealiumFileStorageModule : TealiumModule {
             didFailToFinish(request, error: TealiumFileStorageError.cannotWriteOrLoadFromDisk)
             return
         }
-        
+
         let success = TealiumFileStorage.deleteDataAt(path: filepath)
-        
+
         request.completion?(success,
                             nil,
                             success ? nil : TealiumFileStorageError.cannotWriteOrLoadFromDisk)
-        
+
         didFinish(request)
     }
-    
+
     /// Returns filename prefix to distinguish module persistence files by origin
     ///   accounts. Supports multi-lib instances and legacy 1.0.0-1.2.0 naming
     ///   scheme.
@@ -200,7 +196,7 @@ class TealiumFileStorageModule : TealiumModule {
 }
 
 class TealiumFileStorage {
-    
+
     /// Gets path for filename.
     ///
     /// - Parameter filename: Filename of data file.
@@ -223,48 +219,46 @@ class TealiumFileStorage {
         }
         return "\(fullPath)/\(filename).data"
     }
-    
+
     class func dataExists(atPath: String) -> Bool {
-        
+
         return FileManager.default.fileExists(atPath: atPath)
-        
+
     }
-    
-    class func loadData(fromPath: String) -> [String:Any]? {
-        
+
+    class func loadData(fromPath: String) -> [String: Any]? {
+
         if dataExists(atPath: fromPath) {
-            return NSKeyedUnarchiver.unarchiveObject(withFile: fromPath) as? [String:Any]
+            return NSKeyedUnarchiver.unarchiveObject(withFile: fromPath) as? [String: Any]
         }
-        
+
         return nil
-        
+
     }
-    
-    class func save(data: [String:Any],
+
+    class func save(data: [String: Any],
                     toPath: String) -> Bool {
-        
+
         return NSKeyedArchiver.archiveRootObject(data, toFile: toPath)
-        
+
     }
-    
+
     class func deleteDataAt(path: String) -> Bool {
-        
+
         if dataExists(atPath: path) == false {
             return true
         }
-        
+
         do {
             try FileManager.default.removeItem(atPath: path)
-            
-        }
-        catch _ as NSError {
-            
+
+        } catch _ as NSError {
+
             return false
         }
-        
-        return true
-        
-    }
-    
-}
 
+        return true
+
+    }
+
+}
