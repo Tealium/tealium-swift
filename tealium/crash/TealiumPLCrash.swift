@@ -13,6 +13,7 @@ public class TealiumPLCrash: TealiumAppDataCollection {
 
     static let CrashBuildUuid = "CrashBuildUuid"
     static let CrashDataUnknown = "unknown"
+    static let CrashEvent = "crash"
 
     let crashReport: TEALPLCrashReport
     let deviceDataCollection: TealiumDeviceDataCollection
@@ -207,7 +208,8 @@ public class TealiumPLCrash: TealiumAppDataCollection {
 
     public func getData(truncateLibraries: Bool = false, truncateThreads: Bool = false) -> [String: Any] {
         // get last crash report if it exists
-        return [TealiumCrashKey.uuid: uuid,
+        return [TealiumKey.event: TealiumPLCrash.CrashEvent,
+                TealiumCrashKey.uuid: uuid,
                 TealiumCrashKey.deviceMemoryUsage: memoryUsage,
                 TealiumCrashKey.deviceMemoryAvailable: deviceMemoryAvailable,
                 TealiumCrashKey.deviceOsBuild: osBuild,
@@ -226,7 +228,8 @@ public class TealiumPLCrash: TealiumAppDataCollection {
     }
 
     public func getData(truncate: Bool) -> [String: Any] {
-        return [TealiumCrashKey.uuid: uuid,
+        return [TealiumKey.event: TealiumPLCrash.CrashEvent,
+                TealiumCrashKey.uuid: uuid,
                 TealiumCrashKey.deviceMemoryUsage: memoryUsage,
                 TealiumCrashKey.deviceMemoryAvailable: deviceMemoryAvailable,
                 TealiumCrashKey.deviceOsBuild: osBuild,
