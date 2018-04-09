@@ -91,12 +91,13 @@ class TealiumCrashTests: XCTestCase {
 
     func testGetDataCrashKeys() {
         let testBundle = Bundle(for: type(of: self))
-        if let url = testBundle.url(forResource: "index_out_of_bounds", withExtension: "plcrash") {
+        if let url = testBundle.url(forResource: "live_report", withExtension: "plcrash") {
             do {
                 let data = try Data(contentsOf: url, options: Data.ReadingOptions.mappedRead)
                 let crashReport = try TEALPLCrashReport(data: data)
                 let crash = TealiumPLCrash(crashReport: crashReport, deviceDataCollection: mockDeviceDataCollection)
-                let expectedKeys = [TealiumCrashKey.uuid,
+                let expectedKeys = [TealiumKey.event,
+                                    TealiumCrashKey.uuid,
                                     TealiumCrashKey.deviceMemoryUsage,
                                     TealiumCrashKey.deviceMemoryAvailable,
                                     TealiumCrashKey.deviceOsBuild,

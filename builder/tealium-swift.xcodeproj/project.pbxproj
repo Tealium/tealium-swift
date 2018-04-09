@@ -42,6 +42,7 @@
 		4B7E4E522035F7B600A39C5B /* TealiumPLCrash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7F70732032111F00630388 /* TealiumPLCrash.swift */; };
 		4B7E4E532035F7B900A39C5B /* TealiumCrashModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7F6FA1202CED2400630388 /* TealiumCrashModule.swift */; };
 		4B7E4E5A20360B7E00A39C5B /* TealiumCrashReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7E4E5920360B7E00A39C5B /* TealiumCrashReporter.swift */; };
+		4B896C01207BE01E009FDDA2 /* live_report.plcrash in Resources */ = {isa = PBXBuildFile; fileRef = 4B896C00207BE01E009FDDA2 /* live_report.plcrash */; };
 		4BB08FBE20213DA400DCA625 /* TealiumMulticastDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB08FBD20213DA400DCA625 /* TealiumMulticastDelegateTests.swift */; };
 		4BB08FBF20213DA400DCA625 /* TealiumMulticastDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB08FBD20213DA400DCA625 /* TealiumMulticastDelegateTests.swift */; };
 		4BB08FC020213DA400DCA625 /* TealiumMulticastDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB08FBD20213DA400DCA625 /* TealiumMulticastDelegateTests.swift */; };
@@ -64,7 +65,6 @@
 		4BD4D9A22047770A005C3045 /* TealiumRemoteCommands.swift in Headers */ = {isa = PBXBuildFile; fileRef = 4BB091242022756800DCA625 /* TealiumRemoteCommands.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		4BD4D9A320477754005C3045 /* TealiumRemoteCommandsModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F63A481E799C0D006A723F /* TealiumRemoteCommandsModule.swift */; };
 		4BD4D9A420486776005C3045 /* enumerate_objects.plcrash in Resources */ = {isa = PBXBuildFile; fileRef = 4B7F708C2032177200630388 /* enumerate_objects.plcrash */; };
-		4BD4D9A520486776005C3045 /* index_out_of_bounds.plcrash in Resources */ = {isa = PBXBuildFile; fileRef = 4B7F708B2032177200630388 /* index_out_of_bounds.plcrash */; };
 		4BE69B0F20126B91000759D8 /* TealiumAppDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE69B0E20126B91000759D8 /* TealiumAppDataTests.swift */; };
 		4BE69B1020126B91000759D8 /* TealiumAppDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE69B0E20126B91000759D8 /* TealiumAppDataTests.swift */; };
 		4BE69B1120126B91000759D8 /* TealiumAppDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE69B0E20126B91000759D8 /* TealiumAppDataTests.swift */; };
@@ -469,6 +469,7 @@
 		4B7F708B2032177200630388 /* index_out_of_bounds.plcrash */ = {isa = PBXFileReference; lastKnownFileType = file; path = index_out_of_bounds.plcrash; sourceTree = "<group>"; };
 		4B7F708C2032177200630388 /* enumerate_objects.plcrash */ = {isa = PBXFileReference; lastKnownFileType = file; path = enumerate_objects.plcrash; sourceTree = "<group>"; };
 		4B7F7093203229EE00630388 /* TealiumCrashModuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TealiumCrashModuleTests.swift; sourceTree = "<group>"; };
+		4B896C00207BE01E009FDDA2 /* live_report.plcrash */ = {isa = PBXFileReference; lastKnownFileType = file; path = live_report.plcrash; sourceTree = "<group>"; };
 		4B96ADFB2028C1B000787BCC /* run-swiftlint.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "run-swiftlint.sh"; sourceTree = "<group>"; };
 		4B96ADFF2028D04800787BCC /* run-swiftlint-tests.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "run-swiftlint-tests.sh"; sourceTree = "<group>"; };
 		4BB08FBD20213DA400DCA625 /* TealiumMulticastDelegateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TealiumMulticastDelegateTests.swift; sourceTree = "<group>"; };
@@ -748,6 +749,7 @@
 		4B7F707B2032165400630388 /* resources */ = {
 			isa = PBXGroup;
 			children = (
+				4B896C00207BE01E009FDDA2 /* live_report.plcrash */,
 				4B7F708C2032177200630388 /* enumerate_objects.plcrash */,
 				4B7F708B2032177200630388 /* index_out_of_bounds.plcrash */,
 			);
@@ -1743,9 +1745,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				7121848C1E5360B5000DCE07 /* lifecycle_events.json in Resources */,
+				4B896C01207BE01E009FDDA2 /* live_report.plcrash in Resources */,
 				7121848D1E5360B5000DCE07 /* lifecycle_events_with_crashes.json in Resources */,
 				4BD4D9A420486776005C3045 /* enumerate_objects.plcrash in Resources */,
-				4BD4D9A520486776005C3045 /* index_out_of_bounds.plcrash in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
