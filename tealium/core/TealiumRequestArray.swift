@@ -1,9 +1,9 @@
 //
 //  TealiumQueue.swift
-//  SegueCatalog
+//  tealium-swift
 //
 //  Created by Jason Koo on 6/25/17.
-//  Copyright © 2017 Apple, Inc. All rights reserved.
+//  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 
 import Foundation
@@ -14,16 +14,16 @@ extension Array where Element : TealiumRequest {
     ///     for each loop.
     ///
     /// - Parameter executing: Closure to run for each iteration.
-    mutating func emptyFIFO(executing: (_ request: TealiumRequest)->Void) {
-        
+    mutating func emptyFIFO(executing: (_ request: TealiumRequest) -> Void) {
+
         for request in self {
-            
+
             executing(request)
-            
+
         }
-        
+
         self.removeAll()
-        
+
     }
-    
+
 }
