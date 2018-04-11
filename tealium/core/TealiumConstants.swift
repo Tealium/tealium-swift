@@ -18,15 +18,15 @@ public enum TealiumValue {
 // MARK: ENUMS
 
 public enum TealiumKey {
-    static let account = "tealium_account"
-    static let profile = "tealium_profile"
-    static let environment = "tealium_environment"
-    static let event = "tealium_event"
-    static let callType = "call_type"
-    static let screenTitle = "screen_title"
-    static let eventType = "tealium_event_type"
-    static let libraryName = "tealium_library_name"
-    static let libraryVersion = "tealium_library_version"
+    public static let account = "tealium_account"
+    public static let profile = "tealium_profile"
+    public static let environment = "tealium_environment"
+    public static let event = "tealium_event"
+    public static let callType = "call_type"
+    public static let screenTitle = "screen_title"
+    public static let eventType = "tealium_event_type"
+    public static let libraryName = "tealium_library_name"
+    public static let libraryVersion = "tealium_library_version"
 }
 
 public enum TealiumModulesManagerError: Error {
