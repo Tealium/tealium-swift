@@ -51,6 +51,8 @@ private let HOST_VM_INFO64_COUNT: mach_msg_type_number_t =
 
 public class TealiumDeviceData: TealiumDeviceDataCollection {
 
+    public init() {}
+
     enum Unit: Double {
         // For going from byte to -
         case byte = 1
