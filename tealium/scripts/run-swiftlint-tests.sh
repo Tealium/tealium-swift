@@ -7,8 +7,6 @@
 #  Copyright © 2018 Tealium, Inc. All rights reserved.
 
 if which swiftlint > /dev/null; then
-echo ${PROJECT_DIR}
-echo $SRCROOT
 swiftlint lint --config ${PROJECT_DIR}/../.swiftlint_tests.yml
 else
 echo “warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint”
