@@ -3,7 +3,7 @@
 //  tealium-swift
 //
 //  Created by Jason Koo on 9/1/16.
-//  Copyright © 2016 tealium. All rights reserved.
+//  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
 import XCTest
@@ -15,12 +15,12 @@ import XCTest
         - smallerDictionary: A [String:AnyObject] dictionary
     - Returns: Boolean answer
  */
-extension Dictionary where Key:ExpressibleByStringLiteral, Value:AnyObject{
-    
-    func contains(smallerDictionary:[String:AnyObject])-> Bool {
-        
+extension Dictionary where Key:ExpressibleByStringLiteral, Value:AnyObject {
+
+    func contains(smallerDictionary: [String: AnyObject]) -> Bool {
+
         // Should use generics here
-        
+
         for (key, value) in smallerDictionary {
             guard let largeValue = self[(key as? Key)!] else {
                 print("No entry in source dictionary for key: \(key)")
@@ -39,10 +39,10 @@ extension Dictionary where Key:ExpressibleByStringLiteral, Value:AnyObject{
                 }
             }
         }
-        
+
         return true
     }
-    
+
 }
 
 class TealiumDataManagerTests: XCTestCase {
@@ -50,10 +50,9 @@ class TealiumDataManagerTests: XCTestCase {
     let account = "account"
     let profile = "profile"
     let env = "environment"
-    var dataManager : TealiumDataManager!
-    
+    var dataManager: TealiumDataManager!
+
     override func setUp() {
-        
         super.setUp()
 
         do {
@@ -62,21 +61,18 @@ class TealiumDataManagerTests: XCTestCase {
             XCTFail("Unalbe to start data manager.")
         }
     }
-    
+
     override func tearDown() {
-        
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
 
-
     func testInit() {
-        
         // The compiler works...yay
         XCTAssertTrue(dataManager != nil)
-        
+
     }
-    
+
 //    func testVolatileData(){
 //        
 //        // TODO: test arrays and other value types
@@ -100,53 +96,49 @@ class TealiumDataManagerTests: XCTestCase {
 //        
 //        XCTAssertFalse(volatileDataPostDelete.contains(smallerDictionary: testData as [String : AnyObject]), "VolatileData: \(volatileDataPostDelete)")
 //    }
-    
+
     // This test passes individually, not always as part of full test run.
     func testPersistentData() {
-        
         // TODO: test arrays and other value types
 
         let testData = [
-            "a":"1",
-            "b":"2"
+            "a": "1",
+            "b": "2"
         ]
-        
-        dataManager.addPersistentData(testData as [String : AnyObject])
-        
+
+        dataManager.addPersistentData(testData as [String: AnyObject])
+
         guard let persistentData = dataManager.getPersistentData() else {
-            XCTFail()
+            XCTFail("test failed")
             return
         }
-        
-        XCTAssertTrue(persistentData.contains(smallerDictionary: testData as [String : AnyObject]), "PersistentData: \(persistentData)")
-        
-        dataManager.deletePersistentData(["a","b"])
-        
+
+        XCTAssertTrue(persistentData.contains(smallerDictionary: testData as [String: AnyObject]), "PersistentData: \(persistentData)")
+
+        dataManager.deletePersistentData(["a", "b"])
+
         guard let persistentDataPostDelete = dataManager.getPersistentData() else {
-            XCTFail()
+            XCTFail("test failed")
             return
         }
-        
-        XCTAssertFalse(persistentDataPostDelete.contains(smallerDictionary: testData as [String : AnyObject]), "PersistentData: \(persistentDataPostDelete)")
-        
+
+        XCTAssertFalse(persistentDataPostDelete.contains(smallerDictionary: testData as [String: AnyObject]), "PersistentData: \(persistentDataPostDelete)")
+
     }
-    
+
     func testNewPersistentData() {
-        
-        var expected = [String:AnyObject]()
+        var expected = [String: AnyObject]()
         expected[TealiumKey.libraryName] = "swift" as AnyObject?
         expected[TealiumKey.libraryVersion] = "1.1.0" as AnyObject?
         expected[TealiumKey.account] = account as AnyObject?
         expected[TealiumKey.profile] = profile as AnyObject?
         expected[TealiumKey.environment] = env as AnyObject?
-        
-        // Not testing tealium_visitor_id or tealium_vid
-        
-        let new = dataManager.newPersistentData()
-        
-        XCTAssertTrue(new.contains(smallerDictionary: expected))
-        
-    }
 
+        // Not testing tealium_visitor_id or tealium_vid
+
+        let new = dataManager.newPersistentData()
+
+        XCTAssertTrue(new.contains(smallerDictionary: expected))
+    }
 
 }

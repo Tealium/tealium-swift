@@ -3,13 +3,14 @@
 //  tealium-swift
 //
 //  Created by Jason Koo on 10/11/16.
-//  Copyright © 2016 tealium. All rights reserved.
+//  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
 import XCTest
+@testable import Tealium
 
-class TealiumTestModule : TealiumModule {
-    
+class TealiumTestModule: TealiumModule {
+
     override func enable(_ request: TealiumEnableRequest) {
         super.enable(request)
     }
@@ -18,72 +19,64 @@ class TealiumTestModule : TealiumModule {
 class TealiumModulesManagerTests: XCTestCase {
 
     let numberOfCurrentModules = 16
-    var modulesManager : TealiumModulesManager?
+    var modulesManager: TealiumModulesManager?
 
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
-    
+
     override func tearDown() {
         modulesManager = nil
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
 
-
     func testInitPerformance() {
-        
         let iterations = 100
-        
+
         self.measure {
-            
+
             for _ in 0..<iterations {
-                
+
                 let modulesManager = TealiumModulesManager()
                 modulesManager.enable(config: defaultTealiumConfig)
             }
-            
         }
-        
     }
-    
+
     func testPublicTrackWithEmptyWhitelist() {
-        
         let config = TealiumConfig(account: "test",
                                    profile: "test",
                                    environment: "test")
         let list = TealiumModulesList(isWhitelist: true,
                                       moduleNames: Set<String>())
         config.setModulesList(list)
-        
+
         let manager = TealiumModulesManager()
         manager.enable(config: config)
-        
+
         let expectation = self.expectation(description: "testPublicTrack")
-        
+
         let testTrack = TealiumTrackRequest(data: [:],
-                                            completion: {(success, info, error) in
-        
+                                            completion: { success, _, error in
                 guard let error = error else {
                     XCTFail("Error should have returned")
                     return
                 }
-                
+
                 XCTAssertFalse(success, "Track did not fail as expected. Error: \(error)")
-                
+
                 expectation.fulfill()
-                                        
         })
-        
+
         manager.track(testTrack)
-        
+
         self.waitForExpectations(timeout: 1.0, handler: nil)
-        
     }
-    
+
     // NOTE: This integration test will fail if no dispatch services enabled
-    
+
     // TODO:
 //    func testPublicTrackWithDefaultModules() {
 //
@@ -122,48 +115,45 @@ class TealiumModulesManagerTests: XCTestCase {
 //        self.wait(for: [trackExpectation], timeout: 1.0)
 //        
 //    }
-    
+
     func testPublicTrackWithFullBlackList() {
-        
         let config = TealiumConfig(account: "test",
                                    profile: "test",
                                    environment: "test")
         let list = TealiumModulesList(isWhitelist: false,
-                                      moduleNames: Set(test_tealium_helper.allTealiumModuleNames()))
+                                      moduleNames: Set(TestTealiumHelper.allTealiumModuleNames()))
         config.setModulesList(list)
-        
+
         let manager = TealiumModulesManager()
         manager.enable(config: config)
-        
+
         XCTAssert(manager.modules.count == 0, "Unexpected number of modules initialized: \(manager.modules)")
-        
+
         let expectation = self.expectation(description: "testPublicTrackOneModule")
-        
+
         let testTrack = TealiumTrackRequest(data: [:],
-                                            completion: {(success, info, error) in
-                
+                                            completion: { success, _, error in
+
                 guard let error = error else {
                     XCTFail("Error should have returned")
                     return
                 }
-                
+
                 XCTAssertFalse(success, "Track did not fail as expected. Error: \(error)")
-                                                
+
                 expectation.fulfill()
-                                                
+
         })
-        
+
         manager.track(testTrack)
-        
+
         self.waitForExpectations(timeout: 3.0, handler: nil)
-        
     }
-    
+
     func testStringToBool() {
-        
         // Not entirely necessary as long as we're using NSString.boolValue
         // ...but just in case it gets swapped out
-        
+
         let stringTrue = "true"
         let stringYes = "yes"
         let stringFalse = "false"
@@ -171,7 +161,7 @@ class TealiumModulesManagerTests: XCTestCase {
         let stringNo = "no"
         let stringOtherTrue = "35a"
         let stringOtherFalse = "xyz"
-        
+
         XCTAssertTrue(stringTrue.boolValue)
         XCTAssertTrue(stringYes.boolValue)
         XCTAssertFalse(stringFalse.boolValue)
@@ -180,7 +170,7 @@ class TealiumModulesManagerTests: XCTestCase {
         XCTAssertTrue(stringOtherTrue.boolValue, "String other converted to \(stringOtherTrue.boolValue)")
         XCTAssertFalse(stringOtherFalse.boolValue, "String other converted to \(stringOtherFalse.boolValue)")
     }
-    
+
 //    func testDisableAll() {
 //        
 //        // initial state
@@ -221,45 +211,41 @@ class TealiumModulesManagerTests: XCTestCase {
 //        XCTAssert(modulesManager?.allModulesReady() == false, "Unexpected modules state: \(modulesManager!.modules)")
 //
 //    }
-    
+
     func testGetModuleForName() {
-        
         let config = TealiumConfig(account: "test",
                                    profile: "test",
                                    environment: "test")
-        
+
         let manager = TealiumModulesManager()
         manager.setupModulesFrom(config: config)
-        
+
         let module = manager.getModule(forName: "logger")
-        
+
         XCTAssert((module is TealiumLoggerModule), "Incorrect module received: \(String(describing: module))")
     }
-    
-    
-    func testTrackWhenDisabled() {
 
+    func testTrackWhenDisabled() {
         let modulesManager = TealiumModulesManager()
         modulesManager.enable(config: testTealiumConfig)
         modulesManager.disable()
         let trackExpectation = self.expectation(description: "track")
-        
-        
-        let track = TealiumTrackRequest(data: [:]) { (success, info, error) in
-            
+
+        let track = TealiumTrackRequest(data: [:]) { success, _, _ in
+
             XCTAssert(success == false, "Track succeeded unexpectedly.")
             trackExpectation.fulfill()
-            
+
         }
-        
+
         modulesManager.track(track)
         self.wait(for: [trackExpectation],
                   timeout: 1.0)
-        
+
     }
 
     // TODO: Lib currently designed to resubmit track request until all modules are ready
-    
+
 //    func testTrackWhenAModuleDisabled() {
 //        
 //        // Enable Setup
@@ -293,9 +279,8 @@ class TealiumModulesManagerTests: XCTestCase {
 //                  timeout: 1.0)
 //        
 //    }
-    
+
     func testAllModulesReady() {
-        
         // Assign
         let moduleA = TealiumModule(delegate: nil)
         moduleA.isEnabled = true
@@ -303,17 +288,15 @@ class TealiumModulesManagerTests: XCTestCase {
         moduleB.isEnabled = true
         let manager = TealiumModulesManager()
         manager.modules = [moduleA, moduleB]
-        
+
         // Act
         let result = manager.allModulesReady()
-        
+
         // Assert
         XCTAssert(result == true, "Unexpected result from modules: \(manager.modules)")
-        
     }
-    
+
     func testTrackAllModulesNotYetReady() {
-        
         // Assign
         let moduleA = TealiumModule(delegate: nil)
         moduleA.isEnabled = true
@@ -321,14 +304,14 @@ class TealiumModulesManagerTests: XCTestCase {
         moduleB.isEnabled = false
         let manager = TealiumModulesManager()
         manager.modules = [moduleA, moduleB]
-        
+
         // Act
         let result = manager.allModulesReady()
-        
+
         // Assert
         XCTAssert(result == false, "Unexpected result from modules: \(manager.modules)")
     }
-    
+
     // TODO:
 //    func testUpdate() {
 //        
@@ -394,43 +377,40 @@ class TealiumModulesManagerTests: XCTestCase {
 //        XCTAssert(newFirstModule == "delegate", "Unexpected module enabled: \(String(describing: newFirstModule))")
 //        
 //    }
-    
+
     func testTealiumModulesArray_ModuleNames() {
-        
-        let allModules = TealiumModules.allModules(delegate: self)
-        
+        let allModules = TealiumModules.initializeModules(delegate: self)
+
         // Alphabetically instead of by priority
         let result = allModules.moduleNames().sorted()
-        
-        let expected = test_tealium_helper.allTealiumModuleNames().sorted()
-        
-        let missing = test_tealium_helper.missingStrings(fromArray: expected,
-                                                         anotherArray: result)
-        
+
+        let expected = TestTealiumHelper.allTealiumModuleNames().sorted()
+
+        let missing = TestTealiumHelper.missingStrings(fromArray: expected,
+                                                       anotherArray: result)
+
         XCTAssert(result == expected, "Mismatch in module names returned: \(missing)")
-        
     }
-    
+
 }
 
-extension TealiumModulesManagerTests : TealiumModuleDelegate {
-    
+extension TealiumModulesManagerTests: TealiumModuleDelegate {
+
     func tealiumModuleFinished(module: TealiumModule, process: TealiumRequest) {
-        
         if module == modulesManager?.modules.last {
             process.completion?(true, nil, nil)
         }
-        
-        let nextModule = modulesManager?.modules.next(after:module)
-        
+
+        let nextModule = modulesManager?.modules.next(after: module)
+
         nextModule?.handle(process)
     }
-    
+
     func tealiumModuleRequests(module: TealiumModule, process: TealiumRequest) {
-        
+
     }
-    
+
     func tealiumModuleFinishedReport(fromModule: TealiumModule, module: TealiumModule, process: TealiumRequest) {
-        
+
     }
 }
