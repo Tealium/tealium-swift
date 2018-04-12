@@ -71,52 +71,49 @@ class TealiumModules {
     // swiftlint:disable function_body_length
     class func getTealiumClasses() -> [AnyClass] {
         #if os(iOS)
-            let tealiumClasses = ["TealiumAutotrackingModule",
-                                  "TealiumAppDataModule",
-                                  "TealiumAttributionModule",
-                                  "TealiumCollectModule",
-                                  "TealiumConnectivityModule",
-                                  "TealiumCrashModule",
-                                  "TealiumDatasourceModule",
-                                  "TealiumDefaultsStorageModule",
-                                  "TealiumDelegateModule",
-                                  "TealiumDeviceDataModule",
-                                  "TealiumFileStorageModule",
-                                  "TealiumLifecycleModule",
-                                  "TealiumLoggerModule",
-                                  "TealiumPersistentDataModule",
-                                  "TealiumRemoteCommandsModule",
-                                  "TealiumTagManagementModule",
-                                  "TealiumVolatileDataModule"]
+        let tealiumClasses = ["Tealium.TealiumAutotrackingModule",
+                              "Tealium.TealiumAppDataModule",
+                              "Tealium.TealiumAttributionModule",
+                              "Tealium.TealiumCollectModule",
+                              "Tealium.TealiumConnectivityModule",
+                              "TealiumCrash.TealiumCrashModule",
+                              "Tealium.TealiumDatasourceModule",
+                              "Tealium.TealiumDefaultsStorageModule",
+                              "Tealium.TealiumDelegateModule",
+                              "Tealium.TealiumDeviceDataModule",
+                              "Tealium.TealiumFileStorageModule",
+                              "Tealium.TealiumLifecycleModule",
+                              "Tealium.TealiumLoggerModule",
+                              "Tealium.TealiumPersistentDataModule",
+                              "Tealium.TealiumRemoteCommandsModule",
+                              "Tealium.TealiumTagManagementModule",
+                              "Tealium.TealiumVolatileDataModule"]
         #else
-            let tealiumClasses = ["TealiumAutotrackingModule",
-                                  "TealiumAppDataModule",
-                                  "TealiumAttributionModule",
-                                  "TealiumCollectModule",
-                                  "TealiumConnectivityModule",
-                                  "TealiumDatasourceModule",
-                                  "TealiumDefaultsStorageModule",
-                                  "TealiumDelegateModule",
-                                  "TealiumDeviceDataModule",
-                                  "TealiumFileStorageModule",
-                                  "TealiumLifecycleModule",
-                                  "TealiumLoggerModule",
-                                  "TealiumPersistentDataModule",
-                                  "TealiumRemoteCommandsModule",
-                                  "TealiumTagManagementModule",
-                                  "TealiumVolatileDataModule"]
+        let tealiumClasses = ["Tealium.TealiumAutotrackingModule",
+                              "Tealium.TealiumAppDataModule",
+                              "Tealium.TealiumAttributionModule",
+                              "Tealium.TealiumCollectModule",
+                              "Tealium.TealiumConnectivityModule",
+                              "Tealium.TealiumDatasourceModule",
+                              "Tealium.TealiumDefaultsStorageModule",
+                              "Tealium.TealiumDelegateModule",
+                              "Tealium.TealiumDeviceDataModule",
+                              "Tealium.TealiumFileStorageModule",
+                              "Tealium.TealiumLifecycleModule",
+                              "Tealium.TealiumLoggerModule",
+                              "Tealium.TealiumPersistentDataModule",
+                              "Tealium.TealiumRemoteCommandsModule",
+                              "Tealium.TealiumTagManagementModule",
+                              "Tealium.TealiumVolatileDataModule"]
         #endif
         // swiftlint:enable function_body_length
         // swiftlint:disable syntactic_sugar
         var tealiumClassReferences: Array<AnyClass> = []
         // swiftlint:enable syntactic_sugar
 
-        let thisClass = String(reflecting: self)
-        let moduleNamePrefix = thisClass.replacingOccurrences(of: "TealiumModules", with: "")
-
         for className in tealiumClasses {
-            let fullName = moduleNamePrefix + className
-            let cls = objc_getClass(fullName)
+            let cls = objc_getClass(className)
+
             if cls != nil {
                 if let clazz = cls as? AnyClass {
                     tealiumClassReferences.append(clazz)
