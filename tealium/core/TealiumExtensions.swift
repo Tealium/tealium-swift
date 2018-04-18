@@ -3,7 +3,7 @@
 //  tealium-swift
 //
 //  Created by Jason Koo on 11/1/16.
-//  Copyright © 2016 tealium. All rights reserved.
+//  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
 /**
@@ -21,10 +21,10 @@ extension String {
 }
 
 extension Dictionary where Key == String, Value == Any {
-    
+
     mutating func safelyAdd(key: String, value: Any?) {
-        if let v = value {
-            self += [key:v]
+        if let value = value {
+            self += [key: value]
         }
     }
 
@@ -33,16 +33,16 @@ extension Dictionary where Key == String, Value == Any {
 /**
  Allows use of plus operator for array reduction calls.
  */
-fileprivate func +<Key, Value> (lhs: [Key: Value], rhs: [Key: Value]) -> [Key: Value] {
+private func +<Key, Value> (lhs: [Key: Value], rhs: [Key: Value]) -> [Key: Value] {
     var result = lhs
-    rhs.forEach{ result[$0] = $1 }
+    rhs.forEach { result[$0] = $1 }
     return result
 }
 
 extension Date {
-    
+
     struct Formatter {
-        static let iso8601 : DateFormatter = {
+        static let iso8601: DateFormatter = {
             let formatter = DateFormatter()
             formatter.calendar = Calendar(identifier: .iso8601)
             formatter.locale = Locale(identifier: "en_US_POSIX")
@@ -50,7 +50,7 @@ extension Date {
             formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
             return formatter
         }()
-        static let MMDDYYYY : DateFormatter = {
+        static let MMDDYYYY: DateFormatter = {
             let formatter = DateFormatter()
             formatter.calendar = Calendar(identifier: .iso8601)
             formatter.locale = Locale(identifier: "en_US_POSIX")
@@ -68,22 +68,23 @@ extension Date {
             return formatter
         }()
     }
-    
-    var iso8601String : String {
+
+    var iso8601String: String {
         return Formatter.iso8601.string(from: self)
     }
-    
+
     var iso8601LocalString: String {
-        return Formatter.iso8601Local.string(from:self)
+        return Formatter.iso8601Local.string(from: self)
     }
-    
-    var mmDDYYYYString : String {
+
+    var mmDDYYYYString: String {
         return Formatter.MMDDYYYY.string(from: self)
     }
-    
+
     var unixTime: String {
-        let t = Int(self.timeIntervalSince1970 * 1000)
-        return String(describing: t)
+        let time = Int(self.timeIntervalSince1970 * 1000)
+        
+        return String(describing: time)
     }
-    
+
 }
