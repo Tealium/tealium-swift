@@ -3,47 +3,45 @@
 //  tealium-swift
 //
 //  Created by Jason Koo on 1/13/17.
-//  Copyright © 2017 tealium. All rights reserved.
+//  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 
 import XCTest
+@testable import Tealium
 
 class TealiumLifecycleIntegrationTests: XCTestCase {
-    
+
     override func setUp() {
         super.setUp()
-
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
-    
+
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
+
     // Integration test so far as making sure all the api elements together produce the expected outputs
     // note: for this test to pass, your machine's timezone must be set to Los Angeles
     func testLongRunning() {
-        
         // Load up the input/expected out put JSON file
         guard let allEventsDict = dictionaryFromJSONFile(withName: "lifecycle_events_with_crashes") else {
             XCTFail("Test file missing.")
             return
         }
-        
+
         let allEvents = allEventsDict["events"] as! NSArray
         let lifecycle = TealiumLifecycle()
         let count = allEvents.count
 
         for i in 0..<count {
-            
             let event = allEvents[i] as! NSDictionary
             let appVersion = event["app_version"] as! String
             let ts = Double(event["timestamp_unix"] as! String)
             let time = Date(timeIntervalSince1970: ts!)
-            let expectedData = event["expected_data"] as! [String:Any]
+            let expectedData = event["expected_data"] as! [String: Any]
             let type = expectedData["lifecycle_type"] as! String
-            var returnedData = [String:Any]()
+            var returnedData = [String: Any]()
             switch type {
             case "launch":
                 let overrideSession = TealiumLifecycleSession(withLaunchDate: time)
@@ -58,60 +56,52 @@ class TealiumLifecycleIntegrationTests: XCTestCase {
             default:
                 XCTFail("Unexpected lifecycyle_type: \(type) for event:\(i)")
             }
-            
-            XCTAssertTrue(expectedData.contains(otherDictionary: returnedData), "Unexpected return data for event:\(i)")
-            
 
+            XCTAssertTrue(expectedData.contains(otherDictionary: returnedData), "Unexpected return data for event:\(i)")
         }
-        
     }
-    
+
     // Clunky - more of an integration test
     func testNewCrashDetected() {
-        
         // Creating test sessions, only interested in secondsElapsed here.
         let start = Date(timeIntervalSince1970: 1480554000)     // 2016 DEC 1 - 01:00 UTC
         let end = Date(timeIntervalSince1970: 1480557600)       // 2016 DEC 2 - 02:00 UTC
         let sessionSuccess = TealiumLifecycleSession(withWakeDate: start)
         sessionSuccess.sleepDate = end
         let sessionCrashed = TealiumLifecycleSession(withWakeDate: start)
-        
+
         let lifecycle = TealiumLifecycle()
-        let _ = lifecycle.newLaunch(atDate: start, overrideSession: nil)
+        _ = lifecycle.newLaunch(atDate: start, overrideSession: nil)
 
         // Double checking that we aren't returning "true" if we're still in the first launch session.
         let initialDetection = lifecycle.newCrashDetected()
         XCTAssert(initialDetection == nil, "")
-        
+
         // Check if first launch session resulted in a crash on subsequent launch
-        let _ = lifecycle.newLaunch(atDate: start, overrideSession: nil)
+        _ = lifecycle.newLaunch(atDate: start, overrideSession: nil)
         XCTAssert(lifecycle.newCrashDetected() == "true", "Should have logged crash as initial launch did not have sleep data. FirstSession: \(String(describing: lifecycle.sessions.first))")
-        
+
         lifecycle.sessions.first?.sleepDate = end
         XCTAssert(lifecycle.newCrashDetected() == nil, "Should not have logged crash as initial launch has sleep data. SessionFirst: \(String(describing: lifecycle.sessions.first)) \nall sessions:\(lifecycle.sessions)")
-        
-        
+
         lifecycle.sessions.append(sessionCrashed)
-        let _ = lifecycle.newLaunch(atDate: Date(), overrideSession: nil)
+        _ = lifecycle.newLaunch(atDate: Date(), overrideSession: nil)
         XCTAssertTrue(lifecycle.newCrashDetected() == "true", "Crashed prior session not caught. Sessions: \(lifecycle.sessions)")
-        
     }
 
- 
-    func dictionaryFromJSONFile(withName: String) -> [String:Any]? {
-        
-        let bundle = Bundle(for: type(of:self))
-        
+    func dictionaryFromJSONFile(withName: String) -> [String: Any]? {
+        let bundle = Bundle(for: type(of: self))
+
         guard let path = bundle.path(forResource: withName, ofType: "json") else {
             assertionFailure("Target json file with name:\(withName) not found.")
             return nil
         }
-        
+
         do {
             let jsonData = try NSData(contentsOfFile: path, options: NSData.ReadingOptions.mappedIfSafe)
             do {
                 let jsonResult: NSDictionary = try JSONSerialization.jsonObject(with: jsonData as Data, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
-                guard let jsonDictionary = jsonResult as? [String:Any] else {
+                guard let jsonDictionary = jsonResult as? [String: Any] else {
                     assertionFailure("Target json file with name:\(withName) could not be converted to [String:Any].")
                     return nil
                 }
