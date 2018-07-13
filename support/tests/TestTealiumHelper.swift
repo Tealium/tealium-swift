@@ -17,7 +17,7 @@ enum TealiumTestKey {
 enum TealiumTestValue {
     static let account = "testAccount"
     static let profile = "testProfile"
-    static let environment = "testEnviroment"
+    static let environment = "testEnvironment"
     static let eventType = TealiumTrackType.event.description()
     static let stringValue = "value"
     static let title = "testTitle"
@@ -122,7 +122,9 @@ class TestTealiumHelper {
             "collect",
             "tagmanagement",
             "remotecommands",
-            "crash"
+            "crash",
+            "consentmanager",
+            "dispatchqueue"
         ]
         #else
             return [
@@ -141,7 +143,9 @@ class TestTealiumHelper {
                 "connectivity",
                 "collect",
                 // "tagmanagement",
-                "remotecommands"
+                "remotecommands",
+                "consentmanager",
+                "dispatchqueue"
             ]
         #endif
     }
@@ -162,6 +166,10 @@ class TestTealiumHelper {
 
     func getConfig() -> TealiumConfig {
         return testTealiumConfig
+    }
+
+    func newConfig() -> TealiumConfig {
+        return TealiumConfig(account: TealiumTestValue.account, profile: TealiumTestValue.profile, environment: TealiumTestValue.environment)
     }
 
     class func allTestTealiumRequests() -> [TealiumRequest] {
@@ -308,13 +316,13 @@ extension TestTealiumHelper: TealiumModuleDelegate {
 
     }
 
-    func tealiumModuleRequests(module: TealiumModule, process: TealiumRequest) {
+    func tealiumModuleRequests(module: TealiumModule?, process: TealiumRequest) {
 
     }
 
 }
 
-extension Dictionary where Key:ExpressibleByStringLiteral, Value: Any {
+extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any {
 
     /**
      Allows dictionary to check if it contains keys and values from a smaller library

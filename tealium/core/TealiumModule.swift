@@ -24,7 +24,7 @@ public protocol TealiumModuleDelegate: class {
     /// - Parameters:
     ///   - module: Module making request.
     ///   - process: TealiumModuleProcessType requested.
-    func tealiumModuleRequests(module: TealiumModule,
+    func tealiumModuleRequests(module: TealiumModule?,
                                process: TealiumRequest)
 
 }
@@ -35,7 +35,7 @@ public protocol TealiumModuleProtocol {
 }
 
 /**
-    Base class for all Tealium feature modules.
+ Base class for all Tealium feature modules.
  */
 open class TealiumModule: TealiumModuleProtocol {
 
@@ -49,7 +49,6 @@ open class TealiumModule: TealiumModuleProtocol {
         self.delegate = delegate
     }
 
-    // MARK: 
     // MARK: OVERRIDABLE FUNCTIONS
     class open func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: "default",
@@ -58,7 +57,6 @@ open class TealiumModule: TealiumModuleProtocol {
                                    enabled: false)
     }
 
-    // MARK: 
     // MARK: PUBLIC OVERRIDES
 
     /// Generic handling of requests from ModulesManager. Individual modules will
@@ -110,7 +108,6 @@ open class TealiumModule: TealiumModuleProtocol {
 
     }
 
-    // MARK: 
     // MARK: SUBCLASS CONVENIENCE METHODS
 
     /// Should be called by modules after processing requests, unless needing to
@@ -149,7 +146,7 @@ open class TealiumModule: TealiumModuleProtocol {
                                              process: newRequest)
     }
 
-    /// Called by a module that did not process a request, or will process 
+    /// Called by a module that did not process a request, or will process
     ///     asynchronously and can pass the request down the priority chain at time of
     ///     call. Does not amend the request's moduleResponse with the sub classed
     ///     module's info. No need to override.

@@ -2,6 +2,8 @@ included:
   - ../tealium
 excluded:
   - Tests/SwiftLintFrameworkTests/Resources
+disabled_rules:
+  - unused_optional_binding
 opt_in_rules:
   - file_header
   - explicit_init

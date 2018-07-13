@@ -128,17 +128,17 @@ public class TealiumLifecycleModule: TealiumModule {
     // MARK: 
     // MARK: PUBLIC
 
-    func launchDetected() {
+    public func launchDetected() {
         processDetected(type: .launch)
     }
 
     @objc
-    func sleepDetected() {
+    public func sleepDetected() {
         processDetected(type: .sleep)
     }
 
     @objc
-    func wakeDetected() {
+    public func wakeDetected() {
         processDetected(type: .wake)
     }
 
@@ -333,7 +333,7 @@ enum TealiumLifecycleCodingKey {
     static let totalSecondsAwake = "totalSecondsAwake"
 }
 
-enum TealiumLifecycleType {
+public enum TealiumLifecycleType {
     case launch, sleep, wake
 
     var description: String {
@@ -771,7 +771,7 @@ public func == (lhs: TealiumLifecycle, rhs: TealiumLifecycle ) -> Bool {
     return true
 }
 
-extension Array where Element:TealiumLifecycleSession {
+extension Array where Element: TealiumLifecycleSession {
 
     /// Get item before last
     ///

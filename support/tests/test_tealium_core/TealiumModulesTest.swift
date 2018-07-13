@@ -285,7 +285,7 @@ extension TealiumModulesTest: TealiumModuleDelegate {
 
     }
 
-    func tealiumModuleRequests(module: TealiumModule, process: TealiumRequest) {
+    func tealiumModuleRequests(module: TealiumModule?, process: TealiumRequest) {
 
     }
 

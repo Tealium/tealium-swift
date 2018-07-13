@@ -94,7 +94,7 @@ extension TealiumCrashModuleTests: TealiumModuleDelegate {
         delegateModuleFinished += 1
     }
 
-    func tealiumModuleRequests(module: TealiumModule, process: TealiumRequest) {
+    func tealiumModuleRequests(module: TealiumModule?, process: TealiumRequest) {
         delegateModuleRequests += 1
     }
 }
@@ -129,18 +129,18 @@ class MockTealiumCrashReporter: TealiumCrashReporterType {
         pendingCrashReport = false
         return pendingCrashReport
     }
-    
+
     func disable() {
         purgePendingCrashReportCallCount += 1
         pendingCrashReport = false
     }
-    
+
     func purgePendingCrashReport() {
         purgePendingCrashReportCallCount += 1
         pendingCrashReport = false
     }
-    
-    func getData() -> [String : Any]? {
+
+    func getData() -> [String: Any]? {
         getDataCallCount += 1
         return ["a": "1"]
     }

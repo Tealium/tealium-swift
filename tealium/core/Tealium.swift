@@ -21,7 +21,7 @@ public class Tealium {
     // MARK: PUBLIC
     /**
      Initializer.
-     
+
      - parameters:
         - tealiumConfig: Object created with Tealium account, profile, environment, optional loglevel)
      */
@@ -30,6 +30,7 @@ public class Tealium {
         modulesManager = TealiumModulesManager()
         modulesManager.setupModulesFrom(config: config)
         self.enable()
+        TealiumInstanceManager.shared.addInstance(self, config: config)
     }
 
     /**

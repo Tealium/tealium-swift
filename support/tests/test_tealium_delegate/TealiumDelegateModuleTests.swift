@@ -104,7 +104,7 @@ extension TealiumDelegateModuleTests: TealiumModuleDelegate {
 
     }
 
-    func tealiumModuleRequests(module: TealiumModule,
+    func tealiumModuleRequests(module: TealiumModule?,
                                process: TealiumRequest) {
 
     }

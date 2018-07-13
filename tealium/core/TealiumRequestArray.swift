@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension Array where Element : TealiumRequest {
+extension Array where Element: TealiumRequest {
 
     /// Have the array loop through each element, executing the given code block
     ///     for each loop.

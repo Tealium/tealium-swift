@@ -27,10 +27,10 @@ class TealiumDefaultsStorageModule: TealiumModule {
     // MARK: PUBLIC OVERRIDES
 
     override class func moduleConfig() -> TealiumModuleConfig {
-        return  TealiumModuleConfig(name: TealiumDefaultsStorageKey.moduleName,
-                                    priority: 360,
-                                    build: 1,
-                                    enabled: true)
+        return TealiumModuleConfig(name: TealiumDefaultsStorageKey.moduleName,
+                priority: 360,
+                build: 1,
+                enabled: true)
     }
 
     override func handle(_ request: TealiumRequest) {
@@ -56,7 +56,7 @@ class TealiumDefaultsStorageModule: TealiumModule {
     func load(_ request: TealiumLoadRequest) {
         if self.isEnabled == false {
             didFailToFinish(request,
-                            error: TealiumDefaultsStorageError.moduleDisabled)
+                    error: TealiumDefaultsStorageError.moduleDisabled)
             return
         }
 
@@ -65,34 +65,29 @@ class TealiumDefaultsStorageModule: TealiumModule {
         guard let rawData = UserDefaults.standard.object(forKey: key) else {
             // No saved data
             request.completion?(false,
-                                nil,
-                                TealiumDefaultsStorageError.noSavedData)
+                    nil,
+                    TealiumDefaultsStorageError.noSavedData)
             didFinish(request)
             return
         }
 
         guard let data = rawData as? [String: Any] else {
             // Formatting check
-
-            // TODO: Clean here or let save overwrite?
-
             request.completion?(false,
-                                nil,
-                                TealiumDefaultsStorageError.malformedSavedData)
+                    nil,
+                    TealiumDefaultsStorageError.malformedSavedData)
             didFinish(request)
             return
         }
 
         // Data retrieved, pass back to completion.
         request.completion?(true,
-                            data,
-                            nil)
-
+                data,
+                nil)
         didFinish(request)
     }
 
     func save(_ request: TealiumSaveRequest) {
-
         if self.isEnabled == false {
             didFinish(request)
             return
@@ -102,30 +97,25 @@ class TealiumDefaultsStorageModule: TealiumModule {
         let data = request.data
 
         UserDefaults.standard.set(data, forKey: key)
-        UserDefaults.standard.synchronize()
 
         request.completion?(true,
-                            data,
-                            nil)
+                data,
+                nil)
 
         didFinish(request)
     }
 
     func delete(_ request: TealiumDeleteRequest) {
-
         if self.isEnabled == false {
             didFinish(request)
             return
         }
-
         let key = prefixedKey(request.name)
 
         UserDefaults.standard.removeObject(forKey: key)
-        UserDefaults.standard.synchronize()
-
         request.completion?(true,
-                            nil,
-                            nil)
+                nil,
+                nil)
 
         didFinish(request)
     }
@@ -133,13 +123,10 @@ class TealiumDefaultsStorageModule: TealiumModule {
     // MARK: PUBLIC GENERAL
 
     public class func dataExists(filepath: String) -> Bool {
-
         guard UserDefaults.standard.object(forKey: filepath) as? [String: Any] != nil else {
             return false
         }
-
         return true
-
     }
 
     /// Returns filename prefix to distinguish module persistence files by origin
@@ -152,5 +139,4 @@ class TealiumDefaultsStorageModule: TealiumModule {
         let prefix = "\(config.account).\(config.profile).\(config.environment)"
         return prefix
     }
-
 }

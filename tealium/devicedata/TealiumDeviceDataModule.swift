@@ -93,7 +93,7 @@ class TealiumDeviceDataModule: TealiumModule {
         result[TealiumDeviceDataKey.architecture] = deviceDataCollection.architecture()
         result[TealiumDeviceDataKey.osBuild] = TealiumDeviceData.oSBuild()
         result[TealiumDeviceDataKey.cpuType] = deviceDataCollection.cpuType()
-        result.merge(deviceDataCollection.model()) { (_, new) -> Any in
+        result.merge(deviceDataCollection.model()) { _, new -> Any in
             new
         }
         result[TealiumDeviceDataKey.osVersion] = TealiumDeviceData.oSVersion()
@@ -112,14 +112,14 @@ class TealiumDeviceDataModule: TealiumModule {
         result[TealiumDeviceDataKey.isCharging] = TealiumDeviceData.isCharging()
         result[TealiumDeviceDataKey.language] = TealiumDeviceData.iso639Language()
         if isMemoryEnabled == true {
-            result.merge(deviceDataCollection.getMemoryUsage()) { (_, new) -> Any in
+            result.merge(deviceDataCollection.getMemoryUsage()) { _, new -> Any in
                 new
             }
         }
-        result.merge(deviceDataCollection.orientation()) { (_, new) -> Any in
+        result.merge(deviceDataCollection.orientation()) { _, new -> Any in
             new
         }
-        result.merge(TealiumDeviceData.carrierInfo()) { (_, new) -> Any in
+        result.merge(TealiumDeviceData.carrierInfo()) { _, new -> Any in
             new
         }
         return result

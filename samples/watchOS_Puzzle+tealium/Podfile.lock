@@ -1,0 +1,18 @@
+PODS:
+  - tealium-swift (1.5.0):
+    - tealium-swift/Core (= 1.5.0)
+  - tealium-swift/Core (1.5.0)
+
+DEPENDENCIES:
+  - tealium-swift
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - tealium-swift
+
+SPEC CHECKSUMS:
+  tealium-swift: a8482927ffdc06dc72944291894d68d3f771af75
+
+PODFILE CHECKSUM: 4c9cbba627999d088e18a4fb071a7d17f3eb3704
+
+COCOAPODS: 1.5.3

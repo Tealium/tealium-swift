@@ -80,7 +80,7 @@ class InterfaceController: WKInterfaceController {
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
         
-        TealiumHelper.sharedInstance().track(title: "InterfaceController:awake", data: nil)
+        TealiumHelper.shared.track(title: "InterfaceController:awake", data: nil)
         
         setupGame()
     }
@@ -274,7 +274,7 @@ class InterfaceController: WKInterfaceController {
         
         SCNTransaction.commit()
         
-        TealiumHelper.sharedInstance().track(title: "Game complete", data: nil)
+        TealiumHelper.shared.track(title: "Game complete", data: nil)
     }
     
     // MARK: Convenience
@@ -376,7 +376,7 @@ class InterfaceController: WKInterfaceController {
 
         sceneInterface.overlaySKScene?.addChild(gameNodes.congratulationsLabel)
         
-        TealiumHelper.sharedInstance().track(title: "testEvent",
+        TealiumHelper.shared.track(title: "testEvent",
                                              data: ["gameStatus":"won" as AnyObject])
     
     }

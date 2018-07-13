@@ -1,0 +1,18 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'tvOSMaps' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for tvOSMaps
+  pod "tealium-swift"
+end
+
+target 'tvOSMaps_with_autotracking' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for tvOSMaps_with_autotracking
+  pod "tealium-swift"
+end

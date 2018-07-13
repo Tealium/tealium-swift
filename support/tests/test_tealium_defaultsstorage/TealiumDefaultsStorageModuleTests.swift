@@ -9,7 +9,6 @@
 import XCTest
 @testable import Tealium
 
-// TODO: write test to fully test filestorage mechanism
 class TealiumDefaultsStorageModuleTests: XCTestCase {
 
     override func setUp() {

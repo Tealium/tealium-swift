@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        TealiumHelper.sharedInstance().tealium?.autotracking()?.addCustom(data: ["customAutotrackingKey":"customAutotrackingValue"], toObject: triggerButton)
+        TealiumHelper.shared.tealium?.autotracking()?.addCustom(data: ["customAutotrackingKey":"customAutotrackingValue"], toObject: triggerButton)
         
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -28,7 +28,7 @@ class ViewController: UIViewController {
             print("*** ViewController: showing autotracking enabled.")
         #else
             print("*** ViewController: showing autotracking disabled.")
-            TealiumHelper.sharedInstance().tealium?.trackView(title: "testView",
+            TealiumHelper.shared.tealium?.trackView(title: "testView",
                                                               data: nil,
                                                               completion: { (success, info, error) in
                                                                 
@@ -46,7 +46,7 @@ class ViewController: UIViewController {
 
         #if AUTOTRACKING
         #else
-        TealiumHelper.sharedInstance().track(title: "test",
+        TealiumHelper.shared.track(title: "test",
                                              data: nil)
         #endif
     }

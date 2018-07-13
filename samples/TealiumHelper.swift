@@ -7,20 +7,20 @@
 //
 
 import Foundation
+import tealium_swift
 
 extension String : Error {}
 
 /// Example of a shared helper to handle all 3rd party tracking services. This
 /// paradigm is recommended to reduce burden of future code updates for external services
 /// in general.
-class TealiumHelper : NSObject {
+@objc class TealiumHelper : NSObject {
     
-    static let _sharedInstance = TealiumHelper()
+    static let shared = TealiumHelper()
     var tealium : Tealium?
     var enableHelperLogs = true
-    @objc class func sharedInstance() -> TealiumHelper {
-        
-        return _sharedInstance
+    
+    override public init() {
         
     }
     
@@ -54,7 +54,7 @@ class TealiumHelper : NSObject {
                                 let remoteCommand = TealiumRemoteCommand(commandId: "logger",
                                                                          description: "test") { (response) in
                                                                             
-                                                                            if TealiumHelper.sharedInstance().enableHelperLogs {
+                                                                            if TealiumHelper.shared.enableHelperLogs {
                                                                                 print("*** TealiumHelper: Remote Command Executed: response:\(response)")
                                                                             }
                                                                             

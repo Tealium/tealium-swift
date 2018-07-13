@@ -187,7 +187,7 @@ extension TealiumAppDataTests: TealiumModuleDelegate {
         }
     }
 
-    func tealiumModuleRequests(module: TealiumModule, process: TealiumRequest) {
+    func tealiumModuleRequests(module: TealiumModule?, process: TealiumRequest) {
     }
 }
 

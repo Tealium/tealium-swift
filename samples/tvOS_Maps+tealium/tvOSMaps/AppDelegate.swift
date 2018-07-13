@@ -21,8 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let extraData : [String:AnyObject] = ["customKey" : "customValue" as AnyObject]
         
-        TealiumHelper.sharedInstance().start()
-        TealiumHelper.sharedInstance().track(title: "testLaunch",
+        TealiumHelper.shared.start()
+        TealiumHelper.shared.track(title: "testLaunch",
                                              data: extraData)
         return true
     }

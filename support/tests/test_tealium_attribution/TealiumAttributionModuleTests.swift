@@ -186,7 +186,7 @@ extension TealiumAttributionModuleTests: TealiumModuleDelegate {
 
     }
 
-    func tealiumModuleRequests(module: TealiumModule, process: TealiumRequest) {
+    func tealiumModuleRequests(module: TealiumModule?, process: TealiumRequest) {
         if let p = process as? TealiumLoadRequest {
             let mockData = [
                 TealiumAttributionKey.adGroupId: "1234567890",

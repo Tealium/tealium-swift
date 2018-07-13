@@ -8,3 +8,5 @@ Carthage/
 *carthage/
 *Carthage/
 Cartfile.resolved
+.idea
+Pods/

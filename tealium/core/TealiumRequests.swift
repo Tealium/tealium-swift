@@ -122,12 +122,42 @@ public struct TealiumReportNotificationsRequest: TealiumRequest {
 
 /// Request to send any queued data.
 public struct TealiumReleaseQueuesRequest: TealiumRequest {
-    public var typeId = TealiumSaveRequest.instanceTypeId()
+    public var typeId = TealiumReleaseQueuesRequest.instanceTypeId()
     public var moduleResponses = [TealiumModuleResponse]()
     public var completion: TealiumCompletion?
 
     public static func instanceTypeId() -> String {
         return "queuerelease"
+    }
+}
+
+/// Request to queue a track call
+public struct TealiumEnqueueRequest: TealiumRequest {
+    public var typeId = TealiumEnqueueRequest.instanceTypeId()
+    public var moduleResponses = [TealiumModuleResponse]()
+    public var completion: TealiumCompletion?
+
+    let data: TealiumTrackRequest
+
+    public init(data: TealiumTrackRequest,
+                completion: TealiumCompletion?) {
+        self.data = data
+        self.completion = completion
+    }
+
+    public static func instanceTypeId() -> String {
+        return "enqueue"
+    }
+}
+
+/// Request to send any queued data.
+public struct TealiumClearQueuesRequest: TealiumRequest {
+    public var typeId = TealiumClearQueuesRequest.instanceTypeId()
+    public var moduleResponses = [TealiumModuleResponse]()
+    public var completion: TealiumCompletion?
+
+    public static func instanceTypeId() -> String {
+        return "queuedelete"
     }
 }
 
@@ -158,7 +188,7 @@ public struct TealiumTrackRequest: TealiumRequest {
     public var moduleResponses = [TealiumModuleResponse]()
     public var completion: TealiumCompletion?
 
-    let data: [String: Any]
+    public let data: [String: Any]
 
     public init(data: [String: Any],
                 completion: TealiumCompletion?) {

@@ -11,13 +11,11 @@ import Foundation
 // MARK: CONSTANTS
 
 enum TealiumTagManagementKey {
-    static let dispatchService = "dispatch_service"
     static let jsCommand = "js_command"
     static let jsResult = "js_result"
     static let moduleName = "tagmanagement"
     static let responseHeader = "response_headers"
     static let payload = "payload"
-    static let wasQueud = "was_queued"
 }
 
 enum TealiumTagManagementConfigKey {
@@ -111,19 +109,19 @@ class TealiumTagManagementModule: TealiumModule {
                 return
             }
             sel.tagManagement.enable(forAccount: account,
-                                   profile: profile,
-                                   environment: environment,
-                                   overrideUrl: overrideUrl,
-                                   completion: { success, error in
-                                    sel.dispatchQueue?.async {
-                                        if let err = error {
-                                            sel.didFailToFinish(request,
-                                                              error: err)
-                                            return
+                                     profile: profile,
+                                     environment: environment,
+                                     overrideUrl: overrideUrl,
+                                     completion: { _, error in
+                                        sel.dispatchQueue?.async {
+                                            if let err = error {
+                                                sel.didFailToFinish(request,
+                                                                    error: err)
+                                                return
+                                            }
+                                            sel.isEnabled = true
+                                            sel.didFinish(request)
                                         }
-                                        sel.isEnabled = true
-                                        sel.didFinish(request)
-                                    }
             })
         }
     }
@@ -150,21 +148,21 @@ class TealiumTagManagementModule: TealiumModule {
     func didFinish(_ request: TealiumRequest,
                    info: [String: Any]?) {
         var newRequest = request
-        var response = TealiumModuleResponse(moduleName: type(of:self).moduleConfig().name,
+        var response = TealiumModuleResponse(moduleName: type(of: self).moduleConfig().name,
                                              success: true,
                                              error: nil)
         response.info = info
         newRequest.moduleResponses.append(response)
 
         self.delegate?.tealiumModuleFinished(module: self,
-                                              process: newRequest)
+                                             process: newRequest)
     }
 
     func didFailToFinish(_ request: TealiumRequest,
                          info: [String: Any]?,
                          error: Error) {
         var newRequest = request
-        var response = TealiumModuleResponse(moduleName: type(of:self).moduleConfig().name,
+        var response = TealiumModuleResponse(moduleName: type(of: self).moduleConfig().name,
                                              success: false,
                                              error: error)
         response.info = info
@@ -183,27 +181,27 @@ class TealiumTagManagementModule: TealiumModule {
             // Webview has failed for some reason
             if sel.tagManagement.isWebViewReady() == false {
                 sel.didFailToFinish(track,
-                                  info: nil,
-                                  error: TealiumTagManagementError.webViewNotYetReady)
+                                    info: nil,
+                                    error: TealiumTagManagementError.webViewNotYetReady)
                 return
             }
 
             #if TEST
             #else
                 sel.tagManagement.track(track.data,
-                                      completion: { success, info, error in
+                                        completion: { success, info, error in
                                         sel.dispatchQueue?.async {
 
                                             track.completion?(success, info, error)
 
                                             if error != nil {
                                                 sel.didFailToFinish(track,
-                                                                  info: info,
-                                                                  error:error!)
+                                                                    info: info,
+                                                                    error: error!)
                                                 return
                                             }
                                             sel.didFinish(track,
-                                                        info: info)
+                                                          info: info)
                                         }
                 })
             #endif
@@ -226,25 +224,25 @@ enum TealiumTagManagementNotificationKey {
 }
 
 /// TIQ Supported dispatch service Module. Utlizies older but simpler UIWebView vs. newer WKWebView.
-public class TealiumTagManagement : NSObject {
+public class TealiumTagManagement: NSObject {
 
     static let defaultUrlStringPrefix = "https://tags.tiqcdn.com/utag"
 
     var delegates = TealiumMulticastDelegate<UIWebViewDelegate>()
     var didWebViewFinishLoading = false
-    var account : String = ""
-    var profile : String = ""
-    var environment : String = ""
-    var urlString : String?
-    var webView : UIWebView?
-    var completion : ((Bool, Error?) -> Void)?
+    var account: String = ""
+    var profile: String = ""
+    var environment: String = ""
+    var urlString: String?
+    var webView: UIWebView?
+    var completion: ((Bool, Error?) -> Void)?
 
-    lazy var defaultUrlString : String = {
+    lazy var defaultUrlString: String = {
         let urlString = "\(TealiumTagManagement.defaultUrlStringPrefix)/\(self.account)/\(self.profile)/\(self.environment)/mobile.html?"
         return urlString
     }()
 
-    lazy var urlRequest : URLRequest? = {
+    lazy var urlRequest: URLRequest? = {
         guard let url = URL(string: self.urlString ?? self.defaultUrlString) else {
             return nil
         }
@@ -265,8 +263,8 @@ public class TealiumTagManagement : NSObject {
     func enable(forAccount: String,
                 profile: String,
                 environment: String,
-                overrideUrl : String?,
-                completion: ((_ success:Bool, _ error: Error?)-> Void)?) {
+                overrideUrl: String?,
+                completion: ((_ success: Bool, _ error: Error?) -> Void)?) {
         if self.webView != nil {
             // WebView already enabled.
             return
@@ -297,7 +295,7 @@ public class TealiumTagManagement : NSObject {
     func enableNotifications() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(processRequest),
-                                               name: Notification.Name.init(TealiumTagManagementNotificationKey.jsCommandRequested),
+                                               name: Notification.Name(TealiumTagManagementNotificationKey.jsCommandRequested),
                                                object: nil)
     }
 
@@ -342,13 +340,13 @@ public class TealiumTagManagement : NSObject {
     ///   - data: [String:Any] Dictionary of preferrably String or [String] values.
     ///   - completion: Optional completion handler to call when call completes.
     public func track(_ data: [String: Any],
-               completion: ((_ success:Bool, _ info: [String: Any], _ error: Error?) -> Void)?) {
+                      completion: ((_ success: Bool, _ info: [String: Any], _ error: Error?) -> Void)?) {
         var appendedData = data
-        appendedData[TealiumTagManagementKey.dispatchService] = TealiumTagManagementKey.moduleName
+        appendedData[TealiumKey.dispatchService] = TealiumTagManagementKey.moduleName
         let sanitizedData = TealiumTagManagementUtils.sanitized(dictionary: appendedData)
         guard let encodedPayloadString = TealiumTagManagementUtils.jsonEncode(sanitizedDictionary: sanitizedData) else {
             completion?(false,
-                        ["original_payload":appendedData, "sanitized_payload":sanitizedData],
+                        ["original_payload": appendedData, "sanitized_payload": sanitizedData],
                         TealiumTagManagementError.couldNotJSONEncodeData)
             return
         }
@@ -357,11 +355,11 @@ public class TealiumTagManagement : NSObject {
         let javascript = "utag.track(\'\(legacyType)\',\(encodedPayloadString))"
 
         var info = [String: Any]()
-        info[TealiumTagManagementKey.dispatchService] = TealiumTagManagementKey.moduleName
+        info[TealiumKey.dispatchService] = TealiumTagManagementKey.moduleName
         info[TealiumTagManagementKey.jsCommand] = javascript
-        info += [TealiumTagManagementKey.payload : appendedData]
+        info += [TealiumTagManagementKey.payload: appendedData]
         if let result = self.webView?.stringByEvaluatingJavaScript(from: javascript) {
-            info += [TealiumTagManagementKey.jsResult : result]
+            info += [TealiumTagManagementKey.jsResult: result]
         }
 
         completion?(true, info, nil)
@@ -369,7 +367,7 @@ public class TealiumTagManagement : NSObject {
 
 }
 
-extension TealiumTagManagement : UIWebViewDelegate {
+extension TealiumTagManagement: UIWebViewDelegate {
 
     public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
 
@@ -380,15 +378,15 @@ extension TealiumTagManagement : UIWebViewDelegate {
         //  Because there is no direct link between Remote Command
         //  and Tag Management, such a call would appear as a failed call
         //  in any web console for this webview.
-        let notification = Notification(name: Notification.Name.init(TealiumTagManagementNotificationKey.urlRequestMade),
+        let notification = Notification(name: Notification.Name(TealiumTagManagementNotificationKey.urlRequestMade),
                                         object: webView,
-                                        userInfo: [TealiumTagManagementNotificationKey.urlRequestMade:request])
+                                        userInfo: [TealiumTagManagementNotificationKey.urlRequestMade: request])
         NotificationCenter.default.post(notification)
 
         // Look for false from any delegate
         delegates.invoke { if $0.webView?(webView,
-                                         shouldStartLoadWith: request,
-                                         navigationType: navigationType) == false {
+                                          shouldStartLoadWith: request,
+                                          navigationType: navigationType) == false {
             shouldStart = false
             }
         }
@@ -415,7 +413,7 @@ extension TealiumTagManagement : UIWebViewDelegate {
 
         DispatchQueue.global(qos: .background).async {
 
-        self.completion?(true, nil)
+            self.completion?(true, nil)
         }
     }
 
@@ -436,7 +434,7 @@ class TealiumTagManagementUtils {
         return legacyType
     }
 
-    class func jsonEncode(sanitizedDictionary:[String: Any]) -> String? {
+    class func jsonEncode(sanitizedDictionary: [String: Any]) -> String? {
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: sanitizedDictionary,
                                                       options: [])
@@ -448,7 +446,7 @@ class TealiumTagManagementUtils {
         }
     }
 
-    class func sanitized(dictionary:[String: Any]) -> [String: Any] {
+    class func sanitized(dictionary: [String: Any]) -> [String: Any] {
         var clean = [String: Any]()
 
         for (key, value) in dictionary {

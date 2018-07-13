@@ -17,6 +17,8 @@ class TealiumConnectivityModuleTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        self.delegateExpectation2 = nil
+        self.delegateExpectation = nil
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
 
@@ -58,23 +60,7 @@ class TealiumConnectivityModuleTests: XCTestCase {
         module.isEnabled = true
 
         TealiumConnectivityModule.setConnectionOverride(shouldOverride: false) // allow default state (offline since wifi disabled)
-        let track = TealiumTrackRequest(data: ["test_track": "no connection"]) { _, _, _ in
-
-            guard let trackData = self.trackData else {
-                XCTFail("No track data detected from test.")
-                return
-            }
-
-            let expectedKeys = [
-                "was_queued"
-            ]
-
-                for key in expectedKeys where trackData[key] == nil {
-                    XCTFail("\nKey:\(key) was missing from tracking call. Tracking data: \(trackData)\n")
-                }
-
-                self.delegateExpectation2?.fulfill()
-        }
+        let track = TealiumTrackRequest(data: ["test_track": "no connection"], completion: nil)
 
         module.track(track)
         // override actual connection status to allow track to complete successfully despite no connection
@@ -83,7 +69,7 @@ class TealiumConnectivityModuleTests: XCTestCase {
         let track2 = TealiumTrackRequest(data: [:], completion: nil)
         module.track(track2)
 
-        self.waitForExpectations(timeout: 5.0, handler: nil)
+        self.waitForExpectations(timeout: 15, handler: nil)
 
     }
 
@@ -134,11 +120,12 @@ extension TealiumConnectivityModuleTests: TealiumModuleDelegate {
         }
     }
 
-    func tealiumModuleRequests(module: TealiumModule, process: TealiumRequest) {
+    func tealiumModuleRequests(module: TealiumModule?, process: TealiumRequest) {
        // let expectation = self.delegateExpectationSuccess
         if let req = process as? TealiumReportRequest {
             if req.message.contains("Sending queued track") {
                 print("\n\(req.message)\n")
+                self.delegateExpectation2?.fulfill()
                 return
             } else if req.message.contains("Queued track. No internet connection.") {
                 print("\n\(req.message)\n")

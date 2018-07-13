@@ -176,7 +176,7 @@ protocol TealiumRemoteCommandsDelegate: class {
 extension Array where Element: TealiumRemoteCommand {
 
     func commandForId(_ commandId: String) -> TealiumRemoteCommand? {
-        return self.filter({ $0.commandId == commandId }).first
+        return self.first(where: { $0.commandId == commandId })
     }
 
     mutating func removeCommandForId(_ commandId: String) {
@@ -365,7 +365,7 @@ public extension URL {
         var params = [String: Any]()
         return URLComponents(url: self, resolvingAgainstBaseURL: false)?
             .queryItems?
-            .reduce([:], { (_, item) -> [String: Any] in
+            .reduce([:], { _, item -> [String: Any] in
                 params[item.name] = item.value
                 return params
             }) ?? [:]

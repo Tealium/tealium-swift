@@ -16,12 +16,11 @@ extension String : Error {}
 /// in general.
 class TealiumHelper : NSObject {
     
-    static let _sharedInstance = TealiumHelper()
+    static let shared = TealiumHelper()
     var tealium : Tealium?
     var enableHelperLogs = false
-    class func sharedInstance() -> TealiumHelper {
-        
-        return _sharedInstance
+
+    override private init() {
         
     }
     
@@ -71,7 +70,7 @@ class TealiumHelper : NSObject {
                                                      description: "test",
                                                      queue: DispatchQueue.main) { (response) in
                                                         
-                if TealiumHelper.sharedInstance().enableHelperLogs {
+                if TealiumHelper.shared.enableHelperLogs {
                     print("*** TealiumHelper: Remote Command Executed: response:\(response)")
                 }
                                                         

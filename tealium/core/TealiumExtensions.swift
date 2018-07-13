@@ -82,8 +82,9 @@ extension Date {
     }
 
     var unixTime: String {
-        let time = Int(self.timeIntervalSince1970 * 1000)
-        
+        // must be forced to Int64 to avoid overflow on watchOS (32 bit)
+        let time = Int64(self.timeIntervalSince1970 * 1000)
+
         return String(describing: time)
     }
 
