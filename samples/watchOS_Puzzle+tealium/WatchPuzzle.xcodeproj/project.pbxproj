@@ -13,35 +13,17 @@
 		29EEC4D81CECC14D0048E528 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29EEC4D61CECC14D0048E528 /* Main.storyboard */; };
 		29EEC4DA1CECC14D0048E528 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29EEC4D91CECC14D0048E528 /* Assets.xcassets */; };
 		29EEC4DD1CECC14D0048E528 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29EEC4DB1CECC14D0048E528 /* LaunchScreen.storyboard */; };
-		29EEC4E21CECC14D0048E528 /* WatchPuzzle WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 29EEC4E11CECC14D0048E528 /* WatchPuzzle WatchKit App.app */; };
+		29EEC4E21CECC14D0048E528 /* WatchPuzzle_WatchKit_App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 29EEC4E11CECC14D0048E528 /* WatchPuzzle_WatchKit_App.app */; };
 		29EEC4E81CECC14D0048E528 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29EEC4E61CECC14D0048E528 /* Interface.storyboard */; };
 		29EEC4EA1CECC14D0048E528 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29EEC4E91CECC14D0048E528 /* Assets.xcassets */; };
-		29EEC4F11CECC14D0048E528 /* WatchPuzzle WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 29EEC4F01CECC14D0048E528 /* WatchPuzzle WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		29EEC4F11CECC14D0048E528 /* WatchPuzzle_WatchKit_Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 29EEC4F01CECC14D0048E528 /* WatchPuzzle_WatchKit_Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		29EEC4F61CECC14D0048E528 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29EEC4F51CECC14D0048E528 /* InterfaceController.swift */; };
-		29EEC4F81CECC14D0048E528 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29EEC4F71CECC14D0048E528 /* ExtensionDelegate.swift */; };
 		29EEC4FA1CECC14D0048E528 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29EEC4F91CECC14D0048E528 /* Assets.xcassets */; };
-		71111A471EAA5D0D00132453 /* TealiumUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71111A461EAA5D0D00132453 /* TealiumUtils.swift */; };
-		71111A671EAA603400132453 /* TealiumRemoteCommandsModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71111A621EAA603400132453 /* TealiumRemoteCommandsModule.swift */; };
-		711D1B2C1DF0AAA2006047F5 /* TealiumAppDataModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D1B0B1DF0AAA2006047F5 /* TealiumAppDataModule.swift */; };
-		711D1B311DF0AAA2006047F5 /* TealiumCollectModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D1B121DF0AAA2006047F5 /* TealiumCollectModule.swift */; };
-		711D1B321DF0AAA2006047F5 /* Tealium.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D1B141DF0AAA2006047F5 /* Tealium.swift */; };
-		711D1B331DF0AAA2006047F5 /* TealiumConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D1B151DF0AAA2006047F5 /* TealiumConfig.swift */; };
-		711D1B341DF0AAA2006047F5 /* TealiumConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D1B161DF0AAA2006047F5 /* TealiumConstants.swift */; };
-		711D1B351DF0AAA2006047F5 /* TealiumExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D1B171DF0AAA2006047F5 /* TealiumExtensions.swift */; };
-		711D1B361DF0AAA2006047F5 /* TealiumModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D1B181DF0AAA2006047F5 /* TealiumModule.swift */; };
-		711D1B371DF0AAA2006047F5 /* TealiumModuleConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D1B191DF0AAA2006047F5 /* TealiumModuleConfig.swift */; };
-		711D1B381DF0AAA2006047F5 /* TealiumModulesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D1B1A1DF0AAA2006047F5 /* TealiumModulesManager.swift */; };
-		711D1B3B1DF0AAA2006047F5 /* TealiumLoggerModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D1B1E1DF0AAA2006047F5 /* TealiumLoggerModule.swift */; };
-		711D1B411DF0AAA2006047F5 /* TealiumPersistentDataModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D1B261DF0AAA2006047F5 /* TealiumPersistentDataModule.swift */; };
-		711D1B441DF0AAA2006047F5 /* TealiumVolatileDataModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D1B2A1DF0AAA2006047F5 /* TealiumVolatileDataModule.swift */; };
-		7153ADFA1E7719AD0020CDA5 /* TealiumDatasourceModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7153ADF91E7719AD0020CDA5 /* TealiumDatasourceModule.swift */; };
-		718A73891DE4C4C200A45255 /* TealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718A73881DE4C4C200A45255 /* TealiumHelper.swift */; };
-		71AF06771E5623EF001921D3 /* TealiumLifecycleModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AF06731E5623EF001921D3 /* TealiumLifecycleModule.swift */; };
-		71AF06781E5623EF001921D3 /* TealiumLifecyclePersistentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AF06741E5623EF001921D3 /* TealiumLifecyclePersistentData.swift */; };
-		71AF067C1E5623F6001921D3 /* TealiumDelegateModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AF067B1E5623F6001921D3 /* TealiumDelegateModule.swift */; };
-		71DB42A21F214F9D0005E619 /* TealiumMulticastDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DB429F1F214F9D0005E619 /* TealiumMulticastDelegate.swift */; };
-		71DB42A31F214F9D0005E619 /* TealiumModules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DB42A01F214F9D0005E619 /* TealiumModules.swift */; };
-		71DB42A41F214F9D0005E619 /* TealiumRequestArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DB42A11F214F9D0005E619 /* TealiumRequestArray.swift */; };
+		877D396107140DFDED72AAEB /* Pods_WatchPuzzle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F5BA450788FACDB79F062D7 /* Pods_WatchPuzzle.framework */; };
+		B2F0E6537B54DA23690CD5D6 /* Pods_WatchPuzzle_WatchKit_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B564E644A4CABF36E01C58EB /* Pods_WatchPuzzle_WatchKit_Extension.framework */; };
+		D7FF8C0220E3B9CD008AA35D /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29EEC4F71CECC14D0048E528 /* ExtensionDelegate.swift */; };
+		D7FF8C0320E3BA09008AA35D /* TealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718A73881DE4C4C200A45255 /* TealiumHelper.swift */; };
+		E080D4F84A1C272F025CE7AC /* Pods_WatchPuzzle_WatchKit_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4BA2835ED201DC5ED4D65B3 /* Pods_WatchPuzzle_WatchKit_App.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,7 +50,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				29EEC4F11CECC14D0048E528 /* WatchPuzzle WatchKit Extension.appex in Embed App Extensions */,
+				29EEC4F11CECC14D0048E528 /* WatchPuzzle_WatchKit_Extension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -79,7 +61,7 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				29EEC4E21CECC14D0048E528 /* WatchPuzzle WatchKit App.app in Embed Watch Content */,
+				29EEC4E21CECC14D0048E528 /* WatchPuzzle_WatchKit_App.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -87,7 +69,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1D606FB05398D489209EB110 /* Pods-WatchPuzzle.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WatchPuzzle.release.xcconfig"; path = "Pods/Target Support Files/Pods-WatchPuzzle/Pods-WatchPuzzle.release.xcconfig"; sourceTree = "<group>"; };
 		290ED2DA1CF33D7B003CB7F2 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
+		298927B690000773B0BDA022 /* Pods-WatchPuzzle.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WatchPuzzle.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WatchPuzzle/Pods-WatchPuzzle.debug.xcconfig"; sourceTree = "<group>"; };
 		29EEC4CF1CECC14D0048E528 /* WatchPuzzle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WatchPuzzle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29EEC4D21CECC14D0048E528 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		29EEC4D41CECC14D0048E528 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -95,38 +79,24 @@
 		29EEC4D91CECC14D0048E528 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		29EEC4DC1CECC14D0048E528 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		29EEC4DE1CECC14D0048E528 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		29EEC4E11CECC14D0048E528 /* WatchPuzzle WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WatchPuzzle WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		29EEC4E11CECC14D0048E528 /* WatchPuzzle_WatchKit_App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WatchPuzzle_WatchKit_App.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29EEC4E71CECC14D0048E528 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		29EEC4E91CECC14D0048E528 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		29EEC4EB1CECC14D0048E528 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		29EEC4F01CECC14D0048E528 /* WatchPuzzle WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "WatchPuzzle WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		29EEC4F01CECC14D0048E528 /* WatchPuzzle_WatchKit_Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WatchPuzzle_WatchKit_Extension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		29EEC4F51CECC14D0048E528 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
 		29EEC4F71CECC14D0048E528 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		29EEC4F91CECC14D0048E528 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		29EEC4FB1CECC14D0048E528 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		71111A461EAA5D0D00132453 /* TealiumUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumUtils.swift; sourceTree = "<group>"; };
-		71111A621EAA603400132453 /* TealiumRemoteCommandsModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumRemoteCommandsModule.swift; sourceTree = "<group>"; };
-		711D1B0B1DF0AAA2006047F5 /* TealiumAppDataModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumAppDataModule.swift; sourceTree = "<group>"; };
-		711D1B121DF0AAA2006047F5 /* TealiumCollectModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumCollectModule.swift; sourceTree = "<group>"; };
-		711D1B141DF0AAA2006047F5 /* Tealium.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tealium.swift; sourceTree = "<group>"; };
-		711D1B151DF0AAA2006047F5 /* TealiumConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumConfig.swift; sourceTree = "<group>"; };
-		711D1B161DF0AAA2006047F5 /* TealiumConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumConstants.swift; sourceTree = "<group>"; };
-		711D1B171DF0AAA2006047F5 /* TealiumExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumExtensions.swift; sourceTree = "<group>"; };
-		711D1B181DF0AAA2006047F5 /* TealiumModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumModule.swift; sourceTree = "<group>"; };
-		711D1B191DF0AAA2006047F5 /* TealiumModuleConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumModuleConfig.swift; sourceTree = "<group>"; };
-		711D1B1A1DF0AAA2006047F5 /* TealiumModulesManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumModulesManager.swift; sourceTree = "<group>"; };
-		711D1B1E1DF0AAA2006047F5 /* TealiumLoggerModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumLoggerModule.swift; sourceTree = "<group>"; };
-		711D1B261DF0AAA2006047F5 /* TealiumPersistentDataModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumPersistentDataModule.swift; sourceTree = "<group>"; };
-		711D1B2A1DF0AAA2006047F5 /* TealiumVolatileDataModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumVolatileDataModule.swift; sourceTree = "<group>"; };
-		7153ADF91E7719AD0020CDA5 /* TealiumDatasourceModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumDatasourceModule.swift; sourceTree = "<group>"; };
+		4F5BA450788FACDB79F062D7 /* Pods_WatchPuzzle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WatchPuzzle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		718A73881DE4C4C200A45255 /* TealiumHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TealiumHelper.swift; path = ../../TealiumHelper.swift; sourceTree = "<group>"; };
-		71AF06731E5623EF001921D3 /* TealiumLifecycleModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumLifecycleModule.swift; sourceTree = "<group>"; };
-		71AF06741E5623EF001921D3 /* TealiumLifecyclePersistentData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumLifecyclePersistentData.swift; sourceTree = "<group>"; };
-		71AF067B1E5623F6001921D3 /* TealiumDelegateModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumDelegateModule.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		71DB429F1F214F9D0005E619 /* TealiumMulticastDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumMulticastDelegate.swift; sourceTree = "<group>"; };
-		71DB42A01F214F9D0005E619 /* TealiumModules.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumModules.swift; sourceTree = "<group>"; };
-		71DB42A11F214F9D0005E619 /* TealiumRequestArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumRequestArray.swift; sourceTree = "<group>"; };
+		8A3EA029D7F78C7EA9573BD7 /* Pods-WatchPuzzle_WatchKit_App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WatchPuzzle_WatchKit_App.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WatchPuzzle_WatchKit_App/Pods-WatchPuzzle_WatchKit_App.debug.xcconfig"; sourceTree = "<group>"; };
+		8C7D2A881B15E9EAB27C9865 /* Pods-WatchPuzzle_WatchKit_Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WatchPuzzle_WatchKit_Extension.release.xcconfig"; path = "Pods/Target Support Files/Pods-WatchPuzzle_WatchKit_Extension/Pods-WatchPuzzle_WatchKit_Extension.release.xcconfig"; sourceTree = "<group>"; };
+		ADD1C445A6077EAEE2D2B772 /* Pods-WatchPuzzle_WatchKit_Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WatchPuzzle_WatchKit_Extension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WatchPuzzle_WatchKit_Extension/Pods-WatchPuzzle_WatchKit_Extension.debug.xcconfig"; sourceTree = "<group>"; };
+		B564E644A4CABF36E01C58EB /* Pods_WatchPuzzle_WatchKit_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WatchPuzzle_WatchKit_Extension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B59526461DA84C34005E4553 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		E4BA2835ED201DC5ED4D65B3 /* Pods_WatchPuzzle_WatchKit_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WatchPuzzle_WatchKit_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFB3CF8A49DBC3113C3B59CB /* Pods-WatchPuzzle_WatchKit_App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WatchPuzzle_WatchKit_App.release.xcconfig"; path = "Pods/Target Support Files/Pods-WatchPuzzle_WatchKit_App/Pods-WatchPuzzle_WatchKit_App.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				877D396107140DFDED72AAEB /* Pods_WatchPuzzle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,6 +112,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2F0E6537B54DA23690CD5D6 /* Pods_WatchPuzzle_WatchKit_Extension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9854831BE52A51989D53F1E5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E080D4F84A1C272F025CE7AC /* Pods_WatchPuzzle_WatchKit_App.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -152,9 +132,11 @@
 			children = (
 				B59526461DA84C34005E4553 /* README.md */,
 				29EEC4D11CECC14D0048E528 /* WatchPuzzle */,
-				29EEC4E51CECC14D0048E528 /* WatchPuzzle WatchKit App */,
-				29EEC4F41CECC14D0048E528 /* WatchPuzzle WatchKit Extension */,
+				29EEC4E51CECC14D0048E528 /* WatchPuzzle_WatchKit_App */,
+				29EEC4F41CECC14D0048E528 /* WatchPuzzle_WatchKit_Extension */,
 				29EEC4D01CECC14D0048E528 /* Products */,
+				FF5CC77FEA0EB5ADB32C1929 /* Pods */,
+				399F109FDF959B302348D7A9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -162,8 +144,8 @@
 			isa = PBXGroup;
 			children = (
 				29EEC4CF1CECC14D0048E528 /* WatchPuzzle.app */,
-				29EEC4E11CECC14D0048E528 /* WatchPuzzle WatchKit App.app */,
-				29EEC4F01CECC14D0048E528 /* WatchPuzzle WatchKit Extension.appex */,
+				29EEC4E11CECC14D0048E528 /* WatchPuzzle_WatchKit_App.app */,
+				29EEC4F01CECC14D0048E528 /* WatchPuzzle_WatchKit_Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -181,20 +163,19 @@
 			path = WatchPuzzle;
 			sourceTree = "<group>";
 		};
-		29EEC4E51CECC14D0048E528 /* WatchPuzzle WatchKit App */ = {
+		29EEC4E51CECC14D0048E528 /* WatchPuzzle_WatchKit_App */ = {
 			isa = PBXGroup;
 			children = (
 				29EEC4E61CECC14D0048E528 /* Interface.storyboard */,
 				29EEC4E91CECC14D0048E528 /* Assets.xcassets */,
 				29EEC4EB1CECC14D0048E528 /* Info.plist */,
 			);
-			path = "WatchPuzzle WatchKit App";
+			path = WatchPuzzle_WatchKit_App;
 			sourceTree = "<group>";
 		};
-		29EEC4F41CECC14D0048E528 /* WatchPuzzle WatchKit Extension */ = {
+		29EEC4F41CECC14D0048E528 /* WatchPuzzle_WatchKit_Extension */ = {
 			isa = PBXGroup;
 			children = (
-				711D1B081DF0AAA2006047F5 /* tealium */,
 				290ED2DA1CF33D7B003CB7F2 /* art.scnassets */,
 				29EEC4F51CECC14D0048E528 /* InterfaceController.swift */,
 				29EEC4F71CECC14D0048E528 /* ExtensionDelegate.swift */,
@@ -202,116 +183,30 @@
 				29EEC4F91CECC14D0048E528 /* Assets.xcassets */,
 				29EEC4FB1CECC14D0048E528 /* Info.plist */,
 			);
-			path = "WatchPuzzle WatchKit Extension";
+			path = WatchPuzzle_WatchKit_Extension;
 			sourceTree = "<group>";
 		};
-		71111A5E1EAA603400132453 /* remotecommands */ = {
+		399F109FDF959B302348D7A9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				71111A621EAA603400132453 /* TealiumRemoteCommandsModule.swift */,
+				4F5BA450788FACDB79F062D7 /* Pods_WatchPuzzle.framework */,
+				E4BA2835ED201DC5ED4D65B3 /* Pods_WatchPuzzle_WatchKit_App.framework */,
+				B564E644A4CABF36E01C58EB /* Pods_WatchPuzzle_WatchKit_Extension.framework */,
 			);
-			path = remotecommands;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		711D1B081DF0AAA2006047F5 /* tealium */ = {
+		FF5CC77FEA0EB5ADB32C1929 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				711D1B091DF0AAA2006047F5 /* appData */,
-				711D1B0F1DF0AAA2006047F5 /* collect */,
-				711D1B131DF0AAA2006047F5 /* core */,
-				7153ADF81E7719AD0020CDA5 /* datasource */,
-				71AF067A1E5623F6001921D3 /* delegate */,
-				71AF06711E5623EF001921D3 /* lifecycle */,
-				711D1B1B1DF0AAA2006047F5 /* logger */,
-				711D1B1F1DF0AAA2006047F5 /* persistentData */,
-				71111A5E1EAA603400132453 /* remotecommands */,
-				711D1B271DF0AAA2006047F5 /* volatiledata */,
+				298927B690000773B0BDA022 /* Pods-WatchPuzzle.debug.xcconfig */,
+				1D606FB05398D489209EB110 /* Pods-WatchPuzzle.release.xcconfig */,
+				8A3EA029D7F78C7EA9573BD7 /* Pods-WatchPuzzle_WatchKit_App.debug.xcconfig */,
+				FFB3CF8A49DBC3113C3B59CB /* Pods-WatchPuzzle_WatchKit_App.release.xcconfig */,
+				ADD1C445A6077EAEE2D2B772 /* Pods-WatchPuzzle_WatchKit_Extension.debug.xcconfig */,
+				8C7D2A881B15E9EAB27C9865 /* Pods-WatchPuzzle_WatchKit_Extension.release.xcconfig */,
 			);
-			name = tealium;
-			path = ../../../tealium;
-			sourceTree = "<group>";
-		};
-		711D1B091DF0AAA2006047F5 /* appData */ = {
-			isa = PBXGroup;
-			children = (
-				711D1B0B1DF0AAA2006047F5 /* TealiumAppDataModule.swift */,
-			);
-			path = appData;
-			sourceTree = "<group>";
-		};
-		711D1B0F1DF0AAA2006047F5 /* collect */ = {
-			isa = PBXGroup;
-			children = (
-				711D1B121DF0AAA2006047F5 /* TealiumCollectModule.swift */,
-			);
-			path = collect;
-			sourceTree = "<group>";
-		};
-		711D1B131DF0AAA2006047F5 /* core */ = {
-			isa = PBXGroup;
-			children = (
-				711D1B141DF0AAA2006047F5 /* Tealium.swift */,
-				711D1B151DF0AAA2006047F5 /* TealiumConfig.swift */,
-				71DB429F1F214F9D0005E619 /* TealiumMulticastDelegate.swift */,
-				71DB42A01F214F9D0005E619 /* TealiumModules.swift */,
-				71DB42A11F214F9D0005E619 /* TealiumRequestArray.swift */,
-				711D1B161DF0AAA2006047F5 /* TealiumConstants.swift */,
-				711D1B171DF0AAA2006047F5 /* TealiumExtensions.swift */,
-				711D1B181DF0AAA2006047F5 /* TealiumModule.swift */,
-				711D1B191DF0AAA2006047F5 /* TealiumModuleConfig.swift */,
-				711D1B1A1DF0AAA2006047F5 /* TealiumModulesManager.swift */,
-				71111A461EAA5D0D00132453 /* TealiumUtils.swift */,
-			);
-			path = core;
-			sourceTree = "<group>";
-		};
-		711D1B1B1DF0AAA2006047F5 /* logger */ = {
-			isa = PBXGroup;
-			children = (
-				711D1B1E1DF0AAA2006047F5 /* TealiumLoggerModule.swift */,
-			);
-			path = logger;
-			sourceTree = "<group>";
-		};
-		711D1B1F1DF0AAA2006047F5 /* persistentData */ = {
-			isa = PBXGroup;
-			children = (
-				711D1B261DF0AAA2006047F5 /* TealiumPersistentDataModule.swift */,
-			);
-			path = persistentData;
-			sourceTree = "<group>";
-		};
-		711D1B271DF0AAA2006047F5 /* volatiledata */ = {
-			isa = PBXGroup;
-			children = (
-				711D1B2A1DF0AAA2006047F5 /* TealiumVolatileDataModule.swift */,
-			);
-			path = volatiledata;
-			sourceTree = "<group>";
-		};
-		7153ADF81E7719AD0020CDA5 /* datasource */ = {
-			isa = PBXGroup;
-			children = (
-				7153ADF91E7719AD0020CDA5 /* TealiumDatasourceModule.swift */,
-			);
-			path = datasource;
-			sourceTree = "<group>";
-		};
-		71AF06711E5623EF001921D3 /* lifecycle */ = {
-			isa = PBXGroup;
-			children = (
-				71AF06731E5623EF001921D3 /* TealiumLifecycleModule.swift */,
-				71AF06741E5623EF001921D3 /* TealiumLifecyclePersistentData.swift */,
-			);
-			path = lifecycle;
-			sourceTree = "<group>";
-		};
-		71AF067A1E5623F6001921D3 /* delegate */ = {
-			isa = PBXGroup;
-			children = (
-				71AF067B1E5623F6001921D3 /* TealiumDelegateModule.swift */,
-			);
-			path = delegate;
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -321,10 +216,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 29EEC5061CECC14D0048E528 /* Build configuration list for PBXNativeTarget "WatchPuzzle" */;
 			buildPhases = (
+				DD731E677756660D6E9E6769 /* [CP] Check Pods Manifest.lock */,
 				29EEC4CB1CECC14D0048E528 /* Sources */,
 				29EEC4CC1CECC14D0048E528 /* Frameworks */,
 				29EEC4CD1CECC14D0048E528 /* Resources */,
 				29EEC5051CECC14D0048E528 /* Embed Watch Content */,
+				35DC550A446FCC07D4C4D649 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -336,38 +233,42 @@
 			productReference = 29EEC4CF1CECC14D0048E528 /* WatchPuzzle.app */;
 			productType = "com.apple.product-type.application";
 		};
-		29EEC4E01CECC14D0048E528 /* WatchPuzzle WatchKit App */ = {
+		29EEC4E01CECC14D0048E528 /* WatchPuzzle_WatchKit_App */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 29EEC5021CECC14D0048E528 /* Build configuration list for PBXNativeTarget "WatchPuzzle WatchKit App" */;
+			buildConfigurationList = 29EEC5021CECC14D0048E528 /* Build configuration list for PBXNativeTarget "WatchPuzzle_WatchKit_App" */;
 			buildPhases = (
+				822371855C09D1521913E79E /* [CP] Check Pods Manifest.lock */,
 				29EEC4DF1CECC14D0048E528 /* Resources */,
 				29EEC5011CECC14D0048E528 /* Embed App Extensions */,
+				9854831BE52A51989D53F1E5 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				29EEC4F31CECC14D0048E528 /* PBXTargetDependency */,
 			);
-			name = "WatchPuzzle WatchKit App";
+			name = WatchPuzzle_WatchKit_App;
 			productName = "teapot_swift WatchKit App";
-			productReference = 29EEC4E11CECC14D0048E528 /* WatchPuzzle WatchKit App.app */;
+			productReference = 29EEC4E11CECC14D0048E528 /* WatchPuzzle_WatchKit_App.app */;
 			productType = "com.apple.product-type.application.watchapp2";
 		};
-		29EEC4EF1CECC14D0048E528 /* WatchPuzzle WatchKit Extension */ = {
+		29EEC4EF1CECC14D0048E528 /* WatchPuzzle_WatchKit_Extension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 29EEC4FE1CECC14D0048E528 /* Build configuration list for PBXNativeTarget "WatchPuzzle WatchKit Extension" */;
+			buildConfigurationList = 29EEC4FE1CECC14D0048E528 /* Build configuration list for PBXNativeTarget "WatchPuzzle_WatchKit_Extension" */;
 			buildPhases = (
+				60E85E645B53153FC68707FD /* [CP] Check Pods Manifest.lock */,
 				29EEC4EC1CECC14D0048E528 /* Sources */,
 				29EEC4ED1CECC14D0048E528 /* Frameworks */,
 				29EEC4EE1CECC14D0048E528 /* Resources */,
+				A3EED0D93953D1C19FD4775F /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = "WatchPuzzle WatchKit Extension";
+			name = WatchPuzzle_WatchKit_Extension;
 			productName = "teapot_swift WatchKit Extension";
-			productReference = 29EEC4F01CECC14D0048E528 /* WatchPuzzle WatchKit Extension.appex */;
+			productReference = 29EEC4F01CECC14D0048E528 /* WatchPuzzle_WatchKit_Extension.appex */;
 			productType = "com.apple.product-type.watchkit2-extension";
 		};
 /* End PBXNativeTarget section */
@@ -411,8 +312,8 @@
 			projectRoot = "";
 			targets = (
 				29EEC4CE1CECC14D0048E528 /* WatchPuzzle */,
-				29EEC4E01CECC14D0048E528 /* WatchPuzzle WatchKit App */,
-				29EEC4EF1CECC14D0048E528 /* WatchPuzzle WatchKit Extension */,
+				29EEC4E01CECC14D0048E528 /* WatchPuzzle_WatchKit_App */,
+				29EEC4EF1CECC14D0048E528 /* WatchPuzzle_WatchKit_Extension */,
 			);
 		};
 /* End PBXProject section */
@@ -448,6 +349,99 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		35DC550A446FCC07D4C4D649 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-WatchPuzzle/Pods-WatchPuzzle-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/tealium-swift-iOS/tealium_swift.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/tealium_swift.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WatchPuzzle/Pods-WatchPuzzle-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		60E85E645B53153FC68707FD /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-WatchPuzzle_WatchKit_Extension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		822371855C09D1521913E79E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-WatchPuzzle_WatchKit_App-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A3EED0D93953D1C19FD4775F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-WatchPuzzle_WatchKit_Extension/Pods-WatchPuzzle_WatchKit_Extension-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/tealium-swift-watchOS/tealium_swift.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/tealium_swift.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WatchPuzzle_WatchKit_Extension/Pods-WatchPuzzle_WatchKit_Extension-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DD731E677756660D6E9E6769 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-WatchPuzzle-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		29EEC4CB1CECC14D0048E528 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -462,29 +456,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				711D1B2C1DF0AAA2006047F5 /* TealiumAppDataModule.swift in Sources */,
-				71DB42A41F214F9D0005E619 /* TealiumRequestArray.swift in Sources */,
-				711D1B371DF0AAA2006047F5 /* TealiumModuleConfig.swift in Sources */,
-				711D1B351DF0AAA2006047F5 /* TealiumExtensions.swift in Sources */,
-				711D1B441DF0AAA2006047F5 /* TealiumVolatileDataModule.swift in Sources */,
-				71AF06781E5623EF001921D3 /* TealiumLifecyclePersistentData.swift in Sources */,
-				7153ADFA1E7719AD0020CDA5 /* TealiumDatasourceModule.swift in Sources */,
-				711D1B341DF0AAA2006047F5 /* TealiumConstants.swift in Sources */,
-				71AF06771E5623EF001921D3 /* TealiumLifecycleModule.swift in Sources */,
-				71111A471EAA5D0D00132453 /* TealiumUtils.swift in Sources */,
-				71DB42A21F214F9D0005E619 /* TealiumMulticastDelegate.swift in Sources */,
-				29EEC4F81CECC14D0048E528 /* ExtensionDelegate.swift in Sources */,
-				71111A671EAA603400132453 /* TealiumRemoteCommandsModule.swift in Sources */,
-				711D1B381DF0AAA2006047F5 /* TealiumModulesManager.swift in Sources */,
-				718A73891DE4C4C200A45255 /* TealiumHelper.swift in Sources */,
-				711D1B361DF0AAA2006047F5 /* TealiumModule.swift in Sources */,
-				711D1B321DF0AAA2006047F5 /* Tealium.swift in Sources */,
-				711D1B3B1DF0AAA2006047F5 /* TealiumLoggerModule.swift in Sources */,
-				71AF067C1E5623F6001921D3 /* TealiumDelegateModule.swift in Sources */,
-				711D1B331DF0AAA2006047F5 /* TealiumConfig.swift in Sources */,
-				711D1B311DF0AAA2006047F5 /* TealiumCollectModule.swift in Sources */,
-				711D1B411DF0AAA2006047F5 /* TealiumPersistentDataModule.swift in Sources */,
-				71DB42A31F214F9D0005E619 /* TealiumModules.swift in Sources */,
+				D7FF8C0320E3BA09008AA35D /* TealiumHelper.swift in Sources */,
+				D7FF8C0220E3B9CD008AA35D /* ExtensionDelegate.swift in Sources */,
 				29EEC4F61CECC14D0048E528 /* InterfaceController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -494,12 +467,12 @@
 /* Begin PBXTargetDependency section */
 		29EEC4E41CECC14D0048E528 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 29EEC4E01CECC14D0048E528 /* WatchPuzzle WatchKit App */;
+			target = 29EEC4E01CECC14D0048E528 /* WatchPuzzle_WatchKit_App */;
 			targetProxy = 29EEC4E31CECC14D0048E528 /* PBXContainerItemProxy */;
 		};
 		29EEC4F31CECC14D0048E528 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 29EEC4EF1CECC14D0048E528 /* WatchPuzzle WatchKit Extension */;
+			target = 29EEC4EF1CECC14D0048E528 /* WatchPuzzle_WatchKit_Extension */;
 			targetProxy = 29EEC4F21CECC14D0048E528 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -627,10 +600,11 @@
 		};
 		29EEC4FF1CECC14D0048E528 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = ADD1C445A6077EAEE2D2B772 /* Pods-WatchPuzzle_WatchKit_Extension.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				DEVELOPMENT_TEAM = XC939GDC9P;
-				INFOPLIST_FILE = "WatchPuzzle WatchKit Extension/Info.plist";
+				INFOPLIST_FILE = WatchPuzzle_WatchKit_Extension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.WatchPuzzle.watchkitapp.watchkitextension";
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -638,16 +612,17 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
+				WATCHOS_DEPLOYMENT_TARGET = 3.2;
 			};
 			name = Debug;
 		};
 		29EEC5001CECC14D0048E528 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8C7D2A881B15E9EAB27C9865 /* Pods-WatchPuzzle_WatchKit_Extension.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				DEVELOPMENT_TEAM = XC939GDC9P;
-				INFOPLIST_FILE = "WatchPuzzle WatchKit Extension/Info.plist";
+				INFOPLIST_FILE = WatchPuzzle_WatchKit_Extension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.WatchPuzzle.watchkitapp.watchkitextension";
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -655,44 +630,47 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
+				WATCHOS_DEPLOYMENT_TARGET = 3.2;
 			};
 			name = Release;
 		};
 		29EEC5031CECC14D0048E528 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8A3EA029D7F78C7EA9573BD7 /* Pods-WatchPuzzle_WatchKit_App.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = XC939GDC9P;
 				IBSC_MODULE = WatchPuzzle_WatchKit_Extension;
-				INFOPLIST_FILE = "WatchPuzzle WatchKit App/Info.plist";
+				INFOPLIST_FILE = WatchPuzzle_WatchKit_App/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.WatchPuzzle.watchkitapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
+				WATCHOS_DEPLOYMENT_TARGET = 3.2;
 			};
 			name = Debug;
 		};
 		29EEC5041CECC14D0048E528 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FFB3CF8A49DBC3113C3B59CB /* Pods-WatchPuzzle_WatchKit_App.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = XC939GDC9P;
 				IBSC_MODULE = WatchPuzzle_WatchKit_Extension;
-				INFOPLIST_FILE = "WatchPuzzle WatchKit App/Info.plist";
+				INFOPLIST_FILE = WatchPuzzle_WatchKit_App/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.WatchPuzzle.watchkitapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 3.0;
+				WATCHOS_DEPLOYMENT_TARGET = 3.2;
 			};
 			name = Release;
 		};
 		29EEC5071CECC14D0048E528 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 298927B690000773B0BDA022 /* Pods-WatchPuzzle.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = XC939GDC9P;
@@ -707,6 +685,7 @@
 		};
 		29EEC5081CECC14D0048E528 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1D606FB05398D489209EB110 /* Pods-WatchPuzzle.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = XC939GDC9P;
@@ -731,7 +710,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		29EEC4FE1CECC14D0048E528 /* Build configuration list for PBXNativeTarget "WatchPuzzle WatchKit Extension" */ = {
+		29EEC4FE1CECC14D0048E528 /* Build configuration list for PBXNativeTarget "WatchPuzzle_WatchKit_Extension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				29EEC4FF1CECC14D0048E528 /* Debug */,
@@ -740,7 +719,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		29EEC5021CECC14D0048E528 /* Build configuration list for PBXNativeTarget "WatchPuzzle WatchKit App" */ = {
+		29EEC5021CECC14D0048E528 /* Build configuration list for PBXNativeTarget "WatchPuzzle_WatchKit_App" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				29EEC5031CECC14D0048E528 /* Debug */,

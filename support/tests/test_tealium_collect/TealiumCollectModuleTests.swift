@@ -49,29 +49,4 @@ class TealiumCollectModuleTests: XCTestCase {
 
         XCTAssertTrue(collectModule.collect == nil, "TealiumCollect instance did not nil out.")
     }
-
-    // This is an integration test, will only work in a non-command line environment
-//    func testLegacyTrackWithEncodedURL() {
-//        
-//        // Just checking that the url passed in is returned from info["encodedURLString"]
-//        
-//        let expectation = self.expectation(description: "testLegacyTrack")
-//        let tealium = Tealium(config: testTealiumConfig)
-//        
-//        // track call will fail for a non-existent url
-//        // tracl call will SUCCEED for any existing url that simply returns 200 to these requests.
-//        // Should return encoded url in info["payload"] regardless
-//        let urlString = "http://www.google.com"
-//        tealium?.track(encodedURLString: urlString,
-//                       completion: { (success, encodedURL, error) in
-//                                
-//                XCTAssertTrue(encodedURL == urlString, "Returned encoded URL String: \(encodedURL) - should have been: \(urlString)")
-//                        
-//                expectation.fulfill()
-//        })
-//        
-//        self.waitForExpectations(timeout: 1.0, handler: nil)
-//        
-//    }
-
 }

@@ -71,7 +71,7 @@ public class TealiumDeviceData: TealiumDeviceDataCollection {
             return TealiumDeviceDataValue.unknown
         #endif
     }
-
+    // swiftlint:disable cyclomatic_complexity
     public func cpuType() -> String {
         var type = cpu_type_t()
         var cpuSize = MemoryLayout<cpu_type_t>.size
@@ -101,6 +101,7 @@ public class TealiumDeviceData: TealiumDeviceDataCollection {
 
         return TealiumDeviceDataValue.unknown
     }
+    // swiftlint:enable cyclomatic_complexity
 
     class func isCharging() -> String {
         // only available on iOS
@@ -159,7 +160,7 @@ public class TealiumDeviceData: TealiumDeviceDataCollection {
         }
 
         let data = hostInfo.move()
-        hostInfo.deallocate(capacity: 1)
+        hostInfo.deallocate()
 
         let free = Double(data.free_count) * Double(pageSize)
             / Unit.megabyte.rawValue

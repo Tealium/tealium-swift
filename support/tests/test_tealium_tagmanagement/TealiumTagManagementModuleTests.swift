@@ -55,7 +55,7 @@ extension TealiumTagManagementModuleTests: TealiumModuleDelegate {
         queueName = currentQueueName()
     }
 
-    func tealiumModuleRequests(module: TealiumModule, process: TealiumRequest) {
+    func tealiumModuleRequests(module: TealiumModule?, process: TealiumRequest) {
         delegateExpectationSuccess?.fulfill()
 
         queueName = currentQueueName()

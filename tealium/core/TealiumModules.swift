@@ -91,7 +91,9 @@ class TealiumModules {
             "TealiumPersistentDataModule",
             "TealiumRemoteCommandsModule",
             "TealiumTagManagementModule",
-            "TealiumVolatileDataModule"
+            "TealiumVolatileDataModule",
+            "TealiumConsentManagerModule",
+            "TealiumDispatchQueueModule"
         ]
         #else
         let tealiumClasses = [
@@ -110,7 +112,9 @@ class TealiumModules {
             "TealiumPersistentDataModule",
             "TealiumRemoteCommandsModule",
             "TealiumTagManagementModule",
-            "TealiumVolatileDataModule"
+            "TealiumVolatileDataModule",
+            "TealiumConsentManagerModule",
+            "TealiumDispatchQueueModule"
         ]
         #endif
         // swiftlint:enable function_body_length

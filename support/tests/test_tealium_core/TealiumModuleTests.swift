@@ -129,7 +129,7 @@ extension TealiumModuleTests: TealiumModuleDelegate {
         expectationSuccess?.fulfill()
     }
 
-    func tealiumModuleRequests(module: TealiumModule, process: TealiumRequest) {
+    func tealiumModuleRequests(module: TealiumModule?, process: TealiumRequest) {
 
     }
 

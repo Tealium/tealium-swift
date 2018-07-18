@@ -406,7 +406,7 @@ extension TealiumModulesManagerTests: TealiumModuleDelegate {
         nextModule?.handle(process)
     }
 
-    func tealiumModuleRequests(module: TealiumModule, process: TealiumRequest) {
+    func tealiumModuleRequests(module: TealiumModule?, process: TealiumRequest) {
 
     }
 

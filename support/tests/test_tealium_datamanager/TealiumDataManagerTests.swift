@@ -15,7 +15,7 @@ import XCTest
         - smallerDictionary: A [String:AnyObject] dictionary
     - Returns: Boolean answer
  */
-extension Dictionary where Key:ExpressibleByStringLiteral, Value:AnyObject {
+extension Dictionary where Key: ExpressibleByStringLiteral, Value: AnyObject {
 
     func contains(smallerDictionary: [String: AnyObject]) -> Bool {
 

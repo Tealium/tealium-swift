@@ -54,7 +54,6 @@ class TealiumLifecycleSessionTests: XCTestCase {
         let data = NSKeyedArchiver.archivedData(withRootObject: session)
 
         UserDefaults.standard.set(data, forKey: sessionId)
-        UserDefaults.standard.synchronize()
 
         guard let defaultsCheckData = UserDefaults.standard.object(forKey: sessionId) as? Data else {
             XCTFail("Could not unarchive data.")

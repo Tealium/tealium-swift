@@ -1,6 +1,6 @@
 //
 //  TealiumCrashFactory.swift
-//  ios
+//  tealium-swift
 //
 //  Created by Jonathan Wong on 2/15/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.

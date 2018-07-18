@@ -83,7 +83,7 @@ public class TealiumCollect {
 
         let task = URLSession.shared.dataTask(with: request, completionHandler: { _, response, error in
             var info = [TealiumCollectKey.encodedURLString: finalStringWithParams ,
-                        TealiumCollectKey.dispatchService: TealiumCollectKey.moduleName ] as [String: Any]
+                        TealiumKey.dispatchService: TealiumCollectKey.moduleName ] as [String: Any]
 
             if error != nil {
                 completion?(false, info, error as Error?)

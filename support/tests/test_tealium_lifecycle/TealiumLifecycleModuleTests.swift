@@ -99,7 +99,7 @@ extension TealiumLifecycleModuleTests: TealiumModuleDelegate {
         }
     }
 
-    func tealiumModuleRequests(module: TealiumModule, process: TealiumRequest) {
+    func tealiumModuleRequests(module: TealiumModule?, process: TealiumRequest) {
         if let p = process as? TealiumTrackRequest {
             expectationRequest?.fulfill()
             requestProcess = p

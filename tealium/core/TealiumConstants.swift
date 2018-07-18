@@ -11,7 +11,7 @@
 
 public enum TealiumValue {
     static let libraryName = "swift"
-    static let libraryVersion = "1.5.0"
+    static let libraryVersion = "1.6.0"
 }
 
 // MARK: 
@@ -27,6 +27,9 @@ public enum TealiumKey {
     public static let eventType = "tealium_event_type"
     public static let libraryName = "tealium_library_name"
     public static let libraryVersion = "tealium_library_version"
+    public static let queueReason = "queue_reason"
+    public static let wasQueued = "was_queued"
+    public static let dispatchService = "dispatch_service"
 }
 
 public enum TealiumModulesManagerError: Error {

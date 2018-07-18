@@ -43,7 +43,7 @@ public class TealiumVolatileData: NSObject, TealiumVolatileDataCollection {
         var data = [String: Any]()
 
         data[TealiumVolatileDataKey.random] = TealiumVolatileData.getRandom(length: 16)
-        data.merge(currentTimeStamps()) { (_, new) -> Any in
+        data.merge(currentTimeStamps()) { _, new -> Any in
             new
         }
         data[TealiumVolatileDataKey.timestampOffset] = timezoneOffset()
@@ -104,15 +104,15 @@ public class TealiumVolatileData: NSObject, TealiumVolatileDataCollection {
     }
 
     public class func getTimestampInSeconds(_ date: Date) -> String {
-        let ts = date.timeIntervalSince1970
+        let timestamp = date.timeIntervalSince1970
 
-        return "\(Int(ts))"
+        return "\(Int(timestamp))"
     }
 
     class func getTimestampInMilliseconds(_ date: Date) -> String {
-        let ts = date.unixTime
+        let timestamp = date.unixTime
 
-        return ts
+        return timestamp
     }
 
     class func newSessionId() -> String {
@@ -140,8 +140,8 @@ public class TealiumVolatileData: NSObject, TealiumVolatileDataCollection {
     }
 
     func timezoneOffset() -> String {
-        let tz = TimeZone.current
-        let offsetSeconds = tz.secondsFromGMT()
+        let timezone = TimeZone.current
+        let offsetSeconds = timezone.secondsFromGMT()
         let offsetHours = offsetSeconds / 3600
 
         return String(format: "%i", offsetHours)

@@ -97,7 +97,7 @@ class TealiumAttributionModule: TealiumModule {
         // Add idfa to data - NOTE: This requires additional requirements when
         // submitting to Apple's App Review process, see -
         // https://developer.apple.com/library/content/documentation/LanguagesUtilities/Conceptual/iTunesConnect_Guide/Chapters/SubmittingTheApp.html#//apple_ref/doc/uid/TP40011225-CH33-SW8
-        
+
         if self.isEnabled == false {
 
             // Module disabled - ignore IDFA request
@@ -223,8 +223,8 @@ class TealiumAttributionModule: TealiumModule {
             if let att = detailsDict[AppleInternalKeys.attribution] as? String {
             self.appleAttributionDetails[TealiumAttributionKey.clickedWithin30D] = att
             }
-            if let dt = detailsDict[AppleInternalKeys.clickDate] as? String {
-            self.appleAttributionDetails[TealiumAttributionKey.clickedDate] = dt
+            if let dat = detailsDict[AppleInternalKeys.clickDate] as? String {
+            self.appleAttributionDetails[TealiumAttributionKey.clickedDate] = dat
             }
             if let convDt = detailsDict[AppleInternalKeys.conversionDate] as? String {
             self.appleAttributionDetails[TealiumAttributionKey.conversionDate] = convDt
@@ -260,8 +260,8 @@ class TealiumAttributionModule: TealiumModule {
                     if let att = detailsDict[AppleInternalKeys.attribution] as? String {
                         self.appleAttributionDetails[TealiumAttributionKey.clickedWithin30D] = att
                     }
-                    if let dt = detailsDict[AppleInternalKeys.clickDate] as? String {
-                        self.appleAttributionDetails[TealiumAttributionKey.clickedDate] = dt
+                    if let dat = detailsDict[AppleInternalKeys.clickDate] as? String {
+                        self.appleAttributionDetails[TealiumAttributionKey.clickedDate] = dat
                     }
                     if let convDt = detailsDict[AppleInternalKeys.conversionDate] as? String {
                         self.appleAttributionDetails[TealiumAttributionKey.conversionDate] = convDt

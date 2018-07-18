@@ -112,7 +112,7 @@ extension TealiumDatasourceModuleTests: TealiumModuleDelegate {
         self.process = process
     }
 
-    func tealiumModuleRequests(module: TealiumModule, process: TealiumRequest) {
+    func tealiumModuleRequests(module: TealiumModule?, process: TealiumRequest) {
         delegateExpectationSuccess?.fulfill()
 
         self.process = process

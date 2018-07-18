@@ -9,7 +9,7 @@
 import Foundation
 
 /**
-    Coordinates optional modules with primary Tealium class.
+ Coordinates optional modules with primary Tealium class.
  */
 class TealiumModulesManager: NSObject {
 
@@ -19,7 +19,7 @@ class TealiumModulesManager: NSObject {
     var modulesRequestingReport = [Weak<TealiumModule>]()
     let timeoutMillisecondIncrement = 500
     var timeoutMillisecondCurrent = 0
-    var timeoutMillisecondMax = 10000   // TODO: Make this alterable via config
+    var timeoutMillisecondMax = 10000
 
     func setupModulesFrom(config: TealiumConfig) {
         let modulesList = config.getModulesList()
@@ -81,9 +81,10 @@ class TealiumModulesManager: NSObject {
 
         if notReady.isEmpty == false {
             timeoutMillisecondCurrent += timeoutMillisecondIncrement
-            // TODO: queue events instead of dropping
             if timeoutMillisecondCurrent >= timeoutMillisecondMax {
-                print("*** Track call dropped: Tealium library module(s) not ready in time: \(notReady). Try making call at a later time.")
+                // if modules are not ready after timeout, event is queued until later
+                let request = TealiumEnqueueRequest(data: track, completion: nil)
+                tealiumModuleRequests(module: nil, process: request)
                 return
             }
             let delay = DispatchTime.now() + .milliseconds(timeoutMillisecondCurrent)
@@ -136,14 +137,16 @@ extension TealiumModulesManager: TealiumModuleDelegate {
         nextModule.handle(process)
     }
 
-    func tealiumModuleRequests(module: TealiumModule,
+    func tealiumModuleRequests(module: TealiumModule?,
                                process: TealiumRequest) {
         // Module wants to be notified when last module has finished processing
         //  any requests.
         if process as? TealiumReportNotificationsRequest != nil {
             let existingRequestModule = modulesRequestingReport.filter { $0.value == module }
             if existingRequestModule.count == 0 {
-                modulesRequestingReport.append(Weak(value: module))
+                if let module = module {
+                    modulesRequestingReport.append(Weak(value: module))
+                }
             }
 
             return
@@ -182,7 +185,7 @@ extension TealiumModulesManager: TealiumModuleDelegate {
 
 // MARK: 
 // MARK: MODULEMANAGER EXTENSIONS
-extension Array where Element : TealiumModule {
+extension Array where Element: TealiumModule {
 
     /**
      Convenience for sorting Arrays of TealiumModules by priority number: Lower numbers going first.

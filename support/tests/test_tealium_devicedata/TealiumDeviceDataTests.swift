@@ -6,6 +6,7 @@
 //  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 
+@testable import Tealium
 import XCTest
 
 class TealiumDeviceDataTests: XCTestCase {
@@ -22,7 +23,7 @@ class TealiumDeviceDataTests: XCTestCase {
 
     func testMinimumProtocolsReturn() {
         let expectation = self.expectation(description: "minimumProtocolsReturned")
-        let helper = test_tealium_helper()
+        let helper = TestTealiumHelper()
         let module = TealiumDeviceDataModule(delegate: nil)
         helper.modulesReturnsMinimumProtocols(module: module) { success, failingProtocols in
 

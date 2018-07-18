@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension RangeReplaceableCollection where Iterator.Element : Equatable {
+extension RangeReplaceableCollection where Iterator.Element: Equatable {
     @discardableResult
     mutating func remove(_ element: Iterator.Element) -> Iterator.Element? {
         if let index = self.index(of: element) {

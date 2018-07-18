@@ -17,8 +17,6 @@ enum TealiumCollectKey {
     static let overrideCollectUrl = "tealium_override_collect_url"
     static let payload = "payload"
     static let responseHeader = "response_headers"
-    static let dispatchService = "dispatch_service"
-    static let wasQueue = "was_queued"
 }
 
 enum TealiumCollectError: Error {
@@ -54,7 +52,6 @@ extension Tealium {
                     encodedURLString = encodedURLStringRaw
                 }
 
-                // TODO: convert error to NSError
                 completion?(success, encodedURLString, nil)
         })
     }
@@ -122,8 +119,12 @@ class TealiumCollectModule: TealiumModule {
             return
         }
 
+        if track.data[TealiumKey.event] as? String == TealiumConsentConstants.updateConsentCookieEventName {
+            didFinishWithNoResponse(track)
+            return
+        }
+
         guard let collect = self.collect else {
-            // TODO: Queue instead?
             didFailToFinish(track,
                             error: TealiumCollectError.collectNotInitialized)
             return
@@ -165,7 +166,7 @@ class TealiumCollectModule: TealiumModule {
                   collect: TealiumCollect) {
 
         var newData = track.data
-        newData[TealiumCollectKey.dispatchService] = TealiumCollectKey.moduleName
+        newData[TealiumKey.dispatchService] = TealiumCollectKey.moduleName
 
         collect.dispatch(data: newData, completion: { [weak self] success, info, error in
 

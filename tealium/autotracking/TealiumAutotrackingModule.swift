@@ -143,7 +143,9 @@ class TealiumAutotrackingModule: TealiumModule {
         isEnabled = false
 
         if notificationsEnabled == true {
+            // swiftlint:disable notification_center_detachment
             NotificationCenter.default.removeObserver(self)
+            // swiftlint:enable notification_center_detachment
             notificationsEnabled = false
         }
 

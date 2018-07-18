@@ -46,7 +46,7 @@ class TealiumAppDataModule: TealiumModule {
     }
 
     override func enable(_ request: TealiumEnableRequest) {
-        let loadRequest = TealiumLoadRequest(name: TealiumAppDataModule.moduleConfig().name) { [weak self] (_, data, _) in
+        let loadRequest = TealiumLoadRequest(name: TealiumAppDataModule.moduleConfig().name) { [weak self] _, data, _ in
 
             // No prior saved data
             guard let loadedData = data else {

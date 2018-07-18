@@ -54,7 +54,6 @@ open class TealiumLifecyclePersistentData {
         let data = NSKeyedArchiver.archivedData(withRootObject: lifecycle)
 
         UserDefaults.standard.set(data, forKey: usingUniqueId)
-        UserDefaults.standard.synchronize()
         #if swift(>=4.0)
         guard let defaultsCheckData = UserDefaults.standard.object(forKey: usingUniqueId) as? Data else {
             return (false, TealiumLifecyclePersistentDataError.couldNotArchiveAsData)
@@ -89,7 +88,6 @@ open class TealiumLifecyclePersistentData {
         }
 
         UserDefaults.standard.removeObject(forKey: forUniqueId)
-        UserDefaults.standard.synchronize()
 
         if UserDefaults.standard.object(forKey: forUniqueId) == nil {
             return true

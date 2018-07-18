@@ -12,19 +12,19 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
     
     func applicationDidBecomeActive() {
                 
-        TealiumHelper.sharedInstance().tealium?.lifecycle()?.wakeDetected()
+        TealiumHelper.shared.tealium?.lifecycle()?.wakeDetected()
 
     }
     
     func applicationDidFinishLaunching() {
         
-        TealiumHelper.sharedInstance().start()
+        TealiumHelper.shared.start()
         
     }
     
     func applicationWillResignActive() {
         
-        TealiumHelper._sharedInstance.tealium?.lifecycle()?.sleepDetected()
+        TealiumHelper.shared.tealium?.lifecycle()?.sleepDetected()
         
     }
 }

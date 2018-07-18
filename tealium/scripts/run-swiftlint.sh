@@ -7,6 +7,7 @@
 #  Copyright © 2018 Tealium, Inc. All rights reserved.
 
 if which swiftlint > /dev/null; then
+    cd ${PROJECT_DIR}/../tealium/ && swiftlint autocorrect
     swiftlint lint --config ${PROJECT_DIR}/../.swiftlint.yml
 else
     echo “warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint”
