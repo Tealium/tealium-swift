@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "tealium-swift"
-  s.version      = "1.5.0"
+  s.version      = "1.6.0"
   s.summary      = "Tealium Swift Integration Library"
 
   # This description is used to generate tags and improve search results.
@@ -53,18 +53,16 @@ Pod::Spec.new do |s|
   #  profile URL.
   #
 
-  s.author             = { "craigrouse" => "craig.rouse@tealium.com" }
-  # Or just: s.author    = "Tealium Inc."
-  # s.authors            = { "Tealium Inc." => "tealium@tealium.com" }
-  # s.social_media_url   = "http://twitter.com/tealium"
+  s.authors            = { "Tealium Inc." => "tealium@tealium.com",
+                           "craigrouse"   => "craig.rouse@tealium.com" }
+  s.social_media_url   = "http://twitter.com/tealium"
 
   # ――― Platform Specifics ――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
   #  If this Pod runs only on iOS or OS X, then specify the platform and
   #  the deployment target. You can optionally include the target after the platform.
   #
-
-  # s.platform     = :ios
+  s.swift_version = '4.0'
   s.platform     = :ios, "9.0"
   s.platform     = :osx, "10.11"
   s.platform     = :watchos, "3.0"

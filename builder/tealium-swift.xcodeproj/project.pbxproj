@@ -1248,13 +1248,13 @@
 			path = "tealium-swift";
 			sourceTree = "<group>";
 		};
-		718A73591DE35EA400A45255 /* appData */ = {
+		718A73591DE35EA400A45255 /* appdata */ = {
 			isa = PBXGroup;
 			children = (
 				4B7444C42006D56C00616F95 /* TealiumAppData.swift */,
 				718A735B1DE35EA400A45255 /* TealiumAppDataModule.swift */,
 			);
-			path = appData;
+			path = appdata;
 			sourceTree = "<group>";
 		};
 		718A73671DE366CB00A45255 /* test_tealium_appdata */ = {
@@ -1324,7 +1324,7 @@
 			isa = PBXGroup;
 			children = (
 				4B7444E52007CAF100616F95 /* scripts */,
-				718A73591DE35EA400A45255 /* appData */,
+				718A73591DE35EA400A45255 /* appdata */,
 				71F085BD1DDE154C008850C8 /* attribution */,
 				71D2B34C1E2FE3670049BCF3 /* autotracking */,
 				71F085C01DDE154C008850C8 /* collect */,
@@ -1340,7 +1340,7 @@
 				711834B71EE70EEE00E86D0F /* filestorage */,
 				712184711E536099000DCE07 /* lifecycle */,
 				71F085D31DDE154C008850C8 /* logger */,
-				71F086751DDF574A008850C8 /* persistentData */,
+				71F086751DDF574A008850C8 /* persistentdata */,
 				71F63A441E799C0D006A723F /* remotecommands */,
 				7166E7EF1E60079F00FCA9EE /* tagmanagement */,
 				71F085D81DDE154C008850C8 /* volatiledata */,
@@ -1424,12 +1424,12 @@
 			path = test_tealium_persistentdata;
 			sourceTree = "<group>";
 		};
-		71F086751DDF574A008850C8 /* persistentData */ = {
+		71F086751DDF574A008850C8 /* persistentdata */ = {
 			isa = PBXGroup;
 			children = (
 				71F0867C1DDF574A008850C8 /* TealiumPersistentDataModule.swift */,
 			);
-			path = persistentData;
+			path = persistentdata;
 			sourceTree = "<group>";
 		};
 		71F63A441E799C0D006A723F /* remotecommands */ = {

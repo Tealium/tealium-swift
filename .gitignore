@@ -10,3 +10,4 @@ Carthage/
 Cartfile.resolved
 .idea
 Pods/
+build/
