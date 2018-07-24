@@ -55,6 +55,7 @@ class TealiumHelper : NSObject {
                         
                 // Optional processing post init.
                 print("*** TealiumHelper: tealium init: response: \(responses)")
+                            self.tealium?.consentManager()?.setUserConsentStatus(.consented)
                             
         })
         
