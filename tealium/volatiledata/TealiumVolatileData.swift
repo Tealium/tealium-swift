@@ -15,6 +15,13 @@ public protocol TealiumVolatileDataCollection {
 public class TealiumVolatileData: NSObject, TealiumVolatileDataCollection {
 
     fileprivate var volatileData = [String: Any]()
+    public var minutesBetweenSessionIdentifier: TimeInterval = 30.0
+    var lastTrackEvent: Date?
+    var sessionIdentifier: String
+
+    override init() {
+        sessionIdentifier = TealiumVolatileData.newSessionId()
+    }
 
     func sync(lock: NSObject, closure: () -> Void) {
         objc_sync_enter(lock)
@@ -64,8 +71,8 @@ public class TealiumVolatileData: NSObject, TealiumVolatileDataCollection {
                 volatileData.removeValue(forKey: key)
             }
         }
-
     }
+
     /**
      Delete all volatile data.
      */
@@ -117,6 +124,19 @@ public class TealiumVolatileData: NSObject, TealiumVolatileDataCollection {
 
     class func newSessionId() -> String {
         return getTimestampInMilliseconds(Date())
+    }
+
+    func newSessionIdentifierIfNeeded() -> String {
+        if let lastTrackEvent = lastTrackEvent {
+            let timeDifference = lastTrackEvent.timeIntervalSinceNow
+            if abs(timeDifference) > minutesBetweenSessionIdentifier * 60 {
+                sessionIdentifier = TealiumVolatileData.newSessionId()
+            }
+        } else {
+            sessionIdentifier = TealiumVolatileData.newSessionId()
+        }
+
+        return sessionIdentifier
     }
 
     public func currentTimeStamps() -> [String: Any] {

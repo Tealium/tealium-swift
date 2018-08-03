@@ -127,6 +127,46 @@ class TealiumVolatileDataTests: XCTestCase {
         XCTAssertNotEqual(sessionId, resultSessionId, "sessionIds should be different")
     }
 
+    func testNewSessionIdentifierIfNeeded_DoesNotGenerateNewSessionIdentifier() {
+        guard let volatileData = volatileData else {
+            XCTFail("TealiumVolatileData did not spin up expectedly.")
+            return
+        }
+
+        let sessionId1 = volatileData.newSessionIdentifierIfNeeded()
+        let sessionId2 = volatileData.newSessionIdentifierIfNeeded()
+        let sessionId3 = volatileData.newSessionIdentifierIfNeeded()
+
+        XCTAssertEqual(sessionId1, sessionId2)
+        XCTAssertEqual(sessionId1, sessionId3)
+    }
+
+    func testNewSessionIdentifierIfNeeded_GeneratesNewSessionIdentifier() {
+        guard let volatileData = volatileData else {
+            XCTFail("TealiumVolatileData did not spin up expectedly.")
+            return
+        }
+
+        volatileData.minutesBetweenSessionIdentifier = 0.005
+        let sessionId1 = volatileData.newSessionIdentifierIfNeeded()
+        Thread.sleep(until: Date().addingTimeInterval(0.006 * 60))
+        let sessionId2 = volatileData.newSessionIdentifierIfNeeded()
+        Thread.sleep(until: Date().addingTimeInterval(0.006 * 60))
+        let sessionId3 = volatileData.newSessionIdentifierIfNeeded()
+
+        XCTAssertNotEqual(sessionId1, sessionId2)
+        XCTAssertNotEqual(sessionId2, sessionId3)
+    }
+
+    func testNewSessionIdIsWholeNumber() {
+        for _ in 1...1000 {
+            let sessionId = TealiumVolatileData.newSessionId()
+            let components = sessionId.components(separatedBy: ".")
+
+            XCTAssertEqual(1, components.count)
+        }
+    }
+
     func testVolatileData() {
         // TODO: test arrays and other value types
         let testData = [

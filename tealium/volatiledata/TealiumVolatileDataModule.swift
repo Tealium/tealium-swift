@@ -54,17 +54,17 @@ class TealiumVolatileDataModule: TealiumModule {
     override func enable(_ request: TealiumEnableRequest) {
         isEnabled = true
         let config = request.config
+
         let currentStaticData: [String: Any] = [TealiumKey.account: config.account,
                                                 TealiumKey.profile: config.profile,
                                                 TealiumKey.environment: config.environment,
                                                 TealiumKey.libraryName: TealiumValue.libraryName,
                                                 TealiumKey.libraryVersion: TealiumValue.libraryVersion,
-                                                TealiumVolatileDataKey.sessionId: TealiumVolatileData.newSessionId()]
+                                                TealiumVolatileDataKey.sessionId: volatileData.newSessionIdentifierIfNeeded()]
 
         volatileData.add(data: currentStaticData)
 
         didFinish(request)
-
     }
 
     override func disable(_ request: TealiumDisableRequest) {
@@ -76,12 +76,13 @@ class TealiumVolatileDataModule: TealiumModule {
     override func track(_ track: TealiumTrackRequest) {
         var newData = [String: Any]()
 
-        newData += volatileData.getData()
         newData += track.data
+        volatileData.setSessionId(sessionId: volatileData.newSessionIdentifierIfNeeded())
+        newData += volatileData.getData()
 
         let newTrack = TealiumTrackRequest(data: newData,
                                            completion: track.completion)
-
         didFinish(newTrack)
+        volatileData.lastTrackEvent = Date()
     }
 }
