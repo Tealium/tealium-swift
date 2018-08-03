@@ -60,7 +60,7 @@ class TealiumVolatileDataModule: TealiumModule {
                                                 TealiumKey.environment: config.environment,
                                                 TealiumKey.libraryName: TealiumValue.libraryName,
                                                 TealiumKey.libraryVersion: TealiumValue.libraryVersion,
-                                                TealiumVolatileDataKey.sessionId: volatileData.newSessionIdentifierIfNeeded()]
+                                                TealiumVolatileDataKey.sessionId: TealiumVolatileData.newSessionId()]
 
         volatileData.add(data: currentStaticData)
 
@@ -77,7 +77,11 @@ class TealiumVolatileDataModule: TealiumModule {
         var newData = [String: Any]()
 
         newData += track.data
-        volatileData.setSessionId(sessionId: volatileData.newSessionIdentifierIfNeeded())
+
+        if volatileData.shouldRefreshSessionIdentifier() {
+            volatileData.setSessionId(sessionId: TealiumVolatileData.newSessionId())
+        }
+
         newData += volatileData.getData()
 
         let newTrack = TealiumTrackRequest(data: newData,

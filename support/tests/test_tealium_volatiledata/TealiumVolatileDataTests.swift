@@ -127,35 +127,39 @@ class TealiumVolatileDataTests: XCTestCase {
         XCTAssertNotEqual(sessionId, resultSessionId, "sessionIds should be different")
     }
 
-    func testNewSessionIdentifierIfNeeded_DoesNotGenerateNewSessionIdentifier() {
+    func testShouldRefreshSessionIdentifier_false() {
         guard let volatileData = volatileData else {
             XCTFail("TealiumVolatileData did not spin up expectedly.")
             return
         }
 
-        let sessionId1 = volatileData.newSessionIdentifierIfNeeded()
-        let sessionId2 = volatileData.newSessionIdentifierIfNeeded()
-        let sessionId3 = volatileData.newSessionIdentifierIfNeeded()
+        volatileData.lastTrackEvent = Date()
 
-        XCTAssertEqual(sessionId1, sessionId2)
-        XCTAssertEqual(sessionId1, sessionId3)
+        Thread.sleep(until: Date().addingTimeInterval(0.006 * 60))
+        var result = volatileData.shouldRefreshSessionIdentifier()
+        XCTAssertFalse(result)
+
+        Thread.sleep(until: Date().addingTimeInterval(0.006 * 60))
+        result = volatileData.shouldRefreshSessionIdentifier()
+        XCTAssertFalse(result)
     }
 
-    func testNewSessionIdentifierIfNeeded_GeneratesNewSessionIdentifier() {
+    func testShouldRefreshSessionIdentifier_true() {
         guard let volatileData = volatileData else {
             XCTFail("TealiumVolatileData did not spin up expectedly.")
             return
         }
 
         volatileData.minutesBetweenSessionIdentifier = 0.005
-        let sessionId1 = volatileData.newSessionIdentifierIfNeeded()
-        Thread.sleep(until: Date().addingTimeInterval(0.006 * 60))
-        let sessionId2 = volatileData.newSessionIdentifierIfNeeded()
-        Thread.sleep(until: Date().addingTimeInterval(0.006 * 60))
-        let sessionId3 = volatileData.newSessionIdentifierIfNeeded()
+        volatileData.lastTrackEvent = Date()
 
-        XCTAssertNotEqual(sessionId1, sessionId2)
-        XCTAssertNotEqual(sessionId2, sessionId3)
+        Thread.sleep(until: Date().addingTimeInterval(0.006 * 60))
+        var result = volatileData.shouldRefreshSessionIdentifier()
+        XCTAssertTrue(result)
+
+        Thread.sleep(until: Date().addingTimeInterval(0.006 * 60))
+        result = volatileData.shouldRefreshSessionIdentifier()
+        XCTAssertTrue(result)
     }
 
     func testNewSessionIdIsWholeNumber() {
