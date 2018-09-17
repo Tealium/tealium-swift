@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "tealium-swift"
-  s.version      = "1.6.1"
+  s.version      = "1.6.2"
   s.summary      = "Tealium Swift Integration Library"
 
   # This description is used to generate tags and improve search results.

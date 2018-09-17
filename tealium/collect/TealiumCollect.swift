@@ -43,7 +43,7 @@ public class TealiumCollect {
      Packages data sources into expecteed URL call format and sends
      
      - Parameters:
-     - Data: dictionary of all key-values to bve sent with dispatch.
+     - Data: dictionary of all key-values to be sent with dispatch.
      - completion: passes a completion to send function
      */
     public func dispatch(data: [String: Any],
@@ -158,7 +158,6 @@ public class TealiumCollect {
             var value = dictionary[key]
 
             if let valueString = value as? String {
-
                 value = valueString
             } else if let stringArray = value as? [String] {
                 value = "\(stringArray)"
