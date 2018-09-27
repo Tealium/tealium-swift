@@ -96,10 +96,10 @@ Pod::Spec.new do |s|
 
   s.subspec "Core" do |core|
     core.source_files  = 'tealium/**/*'
-    core.ios.exclude_files = "tealium/crash/*"
-    core.tvos.exclude_files = 'tealium/tagmanagement/TealiumTagManagementModule.swift', 'tealium/remotecommands/*', 'tealium/attribution/*', "tealium/crash/*"
-    core.watchos.exclude_files = 'tealium/tagmanagement/TealiumTagManagementModule.swift', 'tealium/autotracking/*', 'tealium/connectivity/*', 'tealium/remotecommands/*', 'tealium/attribution/*', "tealium/crash/*"
-    core.osx.exclude_files = 'tealium/tagmanagement/TealiumTagManagementModule.swift', 'tealium/autotracking/*', 'tealium/remotecommands/*', 'tealium/attribution/*', "tealium/crash/*"
+    core.ios.exclude_files = 'tealium/crash/*', 'tealium/scripts/*'
+    core.tvos.exclude_files = 'tealium/tagmanagement/TealiumTagManagementModule.swift', 'tealium/remotecommands/*', 'tealium/attribution/*', "tealium/crash/*", 'tealium/scripts/*'
+    core.watchos.exclude_files = 'tealium/tagmanagement/TealiumTagManagementModule.swift', 'tealium/autotracking/*', 'tealium/connectivity/*', 'tealium/remotecommands/*', 'tealium/attribution/*', "tealium/crash/*", 'tealium/scripts/*'
+    core.osx.exclude_files = 'tealium/tagmanagement/TealiumTagManagementModule.swift', 'tealium/autotracking/*', 'tealium/remotecommands/*', 'tealium/attribution/*', "tealium/crash/*", 'tealium/scripts/*'
   end
 
   s.subspec "Crash" do |crash|
