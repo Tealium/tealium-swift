@@ -369,7 +369,7 @@ public class TealiumTagManagement: NSObject {
 
 extension TealiumTagManagement: UIWebViewDelegate {
 
-    public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+    public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool {
 
         var shouldStart = true
 
