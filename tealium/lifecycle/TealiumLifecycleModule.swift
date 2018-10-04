@@ -153,14 +153,23 @@ public class TealiumLifecycleModule: TealiumModule {
             #else
                 #if os(OSX)
                 #else
+
+                    #if swift(>=4.0)
+                        let notificationNameApplicationDidBecomeActive = UIApplication.didBecomeActiveNotification
+                        let notificationNameApplicationWillResignActive = UIApplication.willResignActiveNotification
+                    #else
+                        let notificationNameApplicationDidBecomeActive = NSNotification.Name.UIApplicationDidBecomeActive
+                        let notificationNameApplicationWillResignActive = NSNotification.Name.UIApplicationWillResignActive
+                    #endif
+
                     NotificationCenter.default.addObserver(self,
                                                            selector: #selector(wakeDetected),
-                                                           name: NSNotification.Name.UIApplicationDidBecomeActive,
+                                                           name: notificationNameApplicationDidBecomeActive,
                                                            object: nil)
 
                     NotificationCenter.default.addObserver(self,
                                                            selector: #selector(sleepDetected),
-                                                           name: NSNotification.Name.UIApplicationWillResignActive,
+                                                           name: notificationNameApplicationWillResignActive,
                                                            object: nil)
 
                 #endif
