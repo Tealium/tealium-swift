@@ -49,7 +49,8 @@ public class TealiumConnectivity {
             }
         }
 
-        var flags: SCNetworkReachabilityFlags = SCNetworkReachabilityFlags(rawValue: 0)
+        var flags: SCNetworkReachabilityFlags = SCNetworkReachabilityFlags()
+        SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags)
         #if os(OSX)
             connectionType = TealiumConnectivityKey.connectionTypeWifi
         #else
