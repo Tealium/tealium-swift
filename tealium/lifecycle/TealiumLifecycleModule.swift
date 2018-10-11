@@ -5,16 +5,16 @@
 //  Created by Jason Koo on 1/10/17.
 //  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
-// 
+//
 
 import Foundation
 
 #if TEST
 #else
-    #if os(OSX)
-    #else
-        import UIKit
-    #endif
+#if os(OSX)
+#else
+import UIKit
+#endif
 #endif
 
 // MARK: 
@@ -107,8 +107,8 @@ public class TealiumLifecycleModule: TealiumModule {
         }
 
         // NOTE: This type of check will fail.
-//        if request is TealiumEnableRequest {
-//        }
+        //        if request is TealiumEnableRequest {
+        //        }
     }
 
     override public func track(_ track: TealiumTrackRequest) {
@@ -146,25 +146,33 @@ public class TealiumLifecycleModule: TealiumModule {
     // MARK: INTERNAL
 
     func addListeners() {
-        // Pretty gross
         #if TEST
         #else
-            #if os(watchOS)
-            #else
-                #if os(OSX)
-                #else
-                    NotificationCenter.default.addObserver(self,
-                                                           selector: #selector(wakeDetected),
-                                                           name: NSNotification.Name.UIApplicationDidBecomeActive,
-                                                           object: nil)
+        #if os(watchOS)
+        #else
+        #if os(OSX)
+        #else
 
-                    NotificationCenter.default.addObserver(self,
-                                                           selector: #selector(sleepDetected),
-                                                           name: NSNotification.Name.UIApplicationWillResignActive,
-                                                           object: nil)
+        #if swift(>=4.2)
+        let notificationNameApplicationDidBecomeActive = UIApplication.didBecomeActiveNotification
+        let notificationNameApplicationWillResignActive = UIApplication.willResignActiveNotification
+        #else
+        let notificationNameApplicationDidBecomeActive = NSNotification.Name.UIApplicationDidBecomeActive
+        let notificationNameApplicationWillResignActive = NSNotification.Name.UIApplicationWillResignActive
+        #endif
 
-                #endif
-            #endif
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(wakeDetected),
+                                               name: notificationNameApplicationDidBecomeActive,
+                                               object: nil)
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(sleepDetected),
+                                               name: notificationNameApplicationWillResignActive,
+                                               object: nil)
+
+        #endif
+        #endif
         #endif
         areListenersActive = true
     }
@@ -284,7 +292,7 @@ public class TealiumLifecycleModule: TealiumModule {
         if areListenersActive == true {
             #if os(OSX)
             #else
-                NotificationCenter.default.removeObserver(self)
+            NotificationCenter.default.removeObserver(self)
             #endif
         }
     }

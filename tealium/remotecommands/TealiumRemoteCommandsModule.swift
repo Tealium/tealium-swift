@@ -430,7 +430,7 @@ class TealiumRemoteHTTPCommand: TealiumRemoteCommand {
                             guard let response = weakResponse else {
                                 return
                             }
-                            // Gross legacy status reporting
+                            // Legacy status reporting
                             if let err = error {
                                 response.error = err
                                 response.status = TealiumRemoteCommandStatusCode.failure.rawValue

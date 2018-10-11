@@ -34,10 +34,10 @@ public enum TealiumLoggerModuleError: Error {
 let defaultTealiumLogLevel: TealiumLogLevel = .errors
 
 public enum TealiumLogLevel: Int, Comparable {
-    case none
-    case errors
-    case warnings
-    case verbose
+    case none = 0
+    case errors = 1
+    case warnings = 2
+    case verbose = 3
 
     var description: String {
         switch self {

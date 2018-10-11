@@ -23,7 +23,7 @@ public class TealiumLogger {
     }
 
     public func log(message: String, logLevel: TealiumLogLevel) -> String? {
-        if logThreshold.hashValue >= logLevel.hashValue {
+        if logThreshold >= logLevel {
             var verbosity = ""
             if logLevel == .errors { verbosity = "ERROR: " }
             if logLevel == .warnings { verbosity = "WARNING: " }
