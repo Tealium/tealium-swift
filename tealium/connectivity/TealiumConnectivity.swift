@@ -44,20 +44,21 @@ public class TealiumConnectivity {
         zeroAddress.sin_family = sa_family_t(AF_INET)
 
         let defaultRouteReachability = withUnsafePointer(to: &zeroAddress) {
-            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {zeroSockAddress in
+            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) { zeroSockAddress in
                 SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
             }
         }
 
-        var flags: SCNetworkReachabilityFlags = SCNetworkReachabilityFlags(rawValue: 0)
+        var flags: SCNetworkReachabilityFlags = SCNetworkReachabilityFlags()
+        SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags)
         #if os(OSX)
-            connectionType = TealiumConnectivityKey.connectionTypeWifi
+        connectionType = TealiumConnectivityKey.connectionTypeWifi
         #else
-            if flags.contains(.isWWAN) == true {
-                connectionType = TealiumConnectivityKey.connectionTypeCell
-            } else if flags.contains(.connectionRequired) == false {
-                connectionType = TealiumConnectivityKey.connectionTypeWifi
-            }
+        if flags.contains(.isWWAN) == true {
+            connectionType = TealiumConnectivityKey.connectionTypeCell
+        } else if flags.contains(.connectionRequired) == false {
+            connectionType = TealiumConnectivityKey.connectionTypeWifi
+        }
         #endif
 
         if SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) == false {
@@ -83,54 +84,54 @@ public extension TealiumConnectivity {
         connectivityDelegates.add(delegate)
     }
 
-    func removeAllConnectivityDelegates () {
+    func removeAllConnectivityDelegates() {
         connectivityDelegates.removeAll()
     }
 
     // MARK: Delegate Methods
-    func connectionTypeChanged (_ connectionType: String) {
+    func connectionTypeChanged(_ connectionType: String) {
         connectivityDelegates.invoke {
             $0.connectionTypeChanged(connectionType)
         }
     }
 
     // MARK: Delegate Methods
-    func connectionLost () {
+    func connectionLost() {
         connectivityDelegates.invoke {
             $0.connectionLost()
         }
     }
 
     // MARK: Delegate Methods
-    func connectionRestored () {
+    func connectionRestored() {
         connectivityDelegates.invoke {
             $0.connectionRestored()
         }
     }
 
-    func refreshConnectivityStatus (_ interval: Int = TealiumConnectivityConstants.defaultInterval) {
+    func refreshConnectivityStatus(_ interval: Int = TealiumConnectivityConstants.defaultInterval) {
         TealiumConnectivity.currentConnectionStatus = TealiumConnectivity.isConnectedToNetwork()
         let queue = DispatchQueue(label: "com.tealium.connectivity")
         timer = DispatchSource.makeTimerSource(flags: .strict, queue: queue)
         // todo: make configurable
         timer?.schedule(deadline: .now(), repeating: .seconds(60), leeway: .seconds(interval))
         timer?.setEventHandler {
-                let connected = TealiumConnectivity.isConnectedToNetwork()
-                if let connectionType = TealiumConnectivity.connectionType {
-                    if connectionType != self.currentConnectivityType {
-                        self.connectionTypeChanged(connectionType)
-                    }
-                    self.currentConnectivityType = connectionType
+            let connected = TealiumConnectivity.isConnectedToNetwork()
+            if let connectionType = TealiumConnectivity.connectionType {
+                if connectionType != self.currentConnectivityType {
+                    self.connectionTypeChanged(connectionType)
                 }
+                self.currentConnectivityType = connectionType
+            }
 
-                if connected != TealiumConnectivity.currentConnectionStatus {
-                    switch connected {
-                        case true:
-                            self.connectionRestored()
-                        case false:
-                            self.connectionLost()
-                    }
+            if connected != TealiumConnectivity.currentConnectionStatus {
+                switch connected {
+                case true:
+                    self.connectionRestored()
+                case false:
+                    self.connectionLost()
                 }
+            }
             TealiumConnectivity.currentConnectionStatus = TealiumConnectivity.isConnectedToNetwork()
         }
         timer?.resume()

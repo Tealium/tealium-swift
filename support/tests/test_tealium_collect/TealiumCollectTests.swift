@@ -97,7 +97,7 @@ class TealiumCollectTests: XCTestCase {
     func testDispatch() {
         // Check to see that encoding with dispatch was correctly converted to expected URL
         // NOTE: We'll always need to update this expected URL with the current lib version. This is fine, sort of an extra layer of check on that value prior to production release.
-        let expectedURL = "https://collect.tealiumiq.com/vdata/i.gif?tealium_account=account&tealium_environment=environment&tealium_event=test&tealium_library_name=swift&tealium_library_version=1.6.2&tealium_profile=profile&tealium_random=someRandomNumber&tealium_session_id=someSessionId&tealium_visitor_id=someVisitorId"
+        let expectedURL = "https://collect.tealiumiq.com/vdata/i.gif?tealium_account=account&tealium_environment=environment&tealium_event=test&tealium_library_name=swift&tealium_library_version=\(TealiumValue.libraryVersion)&tealium_profile=profile&tealium_random=someRandomNumber&tealium_session_id=someSessionId&tealium_visitor_id=someVisitorId"
 
         let collect = TealiumCollect(baseURL: TealiumCollect.defaultBaseURLString())
         let expectation = self.expectation(description: "dispatch")

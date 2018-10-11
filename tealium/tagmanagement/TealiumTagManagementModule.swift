@@ -113,16 +113,16 @@ class TealiumTagManagementModule: TealiumModule {
                                      environment: environment,
                                      overrideUrl: overrideUrl,
                                      completion: { _, error in
-                                        sel.dispatchQueue?.async {
-                                            if let err = error {
-                                                sel.didFailToFinish(request,
-                                                                    error: err)
-                                                return
-                                            }
-                                            sel.isEnabled = true
-                                            sel.didFinish(request)
-                                        }
-            })
+                                         sel.dispatchQueue?.async {
+                                             if let err = error {
+                                                 sel.didFailToFinish(request,
+                                                         error: err)
+                                                 return
+                                             }
+                                             sel.isEnabled = true
+                                             sel.didFinish(request)
+                                         }
+                                     })
         }
     }
 
@@ -188,22 +188,22 @@ class TealiumTagManagementModule: TealiumModule {
 
             #if TEST
             #else
-                sel.tagManagement.track(track.data,
-                                        completion: { success, info, error in
+            sel.tagManagement.track(track.data,
+                                    completion: { success, info, error in
                                         sel.dispatchQueue?.async {
 
                                             track.completion?(success, info, error)
 
                                             if error != nil {
                                                 sel.didFailToFinish(track,
-                                                                    info: info,
-                                                                    error: error!)
+                                                        info: info,
+                                                        error: error!)
                                                 return
                                             }
                                             sel.didFinish(track,
                                                           info: info)
                                         }
-                })
+                                    })
             #endif
         }
     }
@@ -328,8 +328,12 @@ public class TealiumTagManagement: NSObject {
     ///
     /// - Returns: Bool indicating whether or not the internal webview is ready for dispatching.
     func isWebViewReady() -> Bool {
-        guard nil != webView else { return false }
-        if didWebViewFinishLoading == false { return false }
+        guard nil != webView else {
+            return false
+        }
+        if didWebViewFinishLoading == false {
+            return false
+        }
 
         return true
     }
@@ -367,9 +371,16 @@ public class TealiumTagManagement: NSObject {
 
 }
 
-extension TealiumTagManagement: UIWebViewDelegate {
+#if swift(>=4.2)
+public typealias WebViewNavigationTypeAlias = UIWebView.NavigationType
+#else
+public typealias WebViewNavigationTypeAlias = UIWebViewNavigationType
+#endif
 
-    public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+extension TealiumTagManagement: UIWebViewDelegate {
+    public func webView(_ webView: UIWebView,
+                        shouldStartLoadWith request: URLRequest,
+                        navigationType: WebViewNavigationTypeAlias) -> Bool {
 
         var shouldStart = true
 
@@ -384,10 +395,11 @@ extension TealiumTagManagement: UIWebViewDelegate {
         NotificationCenter.default.post(notification)
 
         // Look for false from any delegate
-        delegates.invoke { if $0.webView?(webView,
-                                          shouldStartLoadWith: request,
-                                          navigationType: navigationType) == false {
-            shouldStart = false
+        delegates.invoke {
+            if $0.webView?(webView,
+                    shouldStartLoadWith: request,
+                    navigationType: navigationType) == false {
+                shouldStart = false
             }
         }
 
@@ -395,11 +407,15 @@ extension TealiumTagManagement: UIWebViewDelegate {
     }
 
     public func webViewDidStartLoad(_ webView: UIWebView) {
-        delegates.invoke { $0.webViewDidStartLoad?(webView) }
+        delegates.invoke {
+            $0.webViewDidStartLoad?(webView)
+        }
     }
 
     public func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
-        delegates.invoke { $0.webView?(webView, didFailLoadWithError: error) }
+        delegates.invoke {
+            $0.webView?(webView, didFailLoadWithError: error)
+        }
         if didWebViewFinishLoading == true {
             return
         }
@@ -409,7 +425,9 @@ extension TealiumTagManagement: UIWebViewDelegate {
 
     public func webViewDidFinishLoad(_ webView: UIWebView) {
         didWebViewFinishLoading = true
-        delegates.invoke { $0.webViewDidFinishLoad?(webView) }
+        delegates.invoke {
+            $0.webViewDidFinishLoad?(webView)
+        }
 
         DispatchQueue.global(qos: .background).async {
 
@@ -450,18 +468,12 @@ class TealiumTagManagementUtils {
         var clean = [String: Any]()
 
         for (key, value) in dictionary {
-
-            if value is String ||
-                value is [String] {
-
+            if value is String || value is [String] {
                 clean[key] = value
-
             } else {
-
                 let stringified = "\(value)"
                 clean[key] = stringified
             }
-
         }
 
         return clean

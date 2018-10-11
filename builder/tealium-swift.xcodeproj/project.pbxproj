@@ -69,7 +69,6 @@
 		4BB091312022763C00DCA625 /* TealiumRemoteCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB091222022753900DCA625 /* TealiumRemoteCommand.swift */; };
 		4BB091322022763D00DCA625 /* TealiumRemoteCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB091222022753900DCA625 /* TealiumRemoteCommand.swift */; };
 		4BB091332022763D00DCA625 /* TealiumRemoteCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB091222022753900DCA625 /* TealiumRemoteCommand.swift */; };
-		4BD4D88320450865005C3045 /* TealiumCrashReporteriOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BD4D7F12040D0FC005C3045 /* TealiumCrashReporteriOS.framework */; };
 		4BD4D99D2047766F005C3045 /* TealiumAppData.swift in Headers */ = {isa = PBXBuildFile; fileRef = 4B7444C42006D56C00616F95 /* TealiumAppData.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		4BD4D99E204776A1005C3045 /* TealiumCollect.swift in Headers */ = {isa = PBXBuildFile; fileRef = 4B7445352008026D00616F95 /* TealiumCollect.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		4BD4D99F204776B5005C3045 /* TealiumLogger.swift in Headers */ = {isa = PBXBuildFile; fileRef = 4B0187D82006B56A0057E281 /* TealiumLogger.swift */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -386,8 +385,6 @@
 		D782AE041FBF38C400D80E39 /* lifecycle_events_with_crashes.json in Resources */ = {isa = PBXBuildFile; fileRef = 712184861E5360B5000DCE07 /* lifecycle_events_with_crashes.json */; };
 		D78C11BB20BF0DFF00103ABF /* Tealium.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2258C2481DD4E9D300E83806 /* Tealium.framework */; };
 		D78C11BC20BF0DFF00103ABF /* Tealium.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2258C2481DD4E9D300E83806 /* Tealium.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D78C11C020BF120D00103ABF /* TealiumCrashReporteriOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4BD4D7F12040D0FC005C3045 /* TealiumCrashReporteriOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D78C11C120BF3A6F00103ABF /* TealiumCrashReporteriOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4BD4D7F12040D0FC005C3045 /* TealiumCrashReporteriOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D79A2D842087FB17001C1F80 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79A2D832087FB17001C1F80 /* AppDelegate.swift */; };
 		D79A2D862087FB17001C1F80 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79A2D852087FB17001C1F80 /* ViewController.swift */; };
 		D79A2D892087FB17001C1F80 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D79A2D872087FB17001C1F80 /* Main.storyboard */; };
@@ -526,7 +523,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D78C11C120BF3A6F00103ABF /* TealiumCrashReporteriOS.framework in Embed Frameworks */,
 				D7E69A3420BF05E900597212 /* Tealium.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -557,7 +553,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D78C11C020BF120D00103ABF /* TealiumCrashReporteriOS.framework in Embed Frameworks */,
 				D78C11BC20BF0DFF00103ABF /* Tealium.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -793,7 +788,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4BD4D88320450865005C3045 /* TealiumCrashReporteriOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
