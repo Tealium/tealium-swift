@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class TealiumRemoteCommand {
+open class TealiumRemoteCommand {
 
     let commandId: String
     weak var delegate: TealiumRemoteCommandDelegate?
