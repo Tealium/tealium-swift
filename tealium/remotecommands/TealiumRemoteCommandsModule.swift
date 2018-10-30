@@ -424,12 +424,8 @@ class TealiumRemoteHTTPCommand: TealiumRemoteCommand {
                     return
                 }
 
-                weak var weakResponse = response
                 let task = URLSession.shared.dataTask(with: request,
                                                       completionHandler: { data, urlResponse, error in
-                            guard let response = weakResponse else {
-                                return
-                            }
                             // Legacy status reporting
                             if let err = error {
                                 response.error = err
