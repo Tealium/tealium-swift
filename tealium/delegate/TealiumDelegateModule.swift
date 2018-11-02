@@ -1,8 +1,9 @@
 //
 //  TealiumDelegateModule.swift
+//  tealium-swift
 //
-//  Created by Jason Koo on 2/12/17.
-//  Copyright © 2017 Tealium, Inc. All rights reserved.
+//  Created by Craig Rouse on 2/12/18.
+//  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
 import Foundation
@@ -120,8 +121,9 @@ class TealiumDelegateModule: TealiumModule {
 }
 
 public class TealiumDelegates {
-
+    // swiftlint:disable weak_delegate
     var multicastDelegate = TealiumMulticastDelegate<TealiumDelegate>()
+    // swiftlint:enable weak_delegate
 
     /// Add a weak pointer to a class conforming to the TealiumDelegate protocol.
     ///

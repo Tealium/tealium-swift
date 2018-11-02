@@ -2,7 +2,7 @@
 //  DispatchQueueModuleTests.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 01/05/2018.
+//  Created by Craig Rouse on 01/05/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 

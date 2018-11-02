@@ -2,7 +2,7 @@
 //  TealiumConsentUserPreferences.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 25/04/2018.
+//  Created by Craig Rouse on 4/25/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 

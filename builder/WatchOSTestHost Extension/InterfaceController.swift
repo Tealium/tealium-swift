@@ -2,8 +2,8 @@
 //  InterfaceController.swift
 //  WatchOSTestHost Extension
 //
-//  Created by Craig Rouse on 20/11/2017.
-//  Copyright © 2017 tealium. All rights reserved.
+//  Created by Craig Rouse on 20/11/17.
+//  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 
 import WatchKit

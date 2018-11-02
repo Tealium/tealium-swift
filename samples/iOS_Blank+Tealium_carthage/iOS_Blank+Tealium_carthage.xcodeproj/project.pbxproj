@@ -611,6 +611,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tealium.iOS-Blank-Tealium-carthage";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REMOVE_HEADERS_FROM_EMBEDDED_BUNDLES = NO;
+				STRIP_SWIFT_SYMBOLS = NO;
 				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
@@ -629,6 +631,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tealium.iOS-Blank-Tealium-carthage";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REMOVE_HEADERS_FROM_EMBEDDED_BUNDLES = NO;
+				STRIP_SWIFT_SYMBOLS = NO;
 				SWIFT_VERSION = 4.0;
 			};
 			name = Release;

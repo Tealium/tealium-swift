@@ -3,7 +3,7 @@
 //  tealium-swift
 //
 //  Created by Jason Koo on 6/26/17.
-//  Copyright © 2017 Apple, Inc. All rights reserved.
+//  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 
 import Foundation

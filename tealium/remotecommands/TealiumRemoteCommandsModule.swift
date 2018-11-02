@@ -11,7 +11,7 @@ import Foundation
 
 // MARK: 
 // MARK: CONSTANTS
-
+// swiftlint:disable file_length
 enum TealiumRemoteCommandsKey {
     static let moduleName = "remotecommands"
     static let disable = "disable_remote_commands"
@@ -99,7 +99,7 @@ class TealiumRemoteCommandsModule: TealiumModule {
         guard let request = sender.userInfo?[TealiumRemoteCommandsKey.tagmanagementNotification] as? URLRequest else {
             return
         }
-        // TODO: Error handling
+
         _ = remoteCommands?.triggerCommandFrom(request: request)
     }
 
@@ -186,7 +186,7 @@ extension Array where Element: TealiumRemoteCommand {
     }
 
 }
-
+// swiftlint:disable line_length
 /*
  
  ===========
@@ -419,17 +419,12 @@ class TealiumRemoteHTTPCommand: TealiumRemoteCommand {
                                     description: "For processing tag-triggered HTTP requests") { response in
                 let requestInfo = TealiumRemoteHTTPCommand.httpRequest(payload: response.payload())
 
-                // TODO: Error handling?
                 guard let request = requestInfo.request else {
                     return
                 }
 
-                weak var weakResponse = response
                 let task = URLSession.shared.dataTask(with: request,
                                                       completionHandler: { data, urlResponse, error in
-                            guard let response = weakResponse else {
-                                return
-                            }
                             // Legacy status reporting
                             if let err = error {
                                 response.error = err
@@ -612,3 +607,5 @@ public extension TealiumRemoteCommandResponse {
  }
  })), '_self');
  */
+// swiftlint:enable line_length
+// swiftlint:enable file_length

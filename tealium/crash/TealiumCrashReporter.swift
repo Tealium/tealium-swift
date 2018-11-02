@@ -1,5 +1,5 @@
 //
-//  TealiumCrashFactory.swift
+//  TealiumCrashReporter.swift
 //  tealium-swift
 //
 //  Created by Jonathan Wong on 2/15/18.

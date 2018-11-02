@@ -1,10 +1,9 @@
 //
-//  TealiumUtils.swift
+//  TealiumMulticastDelegate.swift
 //  tealium-swift
 //
 //  Created by Jason Koo on 3/14/17.
 //  Copyright © 2017 Tealium, Inc. All rights reserved.
-//
 //
 
 import Foundation

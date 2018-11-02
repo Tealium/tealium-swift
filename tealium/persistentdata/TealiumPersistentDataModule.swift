@@ -1,5 +1,5 @@
 //
-//  TealiumDataManagerModule.swift
+//  TealiumPersistentDataModule.swift
 //  tealium-swift
 //
 //  Created by Jason Koo on 10/7/16.
@@ -70,7 +70,6 @@ class TealiumPersistentDataModule: TealiumModule {
 
         guard let persistentData = self.persistentData else {
             // Unable to load persistent data - continue with track call
-            // TODO: Error reporting?
             didFinish(track)
             return
         }
@@ -128,7 +127,6 @@ public class TealiumPersistentData {
         self.delegate = delegate
         self.delegate?.requestLoad(completion: { [weak self] _, data, _ in
 
-            // TODO: Better error handling
             guard let savedData = data else {
                 // No data to load
                 return

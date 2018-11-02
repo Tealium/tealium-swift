@@ -2,8 +2,8 @@
 //  TealiumDispatchQueueModule.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 09/04/2018.
-//  Copyright © 2018 Tealium. All rights reserved.
+//  Created by Craig Rouse on 4/9/18.
+//  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
 import Foundation
@@ -67,7 +67,7 @@ class TealiumDispatchQueueModule: TealiumModule {
         persistentQueue?.dequeueDispatches()?.forEach({ data in
             let track = TealiumTrackRequest(data: data, completion: request.completion)
             delegate?.tealiumModuleRequests(module: self,
-                                                 process: track)
+                                            process: track)
         })
     }
 

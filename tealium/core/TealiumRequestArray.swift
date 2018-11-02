@@ -1,5 +1,5 @@
 //
-//  TealiumQueue.swift
+//  TealiumRequestArray.swift
 //  tealium-swift
 //
 //  Created by Jason Koo on 6/25/17.

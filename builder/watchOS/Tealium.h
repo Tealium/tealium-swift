@@ -3,7 +3,7 @@
 //  watchOS
 //
 //  Created by Merritt Tidwell on 11/10/16.
-//  Copyright © 2016 tealium. All rights reserved.
+//  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
 #import <WatchKit/WatchKit.h>

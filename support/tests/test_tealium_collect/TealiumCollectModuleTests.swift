@@ -40,13 +40,19 @@ class TealiumCollectModuleTests: XCTestCase {
 
         let collectModule = TealiumCollectModule(delegate: nil)
 
-        collectModule.enable(TealiumEnableRequest(config: testTealiumConfig))
+        let config = testTealiumConfig
+        config.setLegacyDispatchMethod(true)
+        collectModule.enable(TealiumEnableRequest(config: config))
 
         XCTAssertTrue(collectModule.collect != nil, "TealiumCollect did not initialize.")
-        XCTAssertTrue(collectModule.collect?.getBaseURLString().isEmpty == false, "No base URL was provided or auto-initialized.")
 
-        collectModule.disable(TealiumDisableRequest())
-
-        XCTAssertTrue(collectModule.collect == nil, "TealiumCollect instance did not nil out.")
+        if let collect = collectModule.collect as? TealiumCollect {
+            XCTAssertTrue(collect.getBaseURLString().isEmpty == false, "No base URL was provided or auto-initialized.")
+            collectModule.disable(TealiumDisableRequest())
+            let newCollect = collectModule.collect as? TealiumCollect
+            XCTAssertTrue(newCollect == nil, "TealiumCollect instance did not de-initialize properly")
+        } else {
+            XCTFail("Collect module did not initialize properly")
+        }
     }
 }

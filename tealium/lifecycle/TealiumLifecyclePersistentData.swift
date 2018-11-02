@@ -1,11 +1,10 @@
 //
-//  TealiumPersistentData.swift
+//  TealiumLifecyclePersistentData.swift
+//  tealium-swift
 //
 //  Created by Jason Koo on 11/17/16.
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
-
-// TODO: Replace with new persistent request protocol
 
 import Foundation
 

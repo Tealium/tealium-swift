@@ -2,7 +2,7 @@
 //  ConsentManagerModuleUnitTests.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 03/05/2018.
+//  Created by Craig Rouse on 03/05/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 

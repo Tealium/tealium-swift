@@ -171,7 +171,7 @@ class TealiumAttributionModule: TealiumModule {
             let idManager = ASIdentifierManager.shared()
             // check if user allowed IDFA usage
             // if disabled, returns a dummy string of zeroes
-            // TODO: Possibly add deferred check here if nil. Under some circumstances, this could be nil 1st time round
+            // Under some circumstances, this could be nil 1st time round
             data = [TealiumAttributionKey.idfa: "unknown",
                     TealiumAttributionKey.isTrackingAllowed: "unknown",
                     TealiumAttributionKey.idfv: "unknown"]
@@ -211,7 +211,7 @@ class TealiumAttributionModule: TealiumModule {
         let deleteRequest = TealiumDeleteRequest(name: TealiumAttributionModule.moduleConfig().name)
         delegate?.tealiumModuleRequests(module: self, process: deleteRequest)
     }
-
+    // swiftlint:disable function_body_length
     func setNewAttributionData() {
         // get attribution details from Apple's servers
         let adClient = ADClient.shared()
@@ -292,7 +292,7 @@ class TealiumAttributionModule: TealiumModule {
         #endif
 
     }
-
+    // swiftlint:enable function_body_length
     func setLoadedAttributionData(_ data: [String: Any]?) {
         if let data = data {
             self.attributionData += data

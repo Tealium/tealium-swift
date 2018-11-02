@@ -35,11 +35,11 @@ class TealiumVolatileDataTests: XCTestCase {
             XCTFail("TealiumVolatileData did not spin up expectedly.")
             return
         }
-        let initialDataCount = volatileData.getData().count
+        let initialDataCount = volatileData.getData(currentData: [String: Any]()).count
         let data = ["a": "1", "b": "2"]
         volatileData.add(data: data)
 
-        let result = volatileData.getData()
+        let result = volatileData.getData(currentData: [String: Any]())
         XCTAssertEqual(result.count, initialDataCount + data.count)
 
         for (key, _) in data {
@@ -52,7 +52,7 @@ class TealiumVolatileDataTests: XCTestCase {
             XCTFail("TealiumVolatileData did not spin up expectedly.")
             return
         }
-        let result = volatileData.getData()
+        let result = volatileData.getData(currentData: [String: Any]())
 
         // initial static static when module is enabled
         XCTAssertNotNil(result[TealiumKey.account] as? String)
@@ -67,7 +67,7 @@ class TealiumVolatileDataTests: XCTestCase {
         XCTAssertNotNil(result[TealiumVolatileDataKey.timestampEpoch] as? String)
         XCTAssertNotNil(result[TealiumVolatileDataKey.timestamp] as? String)
         XCTAssertNotNil(result[TealiumVolatileDataKey.timestampLocal] as? String)
-        XCTAssertNotNil(result[TealiumVolatileDataKey.timestampUnix] as? String)
+        XCTAssertNotNil(result[TealiumVolatileDataKey.timestampUnixMillis] as? String)
         XCTAssertNotNil(result[TealiumVolatileDataKey.timestampOffset] as? String)
     }
 
@@ -104,9 +104,9 @@ class TealiumVolatileDataTests: XCTestCase {
             XCTFail("TealiumVolatileData did not spin up expectedly.")
             return
         }
-        let initialData = volatileData.getData()
+        let initialData = volatileData.getData(currentData: [String: Any]())
         volatileData.deleteData(forKeys: [TealiumVolatileDataKey.sessionId, TealiumKey.libraryVersion])
-        let result = volatileData.getData()
+        let result = volatileData.getData(currentData: [String: Any]())
 
         XCTAssertEqual(initialData.count - 2, result.count, "Counts did not match")
         XCTAssertNil(result[TealiumVolatileDataKey.sessionId], "sessionId should be nil")
@@ -119,10 +119,10 @@ class TealiumVolatileDataTests: XCTestCase {
             return
         }
 
-        let sessionId = volatileData.getData()[TealiumVolatileDataKey.sessionId] as? String
+        let sessionId = volatileData.getData(currentData: [String: Any]())[TealiumVolatileDataKey.sessionId] as? String
         sleep(1)
         volatileData.resetSessionId()
-        let resultSessionId = volatileData.getData()[TealiumVolatileDataKey.sessionId] as? String
+        let resultSessionId = volatileData.getData(currentData: [String: Any]())[TealiumVolatileDataKey.sessionId] as? String
 
         XCTAssertNotEqual(sessionId, resultSessionId, "sessionIds should be different")
     }
@@ -185,13 +185,13 @@ class TealiumVolatileDataTests: XCTestCase {
 
         volatileData.add(data: testData as [String: AnyObject])
 
-        let data = volatileData.getData()
+        let data = volatileData.getData(currentData: [String: Any]())
 
         XCTAssertTrue(testData.contains(otherDictionary: data), "VolatileData: \(volatileData)")
 
         volatileData.deleteData(forKeys: ["a", "b"])
 
-        let volatileDataPostDelete = volatileData.getData()
+        let volatileDataPostDelete = volatileData.getData(currentData: [String: Any]())
 
         XCTAssertFalse(volatileDataPostDelete.contains(otherDictionary: testData), "VolatileData: \(volatileDataPostDelete)")
     }
@@ -201,12 +201,12 @@ class TealiumVolatileDataTests: XCTestCase {
             XCTFail("TealiumVolatileData did not spin up expectedly.")
             return
         }
-        let result = volatileData.getData()
+        let result = volatileData.getData(currentData: [String: Any]())
 
         XCTAssertNotNil(result[TealiumVolatileDataKey.timestampEpoch] as? String)
         XCTAssertNotNil(result[TealiumVolatileDataKey.timestamp] as? String)
         XCTAssertNotNil(result[TealiumVolatileDataKey.timestampLocal] as? String)
-        XCTAssertNotNil(result[TealiumVolatileDataKey.timestampUnix] as? String)
+        XCTAssertNotNil(result[TealiumVolatileDataKey.timestampUnixMillis] as? String)
     }
 
     func testDeleteAll() {
@@ -222,13 +222,13 @@ class TealiumVolatileDataTests: XCTestCase {
 
         volatileData.add(data: testData as [String: AnyObject])
 
-        let data = volatileData.getData()
+        let data = volatileData.getData(currentData: [String: Any]())
 
         XCTAssertTrue(testData.contains(otherDictionary: data), "VolatileData: \(volatileData)")
 
         volatileData.deleteAllData()
 
-        let volatileDataPostDelete = volatileData.getData()
+        let volatileDataPostDelete = volatileData.getData(currentData: [String: Any]())
 
         XCTAssertFalse(volatileDataPostDelete.contains(otherDictionary: testData), "VolatileData: \(volatileDataPostDelete)")
     }

@@ -1,5 +1,6 @@
 //
-//  TealiumTagManagement.swift
+//  TealiumTagManagementModule.swift
+//  tealium-swift
 //
 //  Created by Jason Koo on 12/14/16.
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
@@ -9,7 +10,7 @@ import Foundation
 
 // MARK: 
 // MARK: CONSTANTS
-
+// swiftlint:disable file_length
 enum TealiumTagManagementKey {
     static let jsCommand = "js_command"
     static let jsResult = "js_result"
@@ -116,7 +117,7 @@ class TealiumTagManagementModule: TealiumModule {
                                          sel.dispatchQueue?.async {
                                              if let err = error {
                                                  sel.didFailToFinish(request,
-                                                         error: err)
+                                                                     error: err)
                                                  return
                                              }
                                              sel.isEnabled = true
@@ -196,8 +197,8 @@ class TealiumTagManagementModule: TealiumModule {
 
                                             if error != nil {
                                                 sel.didFailToFinish(track,
-                                                        info: info,
-                                                        error: error!)
+                                                                    info: info,
+                                                                    error: error!)
                                                 return
                                             }
                                             sel.didFinish(track,
@@ -397,8 +398,8 @@ extension TealiumTagManagement: UIWebViewDelegate {
         // Look for false from any delegate
         delegates.invoke {
             if $0.webView?(webView,
-                    shouldStartLoadWith: request,
-                    navigationType: navigationType) == false {
+                           shouldStartLoadWith: request,
+                           navigationType: navigationType) == false {
                 shouldStart = false
             }
         }
@@ -480,3 +481,4 @@ class TealiumTagManagementUtils {
     }
 
 }
+// swiftlint:enable file_length

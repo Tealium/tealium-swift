@@ -12,7 +12,7 @@ import Foundation
 /**
  Internal class for processing data dispatches to delivery endpoint.
  */
-public class TealiumCollect {
+public class TealiumCollect: TealiumCollectProtocol {
 
     fileprivate var _baseURL: String
 
@@ -47,7 +47,7 @@ public class TealiumCollect {
      - completion: passes a completion to send function
      */
     public func dispatch(data: [String: Any],
-                         completion:((_ success: Bool, _ info: [String: Any]?, _ error: Error?) -> Void)?) {
+                         completion: TealiumCompletion?) {
         let sanitizedData = TealiumCollect.sanitized(dictionary: data)
         let encodedURLString: String = _baseURL + encode(dictionary: sanitizedData)
 
@@ -77,7 +77,7 @@ public class TealiumCollect {
      - completion: Depending on network responses the completion will pass a success/failure, the string sent, and an error if it exists.
      
      */
-    func send(finalStringWithParams: String, completion:((_ success: Bool, _ info: [String: Any]?, _ error: Error?) -> Void)?) {
+    func send(finalStringWithParams: String, completion: TealiumCompletion?) {
         let url = URL(string: finalStringWithParams)
         let request = URLRequest(url: url!)
 
@@ -97,7 +97,7 @@ public class TealiumCollect {
 
             info += [TealiumCollectKey.responseHeader: self.headerResponse(response: httpResponse) ]
 
-            if httpResponse.allHeaderFields["X-Error"] as? String != nil {
+            if httpResponse.allHeaderFields[TealiumCollectKey.errorHeaderKey] as? String != nil {
                 completion?(false, info, TealiumCollectError.xErrorDetected)
                 return
             }

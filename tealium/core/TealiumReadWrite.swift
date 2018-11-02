@@ -1,15 +1,14 @@
 //
-//  TealiumConsentManager.swift
+//  TealiumReadWrite.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 10/07/2018.
+//  Created by Craig Rouse on 7/10/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
+import Foundation
 // credit: https://medium.com/@oyalhi/dispatch-barriers-in-swift-3-6c4a295215d6
 // credit: https://swiftexample.info/snippet/read-writeswift_a-voronov_swift
-
-import Foundation
 
 public class ReadWrite {
     private let queueSpecificKey = DispatchSpecificKey<String>()

@@ -1,9 +1,9 @@
 //
 //  TealiumHelper.swift
-//  WatchPuzzle
+//  SwiftTestbed
 //
 //  Created by Jason Koo on 11/22/16.
-//  Copyright © 2016 Apple. All rights reserved.
+//  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
 import Foundation
@@ -35,6 +35,9 @@ class TealiumHelper: NSObject {
 
         // OPTIONALLY set log level
         config.setMaxQueueSize(20)
+        config.setLegacyDispatchMethod(false)
+        config.setConnectivityRefreshInterval(interval: 5)
+        config.setCollectOverrideURL(string: "https://collect.tealiumiq.com/vdata/i.gif?tealium_account=tealiummobile&tealium_profile=main&")
         config.setLogLevel(logLevel: .verbose)
         config.setConsentLoggingEnabled(true)
         let consentCat: [TealiumConsentCategories] = [.bigData, .analytics]

@@ -35,7 +35,8 @@ class TealiumHelper : NSObject {
         
         // OPTIONALLY set log level
         config.setLogLevel(logLevel: .verbose)
-        
+        //config.setConnectivityRefreshEnabled(enabled: true)
+        config.setConnectivityRefreshInterval(interval: 5)
         // OPTIONALLY add an external delegate
         config.addDelegate(self)
 

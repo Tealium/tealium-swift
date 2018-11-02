@@ -17,9 +17,9 @@ import UIKit
 #endif
 #endif
 
-// MARK: 
 // MARK: ENUMS
-
+// swiftlint:disable file_length
+// swiftlint:disable line_length
 enum TealiumLifecycleModuleKey {
     static let moduleName = "lifecycle"
     static let queueName = "com.tealium.lifecycle"
@@ -152,7 +152,7 @@ public class TealiumLifecycleModule: TealiumModule {
         #else
         #if os(OSX)
         #else
-
+        // swiftlint:disable identifier_name
         #if swift(>=4.2)
         let notificationNameApplicationDidBecomeActive = UIApplication.didBecomeActiveNotification
         let notificationNameApplicationWillResignActive = UIApplication.willResignActiveNotification
@@ -160,7 +160,7 @@ public class TealiumLifecycleModule: TealiumModule {
         let notificationNameApplicationDidBecomeActive = NSNotification.Name.UIApplicationDidBecomeActive
         let notificationNameApplicationWillResignActive = NSNotification.Name.UIApplicationWillResignActive
         #endif
-
+        // swiftlint:enable identifier_name
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(wakeDetected),
                                                name: notificationNameApplicationDidBecomeActive,
@@ -359,7 +359,7 @@ public enum TealiumLifecycleType {
 enum TealiumLifecycleValue {
     static let yes = "true"
 }
-
+// swiftlint:disable type_body_length
 public class TealiumLifecycle: NSObject, NSCoding {
 
     var autotracked: String?
@@ -880,3 +880,6 @@ public func == (lhs: TealiumLifecycleSession, rhs: TealiumLifecycleSession ) -> 
     if lhs.wasLaunch != rhs.wasLaunch { return false }
     return true
 }
+// swiftlint:enable line_length
+// swiftlint:enable type_body_length
+// swiftlint:enable file_length

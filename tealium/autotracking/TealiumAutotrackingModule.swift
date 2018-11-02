@@ -1,5 +1,6 @@
 //
 //  TealiumAutotrackingModule.swift
+//  tealium-swift
 //
 //  Created by Jason Koo on 12/21/16.
 //  Copyright © 2016 Tealium, Inc. All rights reserved.

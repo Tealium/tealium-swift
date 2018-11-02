@@ -3,7 +3,7 @@
 //  tealium-swift
 //
 //  Created by Jonathan Wong on 1/10/18.
-//  Copyright © 2018 tealium. All rights reserved.
+//  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
 import Foundation
@@ -37,9 +37,9 @@ class TealiumConnectivityModule: TealiumModule {
 
     override class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumConnectivityKey.moduleName,
-                priority: 950,
-                build: 1,
-                enabled: true)
+                                   priority: 950,
+                                   build: 1,
+                                   enabled: true)
     }
 
     override func handle(_ request: TealiumRequest) {
@@ -78,7 +78,7 @@ class TealiumConnectivityModule: TealiumModule {
             // Notify any logger
             let report = TealiumReportRequest(message: "Connectivity: Queued track. No internet connection.")
             delegate?.tealiumModuleRequests(module: self,
-                    process: report)
+                                            process: report)
 
             // No did finish call. Halting further processing of track within
             //  module chain.
@@ -97,7 +97,7 @@ class TealiumConnectivityModule: TealiumModule {
         var newData = track.data
         newData[TealiumKey.queueReason] = TealiumConnectivityKey.moduleName
         let newTrack = TealiumTrackRequest(data: newData,
-                completion: track.completion)
+                                           completion: track.completion)
         let req = TealiumEnqueueRequest(data: newTrack, completion: nil)
         delegate?.tealiumModuleRequests(module: self, process: req)
     }
@@ -107,7 +107,7 @@ class TealiumConnectivityModule: TealiumModule {
         let req = TealiumReleaseQueuesRequest(typeId: "connectivity", moduleResponses: [TealiumModuleResponse]()) { _, _, _ in
             let report = TealiumReportRequest(message: "Connectivity: Attempting to send queued track call.")
             self.delegate?.tealiumModuleRequests(module: self,
-                    process: report)
+                                                 process: report)
         }
         delegate?.tealiumModuleRequests(module: self, process: req)
     }
@@ -118,29 +118,29 @@ extension TealiumConnectivityModule: TealiumConnectivityDelegate {
     func connectionTypeChanged(_ connectionType: String) {
         let report = TealiumReportRequest(message: "Connectivity: Connection type changed to \(connectionType)")
         self.delegate?.tealiumModuleRequests(module: self,
-                process: report)
+                                             process: report)
     }
 
     func connectionLost() {
         let report = TealiumReportRequest(message: "Connectivity: Connection lost; queueing dispatches")
         self.delegate?.tealiumModuleRequests(module: self,
-                process: report)
+                                             process: report)
     }
 
     func connectionRestored() {
         let report = TealiumReportRequest(message: "Connectivity: Connection restored; releasing queue")
         self.delegate?.tealiumModuleRequests(module: self,
-                process: report)
+                                             process: report)
         release()
     }
 }
 
-extension TealiumConfig {
-    public func setConnectivityRefreshInterval(interval: Int) {
+public extension TealiumConfig {
+    func setConnectivityRefreshInterval(interval: Int) {
         optionalData[TealiumConnectivityKey.refreshIntervalKey] = interval
     }
 
-    public func setConnectivityRefreshEnabled(enabled: Bool) {
+    func setConnectivityRefreshEnabled(enabled: Bool) {
         optionalData[TealiumConnectivityKey.refreshEnabledKey] = enabled
     }
 }

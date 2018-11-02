@@ -152,6 +152,7 @@ public enum TealiumDeviceDataKey {
     public static let carrierMCC = "network_mcc"
     public static let carrierISO = "network_iso_country_code"
     public static let connectionType = "network_connection_type"
+    public static let fileName = "device-names"
 }
 
 public extension TealiumConfig {

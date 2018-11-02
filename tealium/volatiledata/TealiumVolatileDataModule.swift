@@ -19,7 +19,8 @@ public enum TealiumVolatileDataKey {
     static let timestamp = "event_timestamp_iso"
     static let timestampLocal = "event_timestamp_local_iso"
     static let timestampOffset = "event_timestamp_offset_hours"
-    static let timestampUnix = "event_timestamp_unix_millis"
+    static let timestampUnixMillis = "event_timestamp_unix_millis"
+    static let timestampUnix = "event_timestamp_unix"
 }
 
 // MARK: 
@@ -82,7 +83,7 @@ class TealiumVolatileDataModule: TealiumModule {
             volatileData.setSessionId(sessionId: TealiumVolatileData.newSessionId())
         }
 
-        newData += volatileData.getData()
+        newData += volatileData.getData(currentData: newData)
 
         let newTrack = TealiumTrackRequest(data: newData,
                                            completion: track.completion)
