@@ -7,6 +7,9 @@
 //
 
 import Foundation
+#if dispatchqueue
+import TealiumCore
+#endif
 
 class TealiumDispatchQueueModule: TealiumModule {
 

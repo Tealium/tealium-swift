@@ -8,6 +8,10 @@
 
 import Dispatch
 import Foundation
+import Foundation
+#if collect
+import TealiumCore
+#endif
 
 /**
  Internal class for processing data dispatches to delivery endpoint.

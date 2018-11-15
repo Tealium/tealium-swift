@@ -7,10 +7,13 @@
 //
 
 import Foundation
-#if !COCOAPODS
-import Tealium
-#endif
+
 import TealiumCrashReporteriOS
+#if !COCOAPODS
+import TealiumAppData
+import TealiumCore
+import TealiumDeviceData
+#endif
 
 public class TealiumPLCrash: TealiumAppDataCollection {
 

@@ -39,7 +39,7 @@ public protocol TealiumModuleProtocol {
  */
 open class TealiumModule: TealiumModuleProtocol {
 
-    weak var delegate: TealiumModuleDelegate?
+    public weak var delegate: TealiumModuleDelegate?
     public var isEnabled: Bool = false
 
     /// Constructor.

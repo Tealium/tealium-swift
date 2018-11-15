@@ -7,6 +7,9 @@
 //
 
 import Foundation
+#if consentmanager
+import TealiumCore
+#endif
 
 class TealiumConsentPreferencesStorage {
 

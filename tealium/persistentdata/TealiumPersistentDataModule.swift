@@ -11,6 +11,12 @@ import Foundation
 // MARK: 
 // MARK: CONSTANTS
 
+#if defaultsstorage
+import TealiumCore
+#elseif filestorage
+import TealiumCore
+#endif
+
 public enum TealiumPersistentKey {
     static let moduleName = "persistentdata"
 }
@@ -125,14 +131,14 @@ public class TealiumPersistentData {
 
     init(delegate: TealiumPersistentDataDelegate) {
         self.delegate = delegate
-        self.delegate?.requestLoad(completion: { [weak self] _, data, _ in
+        self.delegate?.requestLoad(completion: { _, data, _ in
 
             guard let savedData = data else {
                 // No data to load
                 return
             }
 
-            self?.persistentDataCache += savedData
+            self.persistentDataCache += savedData
         })
     }
 

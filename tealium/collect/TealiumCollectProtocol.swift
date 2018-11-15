@@ -7,6 +7,9 @@
 //
 
 import Foundation
+#if collect
+import TealiumCore
+#endif
 
 public protocol TealiumCollectProtocol {
     func dispatch(data: [String: Any],

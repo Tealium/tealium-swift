@@ -7,6 +7,9 @@
 //
 
 import Foundation
+#if defaultsstorage
+import TealiumCore
+#endif
 
 enum TealiumDefaultsStorageKey {
     static let moduleName = "defaultsstorage"

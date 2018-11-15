@@ -21,6 +21,10 @@ import CoreTelephony
 import WatchKit
 #endif
 
+#if devicedata
+import TealiumCore
+#endif
+
 import Darwin
 
 public protocol TealiumDeviceDataCollection {
@@ -266,18 +270,6 @@ public class TealiumDeviceData: TealiumDeviceDataCollection {
     }
 
     class func carrierInfo() -> [String: String] {
-        #if os(watchOS)
-        return [
-            TealiumDeviceDataKey.connectionType: TealiumDeviceDataValue.unknown
-        ]
-        #else
-        let thisClassName = String(reflecting: self)
-        // NOTE: dependency on Connectivity module here. Checking if loaded before calling
-        let cls = objc_getClass(thisClassName)
-        var connection = "not available"
-        if cls != nil {
-            connection = TealiumConnectivity.currentConnectionType()
-        }
         // only available on iOS
         #if os(iOS)
         let networkInfo = CTTelephonyNetworkInfo()
@@ -286,14 +278,10 @@ public class TealiumDeviceData: TealiumDeviceDataCollection {
             TealiumDeviceDataKey.carrierMNC: carrier?.mobileNetworkCode ?? "",
             TealiumDeviceDataKey.carrierMCC: carrier?.mobileCountryCode ?? "",
             TealiumDeviceDataKey.carrierISO: carrier?.isoCountryCode ?? "",
-            TealiumDeviceDataKey.carrier: carrier?.carrierName ?? "",
-            TealiumDeviceDataKey.connectionType: connection
+            TealiumDeviceDataKey.carrier: carrier?.carrierName ?? ""
         ]
         #else
-        return [
-            TealiumDeviceDataKey.connectionType: connection
-        ]
-        #endif
+        return [String: String]()
         #endif
     }
 

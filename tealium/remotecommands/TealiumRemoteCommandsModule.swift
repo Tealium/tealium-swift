@@ -8,7 +8,9 @@
 //  See https://github.com/Tealium/tagbridge for spec reference.
 
 import Foundation
-
+#if remotecommands
+import TealiumCore
+#endif
 // MARK: 
 // MARK: CONSTANTS
 // swiftlint:disable file_length

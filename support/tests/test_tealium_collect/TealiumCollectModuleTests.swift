@@ -55,4 +55,26 @@ class TealiumCollectModuleTests: XCTestCase {
             XCTFail("Collect module did not initialize properly")
         }
     }
+
+    func testTrackNoAccount() {
+        let collectModule = TealiumCollectModule(delegate: nil)
+        let waiter = XCTWaiter(delegate: nil)
+        let expectation = XCTestExpectation(description: "successful dispatch")
+        let config = testTealiumConfig
+        config.setLegacyDispatchMethod(true)
+        collectModule.enable(TealiumEnableRequest(config: config))
+        let track = TealiumTrackRequest(data: [String: Any]()) { _, info, _ in
+            if let payload = info?["payload"] as? [String: Any] {
+                XCTAssertNotNil(payload[TealiumKey.account])
+                XCTAssertNotNil(payload[TealiumKey.profile])
+                expectation.fulfill()
+            } else {
+                XCTFail("Collect Module: Expected track data was missing")
+            }
+        }
+
+        collectModule.track(track)
+        waiter.wait(for: [expectation], timeout: 1.0)
+    }
+
 }

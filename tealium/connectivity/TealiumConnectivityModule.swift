@@ -12,10 +12,13 @@ import Foundation
 #else
 import SystemConfiguration
 #endif
+#if connectivity
+import TealiumCore
+#endif
 
 enum TealiumConnectivityKey {
     static let moduleName = "connectivity"
-    static let connectionType = "connection_type"
+    static let connectionType = "network_connection_type"
     static let connectionTypeWifi = "wifi"
     static let connectionTypeCell = "cellular"
     static let connectionTypeNone = "none"
@@ -59,7 +62,10 @@ class TealiumConnectivityModule: TealiumModule {
         connectivity.addConnectivityDelegate(delegate: self)
         if let interval = request.config.optionalData[TealiumConnectivityKey.refreshIntervalKey] as? Int {
             connectivity.refreshConnectivityStatus(interval)
-        } else if request.config.optionalData[TealiumConnectivityKey.refreshEnabledKey] as? Bool == true {
+        } else {
+            if request.config.optionalData[TealiumConnectivityKey.refreshEnabledKey] as? Bool == false {
+                return
+            }
             connectivity.refreshConnectivityStatus()
         }
     }
@@ -70,10 +76,15 @@ class TealiumConnectivityModule: TealiumModule {
             return
         }
 
+        var newData = request.data
+        newData += [TealiumConnectivityKey.connectionType: TealiumConnectivity.currentConnectionType()]
+        let newTrack = TealiumTrackRequest(data: newData,
+                                           completion: request.completion)
+
         if TealiumConnectivity.isConnectedToNetwork() == false {
 
             // Save in cache
-            queue(request)
+            queue(newTrack)
 
             // Notify any logger
             let report = TealiumReportRequest(message: "Connectivity: Queued track. No internet connection.")
@@ -90,7 +101,7 @@ class TealiumConnectivityModule: TealiumModule {
 
         release()
 
-        didFinishWithNoResponse(request)
+        didFinishWithNoResponse(newTrack)
     }
 
     func queue(_ track: TealiumTrackRequest) {

@@ -7,7 +7,9 @@
 //
 
 import Foundation
-
+#if volatiledata
+import TealiumCore
+#endif
 public protocol TealiumVolatileDataCollection {
     func currentTimeStamps() -> [String: Any]
 }

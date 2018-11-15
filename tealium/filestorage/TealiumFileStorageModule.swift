@@ -7,6 +7,9 @@
 //
 
 import Foundation
+#if filestorage
+import TealiumCore
+#endif
 
 enum TealiumFileStorageKey {
     static let moduleName = "filestorage"

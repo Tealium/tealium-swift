@@ -10,7 +10,9 @@ import AdSupport
 import Foundation
 import iAd
 import UIKit
-
+#if attribution
+import TealiumCore
+#endif
 // MARK: 
 // MARK: CONSTANTS
 public enum TealiumAttributionKey {

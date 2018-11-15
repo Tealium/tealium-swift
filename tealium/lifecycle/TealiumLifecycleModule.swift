@@ -17,6 +17,10 @@ import UIKit
 #endif
 #endif
 
+#if lifecycle
+import TealiumCore
+#endif
+
 // MARK: ENUMS
 // swiftlint:disable file_length
 // swiftlint:disable line_length

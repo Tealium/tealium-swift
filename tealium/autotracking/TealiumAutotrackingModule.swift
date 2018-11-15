@@ -15,6 +15,10 @@
     #endif
 #endif
 
+#if autotracking
+import TealiumCore
+#endif
+
 enum TealiumAutotrackingKey {
     static let moduleName = "autotracking"
     static let eventNotificationName = "com.tealium.autotracking.event"

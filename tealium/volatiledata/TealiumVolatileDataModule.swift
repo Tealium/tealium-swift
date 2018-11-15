@@ -7,6 +7,9 @@
 //
 
 import Foundation
+#if volatiledata
+import TealiumCore
+#endif
 
 // MARK: 
 // MARK: CONSTANTS

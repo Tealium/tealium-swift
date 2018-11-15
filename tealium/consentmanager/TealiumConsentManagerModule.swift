@@ -7,6 +7,9 @@
 //
 
 import Foundation
+#if consentmanager
+import TealiumCore
+#endif
 
 class TealiumConsentManagerModule: TealiumModule {
 
@@ -42,14 +45,14 @@ class TealiumConsentManagerModule: TealiumModule {
             didFinish(track)
             return
         }
-        // swiftlint:disable line_length
+
         // allow tracking calls to continue if they are for auditing purposes
         if let event = track.data[TealiumKey.event] as? String, (event == TealiumConsentConstants.consentPartialEventName
-                || event == TealiumConsentConstants.consentGrantedEventName || event == TealiumConsentConstants.consentDeclinedEventName || event == TealiumConsentConstants.updateConsentCookieEventName) {
+                || event == TealiumConsentConstants.consentGrantedEventName || event == TealiumConsentConstants.consentDeclinedEventName || event == TealiumKey.updateConsentCookieEventName) {
             didFinishWithNoResponse(track)
             return
         }
-        // swiftlint:enable line_length
+
         // append consent data to each tracking request
         let newTrack = addConsentDataToTrack(track)
 

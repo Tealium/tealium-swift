@@ -7,6 +7,9 @@
 //
 
 import Foundation
+#if logger
+import TealiumCore
+#endif
 
 /**
  Internal console logger for library debugging.

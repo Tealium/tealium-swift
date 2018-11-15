@@ -106,6 +106,26 @@ class TealiumConnectivityModuleTests: XCTestCase {
 
         self.waitForExpectations(timeout: 3.0, handler: nil)
     }
+
+    func testDefaultConnectivityInterval() {
+        let module = TealiumConnectivityModule(delegate: nil)
+        let request = TealiumEnableRequest(config: TestTealiumHelper().getConfig())
+        module.enable(request)
+        module.isEnabled = true
+        XCTAssertTrue(module.connectivity.timer?.timeInterval == TimeInterval(exactly: TealiumConnectivityConstants.defaultInterval))
+    }
+
+    func testOverriddenConnectivityInterval() {
+        let module = TealiumConnectivityModule(delegate: nil)
+        let config = TestTealiumHelper().getConfig()
+        let testInterval = 5
+        config.setConnectivityRefreshInterval(interval: testInterval)
+        let request = TealiumEnableRequest(config: TestTealiumHelper().getConfig())
+        module.enable(request)
+        module.isEnabled = true
+        XCTAssertTrue(module.connectivity.timer?.timeInterval == TimeInterval(exactly: testInterval))
+    }
+
 }
 
 // delegate to handle callbacks from connectivity module
@@ -137,5 +157,4 @@ extension TealiumConnectivityModuleTests: TealiumModuleDelegate {
             }
         }
     }
-
 }

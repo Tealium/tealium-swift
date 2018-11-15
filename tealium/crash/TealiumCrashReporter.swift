@@ -8,7 +8,8 @@
 
 import Foundation
 #if !COCOAPODS
-import Tealium
+import TealiumCore
+import TealiumDeviceData
 #endif
 import TealiumCrashReporteriOS
 

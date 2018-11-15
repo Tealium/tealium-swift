@@ -13,6 +13,15 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    
+    @IBAction func track(_ sender: Any) {
         let helper = TealiumHelper.shared
         helper.track(title: "hello", data:
             ["nested_object":["hello":123],
@@ -20,10 +29,5 @@ class ViewController: UIViewController {
              "complex_nested_array": ["hello_again":["123","456"]]
             ])
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
+    
 }

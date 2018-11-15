@@ -8,9 +8,12 @@
 
 import Foundation
 import SystemConfiguration
+#if connectivity
+import TealiumCore
+#endif
 
 public enum TealiumConnectivityConstants {
-    public static let defaultInterval: Int = 60
+    public static let defaultInterval: Int = 30
 }
 
 public class TealiumConnectivity {
@@ -19,7 +22,7 @@ public class TealiumConnectivity {
     static var isConnected: Bool?
     // used to simulate connection status for unit tests
     static var forceConnectionOverride: Bool?
-    var timer: DispatchSourceTimer?
+    var timer: TealiumRepeatingTimer?
     private var connectivityDelegates = TealiumMulticastDelegate<TealiumConnectivityDelegate>()
     var currentConnectivityType = ""
     static var currentConnectionStatus: Bool?
@@ -76,6 +79,10 @@ public class TealiumConnectivity {
         return isConnected!
     }
 
+    deinit {
+        timer = nil
+    }
+
 }
 
 public extension TealiumConnectivity {
@@ -112,10 +119,11 @@ public extension TealiumConnectivity {
     func refreshConnectivityStatus(_ interval: Int = TealiumConnectivityConstants.defaultInterval) {
         TealiumConnectivity.currentConnectionStatus = TealiumConnectivity.isConnectedToNetwork()
         let queue = DispatchQueue(label: "com.tealium.connectivity")
-        timer = DispatchSource.makeTimerSource(flags: .strict, queue: queue)
-        // todo: make configurable
-        timer?.schedule(deadline: .now(), repeating: .seconds(60), leeway: .seconds(interval))
-        timer?.setEventHandler {
+        guard let timeInterval = TimeInterval(exactly: interval) else {
+            return
+        }
+        timer = TealiumRepeatingTimer(timeInterval: timeInterval, dispatchQueue: queue)
+        timer?.eventHandler = {
             let connected = TealiumConnectivity.isConnectedToNetwork()
             if let connectionType = TealiumConnectivity.connectionType {
                 if connectionType != self.currentConnectivityType {

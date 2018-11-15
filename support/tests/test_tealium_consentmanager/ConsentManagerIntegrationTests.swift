@@ -533,7 +533,7 @@ extension ConsentManagerTests: TealiumModuleDelegate {
     func tealiumModuleRequests(module: TealiumModule?, process: TealiumRequest) {
         if let process = process as? TealiumTrackRequest {
             trackData = process.data
-            if trackData?["tealium_event"] as? String == TealiumConsentConstants.updateConsentCookieEventName {
+            if trackData?["tealium_event"] as? String == TealiumKey.updateConsentCookieEventName {
                 return
             }
             if let testtrackUserConsentPreferencesExpectation = getExpectation(forDescription: "testTrackUserConsentPreferences") {

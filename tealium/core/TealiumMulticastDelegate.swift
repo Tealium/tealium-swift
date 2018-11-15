@@ -12,6 +12,10 @@ public class TealiumMulticastDelegate<T> {
 
     private var _weakDelegates = [Weak<AnyObject>]()
 
+    public init() {
+
+    }
+
     public func add(_ delegate: T) {
         if Mirror(reflecting: delegate).subjectType is AnyClass {
             _weakDelegates.append(Weak(value: delegate as AnyObject))

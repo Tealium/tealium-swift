@@ -8,7 +8,7 @@
 
 import Foundation
 #if !COCOAPODS
-import Tealium
+import TealiumCore
 #endif
 
 public enum TealiumCrashKey {

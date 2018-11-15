@@ -7,7 +7,9 @@
 //
 
 import Foundation
-
+#if datasource
+import TealiumCore
+#endif
 enum TealiumDatasourceKey {
     static let moduleName = "datasource"
     static let config = "com.tealium.datasource"

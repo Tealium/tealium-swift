@@ -7,6 +7,10 @@
 //
 
 import Foundation
+#if dispatchqueue
+import TealiumCore
+#endif
+
 class TealiumPersistentDispatchQueue {
 
     static var queueStorage = UserDefaults.standard

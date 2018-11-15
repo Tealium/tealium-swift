@@ -1,10 +1,91 @@
 # Uncomment the next line to define a global platform for your project
-platform :ios, '9.0'
+# platform :ios, '9.0'
 
 target 'UIKitCatalog' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
 
   # Pods for UIKitCatalog
-	pod "tealium-swift"
+	pod "tealium-swift/Core"
+	pod "tealium-swift/TealiumAppData"
+	pod "tealium-swift/TealiumAttribution"
+	pod "tealium-swift/TealiumAutotracking"
+	pod "tealium-swift/TealiumCollect"
+	pod "tealium-swift/TealiumConsentManager"
+	pod "tealium-swift/TealiumConnectivity"
+	pod "tealium-swift/Crash"
+	pod "tealium-swift/TealiumDataSource"
+	pod "tealium-swift/TealiumDefaultsStorage"	
+	pod "tealium-swift/TealiumDelegate"
+	pod "tealium-swift/TealiumDeviceData"
+	pod "tealium-swift/TealiumDispatchQueue"
+	# pod "tealium-swift/TealiumFileStorage"
+	pod "tealium-swift/TealiumLifecycle"
+	pod "tealium-swift/TealiumLogger"
+	pod "tealium-swift/TealiumRemoteCommands"
+	pod "tealium-swift/TealiumTagManagement"
+	pod "tealium-swift/TealiumVolatileData"
+end
+
+target 'WatchApp Extension' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for Watch App Extension
+	pod "tealium-swift/Core"
+	pod "tealium-swift/TealiumAppData"
+	pod "tealium-swift/TealiumCollect"
+	pod "tealium-swift/TealiumConsentManager"
+	pod "tealium-swift/TealiumDataSource"
+	pod "tealium-swift/TealiumDefaultsStorage"	
+	pod "tealium-swift/TealiumDelegate"
+	pod "tealium-swift/TealiumDeviceData"
+	pod "tealium-swift/TealiumDispatchQueue"
+	# pod "tealium-swift/TealiumFileStorage"
+	pod "tealium-swift/TealiumLifecycle"
+	pod "tealium-swift/TealiumLogger"
+	pod "tealium-swift/TealiumVolatileData"
+end
+
+target 'TVApp' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for TVApp
+	pod "tealium-swift/Core"
+	pod "tealium-swift/TealiumAppData"
+	pod "tealium-swift/TealiumAutotracking"
+	pod "tealium-swift/TealiumCollect"
+	pod "tealium-swift/TealiumConsentManager"
+	pod "tealium-swift/TealiumConnectivity"
+	pod "tealium-swift/TealiumDataSource"
+	pod "tealium-swift/TealiumDefaultsStorage"	
+	pod "tealium-swift/TealiumDelegate"
+	pod "tealium-swift/TealiumDeviceData"
+	pod "tealium-swift/TealiumDispatchQueue"
+	# pod "tealium-swift/TealiumFileStorage"
+	pod "tealium-swift/TealiumLifecycle"
+	pod "tealium-swift/TealiumLogger"
+	pod "tealium-swift/TealiumVolatileData"
+end
+
+target 'MacOSApp' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for MacOSApp
+	pod "tealium-swift/Core"
+	pod "tealium-swift/TealiumAppData"
+	pod "tealium-swift/TealiumCollect"
+	pod "tealium-swift/TealiumConsentManager"
+	pod "tealium-swift/TealiumConnectivity"
+	pod "tealium-swift/TealiumDataSource"
+	pod "tealium-swift/TealiumDefaultsStorage"	
+	pod "tealium-swift/TealiumDelegate"
+	pod "tealium-swift/TealiumDeviceData"
+	pod "tealium-swift/TealiumDispatchQueue"
+	# pod "tealium-swift/TealiumFileStorage"
+	pod "tealium-swift/TealiumLifecycle"
+	pod "tealium-swift/TealiumLogger"
+	pod "tealium-swift/TealiumVolatileData"
 end

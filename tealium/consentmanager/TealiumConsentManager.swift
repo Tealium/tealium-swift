@@ -7,6 +7,9 @@
 //
 
 import Foundation
+#if consentmanager
+import TealiumCore
+#endif
 
 public class TealiumConsentManager {
 
@@ -92,8 +95,8 @@ public class TealiumConsentManager {
         var consentData = consentData
         // may change: currently, a separate call is required to TiQ to set the relevant cookies in the webview
         // collect module ignores this hit
-        consentData[TealiumKey.event] = TealiumConsentConstants.updateConsentCookieEventName
-        consentData[TealiumKey.callType] = TealiumConsentConstants.updateConsentCookieEventName
+        consentData[TealiumKey.event] = TealiumKey.updateConsentCookieEventName
+        consentData[TealiumKey.callType] = TealiumKey.updateConsentCookieEventName
         moduleDelegate?.tealiumModuleRequests(module: nil, process: TealiumTrackRequest(data: consentData, completion: nil))
     }
 

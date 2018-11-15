@@ -7,7 +7,9 @@
 //
 
 import Foundation
-
+#if tagmanagement
+import TealiumCore
+#endif
 // MARK: 
 // MARK: CONSTANTS
 // swiftlint:disable file_length
@@ -105,23 +107,20 @@ class TealiumTagManagementModule: TealiumModule {
 
         dispatchQueue = config.dispatchQueue()
 
-        DispatchQueue.main.async { [weak self] in
-            guard let sel = self else {
-                return
-            }
-            sel.tagManagement.enable(forAccount: account,
-                                     profile: profile,
-                                     environment: environment,
-                                     overrideUrl: overrideUrl,
-                                     completion: { _, error in
-                                         sel.dispatchQueue?.async {
+        DispatchQueue.main.async {
+            self.tagManagement.enable(forAccount: account,
+                                      profile: profile,
+                                      environment: environment,
+                                      overrideUrl: overrideUrl,
+                                      completion: { _, error in
+                                         self.dispatchQueue?.async {
                                              if let err = error {
-                                                 sel.didFailToFinish(request,
-                                                                     error: err)
+                                                 self.didFailToFinish(request,
+                                                                      error: err)
                                                  return
                                              }
-                                             sel.isEnabled = true
-                                             sel.didFinish(request)
+                                             self.isEnabled = true
+                                             self.didFinish(request)
                                          }
                                      })
         }
@@ -175,34 +174,31 @@ class TealiumTagManagementModule: TealiumModule {
 
     func dispatchTrack(_ track: TealiumTrackRequest) {
         // Dispatch to main thread since webview requires main thread.
-        DispatchQueue.main.async { [weak self] in
-            guard let sel = self else {
-                return
-            }
+        DispatchQueue.main.async {
             // Webview has failed for some reason
-            if sel.tagManagement.isWebViewReady() == false {
-                sel.didFailToFinish(track,
-                                    info: nil,
-                                    error: TealiumTagManagementError.webViewNotYetReady)
+            if self.tagManagement.isWebViewReady() == false {
+                self.didFailToFinish(track,
+                                     info: nil,
+                                     error: TealiumTagManagementError.webViewNotYetReady)
                 return
             }
 
             #if TEST
             #else
-            sel.tagManagement.track(track.data,
-                                    completion: { success, info, error in
-                                        sel.dispatchQueue?.async {
+            self.tagManagement.track(track.data,
+                                     completion: { success, info, error in
+                                        self.dispatchQueue?.async {
 
                                             track.completion?(success, info, error)
 
                                             if error != nil {
-                                                sel.didFailToFinish(track,
-                                                                    info: info,
-                                                                    error: error!)
+                                                self.didFailToFinish(track,
+                                                                     info: info,
+                                                                     error: error!)
                                                 return
                                             }
-                                            sel.didFinish(track,
-                                                          info: info)
+                                            self.didFinish(track,
+                                                           info: info)
                                         }
                                     })
             #endif
@@ -216,8 +212,9 @@ class TealiumTagManagementModule: TealiumModule {
 
 #if TEST
 #else
+#if os(iOS)
 import UIKit
-
+#endif
 enum TealiumTagManagementNotificationKey {
     static let urlRequestMade = "com.tealium.tagmanagement.urlrequest"
     static let jsCommandRequested = "com.tealium.tagmanagement.jscommand"
@@ -313,6 +310,9 @@ public class TealiumTagManagement: NSObject {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
+        self.webView?.stopLoading()
+        self.webView?.delegate = nil
+        self.webView = nil
     }
 
     /// Disable the webview system.
@@ -348,15 +348,14 @@ public class TealiumTagManagement: NSObject {
                       completion: ((_ success: Bool, _ info: [String: Any], _ error: Error?) -> Void)?) {
         var appendedData = data
         appendedData[TealiumKey.dispatchService] = TealiumTagManagementKey.moduleName
-        let sanitizedData = TealiumTagManagementUtils.sanitized(dictionary: appendedData)
-        guard let encodedPayloadString = TealiumTagManagementUtils.jsonEncode(sanitizedDictionary: sanitizedData) else {
+        guard let encodedPayloadString = jsonStringWithDictionary(appendedData) else {
             completion?(false,
-                        ["original_payload": appendedData, "sanitized_payload": sanitizedData],
+                        ["original_payload": appendedData, "sanitized_payload": appendedData],
                         TealiumTagManagementError.couldNotJSONEncodeData)
             return
         }
 
-        let legacyType = TealiumTagManagementUtils.getLegacyType(fromData: sanitizedData)
+        let legacyType = TealiumTagManagementUtils.getLegacyType(fromData: appendedData)
         let javascript = "utag.track(\'\(legacyType)\',\(encodedPayloadString))"
 
         var info = [String: Any]()
@@ -435,7 +434,6 @@ extension TealiumTagManagement: UIWebViewDelegate {
             self.completion?(true, nil)
         }
     }
-
 }
 #endif
 
@@ -451,33 +449,6 @@ class TealiumTagManagementUtils {
             legacyType = callType
         }
         return legacyType
-    }
-
-    class func jsonEncode(sanitizedDictionary: [String: Any]) -> String? {
-        do {
-            let jsonData = try JSONSerialization.data(withJSONObject: sanitizedDictionary,
-                                                      options: [])
-            let string = NSString(data: jsonData,
-                                  encoding: String.Encoding.utf8.rawValue)
-            return string as String?
-        } catch {
-            return nil
-        }
-    }
-
-    class func sanitized(dictionary: [String: Any]) -> [String: Any] {
-        var clean = [String: Any]()
-
-        for (key, value) in dictionary {
-            if value is String || value is [String] {
-                clean[key] = value
-            } else {
-                let stringified = "\(value)"
-                clean[key] = stringified
-            }
-        }
-
-        return clean
     }
 
 }

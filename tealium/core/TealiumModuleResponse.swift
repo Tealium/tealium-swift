@@ -15,9 +15,9 @@ public struct TealiumModuleResponse {
     public var info: [String: Any]?
     public var error: Error?
 
-    init(moduleName: String,
-         success: Bool,
-         error: Error?) {
+    public init(moduleName: String,
+                success: Bool,
+                error: Error?) {
         self.moduleName = moduleName
         self.success = success
         self.error = error

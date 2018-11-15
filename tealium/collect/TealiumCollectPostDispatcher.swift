@@ -7,6 +7,9 @@
 //
 
 import Foundation
+#if collect
+import TealiumCore
+#endif
 
 class TealiumCollectPostDispatcher: TealiumCollectProtocol {
 

@@ -7,6 +7,10 @@
 //
 
 import Foundation
+import Foundation
+#if appdata
+import TealiumCore
+#endif
 
 public protocol TealiumAppDataCollection {
     func name(bundle: Bundle) -> String?

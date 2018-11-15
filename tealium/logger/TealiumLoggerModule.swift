@@ -11,6 +11,10 @@ import Foundation
 // MARK: 
 // MARK: CONSTANTS
 
+#if logger
+import TealiumCore
+#endif
+
 enum TealiumLoggerKey {
     static let moduleName = "logger"
     static let logLevelConfig = "com.tealium.logger.loglevel"

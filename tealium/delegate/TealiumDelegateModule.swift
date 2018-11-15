@@ -7,6 +7,9 @@
 //
 
 import Foundation
+#if delegate
+import TealiumCore
+#endif
 
 public enum TealiumDelegateKey {
     static let moduleName = "delegate"
