@@ -94,6 +94,7 @@ Pod::Spec.new do |s|
   s.subspec "TealiumFull" do |full|
     full.source_files  = 'tealium/**/*'
     full.ios.exclude_files = 'tealium/scripts/*'
+    full.ios.dependency "TealiumCrashReporter"
     full.tvos.exclude_files = 'tealium/tagmanagement/*', 'tealium/remotecommands/*', 'tealium/attribution/*', "tealium/crash/*", 'tealium/scripts/*'
     full.watchos.exclude_files = 'tealium/tagmanagement/*', 'tealium/autotracking/*', 'tealium/connectivity/*', 'tealium/remotecommands/*', 'tealium/attribution/*', "tealium/crash/*", 'tealium/scripts/*'
     full.osx.exclude_files = 'tealium/tagmanagement/*', 'tealium/autotracking/*', 'tealium/remotecommands/*', 'tealium/attribution/*', "tealium/crash/*", 'tealium/scripts/*'
@@ -208,7 +209,5 @@ Pod::Spec.new do |s|
     crash.watchos.exclude_files = "tealium/crash/*"
     crash.osx.exclude_files = "tealium/crash/*"
   end
-  
-  s.ios.dependency "TealiumCrashReporter"
 
 end
