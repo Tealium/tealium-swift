@@ -16,6 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "tealium-swift"
+  s.module_name  = "TealiumSwift"
   s.version      = "1.6.5"
   s.summary      = "Tealium Swift Integration Library"
 
