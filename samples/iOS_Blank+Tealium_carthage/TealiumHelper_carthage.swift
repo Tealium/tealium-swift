@@ -7,7 +7,16 @@
 //
 
 import Foundation
-import Tealium
+import TealiumCore
+import TealiumDelegate
+import TealiumFileStorage
+import TealiumConsentManager
+import TealiumAutotracking
+import TealiumVolatileData
+import TealiumRemoteCommands
+import TealiumDataSource
+import TealiumLogger
+import TealiumConnectivity
 
 extension String : Error {}
 
@@ -45,7 +54,7 @@ class TealiumHelper : NSObject {
         #else
             // OPTIONALLY disable a particular module by name
             let list = TealiumModulesList(isWhitelist: false,
-                                          moduleNames: ["autotracking"])
+                                          moduleNames: ["autotracking", "defaultsstorage"])
             config.setModulesList(list)
             print("*** TealiumHelper: Autotracking disabled.")
         #endif
