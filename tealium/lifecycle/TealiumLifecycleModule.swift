@@ -484,10 +484,6 @@ public class TealiumLifecycle: NSObject, NSCoding {
         let newSession = (overrideSession != nil) ? overrideSession! : TealiumLifecycleSession(withWakeDate: atDate)
         sessions.append(newSession)
 
-        if newCrashDetected() == TealiumLifecycleValue.yes {
-            countCrashTotal += 1
-        }
-
         return self.asDictionary(type: TealiumLifecycleType.wake.description,
                                  forDate: atDate)
     }
@@ -542,7 +538,9 @@ public class TealiumLifecycle: NSObject, NSCoding {
         let firstSession = sessions.first
 
         dict[TealiumLifecycleKey.autotracked] = self.autotracked
-        dict[TealiumLifecycleKey.didDetectCrash] = newCrashDetected()
+        if type == TealiumLifecycleType.launch.description {
+            dict[TealiumLifecycleKey.didDetectCrash] = newCrashDetected()
+        }
         dict[TealiumLifecycleKey.dayOfWeek] = dayOfWeekLocal(forDate: forDate)
         dict[TealiumLifecycleKey.daysSinceFirstLaunch] = daysFrom(earlierDate: firstSession?.wakeDate, laterDate: forDate)
         dict[TealiumLifecycleKey.daysSinceLastUpdate] = daysFrom(earlierDate: dateLastUpdate, laterDate: forDate)
