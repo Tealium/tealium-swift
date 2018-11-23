@@ -15,8 +15,6 @@ enum TealiumModulesListKey {
 
 class TealiumModules {
 
-    var crashModuleReference: AnyClass?
-
     class func initializeModulesFor(_ list: TealiumModulesList?,
                                     assigningDelegate: TealiumModuleDelegate) -> [TealiumModule] {
         let modules = initializeModules(delegate: assigningDelegate)

@@ -29,7 +29,12 @@ public class TealiumCollect: TealiumCollectProtocol {
      - baseURL: Base url for collect end point
      */
     init(baseURL: String) {
-        self._baseURL = baseURL
+        // not compatible with vdata endpoint - default to event endpoint
+        if baseURL.contains("/event") {
+            _baseURL = TealiumCollect.defaultBaseURLString()
+        } else {
+            _baseURL = baseURL
+        }
     }
 
     /**

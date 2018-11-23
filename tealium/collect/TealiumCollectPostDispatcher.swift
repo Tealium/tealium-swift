@@ -72,6 +72,7 @@ class TealiumCollectPostDispatcher: TealiumCollectProtocol {
 
     deinit {
         urlSessionConfiguration = nil
+        urlSession?.finishTasksAndInvalidate()
         urlSession = nil
     }
 

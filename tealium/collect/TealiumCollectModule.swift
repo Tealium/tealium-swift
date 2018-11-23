@@ -18,6 +18,7 @@ enum TealiumCollectKey {
     static let moduleName = "collect"
     static let encodedURLString = "encoded_url"
     static let overrideCollectUrl = "tealium_override_collect_url"
+    static let overrideCollectProfile = "tealium_override_collect_profile"
     static let payload = "payload"
     static let responseHeader = "response_headers"
     public static let errorHeaderKey = "X-Error"
@@ -50,7 +51,23 @@ public extension Tealium {
 public extension TealiumConfig {
 
     func setCollectOverrideURL(string: String) {
-        optionalData[TealiumCollectKey.overrideCollectUrl] = string
+        if string.contains("vdata") {
+            var urlString = string
+            var lastChar: Character?
+            lastChar = urlString.last
+
+            if lastChar != "&" {
+                urlString += "&"
+            }
+            optionalData[TealiumCollectKey.overrideCollectUrl] = urlString
+        } else {
+            optionalData[TealiumCollectKey.overrideCollectUrl] = string
+        }
+
+    }
+
+    func setCollectOverrideProfile(profile: String) {
+        optionalData[TealiumCollectKey.overrideCollectProfile] = profile
     }
 
     func setLegacyDispatchMethod(_ shouldUseLegacyDispatch: Bool) {
@@ -166,9 +183,10 @@ class TealiumCollectModule: TealiumModule {
         var newData = track.data
         newData[TealiumKey.dispatchService] = TealiumCollectKey.moduleName
 
-        /*collect.dispatch(data: newData) { _, _, _ in
+        if let profileOverride = config?.optionalData[TealiumCollectKey.overrideCollectProfile] as? String {
+            newData[TealiumKey.profile] = profileOverride
+        }
 
-        }*/
         collect.dispatch(data: newData, completion: { success, info, error in
 
             track.completion?(success, info, error)
@@ -189,4 +207,10 @@ class TealiumCollectModule: TealiumModule {
                            info: info)
         })
     }
+
+    deinit {
+        self.config = nil
+        self.collect = nil
+    }
+
 }
