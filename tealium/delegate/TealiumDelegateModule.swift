@@ -97,7 +97,11 @@ class TealiumDelegateModule: TealiumModule {
 
     override func handleReport(_  request: TealiumRequest) {
         if let request = request as? TealiumEnableRequest {
-            enableCompletion?(request.moduleResponses)
+            // "Tealium" instance isn't fully initialized when modules have finished, and completion called too soon.
+            // Pushing onto a background queue solves this issue
+            DispatchQueue.global(qos: .background).async {
+                self.enableCompletion?(request.moduleResponses)
+            }
         }
         if let request = request as? TealiumTrackRequest {
             delegates?.invokeTrackCompleted(forTrackProcess: request)

@@ -57,10 +57,10 @@
 		D7194607219F2D4100E9D97F /* TealiumLogger.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D71945DC219F2D3700E9D97F /* TealiumLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D7194608219F2D4100E9D97F /* TealiumRemoteCommands.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D71945E4219F2D3800E9D97F /* TealiumRemoteCommands.framework */; };
 		D7194609219F2D4100E9D97F /* TealiumRemoteCommands.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D71945E4219F2D3800E9D97F /* TealiumRemoteCommands.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D719460A219F2D4100E9D97F /* TealiumTagManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D71945DE219F2D3700E9D97F /* TealiumTagManagement.framework */; };
-		D719460B219F2D4100E9D97F /* TealiumTagManagement.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D71945DE219F2D3700E9D97F /* TealiumTagManagement.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D719460C219F2D4100E9D97F /* TealiumVolatileData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D71945D7219F2D3700E9D97F /* TealiumVolatileData.framework */; };
 		D719460D219F2D4100E9D97F /* TealiumVolatileData.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D71945D7219F2D3700E9D97F /* TealiumVolatileData.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D72FBB8E21A83FFA00D27E1F /* TealiumTagManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D71945DE219F2D3700E9D97F /* TealiumTagManagement.framework */; };
+		D72FBB8F21A83FFA00D27E1F /* TealiumTagManagement.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D71945DE219F2D3700E9D97F /* TealiumTagManagement.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,6 +108,7 @@
 				D71945FF219F2D4100E9D97F /* TealiumDeviceData.framework in Embed Frameworks */,
 				D7194603219F2D4100E9D97F /* TealiumFileStorage.framework in Embed Frameworks */,
 				D71945F7219F2D4100E9D97F /* TealiumCrashReporteriOS.framework in Embed Frameworks */,
+				D72FBB8F21A83FFA00D27E1F /* TealiumTagManagement.framework in Embed Frameworks */,
 				D71945FD219F2D4100E9D97F /* TealiumDelegate.framework in Embed Frameworks */,
 				D7194609219F2D4100E9D97F /* TealiumRemoteCommands.framework in Embed Frameworks */,
 				D7194607219F2D4100E9D97F /* TealiumLogger.framework in Embed Frameworks */,
@@ -115,7 +116,6 @@
 				D7194601219F2D4100E9D97F /* TealiumDispatchQueue.framework in Embed Frameworks */,
 				D71945F3219F2D4100E9D97F /* TealiumCore.framework in Embed Frameworks */,
 				D7194605219F2D4100E9D97F /* TealiumLifecycle.framework in Embed Frameworks */,
-				D719460B219F2D4100E9D97F /* TealiumTagManagement.framework in Embed Frameworks */,
 				D71945E9219F2D4100E9D97F /* TealiumAttribution.framework in Embed Frameworks */,
 				D71945E7219F2D4100E9D97F /* TealiumAppData.framework in Embed Frameworks */,
 				D71945FB219F2D4100E9D97F /* TealiumDefaultsStorage.framework in Embed Frameworks */,
@@ -185,6 +185,7 @@
 				D71945FE219F2D4100E9D97F /* TealiumDeviceData.framework in Frameworks */,
 				D7194602219F2D4100E9D97F /* TealiumFileStorage.framework in Frameworks */,
 				D71945F6219F2D4100E9D97F /* TealiumCrashReporteriOS.framework in Frameworks */,
+				D72FBB8E21A83FFA00D27E1F /* TealiumTagManagement.framework in Frameworks */,
 				D71945FC219F2D4100E9D97F /* TealiumDelegate.framework in Frameworks */,
 				D7194608219F2D4100E9D97F /* TealiumRemoteCommands.framework in Frameworks */,
 				D7194606219F2D4100E9D97F /* TealiumLogger.framework in Frameworks */,
@@ -192,7 +193,6 @@
 				D7194600219F2D4100E9D97F /* TealiumDispatchQueue.framework in Frameworks */,
 				D71945F2219F2D4100E9D97F /* TealiumCore.framework in Frameworks */,
 				D7194604219F2D4100E9D97F /* TealiumLifecycle.framework in Frameworks */,
-				D719460A219F2D4100E9D97F /* TealiumTagManagement.framework in Frameworks */,
 				D71945E8219F2D4100E9D97F /* TealiumAttribution.framework in Frameworks */,
 				D71945E6219F2D4100E9D97F /* TealiumAppData.framework in Frameworks */,
 				D71945FA219F2D4100E9D97F /* TealiumDefaultsStorage.framework in Frameworks */,
@@ -711,6 +711,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_OPTIMIZATION_PROFILE_FILE = "";
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPLOYMENT_POSTPROCESSING = YES;
 				DEVELOPMENT_TEAM = XC939GDC9P;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -722,6 +727,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tealium.iOS-Blank-Tealium-carthage";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REMOVE_HEADERS_FROM_EMBEDDED_BUNDLES = NO;
+				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_SWIFT_SYMBOLS = NO;
 				SWIFT_VERSION = 4.0;
 			};
@@ -731,18 +737,25 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_OPTIMIZATION_PROFILE_FILE = "";
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = NO;
+				DEPLOYMENT_POSTPROCESSING = YES;
 				DEVELOPMENT_TEAM = XC939GDC9P;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
+				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = "iOS_Blank+Tealium_carthage/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tealium.iOS-Blank-Tealium-carthage";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REMOVE_HEADERS_FROM_EMBEDDED_BUNDLES = NO;
+				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_SWIFT_SYMBOLS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 			};
 			name = Release;

@@ -8,26 +8,22 @@
 
 import Foundation
 
-class TealiumInstanceManager {
+public class TealiumInstanceManager {
 
-    lazy var tealiumInstances = [String: Tealium]()
+    public lazy var tealiumInstances = [String: Tealium]()
 
-    static let shared = TealiumInstanceManager()
+    public static let shared = TealiumInstanceManager()
 
     private init() {
 
     }
 
-    public func addInstance(_ instance: Tealium, config: TealiumConfig) {
+    func addInstance(_ instance: Tealium, config: TealiumConfig) {
         let account = config.account
         let profile = config.profile
         let environment = config.environment
         let instanceKey = [account, profile, environment].joined(separator: ".")
         tealiumInstances[instanceKey] = instance
-    }
-
-    public func getInstances() -> [String: Tealium] {
-        return tealiumInstances
     }
 
     public func getInstanceByName(_ instanceKey: String) -> Tealium? {

@@ -61,7 +61,7 @@ class TealiumHelper : NSObject {
         
         // REQUIRED Initialization
         tealium = Tealium(config: config,
-                          completion: { (responses) in
+                          completion: { responses in
                         
                 // Optional processing post init.
                 print("*** TealiumHelper: tealium init: response: \(responses)")
@@ -70,7 +70,6 @@ class TealiumHelper : NSObject {
         })
         
         tealium?.persistentData()?.add(data: ["testPersistentKey":"testPersistentValue"])
-        
         tealium?.volatileData()?.add(data: ["testVolatileKey":"testVolatileValue"])
         
         tealium?.track(title: "tealiumhelper_started")

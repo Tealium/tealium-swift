@@ -77,4 +77,14 @@ class TealiumCollectModuleTests: XCTestCase {
         waiter.wait(for: [expectation], timeout: 1.0)
     }
 
+    func testOverrideCollectURL() {
+        testTealiumConfig.setCollectOverrideURL(string: "https://collect.tealiumiq.com/vdata/i.gif?tealium_account=tealiummobile&tealium_profile=someprofile")
+        XCTAssertTrue(testTealiumConfig.optionalData[TealiumCollectKey.overrideCollectUrl] as! String == "https://collect.tealiumiq.com/vdata/i.gif?tealium_account=tealiummobile&tealium_profile=someprofile&")
+    }
+
+    func testOverrideCollectProfile() {
+        testTealiumConfig.setCollectOverrideProfile(profile: "hello")
+        XCTAssertTrue(testTealiumConfig.optionalData[TealiumCollectKey.overrideCollectProfile] as! String == "hello")
+    }
+
 }

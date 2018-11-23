@@ -32,6 +32,7 @@ class TealiumConnectivityModule: TealiumModule {
     static var isConnected: Bool?
     // used to simulate connection status for unit tests
     lazy var connectivity = TealiumConnectivity()
+    var config: TealiumConfig?
 
     @available(*, deprecated, message: "Internal only. Used only for unit tests. Using this method will disable connectivity checks.")
     public static func setConnectionOverride(shouldOverride override: Bool) {
@@ -60,14 +61,8 @@ class TealiumConnectivityModule: TealiumModule {
     override func enable(_ request: TealiumEnableRequest) {
         super.enable(request)
         connectivity.addConnectivityDelegate(delegate: self)
-        if let interval = request.config.optionalData[TealiumConnectivityKey.refreshIntervalKey] as? Int {
-            connectivity.refreshConnectivityStatus(interval)
-        } else {
-            if request.config.optionalData[TealiumConnectivityKey.refreshEnabledKey] as? Bool == false {
-                return
-            }
-            connectivity.refreshConnectivityStatus()
-        }
+        self.config = request.config
+        self.refreshConnectivityStatus()
     }
 
     override func track(_ request: TealiumTrackRequest) {
@@ -82,7 +77,7 @@ class TealiumConnectivityModule: TealiumModule {
                                            completion: request.completion)
 
         if TealiumConnectivity.isConnectedToNetwork() == false {
-
+            self.refreshConnectivityStatus()
             // Save in cache
             queue(newTrack)
 
@@ -95,6 +90,8 @@ class TealiumConnectivityModule: TealiumModule {
             //  module chain.
             return
         }
+
+        cancelConnectivityRefresh()
 
         let report = TealiumReportRequest(message: "Connectivity: Sending queued track. Internet connection available.")
         delegate?.tealiumModuleRequests(module: self, process: report)
@@ -121,6 +118,21 @@ class TealiumConnectivityModule: TealiumModule {
                                                  process: report)
         }
         delegate?.tealiumModuleRequests(module: self, process: req)
+    }
+
+    func refreshConnectivityStatus() {
+        if let interval = config?.optionalData[TealiumConnectivityKey.refreshIntervalKey] as? Int {
+            connectivity.refreshConnectivityStatus(interval)
+        } else {
+            if config?.optionalData[TealiumConnectivityKey.refreshEnabledKey] as? Bool == false {
+                return
+            }
+            connectivity.refreshConnectivityStatus()
+        }
+    }
+
+    func cancelConnectivityRefresh() {
+        connectivity.cancelAutoStatusRefresh()
     }
 
 }

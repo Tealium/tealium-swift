@@ -117,6 +117,10 @@ public extension TealiumConnectivity {
     }
 
     func refreshConnectivityStatus(_ interval: Int = TealiumConnectivityConstants.defaultInterval) {
+        // already an active timer, so don't start a new one
+        if timer != nil {
+            return
+        }
         TealiumConnectivity.currentConnectionStatus = TealiumConnectivity.isConnectedToNetwork()
         let queue = DispatchQueue(label: "com.tealium.connectivity")
         guard let timeInterval = TimeInterval(exactly: interval) else {
@@ -143,5 +147,10 @@ public extension TealiumConnectivity {
             TealiumConnectivity.currentConnectionStatus = TealiumConnectivity.isConnectedToNetwork()
         }
         timer?.resume()
+    }
+
+    func cancelAutoStatusRefresh() {
+        timer?.suspend()
+        timer = nil
     }
 }

@@ -271,18 +271,41 @@ public class TealiumDeviceData: TealiumDeviceDataCollection {
 
     class func carrierInfo() -> [String: String] {
         // only available on iOS
+        var carrierInfo = [String: String]()
         #if os(iOS)
+        // beginning in iOS 12, Xcode generates lots errors
+        // when calling CTTelephonyNetworkInfo from the simulator
+        // this is a workaround
+        #if targetEnvironment(simulator)
+        carrierInfo = [
+            TealiumDeviceDataKey.carrierMNC: "00",
+            TealiumDeviceDataKey.carrierMCC: "000",
+            TealiumDeviceDataKey.carrierISO: "us",
+            TealiumDeviceDataKey.carrier: "simulator"
+        ]
+        #else
         let networkInfo = CTTelephonyNetworkInfo()
-        let carrier = networkInfo.subscriberCellularProvider
-        return [
+        var carrier: CTCarrier?
+        if #available(iOS 12.0, *) {
+            if let newCarrier = networkInfo.serviceSubscriberCellularProviders {
+                // pick up the first carrier in the list
+                for currentCarrier in newCarrier {
+                    carrier = currentCarrier.value
+                    break
+                }
+            }
+        } else {
+            carrier = networkInfo.subscriberCellularProvider
+        }
+        carrierInfo = [
             TealiumDeviceDataKey.carrierMNC: carrier?.mobileNetworkCode ?? "",
             TealiumDeviceDataKey.carrierMCC: carrier?.mobileCountryCode ?? "",
             TealiumDeviceDataKey.carrierISO: carrier?.isoCountryCode ?? "",
             TealiumDeviceDataKey.carrier: carrier?.carrierName ?? ""
         ]
-        #else
-        return [String: String]()
         #endif
+        #endif
+        return carrierInfo
     }
 
     class func resolution() -> String {
