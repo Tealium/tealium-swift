@@ -32,6 +32,17 @@ public class Tealium {
         TealiumInstanceManager.shared.addInstance(self, config: config)
     }
 
+    public convenience init(config: TealiumConfig,
+                     completion: @escaping (() -> Void ) ) {
+        defer {
+            DispatchQueue.global(qos: .background).async {
+                completion()
+            }
+        }
+        config.optionalData[TealiumDelegateKey.completion] = completion
+        self.init(config: config)
+    }
+
     /**
       Enablement call used after disable() to re-enable library activites. Unnecessary to call after
      initial init. Does NOT override individual module enabled flags.
