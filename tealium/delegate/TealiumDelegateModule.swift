@@ -21,8 +21,6 @@ public enum TealiumDelegateError: Error {
     case suppressedByShouldTrackDelegate
 }
 
-public typealias TealiumEnableCompletion = ((_ modulesResponses: [TealiumModuleResponse]) -> Void )
-
 public protocol TealiumDelegate: class {
 
     func tealiumShouldTrack(data: [String: Any]) -> Bool
@@ -31,13 +29,6 @@ public protocol TealiumDelegate: class {
 }
 
 public extension Tealium {
-
-    convenience init(config: TealiumConfig,
-                     completion: @escaping TealiumEnableCompletion ) {
-        config.optionalData[TealiumDelegateKey.completion] = completion
-        self.init(config: config)
-    }
-
     func delegates() -> TealiumDelegates? {
         guard let module = modulesManager.getModule(forName: TealiumDelegateKey.moduleName) as? TealiumDelegateModule else {
             return nil
@@ -72,7 +63,6 @@ public extension TealiumConfig {
 class TealiumDelegateModule: TealiumModule {
 
     var delegates: TealiumDelegates?
-    var enableCompletion: TealiumEnableCompletion?
 
     override class  func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumDelegateKey.moduleName,
@@ -88,21 +78,10 @@ class TealiumDelegateModule: TealiumModule {
         delegate?.tealiumModuleRequests(module: self,
                                         process: TealiumReportNotificationsRequest())
 
-        if let completion = request.config.optionalData[TealiumDelegateKey.completion] as? TealiumEnableCompletion {
-                enableCompletion = completion
-        }
-
         didFinish(request)
     }
 
     override func handleReport(_  request: TealiumRequest) {
-        if let request = request as? TealiumEnableRequest {
-            // "Tealium" instance isn't fully initialized when modules have finished, and completion called too soon.
-            // Pushing onto a background queue solves this issue
-            DispatchQueue.global(qos: .background).async {
-                self.enableCompletion?(request.moduleResponses)
-            }
-        }
         if let request = request as? TealiumTrackRequest {
             delegates?.invokeTrackCompleted(forTrackProcess: request)
         }
