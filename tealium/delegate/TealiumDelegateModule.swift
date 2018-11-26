@@ -14,7 +14,6 @@ import TealiumCore
 public enum TealiumDelegateKey {
     static let moduleName = "delegate"
     static let multicastDelegates = "com.tealium.delegate.delegates"
-    static let completion = "com.tealium.delegate.completion"
 }
 
 public enum TealiumDelegateError: Error {

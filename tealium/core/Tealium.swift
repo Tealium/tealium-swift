@@ -39,7 +39,6 @@ public class Tealium {
                 completion()
             }
         }
-        config.optionalData[TealiumDelegateKey.completion] = completion
         self.init(config: config)
     }
 
