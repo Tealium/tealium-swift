@@ -54,6 +54,7 @@ private let HOST_VM_INFO64_COUNT: mach_msg_type_number_t =
         UInt32(MemoryLayout<vm_statistics64_data_t>.size / MemoryLayout<integer_t>.size)
 
 // swiftlint:enable identifier_name
+// swiftlint:disable file_length
 // swiftlint:disable type_body_length
 public class TealiumDeviceData: TealiumDeviceDataCollection {
 
@@ -332,30 +333,66 @@ public class TealiumDeviceData: TealiumDeviceDataCollection {
         // UIDevice.current.orientation is available on iOS only
         #if os(iOS)
         let orientation = UIDevice.current.orientation
+        var appOrientation: UIInterfaceOrientation?
+        if !Thread.isMainThread {
+            DispatchQueue.main.sync {
+                appOrientation = UIApplication.shared.statusBarOrientation
+            }
+        } else {
+            appOrientation = UIApplication.shared.statusBarOrientation
+        }
 
         let isLandscape = orientation.isLandscape
         var fullOrientation = [TealiumDeviceDataKey.orientation: isLandscape ? "Landscape" : "Portrait"]
 
-        switch orientation {
-        case .faceUp:
-            fullOrientation[TealiumDeviceDataKey.fullOrientation] = "Face Up"
-        case .faceDown:
-            fullOrientation[TealiumDeviceDataKey.fullOrientation] = "Face Down"
-        case .landscapeLeft:
-            fullOrientation[TealiumDeviceDataKey.fullOrientation] = "Landscape Left"
-        case .landscapeRight:
-            fullOrientation[TealiumDeviceDataKey.fullOrientation] = "Landscape Right"
-        case .portrait:
-            fullOrientation[TealiumDeviceDataKey.fullOrientation] = "Portrait"
-        case .portraitUpsideDown:
-            fullOrientation[TealiumDeviceDataKey.fullOrientation] = "Portrait Upside Down"
-        case .unknown:
-            fullOrientation[TealiumDeviceDataKey.fullOrientation] = TealiumDeviceDataValue.unknown
+        fullOrientation[TealiumDeviceDataKey.fullOrientation] = getDeviceOrientation(orientation)
+        if let appOrientation = appOrientation {
+            let isAppLandscape = appOrientation.isLandscape
+            fullOrientation[TealiumDeviceDataKey.appOrientation] = isAppLandscape ? "Landscape" : "Portrait"
+            fullOrientation[TealiumDeviceDataKey.appOrientationExtended] = getUIOrientation(appOrientation)
         }
         return fullOrientation
         #else
         return [TealiumDeviceDataKey.orientation: TealiumDeviceDataValue.unknown, TealiumDeviceDataKey.fullOrientation: TealiumDeviceDataValue.unknown]
         #endif
+    }
+
+    func getUIOrientation(_ orientation: UIInterfaceOrientation) -> String {
+        var appOrientationString: String
+        switch orientation {
+        case .landscapeLeft:
+            appOrientationString = "Landscape Left"
+        case .landscapeRight:
+            appOrientationString = "Landscape Right"
+        case .portrait:
+            appOrientationString = "Portrait"
+        case .portraitUpsideDown:
+            appOrientationString = "Portrait Upside Down"
+        case .unknown:
+            appOrientationString = TealiumDeviceDataValue.unknown
+        }
+        return appOrientationString
+    }
+
+    func getDeviceOrientation(_ orientation: UIDeviceOrientation) -> String {
+        var deviceOrientationString: String
+        switch orientation {
+        case .faceUp:
+            deviceOrientationString = "Face Up"
+        case .faceDown:
+            deviceOrientationString = "Face Down"
+        case .landscapeLeft:
+            deviceOrientationString = "Landscape Left"
+        case .landscapeRight:
+            deviceOrientationString = "Landscape Right"
+        case .portrait:
+            deviceOrientationString = "Portrait"
+        case .portraitUpsideDown:
+            deviceOrientationString = "Portrait Upside Down"
+        case .unknown:
+            deviceOrientationString = TealiumDeviceDataValue.unknown
+        }
+        return deviceOrientationString
     }
 
     public class func oSBuild() -> String {
@@ -396,3 +433,4 @@ public class TealiumDeviceData: TealiumDeviceDataCollection {
 
 }
 // swiftlint:enable type_body_length
+// swiftlint:enable file_length

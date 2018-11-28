@@ -33,7 +33,7 @@ public class Tealium {
     }
 
     public convenience init(config: TealiumConfig,
-                     completion: @escaping (() -> Void ) ) {
+                            completion: @escaping (() -> Void ) ) {
         defer {
             DispatchQueue.global(qos: .background).async {
                 completion()
