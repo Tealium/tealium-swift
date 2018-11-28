@@ -60,14 +60,13 @@ class TealiumHelper : NSObject {
         #endif
         
         // REQUIRED Initialization
-        tealium = Tealium(config: config,
-                          completion: { responses in
+        tealium = Tealium(config: config) {
                         
                 // Optional processing post init.
                 print("*** TealiumHelper: tealium init: response: \(responses)")
                             self.tealium?.consentManager()?.setUserConsentStatus(.consented)
                             
-        })
+        }
         
         tealium?.persistentData()?.add(data: ["testPersistentKey":"testPersistentValue"])
         tealium?.volatileData()?.add(data: ["testVolatileKey":"testVolatileValue"])

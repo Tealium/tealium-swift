@@ -57,10 +57,8 @@ class TealiumHelper: NSObject {
         print("*** TealiumHelper: Autotracking disabled.")
         #endif
         // REQUIRED Initialization
-        tealium = Tealium(config: config,
-                          completion: { (responses) in
+        tealium = Tealium(config: config) {
                             // Optional processing post init.
-                            print("*** TealiumHelper: tealium init: response: \(responses)")
                             self.tealium?.persistentData()?.add(data: ["testPersistentKey": "testPersistentValue"])
                             self.tealium?.volatileData()?.add(data: ["testVolatileKey": "testVolatileValue"])
                             // OPTIONALLY implement Remote Commands
@@ -80,7 +78,7 @@ class TealiumHelper: NSObject {
                             self.tealium?.consentManager()?.addConsentDelegate(self)
                             self.tealium?.consentManager()?.addConsentDelegate(self.mySecondHelper)
                             self.tealium?.consentManager()?.setUserConsentStatusWithCategories(status: .consented, categories: consentCat)
-        })
+        }
     }
 
     func track(title: String, data: [String: Any]?) {

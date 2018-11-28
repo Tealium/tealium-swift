@@ -45,8 +45,7 @@ extension String: Error {}
         config.setModulesList(list)
 
         // REQUIRED Initialization
-        tealium = Tealium(config: config,
-                          completion: { (_) in
+        tealium = Tealium(config: config) {
 
                             // Optional processing post init.
                             // OPTIONALLY implement Dynamic Triggers/Remote Commands.
@@ -68,7 +67,7 @@ extension String: Error {}
                             }
 
                             #endif
-        })
+        }
 
         // example showing persistent data
         self.tealium?.persistentData()?.add(data: ["testPersistentKey": "testPersistentValue"])
