@@ -51,7 +51,7 @@ public extension TealiumDeviceDataCollection {
 
 // swiftlint:disable identifier_name
 private let HOST_VM_INFO64_COUNT: mach_msg_type_number_t =
-        UInt32(MemoryLayout<vm_statistics64_data_t>.size / MemoryLayout<integer_t>.size)
+    UInt32(MemoryLayout<vm_statistics64_data_t>.size / MemoryLayout<integer_t>.size)
 
 // swiftlint:enable identifier_name
 // swiftlint:disable file_length
@@ -197,16 +197,16 @@ public class TealiumDeviceData: TealiumDeviceDataCollection {
         hostInfo.deallocate()
 
         let free = Double(data.free_count) * Double(pageSize)
-                / Unit.megabyte.rawValue
+            / Unit.megabyte.rawValue
         let active = Double(data.active_count) * Double(pageSize)
-                / Unit.megabyte.rawValue
+            / Unit.megabyte.rawValue
         let inactive = Double(data.inactive_count) * Double(pageSize)
-                / Unit.megabyte.rawValue
+            / Unit.megabyte.rawValue
         let wired = Double(data.wire_count) * Double(pageSize)
-                / Unit.megabyte.rawValue
+            / Unit.megabyte.rawValue
         // Result of the compression. This is what you see in Activity Monitor
         let compressed = Double(data.compressor_page_count) * Double(pageSize)
-                / Unit.megabyte.rawValue
+            / Unit.megabyte.rawValue
 
         let dict = [
             TealiumDeviceDataKey.memoryFree: String(format: "%0.2fMB", free),
@@ -252,8 +252,8 @@ public class TealiumDeviceData: TealiumDeviceDataCollection {
         let model = basicModel()
         if let deviceInfo = self.getJSONData() {
             if let currentModel = deviceInfo[model] as? [String: String],
-               let simpleModel = currentModel[TealiumDeviceDataKey.simpleModel],
-               let fullModel = currentModel[TealiumDeviceDataKey.fullModel] {
+                let simpleModel = currentModel[TealiumDeviceDataKey.simpleModel],
+                let fullModel = currentModel[TealiumDeviceDataKey.fullModel] {
                 return [TealiumDeviceDataKey.simpleModel: simpleModel, TealiumDeviceDataKey.fullModel: fullModel]
             }
         }
@@ -357,6 +357,7 @@ public class TealiumDeviceData: TealiumDeviceDataCollection {
         #endif
     }
 
+    #if os(iOS)
     func getUIOrientation(_ orientation: UIInterfaceOrientation) -> String {
         var appOrientationString: String
         switch orientation {
@@ -394,6 +395,7 @@ public class TealiumDeviceData: TealiumDeviceDataCollection {
         }
         return deviceOrientationString
     }
+    #endif
 
     public class func oSBuild() -> String {
         guard let build = Bundle.main.infoDictionary?["DTSDKBuild"] as? String else {
