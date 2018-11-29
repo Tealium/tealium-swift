@@ -11,15 +11,15 @@ import Foundation
 /**
  Coordinates optional modules with primary Tealium class.
  */
-class TealiumModulesManager: NSObject {
+open class TealiumModulesManager: NSObject {
 
     weak var queue: DispatchQueue?
-    var modules = [TealiumModule]()
-    var isEnabled = true
-    var modulesRequestingReport = [Weak<TealiumModule>]()
-    let timeoutMillisecondIncrement = 500
-    var timeoutMillisecondCurrent = 0
-    var timeoutMillisecondMax = 10000
+    public var modules = [TealiumModule]()
+    public var isEnabled = true
+    public var modulesRequestingReport = [Weak<TealiumModule>]()
+    public let timeoutMillisecondIncrement = 500
+    public var timeoutMillisecondCurrent = 0
+    public var timeoutMillisecondMax = 10000
 
     func setupModulesFrom(config: TealiumConfig) {
         let modulesList = config.getModulesList()
@@ -29,36 +29,36 @@ class TealiumModulesManager: NSObject {
 
     // MARK: 
     // MARK: PUBLIC
-    func update(config: TealiumConfig) {
+    public func update(config: TealiumConfig) {
         self.modules.removeAll()
         enable(config: config)
     }
 
-    func enable(config: TealiumConfig) {
+    public func enable(config: TealiumConfig) {
         self.setupModulesFrom(config: config)
         self.queue = config.dispatchQueue()
         let request = TealiumEnableRequest(config: config)
         self.modules.first?.handle(request)
     }
 
-    func disable() {
+    public func disable() {
         isEnabled = false
         let request = TealiumDisableRequest()
         self.modules.first?.handle(request)
     }
 
-    func getModule(forName: String) -> TealiumModule? {
+    public func getModule(forName: String) -> TealiumModule? {
         return modules.first(where: { type(of: $0).moduleConfig().name == forName })
     }
 
-    func allModulesReady() -> Bool {
+    public func allModulesReady() -> Bool {
         for module in modules where module.isEnabled == false {
             return false
         }
         return true
     }
 
-    func modulesNotReady(_ modules: [TealiumModule]) -> [TealiumModule] {
+    public func modulesNotReady(_ modules: [TealiumModule]) -> [TealiumModule] {
         var result = [TealiumModule]()
         for module in modules where module.isEnabled == false {
             result.append(module)
@@ -66,7 +66,7 @@ class TealiumModulesManager: NSObject {
         return result
     }
 
-    func track(_ track: TealiumTrackRequest) {
+    public func track(_ track: TealiumTrackRequest) {
         guard let firstModule = modules.first else {
             track.completion?(false, nil, TealiumModulesManagerError.noModules)
             return
@@ -102,8 +102,8 @@ class TealiumModulesManager: NSObject {
 
     // MARK: 
     // MARK: INTERNAL
-    func reportToModules(_ modules: [Weak<TealiumModule>],
-                         request: TealiumRequest) {
+    public func reportToModules(_ modules: [Weak<TealiumModule>],
+                                request: TealiumRequest) {
         for moduleRef in modules {
             guard let module = moduleRef.value else {
                 // Module has been dereferenced
@@ -119,8 +119,8 @@ class TealiumModulesManager: NSObject {
 
 extension TealiumModulesManager: TealiumModuleDelegate {
 
-    func tealiumModuleFinished(module: TealiumModule,
-                               process: TealiumRequest) {
+    public func tealiumModuleFinished(module: TealiumModule,
+                                      process: TealiumRequest) {
         guard let nextModule = modules.next(after: module) else {
 
             // If enable call set isEnable
@@ -137,8 +137,8 @@ extension TealiumModulesManager: TealiumModuleDelegate {
         nextModule.handle(process)
     }
 
-    func tealiumModuleRequests(module: TealiumModule?,
-                               process: TealiumRequest) {
+    public func tealiumModuleRequests(module: TealiumModule?,
+                                      process: TealiumRequest) {
         // Module wants to be notified when last module has finished processing
         //  any requests.
         if process as? TealiumReportNotificationsRequest != nil {

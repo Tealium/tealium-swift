@@ -1,10 +1,9 @@
 //
-//  TealiumUtils.swift
+//  TealiumMulticastDelegate.swift
 //  tealium-swift
 //
 //  Created by Jason Koo on 3/14/17.
 //  Copyright © 2017 Tealium, Inc. All rights reserved.
-//
 //
 
 import Foundation
@@ -12,6 +11,10 @@ import Foundation
 public class TealiumMulticastDelegate<T> {
 
     private var _weakDelegates = [Weak<AnyObject>]()
+
+    public init() {
+
+    }
 
     public func add(_ delegate: T) {
         if Mirror(reflecting: delegate).subjectType is AnyClass {

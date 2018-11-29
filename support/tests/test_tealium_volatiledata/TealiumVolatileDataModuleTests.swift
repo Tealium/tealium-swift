@@ -63,7 +63,7 @@ class TealiumVolatileDataModuleTests: XCTestCase {
             "event_timestamp_unix_millis"
         ]
 
-        guard let volatileDataReturned = module?.volatileData.getData() else {
+        guard let volatileDataReturned = module?.volatileData.getData(currentData: [String: Any]()) else {
             XCTFail("No volatile data returned from test module: \(String(describing: module))")
             return
         }

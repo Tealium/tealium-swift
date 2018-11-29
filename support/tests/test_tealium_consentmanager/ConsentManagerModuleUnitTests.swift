@@ -2,7 +2,7 @@
 //  ConsentManagerModuleUnitTests.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 03/05/2018.
+//  Created by Craig Rouse on 03/05/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
@@ -232,7 +232,7 @@ extension ConsentManagerModuleUnitTests: TealiumModuleDelegate {
             }
         } else if let process = process as? TealiumTrackRequest, currentTest == "testConsentLoggingFullConsent" {
             let trackRequest = process.data
-            if trackRequest[TealiumKey.event] as? String == TealiumConsentConstants.updateConsentCookieEventName {
+            if trackRequest[TealiumKey.event] as? String == TealiumKey.updateConsentCookieEventName {
                 return
             }
             XCTAssertTrue(trackRequest[TealiumKey.event] as? String == TealiumConsentConstants.consentGrantedEventName, "Consent Manager Module: \(#function) - Track call contained unexpected event name")
@@ -242,7 +242,7 @@ extension ConsentManagerModuleUnitTests: TealiumModuleDelegate {
             }
         } else if let process = process as? TealiumTrackRequest, currentTest == "testConsentLoggingPartialConsent" {
             let trackRequest = process.data
-            if trackRequest[TealiumKey.event] as? String == TealiumConsentConstants.updateConsentCookieEventName {
+            if trackRequest[TealiumKey.event] as? String == TealiumKey.updateConsentCookieEventName {
                 return
             }
             XCTAssertTrue(trackRequest[TealiumKey.event] as? String == TealiumConsentConstants.consentPartialEventName, "Consent Manager Module: \(#function) - Track call contained unexpected event name")
@@ -252,30 +252,30 @@ extension ConsentManagerModuleUnitTests: TealiumModuleDelegate {
             }
         } else if let process = process as? TealiumTrackRequest, currentTest == "testUpdateConsentCookieFullConsent" {
             let trackRequest = process.data
-            if trackRequest[TealiumKey.event] as? String != TealiumConsentConstants.updateConsentCookieEventName {
+            if trackRequest[TealiumKey.event] as? String != TealiumKey.updateConsentCookieEventName {
                 return
             }
-            XCTAssertTrue(trackRequest[TealiumKey.event] as? String == TealiumConsentConstants.updateConsentCookieEventName, "Consent Manager Module: \(#function) - Track call contained unexpected event name")
+            XCTAssertTrue(trackRequest[TealiumKey.event] as? String == TealiumKey.updateConsentCookieEventName, "Consent Manager Module: \(#function) - Track call contained unexpected event name")
             XCTAssertTrue((trackRequest[TealiumConsentConstants.consentCategoriesKey] as? [String])?.count == TealiumConsentCategories.all().count, "Consent Manager Module: \(#function) - Track call contained unexpected event categories")
             if allTestsFinished {
                 getExpectation(forDescription: "testUpdateConsentCookieFullConsent")?.fulfill()
             }
         } else if let process = process as? TealiumTrackRequest, currentTest == "testUpdateConsentCookiePartialConsent" {
             let trackRequest = process.data
-            if trackRequest[TealiumKey.event] as? String != TealiumConsentConstants.updateConsentCookieEventName {
+            if trackRequest[TealiumKey.event] as? String != TealiumKey.updateConsentCookieEventName {
                 return
             }
-            XCTAssertTrue(trackRequest[TealiumKey.event] as? String == TealiumConsentConstants.updateConsentCookieEventName, "Consent Manager Module: \(#function) - Track call contained unexpected event name")
+            XCTAssertTrue(trackRequest[TealiumKey.event] as? String == TealiumKey.updateConsentCookieEventName, "Consent Manager Module: \(#function) - Track call contained unexpected event name")
             XCTAssertTrue(trackRequest[TealiumConsentConstants.consentCategoriesKey] as? [String] == ["analytics", "cdp"], "Consent Manager Module: \(#function) - Track call contained unexpected event categories")
             if allTestsFinished {
                 getExpectation(forDescription: "testUpdateConsentCookiePartialConsent")?.fulfill()
             }
         } else if let process = process as? TealiumTrackRequest, currentTest == "testUpdateConsentCookieDeclineConsent" {
             let trackRequest = process.data
-            if trackRequest[TealiumKey.event] as? String != TealiumConsentConstants.updateConsentCookieEventName {
+            if trackRequest[TealiumKey.event] as? String != TealiumKey.updateConsentCookieEventName {
                 return
             }
-            XCTAssertTrue(trackRequest[TealiumKey.event] as? String == TealiumConsentConstants.updateConsentCookieEventName, "Consent Manager Module: \(#function) - Track call contained unexpected event name")
+            XCTAssertTrue(trackRequest[TealiumKey.event] as? String == TealiumKey.updateConsentCookieEventName, "Consent Manager Module: \(#function) - Track call contained unexpected event name")
             XCTAssertTrue((trackRequest[TealiumConsentConstants.consentCategoriesKey] as? [String])?.count == 0, "Consent Manager Module: \(#function) - Track call contained unexpected event categories")
             if allTestsFinished {
                 getExpectation(forDescription: "testUpdateConsentCookieDeclineConsent")?.fulfill()

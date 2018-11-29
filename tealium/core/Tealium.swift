@@ -14,9 +14,9 @@ import Foundation
  */
 public class Tealium {
 
-    var config: TealiumConfig
+    public var config: TealiumConfig
     /// Mediator for all Tealium modules.
-    let modulesManager: TealiumModulesManager
+    public let modulesManager: TealiumModulesManager
 
     // MARK: PUBLIC
     /**
@@ -28,9 +28,18 @@ public class Tealium {
     public init(config: TealiumConfig) {
         self.config = config
         modulesManager = TealiumModulesManager()
-        modulesManager.setupModulesFrom(config: config)
         self.enable()
         TealiumInstanceManager.shared.addInstance(self, config: config)
+    }
+
+    public convenience init(config: TealiumConfig,
+                            completion: @escaping (() -> Void ) ) {
+        defer {
+            DispatchQueue.global(qos: .background).async {
+                completion()
+            }
+        }
+        self.init(config: config)
     }
 
     /**

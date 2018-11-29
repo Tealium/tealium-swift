@@ -3,7 +3,7 @@
 //  macOS
 //
 //  Created by Jason Koo on 12/2/16.
-//  Copyright © 2016 tealium. All rights reserved.
+//  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>

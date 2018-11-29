@@ -2,8 +2,8 @@
 //  ViewController.swift
 //  TestHost
 //
-//  Created by Craig Rouse on 06/11/2017.
-//  Copyright © 2017 tealium. All rights reserved.
+//  Created by Craig Rouse on 06/11/17.
+//  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 
 import UIKit

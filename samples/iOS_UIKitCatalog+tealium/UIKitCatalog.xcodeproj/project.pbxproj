@@ -32,6 +32,7 @@
 		221D43D418BF15EF00B9E8C9 /* UIColor+ApplicationSpecific.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221D43D318BF15EF00B9E8C9 /* UIColor+ApplicationSpecific.swift */; };
 		228DB9FA18BC53F1002BA12A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 228DB9F818BC53F1002BA12A /* InfoPlist.strings */; };
 		228DBA0818BC53F1002BA12A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 228DBA0718BC53F1002BA12A /* Images.xcassets */; };
+		2B791685924E104EB22CD33D /* Pods_UIKitCatalog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 041263F17708678D7BAB2C44 /* Pods_UIKitCatalog.framework */; };
 		3E5C084E1974991E00969DD7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E5C08501974991E00969DD7 /* Main.storyboard */; };
 		3E6AE850196B20240062A3E1 /* SearchControllerBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6AE84F196B20240062A3E1 /* SearchControllerBaseViewController.swift */; };
 		3E6AE852196B39110062A3E1 /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6AE851196B39110062A3E1 /* SearchResultsViewController.swift */; };
@@ -39,13 +40,77 @@
 		3E6AE856196B3B490062A3E1 /* SearchPresentOverNavigationBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6AE855196B3B490062A3E1 /* SearchPresentOverNavigationBarViewController.swift */; };
 		3E6AE85A196B3BBC0062A3E1 /* SearchBarEmbeddedInNavigationBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6AE859196B3BBC0062A3E1 /* SearchBarEmbeddedInNavigationBarViewController.swift */; };
 		4B318D2520B5E286003CB668 /* TealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B318D2420B5E286003CB668 /* TealiumHelper.swift */; };
+		4B79A3B1D813F4B7FFDFDBB6 /* Pods_MacOSApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23DCB6B6BB926D3B9607B925 /* Pods_MacOSApp.framework */; };
+		524908E29F50924ADE0749E5 /* Pods_WatchApp_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB7F5B323337C48BB104A86 /* Pods_WatchApp_Extension.framework */; };
 		B50F41081B1D284700E5147D /* StackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50F41071B1D284700E5147D /* StackViewController.swift */; };
 		B51AD3F91B1A8A6A00083F63 /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B51AD3F71B1A8A6A00083F63 /* Search.storyboard */; };
 		B5C300DD1B0FC458003B05A0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5C300DC1B0FC458003B05A0 /* LaunchScreen.storyboard */; };
-		DBAB2F9E5E5B2AD154D77A61 /* Pods_UIKitCatalog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D89D2F1A855F5E4632E2994A /* Pods_UIKitCatalog.framework */; };
+		D737463C219C3655003C88B2 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D737463A219C3655003C88B2 /* Interface.storyboard */; };
+		D737463E219C3658003C88B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D737463D219C3658003C88B2 /* Assets.xcassets */; };
+		D7374645219C3658003C88B2 /* WatchApp Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D7374644219C3658003C88B2 /* WatchApp Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D737464A219C3658003C88B2 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7374649219C3658003C88B2 /* InterfaceController.swift */; };
+		D737464C219C3658003C88B2 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D737464B219C3658003C88B2 /* ExtensionDelegate.swift */; };
+		D737464E219C3658003C88B2 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D737464D219C3658003C88B2 /* NotificationController.swift */; };
+		D7374650219C3659003C88B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D737464F219C3659003C88B2 /* Assets.xcassets */; };
+		D7374655219C3659003C88B2 /* WatchApp.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = D7374638219C3655003C88B2 /* WatchApp.app */; };
+		D737465E219C3911003C88B2 /* TealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B318D2420B5E286003CB668 /* TealiumHelper.swift */; };
+		D7374666219C3C1F003C88B2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7374665219C3C1F003C88B2 /* AppDelegate.swift */; };
+		D7374668219C3C1F003C88B2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7374667219C3C1F003C88B2 /* ViewController.swift */; };
+		D737466B219C3C1F003C88B2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D7374669219C3C1F003C88B2 /* Main.storyboard */; };
+		D737466D219C3C21003C88B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D737466C219C3C21003C88B2 /* Assets.xcassets */; };
+		D7374679219C3C67003C88B2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7374678219C3C67003C88B2 /* AppDelegate.swift */; };
+		D737467B219C3C67003C88B2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D737467A219C3C67003C88B2 /* ViewController.swift */; };
+		D737467D219C3C68003C88B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D737467C219C3C68003C88B2 /* Assets.xcassets */; };
+		D7374680219C3C68003C88B2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D737467E219C3C68003C88B2 /* Main.storyboard */; };
+		D7374686219C3DF8003C88B2 /* TealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B318D2420B5E286003CB668 /* TealiumHelper.swift */; };
+		D7374687219C3DF8003C88B2 /* TealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B318D2420B5E286003CB668 /* TealiumHelper.swift */; };
+		F4472C4F666AE1F0155F056F /* Pods_TVApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68A6C88DA266A31958BB2456 /* Pods_TVApp.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		D7374646219C3658003C88B2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 228DB9EB18BC53F1002BA12A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D7374643219C3658003C88B2;
+			remoteInfo = "WatchApp Extension";
+		};
+		D7374653219C3659003C88B2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 228DB9EB18BC53F1002BA12A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D7374637219C3655003C88B2;
+			remoteInfo = WatchApp;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D737465B219C3659003C88B2 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				D7374645219C3658003C88B2 /* WatchApp Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D737465D219C3659003C88B2 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				D7374655219C3659003C88B2 /* WatchApp.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		041263F17708678D7BAB2C44 /* Pods_UIKitCatalog.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UIKitCatalog.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2200541A18BC54E8002A6E8B /* ActivityIndicatorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorViewController.swift; sourceTree = "<group>"; };
 		2200541B18BC54E8002A6E8B /* AlertControllerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AlertControllerViewController.swift; sourceTree = "<group>"; };
 		2200541C18BC54E8002A6E8B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -73,6 +138,9 @@
 		228DB9F718BC53F1002BA12A /* UIKitCatalog-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "UIKitCatalog-Info.plist"; sourceTree = "<group>"; };
 		228DB9F918BC53F1002BA12A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		228DBA0718BC53F1002BA12A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		23DCB6B6BB926D3B9607B925 /* Pods_MacOSApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MacOSApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3715DDB6BF06A916D287B1CE /* Pods-TVApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TVApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-TVApp/Pods-TVApp.release.xcconfig"; sourceTree = "<group>"; };
+		3D7CF40613EB4582B32ADB99 /* Pods-TVApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TVApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TVApp/Pods-TVApp.debug.xcconfig"; sourceTree = "<group>"; };
 		3E5C084F1974991E00969DD7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3E6AE84F196B20240062A3E1 /* SearchControllerBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchControllerBaseViewController.swift; sourceTree = "<group>"; };
 		3E6AE851196B39110062A3E1 /* SearchResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
@@ -80,12 +148,42 @@
 		3E6AE855196B3B490062A3E1 /* SearchPresentOverNavigationBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchPresentOverNavigationBarViewController.swift; sourceTree = "<group>"; };
 		3E6AE859196B3BBC0062A3E1 /* SearchBarEmbeddedInNavigationBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBarEmbeddedInNavigationBarViewController.swift; sourceTree = "<group>"; };
 		4B318D2420B5E286003CB668 /* TealiumHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TealiumHelper.swift; path = ../../TealiumHelper.swift; sourceTree = "<group>"; };
+		4CB7F5B323337C48BB104A86 /* Pods_WatchApp_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WatchApp_Extension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		68A6C88DA266A31958BB2456 /* Pods_TVApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TVApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9BF19AF3DDD3AE52E735B9AA /* Pods-WatchApp Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WatchApp Extension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WatchApp Extension/Pods-WatchApp Extension.debug.xcconfig"; sourceTree = "<group>"; };
 		B50F41071B1D284700E5147D /* StackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackViewController.swift; sourceTree = "<group>"; };
 		B51AD3F81B1A8A6A00083F63 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Search.storyboard; sourceTree = "<group>"; };
 		B5C300DC1B0FC458003B05A0 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		B7F3A358E7923CAE9A51213A /* Pods-WatchApp Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WatchApp Extension.release.xcconfig"; path = "Pods/Target Support Files/Pods-WatchApp Extension/Pods-WatchApp Extension.release.xcconfig"; sourceTree = "<group>"; };
+		CB37375729D752E92DB565D2 /* Pods-MacOSApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MacOSApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-MacOSApp/Pods-MacOSApp.release.xcconfig"; sourceTree = "<group>"; };
 		D0220B384DE2E8ED7170CE5C /* Pods-UIKitCatalog.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitCatalog.release.xcconfig"; path = "Pods/Target Support Files/Pods-UIKitCatalog/Pods-UIKitCatalog.release.xcconfig"; sourceTree = "<group>"; };
-		D89D2F1A855F5E4632E2994A /* Pods_UIKitCatalog.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UIKitCatalog.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7374638219C3655003C88B2 /* WatchApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WatchApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D737463B219C3655003C88B2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		D737463D219C3658003C88B2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D737463F219C3658003C88B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D7374644219C3658003C88B2 /* WatchApp Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "WatchApp Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7374649219C3658003C88B2 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
+		D737464B219C3658003C88B2 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
+		D737464D219C3658003C88B2 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
+		D737464F219C3659003C88B2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D7374651219C3659003C88B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D7374652219C3659003C88B2 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		D7374663219C3C1F003C88B2 /* TVApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TVApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7374665219C3C1F003C88B2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D7374667219C3C1F003C88B2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		D737466A219C3C1F003C88B2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		D737466C219C3C21003C88B2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D737466E219C3C21003C88B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D7374676219C3C67003C88B2 /* MacOSApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacOSApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7374678219C3C67003C88B2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D737467A219C3C67003C88B2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		D737467C219C3C68003C88B2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D737467F219C3C68003C88B2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		D7374681219C3C68003C88B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D7374682219C3C68003C88B2 /* MacOSApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MacOSApp.entitlements; sourceTree = "<group>"; };
 		DB1D89E0E2FCD3B8F1A9926D /* Pods-UIKitCatalog.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitCatalog.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UIKitCatalog/Pods-UIKitCatalog.debug.xcconfig"; sourceTree = "<group>"; };
+		F204F202567FC4044AC7731D /* Pods_WatchApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WatchApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F552F8CE061B051DECBDA166 /* Pods-MacOSApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MacOSApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MacOSApp/Pods-MacOSApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,7 +191,38 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DBAB2F9E5E5B2AD154D77A61 /* Pods_UIKitCatalog.framework in Frameworks */,
+				2B791685924E104EB22CD33D /* Pods_UIKitCatalog.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		893914054EF20578FAAF2284 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7374641219C3658003C88B2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				524908E29F50924ADE0749E5 /* Pods_WatchApp_Extension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7374660219C3C1F003C88B2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4472C4F666AE1F0155F056F /* Pods_TVApp.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7374673219C3C67003C88B2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4B79A3B1D813F4B7FFDFDBB6 /* Pods_MacOSApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,6 +233,10 @@
 			isa = PBXGroup;
 			children = (
 				228DB9F518BC53F1002BA12A /* UIKitCatalog */,
+				D7374639219C3655003C88B2 /* WatchApp */,
+				D7374648219C3658003C88B2 /* WatchApp Extension */,
+				D7374664219C3C1F003C88B2 /* TVApp */,
+				D7374677219C3C67003C88B2 /* MacOSApp */,
 				228DB9F418BC53F1002BA12A /* Products */,
 				E134FC40AB1F52AC55E913C8 /* Pods */,
 				32DB2B9BBFEC65D1ADFC4F48 /* Frameworks */,
@@ -114,6 +247,10 @@
 			isa = PBXGroup;
 			children = (
 				228DB9F318BC53F1002BA12A /* UIKitCatalog.app */,
+				D7374638219C3655003C88B2 /* WatchApp.app */,
+				D7374644219C3658003C88B2 /* WatchApp Extension.appex */,
+				D7374663219C3C1F003C88B2 /* TVApp.app */,
+				D7374676219C3C67003C88B2 /* MacOSApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -162,7 +299,11 @@
 		32DB2B9BBFEC65D1ADFC4F48 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D89D2F1A855F5E4632E2994A /* Pods_UIKitCatalog.framework */,
+				041263F17708678D7BAB2C44 /* Pods_UIKitCatalog.framework */,
+				F204F202567FC4044AC7731D /* Pods_WatchApp.framework */,
+				4CB7F5B323337C48BB104A86 /* Pods_WatchApp_Extension.framework */,
+				23DCB6B6BB926D3B9607B925 /* Pods_MacOSApp.framework */,
+				68A6C88DA266A31958BB2456 /* Pods_TVApp.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -233,11 +374,65 @@
 			name = "Base View Controllers";
 			sourceTree = "<group>";
 		};
+		D7374639219C3655003C88B2 /* WatchApp */ = {
+			isa = PBXGroup;
+			children = (
+				D737463A219C3655003C88B2 /* Interface.storyboard */,
+				D737463D219C3658003C88B2 /* Assets.xcassets */,
+				D737463F219C3658003C88B2 /* Info.plist */,
+			);
+			path = WatchApp;
+			sourceTree = "<group>";
+		};
+		D7374648219C3658003C88B2 /* WatchApp Extension */ = {
+			isa = PBXGroup;
+			children = (
+				D7374649219C3658003C88B2 /* InterfaceController.swift */,
+				D737464B219C3658003C88B2 /* ExtensionDelegate.swift */,
+				D737464D219C3658003C88B2 /* NotificationController.swift */,
+				D737464F219C3659003C88B2 /* Assets.xcassets */,
+				D7374651219C3659003C88B2 /* Info.plist */,
+				D7374652219C3659003C88B2 /* PushNotificationPayload.apns */,
+			);
+			path = "WatchApp Extension";
+			sourceTree = "<group>";
+		};
+		D7374664219C3C1F003C88B2 /* TVApp */ = {
+			isa = PBXGroup;
+			children = (
+				D7374665219C3C1F003C88B2 /* AppDelegate.swift */,
+				D7374667219C3C1F003C88B2 /* ViewController.swift */,
+				D7374669219C3C1F003C88B2 /* Main.storyboard */,
+				D737466C219C3C21003C88B2 /* Assets.xcassets */,
+				D737466E219C3C21003C88B2 /* Info.plist */,
+			);
+			path = TVApp;
+			sourceTree = "<group>";
+		};
+		D7374677219C3C67003C88B2 /* MacOSApp */ = {
+			isa = PBXGroup;
+			children = (
+				D7374678219C3C67003C88B2 /* AppDelegate.swift */,
+				D737467A219C3C67003C88B2 /* ViewController.swift */,
+				D737467C219C3C68003C88B2 /* Assets.xcassets */,
+				D737467E219C3C68003C88B2 /* Main.storyboard */,
+				D7374681219C3C68003C88B2 /* Info.plist */,
+				D7374682219C3C68003C88B2 /* MacOSApp.entitlements */,
+			);
+			path = MacOSApp;
+			sourceTree = "<group>";
+		};
 		E134FC40AB1F52AC55E913C8 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
 				DB1D89E0E2FCD3B8F1A9926D /* Pods-UIKitCatalog.debug.xcconfig */,
 				D0220B384DE2E8ED7170CE5C /* Pods-UIKitCatalog.release.xcconfig */,
+				9BF19AF3DDD3AE52E735B9AA /* Pods-WatchApp Extension.debug.xcconfig */,
+				B7F3A358E7923CAE9A51213A /* Pods-WatchApp Extension.release.xcconfig */,
+				F552F8CE061B051DECBDA166 /* Pods-MacOSApp.debug.xcconfig */,
+				CB37375729D752E92DB565D2 /* Pods-MacOSApp.release.xcconfig */,
+				3D7CF40613EB4582B32ADB99 /* Pods-TVApp.debug.xcconfig */,
+				3715DDB6BF06A916D287B1CE /* Pods-TVApp.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -254,14 +449,91 @@
 				228DB9F018BC53F1002BA12A /* Frameworks */,
 				228DB9F118BC53F1002BA12A /* Resources */,
 				F8CA21E0DE7605FB2CB66896 /* [CP] Embed Pods Frameworks */,
+				D737465D219C3659003C88B2 /* Embed Watch Content */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D7374654219C3659003C88B2 /* PBXTargetDependency */,
+			);
+			name = UIKitCatalog;
+			productName = UIKitCatalog;
+			productReference = 228DB9F318BC53F1002BA12A /* UIKitCatalog.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D7374637219C3655003C88B2 /* WatchApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D737465C219C3659003C88B2 /* Build configuration list for PBXNativeTarget "WatchApp" */;
+			buildPhases = (
+				D7374636219C3655003C88B2 /* Resources */,
+				D737465B219C3659003C88B2 /* Embed App Extensions */,
+				893914054EF20578FAAF2284 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D7374647219C3658003C88B2 /* PBXTargetDependency */,
+			);
+			name = WatchApp;
+			productName = WatchApp;
+			productReference = D7374638219C3655003C88B2 /* WatchApp.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		D7374643219C3658003C88B2 /* WatchApp Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D737465A219C3659003C88B2 /* Build configuration list for PBXNativeTarget "WatchApp Extension" */;
+			buildPhases = (
+				A7C878ECB264C852AFEEF4A8 /* [CP] Check Pods Manifest.lock */,
+				D7374640219C3658003C88B2 /* Sources */,
+				D7374641219C3658003C88B2 /* Frameworks */,
+				D7374642219C3658003C88B2 /* Resources */,
+				5B37F5F53BAC0112EF6D981B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = UIKitCatalog;
-			productName = UIKitCatalog;
-			productReference = 228DB9F318BC53F1002BA12A /* UIKitCatalog.app */;
+			name = "WatchApp Extension";
+			productName = "WatchApp Extension";
+			productReference = D7374644219C3658003C88B2 /* WatchApp Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
+		D7374662219C3C1F003C88B2 /* TVApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D7374671219C3C21003C88B2 /* Build configuration list for PBXNativeTarget "TVApp" */;
+			buildPhases = (
+				7A886C359FEC50154139118E /* [CP] Check Pods Manifest.lock */,
+				D737465F219C3C1F003C88B2 /* Sources */,
+				D7374660219C3C1F003C88B2 /* Frameworks */,
+				D7374661219C3C1F003C88B2 /* Resources */,
+				22C5958C7809D08FD1095DC2 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TVApp;
+			productName = TVApp;
+			productReference = D7374663219C3C1F003C88B2 /* TVApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D7374675219C3C67003C88B2 /* MacOSApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D7374683219C3C68003C88B2 /* Build configuration list for PBXNativeTarget "MacOSApp" */;
+			buildPhases = (
+				6923602442FB480998AD6A37 /* [CP] Check Pods Manifest.lock */,
+				D7374672219C3C67003C88B2 /* Sources */,
+				D7374673219C3C67003C88B2 /* Frameworks */,
+				D7374674219C3C67003C88B2 /* Resources */,
+				49235D2C21EA7C09362BB9FF /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MacOSApp;
+			productName = MacOSApp;
+			productReference = D7374676219C3C67003C88B2 /* MacOSApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -270,13 +542,38 @@
 		228DB9EB18BC53F1002BA12A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0700;
+				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = Apple;
 				TargetAttributes = {
 					228DB9F218BC53F1002BA12A = {
 						DevelopmentTeam = XC939GDC9P;
 						LastSwiftMigration = 0940;
+					};
+					D7374637219C3655003C88B2 = {
+						CreatedOnToolsVersion = 10.1;
+						DevelopmentTeam = XC939GDC9P;
+						ProvisioningStyle = Automatic;
+					};
+					D7374643219C3658003C88B2 = {
+						CreatedOnToolsVersion = 10.1;
+						DevelopmentTeam = XC939GDC9P;
+						ProvisioningStyle = Automatic;
+					};
+					D7374662219C3C1F003C88B2 = {
+						CreatedOnToolsVersion = 10.1;
+						DevelopmentTeam = XC939GDC9P;
+						ProvisioningStyle = Automatic;
+					};
+					D7374675219C3C67003C88B2 = {
+						CreatedOnToolsVersion = 10.1;
+						DevelopmentTeam = XC939GDC9P;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -294,6 +591,10 @@
 			projectRoot = "";
 			targets = (
 				228DB9F218BC53F1002BA12A /* UIKitCatalog */,
+				D7374637219C3655003C88B2 /* WatchApp */,
+				D7374643219C3658003C88B2 /* WatchApp Extension */,
+				D7374662219C3C1F003C88B2 /* TVApp */,
+				D7374675219C3C67003C88B2 /* MacOSApp */,
 			);
 		};
 /* End PBXProject section */
@@ -312,9 +613,176 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D7374636219C3655003C88B2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D737463E219C3658003C88B2 /* Assets.xcassets in Resources */,
+				D737463C219C3655003C88B2 /* Interface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7374642219C3658003C88B2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7374650219C3659003C88B2 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7374661219C3C1F003C88B2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D737466D219C3C21003C88B2 /* Assets.xcassets in Resources */,
+				D737466B219C3C1F003C88B2 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7374674219C3C67003C88B2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D737467D219C3C68003C88B2 /* Assets.xcassets in Resources */,
+				D7374680219C3C68003C88B2 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		22C5958C7809D08FD1095DC2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TVApp/Pods-TVApp-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/tealium-swift-df2bfc33/tealium_swift.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/tealium_swift.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TVApp/Pods-TVApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		49235D2C21EA7C09362BB9FF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MacOSApp/Pods-MacOSApp-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/tealium-swift-8b644ff3/tealium_swift.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/tealium_swift.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MacOSApp/Pods-MacOSApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5B37F5F53BAC0112EF6D981B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WatchApp Extension/Pods-WatchApp Extension-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/tealium-swift-26794dcd/tealium_swift.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/tealium_swift.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WatchApp Extension/Pods-WatchApp Extension-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6923602442FB480998AD6A37 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MacOSApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7A886C359FEC50154139118E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TVApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A7C878ECB264C852AFEEF4A8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-WatchApp Extension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		AD1D4596B44BDB78214604AB /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -339,16 +807,18 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-UIKitCatalog/Pods-UIKitCatalog-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/tealium-swift/tealium_swift.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-UIKitCatalog/Pods-UIKitCatalog-frameworks.sh",
+				"${PODS_ROOT}/TealiumCrashReporter/TealiumCrashReporteriOS.framework",
+				"${BUILT_PRODUCTS_DIR}/tealium-swift-a9cbd332/tealium_swift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TealiumCrashReporteriOS.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/tealium_swift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-UIKitCatalog/Pods-UIKitCatalog-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UIKitCatalog/Pods-UIKitCatalog-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -390,7 +860,51 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D7374640219C3658003C88B2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D737464E219C3658003C88B2 /* NotificationController.swift in Sources */,
+				D737464C219C3658003C88B2 /* ExtensionDelegate.swift in Sources */,
+				D737464A219C3658003C88B2 /* InterfaceController.swift in Sources */,
+				D737465E219C3911003C88B2 /* TealiumHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D737465F219C3C1F003C88B2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7374668219C3C1F003C88B2 /* ViewController.swift in Sources */,
+				D7374686219C3DF8003C88B2 /* TealiumHelper.swift in Sources */,
+				D7374666219C3C1F003C88B2 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7374672219C3C67003C88B2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D737467B219C3C67003C88B2 /* ViewController.swift in Sources */,
+				D7374687219C3DF8003C88B2 /* TealiumHelper.swift in Sources */,
+				D7374679219C3C67003C88B2 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D7374647219C3658003C88B2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D7374643219C3658003C88B2 /* WatchApp Extension */;
+			targetProxy = D7374646219C3658003C88B2 /* PBXContainerItemProxy */;
+		};
+		D7374654219C3659003C88B2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D7374637219C3655003C88B2 /* WatchApp */;
+			targetProxy = D7374653219C3659003C88B2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		228DB9F818BC53F1002BA12A /* InfoPlist.strings */ = {
@@ -415,6 +929,30 @@
 				B51AD3F81B1A8A6A00083F63 /* Base */,
 			);
 			name = Search.storyboard;
+			sourceTree = "<group>";
+		};
+		D737463A219C3655003C88B2 /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D737463B219C3655003C88B2 /* Base */,
+			);
+			name = Interface.storyboard;
+			sourceTree = "<group>";
+		};
+		D7374669219C3C1F003C88B2 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D737466A219C3C1F003C88B2 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		D737467E219C3C68003C88B2 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D737467F219C3C68003C88B2 /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -544,6 +1082,316 @@
 			};
 			name = Release;
 		};
+		D7374656219C3659003C88B2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = XC939GDC9P;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				IBSC_MODULE = WatchApp_Extension;
+				INFOPLIST_FILE = WatchApp/Info.plist;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.UIKitCatalog.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 5.1;
+			};
+			name = Debug;
+		};
+		D7374657219C3659003C88B2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = XC939GDC9P;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				IBSC_MODULE = WatchApp_Extension;
+				INFOPLIST_FILE = WatchApp/Info.plist;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.UIKitCatalog.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 5.1;
+			};
+			name = Release;
+		};
+		D7374658219C3659003C88B2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9BF19AF3DDD3AE52E735B9AA /* Pods-WatchApp Extension.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = XC939GDC9P;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "WatchApp Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.UIKitCatalog.watchkitapp.watchkitextension";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 5.1;
+			};
+			name = Debug;
+		};
+		D7374659219C3659003C88B2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B7F3A358E7923CAE9A51213A /* Pods-WatchApp Extension.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = XC939GDC9P;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "WatchApp Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.UIKitCatalog.watchkitapp.watchkitextension";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 5.1;
+			};
+			name = Release;
+		};
+		D737466F219C3C21003C88B2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3D7CF40613EB4582B32ADB99 /* Pods-TVApp.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = XC939GDC9P;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = TVApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TVApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 12.1;
+			};
+			name = Debug;
+		};
+		D7374670219C3C21003C88B2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3715DDB6BF06A916D287B1CE /* Pods-TVApp.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = XC939GDC9P;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = TVApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TVApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 12.1;
+			};
+			name = Release;
+		};
+		D7374684219C3C68003C88B2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F552F8CE061B051DECBDA166 /* Pods-MacOSApp.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = MacOSApp/MacOSApp.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = XC939GDC9P;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = MacOSApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.MacOSApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 4.2;
+			};
+			name = Debug;
+		};
+		D7374685219C3C68003C88B2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CB37375729D752E92DB565D2 /* Pods-MacOSApp.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = MacOSApp/MacOSApp.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = XC939GDC9P;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = MacOSApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.MacOSApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.2;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -561,6 +1409,42 @@
 			buildConfigurations = (
 				228DBA0C18BC53F1002BA12A /* Debug */,
 				228DBA0D18BC53F1002BA12A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D737465A219C3659003C88B2 /* Build configuration list for PBXNativeTarget "WatchApp Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D7374658219C3659003C88B2 /* Debug */,
+				D7374659219C3659003C88B2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D737465C219C3659003C88B2 /* Build configuration list for PBXNativeTarget "WatchApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D7374656219C3659003C88B2 /* Debug */,
+				D7374657219C3659003C88B2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D7374671219C3C21003C88B2 /* Build configuration list for PBXNativeTarget "TVApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D737466F219C3C21003C88B2 /* Debug */,
+				D7374670219C3C21003C88B2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D7374683219C3C68003C88B2 /* Build configuration list for PBXNativeTarget "MacOSApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D7374684219C3C68003C88B2 /* Debug */,
+				D7374685219C3C68003C88B2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

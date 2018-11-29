@@ -7,7 +7,9 @@
 //
 
 import Foundation
-
+#if volatiledata
+import TealiumCore
+#endif
 public protocol TealiumVolatileDataCollection {
     func currentTimeStamps() -> [String: Any]
 }
@@ -41,17 +43,27 @@ public class TealiumVolatileData: NSObject, TealiumVolatileDataCollection {
      
      - returns: A dictionary
      */
-    public func getData() -> [String: Any] {
+    public func getData(currentData: [String: Any]) -> [String: Any] {
         var data = [String: Any]()
 
         data[TealiumVolatileDataKey.random] = TealiumVolatileData.getRandom(length: 16)
-        data.merge(currentTimeStamps()) { _, new -> Any in
-            new
+        if !dispatchHasExistingTimestamps(currentData) {
+            data.merge(currentTimeStamps()) { _, new -> Any in
+                new
+            }
+            data[TealiumVolatileDataKey.timestampOffset] = timezoneOffset()
         }
-        data[TealiumVolatileDataKey.timestampOffset] = timezoneOffset()
         data += volatileData
 
         return data
+    }
+
+    func dispatchHasExistingTimestamps(_ currentData: [String: Any]) -> Bool {
+        return (currentData[TealiumVolatileDataKey.timestampEpoch] != nil) &&
+                (currentData[TealiumVolatileDataKey.timestamp] != nil) &&
+                (currentData[TealiumVolatileDataKey.timestampLocal] != nil) &&
+                (currentData[TealiumVolatileDataKey.timestampOffset] != nil) &&
+                (currentData[TealiumVolatileDataKey.timestampUnix] != nil)
     }
 
     /**
@@ -142,7 +154,8 @@ public class TealiumVolatileData: NSObject, TealiumVolatileDataCollection {
             TealiumVolatileDataKey.timestampEpoch: TealiumVolatileData.getTimestampInSeconds(date),
             TealiumVolatileDataKey.timestamp: TealiumVolatileData.getDate8601UTC(date),
             TealiumVolatileDataKey.timestampLocal: TealiumVolatileData.getDate8601Local(date),
-            TealiumVolatileDataKey.timestampUnix: date.unixTime
+            TealiumVolatileDataKey.timestampUnixMillis: date.unixTime,
+            TealiumVolatileDataKey.timestampUnix: date.unixTimeSeconds
         ]
     }
 

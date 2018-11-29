@@ -1,6 +1,9 @@
 //
-// Created by Craig Rouse on 16/05/2018.
-// Copyright (c) 2018 Tealium, Inc. All rights reserved.
+//  TealiumConnectivityDelegate.swift
+//  tealium-swift
+//
+//  Created by Craig Rouse on 16/5/18.
+//  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
 import Foundation

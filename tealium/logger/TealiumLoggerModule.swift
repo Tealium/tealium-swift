@@ -3,13 +3,17 @@
 //  tealium-swift
 //
 //  Created by Jason Koo on 10/5/16.
-//  Copyright © 2016 tealium. All rights reserved.
+//  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
 import Foundation
 
 // MARK: 
 // MARK: CONSTANTS
+
+#if logger
+import TealiumCore
+#endif
 
 enum TealiumLoggerKey {
     static let moduleName = "logger"

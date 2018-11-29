@@ -7,6 +7,9 @@
 //
 
 import Foundation
+#if remotecommands
+import TealiumCore
+#endif
 
 open class TealiumRemoteCommand {
 

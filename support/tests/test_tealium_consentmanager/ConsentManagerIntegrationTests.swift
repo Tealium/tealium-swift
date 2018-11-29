@@ -2,7 +2,7 @@
 //  ConsentManagerIntegrationTests.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 01/05/2018.
+//  Created by Craig Rouse on 01/05/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
@@ -533,7 +533,7 @@ extension ConsentManagerTests: TealiumModuleDelegate {
     func tealiumModuleRequests(module: TealiumModule?, process: TealiumRequest) {
         if let process = process as? TealiumTrackRequest {
             trackData = process.data
-            if trackData?["tealium_event"] as? String == TealiumConsentConstants.updateConsentCookieEventName {
+            if trackData?["tealium_event"] as? String == TealiumKey.updateConsentCookieEventName {
                 return
             }
             if let testtrackUserConsentPreferencesExpectation = getExpectation(forDescription: "testTrackUserConsentPreferences") {

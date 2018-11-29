@@ -7,7 +7,9 @@
 //
 
 import Foundation
-
+#if remotecommands
+import TealiumCore
+#endif
 public class TealiumRemoteCommands: NSObject {
 
     weak var queue: DispatchQueue?

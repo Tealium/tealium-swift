@@ -29,10 +29,10 @@ import Foundation
  */
 open class TealiumConfig {
 
-    let account: String
-    let profile: String
-    let environment: String
-    lazy var optionalData = [String: Any]()
+    public let account: String
+    public let profile: String
+    public let environment: String
+    public lazy var optionalData = [String: Any]()
 
     /// Convenience constructor.
     ///

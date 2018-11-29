@@ -1,9 +1,9 @@
 //
 //  TealiumHelper.swift
-//  WatchPuzzle
+//  SwiftTestbed
 //
 //  Created by Jason Koo on 11/22/16.
-//  Copyright © 2016 Apple. All rights reserved.
+//  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
 import Foundation
@@ -35,6 +35,9 @@ class TealiumHelper: NSObject {
 
         // OPTIONALLY set log level
         config.setMaxQueueSize(20)
+        config.setLegacyDispatchMethod(false)
+        config.setConnectivityRefreshInterval(interval: 5)
+        config.setCollectOverrideURL(string: "https://collect.tealiumiq.com/vdata/i.gif?tealium_account=tealiummobile&tealium_profile=main&")
         config.setLogLevel(logLevel: .verbose)
         config.setConsentLoggingEnabled(true)
         let consentCat: [TealiumConsentCategories] = [.bigData, .analytics]
@@ -54,10 +57,8 @@ class TealiumHelper: NSObject {
         print("*** TealiumHelper: Autotracking disabled.")
         #endif
         // REQUIRED Initialization
-        tealium = Tealium(config: config,
-                          completion: { (responses) in
+        tealium = Tealium(config: config) {
                             // Optional processing post init.
-                            print("*** TealiumHelper: tealium init: response: \(responses)")
                             self.tealium?.persistentData()?.add(data: ["testPersistentKey": "testPersistentValue"])
                             self.tealium?.volatileData()?.add(data: ["testVolatileKey": "testVolatileValue"])
                             // OPTIONALLY implement Remote Commands
@@ -77,7 +78,7 @@ class TealiumHelper: NSObject {
                             self.tealium?.consentManager()?.addConsentDelegate(self)
                             self.tealium?.consentManager()?.addConsentDelegate(self.mySecondHelper)
                             self.tealium?.consentManager()?.setUserConsentStatusWithCategories(status: .consented, categories: consentCat)
-        })
+        }
     }
 
     func track(title: String, data: [String: Any]?) {

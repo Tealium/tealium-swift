@@ -1,23 +1,24 @@
 //
 //  TealiumDelegateModule.swift
+//  tealium-swift
 //
-//  Created by Jason Koo on 2/12/17.
-//  Copyright © 2017 Tealium, Inc. All rights reserved.
+//  Created by Craig Rouse on 2/12/18.
+//  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
 import Foundation
+#if delegate
+import TealiumCore
+#endif
 
 public enum TealiumDelegateKey {
     static let moduleName = "delegate"
     static let multicastDelegates = "com.tealium.delegate.delegates"
-    static let completion = "com.tealium.delegate.completion"
 }
 
 public enum TealiumDelegateError: Error {
     case suppressedByShouldTrackDelegate
 }
-
-public typealias TealiumEnableCompletion = ((_ modulesResponses: [TealiumModuleResponse]) -> Void )
 
 public protocol TealiumDelegate: class {
 
@@ -27,13 +28,6 @@ public protocol TealiumDelegate: class {
 }
 
 public extension Tealium {
-
-    convenience init(config: TealiumConfig,
-                     completion: @escaping TealiumEnableCompletion ) {
-        config.optionalData[TealiumDelegateKey.completion] = completion
-        self.init(config: config)
-    }
-
     func delegates() -> TealiumDelegates? {
         guard let module = modulesManager.getModule(forName: TealiumDelegateKey.moduleName) as? TealiumDelegateModule else {
             return nil
@@ -68,7 +62,6 @@ public extension TealiumConfig {
 class TealiumDelegateModule: TealiumModule {
 
     var delegates: TealiumDelegates?
-    var enableCompletion: TealiumEnableCompletion?
 
     override class  func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumDelegateKey.moduleName,
@@ -84,17 +77,10 @@ class TealiumDelegateModule: TealiumModule {
         delegate?.tealiumModuleRequests(module: self,
                                         process: TealiumReportNotificationsRequest())
 
-        if let completion = request.config.optionalData[TealiumDelegateKey.completion] as? TealiumEnableCompletion {
-                enableCompletion = completion
-        }
-
         didFinish(request)
     }
 
     override func handleReport(_  request: TealiumRequest) {
-        if let request = request as? TealiumEnableRequest {
-            enableCompletion?(request.moduleResponses)
-        }
         if let request = request as? TealiumTrackRequest {
             delegates?.invokeTrackCompleted(forTrackProcess: request)
         }
@@ -120,8 +106,9 @@ class TealiumDelegateModule: TealiumModule {
 }
 
 public class TealiumDelegates {
-
+    // swiftlint:disable weak_delegate
     var multicastDelegate = TealiumMulticastDelegate<TealiumDelegate>()
+    // swiftlint:enable weak_delegate
 
     /// Add a weak pointer to a class conforming to the TealiumDelegate protocol.
     ///

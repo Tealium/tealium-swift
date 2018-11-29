@@ -40,13 +40,51 @@ class TealiumCollectModuleTests: XCTestCase {
 
         let collectModule = TealiumCollectModule(delegate: nil)
 
-        collectModule.enable(TealiumEnableRequest(config: testTealiumConfig))
+        let config = testTealiumConfig
+        config.setLegacyDispatchMethod(true)
+        collectModule.enable(TealiumEnableRequest(config: config))
 
         XCTAssertTrue(collectModule.collect != nil, "TealiumCollect did not initialize.")
-        XCTAssertTrue(collectModule.collect?.getBaseURLString().isEmpty == false, "No base URL was provided or auto-initialized.")
 
-        collectModule.disable(TealiumDisableRequest())
-
-        XCTAssertTrue(collectModule.collect == nil, "TealiumCollect instance did not nil out.")
+        if let collect = collectModule.collect as? TealiumCollect {
+            XCTAssertTrue(collect.getBaseURLString().isEmpty == false, "No base URL was provided or auto-initialized.")
+            collectModule.disable(TealiumDisableRequest())
+            let newCollect = collectModule.collect as? TealiumCollect
+            XCTAssertTrue(newCollect == nil, "TealiumCollect instance did not de-initialize properly")
+        } else {
+            XCTFail("Collect module did not initialize properly")
+        }
     }
+
+    func testTrackNoAccount() {
+        let collectModule = TealiumCollectModule(delegate: nil)
+        let waiter = XCTWaiter(delegate: nil)
+        let expectation = XCTestExpectation(description: "successful dispatch")
+        let config = testTealiumConfig
+        config.setLegacyDispatchMethod(true)
+        collectModule.enable(TealiumEnableRequest(config: config))
+        let track = TealiumTrackRequest(data: [String: Any]()) { _, info, _ in
+            if let payload = info?["payload"] as? [String: Any] {
+                XCTAssertNotNil(payload[TealiumKey.account])
+                XCTAssertNotNil(payload[TealiumKey.profile])
+                expectation.fulfill()
+            } else {
+                XCTFail("Collect Module: Expected track data was missing")
+            }
+        }
+
+        collectModule.track(track)
+        waiter.wait(for: [expectation], timeout: 1.0)
+    }
+
+    func testOverrideCollectURL() {
+        testTealiumConfig.setCollectOverrideURL(string: "https://collect.tealiumiq.com/vdata/i.gif?tealium_account=tealiummobile&tealium_profile=someprofile")
+        XCTAssertTrue(testTealiumConfig.optionalData[TealiumCollectKey.overrideCollectUrl] as! String == "https://collect.tealiumiq.com/vdata/i.gif?tealium_account=tealiummobile&tealium_profile=someprofile&")
+    }
+
+    func testOverrideCollectProfile() {
+        testTealiumConfig.setCollectOverrideProfile(profile: "hello")
+        XCTAssertTrue(testTealiumConfig.optionalData[TealiumCollectKey.overrideCollectProfile] as! String == "hello")
+    }
+
 }

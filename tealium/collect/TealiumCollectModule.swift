@@ -7,6 +7,9 @@
 //
 
 import Foundation
+#if collect
+import TealiumCore
+#endif
 
 // MARK: 
 // MARK: CONSTANTS
@@ -15,8 +18,11 @@ enum TealiumCollectKey {
     static let moduleName = "collect"
     static let encodedURLString = "encoded_url"
     static let overrideCollectUrl = "tealium_override_collect_url"
+    static let overrideCollectProfile = "tealium_override_collect_profile"
     static let payload = "payload"
     static let responseHeader = "response_headers"
+    public static let errorHeaderKey = "X-Error"
+    public static let legacyDispatchMethod = "legacy_dispatch_method"
 }
 
 enum TealiumCollectError: Error {
@@ -31,32 +37,9 @@ enum TealiumCollectError: Error {
 // MARK: 
 // MARK: EXTENSIONS
 
-extension Tealium {
+public extension Tealium {
 
-    /**
-     Deprecated - use the track(title: String, data: [String:Any]?, completion:((_ success: Bool, _ error: Error?)->Void) function instead. Convience method to track event with optional data.
-     
-     - parameters:
-        - encodedURLString: Encoded string that will be used for the end point for the request
-        - completion: Optional callback
-     */
-    @available(*, deprecated, message: "No longer supported. Will be removed next version.")
-    func track(encodedURLString: String,
-               completion: ((_ successful: Bool, _ encodedURLString: String, _ error: NSError?) -> Void)?) {
-        collect()?.send(finalStringWithParams: encodedURLString,
-                        completion: { success, info, _ in
-
-                // Make new call but return empty responses for encodedURLString and error
-                var encodedURLString = ""
-                if let encodedURLStringRaw = info?[TealiumCollectKey.encodedURLString] as? String {
-                    encodedURLString = encodedURLStringRaw
-                }
-
-                completion?(success, encodedURLString, nil)
-        })
-    }
-
-    public func collect() -> TealiumCollect? {
+    func collect() -> TealiumCollectProtocol? {
         guard let collectModule = modulesManager.getModule(forName: TealiumCollectKey.moduleName) as? TealiumCollectModule else {
             return nil
         }
@@ -68,7 +51,27 @@ extension Tealium {
 public extension TealiumConfig {
 
     func setCollectOverrideURL(string: String) {
-        optionalData[TealiumCollectKey.overrideCollectUrl] = string
+        if string.contains("vdata") {
+            var urlString = string
+            var lastChar: Character?
+            lastChar = urlString.last
+
+            if lastChar != "&" {
+                urlString += "&"
+            }
+            optionalData[TealiumCollectKey.overrideCollectUrl] = urlString
+        } else {
+            optionalData[TealiumCollectKey.overrideCollectUrl] = string
+        }
+
+    }
+
+    func setCollectOverrideProfile(profile: String) {
+        optionalData[TealiumCollectKey.overrideCollectProfile] = profile
+    }
+
+    func setLegacyDispatchMethod(_ shouldUseLegacyDispatch: Bool) {
+        optionalData[TealiumCollectKey.legacyDispatchMethod] = shouldUseLegacyDispatch
     }
 
 }
@@ -81,8 +84,8 @@ public extension TealiumConfig {
  */
 class TealiumCollectModule: TealiumModule {
 
-    var collect: TealiumCollect?
-
+    var collect: TealiumCollectProtocol?
+    var config: TealiumConfig?
     override class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumCollectKey.moduleName,
                                    priority: 1000,
@@ -92,19 +95,22 @@ class TealiumCollectModule: TealiumModule {
 
     override func enable(_ request: TealiumEnableRequest) {
         isEnabled = true
-
+        config = request.config
         if self.collect == nil {
             // Collect dispatch service
-            var urlString: String
-            if let collectURLString = request.config.optionalData[TealiumCollectKey.overrideCollectUrl] as? String {
-                urlString = collectURLString
+            let urlString = config?.optionalData[TealiumCollectKey.overrideCollectUrl] as? String
+            // check if should use legacy (GET) dispatch method
+            if config?.optionalData[TealiumCollectKey.legacyDispatchMethod] as? Bool == true {
+                let urlString = urlString ?? TealiumCollect.defaultBaseURLString()
+                self.collect = TealiumCollect(baseURL: urlString)
+                didFinish(request)
             } else {
-                urlString = TealiumCollect.defaultBaseURLString()
+                let urlString = urlString ?? TealiumCollectPostDispatcher.defaultDispatchURL
+                self.collect = TealiumCollectPostDispatcher(dispatchURL: urlString) { _ in
+                    self.didFinish(request)
+                }
             }
-            self.collect = TealiumCollect(baseURL: urlString)
         }
-
-        didFinish(request)
     }
 
     override func disable(_ request: TealiumDisableRequest) {
@@ -118,8 +124,9 @@ class TealiumCollectModule: TealiumModule {
             didFinishWithNoResponse(track)
             return
         }
+        var newTrack = track.data
 
-        if track.data[TealiumKey.event] as? String == TealiumConsentConstants.updateConsentCookieEventName {
+        if track.data[TealiumKey.event] as? String == TealiumKey.updateConsentCookieEventName {
             didFinishWithNoResponse(track)
             return
         }
@@ -130,8 +137,16 @@ class TealiumCollectModule: TealiumModule {
             return
         }
 
+        if newTrack[TealiumKey.account] == nil,
+            newTrack[TealiumKey.profile] == nil {
+                newTrack[TealiumKey.account] = config?.account
+                newTrack[TealiumKey.profile] = config?.profile
+        }
+        newTrack += track.data
+        let trackRequest = TealiumTrackRequest(data: newTrack, completion: track.completion)
+
         // Send the current track call
-        dispatch(track,
+        dispatch(trackRequest,
                  collect: collect)
 
     }
@@ -163,17 +178,16 @@ class TealiumCollectModule: TealiumModule {
     }
 
     func dispatch(_ track: TealiumTrackRequest,
-                  collect: TealiumCollect) {
+                  collect: TealiumCollectProtocol) {
 
         var newData = track.data
         newData[TealiumKey.dispatchService] = TealiumCollectKey.moduleName
 
-        collect.dispatch(data: newData, completion: { [weak self] success, info, error in
+        if let profileOverride = config?.optionalData[TealiumCollectKey.overrideCollectProfile] as? String {
+            newData[TealiumKey.profile] = profileOverride
+        }
 
-            // if self deallocated, stop further track processing
-            guard self != nil else {
-                return
-            }
+        collect.dispatch(data: newData, completion: { success, info, error in
 
             track.completion?(success, info, error)
 
@@ -181,17 +195,22 @@ class TealiumCollectModule: TealiumModule {
             if success == false {
                 var localError = error
                 if localError == nil { localError = TealiumCollectError.unknownIssueWithSend }
-                self?.didFailToFinish(track,
-                                      info: info,
-                                      error: localError!)
+                self.didFailToFinish(track,
+                                     info: info,
+                                     error: localError!)
                 return
             }
 
             // Another message to moduleManager of completed track, this time of
             //  modified track data.
-            self?.didFinish(track,
-                            info: info)
+            self.didFinish(track,
+                           info: info)
         })
+    }
+
+    deinit {
+        self.config = nil
+        self.collect = nil
     }
 
 }

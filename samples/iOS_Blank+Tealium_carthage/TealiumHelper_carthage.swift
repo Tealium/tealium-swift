@@ -7,7 +7,16 @@
 //
 
 import Foundation
-import Tealium
+import TealiumCore
+import TealiumDelegate
+import TealiumFileStorage
+import TealiumConsentManager
+import TealiumAutotracking
+import TealiumVolatileData
+import TealiumRemoteCommands
+import TealiumDataSource
+import TealiumLogger
+import TealiumConnectivity
 
 extension String : Error {}
 
@@ -35,7 +44,8 @@ class TealiumHelper : NSObject {
         
         // OPTIONALLY set log level
         config.setLogLevel(logLevel: .verbose)
-        
+        //config.setConnectivityRefreshEnabled(enabled: true)
+        config.setConnectivityRefreshInterval(interval: 5)
         // OPTIONALLY add an external delegate
         config.addDelegate(self)
 
@@ -44,23 +54,21 @@ class TealiumHelper : NSObject {
         #else
             // OPTIONALLY disable a particular module by name
             let list = TealiumModulesList(isWhitelist: false,
-                                          moduleNames: ["autotracking"])
+                                          moduleNames: ["autotracking", "defaultsstorage"])
             config.setModulesList(list)
             print("*** TealiumHelper: Autotracking disabled.")
         #endif
         
         // REQUIRED Initialization
-        tealium = Tealium(config: config,
-                          completion: { (responses) in
+        tealium = Tealium(config: config) {
                         
                 // Optional processing post init.
                 print("*** TealiumHelper: tealium init: response: \(responses)")
                             self.tealium?.consentManager()?.setUserConsentStatus(.consented)
                             
-        })
+        }
         
         tealium?.persistentData()?.add(data: ["testPersistentKey":"testPersistentValue"])
-        
         tealium?.volatileData()?.add(data: ["testVolatileKey":"testVolatileValue"])
         
         tealium?.track(title: "tealiumhelper_started")

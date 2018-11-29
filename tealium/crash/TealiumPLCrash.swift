@@ -1,5 +1,5 @@
 //
-//  TealiumCrash.swift
+//  TealiumPLCrash.swift
 //  tealium-swift
 //
 //  Created by Jonathan Wong on 2/12/18.
@@ -7,10 +7,13 @@
 //
 
 import Foundation
-#if !COCOAPODS
-import Tealium
-#endif
+
 import TealiumCrashReporteriOS
+#if !COCOAPODS
+import TealiumAppData
+import TealiumCore
+import TealiumDeviceData
+#endif
 
 public class TealiumPLCrash: TealiumAppDataCollection {
 

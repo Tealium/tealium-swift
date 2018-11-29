@@ -2,11 +2,14 @@
 //  TealiumConsentPreferencesStorage.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 26/04/2018.
+//  Created by Craig Rouse on 4/26/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
 import Foundation
+#if consentmanager
+import TealiumCore
+#endif
 
 class TealiumConsentPreferencesStorage {
 

@@ -10,7 +10,9 @@ import AdSupport
 import Foundation
 import iAd
 import UIKit
-
+#if attribution
+import TealiumCore
+#endif
 // MARK: 
 // MARK: CONSTANTS
 public enum TealiumAttributionKey {
@@ -171,25 +173,17 @@ class TealiumAttributionModule: TealiumModule {
             let idManager = ASIdentifierManager.shared()
             // check if user allowed IDFA usage
             // if disabled, returns a dummy string of zeroes
-            // TODO: Possibly add deferred check here if nil. Under some circumstances, this could be nil 1st time round
+            // Under some circumstances, this could be nil 1st time round
             data = [TealiumAttributionKey.idfa: "unknown",
                     TealiumAttributionKey.isTrackingAllowed: "unknown",
                     TealiumAttributionKey.idfv: "unknown"]
             // guaranteed to be the same for all apps from the same vendor (determined by the 1st 2 parts of the rdns bundle identifier, e.g. com.tealium)
             let idfv = UIDevice.current.identifierForVendor?.uuidString
-            #if swift(>=4.0)
             let allowed = idManager.isAdvertisingTrackingEnabled.description
             let idfa = idManager.advertisingIdentifier.uuidString
 
             data = [TealiumAttributionKey.idfa: idfa,
                 TealiumAttributionKey.isTrackingAllowed: allowed]
-
-            #else
-            if let idfa = idManager?.advertisingIdentifier.uuidString, let allowed = idManager?.isAdvertisingTrackingEnabled.description {
-                data = [TealiumAttributionKey.idfa: idfa,
-                        TealiumAttributionKey.isTrackingAllowed: allowed]
-            }
-            #endif
             if let vendorID = idfv {
                 data[TealiumAttributionKey.idfv] = vendorID
             }
@@ -215,82 +209,42 @@ class TealiumAttributionModule: TealiumModule {
     func setNewAttributionData() {
         // get attribution details from Apple's servers
         let adClient = ADClient.shared()
-        // this is pretty nasty, but Apple Changed the API between Swift 3.2 and Swift 4.0, so not much choice.
-        #if swift(>=4.0)
-            let completionHander = { (details: [String: NSObject]?, error: Error?) in
-            // closure callback
-                if let detailsDict = details?[AppleInternalKeys.objectVersion] as? [String: Any] {
-            if let att = detailsDict[AppleInternalKeys.attribution] as? String {
-            self.appleAttributionDetails[TealiumAttributionKey.clickedWithin30D] = att
-            }
-            if let dat = detailsDict[AppleInternalKeys.clickDate] as? String {
-            self.appleAttributionDetails[TealiumAttributionKey.clickedDate] = dat
-            }
-            if let convDt = detailsDict[AppleInternalKeys.conversionDate] as? String {
-            self.appleAttributionDetails[TealiumAttributionKey.conversionDate] = convDt
-            }
-            if let orgName = detailsDict[AppleInternalKeys.orgName] as? String {
-            self.appleAttributionDetails[TealiumAttributionKey.orgName] = orgName
-            }
-            if let cmpId = detailsDict[AppleInternalKeys.campaignId] as? String {
-            self.appleAttributionDetails[TealiumAttributionKey.campaignId] = cmpId
-            }
-            if let cmpName = detailsDict[AppleInternalKeys.campaignName] as? String {
-            self.appleAttributionDetails[TealiumAttributionKey.campaignName] = cmpName
-            }
-            if let adGrpId = detailsDict[AppleInternalKeys.adGroupId] as? String {
-            self.appleAttributionDetails[TealiumAttributionKey.adGroupId] = adGrpId
-            }
-            if let adGrpName = detailsDict[AppleInternalKeys.adGroupName] as? String {
-            self.appleAttributionDetails[TealiumAttributionKey.adGroupName] = adGrpName
-            }
-            if let keyword = detailsDict[AppleInternalKeys.keyword] as? String {
-            self.appleAttributionDetails[TealiumAttributionKey.adKeyword] = keyword
-            }
-
-            }
-            self.savePersistentData(self.appleAttributionDetails)
-            self.setLoadedAttributionData(self.appleAttributionDetails)
-            }
-            adClient.requestAttributionDetails(completionHander)
-        #else
-            let completionHander = { (details: [AnyHashable: Any]?, error: Error?) in
-                // closure callback
+        let completionHander = { (details: [String: NSObject]?, error: Error?) in
+        // closure callback
             if let detailsDict = details?[AppleInternalKeys.objectVersion] as? [String: Any] {
-                    if let att = detailsDict[AppleInternalKeys.attribution] as? String {
-                        self.appleAttributionDetails[TealiumAttributionKey.clickedWithin30D] = att
-                    }
-                    if let dat = detailsDict[AppleInternalKeys.clickDate] as? String {
-                        self.appleAttributionDetails[TealiumAttributionKey.clickedDate] = dat
-                    }
-                    if let convDt = detailsDict[AppleInternalKeys.conversionDate] as? String {
-                        self.appleAttributionDetails[TealiumAttributionKey.conversionDate] = convDt
-                    }
-                    if let orgName = detailsDict[AppleInternalKeys.orgName] as? String {
-                        self.appleAttributionDetails[TealiumAttributionKey.orgName] = orgName
-                    }
-                    if let cmpId = detailsDict[AppleInternalKeys.campaignId] as? String {
-                        self.appleAttributionDetails[TealiumAttributionKey.campaignId] = cmpId
-                    }
-                    if let cmpName = detailsDict[AppleInternalKeys.campaignName] as? String {
-                        self.appleAttributionDetails[TealiumAttributionKey.campaignName] = cmpName
-                    }
-                    if let adGrpId = detailsDict[AppleInternalKeys.adGroupId] as? String {
-                        self.appleAttributionDetails[TealiumAttributionKey.adGroupId] = adGrpId
-                    }
-                    if let adGrpName = detailsDict[AppleInternalKeys.adGroupName] as? String {
-                        self.appleAttributionDetails[TealiumAttributionKey.adGroupName] = adGrpName
-                    }
-                    if let keyword = detailsDict[AppleInternalKeys.keyword] as? String {
-                        self.appleAttributionDetails[TealiumAttributionKey.adKeyword] = keyword
-                    }
-                }
-                self.savePersistentData(self.appleAttributionDetails)
-                self.setLoadedAttributionData(self.appleAttributionDetails)
-            }
-            adClient?.requestAttributionDetails(completionHander)
-        #endif
+        if let att = detailsDict[AppleInternalKeys.attribution] as? String {
+        self.appleAttributionDetails[TealiumAttributionKey.clickedWithin30D] = att
+        }
+        if let dat = detailsDict[AppleInternalKeys.clickDate] as? String {
+        self.appleAttributionDetails[TealiumAttributionKey.clickedDate] = dat
+        }
+        if let convDt = detailsDict[AppleInternalKeys.conversionDate] as? String {
+        self.appleAttributionDetails[TealiumAttributionKey.conversionDate] = convDt
+        }
+        if let orgName = detailsDict[AppleInternalKeys.orgName] as? String {
+        self.appleAttributionDetails[TealiumAttributionKey.orgName] = orgName
+        }
+        if let cmpId = detailsDict[AppleInternalKeys.campaignId] as? String {
+        self.appleAttributionDetails[TealiumAttributionKey.campaignId] = cmpId
+        }
+        if let cmpName = detailsDict[AppleInternalKeys.campaignName] as? String {
+        self.appleAttributionDetails[TealiumAttributionKey.campaignName] = cmpName
+        }
+        if let adGrpId = detailsDict[AppleInternalKeys.adGroupId] as? String {
+        self.appleAttributionDetails[TealiumAttributionKey.adGroupId] = adGrpId
+        }
+        if let adGrpName = detailsDict[AppleInternalKeys.adGroupName] as? String {
+        self.appleAttributionDetails[TealiumAttributionKey.adGroupName] = adGrpName
+        }
+        if let keyword = detailsDict[AppleInternalKeys.keyword] as? String {
+        self.appleAttributionDetails[TealiumAttributionKey.adKeyword] = keyword
+        }
 
+        }
+        self.savePersistentData(self.appleAttributionDetails)
+        self.setLoadedAttributionData(self.appleAttributionDetails)
+        }
+        adClient.requestAttributionDetails(completionHander)
     }
 
     func setLoadedAttributionData(_ data: [String: Any]?) {

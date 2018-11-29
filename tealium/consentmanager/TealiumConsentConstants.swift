@@ -2,7 +2,7 @@
 //  TealiumConsentConstants.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 20/04/2018.
+//  Created by Craig Rouse on 4/20/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
@@ -14,7 +14,6 @@ public enum TealiumConsentConstants {
     static let consentGrantedEventName = "grant_full_consent"
     static let consentDeclinedEventName = "decline_consent"
     static let consentPartialEventName = "grant_partial_consent"
-    static let updateConsentCookieEventName = "update_consent_cookie"
     static let moduleName = "consentmanager"
     static let consentLoggingEnabled = "consent_manager_enabled"
     static let consentStatus = "consent_status"

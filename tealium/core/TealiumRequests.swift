@@ -31,9 +31,9 @@ public struct TealiumDeleteRequest: TealiumRequest {
     public var moduleResponses = [TealiumModuleResponse]()
     public var completion: TealiumCompletion?
 
-    let name: String
+    public let name: String
 
-    init(name: String) {
+    public init(name: String) {
         self.name = name
         self.completion = nil
     }
@@ -62,7 +62,7 @@ public struct TealiumEnableRequest: TealiumRequest {
     public var moduleResponses = [TealiumModuleResponse]()
     public var completion: TealiumCompletion?
 
-    let config: TealiumConfig
+    public let config: TealiumConfig
 
     public init(config: TealiumConfig) {
         self.config = config
@@ -78,10 +78,10 @@ public struct TealiumLoadRequest: TealiumRequest {
     public var typeId = TealiumLoadRequest.instanceTypeId()
     public var moduleResponses = [TealiumModuleResponse]()
     public var completion: TealiumCompletion?
-    let name: String
+    public let name: String
 
-    init(name: String,
-         completion: TealiumCompletion?) {
+    public init(name: String,
+                completion: TealiumCompletion?) {
         self.name = name
         self.completion = completion
     }
@@ -97,9 +97,9 @@ public struct TealiumReportRequest: TealiumRequest {
     public var moduleResponses = [TealiumModuleResponse]()
     public var completion: TealiumCompletion?
 
-    let message: String
+    public let message: String
 
-    init(message: String) {
+    public init(message: String) {
         self.message = message
     }
 
@@ -115,6 +115,9 @@ public struct TealiumReportNotificationsRequest: TealiumRequest {
     public var moduleResponses = [TealiumModuleResponse]()
     public var completion: TealiumCompletion?
 
+    public init() {
+    }
+
     public static func instanceTypeId() -> String {
         return "reportnotification"
     }
@@ -125,6 +128,12 @@ public struct TealiumReleaseQueuesRequest: TealiumRequest {
     public var typeId = TealiumReleaseQueuesRequest.instanceTypeId()
     public var moduleResponses = [TealiumModuleResponse]()
     public var completion: TealiumCompletion?
+
+    public init(typeId: String, moduleResponses: [TealiumModuleResponse], completion: TealiumCompletion?) {
+        self.typeId = typeId
+        self.moduleResponses = moduleResponses
+        self.completion = completion
+    }
 
     public static func instanceTypeId() -> String {
         return "queuerelease"
@@ -137,7 +146,7 @@ public struct TealiumEnqueueRequest: TealiumRequest {
     public var moduleResponses = [TealiumModuleResponse]()
     public var completion: TealiumCompletion?
 
-    let data: TealiumTrackRequest
+    public let data: TealiumTrackRequest
 
     public init(data: TealiumTrackRequest,
                 completion: TealiumCompletion?) {
@@ -156,6 +165,12 @@ public struct TealiumClearQueuesRequest: TealiumRequest {
     public var moduleResponses = [TealiumModuleResponse]()
     public var completion: TealiumCompletion?
 
+    public init(typeId: String, moduleResponses: [TealiumModuleResponse], completion: TealiumCompletion?) {
+        self.typeId = typeId
+        self.moduleResponses = moduleResponses
+        self.completion = completion
+    }
+
     public static func instanceTypeId() -> String {
         return "queuedelete"
     }
@@ -167,11 +182,11 @@ public struct TealiumSaveRequest: TealiumRequest {
     public var moduleResponses = [TealiumModuleResponse]()
     public var completion: TealiumCompletion?
 
-    let name: String
-    let data: [String: Any]
+    public let name: String
+    public let data: [String: Any]
 
-    init(name: String,
-         data: [String: Any]) {
+    public init(name: String,
+                data: [String: Any]) {
         self.name = name
         self.data = data
         self.completion = nil

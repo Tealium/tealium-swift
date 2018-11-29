@@ -7,137 +7,132 @@
 //
 
 import Foundation
-import tealium_swift
+import TealiumSwift
 
-extension String : Error {}
+extension String: Error {}
 
 /// Example of a shared helper to handle all 3rd party tracking services. This
 /// paradigm is recommended to reduce burden of future code updates for external services
 /// in general.
-@objc class TealiumHelper : NSObject {
-    
+@objc class TealiumHelper: NSObject {
+
     static let shared = TealiumHelper()
-    var tealium : Tealium?
+    var tealium: Tealium?
     var enableHelperLogs = true
-    
-    override public init() {
-        
+
+    override private init() {
+
     }
-    
+
     @objc func start() {
-    
+
         // REQUIRED Config object for lib
         let config = TealiumConfig(account: "tealiummobile",
                                    profile: "demo",
                                    environment: "dev",
                                    datasource: "test12",
                                    optionalData: nil)
-        
+
         // OPTIONALLY set log level
         config.setLogLevel(logLevel: .verbose)
-        
+
         // OPTIONALLY add an external delegate
         config.addDelegate(self)
-        
+
         // OPTIONALLY disable a particular module by name
         let list = TealiumModulesList(isWhitelist: false,
                                       moduleNames: ["autotracking"])
         config.setModulesList(list)
 
         // REQUIRED Initialization
-        tealium = Tealium(config: config,
-                          completion: { (responses) in
-                        
+        tealium = Tealium(config: config) {
+
                             // Optional processing post init.
                             // OPTIONALLY implement Dynamic Triggers/Remote Commands.
                             #if os(iOS)
-                                let remoteCommand = TealiumRemoteCommand(commandId: "logger",
-                                                                         description: "test") { (response) in
-                                                                            
-                                                                            if TealiumHelper.shared.enableHelperLogs {
-                                                                                print("*** TealiumHelper: Remote Command Executed: response:\(response)")
-                                                                            }
-                                                                            
-                                }
-                                
-                                // this must be done inside the Tealium init callback, otherwise remotecommands won't be avaialable
-                                if let remoteCommands = self.tealium?.remoteCommands() {
-                                    remoteCommands.add(remoteCommand)
-                                } else {
-                                    return
-                                }
-                                
+                            let remoteCommand = TealiumRemoteCommand(commandId: "logger",
+                                                                     description: "test") { (response) in
+
+                                                                        if TealiumHelper.shared.enableHelperLogs {
+                                                                            print("*** TealiumHelper: Remote Command Executed: response:\(response)")
+                                                                        }
+
+                            }
+
+                            // this must be done inside the Tealium init callback, otherwise remotecommands won't be avaialable
+                            if let remoteCommands = self.tealium?.remoteCommands() {
+                                remoteCommands.add(remoteCommand)
+                            } else {
+                                return
+                            }
+
                             #endif
-                            
-        })
-        
+        }
+
         // example showing persistent data
-        self.tealium?.persistentData()?.add(data: ["testPersistentKey":"testPersistentValue"])
+        self.tealium?.persistentData()?.add(data: ["testPersistentKey": "testPersistentValue"])
         // example showing volatile data
-        self.tealium?.volatileData()?.add(data: ["testVolatileKey":"testVolatileValue"])
-        
+        self.tealium?.volatileData()?.add(data: ["testVolatileKey": "testVolatileValue"])
+
         // process a tracking call on the background queue
         // example tracking call - not required in production
         DispatchQueue.global(qos: .background).async {
-            self.tealium?.track(title: "HelperReady_BG_Queue")    
+            self.tealium?.track(title: "HelperReady_BG_Queue")
         }
         // example tracking call - not required in production
         self.tealium?.track(title: "HelperReady")
     }
-    
+
     // track an event
-    @objc func track(title: String, data:[String:Any]?) {
-    
+    @objc func track(title: String, data: [String: Any]?) {
+
         tealium?.track(title: title,
-                      data: data,
-                      completion: { (success, info, error) in
-                        
-                // Optional post processing
-                if self.enableHelperLogs == false {
-                    return
-                }
-                print("*** TealiumHelper: track completed:\n\(success)\n\(String(describing: info))\n\(String(describing: error))")
-        })
-    }
-    
-    // track a screen view
-    @objc func trackView(title: String, data:[String:Any]?) {
-        
-        tealium?.trackView(title: title,
                        data: data,
                        completion: { (success, info, error) in
-                        
-                // Optional post processing
-                // Alternatively, monitoring track completions can be done here vs. using the delegate module's callbacks.
-                if self.enableHelperLogs == false {
-                    return
-                }
-                print("*** TealiumHelper: view completed:\n\(success)\n\(String(describing: info))\n\(String(describing: error))")
-    
-                        
+
+                        // Optional post processing
+                        if self.enableHelperLogs == false {
+                            return
+                        }
+                        print("*** TealiumHelper: track completed:\n\(success)\n\(String(describing: info))\n\(String(describing: error))")
         })
-    
     }
-    
+
+    // track a screen view
+    @objc func trackView(title: String, data: [String: Any]?) {
+
+        tealium?.trackView(title: title,
+                           data: data,
+                           completion: { (success, info, error) in
+
+                            // Optional post processing
+                            // Alternatively, monitoring track completions can be done here vs. using the delegate module's callbacks.
+                            if self.enableHelperLogs == false {
+                                return
+                            }
+                            print("*** TealiumHelper: view completed:\n\(success)\n\(String(describing: info))\n\(String(describing: error))")
+
+        })
+
+    }
+
     @objc func crash() {
-        NSException.raise(NSExceptionName(rawValue: "Exception"), format:"This is a test exception", arguments:getVaList(["nil"]))
+        NSException.raise(NSExceptionName(rawValue: "Exception"), format: "This is a test exception", arguments: getVaList(["nil"]))
     }
-    
+
 }
 
-extension TealiumHelper : TealiumDelegate {
+extension TealiumHelper: TealiumDelegate {
 
-    
-    func tealiumShouldTrack(data: [String : Any]) -> Bool {
+    func tealiumShouldTrack(data: [String: Any]) -> Bool {
         return true
     }
-    
-    func tealiumTrackCompleted(success: Bool, info: [String : Any]?, error: Error?) {
-        
+
+    func tealiumTrackCompleted(success: Bool, info: [String: Any]?, error: Error?) {
+
         if enableHelperLogs == false {
             return
         }
-        print("\n*** Tealium Helper: Tealium Delegate : tealiumTrackCompleted *** Track finished. Was successful:\(success)\nInfo:\(info as AnyObject)\((error != nil) ? "\nError:\(String(describing:error))":"")")
-        
+        print("\n*** Tealium Helper: Tealium Delegate : tealiumTrackCompleted *** Track finished. Was successful:\(success)\nInfo:\(info as AnyObject)\((error != nil) ? "\nError:\(String(describing: error))":"")")
     }
 }

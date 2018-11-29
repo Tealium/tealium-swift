@@ -10,8 +10,8 @@
 // MARK: VALUES
 
 public enum TealiumValue {
-    static let libraryName = "swift"
-    static let libraryVersion = "1.6.4"
+    public static let libraryName = "swift"
+    public static let libraryVersion = "1.6.5"
 }
 
 // MARK: 
@@ -30,6 +30,7 @@ public enum TealiumKey {
     public static let queueReason = "queue_reason"
     public static let wasQueued = "was_queued"
     public static let dispatchService = "dispatch_service"
+    public static let updateConsentCookieEventName = "update_consent_cookie"
 }
 
 public enum TealiumModulesManagerError: Error {

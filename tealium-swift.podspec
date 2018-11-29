@@ -16,7 +16,8 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "tealium-swift"
-  s.version      = "1.6.4"
+  s.module_name  = "TealiumSwift"
+  s.version      = "1.6.5"
   s.summary      = "Tealium Swift Integration Library"
 
   # This description is used to generate tags and improve search results.
@@ -29,8 +30,6 @@ Pod::Spec.new do |s|
                    DESC
 
   s.homepage     = "https://github.com/Tealium/tealium-swift"
-  # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
-
 
   # ―――  Spec License  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
@@ -40,7 +39,6 @@ Pod::Spec.new do |s|
   #
 
   s.license      = { :type => "Commercial", :file => "LICENSE.txt" }
-  # s.license      = { :type => "MIT", :file => "FILE_LICENSE" }
 
 
   # ――― Author Metadata  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -92,26 +90,125 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
   
-  s.default_subspec = "Core"
+  s.default_subspec = "TealiumFull"
+
+  s.subspec "TealiumFull" do |full|
+    full.source_files  = 'tealium/**/*'
+    full.ios.exclude_files = 'tealium/scripts/*'
+    full.ios.dependency "TealiumCrashReporter"
+    full.tvos.exclude_files = 'tealium/tagmanagement/*', 'tealium/remotecommands/*', 'tealium/attribution/*', "tealium/crash/*", 'tealium/scripts/*'
+    full.watchos.exclude_files = 'tealium/tagmanagement/*', 'tealium/autotracking/*', 'tealium/connectivity/*', 'tealium/remotecommands/*', 'tealium/attribution/*', "tealium/crash/*", 'tealium/scripts/*'
+    full.osx.exclude_files = 'tealium/tagmanagement/*', 'tealium/autotracking/*', 'tealium/remotecommands/*', 'tealium/attribution/*', "tealium/crash/*", 'tealium/scripts/*'
+  end
 
   s.subspec "Core" do |core|
-    core.source_files  = 'tealium/**/*'
-    core.ios.exclude_files = 'tealium/crash/*', 'tealium/scripts/*'
-    core.tvos.exclude_files = 'tealium/tagmanagement/TealiumTagManagementModule.swift', 'tealium/remotecommands/*', 'tealium/attribution/*', "tealium/crash/*", 'tealium/scripts/*'
-    core.watchos.exclude_files = 'tealium/tagmanagement/TealiumTagManagementModule.swift', 'tealium/autotracking/*', 'tealium/connectivity/*', 'tealium/remotecommands/*', 'tealium/attribution/*', "tealium/crash/*", 'tealium/scripts/*'
-    core.osx.exclude_files = 'tealium/tagmanagement/TealiumTagManagementModule.swift', 'tealium/autotracking/*', 'tealium/remotecommands/*', 'tealium/attribution/*', "tealium/crash/*", 'tealium/scripts/*'
+    core.source_files  = 'tealium/core/*'
+  end
+
+  s.subspec "TealiumAppData" do |appdata|
+    appdata.source_files = "tealium/appdata/*"
+    appdata.dependency "tealium-swift/Core"
+  end
+
+  s.subspec "TealiumAttribution" do |attribution|
+    attribution.platform = :ios, "9.0"
+    attribution.source_files = "tealium/attribution/*"
+    attribution.dependency "tealium-swift/Core"
+  end
+
+  s.subspec "TealiumAutotracking" do |autotracking|
+    autotracking.ios.deployment_target = "9.0"
+    autotracking.tvos.deployment_target = "9.0"
+    autotracking.source_files = "tealium/autotracking/*"
+    autotracking.dependency "tealium-swift/Core"
+  end
+
+  s.subspec "TealiumCollect" do |collect|
+    collect.source_files = "tealium/collect/*"
+    collect.dependency "tealium-swift/Core"
+  end
+
+  s.subspec "TealiumConnectivity" do |connectivity|
+    connectivity.ios.deployment_target = "9.0"
+    connectivity.osx.deployment_target = "10.11"
+    connectivity.tvos.deployment_target = "9.0"
+    connectivity.source_files = "tealium/connectivity/*"
+    connectivity.dependency "tealium-swift/Core"
+  end
+
+  s.subspec "TealiumConsentManager" do |consentmanager|
+    consentmanager.source_files = "tealium/consentmanager/*"
+    consentmanager.dependency "tealium-swift/Core"
+  end
+
+  s.subspec "TealiumDataSource" do |datasource|
+    datasource.source_files = "tealium/datasource/*"
+    datasource.dependency "tealium-swift/Core"
+  end
+
+  s.subspec "TealiumDefaultsStorage" do |defaultsstorage|
+    defaultsstorage.source_files = "tealium/defaultsstorage/*", "tealium/persistentdata/*"
+    defaultsstorage.dependency "tealium-swift/Core"
+  end
+
+  s.subspec "TealiumDelegate" do |delegate|
+    delegate.source_files = "tealium/delegate/*"
+    delegate.dependency "tealium-swift/Core"
+  end
+
+  s.subspec "TealiumDeviceData" do |devicedata|
+    devicedata.source_files = "tealium/devicedata/*"
+    devicedata.dependency "tealium-swift/Core"
+    devicedata.resources = "tealium/devicedata/device-names.json"
+  end
+
+  s.subspec "TealiumDispatchQueue" do |dispatchqueue|
+    dispatchqueue.source_files = "tealium/dispatchqueue/*"
+    dispatchqueue.dependency "tealium-swift/Core"
+  end
+
+  s.subspec "TealiumFileStorage" do |filestorage|
+    filestorage.source_files = "tealium/filestorage/*", "tealium/persistentdata/*"
+    filestorage.dependency "tealium-swift/Core"
+  end
+
+  s.subspec "TealiumLifecycle" do |lifecycle|
+    lifecycle.source_files = "tealium/lifecycle/*"
+    lifecycle.dependency "tealium-swift/Core"
+  end
+
+  s.subspec "TealiumLogger" do |logger|
+    logger.source_files = "tealium/logger/*"
+    logger.dependency "tealium-swift/Core"
+  end
+
+  s.subspec "TealiumRemoteCommands" do |remotecommands|
+    remotecommands.platform = :ios, "9.0"
+    remotecommands.source_files = "tealium/remotecommands/*"
+    remotecommands.dependency "tealium-swift/Core"
+  end
+
+  s.subspec "TealiumTagManagement" do |tagmanagement|
+    tagmanagement.platform = :ios, "9.0"
+    tagmanagement.source_files = "tealium/tagmanagement/*"
+    tagmanagement.dependency "tealium-swift/Core"
+  end
+
+  s.subspec "TealiumVolatileData" do |volatiledata|
+    volatiledata.source_files = "tealium/volatiledata/*"
+    volatiledata.dependency "tealium-swift/Core"
   end
 
   s.subspec "Crash" do |crash|
     crash.platform = :ios, "9.0"
     crash.ios.source_files = "tealium/crash/*"
     crash.ios.dependency "tealium-swift/Core"
+    crash.ios.dependency "tealium-swift/TealiumAppData"
+    crash.ios.dependency "tealium-swift/TealiumDeviceData"
     crash.ios.dependency "TealiumCrashReporter"
     crash.tvos.exclude_files = "tealium/crash/*"
     crash.watchos.exclude_files = "tealium/crash/*"
     crash.osx.exclude_files = "tealium/crash/*"
   end
-  
-  # s.ios.dependency "TealiumCrashReporter"
 
 end

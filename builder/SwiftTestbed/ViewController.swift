@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  SwiftTestbed
 //
-//  Created by Craig Rouse on 18/04/2018.
+//  Created by Craig Rouse on 18/04/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
@@ -19,5 +19,15 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
+    
+    @IBAction func track(_ sender: Any) {
+        let helper = TealiumHelper.shared
+        helper.track(title: "hello", data:
+            ["nested_object":["hello":123],
+             "array_strings":["123","456"],
+             "complex_nested_array": ["hello_again":["123","456"]]
+            ])
+    }
+    
 }

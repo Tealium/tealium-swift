@@ -1,5 +1,5 @@
 //
-//  TealiumCrashFactory.swift
+//  TealiumCrashReporter.swift
 //  tealium-swift
 //
 //  Created by Jonathan Wong on 2/15/18.
@@ -8,7 +8,8 @@
 
 import Foundation
 #if !COCOAPODS
-import Tealium
+import TealiumCore
+import TealiumDeviceData
 #endif
 import TealiumCrashReporteriOS
 

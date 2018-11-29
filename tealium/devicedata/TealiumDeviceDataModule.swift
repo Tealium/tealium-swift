@@ -20,6 +20,10 @@ import CoreTelephony
 import WatchKit
 #endif
 
+#if devicedata
+import TealiumCore
+#endif
+
 import Darwin
 
 enum TealiumDeviceDataModuleKey {
@@ -151,7 +155,9 @@ public enum TealiumDeviceDataKey {
     public static let carrierMNC = "network_mnc"
     public static let carrierMCC = "network_mcc"
     public static let carrierISO = "network_iso_country_code"
-    public static let connectionType = "network_connection_type"
+    public static let fileName = "device-names"
+    public static let appOrientation = "app_orientation"
+    public static let appOrientationExtended = "app_orientation_extended"
 }
 
 public extension TealiumConfig {

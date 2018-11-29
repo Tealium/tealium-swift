@@ -7,6 +7,9 @@
 //
 
 import Foundation
+#if defaultsstorage
+import TealiumCore
+#endif
 
 enum TealiumDefaultsStorageKey {
     static let moduleName = "defaultsstorage"
@@ -28,9 +31,9 @@ class TealiumDefaultsStorageModule: TealiumModule {
 
     override class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumDefaultsStorageKey.moduleName,
-                priority: 360,
-                build: 1,
-                enabled: true)
+                                   priority: 360,
+                                   build: 1,
+                                   enabled: true)
     }
 
     override func handle(_ request: TealiumRequest) {
@@ -56,7 +59,7 @@ class TealiumDefaultsStorageModule: TealiumModule {
     func load(_ request: TealiumLoadRequest) {
         if self.isEnabled == false {
             didFailToFinish(request,
-                    error: TealiumDefaultsStorageError.moduleDisabled)
+                            error: TealiumDefaultsStorageError.moduleDisabled)
             return
         }
 
@@ -65,8 +68,8 @@ class TealiumDefaultsStorageModule: TealiumModule {
         guard let rawData = UserDefaults.standard.object(forKey: key) else {
             // No saved data
             request.completion?(false,
-                    nil,
-                    TealiumDefaultsStorageError.noSavedData)
+                                nil,
+                                TealiumDefaultsStorageError.noSavedData)
             didFinish(request)
             return
         }
@@ -74,16 +77,16 @@ class TealiumDefaultsStorageModule: TealiumModule {
         guard let data = rawData as? [String: Any] else {
             // Formatting check
             request.completion?(false,
-                    nil,
-                    TealiumDefaultsStorageError.malformedSavedData)
+                                nil,
+                                TealiumDefaultsStorageError.malformedSavedData)
             didFinish(request)
             return
         }
 
         // Data retrieved, pass back to completion.
         request.completion?(true,
-                data,
-                nil)
+                            data,
+                            nil)
         didFinish(request)
     }
 
@@ -99,8 +102,8 @@ class TealiumDefaultsStorageModule: TealiumModule {
         UserDefaults.standard.set(data, forKey: key)
 
         request.completion?(true,
-                data,
-                nil)
+                            data,
+                            nil)
 
         didFinish(request)
     }
@@ -114,8 +117,8 @@ class TealiumDefaultsStorageModule: TealiumModule {
 
         UserDefaults.standard.removeObject(forKey: key)
         request.completion?(true,
-                nil,
-                nil)
+                            nil,
+                            nil)
 
         didFinish(request)
     }

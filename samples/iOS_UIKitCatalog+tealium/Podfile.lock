@@ -1,18 +1,87 @@
 PODS:
-  - tealium-swift (1.5.0):
-    - tealium-swift/Core (= 1.5.0)
-  - tealium-swift/Core (1.5.0)
+  - tealium-swift/Core (1.6.5):
+    - TealiumCrashReporter
+  - tealium-swift/TealiumAppData (1.6.5):
+    - tealium-swift/Core
+    - TealiumCrashReporter
+  - tealium-swift/TealiumAttribution (1.6.5):
+    - tealium-swift/Core
+    - TealiumCrashReporter
+  - tealium-swift/TealiumAutotracking (1.6.5):
+    - tealium-swift/Core
+    - TealiumCrashReporter
+  - tealium-swift/TealiumCollect (1.6.5):
+    - tealium-swift/Core
+    - TealiumCrashReporter
+  - tealium-swift/TealiumConnectivity (1.6.5):
+    - tealium-swift/Core
+    - TealiumCrashReporter
+  - tealium-swift/TealiumConsentManager (1.6.5):
+    - tealium-swift/Core
+    - TealiumCrashReporter
+  - tealium-swift/TealiumDataSource (1.6.5):
+    - tealium-swift/Core
+    - TealiumCrashReporter
+  - tealium-swift/TealiumDefaultsStorage (1.6.5):
+    - tealium-swift/Core
+    - TealiumCrashReporter
+  - tealium-swift/TealiumDelegate (1.6.5):
+    - tealium-swift/Core
+    - TealiumCrashReporter
+  - tealium-swift/TealiumDeviceData (1.6.5):
+    - tealium-swift/Core
+    - TealiumCrashReporter
+  - tealium-swift/TealiumDispatchQueue (1.6.5):
+    - tealium-swift/Core
+    - TealiumCrashReporter
+  - tealium-swift/TealiumLifecycle (1.6.5):
+    - tealium-swift/Core
+    - TealiumCrashReporter
+  - tealium-swift/TealiumLogger (1.6.5):
+    - tealium-swift/Core
+    - TealiumCrashReporter
+  - tealium-swift/TealiumRemoteCommands (1.6.5):
+    - tealium-swift/Core
+    - TealiumCrashReporter
+  - tealium-swift/TealiumTagManagement (1.6.5):
+    - tealium-swift/Core
+    - TealiumCrashReporter
+  - tealium-swift/TealiumVolatileData (1.6.5):
+    - tealium-swift/Core
+    - TealiumCrashReporter
+  - TealiumCrashReporter (1.3.2)
 
 DEPENDENCIES:
-  - tealium-swift
+  - tealium-swift/Core (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumAppData (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumAttribution (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumAutotracking (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumCollect (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumConnectivity (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumConsentManager (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumDataSource (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumDefaultsStorage (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumDelegate (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumDeviceData (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumDispatchQueue (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumLifecycle (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumLogger (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumRemoteCommands (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumTagManagement (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumVolatileData (from `../../tealium-swift.podspec`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - tealium-swift
+    - TealiumCrashReporter
+
+EXTERNAL SOURCES:
+  tealium-swift:
+    :path: "../../tealium-swift.podspec"
 
 SPEC CHECKSUMS:
-  tealium-swift: a8482927ffdc06dc72944291894d68d3f771af75
+  tealium-swift: 030372f3ac95632d6f92eb23d2004f9da03ee972
+  TealiumCrashReporter: c0f85fffe00e125b4eb5eac11fc9f3d2b755e3ad
 
-PODFILE CHECKSUM: 31f70a5789a5a201e5131d7bb0f0e4a4c6a6883d
+PODFILE CHECKSUM: a80a71015504d5bea31dbac69687e40006add0f3
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.0.beta.1

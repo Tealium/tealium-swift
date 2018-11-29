@@ -14,10 +14,10 @@ import Foundation
  */
 open class TealiumModuleConfig: CustomStringConvertible {
 
-    let name: String
-    let priority: UInt
-    let build: UInt
-    var enabled: Bool
+    public let name: String
+    public let priority: UInt
+    public let build: UInt
+    public var enabled: Bool
     public var description: String {
         return "\(name).moduleConfig.priority:\(priority).enabled:\(enabled)))"
     }

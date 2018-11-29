@@ -69,21 +69,28 @@ extension Date {
         }()
     }
 
-    var iso8601String: String {
+    public var iso8601String: String {
         return Formatter.iso8601.string(from: self)
     }
 
-    var iso8601LocalString: String {
+    public var iso8601LocalString: String {
         return Formatter.iso8601Local.string(from: self)
     }
 
-    var mmDDYYYYString: String {
+    public var mmDDYYYYString: String {
         return Formatter.MMDDYYYY.string(from: self)
     }
 
-    var unixTime: String {
+    public var unixTime: String {
         // must be forced to Int64 to avoid overflow on watchOS (32 bit)
         let time = Int64(self.timeIntervalSince1970 * 1000)
+
+        return String(describing: time)
+    }
+
+    public var unixTimeSeconds: String {
+        // must be forced to Int64 to avoid overflow on watchOS (32 bit)
+        let time = Int64(self.timeIntervalSince1970)
 
         return String(describing: time)
     }

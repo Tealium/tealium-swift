@@ -1,14 +1,15 @@
 //
-//  TealiumStorageModule.swift
+//  TealiumFileStorageModule.swift
 //  tealium-swift
 //
 //  Created by Jason Koo on 4/26/17.
 //  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 
-//  BRIEF: General purpose file persistence module using NSKeyedArchiver
-
 import Foundation
+#if filestorage
+import TealiumCore
+#endif
 
 enum TealiumFileStorageKey {
     static let moduleName = "filestorage"
@@ -32,8 +33,10 @@ extension TealiumFileStorageError: LocalizedError {
             return NSLocalizedString("\(TealiumFileStorageKey.moduleName) Error: cannotWriteOrLoadFromDisk: Could not write to or load from disk.", comment: "")
         case .noDataToSave:
             return NSLocalizedString("\(TealiumFileStorageKey.moduleName) Error: noDataToSave", comment: "")
+        // swiftlint:disable line_length
         case .noSavedData:
             return NSLocalizedString("\(TealiumFileStorageKey.moduleName) Error: noSavedData: Data could not be loaded from persistent storage. If this is a 1st launch, or no prior data has been set, then disregard this warning.", comment: "")
+        // swiftlint:enable line_length
         case .noFilename:
             return NSLocalizedString("\(TealiumFileStorageKey.moduleName) Error: noFileName", comment: "")
         case .malformedRequest:
@@ -121,7 +124,6 @@ class TealiumFileStorageModule: TealiumModule {
 
     }
 
-    // TODO: New requests aren't overwriting existing
     func save(_ request: TealiumSaveRequest) {
 
         if self.isEnabled == false {

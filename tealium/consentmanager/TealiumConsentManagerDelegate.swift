@@ -2,11 +2,14 @@
 //  TealiumConsentManagerDelegate.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 19/04/2018.
+//  Created by Craig Rouse on 4/19/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
 import Foundation
+#if consentmanager
+import TealiumCore
+#endif
 
 public protocol TealiumConsentManagerDelegate: class {
 

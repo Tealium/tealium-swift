@@ -2,11 +2,14 @@
 //  TealiumConsentManagerModule.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 29/03/2018.
+//  Created by Craig Rouse on 3/29/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
 import Foundation
+#if consentmanager
+import TealiumCore
+#endif
 
 class TealiumConsentManagerModule: TealiumModule {
 
@@ -15,9 +18,9 @@ class TealiumConsentManagerModule: TealiumModule {
 
     override class func moduleConfig() -> TealiumModuleConfig {
         return  TealiumModuleConfig(name: TealiumConsentConstants.moduleName,
-                priority: 50,
-                build: 2,
-                enabled: true)
+                                    priority: 50,
+                                    build: 2,
+                                    enabled: true)
     }
 
     override func enable(_ request: TealiumEnableRequest) {
@@ -45,10 +48,11 @@ class TealiumConsentManagerModule: TealiumModule {
 
         // allow tracking calls to continue if they are for auditing purposes
         if let event = track.data[TealiumKey.event] as? String, (event == TealiumConsentConstants.consentPartialEventName
-                || event == TealiumConsentConstants.consentGrantedEventName || event == TealiumConsentConstants.consentDeclinedEventName || event == TealiumConsentConstants.updateConsentCookieEventName) {
+                || event == TealiumConsentConstants.consentGrantedEventName || event == TealiumConsentConstants.consentDeclinedEventName || event == TealiumKey.updateConsentCookieEventName) {
             didFinishWithNoResponse(track)
             return
         }
+
         // append consent data to each tracking request
         let newTrack = addConsentDataToTrack(track)
 
@@ -57,7 +61,7 @@ class TealiumConsentManagerModule: TealiumModule {
             queue(newTrack)
             let report = TealiumReportRequest(message: "Consent Manager: Queued track. Consent Manager not ready.")
             delegate?.tealiumModuleRequests(module: self,
-                    process: report)
+                                            process: report)
             return
         }
 
@@ -93,7 +97,7 @@ class TealiumConsentManagerModule: TealiumModule {
         var newData = track.data
         newData[TealiumKey.queueReason] = TealiumConsentConstants.moduleName
         let newTrack = TealiumTrackRequest(data: newData,
-                completion: track.completion)
+                                           completion: track.completion)
         let req = TealiumEnqueueRequest(data: newTrack, completion: nil)
         self.delegate?.tealiumModuleRequests(module: self, process: req)
     }
@@ -103,7 +107,7 @@ class TealiumConsentManagerModule: TealiumModule {
         let req = TealiumReleaseQueuesRequest(typeId: "consent", moduleResponses: [TealiumModuleResponse]()) { _, _, _ in
             let report = TealiumReportRequest(message: "Consent Manager: Attempting to send queued track call.")
             self.delegate?.tealiumModuleRequests(module: self,
-                    process: report)
+                                                 process: report)
         }
         self.delegate?.tealiumModuleRequests(module: self, process: req)
     }
@@ -112,7 +116,7 @@ class TealiumConsentManagerModule: TealiumModule {
         let req = TealiumClearQueuesRequest(typeId: "consent", moduleResponses: [TealiumModuleResponse]()) { _, _, _ in
             let report = TealiumReportRequest(message: "Consent Manager: Purging queue.")
             self.delegate?.tealiumModuleRequests(module: self,
-                    process: report)
+                                                 process: report)
         }
         self.delegate?.tealiumModuleRequests(module: self, process: req)
     }

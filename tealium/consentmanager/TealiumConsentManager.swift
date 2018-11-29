@@ -2,11 +2,14 @@
 //  TealiumConsentManager.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 29/03/2018.
+//  Created by Craig Rouse on 3/29/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
 import Foundation
+#if consentmanager
+import TealiumCore
+#endif
 
 public class TealiumConsentManager {
 
@@ -92,8 +95,8 @@ public class TealiumConsentManager {
         var consentData = consentData
         // may change: currently, a separate call is required to TiQ to set the relevant cookies in the webview
         // collect module ignores this hit
-        consentData[TealiumKey.event] = TealiumConsentConstants.updateConsentCookieEventName
-        consentData[TealiumKey.callType] = TealiumConsentConstants.updateConsentCookieEventName
+        consentData[TealiumKey.event] = TealiumKey.updateConsentCookieEventName
+        consentData[TealiumKey.callType] = TealiumKey.updateConsentCookieEventName
         moduleDelegate?.tealiumModuleRequests(module: nil, process: TealiumTrackRequest(data: consentData, completion: nil))
     }
 
@@ -183,7 +186,7 @@ public class TealiumConsentManager {
     }
 }
 
-// Mark: Public API
+// MARK: Public API
 public extension TealiumConsentManager {
 
     func addConsentDelegate(_ delegate: TealiumConsentManagerDelegate) {
@@ -241,8 +244,8 @@ public extension TealiumConsentManager {
     }
 
     func consentCategoriesEqual(_ lhs: [TealiumConsentCategories], _ rhs: [TealiumConsentCategories]) -> Bool {
-        let lhs = lhs.sorted {$0.rawValue < $1.rawValue}
-        let rhs = rhs.sorted {$0.rawValue < $1.rawValue}
+        let lhs = lhs.sorted { $0.rawValue < $1.rawValue }
+        let rhs = rhs.sorted { $0.rawValue < $1.rawValue }
         return lhs == rhs
     }
 
