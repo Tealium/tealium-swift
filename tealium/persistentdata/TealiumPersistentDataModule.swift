@@ -42,7 +42,7 @@ public extension Tealium {
 // MARK: MODULE SUBCLASS
 
 /**
- Module for adding publically accessible persistence data capability.
+ Module for adding publicly accessible persistence data capability.
  */
 class TealiumPersistentDataModule: TealiumModule {
 
