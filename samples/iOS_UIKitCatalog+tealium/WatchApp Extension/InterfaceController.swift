@@ -8,7 +8,6 @@
 
 import WatchKit
 import Foundation
-import tealium_swift
 
 class InterfaceController: WKInterfaceController {
 
