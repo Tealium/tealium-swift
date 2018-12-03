@@ -84,8 +84,7 @@ class TealiumDeviceDataModuleTests: XCTestCase {
                 "network_name",
                 "network_mnc",
                 "network_mcc",
-                "network_iso_country_code",
-                "network_connection_type"
+                "network_iso_country_code"
             ]
             #else
                 let expectedKeys = [
@@ -101,8 +100,7 @@ class TealiumDeviceDataModuleTests: XCTestCase {
                     "device_is_charging",
                     "user_locale",
                     "device_orientation",
-                    "device_orientation_extended",
-                    "network_connection_type"
+                    "device_orientation_extended"
                 ]
             #endif
 
@@ -166,7 +164,6 @@ class TealiumDeviceDataModuleTests: XCTestCase {
                 "network_mnc",
                 "network_mcc",
                 "network_iso_country_code",
-                "network_connection_type",
                 "memory_free",
                 "memory_wired",
                 "memory_active",
@@ -190,7 +187,6 @@ class TealiumDeviceDataModuleTests: XCTestCase {
                 "user_locale",
                 "device_orientation",
                 "device_orientation_extended",
-                "network_connection_type",
                 "memory_free",
                 "memory_wired",
                 "memory_active",
@@ -245,8 +241,7 @@ class TealiumDeviceDataModuleTests: XCTestCase {
                 "network_name",
                 "network_mnc",
                 "network_mcc",
-                "network_iso_country_code",
-                "network_connection_type"
+                "network_iso_country_code"
             ]
         #else
             let expectedKeys = [
@@ -254,8 +249,7 @@ class TealiumDeviceDataModuleTests: XCTestCase {
                 "device_is_charging",
                 "user_locale",
                 "device_orientation",
-                "device_orientation_extended",
-                "network_connection_type"
+                "device_orientation_extended"
             ]
         #endif
         for key in expectedKeys where allData[key] == nil {
@@ -263,13 +257,18 @@ class TealiumDeviceDataModuleTests: XCTestCase {
         }
     }
 
-    // note: will not work on simulator
     func testBatteryPercentValid() {
         let module = TealiumDeviceDataModule(delegate: nil)
         let allData = module.trackTimeData()
+        let enableData = module.enableTimeData()
+        let simulator = enableData["model_name"] as? String == "Simulator"
         if let batteryPercent = allData["battery_percent"] {
             if let bpDouble = Double(batteryPercent as! String) {
-                XCTAssertTrue(bpDouble >= 0.0 && bpDouble <= 100.0, "Battery percentage is not valid")
+                if simulator {
+                    XCTAssertTrue(batteryPercent as? String == "-100.0")
+                } else {
+                 XCTAssertTrue(bpDouble >= 0.0 && bpDouble <= 100.0, "Battery percentage is not valid")
+                }
             }
         } else {
             XCTFail("Battery percentage missing from track call")

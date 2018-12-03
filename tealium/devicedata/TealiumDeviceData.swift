@@ -58,6 +58,11 @@ private let HOST_VM_INFO64_COUNT: mach_msg_type_number_t =
 // swiftlint:disable type_body_length
 public class TealiumDeviceData: TealiumDeviceDataCollection {
 
+    private class var sharedApplication: UIApplication? {
+        let selector = NSSelectorFromString("sharedApplication")
+        return UIApplication.perform(selector)?.takeUnretainedValue() as? UIApplication
+    }
+
     public init() {
     }
 
@@ -334,12 +339,13 @@ public class TealiumDeviceData: TealiumDeviceDataCollection {
         #if os(iOS)
         let orientation = UIDevice.current.orientation
         var appOrientation: UIInterfaceOrientation?
+
         if !Thread.isMainThread {
             DispatchQueue.main.sync {
-                appOrientation = UIApplication.shared.statusBarOrientation
+                appOrientation = TealiumDeviceData.sharedApplication?.statusBarOrientation
             }
         } else {
-            appOrientation = UIApplication.shared.statusBarOrientation
+            appOrientation = TealiumDeviceData.sharedApplication?.statusBarOrientation
         }
 
         let isLandscape = orientation.isLandscape
