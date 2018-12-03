@@ -58,10 +58,12 @@ private let HOST_VM_INFO64_COUNT: mach_msg_type_number_t =
 // swiftlint:disable type_body_length
 public class TealiumDeviceData: TealiumDeviceDataCollection {
 
+    #if os(iOS)
     private class var sharedApplication: UIApplication? {
         let selector = NSSelectorFromString("sharedApplication")
         return UIApplication.perform(selector)?.takeUnretainedValue() as? UIApplication
     }
+    #endif
 
     public init() {
     }
