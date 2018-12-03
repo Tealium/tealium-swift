@@ -56,25 +56,22 @@ class TealiumHelper: NSObject {
         config.setModulesList(list)
         print("*** TealiumHelper: Autotracking disabled.")
         #endif
+        #if os(iOS)
+        let remoteCommand = TealiumRemoteCommand(commandId: "hello",
+                                                 description: "test") { response in
+                                                    if TealiumHelper.shared.enableHelperLogs {
+                                                        print("*** TealiumHelper: Remote Command Executed: response:\(response)")
+                                                    }
+        }
+        config.addRemoteCommand(remoteCommand)
+        #endif
+
         // REQUIRED Initialization
         tealium = Tealium(config: config) {
                             // Optional processing post init.
                             self.tealium?.persistentData()?.add(data: ["testPersistentKey": "testPersistentValue"])
                             self.tealium?.volatileData()?.add(data: ["testVolatileKey": "testVolatileValue"])
                             // OPTIONALLY implement Remote Commands
-                            #if os(iOS)
-                            let remoteCommand = TealiumRemoteCommand(commandId: "logger",
-                                                                     description: "test") { (response) in
-                                                                        if TealiumHelper.shared.enableHelperLogs {
-                                                                            print("*** TealiumHelper: Remote Command Executed: response:\(response)")
-                                                                        }
-
-                            }
-                            guard let remoteCommands = self.tealium?.remoteCommands() else {
-                                return
-                            }
-                            remoteCommands.add(remoteCommand)
-                            #endif
                             self.tealium?.consentManager()?.addConsentDelegate(self)
                             self.tealium?.consentManager()?.addConsentDelegate(self.mySecondHelper)
                             self.tealium?.consentManager()?.setUserConsentStatusWithCategories(status: .consented, categories: consentCat)

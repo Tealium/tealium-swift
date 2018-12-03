@@ -91,10 +91,13 @@ class TealiumConnectivityModuleTests: XCTestCase {
 
             let expectedKeys = [
                 "was_queued",
-                "connection_type"
+                "network_connection_type"
             ]
 
             for key in expectedKeys where trackData[key] != nil {
+                if key == "network_connection_type" {
+                    continue
+                }
                 XCTFail("\nKey:\(key) was unexpectedly included in tracking call. Tracking data: \(trackData)\n")
             }
 
