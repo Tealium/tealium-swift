@@ -107,10 +107,6 @@ class TealiumHelper: NSObject {
 }
 
 extension TealiumHelper: TealiumDelegate {
-    func tealiumModulesReady(_ responses: [TealiumModuleResponse]?) {
-        
-    }
-    
 
     func tealiumShouldTrack(data: [String: Any]) -> Bool {
         return true
