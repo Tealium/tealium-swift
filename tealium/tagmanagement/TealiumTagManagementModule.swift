@@ -74,9 +74,9 @@ public extension Tealium {
 // MARK: 
 // MARK: MODULE SUBCLASS
 
-class TealiumTagManagementModule: TealiumModule {
+public class TealiumTagManagementModule: TealiumModule {
 
-    override class func moduleConfig() -> TealiumModuleConfig {
+    override public class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumTagManagementKey.moduleName,
                                    priority: 1100,
                                    build: 3,
@@ -89,7 +89,7 @@ class TealiumTagManagementModule: TealiumModule {
     fileprivate weak var dispatchQueue: DispatchQueue?
     var tagManagement = TealiumTagManagement()
 
-    override func enable(_ request: TealiumEnableRequest) {
+    override public func enable(_ request: TealiumEnableRequest) {
         let config = request.config
         if config.optionalData[TealiumTagManagementConfigKey.disable] as? Bool == true {
             DispatchQueue.main.async {
@@ -126,7 +126,7 @@ class TealiumTagManagementModule: TealiumModule {
         }
     }
 
-    override func disable(_ request: TealiumDisableRequest) {
+    override public func disable(_ request: TealiumDisableRequest) {
         isEnabled = false
         DispatchQueue.main.async {
             self.tagManagement.disable()
@@ -135,7 +135,7 @@ class TealiumTagManagementModule: TealiumModule {
                   info: nil)
     }
 
-    override func track(_ track: TealiumTrackRequest) {
+    override public func track(_ track: TealiumTrackRequest) {
         if isEnabled == false {
             // Ignore while disabled
             didFinishWithNoResponse(track)
@@ -430,8 +430,8 @@ extension TealiumTagManagement: UIWebViewDelegate {
         }
 
         DispatchQueue.global(qos: .background).async {
-
             self.completion?(true, nil)
+            self.completion = nil
         }
     }
 }

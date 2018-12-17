@@ -61,11 +61,12 @@ public struct TealiumEnableRequest: TealiumRequest {
     public var typeId = TealiumEnableRequest.instanceTypeId()
     public var moduleResponses = [TealiumModuleResponse]()
     public var completion: TealiumCompletion?
-
+    public var enableCompletion: TealiumEnableCompletion?
     public let config: TealiumConfig
 
-    public init(config: TealiumConfig) {
+    public init(config: TealiumConfig, enableCompletion: TealiumEnableCompletion?) {
         self.config = config
+        self.enableCompletion = enableCompletion
     }
 
     public static func instanceTypeId() -> String {

@@ -20,6 +20,11 @@ public enum TealiumDelegateError: Error {
     case suppressedByShouldTrackDelegate
 }
 
+enum TealiumDelegateConstants {
+    static let maxAttempts = 20
+    static let interval = 0.2
+}
+
 public protocol TealiumDelegate: class {
 
     func tealiumShouldTrack(data: [String: Any]) -> Bool
@@ -81,7 +86,9 @@ class TealiumDelegateModule: TealiumModule {
     }
 
     override func handleReport(_  request: TealiumRequest) {
-        if let request = request as? TealiumTrackRequest {
+        if let request = request as? TealiumEnableRequest {
+            runEnableCompletion(request, runs: nil)
+        } else if let request = request as? TealiumTrackRequest {
             delegates?.invokeTrackCompleted(forTrackProcess: request)
         }
     }
@@ -101,6 +108,25 @@ class TealiumDelegateModule: TealiumModule {
             return
         }
         didFinish(track)
+    }
+
+    func getTealiumInstanceFromConfig(_ config: TealiumConfig) -> Tealium? {
+        let instanceKey = "\(config.account).\(config.profile).\(config.environment)"
+        return TealiumInstanceManager.shared.getInstanceByName(instanceKey)
+    }
+
+    func runEnableCompletion(_ request: TealiumEnableRequest, runs: Int?) {
+        let config = request.config
+        let runs = runs ?? 0
+        // under some circumstances, competion would run before Tealium is initialized
+        // this guarantees Tealium instance is not nil before calling completion
+        if let _ = getTealiumInstanceFromConfig(config) {
+            request.enableCompletion?(request.moduleResponses)
+        } else if runs < TealiumDelegateConstants.maxAttempts {
+            DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime.now() + TealiumDelegateConstants.interval) {
+                self.runEnableCompletion(request, runs: runs + 1)
+            }
+        }
     }
 
 }

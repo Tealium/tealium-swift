@@ -41,14 +41,13 @@ class TealiumHelper: NSObject {
         let list = TealiumModulesList(isWhitelist:false, moduleNames: ["autotracking"])
         config.setModulesList(list)
         // REQUIRED Initialization
-        self.tealium = Tealium(config: config,
-                completion: { (responses) in
+        self.tealium = Tealium(config: config) { _ in
                     // Interact with Tealium inside callback to guarantee successful initialization
-                    print("*** TealiumHelper: tealium init: response: \(responses)")
+                    
                     self.tealium?.persistentData()?.add(data: ["testPersistentKey": "testPersistentValue"])
                     self.tealium?.volatileData()?.add(data: ["testVolatileKey": "testVolatileValue"])
                     self.tealium?.consentManager()?.addConsentDelegate(self)
-                })
+                }
     }
 
     func resetConsentPreferences() {
@@ -108,6 +107,10 @@ class TealiumHelper: NSObject {
 }
 
 extension TealiumHelper: TealiumDelegate {
+    func tealiumModulesReady(_ responses: [TealiumModuleResponse]?) {
+        
+    }
+    
 
     func tealiumShouldTrack(data: [String: Any]) -> Bool {
         return true

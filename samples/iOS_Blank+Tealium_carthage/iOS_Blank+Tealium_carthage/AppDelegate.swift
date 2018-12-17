@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Tealium
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

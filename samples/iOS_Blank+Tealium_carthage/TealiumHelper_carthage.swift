@@ -60,7 +60,7 @@ class TealiumHelper : NSObject {
         #endif
         
         // REQUIRED Initialization
-        tealium = Tealium(config: config) {
+        tealium = Tealium(config: config) { responses in
                         
                 // Optional processing post init.
                 print("*** TealiumHelper: tealium init: response: \(responses)")
@@ -76,8 +76,7 @@ class TealiumHelper : NSObject {
         // OPTIONALLY implement Dynamic Triggers.
         #if os(iOS)
             let remoteCommand = TealiumRemoteCommand(commandId: "logger",
-                                                     description: "test",
-                                                     queue: DispatchQueue.main) { (response) in
+                                                     description: "test") { response in
                                                         
                 if TealiumHelper.shared.enableHelperLogs {
                     print("*** TealiumHelper: Remote Command Executed: response:\(response)")

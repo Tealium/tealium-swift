@@ -30,14 +30,20 @@ open class TealiumModulesManager: NSObject {
     // MARK: 
     // MARK: PUBLIC
     public func update(config: TealiumConfig) {
-        self.modules.removeAll()
-        enable(config: config)
+        update(config: config, enableCompletion: nil)
     }
 
-    public func enable(config: TealiumConfig) {
+    public func update(config: TealiumConfig, enableCompletion: TealiumEnableCompletion?) {
+        self.modules.removeAll()
+        enable(config: config,
+               enableCompletion: enableCompletion)
+    }
+
+    public func enable(config: TealiumConfig, enableCompletion: TealiumEnableCompletion?) {
         self.setupModulesFrom(config: config)
         self.queue = config.dispatchQueue()
-        let request = TealiumEnableRequest(config: config)
+        let request = TealiumEnableRequest(config: config,
+                                           enableCompletion: enableCompletion)
         self.modules.first?.handle(request)
     }
 
@@ -165,7 +171,8 @@ extension TealiumModulesManager: TealiumModuleDelegate {
         }
 
         if let enable = process as? TealiumEnableRequest {
-            self.enable(config: enable.config)
+            self.enable(config: enable.config,
+                        enableCompletion: enable.enableCompletion)
             return
         }
 

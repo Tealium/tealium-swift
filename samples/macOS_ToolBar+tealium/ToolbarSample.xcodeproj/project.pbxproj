@@ -188,16 +188,16 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-ToolbarSample/Pods-ToolbarSample-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/tealium-swift/tealium_swift.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-ToolbarSample/Pods-ToolbarSample-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/tealium-swift/TealiumSwift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/tealium_swift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TealiumSwift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ToolbarSample/Pods-ToolbarSample-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ToolbarSample/Pods-ToolbarSample-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E424668D3577B157F52BED4B /* [CP] Check Pods Manifest.lock */ = {

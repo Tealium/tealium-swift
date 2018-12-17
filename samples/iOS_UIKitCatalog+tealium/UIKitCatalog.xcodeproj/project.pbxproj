@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		14EDE8EE5AB69DA6432288C5 /* Pods_TVApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68A6C88DA266A31958BB2456 /* Pods_TVApp.framework */; };
 		2200541E18BC54E8002A6E8B /* ActivityIndicatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2200541A18BC54E8002A6E8B /* ActivityIndicatorViewController.swift */; };
 		2200541F18BC54E8002A6E8B /* AlertControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2200541B18BC54E8002A6E8B /* AlertControllerViewController.swift */; };
 		2200542018BC54E8002A6E8B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2200541C18BC54E8002A6E8B /* AppDelegate.swift */; };
@@ -40,8 +41,7 @@
 		3E6AE856196B3B490062A3E1 /* SearchPresentOverNavigationBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6AE855196B3B490062A3E1 /* SearchPresentOverNavigationBarViewController.swift */; };
 		3E6AE85A196B3BBC0062A3E1 /* SearchBarEmbeddedInNavigationBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6AE859196B3BBC0062A3E1 /* SearchBarEmbeddedInNavigationBarViewController.swift */; };
 		4B318D2520B5E286003CB668 /* TealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B318D2420B5E286003CB668 /* TealiumHelper.swift */; };
-		4B79A3B1D813F4B7FFDFDBB6 /* Pods_MacOSApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23DCB6B6BB926D3B9607B925 /* Pods_MacOSApp.framework */; };
-		524908E29F50924ADE0749E5 /* Pods_WatchApp_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB7F5B323337C48BB104A86 /* Pods_WatchApp_Extension.framework */; };
+		B3535409E4D031A45C9B1C95 /* Pods_MacOSApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23DCB6B6BB926D3B9607B925 /* Pods_MacOSApp.framework */; };
 		B50F41081B1D284700E5147D /* StackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50F41071B1D284700E5147D /* StackViewController.swift */; };
 		B51AD3F91B1A8A6A00083F63 /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B51AD3F71B1A8A6A00083F63 /* Search.storyboard */; };
 		B5C300DD1B0FC458003B05A0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5C300DC1B0FC458003B05A0 /* LaunchScreen.storyboard */; };
@@ -53,7 +53,6 @@
 		D737464E219C3658003C88B2 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D737464D219C3658003C88B2 /* NotificationController.swift */; };
 		D7374650219C3659003C88B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D737464F219C3659003C88B2 /* Assets.xcassets */; };
 		D7374655219C3659003C88B2 /* WatchApp.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = D7374638219C3655003C88B2 /* WatchApp.app */; };
-		D737465E219C3911003C88B2 /* TealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B318D2420B5E286003CB668 /* TealiumHelper.swift */; };
 		D7374666219C3C1F003C88B2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7374665219C3C1F003C88B2 /* AppDelegate.swift */; };
 		D7374668219C3C1F003C88B2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7374667219C3C1F003C88B2 /* ViewController.swift */; };
 		D737466B219C3C1F003C88B2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D7374669219C3C1F003C88B2 /* Main.storyboard */; };
@@ -62,9 +61,8 @@
 		D737467B219C3C67003C88B2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D737467A219C3C67003C88B2 /* ViewController.swift */; };
 		D737467D219C3C68003C88B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D737467C219C3C68003C88B2 /* Assets.xcassets */; };
 		D7374680219C3C68003C88B2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D737467E219C3C68003C88B2 /* Main.storyboard */; };
-		D7374686219C3DF8003C88B2 /* TealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B318D2420B5E286003CB668 /* TealiumHelper.swift */; };
-		D7374687219C3DF8003C88B2 /* TealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B318D2420B5E286003CB668 /* TealiumHelper.swift */; };
-		F4472C4F666AE1F0155F056F /* Pods_TVApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68A6C88DA266A31958BB2456 /* Pods_TVApp.framework */; };
+		D7C25E8A21C7C2F700F74FE3 /* TealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B318D2420B5E286003CB668 /* TealiumHelper.swift */; };
+		DEBCC275578C0BE0E5FFB3D3 /* Pods_WatchApp_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB7F5B323337C48BB104A86 /* Pods_WatchApp_Extension.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -111,6 +109,7 @@
 
 /* Begin PBXFileReference section */
 		041263F17708678D7BAB2C44 /* Pods_UIKitCatalog.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UIKitCatalog.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0821EB514C18E2BD98D6832F /* Pods-TVApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TVApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TVApp/Pods-TVApp.debug.xcconfig"; sourceTree = "<group>"; };
 		2200541A18BC54E8002A6E8B /* ActivityIndicatorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorViewController.swift; sourceTree = "<group>"; };
 		2200541B18BC54E8002A6E8B /* AlertControllerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AlertControllerViewController.swift; sourceTree = "<group>"; };
 		2200541C18BC54E8002A6E8B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -139,8 +138,6 @@
 		228DB9F918BC53F1002BA12A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		228DBA0718BC53F1002BA12A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		23DCB6B6BB926D3B9607B925 /* Pods_MacOSApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MacOSApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		3715DDB6BF06A916D287B1CE /* Pods-TVApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TVApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-TVApp/Pods-TVApp.release.xcconfig"; sourceTree = "<group>"; };
-		3D7CF40613EB4582B32ADB99 /* Pods-TVApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TVApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TVApp/Pods-TVApp.debug.xcconfig"; sourceTree = "<group>"; };
 		3E5C084F1974991E00969DD7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3E6AE84F196B20240062A3E1 /* SearchControllerBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchControllerBaseViewController.swift; sourceTree = "<group>"; };
 		3E6AE851196B39110062A3E1 /* SearchResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
@@ -149,13 +146,13 @@
 		3E6AE859196B3BBC0062A3E1 /* SearchBarEmbeddedInNavigationBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBarEmbeddedInNavigationBarViewController.swift; sourceTree = "<group>"; };
 		4B318D2420B5E286003CB668 /* TealiumHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TealiumHelper.swift; path = ../../TealiumHelper.swift; sourceTree = "<group>"; };
 		4CB7F5B323337C48BB104A86 /* Pods_WatchApp_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WatchApp_Extension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5CC7082AB94440F6E9C440AC /* Pods-MacOSApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MacOSApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-MacOSApp/Pods-MacOSApp.release.xcconfig"; sourceTree = "<group>"; };
 		68A6C88DA266A31958BB2456 /* Pods_TVApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TVApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9BF19AF3DDD3AE52E735B9AA /* Pods-WatchApp Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WatchApp Extension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WatchApp Extension/Pods-WatchApp Extension.debug.xcconfig"; sourceTree = "<group>"; };
+		95F828C1AF2AE947A83A5EA1 /* Pods-WatchApp Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WatchApp Extension.release.xcconfig"; path = "Pods/Target Support Files/Pods-WatchApp Extension/Pods-WatchApp Extension.release.xcconfig"; sourceTree = "<group>"; };
 		B50F41071B1D284700E5147D /* StackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackViewController.swift; sourceTree = "<group>"; };
 		B51AD3F81B1A8A6A00083F63 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Search.storyboard; sourceTree = "<group>"; };
 		B5C300DC1B0FC458003B05A0 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-		B7F3A358E7923CAE9A51213A /* Pods-WatchApp Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WatchApp Extension.release.xcconfig"; path = "Pods/Target Support Files/Pods-WatchApp Extension/Pods-WatchApp Extension.release.xcconfig"; sourceTree = "<group>"; };
-		CB37375729D752E92DB565D2 /* Pods-MacOSApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MacOSApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-MacOSApp/Pods-MacOSApp.release.xcconfig"; sourceTree = "<group>"; };
+		C9ACC9A3BD1FC75CEBBEE778 /* Pods-MacOSApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MacOSApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MacOSApp/Pods-MacOSApp.debug.xcconfig"; sourceTree = "<group>"; };
 		D0220B384DE2E8ED7170CE5C /* Pods-UIKitCatalog.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitCatalog.release.xcconfig"; path = "Pods/Target Support Files/Pods-UIKitCatalog/Pods-UIKitCatalog.release.xcconfig"; sourceTree = "<group>"; };
 		D7374638219C3655003C88B2 /* WatchApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WatchApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D737463B219C3655003C88B2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
@@ -183,7 +180,8 @@
 		D7374682219C3C68003C88B2 /* MacOSApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MacOSApp.entitlements; sourceTree = "<group>"; };
 		DB1D89E0E2FCD3B8F1A9926D /* Pods-UIKitCatalog.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitCatalog.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UIKitCatalog/Pods-UIKitCatalog.debug.xcconfig"; sourceTree = "<group>"; };
 		F204F202567FC4044AC7731D /* Pods_WatchApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WatchApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F552F8CE061B051DECBDA166 /* Pods-MacOSApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MacOSApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MacOSApp/Pods-MacOSApp.debug.xcconfig"; sourceTree = "<group>"; };
+		FC4F87827D01BACDF1C292BF /* Pods-TVApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TVApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-TVApp/Pods-TVApp.release.xcconfig"; sourceTree = "<group>"; };
+		FE0231E546AC7A3CB71A10FD /* Pods-WatchApp Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WatchApp Extension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WatchApp Extension/Pods-WatchApp Extension.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,7 +204,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				524908E29F50924ADE0749E5 /* Pods_WatchApp_Extension.framework in Frameworks */,
+				DEBCC275578C0BE0E5FFB3D3 /* Pods_WatchApp_Extension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,7 +212,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4472C4F666AE1F0155F056F /* Pods_TVApp.framework in Frameworks */,
+				14EDE8EE5AB69DA6432288C5 /* Pods_TVApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -222,7 +220,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4B79A3B1D813F4B7FFDFDBB6 /* Pods_MacOSApp.framework in Frameworks */,
+				B3535409E4D031A45C9B1C95 /* Pods_MacOSApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,12 +425,12 @@
 			children = (
 				DB1D89E0E2FCD3B8F1A9926D /* Pods-UIKitCatalog.debug.xcconfig */,
 				D0220B384DE2E8ED7170CE5C /* Pods-UIKitCatalog.release.xcconfig */,
-				9BF19AF3DDD3AE52E735B9AA /* Pods-WatchApp Extension.debug.xcconfig */,
-				B7F3A358E7923CAE9A51213A /* Pods-WatchApp Extension.release.xcconfig */,
-				F552F8CE061B051DECBDA166 /* Pods-MacOSApp.debug.xcconfig */,
-				CB37375729D752E92DB565D2 /* Pods-MacOSApp.release.xcconfig */,
-				3D7CF40613EB4582B32ADB99 /* Pods-TVApp.debug.xcconfig */,
-				3715DDB6BF06A916D287B1CE /* Pods-TVApp.release.xcconfig */,
+				FE0231E546AC7A3CB71A10FD /* Pods-WatchApp Extension.debug.xcconfig */,
+				95F828C1AF2AE947A83A5EA1 /* Pods-WatchApp Extension.release.xcconfig */,
+				C9ACC9A3BD1FC75CEBBEE778 /* Pods-MacOSApp.debug.xcconfig */,
+				5CC7082AB94440F6E9C440AC /* Pods-MacOSApp.release.xcconfig */,
+				0821EB514C18E2BD98D6832F /* Pods-TVApp.debug.xcconfig */,
+				FC4F87827D01BACDF1C292BF /* Pods-TVApp.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -483,11 +481,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D737465A219C3659003C88B2 /* Build configuration list for PBXNativeTarget "WatchApp Extension" */;
 			buildPhases = (
-				A7C878ECB264C852AFEEF4A8 /* [CP] Check Pods Manifest.lock */,
+				9A08BBB9FD72223B9E13CCE4 /* [CP] Check Pods Manifest.lock */,
 				D7374640219C3658003C88B2 /* Sources */,
 				D7374641219C3658003C88B2 /* Frameworks */,
 				D7374642219C3658003C88B2 /* Resources */,
-				5B37F5F53BAC0112EF6D981B /* [CP] Embed Pods Frameworks */,
+				F269D3617DAA4AFFDCEF3A42 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -502,11 +500,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D7374671219C3C21003C88B2 /* Build configuration list for PBXNativeTarget "TVApp" */;
 			buildPhases = (
-				7A886C359FEC50154139118E /* [CP] Check Pods Manifest.lock */,
+				DD436C0D506DEBE6FCC4C537 /* [CP] Check Pods Manifest.lock */,
 				D737465F219C3C1F003C88B2 /* Sources */,
 				D7374660219C3C1F003C88B2 /* Frameworks */,
 				D7374661219C3C1F003C88B2 /* Resources */,
-				22C5958C7809D08FD1095DC2 /* [CP] Embed Pods Frameworks */,
+				73AB0D4D7AB9C037EC91A5E5 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -521,11 +519,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D7374683219C3C68003C88B2 /* Build configuration list for PBXNativeTarget "MacOSApp" */;
 			buildPhases = (
-				6923602442FB480998AD6A37 /* [CP] Check Pods Manifest.lock */,
+				3AB29D7AE156BE3090ED6AF2 /* [CP] Check Pods Manifest.lock */,
 				D7374672219C3C67003C88B2 /* Sources */,
 				D7374673219C3C67003C88B2 /* Frameworks */,
 				D7374674219C3C67003C88B2 /* Resources */,
-				49235D2C21EA7C09362BB9FF /* [CP] Embed Pods Frameworks */,
+				0B2C8EF03E236FA27F1CAB24 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -651,29 +649,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		22C5958C7809D08FD1095DC2 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TVApp/Pods-TVApp-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/tealium-swift-df2bfc33/TealiumSwift.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TealiumSwift.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TVApp/Pods-TVApp-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		49235D2C21EA7C09362BB9FF /* [CP] Embed Pods Frameworks */ = {
+		0B2C8EF03E236FA27F1CAB24 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -695,29 +671,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MacOSApp/Pods-MacOSApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		5B37F5F53BAC0112EF6D981B /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WatchApp Extension/Pods-WatchApp Extension-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/tealium-swift-26794dcd/TealiumSwift.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TealiumSwift.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WatchApp Extension/Pods-WatchApp Extension-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		6923602442FB480998AD6A37 /* [CP] Check Pods Manifest.lock */ = {
+		3AB29D7AE156BE3090ED6AF2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -739,7 +693,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7A886C359FEC50154139118E /* [CP] Check Pods Manifest.lock */ = {
+		73AB0D4D7AB9C037EC91A5E5 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -747,21 +701,21 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
+				"${PODS_ROOT}/Target Support Files/Pods-TVApp/Pods-TVApp-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/tealium-swift-df2bfc33/TealiumSwift.framework",
 			);
-			name = "[CP] Check Pods Manifest.lock";
+			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TVApp-checkManifestLockResult.txt",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TealiumSwift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TVApp/Pods-TVApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A7C878ECB264C852AFEEF4A8 /* [CP] Check Pods Manifest.lock */ = {
+		9A08BBB9FD72223B9E13CCE4 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -799,6 +753,50 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DD436C0D506DEBE6FCC4C537 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TVApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F269D3617DAA4AFFDCEF3A42 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WatchApp Extension/Pods-WatchApp Extension-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/tealium-swift-26794dcd/TealiumSwift.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TealiumSwift.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WatchApp Extension/Pods-WatchApp Extension-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F8CA21E0DE7605FB2CB66896 /* [CP] Embed Pods Frameworks */ = {
@@ -865,7 +863,7 @@
 				D737464E219C3658003C88B2 /* NotificationController.swift in Sources */,
 				D737464C219C3658003C88B2 /* ExtensionDelegate.swift in Sources */,
 				D737464A219C3658003C88B2 /* InterfaceController.swift in Sources */,
-				D737465E219C3911003C88B2 /* TealiumHelper.swift in Sources */,
+				D7C25E8A21C7C2F700F74FE3 /* TealiumHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -874,7 +872,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7374668219C3C1F003C88B2 /* ViewController.swift in Sources */,
-				D7374686219C3DF8003C88B2 /* TealiumHelper.swift in Sources */,
 				D7374666219C3C1F003C88B2 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -884,7 +881,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D737467B219C3C67003C88B2 /* ViewController.swift in Sources */,
-				D7374687219C3DF8003C88B2 /* TealiumHelper.swift in Sources */,
 				D7374679219C3C67003C88B2 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1159,7 +1155,7 @@
 		};
 		D7374658219C3659003C88B2 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9BF19AF3DDD3AE52E735B9AA /* Pods-WatchApp Extension.debug.xcconfig */;
+			baseConfigurationReference = FE0231E546AC7A3CB71A10FD /* Pods-WatchApp Extension.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1197,7 +1193,7 @@
 		};
 		D7374659219C3659003C88B2 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B7F3A358E7923CAE9A51213A /* Pods-WatchApp Extension.release.xcconfig */;
+			baseConfigurationReference = 95F828C1AF2AE947A83A5EA1 /* Pods-WatchApp Extension.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1236,7 +1232,7 @@
 		};
 		D737466F219C3C21003C88B2 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3D7CF40613EB4582B32ADB99 /* Pods-TVApp.debug.xcconfig */;
+			baseConfigurationReference = 0821EB514C18E2BD98D6832F /* Pods-TVApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1274,7 +1270,7 @@
 		};
 		D7374670219C3C21003C88B2 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3715DDB6BF06A916D287B1CE /* Pods-TVApp.release.xcconfig */;
+			baseConfigurationReference = FC4F87827D01BACDF1C292BF /* Pods-TVApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1313,7 +1309,7 @@
 		};
 		D7374684219C3C68003C88B2 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F552F8CE061B051DECBDA166 /* Pods-MacOSApp.debug.xcconfig */;
+			baseConfigurationReference = C9ACC9A3BD1FC75CEBBEE778 /* Pods-MacOSApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1352,7 +1348,7 @@
 		};
 		D7374685219C3C68003C88B2 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CB37375729D752E92DB565D2 /* Pods-MacOSApp.release.xcconfig */;
+			baseConfigurationReference = 5CC7082AB94440F6E9C440AC /* Pods-MacOSApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;

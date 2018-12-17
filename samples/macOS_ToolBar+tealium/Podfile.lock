@@ -1,7 +1,8 @@
 PODS:
-  - tealium-swift (1.5.0):
-    - tealium-swift/Core (= 1.5.0)
-  - tealium-swift/Core (1.5.0)
+  - tealium-swift (1.6.6):
+    - tealium-swift/TealiumFull (= 1.6.6)
+  - tealium-swift/TealiumFull (1.6.6):
+    - TealiumCrashReporter
 
 DEPENDENCIES:
   - tealium-swift
@@ -11,8 +12,8 @@ SPEC REPOS:
     - tealium-swift
 
 SPEC CHECKSUMS:
-  tealium-swift: a8482927ffdc06dc72944291894d68d3f771af75
+  tealium-swift: 7cb0a72a622ee6cf61c93cbf59fd0366153cdd27
 
 PODFILE CHECKSUM: 052b158348db36bd4d007f533f91f5603adf2a6e
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.0.beta.2

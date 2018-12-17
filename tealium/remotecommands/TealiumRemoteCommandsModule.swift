@@ -73,25 +73,25 @@ public extension TealiumConfig {
 // MARK: 
 // MARK: MODULE SUBCLASS
 
-class TealiumRemoteCommandsModule: TealiumModule {
+public class TealiumRemoteCommandsModule: TealiumModule {
 
-    var remoteCommands: TealiumRemoteCommands?
+    public var remoteCommands: TealiumRemoteCommands?
 
-    override class func moduleConfig() -> TealiumModuleConfig {
+    override public class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumRemoteCommandsKey.moduleName,
                                    priority: 1200,
                                    build: 3,
                                    enabled: true)
     }
 
-    override func disable(_ request: TealiumDisableRequest) {
+    override public func disable(_ request: TealiumDisableRequest) {
         isEnabled = false
         remoteCommands?.disable()
         remoteCommands = nil
         didFinish(request)
     }
 
-    override func enable(_ request: TealiumEnableRequest) {
+    override public func enable(_ request: TealiumEnableRequest) {
         isEnabled = true
         let config = request.config
         remoteCommands = TealiumRemoteCommands()

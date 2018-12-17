@@ -7,6 +7,7 @@
 //
 
 import Foundation
+//import TealiumSwift
 import TealiumSwift
 
 extension String: Error {}
@@ -43,15 +44,14 @@ extension String: Error {}
         let list = TealiumModulesList(isWhitelist: false,
                                       moduleNames: ["autotracking"])
         config.setModulesList(list)
-
-        // REQUIRED Initialization
-        tealium = Tealium(config: config) {
+      
+        tealium = Tealium(config: config) { responses in
 
                             // Optional processing post init.
-                            // OPTIONALLY implement Dynamic Triggers/Remote Commands.
+                            // OPTIONALLY implement Remote Commands.
                             #if os(iOS)
                             let remoteCommand = TealiumRemoteCommand(commandId: "logger",
-                                                                     description: "test") { (response) in
+                                                                     description: "test") { response in
 
                                                                         if TealiumHelper.shared.enableHelperLogs {
                                                                             print("*** TealiumHelper: Remote Command Executed: response:\(response)")
@@ -68,6 +68,7 @@ extension String: Error {}
 
                             #endif
         }
+
 
         // example showing persistent data
         self.tealium?.persistentData()?.add(data: ["testPersistentKey": "testPersistentValue"])
