@@ -52,7 +52,7 @@ public class TealiumVolatileData: NSObject, TealiumVolatileDataCollection {
      
      - returns: A dictionary
      */
-    internal func getData(currentData: [String: Any]) -> [String: Any] {
+    func getData(currentData: [String: Any]) -> [String: Any] {
         var data = [String: Any]()
 
         data[TealiumVolatileDataKey.random] = TealiumVolatileData.getRandom(length: 16)
