@@ -259,16 +259,16 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-tvOSMaps_with_autotracking/Pods-tvOSMaps_with_autotracking-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/tealium-swift/tealium_swift.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-tvOSMaps_with_autotracking/Pods-tvOSMaps_with_autotracking-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/tealium-swift/TealiumSwift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/tealium_swift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TealiumSwift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-tvOSMaps_with_autotracking/Pods-tvOSMaps_with_autotracking-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-tvOSMaps_with_autotracking/Pods-tvOSMaps_with_autotracking-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		AD02DDA37DA20BB31F2AA232 /* [CP] Embed Pods Frameworks */ = {
@@ -277,16 +277,16 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-tvOSMaps/Pods-tvOSMaps-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/tealium-swift/tealium_swift.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-tvOSMaps/Pods-tvOSMaps-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/tealium-swift/TealiumSwift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/tealium_swift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TealiumSwift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-tvOSMaps/Pods-tvOSMaps-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-tvOSMaps/Pods-tvOSMaps-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F7EFE0756478E4987A6F0F3A /* [CP] Check Pods Manifest.lock */ = {

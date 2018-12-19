@@ -27,7 +27,7 @@ class MasterViewController: UITableViewController {
             print("Autotracking detected for MasterViewController")
         #else
             
-            let helper = TealiumHelper.sharedInstance()
+            let helper = TealiumHelper.shared
             helper.trackView(title: "MasterViewController",
                              data: ["autotracked":"false"])
         #endif

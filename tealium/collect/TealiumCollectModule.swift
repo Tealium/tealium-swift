@@ -201,10 +201,14 @@ class TealiumCollectModule: TealiumModule {
                 return
             }
 
+            var trackInfo = info ?? [String: Any]()
+            trackInfo[TealiumKey.dispatchService] = TealiumCollectKey.moduleName
+            trackInfo += [TealiumCollectKey.payload: track.data]
+
             // Another message to moduleManager of completed track, this time of
             //  modified track data.
             self.didFinish(track,
-                           info: info)
+                           info: trackInfo)
         })
     }
 

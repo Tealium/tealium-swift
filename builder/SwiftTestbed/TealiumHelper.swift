@@ -19,7 +19,6 @@ class TealiumHelper: NSObject {
     static let shared = TealiumHelper()
     var tealium: Tealium?
     var enableHelperLogs = false
-    let mySecondHelper = MySecondHelper()
 
     override private init () {
 
@@ -67,13 +66,12 @@ class TealiumHelper: NSObject {
         #endif
 
         // REQUIRED Initialization
-        tealium = Tealium(config: config) {
+        tealium = Tealium(config: config) { _ in
                             // Optional processing post init.
                             self.tealium?.persistentData()?.add(data: ["testPersistentKey": "testPersistentValue"])
                             self.tealium?.volatileData()?.add(data: ["testVolatileKey": "testVolatileValue"])
                             // OPTIONALLY implement Remote Commands
                             self.tealium?.consentManager()?.addConsentDelegate(self)
-                            self.tealium?.consentManager()?.addConsentDelegate(self.mySecondHelper)
                             self.tealium?.consentManager()?.setUserConsentStatusWithCategories(status: .consented, categories: consentCat)
         }
     }
@@ -155,47 +153,5 @@ extension TealiumHelper: TealiumConsentManagerDelegate {
     
     func userChangedConsentCategories(categories: [TealiumConsentCategories]) {
         print("User changed consent categories: \(categories)")
-    }
-}
-
-class MySecondHelper: NSObject, TealiumDelegate, TealiumConsentManagerDelegate {
-
-    func tealiumShouldTrack(data: [String : Any]) -> Bool {
-        return true
-    }
-    
-    func tealiumTrackCompleted(success: Bool, info: [String : Any]?, error: Error?) {
-        print("trackCompleted - 2nd helper")
-    }
-    
-    func willDropTrackingCall(_ request: TealiumTrackRequest) {
-        print("**** Tracking call DROPPED - 2nd Helper ******")
-        print(request.data)
-    }
-    
-    func willQueueTrackingCall(_ request: TealiumTrackRequest) {
-        print("**** Tracking call Queued - 2nd helper ******")
-        print(request.data)
-    }
-    
-    func willSendTrackingCall(_ request: TealiumTrackRequest) {
-        print("**** Tracking call Sent - 2nd Helper ******")
-        print(request.data)
-    }
-
-    func consentStatusChanged(_ status: TealiumConsentStatus) {
-        print("2nd Helper: Consent Status Changed to: \(status)")
-    }
-
-    func userConsentedToTracking() {
-        print("2nd Helper: User consented to tracking")
-    }
-
-    func userOptedOutOfTracking() {
-        print("2nd Helper: User opted out of tracking")
-    }
-
-    func userChangedConsentCategories(categories: [TealiumConsentCategories]) {
-        print("2nd Helper: User changed consent categories: \(categories)")
     }
 }

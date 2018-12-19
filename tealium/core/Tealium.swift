@@ -12,12 +12,15 @@ import Foundation
 /**
     Public interface for the Tealium library.
  */
+
+public typealias TealiumEnableCompletion = ((_ responses: [TealiumModuleResponse?]) -> Void)
+
 public class Tealium {
 
     public var config: TealiumConfig
     /// Mediator for all Tealium modules.
     public let modulesManager: TealiumModulesManager
-
+    public var enableCompletion: TealiumEnableCompletion?
     // MARK: PUBLIC
     /**
      Initializer.
@@ -25,21 +28,17 @@ public class Tealium {
      - parameters:
         - tealiumConfig: Object created with Tealium account, profile, environment, optional loglevel)
      */
-    public init(config: TealiumConfig) {
+    public init(config: TealiumConfig,
+                enableCompletion: TealiumEnableCompletion?) {
         self.config = config
+        self.enableCompletion = enableCompletion
         modulesManager = TealiumModulesManager()
         self.enable()
         TealiumInstanceManager.shared.addInstance(self, config: config)
     }
 
-    public convenience init(config: TealiumConfig,
-                            completion: @escaping (() -> Void ) ) {
-        defer {
-            DispatchQueue.global(qos: .background).async {
-                completion()
-            }
-        }
-        self.init(config: config)
+    public convenience init(config: TealiumConfig) {
+        self.init(config: config, enableCompletion: nil)
     }
 
     /**
@@ -47,7 +46,7 @@ public class Tealium {
      initial init. Does NOT override individual module enabled flags.
      */
     public func enable() {
-        self.modulesManager.enable(config: self.config)
+        self.modulesManager.enable(config: self.config, enableCompletion: enableCompletion)
     }
 
     /**

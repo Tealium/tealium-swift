@@ -53,12 +53,14 @@ public extension Tealium {
 
 public class TealiumLifecycleModule: TealiumModule {
 
-    fileprivate weak var _dispatchQueue: DispatchQueue?
     var areListenersActive = false
     var enabledPrior = false    // To differentiate between new launches and re-enables.
     var lifecycle: TealiumLifecycle?
     var uniqueId: String = ""
     var lastProcess: TealiumLifecycleType?
+    lazy var dispatchQueue: DispatchQueue? = {
+        return DispatchQueue(label: TealiumLifecycleModuleKey.moduleName)
+    }()
 
     // MARK: TEALIUM MODULE CONFIG
     override public class func moduleConfig() -> TealiumModuleConfig {
@@ -75,7 +77,6 @@ public class TealiumLifecycleModule: TealiumModule {
             delegate?.tealiumModuleRequests(module: self,
                                             process: TealiumReportNotificationsRequest())
         }
-        _dispatchQueue = OperationQueue.current?.underlyingQueue
 
         let config = request.config
         uniqueId = "\(config.account).\(config.profile).\(config.environment)"
@@ -96,7 +97,7 @@ public class TealiumLifecycleModule: TealiumModule {
     override public func disable(_ request: TealiumDisableRequest) {
         isEnabled = false
         lifecycle = nil
-        _dispatchQueue = nil
+        dispatchQueue = nil
         didFinish(request)
     }
 
@@ -187,11 +188,8 @@ public class TealiumLifecycleModule: TealiumModule {
         }
 
         lastProcess = type
-        _dispatchQueue?.async { [weak self] in
-            guard let sel = self else {
-                return
-            }
-            sel.process(type: type)
+        dispatchQueue?.async {
+            self.process(type: type)
         }
     }
 

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Tealium
 
 class ViewController: UIViewController {
 

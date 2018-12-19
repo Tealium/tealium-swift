@@ -11,7 +11,7 @@
 
 public enum TealiumValue {
     public static let libraryName = "swift"
-    public static let libraryVersion = "1.6.6"
+    public static let libraryVersion = "1.6.7"
 }
 
 // MARK: 

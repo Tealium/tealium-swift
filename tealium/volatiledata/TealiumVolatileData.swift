@@ -39,11 +39,20 @@ public class TealiumVolatileData: NSObject, TealiumVolatileDataCollection {
     }
 
     /**
+     Public convenience function to retrieve a copy of volatile data used with dispatches.
+     
+     - returns: A dictionary
+     */
+    public func getData() -> [String: Any] {
+        return getData(currentData: [String: Any]())
+    }
+
+    /**
      Retrieve a copy of volatile data used with dispatches.
      
      - returns: A dictionary
      */
-    public func getData(currentData: [String: Any]) -> [String: Any] {
+    func getData(currentData: [String: Any]) -> [String: Any] {
         var data = [String: Any]()
 
         data[TealiumVolatileDataKey.random] = TealiumVolatileData.getRandom(length: 16)

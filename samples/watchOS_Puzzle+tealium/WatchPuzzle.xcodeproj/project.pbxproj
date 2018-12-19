@@ -356,16 +356,18 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-WatchPuzzle/Pods-WatchPuzzle-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/tealium-swift-iOS/tealium_swift.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-WatchPuzzle/Pods-WatchPuzzle-frameworks.sh",
+				"${PODS_ROOT}/TealiumCrashReporter/TealiumCrashReporteriOS.framework",
+				"${BUILT_PRODUCTS_DIR}/tealium-swift-iOS/TealiumSwift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/tealium_swift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TealiumCrashReporteriOS.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TealiumSwift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WatchPuzzle/Pods-WatchPuzzle-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WatchPuzzle/Pods-WatchPuzzle-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		60E85E645B53153FC68707FD /* [CP] Check Pods Manifest.lock */ = {
@@ -410,16 +412,16 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-WatchPuzzle_WatchKit_Extension/Pods-WatchPuzzle_WatchKit_Extension-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/tealium-swift-watchOS/tealium_swift.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-WatchPuzzle_WatchKit_Extension/Pods-WatchPuzzle_WatchKit_Extension-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/tealium-swift-watchOS/TealiumSwift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/tealium_swift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TealiumSwift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WatchPuzzle_WatchKit_Extension/Pods-WatchPuzzle_WatchKit_Extension-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WatchPuzzle_WatchKit_Extension/Pods-WatchPuzzle_WatchKit_Extension-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		DD731E677756660D6E9E6769 /* [CP] Check Pods Manifest.lock */ = {
