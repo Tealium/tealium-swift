@@ -33,6 +33,7 @@ open class TealiumConfig {
     public let profile: String
     public let environment: String
     public lazy var optionalData = [String: Any]()
+    public var registration: TealiumRegistration?
 
     /// Convenience constructor.
     ///

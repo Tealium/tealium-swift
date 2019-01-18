@@ -150,4 +150,8 @@ public class Tealium {
         return trackData
     }
 
+    // todo: add description
+    public func registerPushToken(_ token: String) {
+        config.registration?.registerPushToken(token)
+    }
 }
