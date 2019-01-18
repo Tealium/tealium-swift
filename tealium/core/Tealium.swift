@@ -7,6 +7,11 @@
 //
 //
 
+#if os(OSX)
+#else
+import UIKit
+import UserNotifications
+#endif
 import Foundation
 
 /**
@@ -149,9 +154,33 @@ public class Tealium {
 
         return trackData
     }
+}
 
-    // todo: add description
+extension Tealium: TealiumRegistration {
+    
+    /// Registers a push token on your behalf with the underlying
+    /// TealiumConfig.registration provider.
+    ///
+    /// - parameters:
+    ///     - token: the deviceToken as a String
     public func registerPushToken(_ token: String) {
         config.registration?.registerPushToken(token)
+    }
+    
+    public func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        config.registration?.application(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: completionHandler)
+    }
+    
+    /// Processes the user's response to a notification with the underlying
+    /// TealiumConfig.registration provider.
+    ///
+    /// - parameters:
+    ///   - center: shared user notification center
+    ///   - response: user's response to the notification
+    ///   - completionHandler: the block to execute when the user's response
+    ///     has finished processing
+    @available(iOS 10.0, *)
+    public func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        config.registration?.userNotificationCenter(center, didReceive: response, withCompletionHandler: completionHandler)
     }
 }
