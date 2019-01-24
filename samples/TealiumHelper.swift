@@ -43,8 +43,8 @@ extension String: Error {}
         let list = TealiumModulesList(isWhitelist: false,
                                       moduleNames: ["autotracking"])
         config.setModulesList(list)
-      
-        tealium = Tealium(config: config) { responses in
+        
+        tealium = Tealium(config: config) {
 
                             // Optional processing post init.
                             // OPTIONALLY implement Remote Commands.
