@@ -40,7 +40,7 @@ private enum AppleInternalKeys {
     static let campaignId = "iad-campaign-id"
     static let campaignName = "iad-campaign-name"
     static let adGroupId = "iad-adgroup-id"
-    static let adGroupName = "iad-agroup-name"
+    static let adGroupName = "iad-adgroup-name"
     static let keyword = "iad-keyword"
     static let objectVersion = "Version3.1" // peculiarly, Apple keys the entire object from this
 }
