@@ -44,7 +44,7 @@ extension String: Error {}
                                       moduleNames: ["autotracking"])
         config.setModulesList(list)
       
-        tealium = Tealium(config: config) { responses in
+        tealium = Tealium(config: config) {
 
                             // Optional processing post init.
                             // OPTIONALLY implement Remote Commands.
