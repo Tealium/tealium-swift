@@ -7,6 +7,29 @@
 
 #import "UIApplication+TealiumTracker.h"
 
+@interface LastEvent : NSObject
+
+/// A weak event view to avoid lastEvent to retain dismissed views
+@property (nonatomic, weak) UIView* lastEventView;
+@property (nonatomic, strong) NSDate *lastEventTS;
+
+-(instancetype)initWithView:(UIView *)view date: (NSDate *)date;
+
+@end
+
+@implementation LastEvent
+
+- (instancetype)initWithView:(UIView *)view date:(NSDate *)date
+{
+    self = [super init];
+    if (self) {
+        self.lastEventView = view;
+        self.lastEventTS = date;
+    }
+    return self;
+}
+@end
+
 @implementation UIApplication (TealiumTracker)
 
 void (*oSendEvent)(id, SEL, UIEvent *e);
@@ -20,8 +43,7 @@ void (*oSendEvent)(id, SEL, UIEvent *e);
 }
 
 // duplicate suppression
-static id     _lastEvent;
-static NSDate *_lastEventTS;
+static LastEvent * _lastEvent;
 static int _maxScans = 6;
 
 static void TealiumSendEvent(UIApplication *self, SEL _cmd, UIEvent *e) {
@@ -36,7 +58,7 @@ static void TealiumSendEvent(UIApplication *self, SEL _cmd, UIEvent *e) {
     
     if (touch.phase == UITouchPhaseEnded && view){
         NSDate *now = [NSDate date];
-        if ([now compare:_lastEventTS] == NSOrderedAscending && _lastEvent == view) {
+        if ([now compare:_lastEvent.lastEventTS] == NSOrderedAscending && _lastEvent.lastEventView == view) {
             isViable = NO;
         }
         if (isViable &&
@@ -53,9 +75,8 @@ static void TealiumSendEvent(UIApplication *self, SEL _cmd, UIEvent *e) {
 
             }
         }
+        _lastEvent = [[LastEvent alloc] initWithView:view date:[NSDate dateWithTimeInterval:0.1 sinceDate:now]];
         
-        _lastEvent = view;
-        _lastEventTS = [NSDate dateWithTimeInterval:0.1 sinceDate:now];
     }
     
     // Forward event to original target object
