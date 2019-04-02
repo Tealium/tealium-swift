@@ -1,0 +1,4 @@
+## Firebase Sample App
+Showcases the ability to use Firebase Analytics via Tealium IQ and Remote Commands. This sample was created from this guide: [Gogole Analytics for Firebase Mobile Integration Guide](https://community.tealiumiq.com/t5/Installation-Libraries/Google-Analytics-for-Firebase-Mobile-Integration-Guide/ta-p/21200)
+
+In order to achieve a successful build, you must add your own `GoogleService-Info.plist` to the `keys` folder within the project. More information can be found within Firebase's getting started documentation: [Add Firebase to your iOS Project](https://firebase.google.com/docs/ios/setup.)
