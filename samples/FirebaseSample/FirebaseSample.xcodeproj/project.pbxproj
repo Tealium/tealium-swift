@@ -18,7 +18,6 @@
 		CF66604C2253D7CD0093330D /* UIView+showAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF66604B2253D7CD0093330D /* UIView+showAlert.swift */; };
 		CF66604E2254032A0093330D /* TealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF66604D2254032A0093330D /* TealiumHelper.swift */; };
 		CF6660502254044D0093330D /* FirebaseTealiumSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF66604F2254044D0093330D /* FirebaseTealiumSwift.swift */; };
-		CFA211242255622000916C54 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CFA211232255622000916C54 /* GoogleService-Info.plist */; };
 		E20E20988ACE563665FFA3B1 /* Pods_FirebaseSample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E22E57AD4F439FD22988FB8 /* Pods_FirebaseSample.framework */; };
 /* End PBXBuildFile section */
 
@@ -39,7 +38,6 @@
 		CF66604B2253D7CD0093330D /* UIView+showAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+showAlert.swift"; sourceTree = "<group>"; };
 		CF66604D2254032A0093330D /* TealiumHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TealiumHelper.swift; sourceTree = "<group>"; };
 		CF66604F2254044D0093330D /* FirebaseTealiumSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseTealiumSwift.swift; sourceTree = "<group>"; };
-		CFA211232255622000916C54 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,7 +118,6 @@
 		CF666051225407950093330D /* keys */ = {
 			isa = PBXGroup;
 			children = (
-				CFA211232255622000916C54 /* GoogleService-Info.plist */,
 			);
 			path = keys;
 			sourceTree = "<group>";
@@ -210,7 +207,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF66603A2253C8AB0093330D /* LaunchScreen.storyboard in Resources */,
-				CFA211242255622000916C54 /* GoogleService-Info.plist in Resources */,
 				CF6660372253C8AB0093330D /* Assets.xcassets in Resources */,
 				CF6660352253C8AA0093330D /* Main.storyboard in Resources */,
 			);
