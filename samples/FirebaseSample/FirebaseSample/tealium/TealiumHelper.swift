@@ -9,7 +9,6 @@
 import Foundation
 import TealiumSwift
 
-extension String: Error { }
 /// Example of a shared helper to handle all 3rd party tracking services. This
 /// paradigm is recommended to reduce burden of future code updates for external services
 /// in general.
@@ -28,7 +27,7 @@ class TealiumHelper {
         config.setLogLevel(logLevel: .verbose)
         config.addDelegate(self)
         tealium = Tealium(config: config, enableCompletion: { (response) in
-            /// Remote Commands.
+            // Remote Commands.
             #if os(iOS)
                 guard let remoteCommands = self.tealium?.remoteCommands() else {
                     return
@@ -37,11 +36,11 @@ class TealiumHelper {
                 remoteCommands.add(firebaseCommand)
             #endif
         })
-        /// process a tracking call on the background queue
+        // process a tracking call on the background queue
         DispatchQueue.global(qos: .background).async {
             self.tealium?.track(title: "HelperReady_BG_Queue")
         }
-        /// example tracking call - not required in production
+        // example tracking call - not required in production
         self.tealium?.track(title: "HelperReady")
     }
 
@@ -50,7 +49,7 @@ class TealiumHelper {
         tealium?.track(title: title,
                        data: data,
                        completion: { (success, info, error) in
-                           /// Optional post processing
+                           // Optional post processing
                            if self.enableHelperLogs == false {
                                return
                            }
@@ -63,7 +62,7 @@ class TealiumHelper {
         tealium?.trackView(title: title,
                            data: data,
                            completion: { (success, info, error) in
-                               /// Optional post processing. Alternatively, monitoring track completions can be done here vs. using the delegate module's callbacks.
+                               // Optional post processing. Alternatively, monitoring track completions can be done here vs. using the delegate module's callbacks.
                                if self.enableHelperLogs == false {
                                    return
                                }

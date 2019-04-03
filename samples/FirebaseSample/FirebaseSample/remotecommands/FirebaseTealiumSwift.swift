@@ -11,11 +11,6 @@ import FirebaseAnalytics
 import Firebase
 import TealiumSwift
 
-// let firebaseCommand = FirebaseCommands.firebaseCommand()
-// remotecommands?.add(firebaseCommand)
-// demo account: tealiummobile
-// profile: firebase-analytics
-
 class FirebaseCommands: TealiumRemoteCommand {
 
     enum keyNames {

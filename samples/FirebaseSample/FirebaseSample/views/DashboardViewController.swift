@@ -38,7 +38,7 @@ class DashboardViewController: UIViewController {
             loyaltyStatus = currentLoyaltyStatus
         }
         let toggle = toggleLoyaltyStatus(loyaltyStatus)
-        /// trackEvent sent to Tealium with the set_loyalty_status event and associated parameters. This will then get mapped to trigger the setUserProperty(<toggle>, forName: "user_loyalty_status") method in Firebase
+        // trackEvent sent to Tealium with the set_loyalty_status event and associated parameters. This will then get mapped to trigger the setUserProperty(<toggle>, forName: "user_loyalty_status") method in Firebase
         TealiumHelper.shared.track(title: "set_loyalty_status", data: ["user_loyalty_status": toggle])
         self.showSimpleAlert(title: "setUserProperty", message: "Firebase .setUserProperty called with user_loyalty_status set to \(toggle)")
         UserDefaults.standard.set(toggle, forKey: DashboardViewControllerKeys.userLoyalty)
@@ -46,7 +46,7 @@ class DashboardViewController: UIViewController {
 
     @IBAction func addToCart(_ sender: Any) {
         let addToCartData = ["product_id": ["ABC123"], "product_price": ["14.99"], "product_quantity": ["1"], "product_name": ["Premium Widget"]]
-        /// trackEvent sent to Tealium with the cart_add event and associated parameters. This will then get mapped in TiQ to trigger the logEvent("add_to_cart", firebase_event_params) method in Firebase
+        // trackEvent sent to Tealium with the cart_add event and associated parameters. This will then get mapped in TiQ to trigger the logEvent("add_to_cart", firebase_event_params) method in Firebase
         TealiumHelper.shared.track(title: "cart_add", data: addToCartData)
         self.showSimpleAlert(title: "logEvent", message: "Firebase .logEvent called with the cart_add event and properties. This will send the add_to_cart event to Firebase with these parameters: \(addToCartData)")
     }
