@@ -6,7 +6,23 @@ target 'FirebaseSample' do
   use_frameworks!
 
   # Pods for FirebaseSample
-  pod 'tealium-swift', '1.6.7'
-  pod 'Firebase/Core', '5.4.1'
+
+  # Tealium
+  pod "tealium-swift/Core"
+  pod "tealium-swift/TealiumAppData"
+  pod "tealium-swift/TealiumConnectivity"
+  pod "tealium-swift/TealiumDataSource"
+  pod "tealium-swift/TealiumDelegate"
+  pod "tealium-swift/TealiumDeviceData"
+  pod "tealium-swift/TealiumDispatchQueue"
+  pod "tealium-swift/TealiumLifecycle"
+  pod "tealium-swift/TealiumLogger"
+  pod "tealium-swift/TealiumRemoteCommands"
+  pod "tealium-swift/TealiumTagManagement"
+  pod "tealium-swift/TealiumVolatileData"
+  pod "tealium-swift/TealiumDefaultsStorage"
+
+  # Firebase
+  pod 'Firebase/Core'
 
 end

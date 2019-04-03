@@ -29,21 +29,21 @@
                                             <segue destination="99i-0w-kmr" kind="show" id="aTg-j8-uQi"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lCV-A7-qxS" userLabel="Product ">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lCV-A7-qxS">
                                         <rect key="frame" x="52.5" y="73" width="55" height="30"/>
-                                        <state key="normal" title="Product"/>
+                                        <state key="normal" title="Content"/>
                                         <connections>
                                             <segue destination="3ZW-8T-c7j" kind="show" id="Ie6-6H-QiW"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5ck-JY-Rib" userLabel="Button3">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5ck-JY-Rib">
                                         <rect key="frame" x="31.5" y="146" width="97" height="30"/>
                                         <state key="normal" title="Loyalty Status"/>
                                         <connections>
                                             <action selector="setLoyaltyStatus:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ON5-CD-Kai"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aGd-Rh-br8" userLabel="Button4">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aGd-Rh-br8">
                                         <rect key="frame" x="39" y="219" width="82" height="30"/>
                                         <state key="normal" title="Add To Cart"/>
                                         <connections>

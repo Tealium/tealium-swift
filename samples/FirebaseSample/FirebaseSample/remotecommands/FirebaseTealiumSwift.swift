@@ -17,7 +17,7 @@ import TealiumSwift
 // profile: firebase-analytics
 
 class FirebaseCommands: TealiumRemoteCommand {
-    
+
     enum keyNames {
         static let sessionTimeout = "firebase_session_timeout_seconds"
         static let minSeconds = "firebase_session_minimum_seconds"
@@ -32,106 +32,96 @@ class FirebaseCommands: TealiumRemoteCommand {
         static let userId = "firebase_user_id"
         static let commandName = "command_name"
     }
-    
+
     class func firebaseCommand() -> TealiumRemoteCommand {
         return TealiumRemoteCommand(commandId: "firebaseAnalytics",
-                                    description: "Firebase Analytics Remote Command"){
-                                        (response) in
-                                        let commandDict = response.payload()
-                                        guard let command = commandDict["command_name"] as? String else {
-                                            return
-                                        }
-                                        
-                                        // allow multiple commands
-                                        let commandSplit = command.split(separator: ",")
-                                        for oneCommand in commandSplit {
-                                            let trimmedCommand = oneCommand.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-                                            switch trimmedCommand {
-                                            case "config":
-                                                var timeout: TimeInterval?
-                                                var minSeconds: TimeInterval?
-                                                var analyticsEnabled: Bool?
-                                                if let t = commandDict[keyNames.sessionTimeout] as? String {
-                                                    timeout = TimeInterval(t)
-                                                }
-                                                if let m = commandDict[keyNames.minSeconds] as? String {
-                                                    minSeconds = TimeInterval(m)
-                                                }
-                                                if let ae = commandDict[keyNames.analyticsEnabled] as? String {
-                                                    analyticsEnabled = Bool(ae)
-                                                }
-                                                let logLevel = commandDict[keyNames.logLevel] as? String
-                                                FirebaseCommands.createAnalyticsConfig(timeout, minSeconds, analyticsEnabled, logLevel)
-                                            case "logEvent":
-                                                guard let name = commandDict[keyNames.eventName] as? String else {
-                                                    return
-                                                }
-                                                
-                                                let eventName = FirebaseCommands.mapEventNames(name)
-                                                
-                                                guard let params = commandDict[keyNames.eventParams] as? Dictionary<String, Any> else {
-                                                    return
-                                                }
-                                                
-                                                var normalizedParams = [String: Any]()
-                                                
-                                                for param in params {
-                                                    let newKeyName = FirebaseCommands.paramsMap(param.key)
-                                                    normalizedParams[newKeyName] = param.value
-                                                }
-                                                
-                                                FirebaseCommands.logEvent(eventName, normalizedParams)
-                                            case "setScreenName":
-                                                guard let screenName = commandDict[keyNames.screenName] as? String else {
-                                                    return
-                                                }
-                                                let cls = commandDict[keyNames.screenClass] as? String
-                                                FirebaseCommands.setScreenName(screenName, cls)
-                                            case "setUserProperty":
-                                                guard let propertyName = commandDict[keyNames.userPropertyName] as? String else {
-                                                    return
-                                                }
-                                                guard let propertyValue = commandDict[keyNames.userPropertyValue] as? String else {
-                                                    return
-                                                }
-                                                FirebaseCommands.setUserProperty(propertyName, value: propertyValue)
-                                            case "setUserId":
-                                                guard let userId = commandDict[keyNames.userId] as? String else {
-                                                    return
-                                                }
-                                                FirebaseCommands.setUserId(userId)
-                                            default:
-                                                return
-                                            }
-                                        }
-                                        
-                                        
+                                    description: "Firebase Analytics Remote Command") {
+            (response) in
+            let commandPayload = response.payload()
+            guard let command = commandPayload["command_name"] as? String else {
+                return
+            }
+            // allow multiple commands
+            let commandSplit = command.split(separator: ",")
+            for singleCommandName in commandSplit {
+                let trimmedCommandName = singleCommandName.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+                switch trimmedCommandName {
+                case "config":
+                    var firebaseSessionTimeout: TimeInterval?
+                    var firebaseSessionMinimumSeconds: TimeInterval?
+                    var firebaseAnalyticsEnabled: Bool?
+                    if let sessionTimeout = commandPayload[keyNames.sessionTimeout] as? String {
+                        firebaseSessionTimeout = TimeInterval(sessionTimeout)
+                    }
+                    if let sessionMinimumSeconds = commandPayload[keyNames.minSeconds] as? String {
+                        firebaseSessionMinimumSeconds = TimeInterval(sessionMinimumSeconds)
+                    }
+                    if let analyticsEnabled = commandPayload[keyNames.analyticsEnabled] as? String {
+                        firebaseAnalyticsEnabled = Bool(analyticsEnabled)
+                    }
+                    let logLevel = commandPayload[keyNames.logLevel] as? String
+                    FirebaseCommands.createAnalyticsConfig(firebaseSessionTimeout, firebaseSessionMinimumSeconds, firebaseAnalyticsEnabled, logLevel)
+                case "logEvent":
+                    guard let name = commandPayload[keyNames.eventName] as? String else {
+                        return
+                    }
+                    let eventName = FirebaseCommands.mapEventNames(name)
+                    guard let params = commandPayload[keyNames.eventParams] as? Dictionary<String, Any> else {
+                        return
+                    }
+                    var normalizedParams = [String: Any]()
+                    for param in params {
+                        let newKeyName = FirebaseCommands.paramsMap(param.key)
+                        normalizedParams[newKeyName] = param.value
+                    }
+                    FirebaseCommands.logEvent(eventName, normalizedParams)
+                case "setScreenName":
+                    guard let screenName = commandPayload[keyNames.screenName] as? String else {
+                        return
+                    }
+                    let screenClass = commandPayload[keyNames.screenClass] as? String
+                    FirebaseCommands.setScreenName(screenName, screenClass)
+                case "setUserProperty":
+                    guard let propertyName = commandPayload[keyNames.userPropertyName] as? String else {
+                        return
+                    }
+                    guard let propertyValue = commandPayload[keyNames.userPropertyValue] as? String else {
+                        return
+                    }
+                    FirebaseCommands.setUserProperty(propertyName, value: propertyValue)
+                case "setUserId":
+                    guard let userId = commandPayload[keyNames.userId] as? String else {
+                        return
+                    }
+                    FirebaseCommands.setUserId(userId)
+                default:
+                    return
+                }
+            }
         }
     }
-    
-    static let firConfig = FirebaseConfiguration.shared
-    
-    class func createAnalyticsConfig(_ sessionTimeoutSeconds: TimeInterval?, _ minimumSessionSeconds: TimeInterval?, _ analyticsEnabled: Bool?,  _ logLevel: String?){
-        
-        if let timeout = sessionTimeoutSeconds {
-            Analytics.setSessionTimeoutInterval(timeout)
+
+    static let firebaseConfiguration = FirebaseConfiguration.shared
+
+    class func createAnalyticsConfig(_ sessionTimeoutSeconds: TimeInterval?, _ minimumSessionSeconds: TimeInterval?, _ analyticsEnabled: Bool?, _ logLevel: String?) {
+        if let sessionTimeoutSeconds = sessionTimeoutSeconds {
+            Analytics.setSessionTimeoutInterval(sessionTimeoutSeconds)
         }
-        
-        if let enabled = analyticsEnabled {
-            Analytics.setAnalyticsCollectionEnabled(enabled)
+        if let analyticsEnabled = analyticsEnabled {
+            Analytics.setAnalyticsCollectionEnabled(analyticsEnabled)
         }
-        
-        if let log = logLevel {
-            firConfig.setLoggerLevel(FirebaseCommands.parseLogLevel(log))
+        if let logLevel = logLevel {
+            firebaseConfiguration.setLoggerLevel(FirebaseCommands.parseLogLevel(logLevel))
         }
-        
-        FirebaseApp.configure()
+        if FirebaseApp.app() == nil {
+            FirebaseApp.configure()
+        }
     }
-    
+
     class func logEvent(_ name: String, _ params: Dictionary<String, Any>) {
         Analytics.logEvent(name, parameters: params)
     }
-    
+
     class func setUserProperty(_ property: String, value: String) {
         if value == "" {
             Analytics.setUserProperty(nil, forName: property)
@@ -139,18 +129,17 @@ class FirebaseCommands: TealiumRemoteCommand {
             Analytics.setUserProperty(value, forName: property)
         }
     }
-    
+
     class func setUserId(_ id: String) {
         Analytics.setUserID(id)
     }
-    
-    class func setScreenName(_ name: String, _ cls: String?) {
-        Analytics.setScreenName(name, screenClass: cls)
+
+    class func setScreenName(_ screenName: String, _ screenClass: String?) {
+        Analytics.setScreenName(screenName, screenClass: screenClass)
     }
-    
-    class func parseLogLevel(_ level: String) -> FirebaseLoggerLevel{
-        
-        switch level {
+
+    class func parseLogLevel(_ logLevel: String) -> FirebaseLoggerLevel {
+        switch logLevel {
         case "min":
             return FirebaseLoggerLevel.min
         case "max":
@@ -169,11 +158,11 @@ class FirebaseCommands: TealiumRemoteCommand {
             return FirebaseLoggerLevel.min
         }
     }
-    
+
     class func mapEventNames(_ eventName: String) -> String {
         let eventsMap = [
-            "add_payment_info" : AnalyticsEventAddPaymentInfo,
-            "add_to_cart":  AnalyticsEventAddToCart,
+            "add_payment_info": AnalyticsEventAddPaymentInfo,
+            "add_to_cart": AnalyticsEventAddToCart,
             "add_to_wishlist": AnalyticsEventAddToWishlist,
             "app_open": AnalyticsEventAppOpen,
             "event_begin_checkout": AnalyticsEventBeginCheckout,
@@ -204,16 +193,15 @@ class FirebaseCommands: TealiumRemoteCommand {
         ]
         return eventsMap[eventName] ?? eventName
     }
-    
+
     class func paramsMap(_ paramName: String) -> String {
-        
         let paramsMap = [
-            "param_achievement_id" : AnalyticsParameterAchievementID,
+            "param_achievement_id": AnalyticsParameterAchievementID,
             "param_ad_network_click_id": AnalyticsParameterAdNetworkClickID,
             "param_affiliation": AnalyticsParameterAffiliation,
             "param_cp1": AnalyticsParameterCP1,
             "param_campaign": AnalyticsParameterCampaign,
-            "param_character": AnalyticsParameterCharacter ,
+            "param_character": AnalyticsParameterCharacter,
             "param_checkout_option": AnalyticsParameterCheckoutOption,
             "param_checkout_step": AnalyticsParameterCheckoutStep,
             "param_content": AnalyticsParameterContent,
@@ -257,8 +245,7 @@ class FirebaseCommands: TealiumRemoteCommand {
             "param_virtual_currency_name": AnalyticsParameterVirtualCurrencyName,
             "param_user_signup_method": AnalyticsUserPropertySignUpMethod
         ]
-        
         return paramsMap[paramName] ?? paramName
     }
-    
+
 }
