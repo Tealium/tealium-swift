@@ -204,8 +204,8 @@ extension TealiumModule: Equatable {
 
 extension TealiumModule: Hashable {
 
-    public var hashValue: Int {
-        return type(of: self).moduleConfig().name.hash
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(type(of: self).moduleConfig().name)
     }
 
 }
