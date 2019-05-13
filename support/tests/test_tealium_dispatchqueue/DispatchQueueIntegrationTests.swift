@@ -29,7 +29,7 @@ class TealiumPersistentQueueIntegrationTests: XCTestCase {
     }
 
     func testMultiple() {
-        for _ in 0...10000 {
+        for _ in 0...10 {
             clearUserDefaults()
             tesStorageKey()
             tesSaveDispatchNonEmptyQueue()

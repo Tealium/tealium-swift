@@ -42,7 +42,7 @@ class TealiumCollectModuleTests: XCTestCase {
 
         let config = testTealiumConfig
         config.setLegacyDispatchMethod(true)
-        collectModule.enable(TealiumEnableRequest(config: config))
+        collectModule.enable(TealiumEnableRequest(config: config, enableCompletion: nil))
 
         XCTAssertTrue(collectModule.collect != nil, "TealiumCollect did not initialize.")
 
@@ -62,7 +62,7 @@ class TealiumCollectModuleTests: XCTestCase {
         let expectation = XCTestExpectation(description: "successful dispatch")
         let config = testTealiumConfig
         config.setLegacyDispatchMethod(true)
-        collectModule.enable(TealiumEnableRequest(config: config))
+        collectModule.enable(TealiumEnableRequest(config: config, enableCompletion: nil))
         let track = TealiumTrackRequest(data: [String: Any]()) { _, info, _ in
             if let payload = info?["payload"] as? [String: Any] {
                 XCTAssertNotNil(payload[TealiumKey.account])

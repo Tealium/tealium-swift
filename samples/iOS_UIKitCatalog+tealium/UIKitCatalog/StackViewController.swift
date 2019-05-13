@@ -33,6 +33,11 @@ class StackViewController: UIViewController {
         updateAddRemoveButtons()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        TealiumHelper.shared.trackView(title: self.title ?? "View Controller", data: nil)
+        super.viewDidAppear(animated)
+    }
+    
     // MARK: - Actions
     
     @IBAction func showFurtherDetail(_: AnyObject) {

@@ -7,36 +7,9 @@
 //
 
 import Foundation
-import Foundation
 #if appdata
 import TealiumCore
 #endif
-
-public protocol TealiumAppDataCollection {
-    func name(bundle: Bundle) -> String?
-
-    func rdns(bundle: Bundle) -> String?
-
-    func version(bundle: Bundle) -> String?
-
-    func build(bundle: Bundle) -> String?
-}
-
-protocol TealiumAppDataProtocol {
-    func add(data: [String: Any])
-
-    func getData() -> [String: Any]
-
-    func setNewAppData()
-
-    func setLoadedAppData(data: [String: Any])
-
-    func deleteAllData()
-}
-
-public protocol TealiumSaveDelegate: class {
-    func savePersistentData(data: [String: Any])
-}
 
 public class TealiumAppData: TealiumAppDataProtocol, TealiumAppDataCollection {
 
@@ -49,27 +22,21 @@ public class TealiumAppData: TealiumAppDataProtocol, TealiumAppDataCollection {
         self.delegate = delegate
     }
 
-    /**
-     Public constructor to enable other modules to use TealiumAppDataCollection protocol
-     */
+    /// Public constructor to enable other modules to use TealiumAppDataCollection protocol
     public init() {
     }
 
-    /**
-     Add app data to all dispatches for the remainder of an active session.
-     
-     - parameters:
-     - data: A [String: Any] dictionary. Values should be of type String or [String]
-     */
+    /// Add app data to all dispatches for the remainder of an active session.
+    ///
+    /// - Parameters:
+    /// - data: A [String: Any] dictionary. Values should be of type String or [String]
     func add(data: [String: Any]) {
         appData += data
     }
 
-    /**
-     Retrieve a copy of app data used with dispatches.
-     
-     - returns: `[String: Any]`
-     */
+    /// Retrieve a copy of app data used with dispatches.
+    ///
+    /// - Returns: `[String: Any]`
     func getData() -> [String: Any] {
         let data = appData
         return data
@@ -85,23 +52,24 @@ public class TealiumAppData: TealiumAppDataProtocol, TealiumAppDataCollection {
         return appData.count
     }
 
-    // MARK: 
     // MARK: INTERNAL
-    /**
-     Checks if persistent keys are missing from the `data` dictionary
-     - parameter data: The dictionary to check
-     
-     - TealiumAppDataKey.uuid
-     - TealiumAppDataKey.visitorId
-     
-     - returns: Bool
-     */
+    /// Checks if persistent keys are missing from the `data` dictionary
+    /// - Parameter data: The dictionary to check
+    ///
+    /// - TealiumAppDataKey.uuid
+    /// - TealiumAppDataKey.visitorId
+    ///
+    /// - Returns: Bool
     class func isMissingPersistentKeys(data: [String: Any]) -> Bool {
         if data[TealiumAppDataKey.uuid] == nil { return true }
         if data[TealiumAppDataKey.visitorId] == nil { return true }
         return false
     }
 
+    /// Converts UUID to Tealium Visitor ID format
+    ///
+    /// - Parameter from: String containing a UUID
+    /// - Returns: String containing Tealium Visitor ID
     func visitorId(from uuid: String) -> String {
         return uuid.replacingOccurrences(of: "-", with: "")
     }
@@ -116,12 +84,15 @@ public class TealiumAppData: TealiumAppDataProtocol, TealiumAppDataCollection {
 
         let data = [
             TealiumAppDataKey.uuid: uuid,
-            TealiumAppDataKey.visitorId: vid
+            TealiumAppDataKey.visitorId: vid,
         ]
 
         return data as [String: Any]
     }
 
+    /// Retrieves a new set of Volatile Data (usually once per app launch)
+    ///
+    /// - Returns: [String: Any] containing new volatile data (app name, rdns, version, build)
     func newVolatileData() -> [String: Any] {
         var result: [String: Any] = [:]
 
@@ -144,6 +115,7 @@ public class TealiumAppData: TealiumAppDataProtocol, TealiumAppDataCollection {
         return result
     }
 
+    /// Stores current AppData in memory
     func setNewAppData() {
         let newUuid = UUID().uuidString
         appData = newPersistentData(for: newUuid)
@@ -152,26 +124,11 @@ public class TealiumAppData: TealiumAppDataProtocol, TealiumAppDataCollection {
         uuid = newUuid
     }
 
+    /// Populates in-memory AppData with existing values from persistent storage, if present
+    ///
+    /// - Parameter data: [String: Any] containing existing AppData variables
     func setLoadedAppData(data: [String: Any]) {
         appData = data
         appData += newVolatileData()
-    }
-}
-
-public extension TealiumAppDataCollection {
-    func name(bundle: Bundle) -> String? {
-        return bundle.infoDictionary?[kCFBundleNameKey as String] as? String
-    }
-
-    func rdns(bundle: Bundle) -> String? {
-        return bundle.bundleIdentifier
-    }
-
-    func version(bundle: Bundle) -> String? {
-        return bundle.infoDictionary?["CFBundleShortVersionString"] as? String
-    }
-
-    func build(bundle: Bundle) -> String? {
-        return bundle.infoDictionary?[kCFBundleVersionKey as String] as? String
     }
 }

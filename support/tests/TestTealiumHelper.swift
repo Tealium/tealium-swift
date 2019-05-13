@@ -24,6 +24,9 @@ enum TealiumTestValue {
     static let sessionId = "1234567890124"
     static let visitorID = "someVisitorId"
     static let random = "someRandomNumber"
+    static let testIDFAString = "6D92078A-8246-4BA4-AE5B-76104861E7DC"
+    static let testIDFAStringAdTrackingDisabled = "00000000-0000-0000-0000-000000000000"
+    static let testIDFVString = "599F9C00-92DC-4B5C-9464-7971F01F8370"
 }
 
 enum TealiumTestError: Error {
@@ -40,7 +43,7 @@ let testTealiumConfig = TealiumConfig(account: TealiumTestValue.account,
 
 let testDeleteRequest = TealiumDeleteRequest(name: "testDelete")
 let testDisableRequest = TealiumDisableRequest()
-let testEnableRequest = TealiumEnableRequest(config: testTealiumConfig)
+let testEnableRequest = TealiumEnableRequest(config: testTealiumConfig, enableCompletion: nil)
 let testLoadRequest = TealiumLoadRequest(name: "test") { (_, _, _) in
     // Future processing... maybe
 }
@@ -122,9 +125,27 @@ class TestTealiumHelper {
             "collect",
             "tagmanagement",
             "remotecommands",
-            "crash",
+            //            "crash", // crash is excluded; separate tests exist for crash
             "consentmanager",
-            "dispatchqueue"
+            "dispatchqueue",
+        ]
+        #elseif os(tvOS)
+        return [
+            "logger",
+            "lifecycle",
+            "autotracking",
+            "filestorage",
+            "defaultsstorage",
+            "appdata",
+            "datasource",
+            "devicedata",
+            "persistentdata",
+            "volatiledata",
+            "delegate",
+            "connectivity",
+            "collect",
+            "consentmanager",
+            "dispatchqueue",
         ]
         #else
             return [
@@ -143,9 +164,8 @@ class TestTealiumHelper {
                 "connectivity",
                 "collect",
                 // "tagmanagement",
-                "remotecommands",
                 "consentmanager",
-                "dispatchqueue"
+                "dispatchqueue",
             ]
         #endif
     }
@@ -159,7 +179,7 @@ class TestTealiumHelper {
             TealiumLoadRequest.instanceTypeId(),
             TealiumReportNotificationsRequest.instanceTypeId(),
             TealiumSaveRequest.instanceTypeId(),
-            TealiumTrackRequest.instanceTypeId()
+            TealiumTrackRequest.instanceTypeId(),
         ]
 
     }
@@ -180,7 +200,7 @@ class TestTealiumHelper {
             testLoadRequest,
             testReportNotificationRequest,
             testSaveRequest,
-            testTrackRequest
+            testTrackRequest,
         ]
     }
 
@@ -324,13 +344,11 @@ extension TestTealiumHelper: TealiumModuleDelegate {
 
 extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any {
 
-    /**
-     Allows dictionary to check if it contains keys and values from a smaller library
-     
-     - Paramaters:
-     - otherDictionary: A [String:AnyObject] dictionary
-     - Returns: Boolean answer
-     */
+    /// Allows dictionary to check if it contains keys and values from a smaller library
+    ///
+    /// - Paramaters:
+    /// - otherDictionary: A [String:AnyObject] dictionary
+    /// - Returns: Boolean answer
     func contains(otherDictionary: [String: Any]) -> Bool {
         // Should use generics here
         for (key, value) in self {

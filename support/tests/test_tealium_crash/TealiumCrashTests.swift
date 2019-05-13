@@ -7,7 +7,10 @@
 //
 
 import XCTest
-@testable import Tealium
+@testable import TealiumCore
+@testable import TealiumAppData
+@testable import TealiumDeviceData
+@testable import TealiumVolatileData
 @testable import TealiumCrash
 @testable import TealiumCrashReporteriOS
 
@@ -113,7 +116,7 @@ class TealiumCrashTests: XCTestCase {
                                     TealiumCrashKey.signalName,
                                     TealiumCrashKey.signalAddress,
                                     TealiumCrashKey.libraries,
-                                    TealiumCrashKey.threads
+                                    TealiumCrashKey.threads,
                 ]
                 let result = crash.getData()
                 for key in expectedKeys {

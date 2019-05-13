@@ -6,27 +6,9 @@
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
-// *****************************************
-// BRIEF: This is a sample config object.
-// MARK: Edit as Necessary
-// NOTE: Editable only with direct import.
-// *****************************************
-
-let defaultTealiumConfig = TealiumConfig(account: "tealiummobile",
-                                         profile: "demo",
-                                         environment: "dev",
-                                         optionalData: nil)
-
-// *****************************************
-// MARK: No need to edit below this line
-// *****************************************
-
 import Foundation
 
-/*
- Configuration object for any Tealium instance.
- 
- */
+/// Configuration object for any Tealium instance.
 open class TealiumConfig {
 
     public let account: String
@@ -37,10 +19,9 @@ open class TealiumConfig {
     /// Convenience constructor.
     ///
     /// - Parameters:
-    ///   - account: Tealium Account.
-    ///   - profile: Tealium Profile.
-    ///   - environment: Tealium Environment. 'prod' recommended for 
-    ///         release.
+    /// - account: Tealium Account.
+    /// - profile: Tealium Profile.
+    /// - environment: Tealium Environment. 'prod' recommended for release.
     public convenience init(account: String,
                             profile: String,
                             environment: String) {
@@ -50,15 +31,13 @@ open class TealiumConfig {
                   optionalData: nil)
     }
 
-    /**
-     Primary constructor.
-     
-     - parameters:
-     - account: Tealium account name string to use.
-     - profile: Tealium profile string.
-     - environment: Tealium environment string.
-     - optionalData: Optional [String:Any] dictionary meant primarily for module use.
-     */
+    /// Primary constructor.
+    ///
+    /// - Parameters:
+    /// - account: Tealium account name string to use.
+    /// - profile: Tealium profile string.
+    /// - environment: Tealium environment string.
+    /// - optionalData: Optional [String:Any] dictionary meant primarily for module use.
     public init(account: String,
                 profile: String,
                 environment: String,

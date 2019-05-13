@@ -10,36 +10,51 @@ import Foundation
 #if remotecommands
 import TealiumCore
 #endif
+
+/// Manages instances of TealiumRemoteCommand
 public class TealiumRemoteCommands: NSObject {
 
     weak var queue: DispatchQueue?
     var commands = [TealiumRemoteCommand]()
     var isEnabled = false
-    var schemeProtocol = "tealium"
+    static var pendingResponses = [String: Bool]()
 
+    /// Checks if a URLRequest object contains a valid Remote Command
+    ///
+    /// - Parameter request: URLRequest representing the Remote Command
+    /// - Returns: Bool indicating whether the command is valid
     func isAValidRemoteCommand(request: URLRequest) -> Bool {
-        if request.url?.scheme == self.schemeProtocol {
+        if request.url?.scheme == TealiumKey.tealiumURLScheme {
             return true
         }
 
         return false
     }
 
+    /// Adds a remote command for later execution
+    ///
+    /// - Parameters:
+    /// - remoteCommand: TealiumRemoteCommand to be added for later execution
     public func add(_ remoteCommand: TealiumRemoteCommand) {
         // NOTE: Multiple commands with the same command id are possible - OK
         remoteCommand.delegate = self
         commands.append(remoteCommand)
     }
 
+    /// Removes a Remote Command so it can no longer be called
+    ///
+    /// - Parameters:
+    /// - commandId: String containing the command ID to be removed
     public func remove(commandWithId: String) {
         commands.removeCommandForId(commandWithId)
     }
 
+    /// Enables the Remote Commands feature
     func enable() {
         isEnabled = true
     }
 
-    // NOTE: Will wipe out all existing commands. Will need to re-add after.
+    /// Disables Remote Commands and removes all previously-added Remote Commands so they can no longer be executed
     func disable() {
         commands.removeAll()
         isEnabled = false
@@ -75,36 +90,52 @@ public class TealiumRemoteCommands: NSObject {
     ///     then call was a successfully triggered remote command.
     public func triggerCommandFrom(request: URLRequest) -> TealiumRemoteCommandsError? {
 
-        if request.url?.scheme != self.schemeProtocol {
+        if request.url?.scheme != TealiumKey.tealiumURLScheme {
             return TealiumRemoteCommandsError.invalidScheme
         }
+
         guard let commandId = request.url?.host else {
             return TealiumRemoteCommandsError.noCommandIdFound
         }
+
         guard let command = commands.commandForId(commandId) else {
             return TealiumRemoteCommandsError.noCommandForCommandIdFound
         }
+
         guard let response = TealiumRemoteCommandResponse(request: request) else {
             return TealiumRemoteCommandsError.requestNotProperlyFormatted
         }
+
         if isEnabled == false {
             // Was valid remote command, but we're disabled at the moment.
             return nil
+        }
+
+        if let responseId = response.responseId() {
+         TealiumRemoteCommands.pendingResponses[responseId] = true
         }
         command.completeWith(response: response)
 
         return nil
     }
-
 }
 
 extension TealiumRemoteCommands: TealiumRemoteCommandDelegate {
 
+    /// Triggers the completion block registered for a specific remote command
+    ///
+    /// - Parameters:
+    /// - command: The Remote Command to be executed
+    /// - response: The Response object passed back from TiQ. If the command needs to explictly handle the response (e.g. data needs passing back to webview),
+    ///    it must set the "hasCustomCompletionHandler" flag, otherwise the completion notification will be sent automatically
     func tealiumRemoteCommandRequestsExecution(_ command: TealiumRemoteCommand,
                                                response: TealiumRemoteCommandResponse) {
         self.queue?.async {
             command.remoteCommandCompletion(response)
+            // this will send the completion notification, if it wasn't explictly handled by the command
+            if !response.hasCustomCompletionHandler {
+             TealiumRemoteCommand.sendCompletionNotification(for: command.commandId, response: response)
+            }
         }
     }
-
 }

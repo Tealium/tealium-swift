@@ -11,21 +11,6 @@ import Foundation
 import TealiumCore
 #endif
 
-// MARK: 
-// MARK: CONSTANTS
-public enum TealiumAppDataKey {
-    public static let moduleName = "appdata"
-    public static let build = "app_build"
-    public static let name = "app_name"
-    public static let rdns = "app_rdns"
-    public static let uuid = "app_uuid"
-    public static let version = "app_version"
-    public static let visitorId = "tealium_visitor_id"
-}
-
-// MARK: 
-// MARK: MODULE SUBCLASS
-
 /// Module to add app related data to track calls.
 class TealiumAppDataModule: TealiumModule {
 
@@ -48,6 +33,9 @@ class TealiumAppDataModule: TealiumModule {
                                    enabled: true)
     }
 
+    /// Enables the module and loads AppData into memory
+    ///
+    /// - Parameter request: TealiumEnableRequest - the request from the core library to enable this module
     override func enable(_ request: TealiumEnableRequest) {
         let loadRequest = TealiumLoadRequest(name: TealiumAppDataModule.moduleConfig().name) { [weak self] _, data, _ in
 
@@ -69,22 +57,16 @@ class TealiumAppDataModule: TealiumModule {
         delegate?.tealiumModuleRequests(module: self,
                                         process: loadRequest)
 
-        // Little wonky here because what if a persistence modules is still in the
-        //  process of returning data?
         isEnabled = true
 
         // We're not going to wait for the loadrequest to return because it may never
-        //  if there are no persistence modules enabled.
+        // if there are no persistence modules enabled.
         didFinish(request)
     }
 
-    override func disable(_ request: TealiumDisableRequest) {
-        appData.deleteAllData()
-        isEnabled = false
-
-        didFinish(request)
-    }
-
+    /// Adds current AppData to the track request
+    ///
+    /// - Parameter track: TealiumTrackRequest to be modified
     override func track(_ track: TealiumTrackRequest) {
         if isEnabled == false {
             // Ignore this module
@@ -107,14 +89,14 @@ class TealiumAppDataModule: TealiumModule {
 
         didFinish(newTrack)
     }
-}
 
-extension TealiumAppDataModule: TealiumSaveDelegate {
-    func savePersistentData(data: [String: Any]) {
-        let saveRequest = TealiumSaveRequest(name: TealiumAppDataModule.moduleConfig().name,
-                                             data: data)
+    /// Disables the module and deletes all associated data
+    ///
+    /// - Parameter request: TealiumDisableRequest
+    override func disable(_ request: TealiumDisableRequest) {
+        appData.deleteAllData()
+        isEnabled = false
 
-        delegate?.tealiumModuleRequests(module: self,
-                                        process: saveRequest)
+        didFinish(request)
     }
 }

@@ -21,7 +21,12 @@ public class TealiumConsentManager {
     var consentLoggingEnabled = false
     var consentManagerModuleInstance: TealiumConsentManagerModule?
 
-    // MARK: initialize consent manager
+    /// Initialize consent manager
+    ///
+    /// - Parameters:
+    /// - config: TealiumConfig
+    /// - delegate: TealiumModuleDelegate?
+    /// - completion: Optional completion block, called when fully initialized
     public func start(config: TealiumConfig, delegate: TealiumModuleDelegate?, _ completion: (() -> Void)?) {
         tealiumConfig = config
         consentLoggingEnabled = config.isConsentLoggingEnabled()
@@ -40,11 +45,16 @@ public class TealiumConsentManager {
         completion?()
     }
 
+    /// Sets the module delegate
+    ///
+    /// - Parameter delegate: TealiumModuleDelegate
     public func setModuleDelegate(delegate: TealiumModuleDelegate) {
         moduleDelegate = delegate
     }
 
-    // update current consent preferences from config passed at init time
+    /// Updates current consent preferences from config passed at init time
+    ///
+    /// - Parameter config: TealiumConfig?
     func updateConsentPreferencesFromConfig(_ config: TealiumConfig?) {
         if let config = config {
             let status = config.getInitialUserConsentStatus(),
@@ -59,7 +69,9 @@ public class TealiumConsentManager {
         }
     }
 
-    // send a track call containing the consent settings if consent logging is enabled
+     /// Sends a track call containing the consent settings if consent logging is enabled
+     ///
+     /// - Parameter preferences: TealiumConsentUserPreferences?
     func trackUserConsentPreferences(preferences: TealiumConsentUserPreferences?) {
         if let preferences = preferences, var consentData = preferences.toDictionary() {
             // we can't log a nil consent status
@@ -77,10 +89,12 @@ public class TealiumConsentManager {
                 } else {
                     consentData[TealiumKey.event] = TealiumConsentConstants.consentGrantedEventName
                 }
+            } else {
+                consentData[TealiumKey.event] = TealiumConsentConstants.consentDeclinedEventName
             }
 
             // this track call must only be sent if "Log Consent Changes" is enabled and user has consented
-            if consentLoggingEnabled && preferences.consentStatus == .consented {
+            if consentLoggingEnabled {
                 // call type must be set to override "link" or "view"
                 consentData[TealiumKey.callType] = consentData[TealiumKey.event]
                 moduleDelegate?.tealiumModuleRequests(module: nil, process: TealiumTrackRequest(data: consentData, completion: nil))
@@ -90,7 +104,9 @@ public class TealiumConsentManager {
         }
     }
 
-    // Sends the track call to update TiQ cookie info. Ignored by Collect module.
+    /// Sends the track call to update TiQ cookie info. Ignored by Collect module.
+    ///
+    /// - Parameter consentData: [String: Any] containing the consent preferences
     func updateTIQCookie(_ consentData: [String: Any]) {
         var consentData = consentData
         // may change: currently, a separate call is required to TiQ to set the relevant cookies in the webview
@@ -100,7 +116,7 @@ public class TealiumConsentManager {
         moduleDelegate?.tealiumModuleRequests(module: nil, process: TealiumTrackRequest(data: consentData, completion: nil))
     }
 
-    // returns existing preferences from UserDefaults if they exist
+    /// - Returns: Existing preferences from UserDefaults if they exist
     func getSavedPreferences() -> TealiumConsentUserPreferences? {
         if let existingPrefs = consentPreferencesStorage.retrieveConsentPreferences() {
             var newPrefs = TealiumConsentUserPreferences(consentStatus: nil, consentCategories: nil)
@@ -110,7 +126,7 @@ public class TealiumConsentManager {
         return nil
     }
 
-    // saves current consent preferences to UserDefaults
+    /// Saves current consent preferences to UserDefaults
     func storeConsentUserPreferences() {
         guard let consentUserPrefs = getUserConsentPreferences()?.toDictionary() else {
             return
@@ -119,11 +135,15 @@ public class TealiumConsentManager {
         consentPreferencesStorage.storeConsentPreferences(consentUserPrefs)
     }
 
+    /// Sets the current consent preferences
+    ///
+    /// - Parameter prefs: TealiumConsentUserPreferences
     func setConsentUserPreferences(_ prefs: TealiumConsentUserPreferences) {
         consentUserPreferences = prefs
     }
 
-    // allows module to determine current tracking status
+    /// - Returns: TealiumConsentTrackAction indicating whether tracking is allowed or forbidden
+    /// Used by the Consent Manager module to determine if tracking calls can be sent
     public func getTrackingStatus() -> TealiumConsentTrackAction {
         if getUserConsentPreferences()?.consentStatus == .consented {
             return .trackingAllowed
@@ -132,26 +152,41 @@ public class TealiumConsentManager {
         }
         return .trackingQueued
     }
+}
 
-    // MARK: Delegate Methods
+// MARK: Invoke delegate methods
+extension TealiumConsentManager {
+
+    /// Called when the consent manager will drop a request (user not consented)
+    ///
+    /// - Parameter request: TealiumTrackRequest
     func willDropTrackingCall(_ track: TealiumTrackRequest) {
         consentDelegates.invoke {
             $0.willDropTrackingCall(track)
         }
     }
 
+    /// Called when the consent manager will queue a request (user consent state not determined)
+    ///
+    /// - Parameter request: TealiumTrackRequest
     func willQueueTrackingCall(_ track: TealiumTrackRequest) {
         consentDelegates.invoke {
             $0.willQueueTrackingCall(track)
         }
     }
 
+    /// Called when the consent manager will send a request (user has consented)
+    ///
+    /// - Parameter request: TealiumTrackRequest
     func willSendTrackingCall(_ track: TealiumTrackRequest) {
         consentDelegates.invoke {
             $0.willSendTrackingCall(track)
         }
     }
 
+    /// Called when the user has changed their consent status
+    ///
+    /// - Parameter status: TealiumConsentStatus
     func consentStatusChanged(_ status: TealiumConsentStatus?) {
         guard let currentStat = status else {
             return
@@ -167,18 +202,23 @@ public class TealiumConsentManager {
         }
     }
 
+    /// Called when the user declined tracking consent
     func userOptedOutOfTracking() {
         consentDelegates.invoke {
             $0.userOptedOutOfTracking()
         }
     }
 
+    /// Called when the user changed their consent category choices
+    ///
+    /// - Parameter categories: [TealiumConsentCategories] containing the new list of consent categories selected by the user
     func userChangedConsentCategories(_ categories: [TealiumConsentCategories]) {
         consentDelegates.invoke {
             $0.userChangedConsentCategories(categories: categories)
         }
     }
 
+    /// Called when the user consented to tracking
     func userConsentedToTracking() {
         consentDelegates.invoke {
             $0.userConsentedToTracking()
@@ -189,6 +229,9 @@ public class TealiumConsentManager {
 // MARK: Public API
 public extension TealiumConsentManager {
 
+    /// Adds a new class conforming to TealiumConsentManagerDelegate
+    ///
+    /// - Parameter delegate: Class conforming to `TealiumConsentManagerDelegate` to be added
     func addConsentDelegate(_ delegate: TealiumConsentManagerDelegate) {
         if let delegate = delegate as? TealiumConsentManagerModule {
             consentManagerModuleInstance = delegate
@@ -196,6 +239,7 @@ public extension TealiumConsentManager {
         consentDelegates.add(delegate)
     }
 
+    /// Removes all consent delegates except the consent manager module itself
     func removeAllConsentDelegates() {
         consentDelegates.removeAll()
         // ensures that consent manager module is always maintained as a delegate if removeAll is invoked
@@ -204,10 +248,16 @@ public extension TealiumConsentManager {
         }
     }
 
+    /// Removes a specific consent delegate
+    ///
+    /// - Parameter delegate: Class conforming to `TealiumConsentManagerDelegate` to be removed
     func removeSingleDelegate(delegate: TealiumConsentManagerDelegate) {
         consentDelegates.remove(delegate)
     }
 
+    /// Sets consent status only. Will set the full list of consent categories if the status is `.consented`.
+    ///
+    /// - Parameter status: TealiumConsentStatus?
     func setUserConsentStatus(_ status: TealiumConsentStatus) {
         var categories = [TealiumConsentCategories]()
         if status == .consented {
@@ -220,6 +270,11 @@ public extension TealiumConsentManager {
         setUserConsentStatusWithCategories(status: .consented, categories: categories)
     }
 
+    /// Can set both Consent Status and Consent Categories in a single call
+    ///
+    /// - Parameters:
+    /// - status: TealiumConsentStatus?
+    /// - categories: [TealiumConsentCategories]?
     func setUserConsentStatusWithCategories(status: TealiumConsentStatus?, categories: [TealiumConsentCategories]?) {
         // delegate method
         if let categories = categories, let previousCategories = consentUserPreferences?.consentCategories, !consentCategoriesEqual(categories, previousCategories) {
@@ -243,24 +298,33 @@ public extension TealiumConsentManager {
         consentStatusChanged(status)
     }
 
+    /// Utility method to determine if consent categories have changed
+    ///
+    /// - Parameters:
+    /// - lhs: [TealiumConsentCategories]
+    /// - rhs: [TealiumConsentCategories]
     func consentCategoriesEqual(_ lhs: [TealiumConsentCategories], _ rhs: [TealiumConsentCategories]) -> Bool {
         let lhs = lhs.sorted { $0.rawValue < $1.rawValue }
         let rhs = rhs.sorted { $0.rawValue < $1.rawValue }
         return lhs == rhs
     }
 
+    /// - Returns: TealiumConsentStatus
     func getUserConsentStatus() -> TealiumConsentStatus {
         return consentUserPreferences?.consentStatus ?? TealiumConsentStatus.unknown
     }
 
+    /// - Returns: [TealiumConsentCategories]? containing all current consent categories
     func getUserConsentCategories() -> [TealiumConsentCategories]? {
         return consentUserPreferences?.consentCategories
     }
 
+    /// - Returns: TealiumConsentUserPreferences? containing all current consent preferences
     func getUserConsentPreferences() -> TealiumConsentUserPreferences? {
         return consentUserPreferences
     }
 
+    /// Resets all consent preferences in memory and in persistent storage
     func resetUserConsentPreferences() {
         consentPreferencesStorage.clearStoredPreferences()
         consentUserPreferences?.resetConsentCategories()
@@ -268,49 +332,5 @@ public extension TealiumConsentManager {
         consentStatusChanged(consentUserPreferences?.consentStatus)
         userChangedConsentCategories([TealiumConsentCategories]())
         trackUserConsentPreferences(preferences: consentUserPreferences)
-    }
-}
-
-public extension TealiumConfig {
-
-    func setConsentLoggingEnabled(_ enabled: Bool) {
-        optionalData[TealiumConsentConstants.consentLoggingEnabled] = enabled
-    }
-
-    func isConsentLoggingEnabled() -> Bool {
-        if let enabled = optionalData[TealiumConsentConstants.consentLoggingEnabled] as? Bool {
-            return enabled
-        }
-        return false
-    }
-
-    func setOverrideConsentPolicy(_ policy: String) {
-        optionalData[TealiumConsentConstants.policyKey] = policy
-    }
-
-    func getOverrideConsentPolicy() -> String? {
-        return optionalData[TealiumConsentConstants.policyKey] as? String
-    }
-
-    func setInitialUserConsentStatus(_ status: TealiumConsentStatus) {
-        optionalData[TealiumConsentConstants.consentStatus] = status
-    }
-
-    func setInitialUserConsentCategories(_ categories: [TealiumConsentCategories]) {
-        optionalData[TealiumConsentConstants.consentCategoriesKey] = categories
-    }
-
-    func getInitialUserConsentStatus() -> TealiumConsentStatus? {
-        if let status = optionalData[TealiumConsentConstants.consentStatus] as? TealiumConsentStatus {
-            return status
-        }
-        return nil
-    }
-
-    func getInitialUserConsentCategories() -> [TealiumConsentCategories]? {
-        if let categories = optionalData[TealiumConsentConstants.consentCategoriesKey] as? [TealiumConsentCategories] {
-            return categories
-        }
-        return nil
     }
 }

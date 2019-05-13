@@ -46,7 +46,7 @@ class TealiumVolatileDataModuleTests: XCTestCase {
                                    environment: TealiumTestValue.environment,
                                    optionalData: [String: Any]() as [String: Any])
 
-        module?.enable(TealiumEnableRequest(config: config))
+        module?.enable(TealiumEnableRequest(config: config, enableCompletion: nil))
 
         let volatileDataKeysExpected = [
             "tealium_account",
@@ -57,10 +57,15 @@ class TealiumVolatileDataModuleTests: XCTestCase {
             "tealium_random",
             "tealium_session_id",
             "tealium_timestamp_epoch",
+            "timestamp",
+            "timestamp_local",
+            "timestamp_offset",
+            "timestamp_unix",
+            "timestamp_unix_milliseconds",
             "event_timestamp_iso",
             "event_timestamp_local_iso",
             "event_timestamp_offset_hours",
-            "event_timestamp_unix_millis"
+            "event_timestamp_unix_millis",
         ]
 
         guard let volatileDataReturned = module?.volatileData.getData(currentData: [String: Any]()) else {
@@ -72,4 +77,23 @@ class TealiumVolatileDataModuleTests: XCTestCase {
 
         XCTAssertTrue(missingKeys.isEmpty, "\n\n Volatile data is missing keys: \(missingKeys)")
     }
+
+    func testJoinAndLeaveTrace() {
+        let config = TealiumConfig(account: TealiumTestValue.account,
+                                   profile: TealiumTestValue.profile,
+                                   environment: TealiumTestValue.environment,
+                                   optionalData: [String: Any]() as [String: Any])
+
+        module?.enable(TealiumEnableRequest(config: config, enableCompletion: nil))
+
+        let traceId = "12345"
+        let traceIdKey = "cp.trace_id"
+        let joinTraceRequest = TealiumJoinTraceRequest(traceId: traceId)
+        module?.handle(joinTraceRequest)
+        XCTAssertTrue(module?.volatileData.getData()[traceIdKey] as? String == traceId, "Trace ID incorrect or missing")
+        let leaveTraceRequest = TealiumLeaveTraceRequest()
+        module?.handle(leaveTraceRequest)
+        XCTAssertNil(module?.volatileData.getData()[traceIdKey], "Trace ID not successfully deleted")
+    }
+
 }

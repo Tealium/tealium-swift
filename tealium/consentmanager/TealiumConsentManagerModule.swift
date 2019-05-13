@@ -23,6 +23,9 @@ class TealiumConsentManagerModule: TealiumModule {
                                     enabled: true)
     }
 
+    /// Enables the module and starts the Consent Manager instance
+    ///
+    /// - Parameter request: TealiumEnableRequest - the request from the core library to enable this module
     override func enable(_ request: TealiumEnableRequest) {
         isEnabled = true
         // start consent manager with completion block
@@ -34,11 +37,9 @@ class TealiumConsentManagerModule: TealiumModule {
         consentManager.addConsentDelegate(self)
     }
 
-    override func disable(_ request: TealiumDisableRequest) {
-        isEnabled = false
-        didFinish(request)
-    }
-
+    /// Decides whether a tracking request can be completed based on current consent status.
+    ///
+    /// - Parameter track: TealiumTrackRequest to be considered for processing.
     override func track(_ track: TealiumTrackRequest) {
         // do nothing if disabled - return to normal operation
         if self.isEnabled == false {
@@ -82,6 +83,9 @@ class TealiumConsentManagerModule: TealiumModule {
         }
     }
 
+    /// Adds consent categories and status to the tracking request.
+    ///
+    /// - Parameter track: TealiumTrackRequest to be modified.
     func addConsentDataToTrack(_ track: TealiumTrackRequest) -> TealiumTrackRequest {
         var newTrack = track.data
         if let consentDictionary = consentManager.getUserConsentPreferences()?.toDictionary() {
@@ -93,6 +97,9 @@ class TealiumConsentManagerModule: TealiumModule {
         return TealiumTrackRequest(data: newTrack, completion: track.completion)
     }
 
+    /// Queues a tracking request until consent status is known.
+    ///
+    /// - Parameter track: TealiumTrackRequest to be queued.
     func queue(_ track: TealiumTrackRequest) {
         var newData = track.data
         newData[TealiumKey.queueReason] = TealiumConsentConstants.moduleName
@@ -102,6 +109,7 @@ class TealiumConsentManagerModule: TealiumModule {
         self.delegate?.tealiumModuleRequests(module: self, process: req)
     }
 
+    /// Releases all queued tracking calls. Called if tracking consent is granted by the user.
     func releaseQueue() {
         // queue will be released, but will only be allowed to continue if tracking is allowed when track call is resubmitted
         let req = TealiumReleaseQueuesRequest(typeId: "consent", moduleResponses: [TealiumModuleResponse]()) { _, _, _ in
@@ -112,6 +120,7 @@ class TealiumConsentManagerModule: TealiumModule {
         self.delegate?.tealiumModuleRequests(module: self, process: req)
     }
 
+    /// Clears all pending dispatches from the DispatchQueue. Called if tracking consent is declined by the user.
     func purgeQueue() {
         let req = TealiumClearQueuesRequest(typeId: "consent", moduleResponses: [TealiumModuleResponse]()) { _, _, _ in
             let report = TealiumReportRequest(message: "Consent Manager: Purging queue.")
@@ -120,54 +129,12 @@ class TealiumConsentManagerModule: TealiumModule {
         }
         self.delegate?.tealiumModuleRequests(module: self, process: req)
     }
-}
 
-extension TealiumConsentManagerModule: TealiumConsentManagerDelegate {
-
-    func willDropTrackingCall(_ request: TealiumTrackRequest) {
-
-    }
-
-    func willQueueTrackingCall(_ request: TealiumTrackRequest) {
-
-    }
-
-    func willSendTrackingCall(_ request: TealiumTrackRequest) {
-
-    }
-
-    func consentStatusChanged(_ status: TealiumConsentStatus) {
-        switch status {
-        case .notConsented:
-            self.purgeQueue()
-        case .consented:
-            self.releaseQueue()
-        default:
-            return
-        }
-    }
-
-    func userConsentedToTracking() {
-
-    }
-
-    func userOptedOutOfTracking() {
-
-    }
-
-    func userChangedConsentCategories(categories: [TealiumConsentCategories]) {
-
-    }
-}
-
-// public interface for consent manager
-public extension Tealium {
-
-    func consentManager() -> TealiumConsentManager? {
-        guard let module = modulesManager.getModule(forName: TealiumConsentConstants.moduleName) as? TealiumConsentManagerModule else {
-            return nil
-        }
-
-        return module.consentManager
+    /// Disables the Consent Manager module
+    ///
+    /// - Parameter request: TealiumDisableRequest
+    override func disable(_ request: TealiumDisableRequest) {
+        isEnabled = false
+        didFinish(request)
     }
 }

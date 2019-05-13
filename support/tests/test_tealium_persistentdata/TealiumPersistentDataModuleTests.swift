@@ -45,7 +45,7 @@ class TealiumPersistentDataModuleTests: XCTestCase {
     func testEnableDisable() {
         let module = TealiumPersistentDataModule(delegate: nil)
 
-        module.enable(TealiumEnableRequest(config: testTealiumConfig))
+        module.enable(TealiumEnableRequest(config: testTealiumConfig, enableCompletion: nil))
 
         XCTAssertTrue(module.persistentData != nil, "Persistent Data did not init.")
 
@@ -101,7 +101,7 @@ class TealiumPersistentDataModuleTests: XCTestCase {
 
         let module = TealiumPersistentDataModule(delegate: self)
 
-        module.enable(TealiumEnableRequest(config: testTealiumConfig))
+        module.enable(TealiumEnableRequest(config: testTealiumConfig, enableCompletion: nil))
 
         let testTrack = TealiumTrackRequest(data: testDataDictionary,
                                             completion: { success, info, _ in

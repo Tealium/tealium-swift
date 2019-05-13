@@ -16,7 +16,7 @@ class ConsentManagerModuleUnitTests: XCTestCase {
     let waiter = XCTWaiter()
     var currentTest = ""
     var allTestsFinished = false
-    let maxRuns = 10000 // max runs for each test
+    let maxRuns = 10 // max runs for each test
 
     func getExpectation(forDescription: String) -> XCTestExpectation? {
         let exp = expectations.filter {
@@ -84,7 +84,7 @@ class ConsentManagerModuleUnitTests: XCTestCase {
 
             let module = TealiumConsentManagerModule(delegate: self)
             module.consentManager.resetUserConsentPreferences()
-            let enableRequest = TealiumEnableRequest(config: config)
+            let enableRequest = TealiumEnableRequest(config: config, enableCompletion: nil)
             module.enable(enableRequest)
             let track = TealiumTrackRequest(data: ["purge_test": "true"], completion: nil)
             module.track(track)
@@ -101,7 +101,7 @@ class ConsentManagerModuleUnitTests: XCTestCase {
             let config = helper.getConfig()
             let module = TealiumConsentManagerModule(delegate: self)
             module.consentManager.resetUserConsentPreferences()
-            let enableRequest = TealiumEnableRequest(config: config)
+            let enableRequest = TealiumEnableRequest(config: config, enableCompletion: nil)
             module.enable(enableRequest)
             // set currentTest here to avoid triggering ReleaseQueue at module enable (avoid multiple fulfill on expectation)
             currentTest = "testReleaseQueueOnConsentGranted"
@@ -123,7 +123,7 @@ class ConsentManagerModuleUnitTests: XCTestCase {
             config.setConsentLoggingEnabled(true)
             let module = TealiumConsentManagerModule(delegate: self)
             module.consentManager.resetUserConsentPreferences()
-            let enableRequest = TealiumEnableRequest(config: config)
+            let enableRequest = TealiumEnableRequest(config: config, enableCompletion: nil)
             module.enable(enableRequest)
             currentTest = "testConsentLoggingFullConsent"
             module.consentManager.setUserConsentStatus(.consented)
@@ -140,7 +140,7 @@ class ConsentManagerModuleUnitTests: XCTestCase {
             config.setConsentLoggingEnabled(true)
             let module = TealiumConsentManagerModule(delegate: self)
             module.consentManager.resetUserConsentPreferences()
-            let enableRequest = TealiumEnableRequest(config: config)
+            let enableRequest = TealiumEnableRequest(config: config, enableCompletion: nil)
             module.enable(enableRequest)
             currentTest = "testConsentLoggingPartialConsent"
             module.consentManager.setUserConsentCategories([.analytics, .cdp])
@@ -157,7 +157,7 @@ class ConsentManagerModuleUnitTests: XCTestCase {
             config.setConsentLoggingEnabled(true)
             let module = TealiumConsentManagerModule(delegate: self)
             module.consentManager.resetUserConsentPreferences()
-            let enableRequest = TealiumEnableRequest(config: config)
+            let enableRequest = TealiumEnableRequest(config: config, enableCompletion: nil)
             module.enable(enableRequest)
             currentTest = "testUpdateConsentCookieFullConsent"
             module.consentManager.setUserConsentStatus(.consented)
@@ -174,7 +174,7 @@ class ConsentManagerModuleUnitTests: XCTestCase {
             config.setConsentLoggingEnabled(true)
             let module = TealiumConsentManagerModule(delegate: self)
             module.consentManager.resetUserConsentPreferences()
-            let enableRequest = TealiumEnableRequest(config: config)
+            let enableRequest = TealiumEnableRequest(config: config, enableCompletion: nil)
             module.enable(enableRequest)
             currentTest = "testUpdateConsentCookiePartialConsent"
             module.consentManager.setUserConsentCategories([.analytics, .cdp])
@@ -191,7 +191,7 @@ class ConsentManagerModuleUnitTests: XCTestCase {
             config.setConsentLoggingEnabled(false)
             let module = TealiumConsentManagerModule(delegate: self)
             module.consentManager.resetUserConsentPreferences()
-            let enableRequest = TealiumEnableRequest(config: config)
+            let enableRequest = TealiumEnableRequest(config: config, enableCompletion: nil)
             module.enable(enableRequest)
             currentTest = "testUpdateConsentCookieDeclineConsent"
             module.consentManager.setUserConsentStatus(.notConsented)

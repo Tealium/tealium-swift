@@ -25,9 +25,8 @@ public enum TealiumPersistentKey {
 // MARK: EXTENSIONS
 public extension Tealium {
 
-    /**
-     Get the Data Manager instance for accessing file persistence and auto data variable APIs.
-     */
+    /// Get the Data Manager instance for accessing file persistence and auto data variable APIs.
+    /// - Returns: Optional TealiumPersistentData instance (nil if disabled)
     func persistentData() -> TealiumPersistentData? {
         guard let module = modulesManager.getModule(forName: TealiumPersistentKey.moduleName) as? TealiumPersistentDataModule else {
             return nil
@@ -41,9 +40,7 @@ public extension Tealium {
 // MARK: 
 // MARK: MODULE SUBCLASS
 
-/**
- Module for adding publicly accessible persistence data capability.
- */
+/// Module for adding publicly accessible persistence data capability.
 class TealiumPersistentDataModule: TealiumModule {
 
     var persistentData: TealiumPersistentData?
@@ -168,10 +165,7 @@ public class TealiumPersistentData {
         delegate?.requestSave(data: persistentDataCache)
     }
 
-    /**
-     Delete all custom persisted data for current library instance.
-     
-     */
+    /// Delete all custom persisted data for current library instance.
     public func deleteAllData() {
         persistentDataCache.removeAll()
 

@@ -10,11 +10,15 @@
 
 import Foundation
 
+/// Safe implementation of a repeating timer for scheduling connectivity checks
 class TealiumRepeatingTimer {
 
     let timeInterval: TimeInterval
     let dispatchQueue: DispatchQueue
 
+    /// - Parameters:
+    /// - timeInterval: TimeInterval between runs of the timed event
+    /// - dispatchQueue: The queue to use for the timer
     init(timeInterval: TimeInterval, dispatchQueue: DispatchQueue) {
         self.timeInterval = timeInterval
         self.dispatchQueue = dispatchQueue
@@ -49,6 +53,7 @@ class TealiumRepeatingTimer {
         eventHandler = nil
     }
 
+    /// Resumes this timer instance if suspended
     func resume() {
         if state == .resumed {
             return
@@ -57,6 +62,7 @@ class TealiumRepeatingTimer {
         timer.resume()
     }
 
+    /// Suspends this timer instance if running
     func suspend() {
         if state == .suspended {
             return

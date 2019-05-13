@@ -11,10 +11,7 @@ import Foundation
 import TealiumCore
 #endif
 
-/**
- Internal console logger for library debugging.
- 
- */
+/// Internal console logger for library debugging.
 public class TealiumLogger {
 
     let idString: String

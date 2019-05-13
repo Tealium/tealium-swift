@@ -35,37 +35,6 @@ class TealiumRemoteCommandsModuleTests: XCTestCase {
         self.waitForExpectations(timeout: 1.0, handler: nil)
     }
 
-    // No longer necessary with config modules list
-//    func testDefaultEnable() {
-//        
-//        let config = TealiumConfig(account: "test",
-//                                   profile: "test",
-//                                   environment: "test",
-//                                   datasource: "test",
-//                                   optionalData: nil)
-//        let module = TealiumRemoteCommandsModule(delegate: nil)
-//        module.enable(TealiumEnableRequest(config: config))
-//        
-//        XCTAssertTrue(module.remoteCommands?.isEnabled == true, "Remote commands did not enable")
-//        XCTAssertTrue(module.remoteCommands?.commands.count == 1, "Unexpected number of reserve commands found: \(String(describing: module.remoteCommands?.commands))")
-//    }
-
-    // No longer necessary with config modules list
-//    func testDisableViaConfig() {
-//        
-//        let config = TealiumConfig(account: "test",
-//                                   profile: "test",
-//                                   environment: "test",
-//                                   datasource: "test",
-//                                   optionalData: nil)
-//        config.disableRemoteCommands()
-//        let module = TealiumRemoteCommandsModule(delegate: nil)
-//        module.enable(TealiumEnableRequest(config: config))
-//        
-//        XCTAssertTrue(module.remoteCommands == nil, "Remote commands were unexpectedly initiazlied.")
-//
-//    }
-
     func testDisableHTTPCommandsViaConfig() {
         let config = TealiumConfig(account: "test",
                                    profile: "test",
@@ -74,7 +43,7 @@ class TealiumRemoteCommandsModuleTests: XCTestCase {
                                    optionalData: nil)
         config.disableRemoteHTTPCommand()
         let module = TealiumRemoteCommandsModule(delegate: nil)
-        module.enable(TealiumEnableRequest(config: config))
+        module.enable(TealiumEnableRequest(config: config, enableCompletion: nil))
 
         XCTAssertTrue(module.remoteCommands?.commands.count == 0, "Unexpected number of reserve commands found: \(String(describing: module.remoteCommands?.commands))")
     }
@@ -89,7 +58,7 @@ class TealiumRemoteCommandsModuleTests: XCTestCase {
                                    optionalData: nil)
         config.enableRemoteHTTPCommand()
         let module = TealiumRemoteCommandsModule(delegate: nil)
-        module.enable(TealiumEnableRequest(config: config))
+        module.enable(TealiumEnableRequest(config: config, enableCompletion: nil))
 
         // Add remote command
         let testExpectation = expectation(description: "triggerTest")
@@ -111,12 +80,12 @@ class TealiumRemoteCommandsModuleTests: XCTestCase {
             return
         }
         let urlRequest = URLRequest(url: url)
-        let notification = Notification(name: Notification.Name(TealiumRemoteCommandsKey.tagmanagementNotification),
+        let notification = Notification(name: Notification.Name(TealiumKey.tagmanagementNotification),
                                         object: nil,
-                                        userInfo: [TealiumRemoteCommandsKey.tagmanagementNotification: urlRequest])
+                                        userInfo: [TealiumKey.tagmanagementNotification: urlRequest])
         module.trigger(sender: notification)
 
-        waitForExpectations(timeout: 1.0, handler: nil)
+        waitForExpectations(timeout: 5.0, handler: nil)
 
         XCTAssertTrue(1 == 1, "Remote command completion block successfully triggered.")
     }

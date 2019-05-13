@@ -38,6 +38,10 @@ public enum TealiumConsentCategories: String {
     case cookieMatch = "cookiematch"
     case misc = "misc"
 
+    /// Converts a string array of consent categories to an array of TealiumConsentCategories
+    ///
+    /// - Parameter categories: [String] of consent categories
+    /// - Returns: [TealiumConsentCategories]
     public static func consentCategoriesStringArrayToEnum(_ categories: [String]) -> [TealiumConsentCategories] {
         var converted = [TealiumConsentCategories]()
         categories.forEach { category in
@@ -49,6 +53,7 @@ public enum TealiumConsentCategories: String {
         return converted
     }
 
+    /// - Returns: An array of all currently-implemented consent categories
     public static func all() -> [TealiumConsentCategories] {
         return [
             .analytics,
@@ -65,7 +70,7 @@ public enum TealiumConsentCategories: String {
             .crm,
             .cdp,
             .cookieMatch,
-            .misc
+            .misc,
         ]
     }
 }

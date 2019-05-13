@@ -8,14 +8,13 @@
 
 //  Application Test do to UIKit not being available to Unit Test Bundle
 
-import XCTest
 @testable import Tealium
+import XCTest
 
 class TealiumAttributionModuleTests: XCTestCase {
 
     var module: TealiumAttributionModule?
     var expectation: XCTestExpectation?
-    var expectation2: XCTestExpectation?
     var payload: [String: Any]?
 
     override func setUp() {
@@ -51,7 +50,9 @@ class TealiumAttributionModuleTests: XCTestCase {
     func testFullTrack() {
         expectation = self.expectation(description: "full track")
         testTealiumConfig.setSearchAdsEnabled(true)
-        module?.enable(TealiumEnableRequest(config: testTealiumConfig))
+        let attributionData = TealiumAttributionData(identifierManager: TealiumASIdentifierManagerAdTrackingEnabled.shared, adClient: TestTealiumAdClient.shared)
+        module?.attributionData = attributionData
+        module?.enable(TealiumEnableRequest(config: testTealiumConfig, enableCompletion: nil))
         let testTrack = TealiumTrackRequest(data: [String: AnyObject](),
                                             completion: { _, info, _ in
                                                 guard let trackData = info else {
@@ -68,7 +69,7 @@ class TealiumAttributionModuleTests: XCTestCase {
                                                     TealiumAttributionKey.clickedWithin30D,
                                                     TealiumAttributionKey.idfv,
                                                     TealiumAttributionKey.idfa,
-                                                    TealiumAttributionKey.isTrackingAllowed
+                                                    TealiumAttributionKey.isTrackingAllowed,
                                                 ]
 
                                                 for key in expectedKeys where trackData[key] == nil {
@@ -83,53 +84,50 @@ class TealiumAttributionModuleTests: XCTestCase {
         self.waitForExpectations(timeout: 15.0, handler: nil)
     }
 
-    // manually enable limit ad tracking on the device
-    /*func testWithLimitTrackingEnabled(){
-        expectation = self.expectation(description: "full track")
-        module?.enable(TealiumEnableRequest(config: testTealiumConfig))
-        let testTrack = TealiumTrackRequest(data: [String:AnyObject](),
-                                            completion: {(success, info, error) in
+    func testWithLimitTrackingEnabled() {
+        let expectation = self.expectation(description: "testWithLimitTrackingEnabled")
+        let attributionData = TealiumAttributionData(identifierManager: TealiumASIdentifierManagerAdTrackingDisabled.shared, adClient: TestTealiumAdClient.shared)
+        module?.attributionData = attributionData
+        module?.enable(TealiumEnableRequest(config: testTealiumConfig, enableCompletion: nil))
+        let testTrack = TealiumTrackRequest(data: [String: AnyObject](),
+                                            completion: { _, info, _ in
                                                 guard let trackData = info else {
                                                     return
                                                 }
                                                 // test for expected keys
                                                 let expectedKeys = [
-                                                    TealiumAttributionKey.adDataSource,
-                                                    TealiumAttributionKey.adGroupId,
-                                                    TealiumAttributionKey.adGroupName,
-                                                    TealiumAttributionKey.adKeyword,
-                                                    TealiumAttributionKey.campaignName,
-                                                    TealiumAttributionKey.campaignId,
-                                                    TealiumAttributionKey.clickedDate,
-                                                    TealiumAttributionKey.conversionDate,
-                                                    TealiumAttributionKey.clickedWithin30D,
                                                     TealiumAttributionKey.idfv,
                                                     TealiumAttributionKey.idfa,
-                                                    TealiumAttributionKey.isTrackingAllowed
+                                                    TealiumAttributionKey.isTrackingAllowed,
                                                 ]
-                                                
-                                                for key in expectedKeys {
-                                                    if trackData[key] == nil {
+
+                                                for key in expectedKeys where trackData[key] == nil {
                                                         XCTFail("Missing expected key: \(key)")
-                                                    }
                                                 }
-                                                
+                                                guard let idfa = trackData[TealiumAttributionKey.idfa] as? String else {
+                                                    XCTFail("IDFA missing from track call")
+                                                    return
+                                                }
+
+                                                XCTAssertEqual(idfa, TealiumTestValue.testIDFAStringAdTrackingDisabled, "IDFA contained incorrect value")
+
                                                 if trackData[TealiumAttributionKey.isTrackingAllowed] as! String == "true" {
-                                                    XCTFail("Expected tracking to be enabled. Check device settings")
+                                                    XCTFail("Expected tracking to be disabled")
                                                 }
+                                                expectation.fulfill()
         })
-        
+
         module?.track(testTrack)
-        self.waitForExpectations(timeout: 5.0, handler: nil)
-    }*/
+        self.wait(for: [expectation], timeout: 5.0)
+    }
 
     func testWithIDFA() {
         expectation = self.expectation(description: "attribution-enabled")
-        let testID = "test"
-        module?.setIdfa(testID)
-        module?.setAllowed("true")
+        let testID = TealiumTestValue.testIDFAString
+        let attributionData = TealiumAttributionData(identifierManager: TealiumASIdentifierManagerAdTrackingEnabled.shared, adClient: TestTealiumAdClient.shared)
+        module?.attributionData = attributionData
         testTealiumConfig.setSearchAdsEnabled(true)
-        module?.enable(TealiumEnableRequest(config: testTealiumConfig))
+        module?.enable(TealiumEnableRequest(config: testTealiumConfig, enableCompletion: nil))
 
         let testTrack = TealiumTrackRequest(data: [String: AnyObject](),
                                             completion: { success, info, _ in
@@ -187,7 +185,7 @@ extension TealiumAttributionModuleTests: TealiumModuleDelegate {
     }
 
     func tealiumModuleRequests(module: TealiumModule?, process: TealiumRequest) {
-        if let p = process as? TealiumLoadRequest {
+        if let process = process as? TealiumLoadRequest {
             let mockData = [
                 TealiumAttributionKey.adGroupId: "1234567890",
                 TealiumAttributionKey.adGroupName: "adGroupName",
@@ -200,7 +198,7 @@ extension TealiumAttributionModuleTests: TealiumModuleDelegate {
                 TealiumAttributionKey.clickedWithin30D: "true",
                 TealiumAttributionKey.idfv: UUID().uuidString
             ]
-            p.completion?(true, mockData, nil)
+            process.completion?(true, mockData, nil)
         }
     }
 

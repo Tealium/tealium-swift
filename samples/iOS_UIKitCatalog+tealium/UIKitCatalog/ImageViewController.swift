@@ -17,6 +17,11 @@ class ImageViewController: UIViewController {
         configureImageView()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        TealiumHelper.shared.trackView(title: self.title ?? "Image View Controller", data: nil)
+        super.viewDidAppear(animated)
+    }
+    
     // MARK: - Configuration
     
     func configureImageView() {
