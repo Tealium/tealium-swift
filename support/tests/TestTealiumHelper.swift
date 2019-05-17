@@ -62,7 +62,6 @@ let testDataDictionary: [String: Any]  =
         TealiumKey.libraryVersion: TealiumValue.libraryVersion,
         TealiumVolatileDataKey.sessionId: TealiumTestValue.sessionId,
         TealiumAppDataKey.visitorId: TealiumTestValue.visitorID,
-        // TealiumAppDataKey.legacyVid : TealiumTestValue.visitorID,
         TealiumVolatileDataKey.random: TealiumTestValue.random
     ]
 
@@ -78,8 +77,8 @@ class TestTealiumHelper {
                                    completion: nil)
     }
 
-    // Any subclass of the TealiumModule must eventually trigger it's protocol
-    //  for the ModulesManager to work properly.
+    // Any subclass of the TealiumModule must eventually trigger its protocol
+    // for the ModulesManager to work properly.
 
     func didReceiveCallBack(completion:((_ module: TealiumModule, _ protocolName: String) -> Void)?) {
         callBack = completion

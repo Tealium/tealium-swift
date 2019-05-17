@@ -219,7 +219,9 @@ public class TealiumPLCrash: TealiumAppDataCollection {
         // get last crash report if it exists
         return [TealiumKey.event: TealiumPLCrash.CrashEvent,
                 TealiumCrashKey.uuid: uuid,
+                TealiumCrashKey.deviceMemoryUsageLegacy: memoryUsage,
                 TealiumCrashKey.deviceMemoryUsage: memoryUsage,
+                TealiumCrashKey.deviceMemoryAvailableLegacy: deviceMemoryAvailable,
                 TealiumCrashKey.deviceMemoryAvailable: deviceMemoryAvailable,
                 TealiumCrashKey.deviceOsBuild: osBuild,
                 TealiumAppDataKey.build: appBuild(),

@@ -96,6 +96,7 @@ class TealiumDeviceDataModule: TealiumModule {
 
         result[TealiumDeviceDataKey.architectureLegacy] = deviceDataCollection.architecture()
         result[TealiumDeviceDataKey.architecture] = result[TealiumDeviceDataKey.architectureLegacy] ?? ""
+        result[TealiumDeviceDataKey.osBuildLegacy] = TealiumDeviceData.oSBuild()
         result[TealiumDeviceDataKey.osBuild] = TealiumDeviceData.oSBuild()
         result[TealiumDeviceDataKey.cpuTypeLegacy] = deviceDataCollection.cpuType()
         result[TealiumDeviceDataKey.cpuType] = result[TealiumDeviceDataKey.cpuTypeLegacy] ?? ""
@@ -160,7 +161,8 @@ public enum TealiumDeviceDataKey {
     public static let physicalMemory = "memory_physical"
     public static let orientation = "device_orientation"
     public static let fullOrientation = "device_orientation_extended"
-    public static let osBuild = "os_build"
+    public static let osBuildLegacy = "os_build"
+    public static let osBuild = "device_os_build"
     public static let osVersionLegacy = "os_version"
     public static let osVersion = "device_os_version"
     public static let osName = "os_name"

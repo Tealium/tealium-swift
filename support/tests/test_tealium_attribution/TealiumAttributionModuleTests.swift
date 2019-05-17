@@ -196,7 +196,7 @@ extension TealiumAttributionModuleTests: TealiumModuleDelegate {
                 TealiumAttributionKey.clickedDate: "2017-11-23T09:46:51Z",
                 TealiumAttributionKey.conversionDate: "2017-11-23T09:46:51Z",
                 TealiumAttributionKey.clickedWithin30D: "true",
-                TealiumAttributionKey.idfv: UUID().uuidString
+                TealiumAttributionKey.idfv: UUID().uuidString,
             ]
             process.completion?(true, mockData, nil)
         }
