@@ -1,34 +1,34 @@
 PODS:
-  - tealium-swift/Core (1.6.6)
-  - tealium-swift/TealiumAppData (1.6.6):
+  - tealium-swift/Core (1.6.7)
+  - tealium-swift/TealiumAppData (1.6.7):
     - tealium-swift/Core
-  - tealium-swift/TealiumAutotracking (1.6.6):
+  - tealium-swift/TealiumAutotracking (1.6.7):
     - tealium-swift/Core
-  - tealium-swift/TealiumCollect (1.6.6):
+  - tealium-swift/TealiumCollect (1.6.7):
     - tealium-swift/Core
-  - tealium-swift/TealiumConnectivity (1.6.6):
+  - tealium-swift/TealiumConnectivity (1.6.7):
     - tealium-swift/Core
-  - tealium-swift/TealiumConsentManager (1.6.6):
+  - tealium-swift/TealiumConsentManager (1.6.7):
     - tealium-swift/Core
-  - tealium-swift/TealiumDataSource (1.6.6):
+  - tealium-swift/TealiumDataSource (1.6.7):
     - tealium-swift/Core
-  - tealium-swift/TealiumDefaultsStorage (1.6.6):
+  - tealium-swift/TealiumDefaultsStorage (1.6.7):
     - tealium-swift/Core
-  - tealium-swift/TealiumDelegate (1.6.6):
+  - tealium-swift/TealiumDelegate (1.6.7):
     - tealium-swift/Core
-  - tealium-swift/TealiumDeviceData (1.6.6):
+  - tealium-swift/TealiumDeviceData (1.6.7):
     - tealium-swift/Core
-  - tealium-swift/TealiumDispatchQueue (1.6.6):
+  - tealium-swift/TealiumDispatchQueue (1.6.7):
     - tealium-swift/Core
-  - tealium-swift/TealiumLifecycle (1.6.6):
+  - tealium-swift/TealiumLifecycle (1.6.7):
     - tealium-swift/Core
-  - tealium-swift/TealiumLogger (1.6.6):
+  - tealium-swift/TealiumLogger (1.6.7):
     - tealium-swift/Core
-  - tealium-swift/TealiumRemoteCommands (1.6.6):
+  - tealium-swift/TealiumRemoteCommands (1.6.7):
     - tealium-swift/Core
-  - tealium-swift/TealiumTagManagement (1.6.6):
+  - tealium-swift/TealiumTagManagement (1.6.7):
     - tealium-swift/Core
-  - tealium-swift/TealiumVolatileData (1.6.6):
+  - tealium-swift/TealiumVolatileData (1.6.7):
     - tealium-swift/Core
 
 DEPENDENCIES:
@@ -54,8 +54,8 @@ SPEC REPOS:
     - tealium-swift
 
 SPEC CHECKSUMS:
-  tealium-swift: 7cb0a72a622ee6cf61c93cbf59fd0366153cdd27
+  tealium-swift: d297414e757130e6c26e76a75cb0cb2c90b39454
 
 PODFILE CHECKSUM: a4fbc75bd203caee2980857eca1b3e6b844518f1
 
-COCOAPODS: 1.6.0.beta.2
+COCOAPODS: 1.6.1

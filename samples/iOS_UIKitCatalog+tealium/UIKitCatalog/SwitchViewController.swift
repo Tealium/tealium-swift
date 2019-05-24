@@ -42,7 +42,7 @@ class SwitchViewController: UITableViewController {
 
     // MARK: - Actions
 
-    func switchValueDidChange(_ aSwitch: UISwitch) {
+    @objc func switchValueDidChange(_ aSwitch: UISwitch) {
         NSLog("A switch changed its value: \(aSwitch).")
     }
 }

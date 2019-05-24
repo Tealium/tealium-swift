@@ -62,7 +62,7 @@ class DatePickerController: UIViewController {
 
     // MARK: - Actions
 
-    func updateDatePickerLabel() {
+    @objc func updateDatePickerLabel() {
         dateLabel.text = dateFormatter.string(from: datePicker.date)
     }
 }

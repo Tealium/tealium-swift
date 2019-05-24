@@ -8,16 +8,21 @@
 
 import Cocoa
 
-fileprivate extension NSTouchBarCustomizationIdentifier {
+@available(OSX 10.12.2, *)
+fileprivate extension NSTouchBar.CustomizationIdentifier {
     
-    static let touchBar = NSTouchBarCustomizationIdentifier("com.ToolbarSample.touchBar")
+    static let touchBar = "com.ToolbarSample.touchBar"
 }
 
-fileprivate extension NSTouchBarItemIdentifier {
+@available(OSX 10.12.2, *)
+fileprivate extension NSTouchBarItem.Identifier {
     
-    static let popover = NSTouchBarItemIdentifier("com.ToolbarSample.TouchBarItem.popover")
-    static let fontStyle = NSTouchBarItemIdentifier("com.ToolbarSample.TouchBarItem.fontStyle")
-    static let popoverSlider = NSTouchBarItemIdentifier("com.ToolbarSample.popoverBar.slider")
+    @available(OSX 10.12.2, *)
+    static let popover = NSTouchBarItem.Identifier("com.ToolbarSample.TouchBarItem.popover")
+    @available(OSX 10.12.2, *)
+    static let fontStyle = NSTouchBarItem.Identifier("com.ToolbarSample.TouchBarItem.fontStyle")
+    @available(OSX 10.12.2, *)
+    static let popoverSlider = NSTouchBarItem.Identifier("com.ToolbarSample.popoverBar.slider")
 }
 
 class WindowController: NSWindowController, NSToolbarDelegate {
@@ -78,7 +83,7 @@ class WindowController: NSWindowController, NSToolbarDelegate {
                 
                 // Make the font size slider a bit narrowed, about 250 pixels.
                 let views = ["slider" : slider]
-                let theConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:[slider(250)]", options: NSLayoutFormatOptions(), metrics: nil, views:views)
+                let theConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:[slider(250)]", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views:views)
                 NSLayoutConstraint.activate(theConstraints)
                 
                 // Set the font size for the slider item to the same value as the stepper.
@@ -98,10 +103,10 @@ class WindowController: NSWindowController, NSToolbarDelegate {
         
         fontSizeField.floatValue = round(fontSize)
         
-        let attrs = self.contentTextView().typingAttributes
+        let attrs = convertFromNSAttributedStringKeyDictionary(self.contentTextView().typingAttributes)
         var theFont : NSFont = attrs["NSFont"] as! NSFont
         
-        theFont = NSFontManager.shared().convert(theFont, toSize: CGFloat(fontSize))
+        theFont = NSFontManager.shared.convert(theFont, toSize: CGFloat(fontSize))
         
         if (self.contentTextView().selectedRange().length > 0) {
             // We have a selection, change the selected text
@@ -109,8 +114,8 @@ class WindowController: NSWindowController, NSToolbarDelegate {
         }
         else {
             // No selection, so just change the font size at insertion.
-            let attributesDict = [ NSFontAttributeName: theFont ]
-            self.contentTextView().typingAttributes = attributesDict
+            let attributesDict = [ convertFromNSAttributedStringKey(NSAttributedString.Key.font): theFont ]
+            self.contentTextView().typingAttributes = convertToNSAttributedStringKeyDictionary(attributesDict)
         }
     }
     
@@ -120,29 +125,29 @@ class WindowController: NSWindowController, NSToolbarDelegate {
      */
     func setTextViewFont(index: Int) {
         
-        let attrs = self.contentTextView().typingAttributes
+        let attrs = convertFromNSAttributedStringKeyDictionary(self.contentTextView().typingAttributes)
         var theFont : NSFont = attrs["NSFont"] as! NSFont
         
         // Set the font properties depending upon what was selected.
         switch (index) {
             case 0: // plain
-                theFont = NSFontManager.shared().convert(theFont, toNotHaveTrait:.italicFontMask)
-                theFont = NSFontManager.shared().convert(theFont, toNotHaveTrait:.boldFontMask)
-                theFont = NSFontManager.shared().convert(theFont, toNotHaveTrait:.boldFontMask)
+                theFont = NSFontManager.shared.convert(theFont, toNotHaveTrait:.italicFontMask)
+                theFont = NSFontManager.shared.convert(theFont, toNotHaveTrait:.boldFontMask)
+                theFont = NSFontManager.shared.convert(theFont, toNotHaveTrait:.boldFontMask)
             
                 // No underline attribute.
                 let selectedRange = self.contentTextView().selectedRange()
                 let textStorage = self.contentTextView().textStorage
-                textStorage?.removeAttribute(NSForegroundColorAttributeName, range: selectedRange)
-                textStorage?.addAttribute(NSUnderlineStyleAttributeName, value: NSNumber.init(value: 0), range: selectedRange)
+                textStorage?.removeAttribute(NSAttributedString.Key.foregroundColor, range: selectedRange)
+                textStorage?.addAttribute(NSAttributedString.Key.underlineStyle, value: NSNumber.init(value: 0), range: selectedRange)
                 
             case 1: // bold
-                theFont = NSFontManager.shared().convert(theFont, toNotHaveTrait:.italicFontMask)
-                theFont = NSFontManager.shared().convert(theFont, toHaveTrait:.boldFontMask)
+                theFont = NSFontManager.shared.convert(theFont, toNotHaveTrait:.italicFontMask)
+                theFont = NSFontManager.shared.convert(theFont, toHaveTrait:.boldFontMask)
                 
             case 2: // italic
-                theFont = NSFontManager.shared().convert(theFont, toNotHaveTrait:.boldFontMask)
-                theFont = NSFontManager.shared().convert(theFont, toHaveTrait:.italicFontMask)
+                theFont = NSFontManager.shared.convert(theFont, toNotHaveTrait:.boldFontMask)
+                theFont = NSFontManager.shared.convert(theFont, toHaveTrait:.italicFontMask)
                 
             default:
                 print("invalid selection")
@@ -154,8 +159,8 @@ class WindowController: NSWindowController, NSToolbarDelegate {
         }
         else {
             // No selection, so just change the font style at insertion.
-            let attributesDict = [ NSFontAttributeName: theFont ]
-            self.contentTextView().typingAttributes = attributesDict
+            let attributesDict = [ convertFromNSAttributedStringKey(NSAttributedString.Key.font): theFont ]
+            self.contentTextView().typingAttributes = convertToNSAttributedStringKeyDictionary(attributesDict)
         }
     }
     
@@ -189,14 +194,14 @@ class WindowController: NSWindowController, NSToolbarDelegate {
         if (self.contentTextView().selectedRange().length > 0) {
             // We have a selection, change the selected text
             let textStorage = self.contentTextView().textStorage
-            textStorage?.removeAttribute(NSForegroundColorAttributeName, range: self.contentTextView().selectedRange())
-            textStorage?.addAttribute(NSForegroundColorAttributeName, value: NSColor.blue, range: self.contentTextView().selectedRange())
+            textStorage?.removeAttribute(NSAttributedString.Key.foregroundColor, range: self.contentTextView().selectedRange())
+            textStorage?.addAttribute(NSAttributedString.Key.foregroundColor, value: NSColor.blue, range: self.contentTextView().selectedRange())
         }
         else {
             // No selection, so just change the font size at insertion.
-            var attrs = self.contentTextView().typingAttributes
+            var attrs = convertFromNSAttributedStringKeyDictionary(self.contentTextView().typingAttributes)
             attrs["NSColor"] = NSColor.blue
-            self.contentTextView().typingAttributes = attrs
+            self.contentTextView().typingAttributes = convertToNSAttributedStringKeyDictionary(attrs)
         }
     }
 
@@ -234,7 +239,7 @@ class WindowController: NSWindowController, NSToolbarDelegate {
     */
     func customToolbarItem(itemForItemIdentifier itemIdentifier: String, label: String, paletteLabel: String, toolTip: String, target: AnyObject, itemContent: AnyObject, action: Selector?, menu: NSMenu?) -> NSToolbarItem? {
         
-        let toolbarItem = NSToolbarItem(itemIdentifier: itemIdentifier)
+        let toolbarItem = NSToolbarItem(itemIdentifier: convertToNSToolbarItemIdentifier(itemIdentifier))
         
         toolbarItem.label = label
         toolbarItem.paletteLabel = paletteLabel
@@ -281,7 +286,7 @@ class WindowController: NSWindowController, NSToolbarDelegate {
         let userInfo = notification.userInfo!
         let addedItem = userInfo["item"] as! NSToolbarItem
         
-        let itemIdentifier = addedItem.itemIdentifier
+        let itemIdentifier = convertFromNSToolbarItemIdentifier(addedItem.itemIdentifier)
         
         if itemIdentifier == "NSToolbarPrintItem" {
             addedItem.toolTip = "Print your document"
@@ -295,7 +300,10 @@ class WindowController: NSWindowController, NSToolbarDelegate {
         whether this toolbar item is going into an actual toolbar, or whether it's going to be displayed
         in a customization palette.
     */
-    func toolbar(_ toolbar: NSToolbar, itemForItemIdentifier itemIdentifier: String, willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
+    func toolbar(_ toolbar: NSToolbar, itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier, willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
+// Local variable inserted by Swift 4.2 migrator.
+let itemIdentifier = convertFromNSToolbarItemIdentifier(itemIdentifier)
+
         
         var toolbarItem: NSToolbarItem = NSToolbarItem()
         
@@ -318,9 +326,9 @@ class WindowController: NSWindowController, NSToolbarDelegate {
         NSToolbar delegates require this function.  It returns an array holding identifiers for the default
         set of toolbar items.  It can also be called by the customization palette to display the default toolbar.
     */
-    func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [String] {
+    func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
         
-        return [FontStyleToolbarItemID, FontSizeToolbarItemID]
+        return [NSToolbarItem.Identifier(rawValue: FontStyleToolbarItemID), NSToolbarItem.Identifier(rawValue: FontSizeToolbarItemID)]
         /*  Note:
             That since our toolbar is defined from Interface Builder, an additional separator and customize
             toolbar items will be automatically added to the "default" list of items.
@@ -331,13 +339,13 @@ class WindowController: NSWindowController, NSToolbarDelegate {
         NSToolbar delegates require this function.  It returns an array holding identifiers for all allowed
         toolbar items in this toolbar.  Any not listed here will not be available in the customization palette.
     */
-    func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [String] {
+    func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
         
-        return [ FontStyleToolbarItemID,
-                 FontSizeToolbarItemID,
-                 NSToolbarSpaceItemIdentifier,
-                 NSToolbarFlexibleSpaceItemIdentifier,
-                 NSToolbarPrintItemIdentifier ]
+        return [ NSToolbarItem.Identifier(rawValue: FontStyleToolbarItemID),
+                 NSToolbarItem.Identifier(rawValue: FontSizeToolbarItemID),
+                 NSToolbarItem.Identifier(rawValue: convertFromNSToolbarItemIdentifier(NSToolbarItem.Identifier.space)),
+                 NSToolbarItem.Identifier(rawValue: convertFromNSToolbarItemIdentifier(NSToolbarItem.Identifier.flexibleSpace)),
+                 NSToolbarItem.Identifier(rawValue: convertFromNSToolbarItemIdentifier(NSToolbarItem.Identifier.print)) ]
     }
     
     // MARK: - NSTouchBar
@@ -359,11 +367,11 @@ class WindowController: NSWindowController, NSToolbarDelegate {
 extension WindowController: NSTouchBarDelegate {
     
     @available(OSX 10.12.2, *)
-    func touchBar(_ touchBar: NSTouchBar, makeItemForIdentifier identifier: NSTouchBarItemIdentifier) -> NSTouchBarItem? {
+    func touchBar(_ touchBar: NSTouchBar, makeItemForIdentifier identifier: NSTouchBarItem.Identifier) -> NSTouchBarItem? {
         
         switch identifier {
             
-            case NSTouchBarItemIdentifier.popover:
+            case NSTouchBarItem.Identifier.popover:
                 
                 let popoverItem = NSPopoverTouchBarItem(identifier: identifier)
                 popoverItem.customizationLabel = "Font Size"
@@ -381,7 +389,7 @@ extension WindowController: NSTouchBarDelegate {
             
                 return popoverItem
             
-            case NSTouchBarItemIdentifier.fontStyle:
+            case NSTouchBarItem.Identifier.fontStyle:
                 
                 let fontStyleItem = NSCustomTouchBarItem(identifier: identifier)
                 fontStyleItem.customizationLabel = "Font Style"
@@ -392,7 +400,7 @@ extension WindowController: NSTouchBarDelegate {
                 
                 return fontStyleItem;
             
-            case NSTouchBarItemIdentifier.popoverSlider:
+            case NSTouchBarItem.Identifier.popoverSlider:
                 
                 let sliderItem = NSSliderTouchBarItem(identifier: identifier)
                 sliderItem.label = "Size"
@@ -406,8 +414,6 @@ extension WindowController: NSTouchBarDelegate {
 
                 // Set the font size for the slider item to the same value as the stepper.
                 slider.integerValue = DefaultFontSize
-                
-                slider.bind(NSValueBinding, to: self, withKeyPath: "currentFontSize", options: nil)
     
                 return sliderItem
             
@@ -417,3 +423,33 @@ extension WindowController: NSTouchBarDelegate {
     
 }
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSToolbarItemIdentifier(_ input: NSToolbarItem.Identifier) -> String {
+	return input.rawValue
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSAttributedStringKeyDictionary(_ input: [NSAttributedString.Key: Any]) -> [String: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSAttributedStringKey(_ input: NSAttributedString.Key) -> String {
+	return input.rawValue
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToNSAttributedStringKeyDictionary(_ input: [String: Any]) -> [NSAttributedString.Key: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToNSToolbarItemIdentifier(_ input: String) -> NSToolbarItem.Identifier {
+	return NSToolbarItem.Identifier(rawValue: input)
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSBindingName(_ input: NSBindingName) -> String {
+	return input.rawValue
+}

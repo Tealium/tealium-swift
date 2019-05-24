@@ -39,7 +39,7 @@ class ButtonViewController: UITableViewController {
     func configureSystemTextButton() {
         let buttonTitle = NSLocalizedString("Button", comment: "")
 
-        systemTextButton.setTitle(buttonTitle, for: UIControlState())
+        systemTextButton.setTitle(buttonTitle, for: UIControl.State())
 
         systemTextButton.addTarget(self, action: #selector(ButtonViewController.buttonClicked(_:)), for: .touchUpInside)
     }
@@ -60,12 +60,12 @@ class ButtonViewController: UITableViewController {
         // To create this button in code you can use UIButton.buttonWithType() with a parameter value of .Custom.
 
         // Remove the title text.
-        imageButton.setTitle("", for: UIControlState())
+        imageButton.setTitle("", for: UIControl.State())
 
         imageButton.tintColor = UIColor.applicationPurpleColor
 
         let imageButtonNormalImage = UIImage(named: "x_icon")
-        imageButton.setImage(imageButtonNormalImage, for: UIControlState())
+        imageButton.setImage(imageButtonNormalImage, for: UIControl.State())
 
         // Add an accessibility label to the image.
         imageButton.accessibilityLabel = NSLocalizedString("X Button", comment: "")
@@ -78,18 +78,18 @@ class ButtonViewController: UITableViewController {
         
         // Set the button's title for normal state.
         let normalTitleAttributes = [
-            NSForegroundColorAttributeName: UIColor.applicationBlueColor,
-            NSStrikethroughStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue
+            convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor): UIColor.applicationBlueColor,
+            convertFromNSAttributedStringKey(NSAttributedString.Key.strikethroughStyle): NSUnderlineStyle.single.rawValue
         ] as [String : Any]
-        let normalAttributedTitle = NSAttributedString(string: buttonTitle, attributes: normalTitleAttributes)
-        attributedTextButton.setAttributedTitle(normalAttributedTitle, for: UIControlState())
+        let normalAttributedTitle = NSAttributedString(string: buttonTitle, attributes: convertToOptionalNSAttributedStringKeyDictionary(normalTitleAttributes))
+        attributedTextButton.setAttributedTitle(normalAttributedTitle, for: UIControl.State())
 
         // Set the button's title for highlighted state.
         let highlightedTitleAttributes = [
-            NSForegroundColorAttributeName: UIColor.green,
-            NSStrikethroughStyleAttributeName: NSUnderlineStyle.styleThick.rawValue
+            convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor): UIColor.green,
+            convertFromNSAttributedStringKey(NSAttributedString.Key.strikethroughStyle): NSUnderlineStyle.thick.rawValue
         ] as [String : Any]
-        let highlightedAttributedTitle = NSAttributedString(string: buttonTitle, attributes: highlightedTitleAttributes)
+        let highlightedAttributedTitle = NSAttributedString(string: buttonTitle, attributes: convertToOptionalNSAttributedStringKeyDictionary(highlightedTitleAttributes))
         attributedTextButton.setAttributedTitle(highlightedAttributedTitle, for: .highlighted)
 
         attributedTextButton.addTarget(self, action: #selector(ButtonViewController.buttonClicked(_:)), for: .touchUpInside)
@@ -97,7 +97,18 @@ class ButtonViewController: UITableViewController {
 
     // MARK: - Actions
 
-    func buttonClicked(_ sender: UIButton) {
+    @objc func buttonClicked(_ sender: UIButton) {
         NSLog("A button was clicked: \(sender).")
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSAttributedStringKey(_ input: NSAttributedString.Key) -> String {
+	return input.rawValue
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
 }

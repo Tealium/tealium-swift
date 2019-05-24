@@ -162,8 +162,8 @@ public class TealiumLifecycleModule: TealiumModule {
         let notificationNameApplicationDidBecomeActive = UIApplication.didBecomeActiveNotification
         let notificationNameApplicationWillResignActive = UIApplication.willResignActiveNotification
         #else
-        let notificationNameApplicationDidBecomeActive = NSNotification.Name.UIApplicationDidBecomeActive
-        let notificationNameApplicationWillResignActive = NSNotification.Name.UIApplicationWillResignActive
+        let notificationNameApplicationDidBecomeActive = UIApplication.didBecomeActiveNotification
+        let notificationNameApplicationWillResignActive = UIApplication.willResignActiveNotification
         #endif
         // swiftlint:enable identifier_name
         NotificationCenter.default.addObserver(self,

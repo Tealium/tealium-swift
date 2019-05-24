@@ -46,7 +46,8 @@ class ViewController: NSViewController, NSTextViewDelegate {
     
     // MARK: - NSTextViewDelegate
     
-    func textView(_ textView: NSTextView, shouldUpdateTouchBarItemIdentifiers identifiers: [NSTouchBarItemIdentifier]) -> [NSTouchBarItemIdentifier] {
+    @available(OSX 10.12.2, *)
+    func textView(_ textView: NSTextView, shouldUpdateTouchBarItemIdentifiers identifiers: [NSTouchBarItem.Identifier]) -> [NSTouchBarItem.Identifier] {
         
         return []   // We want to show only our NSTouchBarItem instances.
     }

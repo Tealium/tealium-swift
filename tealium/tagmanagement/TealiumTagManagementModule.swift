@@ -374,13 +374,13 @@ public class TealiumTagManagement: NSObject {
 #if swift(>=4.2)
 public typealias WebViewNavigationTypeAlias = UIWebView.NavigationType
 #else
-public typealias WebViewNavigationTypeAlias = UIWebViewNavigationType
+public typealias WebViewNavigationTypeAlias = UIWebView.NavigationType
 #endif
 
 extension TealiumTagManagement: UIWebViewDelegate {
     public func webView(_ webView: UIWebView,
                         shouldStartLoadWith request: URLRequest,
-                        navigationType: WebViewNavigationTypeAlias) -> Bool {
+                        navigationType: UIWebView.NavigationType) -> Bool {
 
         var shouldStart = true
 

@@ -113,7 +113,7 @@ class MapViewController: UIViewController {
             view if it's hidden.
         */
         menuGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleMenuGestureRecognizer(_:)))
-        menuGestureRecognizer?.allowedPressTypes = [NSNumber(integerLiteral: UIPressType.menu.rawValue)]
+        menuGestureRecognizer?.allowedPressTypes = [NSNumber(integerLiteral: UIPress.PressType.menu.rawValue)]
         mapView.addGestureRecognizer(menuGestureRecognizer!)
 
         /*
@@ -122,7 +122,7 @@ class MapViewController: UIViewController {
             user clicks a selected annotation.
         */
         selectGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleSelectGestureRecognizer(_:)))
-        selectGestureRecognizer?.allowedPressTypes = [NSNumber(integerLiteral: UIPressType.select.rawValue)]
+        selectGestureRecognizer?.allowedPressTypes = [NSNumber(integerLiteral: UIPress.PressType.select.rawValue)]
         selectGestureRecognizer?.delegate = self
         mapView.addGestureRecognizer(selectGestureRecognizer!)
 
@@ -163,14 +163,14 @@ class MapViewController: UIViewController {
     
     // MARK: Gesture recognizer handlers
     
-    func handleMenuGestureRecognizer(_ recognizer: UITapGestureRecognizer) {
+    @objc func handleMenuGestureRecognizer(_ recognizer: UITapGestureRecognizer) {
         // Hide the table view if the menu button has been tapped.
         if recognizer.state == .ended {
             animateTableView(hidden: false)
         }
     }
     
-    func handleSelectGestureRecognizer(_ recognizer: UITapGestureRecognizer) {
+    @objc func handleSelectGestureRecognizer(_ recognizer: UITapGestureRecognizer) {
         // If the recognizer state is `Ended`, the user selected an annotation.
         if let selectedItem = selectedItem, recognizer.state == .ended {
             print("Selected \(selectedItem.title)")
@@ -190,7 +190,7 @@ class MapViewController: UIViewController {
             Determine an appropriate animation curve to used depending on
             whether the table view is being shown or hidden.
         */
-        let animationCurve: UIViewAnimationOptions = hidden ? .curveEaseIn : .curveEaseOut
+        let animationCurve: UIView.AnimationOptions = hidden ? .curveEaseIn : .curveEaseOut
 
         let selectedItemAnnotation = annotation(for: selectedItem)
         
@@ -234,7 +234,7 @@ class MapViewController: UIViewController {
     
     /// Returns the `SearchResultMapAnnotation` instance that represents the passed `SearchableItem`.
     private func annotation(for item: SearchableItem) -> SearchResultMapAnnotation {
-        let foundAnnotation = mapView.annotations.flatMap { annotation in
+        let foundAnnotation = mapView.annotations.compactMap { annotation in
             return annotation as? SearchResultMapAnnotation
         }.filter { annotation in
             return annotation.item == item

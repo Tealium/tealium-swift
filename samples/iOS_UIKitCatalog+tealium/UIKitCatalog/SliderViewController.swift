@@ -47,13 +47,13 @@ class SliderViewController: UITableViewController {
 
     func configureCustomSlider() {
         let leftTrackImage = UIImage(named: "slider_blue_track")
-        customSlider.setMinimumTrackImage(leftTrackImage, for: UIControlState())
+        customSlider.setMinimumTrackImage(leftTrackImage, for: UIControl.State())
 
         let rightTrackImage = UIImage(named: "slider_green_track")
-        customSlider.setMaximumTrackImage(rightTrackImage, for: UIControlState())
+        customSlider.setMaximumTrackImage(rightTrackImage, for: UIControl.State())
 
         let thumbImage = UIImage(named: "slider_thumb")
-        customSlider.setThumbImage(thumbImage, for: UIControlState())
+        customSlider.setThumbImage(thumbImage, for: UIControl.State())
 
         customSlider.minimumValue = 0
         customSlider.maximumValue = 100
@@ -65,7 +65,7 @@ class SliderViewController: UITableViewController {
 
     // MARK: - Actions
 
-    func sliderValueDidChange(_ slider: UISlider) {
+    @objc func sliderValueDidChange(_ slider: UISlider) {
         NSLog("A slider changed its value: \(slider).")
     }
 }

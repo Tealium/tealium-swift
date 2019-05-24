@@ -55,7 +55,7 @@ class StepperViewController: UITableViewController {
     func configureCustomStepper() {
         // Set the background image.
         let stepperBackgroundImage = UIImage(named: "stepper_and_segment_background")
-        customStepper.setBackgroundImage(stepperBackgroundImage, for: UIControlState())
+        customStepper.setBackgroundImage(stepperBackgroundImage, for: UIControl.State())
 
         let stepperHighlightedBackgroundImage = UIImage(named: "stepper_and_segment_background_highlighted")
         customStepper.setBackgroundImage(stepperHighlightedBackgroundImage, for: .highlighted)
@@ -68,15 +68,15 @@ class StepperViewController: UITableViewController {
             (depends on the states of both segments).
         */
         let stepperSegmentDividerImage = UIImage(named: "stepper_and_segment_divider")
-        customStepper.setDividerImage(stepperSegmentDividerImage, forLeftSegmentState: UIControlState(), rightSegmentState: UIControlState())
+        customStepper.setDividerImage(stepperSegmentDividerImage, forLeftSegmentState: UIControl.State(), rightSegmentState: UIControl.State())
 
         // Set the image for the + button.
         let stepperIncrementImage = UIImage(named: "stepper_increment")
-        customStepper.setIncrementImage(stepperIncrementImage, for: UIControlState())
+        customStepper.setIncrementImage(stepperIncrementImage, for: UIControl.State())
 
         // Set the image for the - button.
         let stepperDecrementImage = UIImage(named: "stepper_decrement")
-        customStepper.setDecrementImage(stepperDecrementImage, for: UIControlState())
+        customStepper.setDecrementImage(stepperDecrementImage, for: UIControl.State())
 
         customStepperLabel.text = "\(Int(customStepper.value))"
         customStepper.addTarget(self, action: #selector(StepperViewController.stepperValueDidChange(_:)), for: .valueChanged)
@@ -84,7 +84,7 @@ class StepperViewController: UITableViewController {
 
     // MARK: - Actions
 
-    func stepperValueDidChange(_ stepper: UIStepper) {
+    @objc func stepperValueDidChange(_ stepper: UIStepper) {
         NSLog("A stepper changed its value: \(stepper).")
 
         // A mapping from a stepper to its associated label.

@@ -120,10 +120,10 @@ class PickerViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
 
         // Set the foreground color for the entire attributed string.
         let attributes = [
-            NSForegroundColorAttributeName: foregroundColor
+            convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor): foregroundColor
         ]
 
-        let title = NSMutableAttributedString(string: "\(Int(colorValue))", attributes: attributes)
+        let title = NSMutableAttributedString(string: "\(Int(colorValue))", attributes: convertToOptionalNSAttributedStringKeyDictionary(attributes))
 
         return title
     }
@@ -157,4 +157,15 @@ class PickerViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
                 return NSLocalizedString("Blue color component value", comment: "")
         }
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSAttributedStringKey(_ input: NSAttributedString.Key) -> String {
+	return input.rawValue
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
 }

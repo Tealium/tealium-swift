@@ -85,7 +85,7 @@ class TextFieldViewController: UITableViewController, UITextFieldDelegate {
         let purpleImageButton = UIButton(type: .custom)
         purpleImageButton.bounds = CGRect(x: 0, y: 0, width: purpleImage.size.width, height: purpleImage.size.height)
         purpleImageButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
-        purpleImageButton.setImage(purpleImage, for: UIControlState())
+        purpleImageButton.setImage(purpleImage, for: UIControl.State())
         purpleImageButton.addTarget(self, action: #selector(TextFieldViewController.customTextFieldPurpleButtonClicked), for: .touchUpInside)
         customTextField.rightView = purpleImageButton
         customTextField.rightViewMode = .always
@@ -111,7 +111,7 @@ class TextFieldViewController: UITableViewController, UITextFieldDelegate {
 
     // MARK: - Actions
     
-    func customTextFieldPurpleButtonClicked() {
+    @objc func customTextFieldPurpleButtonClicked() {
         customTextField.textColor = UIColor.applicationPurpleColor
 
         NSLog("The custom text field's purple right view button was clicked.")

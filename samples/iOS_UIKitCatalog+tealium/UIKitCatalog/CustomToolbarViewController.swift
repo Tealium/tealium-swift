@@ -57,19 +57,30 @@ class CustomToolbarViewController: UIViewController {
         let barButtonItem = UIBarButtonItem(title: NSLocalizedString("Button", comment: ""), style: .plain, target: self, action: #selector(CustomToolbarViewController.barButtonItemClicked(_:)))
 
         let backgroundImage = UIImage(named: "WhiteButton")
-        barButtonItem.setBackgroundImage(backgroundImage, for: UIControlState(), barMetrics: .default)
+        barButtonItem.setBackgroundImage(backgroundImage, for: UIControl.State(), barMetrics: .default)
 
         let attributes = [
-            NSForegroundColorAttributeName: UIColor.applicationPurpleColor
+            convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor): UIColor.applicationPurpleColor
         ]
-        barButtonItem.setTitleTextAttributes(attributes, for: UIControlState())
+        barButtonItem.setTitleTextAttributes(convertToOptionalNSAttributedStringKeyDictionary(attributes), for: UIControl.State())
 
         return barButtonItem
     }
 
     // MARK: - Actions
     
-    func barButtonItemClicked(_ barButtonItem: UIBarButtonItem) {
+    @objc func barButtonItemClicked(_ barButtonItem: UIBarButtonItem) {
         NSLog("A bar button item on the custom toolbar was clicked: \(barButtonItem).")
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSAttributedStringKey(_ input: NSAttributedString.Key) -> String {
+	return input.rawValue
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
 }
