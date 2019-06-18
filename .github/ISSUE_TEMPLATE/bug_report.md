@@ -3,7 +3,7 @@ name: Bug report
 about: Submit a bug report for the Tealium Swift library
 title: "[TEALIUM SWIFT BUG]: "
 labels: ''
-assignees: craigrouse, jonwong-tealium
+assignees: craigrouse, jonwong-tealium, christinasund
 
 ---
 
