@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import Tealium
+@testable import TealiumCore
 @testable import TealiumCrash
 
 class TealiumCrashModuleTests: XCTestCase {
@@ -35,19 +35,20 @@ class TealiumCrashModuleTests: XCTestCase {
 
     func testEnableSetsEnablePropertyToTrue() {
         XCTAssertFalse(crashModule.isEnabled)
-        crashModule.handle(TealiumEnableRequest(config: config))
+        let request = TealiumEnableRequest(config: config, enableCompletion: nil)
+        crashModule.handle(TealiumEnableRequest(config: config, enableCompletion: nil))
         XCTAssertTrue(crashModule.isEnabled)
     }
 
     func testDisableSetsEnablePropertyToFalse() {
-        crashModule.handle(TealiumEnableRequest(config: config))
+        crashModule.handle(TealiumEnableRequest(config: config, enableCompletion: nil))
         XCTAssertTrue(crashModule.isEnabled)
         crashModule.handle(TealiumDisableRequest())
         XCTAssertFalse(crashModule.isEnabled)
     }
 
     func testDisablePurgesCrashReport() {
-        crashModule.handle(TealiumEnableRequest(config: config))
+        crashModule.handle(TealiumEnableRequest(config: config, enableCompletion: nil))
         crashModule.crashReporter = mockCrashReporter
         crashModule.disable(TealiumDisableRequest())
         XCTAssertEqual(1, mockCrashReporter.purgePendingCrashReportCallCount)
@@ -55,7 +56,7 @@ class TealiumCrashModuleTests: XCTestCase {
 
     func testCrashReporterEnabledOnEnableRequest() {
         let module = TealiumCrashModule(delegate: self, crashReporter: mockCrashReporter)
-        module.handle(TealiumEnableRequest(config: config))
+        module.handle(TealiumEnableRequest(config: config, enableCompletion: nil))
         XCTAssertEqual(1, mockCrashReporter.enableCallCount)
     }
 
@@ -68,7 +69,7 @@ class TealiumCrashModuleTests: XCTestCase {
     }
 
     func testTrackFinishesWithNoResponseWhenNoPendingCrashReport() {
-        crashModule.handle(TealiumEnableRequest(config: config))
+        crashModule.handle(TealiumEnableRequest(config: config, enableCompletion: nil))
         crashModule.crashReporter = mockCrashReporter
         crashModule.track(TealiumTrackRequest(data: ["a": "1"], completion: nil))
 
@@ -78,7 +79,7 @@ class TealiumCrashModuleTests: XCTestCase {
     }
 
     func testTrackGetsCrashDataIfAvailable() {
-        crashModule.handle(TealiumEnableRequest(config: config))
+        crashModule.handle(TealiumEnableRequest(config: config, enableCompletion: nil))
         crashModule.crashReporter = mockCrashReporter
         mockCrashReporter.pendingCrashReport = true
         crashModule.track(TealiumTrackRequest(data: ["a": "1"], completion: nil))

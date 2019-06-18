@@ -16,7 +16,12 @@ extension String: Error { }
 /// in general.
 @objc class TealiumHelper: NSObject {
 
-    static let shared = TealiumHelper()
+    static let shared: TealiumHelper = {
+        let helper = TealiumHelper()
+        helper.start()
+        return helper
+    }()
+    
     var tealium: Tealium?
     var enableHelperLogs = true
 
@@ -30,26 +35,27 @@ extension String: Error { }
         let config = TealiumConfig(account: "tealiummobile",
                                    profile: "demo",
                                    environment: "dev",
-                                   datasource: "test12",
+                                   datasource: "a1b2c3",
                                    optionalData: nil)
 
         // OPTIONALLY set log level
         config.setLogLevel(logLevel: .verbose)
-
         // OPTIONALLY add an external delegate
         config.addDelegate(self)
-
+        config.setInitialUserConsentStatus(.consented)
         // OPTIONALLY disable a particular module by name
         let list = TealiumModulesList(isWhitelist: false,
-                                      moduleNames: ["autotracking"])
+                                      moduleNames: ["autotracking", "collect"])
         config.setModulesList(list)
+      
+        tealium = Tealium(config: config) { responses in
+            self.tealium?.consentManager()?.setUserConsentStatus(.consented)
+                            // Optional processing post init.
+                            // OPTIONALLY implement Remote Commands.
+                            #if os(iOS)
+                            let remoteCommand = TealiumRemoteCommand(commandId: "logger",
+                                                                     description: "test") { response in
 
-        tealium = Tealium(config: config, enableCompletion: { response in
-            // Optional processing post init.
-            // OPTIONALLY implement Remote Commands.
-            #if os(iOS)
-                let remoteCommand = TealiumRemoteCommand(commandId: "logger",
-                                                         description: "test") { response in
 
                     if TealiumHelper.shared.enableHelperLogs {
                         print("*** TealiumHelper: Remote Command Executed: response:\(response)")

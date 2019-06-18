@@ -222,7 +222,7 @@ public class TealiumDeviceData: TealiumDeviceDataCollection {
             TealiumDeviceDataKey.memoryActive: String(format: "%0.2fMB", active),
             TealiumDeviceDataKey.memoryCompressed: String(format: "%0.2fMB", compressed),
             TealiumDeviceDataKey.physicalMemory: String(format: "%0.2fMB", physical),
-            TealiumDeviceDataKey.appMemoryUsage: appMemoryUsed
+            TealiumDeviceDataKey.appMemoryUsage: appMemoryUsed,
         ]
 
         return dict
@@ -261,10 +261,15 @@ public class TealiumDeviceData: TealiumDeviceDataCollection {
             if let currentModel = deviceInfo[model] as? [String: String],
                 let simpleModel = currentModel[TealiumDeviceDataKey.simpleModel],
                 let fullModel = currentModel[TealiumDeviceDataKey.fullModel] {
-                return [TealiumDeviceDataKey.simpleModel: simpleModel, TealiumDeviceDataKey.fullModel: fullModel]
+                return [TealiumDeviceDataKey.simpleModel: simpleModel,
+                        TealiumDeviceDataKey.device: simpleModel,
+                        TealiumDeviceDataKey.fullModel: fullModel,
+                ]
             }
         }
-        return [TealiumDeviceDataKey.simpleModel: model, TealiumDeviceDataKey.fullModel: ""]
+        return [TealiumDeviceDataKey.simpleModel: model,
+                TealiumDeviceDataKey.fullModel: "",
+        ]
     }
 
     class func name() -> String {
@@ -289,7 +294,11 @@ public class TealiumDeviceData: TealiumDeviceDataCollection {
             TealiumDeviceDataKey.carrierMNC: "00",
             TealiumDeviceDataKey.carrierMCC: "000",
             TealiumDeviceDataKey.carrierISO: "us",
-            TealiumDeviceDataKey.carrier: "simulator"
+            TealiumDeviceDataKey.carrier: "simulator",
+            TealiumDeviceDataKey.carrierMNCLegacy: "00",
+            TealiumDeviceDataKey.carrierMCCLegacy: "000",
+            TealiumDeviceDataKey.carrierISOLegacy: "us",
+            TealiumDeviceDataKey.carrierLegacy: "simulator",
         ]
         #else
         let networkInfo = CTTelephonyNetworkInfo()
@@ -306,10 +315,14 @@ public class TealiumDeviceData: TealiumDeviceDataCollection {
             carrier = networkInfo.subscriberCellularProvider
         }
         carrierInfo = [
+            TealiumDeviceDataKey.carrierMNCLegacy: carrier?.mobileNetworkCode ?? "",
             TealiumDeviceDataKey.carrierMNC: carrier?.mobileNetworkCode ?? "",
+            TealiumDeviceDataKey.carrierMCCLegacy: carrier?.mobileCountryCode ?? "",
             TealiumDeviceDataKey.carrierMCC: carrier?.mobileCountryCode ?? "",
+            TealiumDeviceDataKey.carrierISOLegacy: carrier?.isoCountryCode ?? "",
             TealiumDeviceDataKey.carrierISO: carrier?.isoCountryCode ?? "",
-            TealiumDeviceDataKey.carrier: carrier?.carrierName ?? ""
+            TealiumDeviceDataKey.carrierLegacy: carrier?.carrierName ?? "",
+            TealiumDeviceDataKey.carrier: carrier?.carrierName ?? "",
         ]
         #endif
         #endif
@@ -361,7 +374,9 @@ public class TealiumDeviceData: TealiumDeviceDataCollection {
         }
         return fullOrientation
         #else
-        return [TealiumDeviceDataKey.orientation: TealiumDeviceDataValue.unknown, TealiumDeviceDataKey.fullOrientation: TealiumDeviceDataValue.unknown]
+        return [TealiumDeviceDataKey.orientation: TealiumDeviceDataValue.unknown,
+                TealiumDeviceDataKey.fullOrientation: TealiumDeviceDataValue.unknown,
+        ]
         #endif
     }
 

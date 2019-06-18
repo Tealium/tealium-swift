@@ -111,7 +111,7 @@ class TealiumModules {
             "TealiumConsentManagerModule",
             "TealiumConsentManager.TealiumConsentManagerModule",
             "TealiumDispatchQueueModule",
-            "TealiumDispatchQueue.TealiumDispatchQueueModule"
+            "TealiumDispatchQueue.TealiumDispatchQueueModule",
         ]
         #else
         let tealiumClasses = [
@@ -146,7 +146,7 @@ class TealiumModules {
             "TealiumConsentManagerModule",
             "TealiumConsentManager.TealiumConsentManagerModule",
             "TealiumDispatchQueueModule",
-            "TealiumDispatchQueue.TealiumDispatchQueueModule"
+            "TealiumDispatchQueue.TealiumDispatchQueueModule",
         ]
         #endif
         // swiftlint:enable function_body_length

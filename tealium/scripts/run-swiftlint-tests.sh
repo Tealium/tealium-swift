@@ -8,7 +8,7 @@
 if which swiftlint > /dev/null; then
 echo ${PROJECT_DIR}
 echo $SRCROOT
-cd $SRCROOT/../support/tests/ && swiftlint autocorrect
+cd $SRCROOT/../support/tests/ && swiftlint autocorrect --config ${PROJECT_DIR}/../.swiftlint-tests.yml
 cd $SRCROOT/
 swiftlint lint --config ${PROJECT_DIR}/../.swiftlint_tests.yml
 else

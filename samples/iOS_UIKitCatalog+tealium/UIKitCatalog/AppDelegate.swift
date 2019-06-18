@@ -22,7 +22,8 @@ class AppDelegate: NSObject, UIApplicationDelegate, UISplitViewControllerDelegat
         splitViewController.delegate = self
         splitViewController.preferredDisplayMode = .allVisible
 
-        TealiumHelper.shared.start()
+        let _ = TealiumHelper.shared
+//        TealiumHelper.shared.tealium?.updateRootView(splitViewController.view)
         
         return true
     }

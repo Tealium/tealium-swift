@@ -13,9 +13,7 @@ import TealiumDeviceData
 #endif
 import TealiumCrashReporteriOS
 
-/**
- Defines the specifications for TealiumCrashReporterType.  Concrete TealiumCrashReporters must implement this protocol.
- */
+/// Defines the specifications for TealiumCrashReporterType.  Concrete TealiumCrashReporters must implement this protocol.
 public protocol TealiumCrashReporterType: class {
     func enable() -> Bool
 
@@ -33,47 +31,35 @@ public class TealiumCrashReporter: TealiumCrashReporterType {
     var crashReporter = TEALPLCrashReporter()
     public var crashData: [String: Any]?
 
-    /**
-     Enables crashReporter internal type.
-     */
+    /// Enables crashReporter internal type.
     public func enable() -> Bool {
         return crashReporter.enable()
     }
 
-    /**
-     Checks if a crash report exists.
-    */
+    /// Checks if a crash report exists.
     public func hasPendingCrashReport() -> Bool {
         return crashReporter.hasPendingCrashReport()
     }
 
-    /**
-     Removes any existing crash report on `disable()`.
-     */
+    /// Removes any existing crash report on `disable()`.
     public func disable() {
         crashReporter.purgePendingCrashReport()
     }
 
-    /**
-     Removes any existing crash report.
-     */
+    /// Removes any existing crash report.
     public func purgePendingCrashReport() {
         crashReporter.purgePendingCrashReport()
     }
 
-    /**
-     Invokes a crash
-     - parameters:
-     - name: name of the crash
-     - reason: reason for the crash
-     */
+    /// Invokes a crash
+    /// - Parameters:
+    /// - name: name of the crash
+    /// - reason: reason for the crash
     public class func invokeCrash(name: String, reason: String) {
         NSException(name: NSExceptionName(rawValue: name), reason: reason, userInfo: nil).raise()
     }
 
-    /**
-     Gets crash data if crash module is enabled.
-     */
+    /// Gets crash data if crash module is enabled.
     public func getData() -> [String: Any]? {
         do {
             guard crashData == nil else {

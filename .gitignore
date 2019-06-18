@@ -3,7 +3,6 @@
 *.xcbkptlist
 tealium/tealium_debug/Swifter
 *.xcuserdatad*
-*.wakello
 carthage/
 Carthage/
 *carthage/

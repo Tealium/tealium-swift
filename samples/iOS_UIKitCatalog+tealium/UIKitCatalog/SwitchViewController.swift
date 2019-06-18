@@ -23,6 +23,11 @@ class SwitchViewController: UITableViewController {
         configureDefaultSwitch()
         configureTintedSwitch()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        TealiumHelper.shared.trackView(title: self.title ?? "View Controller", data: nil)
+        super.viewDidAppear(animated)
+    }
 
     // MARK: - Configuration
 

@@ -71,7 +71,7 @@ class TealiumLifecycleModuleTests: XCTestCase {
                                    profile: "",
                                    environment: "",
                                    optionalData: nil)
-        lifecycleModule.enable(TealiumEnableRequest(config: config))
+        lifecycleModule.enable(TealiumEnableRequest(config: config, enableCompletion: nil))
         self.waitForExpectations(timeout: 20.0, handler: nil)
 
         guard let request = requestProcess as? TealiumTrackRequest else {

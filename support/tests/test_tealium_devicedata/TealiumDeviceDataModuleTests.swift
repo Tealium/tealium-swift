@@ -55,7 +55,7 @@ class TealiumDeviceDataModuleTests: XCTestCase {
     func testTrack() {
         let expectation = self.expectation(description: "deviceDataTrack")
         let module = TealiumDeviceDataModule(delegate: self)
-        let request = TealiumEnableRequest(config: TestTealiumHelper().getConfig())
+        let request = TealiumEnableRequest(config: TestTealiumHelper().getConfig(), enableCompletion: nil)
         module.enable(request)
         module.isEnabled = true
 
@@ -68,40 +68,60 @@ class TealiumDeviceDataModuleTests: XCTestCase {
             }
             #if os(iOS)
             let expectedKeys = [
+                "device_architecture",
                 "cpu_architecture",
                 "os_build",
+                "device_os_build",
+                "device_cputype",
                 "cpu_type",
                 "model_name",
                 "model_variant",
+                "device_os_version",
                 "os_version",
+                "platform",
                 "os_name",
                 "device_resolution",
+                "device_ischarging",
+                "device_battery_percent",
+                "battery_percent",
+                "device_is_charging",
+                "device_language",
+                "user_locale",
+                "app_orientation",
+                "device_orientation",
+                "device_orientation_extended",
+                "carrier",
+                "carrier_mnc",
+                "carrier_mcc",
+                "carrier_iso",
+                "network_name",
+                "network_mnc",
+                "network_mcc",
+                "network_iso_country_code",
+            ]
+            #else
+            let expectedKeys = [
+                "device_architecture",
+                "cpu_architecture",
+                "os_build",
+                "device_os_build",
+                "device_cputype",
+                "cpu_type",
+                "model_name",
+                "model_variant",
+                "device_os_version",
+                "os_version",
+                "platform",
+                "os_name",
+                "device_resolution",
+                "device_ischarging",
+                "device_battery_percent",
                 "battery_percent",
                 "device_is_charging",
                 "user_locale",
                 "device_orientation",
                 "device_orientation_extended",
-                "network_name",
-                "network_mnc",
-                "network_mcc",
-                "network_iso_country_code"
             ]
-            #else
-                let expectedKeys = [
-                    "cpu_architecture",
-                    "os_build",
-                    "cpu_type",
-                    "model_name",
-                    "model_variant",
-                    "os_version",
-                    "os_name",
-                    "device_resolution",
-                    "battery_percent",
-                    "device_is_charging",
-                    "user_locale",
-                    "device_orientation",
-                    "device_orientation_extended"
-                ]
             #endif
 
             let unexpectedKeys = [
@@ -111,7 +131,7 @@ class TealiumDeviceDataModuleTests: XCTestCase {
                 "memory_inactive",
                 "memory_compressed",
                 "memory_physical",
-                "app_memory_usage"
+                "app_memory_usage",
             ]
 
             for key in expectedKeys where trackData[key] == nil {
@@ -134,7 +154,7 @@ class TealiumDeviceDataModuleTests: XCTestCase {
         let module = TealiumDeviceDataModule(delegate: self)
         let config = TestTealiumHelper().getConfig()
         config.setMemoryReportingEnabled(true)
-        let request = TealiumEnableRequest(config: config)
+        let request = TealiumEnableRequest(config: config, enableCompletion: nil)
         module.enable(request)
         module.isEnabled = true
 
@@ -147,19 +167,31 @@ class TealiumDeviceDataModuleTests: XCTestCase {
             }
             #if os(iOS)
             let expectedKeys = [
+                "device_architecture",
                 "cpu_architecture",
                 "os_build",
+                "device_os_build",
+                "device_cputype",
                 "cpu_type",
                 "model_name",
                 "model_variant",
+                "device_os_version",
                 "os_version",
+                "platform",
                 "os_name",
                 "device_resolution",
+                "device_ischarging",
+                "device_battery_percent",
                 "battery_percent",
                 "device_is_charging",
                 "user_locale",
+                "app_orientation",
                 "device_orientation",
                 "device_orientation_extended",
+                "carrier",
+                "carrier_mnc",
+                "carrier_mcc",
+                "carrier_iso",
                 "network_name",
                 "network_mnc",
                 "network_mcc",
@@ -170,18 +202,25 @@ class TealiumDeviceDataModuleTests: XCTestCase {
                 "memory_inactive",
                 "memory_compressed",
                 "memory_physical",
-                "app_memory_usage"
+                "app_memory_usage",
             ]
             #else
             let expectedKeys = [
+                "device_architecture",
                 "cpu_architecture",
                 "os_build",
+                "device_os_build",
+                "device_cputype",
                 "cpu_type",
                 "model_name",
                 "model_variant",
+                "device_os_version",
                 "os_version",
+                "platform",
                 "os_name",
                 "device_resolution",
+                "device_ischarging",
+                "device_battery_percent",
                 "battery_percent",
                 "device_is_charging",
                 "user_locale",
@@ -193,7 +232,7 @@ class TealiumDeviceDataModuleTests: XCTestCase {
                 "memory_inactive",
                 "memory_compressed",
                 "memory_physical",
-                "app_memory_usage"
+                "app_memory_usage",
             ]
             #endif
 
@@ -214,14 +253,19 @@ class TealiumDeviceDataModuleTests: XCTestCase {
         let module = TealiumDeviceDataModule(delegate: nil)
         let allData = module.enableTimeData()
         let expectedKeys = [
+            "device_architecture",
             "cpu_architecture",
             "os_build",
+            "device_os_build",
+            "device_cputype",
             "cpu_type",
             "model_name",
             "model_variant",
+            "device_os_version",
             "os_version",
+            "platform",
             "os_name",
-            "device_resolution"
+            "device_resolution",
         ]
         for key in expectedKeys where allData[key] == nil {
             XCTFail("Missing key: \(key). Device Data: \(allData)")
@@ -233,23 +277,32 @@ class TealiumDeviceDataModuleTests: XCTestCase {
         let allData = module.trackTimeData()
         #if os(iOS)
             let expectedKeys = [
+                "device_ischarging",
+                "device_battery_percent",
+                "battery_percent",
+                "device_is_charging",
+                "user_locale",
+                "app_orientation",
+                "device_orientation",
+                "device_orientation_extended",
+                "carrier",
+                "carrier_mnc",
+                "carrier_mcc",
+                "carrier_iso",
+                "network_name",
+                "network_mnc",
+                "network_mcc",
+                "network_iso_country_code",
+            ]
+        #else
+            let expectedKeys = [
+                "device_ischarging",
+                "device_battery_percent",
                 "battery_percent",
                 "device_is_charging",
                 "user_locale",
                 "device_orientation",
                 "device_orientation_extended",
-                "network_name",
-                "network_mnc",
-                "network_mcc",
-                "network_iso_country_code"
-            ]
-        #else
-            let expectedKeys = [
-                "battery_percent",
-                "device_is_charging",
-                "user_locale",
-                "device_orientation",
-                "device_orientation_extended"
             ]
         #endif
         for key in expectedKeys where allData[key] == nil {

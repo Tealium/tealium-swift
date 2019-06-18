@@ -26,6 +26,11 @@ class SliderViewController: UITableViewController {
         configureTintedSlider()
         configureCustomSlider()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        TealiumHelper.shared.trackView(title: self.title ?? "View Controller", data: nil)
+        super.viewDidAppear(animated)
+    }
 
     // MARK: - Configuration
 

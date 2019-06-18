@@ -29,6 +29,11 @@ class SegmentedControlViewController: UITableViewController {
         configureCustomSegmentsSegmentedControl()
         configureCustomBackgroundSegmentedControl()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        TealiumHelper.shared.trackView(title: self.title ?? "View Controller", data: nil)
+        super.viewDidAppear(animated)
+    }
 
     // MARK: - Configuration
 
@@ -95,15 +100,15 @@ class SegmentedControlViewController: UITableViewController {
         let captionFontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFont.TextStyle.caption1)
         let font = UIFont(descriptor: captionFontDescriptor, size: 0)
 
-        let normalTextAttributes: [NSAttributedString.Key: Any] = [
-            NSAttributedString.Key(rawValue: convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor)): UIColor.applicationPurpleColor,
-            NSAttributedString.Key(rawValue: convertFromNSAttributedStringKey(NSAttributedString.Key.font)): font
+        let normalTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.applicationPurpleColor,
+            NSAttributedString.Key.font: font
         ]
         customBackgroundSegmentedControl.setTitleTextAttributes(normalTextAttributes, for: UIControl.State())
 
-        let highlightedTextAttributes: [NSAttributedString.Key: Any] = [
-            NSAttributedString.Key(rawValue: convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor)): UIColor.applicationGreenColor,
-            NSAttributedString.Key(rawValue: convertFromNSAttributedStringKey(NSAttributedString.Key.font)): font
+        let highlightedTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.applicationGreenColor,
+            NSAttributedString.Key.font: font
         ]
         customBackgroundSegmentedControl.setTitleTextAttributes(highlightedTextAttributes, for: .highlighted)
 
@@ -115,9 +120,4 @@ class SegmentedControlViewController: UITableViewController {
     @objc func selectedSegmentDidChange(_ segmentedControl: UISegmentedControl) {
         NSLog("The selected segment changed for: \(segmentedControl).")
     }
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromNSAttributedStringKey(_ input: NSAttributedString.Key) -> String {
-	return input.rawValue
 }

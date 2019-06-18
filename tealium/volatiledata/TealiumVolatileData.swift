@@ -26,32 +26,26 @@ public class TealiumVolatileData: NSObject, TealiumVolatileDataCollection {
         objc_sync_exit(lock)
     }
 
-    /**
-     Add data to all dispatches for the remainder of an active session.
-     
-     - parameters:
-     - data: A [String: Any] dictionary. Values should be of type String or [String]
-     */
+    /// Add data to all dispatches for the remainder of an active session.
+    ///
+    /// - Parameters:
+    /// - data: A [String: Any] dictionary. Values should be of type String or [String]
     public func add(data: [String: Any]) {
         sync(lock: self) {
             volatileData += data
         }
     }
 
-    /**
-     Public convenience function to retrieve a copy of volatile data used with dispatches.
-     
-     - returns: A dictionary
-     */
+    /// Public convenience function to retrieve a copy of volatile data used with dispatches.
+    ///
+    /// - Returns: A dictionary
     public func getData() -> [String: Any] {
         return getData(currentData: [String: Any]())
     }
 
-    /**
-     Retrieve a copy of volatile data used with dispatches.
-     
-     - returns: A dictionary
-     */
+    /// Retrieve a copy of volatile data used with dispatches.
+    ///
+    /// - Returns: A dictionary
     func getData(currentData: [String: Any]) -> [String: Any] {
         var data = [String: Any]()
 
@@ -61,12 +55,14 @@ public class TealiumVolatileData: NSObject, TealiumVolatileDataCollection {
                 new
             }
             data[TealiumVolatileDataKey.timestampOffset] = timezoneOffset()
+            data[TealiumVolatileDataKey.timestampOffsetLegacy] = timezoneOffset()
         }
         data += volatileData
 
         return data
     }
 
+    /// - Returns: `true` if dispatch contains existing timestamps
     func dispatchHasExistingTimestamps(_ currentData: [String: Any]) -> Bool {
         return (currentData[TealiumVolatileDataKey.timestampEpoch] != nil) &&
                 (currentData[TealiumVolatileDataKey.timestamp] != nil) &&
@@ -75,12 +71,10 @@ public class TealiumVolatileData: NSObject, TealiumVolatileDataCollection {
                 (currentData[TealiumVolatileDataKey.timestampUnix] != nil)
     }
 
-    /**
-     Delete volatile data.
-     
-     - parameters:
-     - keys: An array of String keys to remove from the internal volatile data store.
-     */
+    /// Delete volatile data.
+    ///
+    /// - Parameters:
+    /// - keys: An array of String keys to remove from the internal volatile data store.
     public func deleteData(forKeys: [String]) {
         sync(lock: self) {
             for key in forKeys {
@@ -89,9 +83,7 @@ public class TealiumVolatileData: NSObject, TealiumVolatileDataCollection {
         }
     }
 
-    /**
-     Delete all volatile data.
-     */
+    /// Delete all volatile data.
     public func deleteAllData() {
         sync(lock: self) {
             for key in volatileData.keys {
@@ -105,10 +97,9 @@ public class TealiumVolatileData: NSObject, TealiumVolatileDataCollection {
         add(data: [TealiumVolatileDataKey.sessionId: TealiumVolatileData.newSessionId() ])
     }
 
-    /** Manually set session id to a specified string
-     - Parameter sessionId: String id to set session id to.
-     **/
-
+    /// Manually set session id to a specified string
+    ///
+    /// - Parameter sessionId: String id to set session id to.
     public func setSessionId(sessionId: String) {
         add(data: [TealiumVolatileDataKey.sessionId: sessionId])
     }
@@ -156,15 +147,19 @@ public class TealiumVolatileData: NSObject, TealiumVolatileDataCollection {
     }
 
     public func currentTimeStamps() -> [String: Any] {
-        /** having this in a single function guarantees we're sending the exact same timestamp,
-         as the date object only gets created once **/
+        // having this in a single function guarantees we're sending the exact same timestamp,
+        // as the date object only gets created once
         let date = Date()
         return [
             TealiumVolatileDataKey.timestampEpoch: TealiumVolatileData.getTimestampInSeconds(date),
             TealiumVolatileDataKey.timestamp: TealiumVolatileData.getDate8601UTC(date),
+            TealiumVolatileDataKey.timestampLegacy: TealiumVolatileData.getDate8601UTC(date), // included to prevent mapping issues. Will be removed in future release
             TealiumVolatileDataKey.timestampLocal: TealiumVolatileData.getDate8601Local(date),
-            TealiumVolatileDataKey.timestampUnixMillis: date.unixTime,
-            TealiumVolatileDataKey.timestampUnix: date.unixTimeSeconds
+            TealiumVolatileDataKey.timestampLocalLegacy: TealiumVolatileData.getDate8601Local(date), // included to prevent mapping issues. Will be removed in future release
+            TealiumVolatileDataKey.timestampUnixMilliseconds: date.unixTime,
+            TealiumVolatileDataKey.timestampUnixMillisecondsLegacy: date.unixTime, // included to prevent mapping issues. Will be removed in future release
+            TealiumVolatileDataKey.timestampUnix: date.unixTimeSeconds,
+            TealiumVolatileDataKey.timestampUnixLegacy: date.unixTimeSeconds, // included to prevent mapping issues. Will be removed in future release
         ]
     }
 

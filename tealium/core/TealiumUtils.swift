@@ -22,7 +22,7 @@ extension RangeReplaceableCollection where Iterator.Element: Equatable {
 // Example Collection setup: var playerViewPointers = [String:Weak<PlayerView>]()
 // Example Set: playerViewPointers[someKey] = Weak(value: playerView)
 // Example Get: let x = playerViewPointers[user.uniqueId]?.value
-public class Weak<T: AnyObject> : Equatable {
+public class Weak<T: AnyObject>: Equatable {
     weak var value: T?
 
     init(value: T) {
@@ -34,18 +34,14 @@ public func == <T> (lhs: Weak<T>, rhs: Weak<T>) -> Bool {
     return lhs.value === rhs.value
 }
 
-/**
- Extend the use of += operators to dictionaries.
- */
+/// Extend the use of += operators to dictionaries.
 public func += <K, V> (left: inout [K: V], right: [K: V]) {
     for (key, value) in right {
         left.updateValue(value, forKey: key)
     }
 }
 
-/**
- Extend use of == to dictionaries.
- */
+/// Extend use of == to dictionaries.
 public func == (lhs: [String: Any], rhs: [String: Any] ) -> Bool {
     return NSDictionary(dictionary: lhs).isEqual(to: rhs)
 }

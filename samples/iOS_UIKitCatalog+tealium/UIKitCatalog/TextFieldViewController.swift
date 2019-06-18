@@ -33,6 +33,11 @@ class TextFieldViewController: UITableViewController, UITextFieldDelegate {
         configureCustomTextField()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        TealiumHelper.shared.trackView(title: self.title ?? "View Controller", data: nil)
+        super.viewDidAppear(animated)
+    }
+    
     // MARK: - Configuration
 
     func configureTextField() {

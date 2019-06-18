@@ -146,7 +146,6 @@ public struct TealiumEnqueueRequest: TealiumRequest {
     public var typeId = TealiumEnqueueRequest.instanceTypeId()
     public var moduleResponses = [TealiumModuleResponse]()
     public var completion: TealiumCompletion?
-
     public let data: TealiumTrackRequest
 
     public init(data: TealiumTrackRequest,
@@ -225,4 +224,32 @@ public struct TealiumDeviceDataRequest: TealiumRequest {
     public static func instanceTypeId() -> String {
         return "devicedata"
     }
+}
+
+public struct TealiumJoinTraceRequest: TealiumRequest {
+    public var typeId = TealiumJoinTraceRequest.instanceTypeId()
+    public var traceId: String
+    public var moduleResponses = [TealiumModuleResponse]()
+    public var completion: TealiumCompletion?
+
+    public static func instanceTypeId() -> String {
+        return "jointrace"
+    }
+
+    public init(traceId: String) {
+        self.traceId = traceId
+    }
+
+}
+
+public struct TealiumLeaveTraceRequest: TealiumRequest {
+    public var typeId = TealiumLeaveTraceRequest.instanceTypeId()
+    public var moduleResponses = [TealiumModuleResponse]()
+    public var completion: TealiumCompletion?
+
+    public static func instanceTypeId() -> String {
+        return "leavetrace"
+    }
+
+    public init () {}
 }

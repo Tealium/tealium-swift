@@ -63,7 +63,7 @@ class ProgressViewController: UITableViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        TealiumHelper.shared.trackView(title: self.title ?? "View Controller", data: nil)
         // Reset the completed progress of the `UIProgressView`s.
         for progressView in progressViews {
             progressView.setProgress(0.0, animated: false)

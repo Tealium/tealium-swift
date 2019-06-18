@@ -34,6 +34,11 @@ class ButtonViewController: UITableViewController {
         configureAttributedTextSystemButton()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        TealiumHelper.shared.trackView(title: self.title ?? "View Controller", data: nil)
+        super.viewDidAppear(animated)
+    }
+    
     // MARK: - Configuration
 
     func configureSystemTextButton() {
@@ -77,19 +82,19 @@ class ButtonViewController: UITableViewController {
         let buttonTitle = NSLocalizedString("Button", comment: "")
         
         // Set the button's title for normal state.
-        let normalTitleAttributes = [
-            convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor): UIColor.applicationBlueColor,
-            convertFromNSAttributedStringKey(NSAttributedString.Key.strikethroughStyle): NSUnderlineStyle.single.rawValue
-        ] as [String : Any]
-        let normalAttributedTitle = NSAttributedString(string: buttonTitle, attributes: convertToOptionalNSAttributedStringKeyDictionary(normalTitleAttributes))
+        let normalTitleAttributes: [NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.foregroundColor: UIColor.applicationBlueColor,
+            NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue
+            ]
+        let normalAttributedTitle = NSAttributedString(string: buttonTitle, attributes: normalTitleAttributes)
         attributedTextButton.setAttributedTitle(normalAttributedTitle, for: UIControl.State())
 
         // Set the button's title for highlighted state.
-        let highlightedTitleAttributes = [
-            convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor): UIColor.green,
-            convertFromNSAttributedStringKey(NSAttributedString.Key.strikethroughStyle): NSUnderlineStyle.thick.rawValue
-        ] as [String : Any]
-        let highlightedAttributedTitle = NSAttributedString(string: buttonTitle, attributes: convertToOptionalNSAttributedStringKeyDictionary(highlightedTitleAttributes))
+        let highlightedTitleAttributes: [NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.foregroundColor: UIColor.green,
+            NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.thick.rawValue
+            ]
+        let highlightedAttributedTitle = NSAttributedString(string: buttonTitle, attributes: highlightedTitleAttributes)
         attributedTextButton.setAttributedTitle(highlightedAttributedTitle, for: .highlighted)
 
         attributedTextButton.addTarget(self, action: #selector(ButtonViewController.buttonClicked(_:)), for: .touchUpInside)
@@ -99,16 +104,6 @@ class ButtonViewController: UITableViewController {
 
     @objc func buttonClicked(_ sender: UIButton) {
         NSLog("A button was clicked: \(sender).")
+        TealiumHelper.shared.track(title: "Button Clicked", data: nil)
     }
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromNSAttributedStringKey(_ input: NSAttributedString.Key) -> String {
-	return input.rawValue
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
-	guard let input = input else { return nil }
-	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
 }

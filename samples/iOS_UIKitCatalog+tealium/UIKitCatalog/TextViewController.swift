@@ -23,6 +23,11 @@ class TextViewController: UIViewController, UITextViewDelegate {
 
         configureTextView()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        TealiumHelper.shared.trackView(title: self.title ?? "View Controller", data: nil)
+        super.viewDidAppear(animated)
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

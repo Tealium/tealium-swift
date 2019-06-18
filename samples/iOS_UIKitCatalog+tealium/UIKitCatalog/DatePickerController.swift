@@ -32,6 +32,11 @@ class DatePickerController: UIViewController {
 
         configureDatePicker()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        TealiumHelper.shared.trackView(title: self.title ?? "View Controller", data: nil)
+        super.viewDidAppear(animated)
+    }
 
     // MARK: - Configuration
 
@@ -64,5 +69,6 @@ class DatePickerController: UIViewController {
 
     @objc func updateDatePickerLabel() {
         dateLabel.text = dateFormatter.string(from: datePicker.date)
+        TealiumHelper.shared.track(title: "Date Picked", data: ["date": datePicker.date.mmDDYYYYString])
     }
 }

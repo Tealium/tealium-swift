@@ -15,7 +15,7 @@ class ConsentManagerTests: XCTestCase {
     let tealHelper = TestTealiumHelper()
     var expectations = [XCTestExpectation]()
     var trackData: [String: Any]?
-    let maxRuns = 1000 // max runs for each test
+    let maxRuns = 10 // max runs for each test
     let waiter = XCTWaiter()
     var allTestsFinished = false
     var currentTest: String = ""
@@ -192,7 +192,7 @@ class ConsentManagerTests: XCTestCase {
             let preferences = TealiumConsentUserPreferences(consentStatus: .consented, consentCategories: [.cdp, .analytics])
             consentManager?.setConsentUserPreferences(preferences)
             consentManager?.storeConsentUserPreferences()
-            var savedPreferences = consentManager?.getSavedPreferences()
+            let savedPreferences = consentManager?.getSavedPreferences()
             if let categories = savedPreferences?.consentCategories, let status = savedPreferences?.consentStatus {
                 XCTAssertTrue(categories == [.cdp, .analytics], "Consent Manager Test: \(#function) -Incorrect array members found for categories")
                 XCTAssertTrue(status == .consented, "Consent Manager Test: \(#function) -Incorrect consent status found")

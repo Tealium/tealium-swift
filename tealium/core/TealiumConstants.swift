@@ -5,16 +5,14 @@
 //  Created by Jason Koo on 9/1/16.
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
-//  Build 3
 
 // MARK: VALUES
 
 public enum TealiumValue {
     public static let libraryName = "swift"
-    public static let libraryVersion = "1.6.7"
+    public static let libraryVersion = "1.7.0"
 }
 
-// MARK: 
 // MARK: ENUMS
 
 public enum TealiumKey {
@@ -31,6 +29,13 @@ public enum TealiumKey {
     public static let wasQueued = "was_queued"
     public static let dispatchService = "dispatch_service"
     public static let updateConsentCookieEventName = "update_consent_cookie"
+    public static let jsNotificationName = "com.tealium.tagmanagement.jscommand"
+    public static let tagmanagementNotification = "com.tealium.tagmanagement.urlrequest"
+    public static let jsCommand = "js"
+    public static let traceId = "cp.trace_id"
+    public static let killVisitorSession = "kill_visitor_session"
+    // used for remote commands
+    public static let tealiumURLScheme = "tealium"
 }
 
 public enum TealiumModulesManagerError: Error {

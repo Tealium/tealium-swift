@@ -38,7 +38,7 @@ class TealiumDefaultsStorageModuleTests: XCTestCase {
     func testSaveLoad() {
         let module = TealiumDefaultsStorageModule(delegate: nil)
         let helper = TestTealiumHelper()
-        let req = TealiumEnableRequest(config: helper.getConfig())
+        let req = TealiumEnableRequest(config: helper.getConfig(), enableCompletion: nil)
         module.enable(req)
         let saveRequest = TealiumSaveRequest(name: "unittests", data: ["testing": "123"])
         module.save(saveRequest)
@@ -55,7 +55,7 @@ class TealiumDefaultsStorageModuleTests: XCTestCase {
     func testDeleteAll() {
         let module = TealiumDefaultsStorageModule(delegate: nil)
         let helper = TestTealiumHelper()
-        let req = TealiumEnableRequest(config: helper.getConfig())
+        let req = TealiumEnableRequest(config: helper.getConfig(), enableCompletion: nil)
         module.enable(req)
         let saveRequest = TealiumSaveRequest(name: "unittests", data: ["testing": "123"])
         module.save(saveRequest)

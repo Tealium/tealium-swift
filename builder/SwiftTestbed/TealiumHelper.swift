@@ -14,11 +14,14 @@ extension String: Error {}
 /// Example of a shared helper to handle all 3rd party tracking services. This
 /// paradigm is recommended to reduce burden of future code updates for external services
 /// in general.
+/// Note: TealiumHelper class inherits from NSObject to allow @objc annotations and Objective-C interop.
+/// If you don't need this, you may omit @objc annotations and NSObject inheritance.
 class TealiumHelper: NSObject {
 
     static let shared = TealiumHelper()
     var tealium: Tealium?
-    var enableHelperLogs = false
+    var enableHelperLogs = true
+    var traceId = "04136"
 
     override private init () {
 
@@ -36,11 +39,9 @@ class TealiumHelper: NSObject {
         config.setMaxQueueSize(20)
         config.setLegacyDispatchMethod(false)
         config.setConnectivityRefreshInterval(interval: 5)
-        config.setCollectOverrideURL(string: "https://collect.tealiumiq.com/vdata/i.gif?tealium_account=tealiummobile&tealium_profile=main&")
         config.setLogLevel(logLevel: .verbose)
         config.setConsentLoggingEnabled(true)
-        let consentCat: [TealiumConsentCategories] = [.bigData, .analytics]
-        config.setInitialUserConsentCategories(consentCat)
+        config.setSearchAdsEnabled(true)
         config.setInitialUserConsentStatus(.consented)
 
         // OPTIONALLY add an external delegate
@@ -51,28 +52,35 @@ class TealiumHelper: NSObject {
         #else
         // OPTIONALLY disable a particular module by name
         let list = TealiumModulesList(isWhitelist: false,
-                                      moduleNames: ["autotracking"])
+                                      moduleNames: ["autotracking", "collect"])
         config.setModulesList(list)
         print("*** TealiumHelper: Autotracking disabled.")
         #endif
         #if os(iOS)
+
         let remoteCommand = TealiumRemoteCommand(commandId: "hello",
                                                  description: "test") { response in
                                                     if TealiumHelper.shared.enableHelperLogs {
                                                         print("*** TealiumHelper: Remote Command Executed: response:\(response)")
                                                     }
+                                                    let dict = ["hello":"from helper"]
+                                                    // set some JSON response data to be passed back to the webview
+                                                    let myJson = try? JSONSerialization.data(withJSONObject: dict, options: [])
+                                                    response.data = myJson
         }
         config.addRemoteCommand(remoteCommand)
         #endif
 
         // REQUIRED Initialization
-        tealium = Tealium(config: config) { _ in
+        tealium = Tealium(config: config) { response in
                             // Optional processing post init.
+                            // Optionally, join a trace. Trace ID must be generated server-side in UDH.
+                            self.tealium?.joinTrace(traceId: self.traceId)
                             self.tealium?.persistentData()?.add(data: ["testPersistentKey": "testPersistentValue"])
                             self.tealium?.volatileData()?.add(data: ["testVolatileKey": "testVolatileValue"])
                             // OPTIONALLY implement Remote Commands
                             self.tealium?.consentManager()?.addConsentDelegate(self)
-                            self.tealium?.consentManager()?.setUserConsentStatusWithCategories(status: .consented, categories: consentCat)
+                            self.tealium?.consentManager()?.setUserConsentStatus( .consented)
         }
     }
 

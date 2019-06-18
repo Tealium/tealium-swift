@@ -25,8 +25,10 @@ public enum TealiumCrashKey {
     public static let signalAddress = "crash_signal_address"
     public static let libraries = "crash_libraries"
     public static let threads = "crash_threads"
-    public static let deviceMemoryUsage = "device_memory_usage"
+    public static let deviceMemoryUsageLegacy = "device_memory_usage"
+    public static let deviceMemoryUsage = "app_memory_usage"
     public static let deviceMemoryAvailable = "device_memory_available"
+    public static let deviceMemoryAvailableLegacy = "memory_free"
     public static let deviceOsBuild = "device_os_build"
 }
 

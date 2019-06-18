@@ -3,6 +3,7 @@ included:
 excluded:
   - Tests/SwiftLintFrameworkTests/Resources
 disabled_rules:
+  - trailing_comma
   - unused_optional_binding
 opt_in_rules:
   - file_header

@@ -23,6 +23,11 @@ class WebViewController: UIViewController, UIWebViewDelegate, UITextFieldDelegat
         configureWebView()
         loadAddressURL()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        TealiumHelper.shared.trackView(title: self.title ?? "View Controller", data: nil)
+        super.viewDidAppear(animated)
+    }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)

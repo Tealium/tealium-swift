@@ -60,9 +60,9 @@ class CustomToolbarViewController: UIViewController {
         barButtonItem.setBackgroundImage(backgroundImage, for: UIControl.State(), barMetrics: .default)
 
         let attributes = [
-            convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor): UIColor.applicationPurpleColor
+            NSAttributedString.Key.foregroundColor: UIColor.applicationPurpleColor
         ]
-        barButtonItem.setTitleTextAttributes(convertToOptionalNSAttributedStringKeyDictionary(attributes), for: UIControl.State())
+        barButtonItem.setTitleTextAttributes(attributes, for: UIControl.State())
 
         return barButtonItem
     }
@@ -72,15 +72,4 @@ class CustomToolbarViewController: UIViewController {
     @objc func barButtonItemClicked(_ barButtonItem: UIBarButtonItem) {
         NSLog("A bar button item on the custom toolbar was clicked: \(barButtonItem).")
     }
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromNSAttributedStringKey(_ input: NSAttributedString.Key) -> String {
-	return input.rawValue
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
-	guard let input = input else { return nil }
-	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
 }

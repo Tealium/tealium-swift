@@ -32,6 +32,11 @@ class StepperViewController: UITableViewController {
         configureTintedStepper()
         configureCustomStepper()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        TealiumHelper.shared.trackView(title: self.title ?? "View Controller", data: nil)
+        super.viewDidAppear(animated)
+    }
 
     // MARK: - Configuration
 

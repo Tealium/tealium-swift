@@ -31,7 +31,7 @@ class TealiumCollectTests: XCTestCase {
             TealiumKey.libraryVersion: TealiumValue.libraryVersion ,
             TealiumVolatileDataKey.sessionId: "someSessionId" ,
             TealiumAppDataKey.visitorId: "someVisitorId" ,
-            TealiumVolatileDataKey.random: "someRandomNumber"
+            TealiumVolatileDataKey.random: "someRandomNumber",
         ]
     }
 
@@ -82,7 +82,7 @@ class TealiumCollectTests: XCTestCase {
             "stringArray": ["v1", "v2"],
             "dictionary": ["key": "value"],
             "set": set,
-            "number": 15
+            "number": 15,
         ] as [String: Any]
 
         XCTAssertFalse(isValidCollectDictionary(dictionary: data))
