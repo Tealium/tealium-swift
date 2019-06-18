@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11539" systemVersion="16B2656" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11539"/>
-        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -418,7 +417,7 @@
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController id="B8D-0N-5wS" customClass="WindowController" customModule="ToolbarSample" customModuleProvider="target" sceneMemberID="viewController">
-                    <window key="window" title="ToolbarSample" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="ToolbarSample" animationBehavior="default" id="IQv-IB-iLA">
+                    <window key="window" title="ToolbarSample" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="ToolbarSample" animationBehavior="default" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
@@ -436,6 +435,9 @@
                                 <outlet property="delegate" destination="B8D-0N-5wS" id="aY6-vG-xqY"/>
                             </connections>
                         </toolbar>
+                        <connections>
+                            <outlet property="delegate" destination="B8D-0N-5wS" id="0lS-CH-ouK"/>
+                        </connections>
                     </window>
                     <connections>
                         <outlet property="fontSizeField" destination="O13-Lp-9wy" id="sry-7R-lna"/>
@@ -451,7 +453,7 @@
                     <autoresizingMask key="autoresizingMask"/>
                     <subviews>
                         <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2OG-pA-l2L">
-                            <rect key="frame" x="4" y="6" width="64" height="20"/>
+                            <rect key="frame" x="4" y="7" width="64" height="19"/>
                             <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Font Size:" id="qDh-6i-VFR">
                                 <font key="font" metaFont="system"/>
                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -459,7 +461,7 @@
                             </textFieldCell>
                         </textField>
                         <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="O13-Lp-9wy">
-                            <rect key="frame" x="91" y="4" width="39" height="24"/>
+                            <rect key="frame" x="91" y="5" width="39" height="23"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="39" id="0b0-R4-ClH"/>
                             </constraints>
@@ -477,7 +479,6 @@
                             <stepperCell key="cell" continuous="YES" alignment="left" minValue="6" maxValue="128" doubleValue="12" valueWraps="YES" id="eUV-3P-WTN"/>
                             <connections>
                                 <action selector="changeFontSize:" target="B8D-0N-5wS" id="nSK-jo-xbF"/>
-                                <binding destination="B8D-0N-5wS" name="value" keyPath="self.currentFontSize" id="9RJ-Dy-LFR"/>
                             </connections>
                         </stepper>
                     </subviews>
@@ -534,14 +535,15 @@
                         <subviews>
                             <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xBx-mF-oRY">
                                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
-                                <clipView key="contentView" id="vdA-vl-fbY">
+                                <clipView key="contentView" drawsBackground="NO" id="vdA-vl-fbY">
                                     <rect key="frame" x="1" y="1" width="463" height="268"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textView importsGraphics="NO" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="5cg-ux-stu">
+                                        <textView importsGraphics="NO" verticallyResizable="YES" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="5cg-ux-stu">
                                             <rect key="frame" x="0.0" y="0.0" width="463" height="268"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <size key="minSize" width="463" height="268"/>
                                             <size key="maxSize" width="503" height="10000000"/>
                                             <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -550,7 +552,6 @@
                                             </connections>
                                         </textView>
                                     </subviews>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="8ph-gU-IEz">
                                     <rect key="frame" x="-100" y="-100" width="87" height="18"/>

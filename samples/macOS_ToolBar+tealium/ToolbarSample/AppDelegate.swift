@@ -17,7 +17,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Here we just opt-in for allowing our instance of the NSTouchBar class to be customized throughout the app.
         if #available(OSX 10.12.2, *) {
             if ((NSClassFromString("NSTouchBar")) != nil) {
-                NSApplication.shared().isAutomaticCustomizeTouchBarMenuItemEnabled = true
+                NSApplication.shared.isAutomaticCustomizeTouchBarMenuItemEnabled = true
             }
         }
         
