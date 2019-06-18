@@ -71,7 +71,7 @@ extension String: Error { }
                 }
 
             #endif
-        })
+        }
 
 
         // example showing persistent data
