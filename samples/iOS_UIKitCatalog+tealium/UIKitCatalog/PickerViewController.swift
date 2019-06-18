@@ -1,10 +1,10 @@
 /*
-    Copyright (C) 2016 Apple Inc. All Rights Reserved.
-    See LICENSE.txt for this sample’s licensing information
-    
-    Abstract:
-    A view controller that demonstrates how to use UIPickerView.
-*/
+ Copyright (C) 2016 Apple Inc. All Rights Reserved.
+ See LICENSE.txt for this sample’s licensing information
+ 
+ Abstract:
+ A view controller that demonstrates how to use UIPickerView.
+ */
 
 import UIKit
 
@@ -28,7 +28,7 @@ class PickerViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
     // MARK: - Properties
 
     @IBOutlet weak var pickerView: UIPickerView!
-    
+
     @IBOutlet weak var colorSwatchView: UIView!
 
     lazy var numberOfColorValuesPerComponent: Int = (Int(RGB.max) / Int(RGB.offset)) + 1
@@ -55,23 +55,23 @@ class PickerViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         configurePickerView()
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         TealiumHelper.shared.trackView(title: self.title ?? "View Controller", data: nil)
         super.viewDidAppear(animated)
     }
 
     // MARK: - Convenience
-    
+
     func updateColorSwatchViewBackgroundColor() {
         colorSwatchView.backgroundColor = UIColor(red: redColor, green: greenColor, blue: blueColor, alpha: 1)
     }
 
     // MARK: - Configuration
-    
+
     func configurePickerView() {
         // Show that a given row is selected. This is off by default.
         pickerView.showsSelectionIndicator = true
@@ -81,10 +81,10 @@ class PickerViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
 
         for (colorComponent, selectedRow) in selectedRows {
             /*
-                Note that the delegate method on `UIPickerViewDelegate` is not triggered
-                when manually calling `selectRow(_:inComponent:animated:)`. To do
-                this, we fire off delegate method manually.
-            */
+             Note that the delegate method on `UIPickerViewDelegate` is not triggered
+             when manually calling `selectRow(_:inComponent:animated:)`. To do
+             this, we fire off delegate method manually.
+             */
             pickerView.selectRow(selectedRow, inComponent: colorComponent.rawValue, animated: true)
             pickerView(pickerView, didSelectRow: selectedRow, inComponent: colorComponent.rawValue)
         }
@@ -111,14 +111,14 @@ class PickerViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         var blueColorComponent = RGB.min
 
         switch ColorComponent(rawValue: component)! {
-            case .red:
-                redColorComponent = value
+        case .red:
+            redColorComponent = value
 
-            case .green:
-                greenColorComponent = value
-            
-            case .blue:
-                blueColorComponent = value
+        case .green:
+            greenColorComponent = value
+
+        case .blue:
+            blueColorComponent = value
         }
 
         let foregroundColor = UIColor(red: redColorComponent, green: greenColorComponent, blue: blueColorComponent, alpha: 1)
@@ -128,7 +128,7 @@ class PickerViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
             NSAttributedString.Key.foregroundColor: foregroundColor
         ]
 
-        let title = NSMutableAttributedString(string: "\(Int(colorValue))", attributes: convertToOptionalNSAttributedStringKeyDictionary(attributes))
+        let title = NSMutableAttributedString(string: "\(Int(colorValue))", attributes: attributes)
 
         return title
     }
@@ -137,14 +137,14 @@ class PickerViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         let colorComponentValue = RGB.offset * CGFloat(row) / RGB.max
 
         switch ColorComponent(rawValue: component)! {
-            case .red:
-                redColor = colorComponentValue
+        case .red:
+            redColor = colorComponentValue
 
-            case .green:
-                greenColor = colorComponentValue
-            
-            case .blue:
-                blueColor = colorComponentValue
+        case .green:
+            greenColor = colorComponentValue
+
+        case .blue:
+            blueColor = colorComponentValue
         }
     }
 
@@ -152,14 +152,14 @@ class PickerViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
 
     func pickerView(_ pickerView: UIPickerView, accessibilityLabelForComponent component: Int) -> String? {
         switch ColorComponent(rawValue: component)! {
-            case .red:
-                return NSLocalizedString("Red color component value", comment: "")
+        case .red:
+            return NSLocalizedString("Red color component value", comment: "")
 
-            case .green:
-                return NSLocalizedString("Green color component value", comment: "")
-            
-            case .blue:
-                return NSLocalizedString("Blue color component value", comment: "")
+        case .green:
+            return NSLocalizedString("Green color component value", comment: "")
+
+        case .blue:
+            return NSLocalizedString("Blue color component value", comment: "")
         }
     }
 }

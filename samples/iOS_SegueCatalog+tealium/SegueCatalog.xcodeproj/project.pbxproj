@@ -25,7 +25,7 @@
 		717897B71E3175E800CB5B5A /* Detail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 277E4ADA1AC5EEC500FA6F23 /* Detail.storyboard */; };
 		717897B81E3175E800CB5B5A /* Split.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 277E4ADE1AC5F27A00FA6F23 /* Split.storyboard */; };
 		71A28E7F1DE61841006B6F0D /* TealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A28E7E1DE61841006B6F0D /* TealiumHelper.swift */; };
-		F6445830471F657ED4B38713 /* Pods_SegueCatalog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D78230998B3B726A108D49C /* Pods_SegueCatalog.framework */; };
+		F76C5F2AC084097BBE90192B /* Pods_SegueCatalog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFD60B772D7DBD5810CCBCC8 /* Pods_SegueCatalog.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,7 +40,6 @@
 		277E4ADC1AC5F00100FA6F23 /* DetailViewControllers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewControllers.swift; sourceTree = "<group>"; };
 		277E4ADF1AC5F27A00FA6F23 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Split.storyboard; sourceTree = "<group>"; };
 		3ED1B1071B1E238300A2F343 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		5D78230998B3B726A108D49C /* Pods_SegueCatalog.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SegueCatalog.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		717897BC1E3175E800CB5B5A /* SegueCatalog_with_autotracking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SegueCatalog_with_autotracking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		717897BD1E3175E800CB5B5A /* SegueCatalog copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "SegueCatalog copy-Info.plist"; path = "/Users/jasonkoo/Jason/tealium-swift/samples/iOS_SegueCatalog+tealium/SegueCatalog copy-Info.plist"; sourceTree = "<absolute>"; };
 		717897ED1E3175F200CB5B5A /* SegueCatalog copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "SegueCatalog copy2-Info.plist"; path = "/Users/jasonkoo/Jason/tealium-swift/samples/iOS_SegueCatalog+tealium/SegueCatalog copy2-Info.plist"; sourceTree = "<absolute>"; };
@@ -49,8 +48,9 @@
 		71EBA7891DDCE02400813470 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		71EBA7E51DDCE1CC00813470 /* SegueCatalogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegueCatalogTests.swift; sourceTree = "<group>"; };
 		71EBA7E71DDCE1CC00813470 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D5FBC34F97B371EA60CA1F10 /* Pods-SegueCatalog.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SegueCatalog.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SegueCatalog/Pods-SegueCatalog.debug.xcconfig"; sourceTree = "<group>"; };
-		F6FF62392FE2E76542841C21 /* Pods-SegueCatalog.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SegueCatalog.release.xcconfig"; path = "Pods/Target Support Files/Pods-SegueCatalog/Pods-SegueCatalog.release.xcconfig"; sourceTree = "<group>"; };
+		AFD60B772D7DBD5810CCBCC8 /* Pods_SegueCatalog.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SegueCatalog.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8671CA34D67B4473881F1EC /* Pods-SegueCatalog.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SegueCatalog.debug.xcconfig"; path = "Target Support Files/Pods-SegueCatalog/Pods-SegueCatalog.debug.xcconfig"; sourceTree = "<group>"; };
+		D0FDED002862E23AEEECA16D /* Pods-SegueCatalog.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SegueCatalog.release.xcconfig"; path = "Target Support Files/Pods-SegueCatalog/Pods-SegueCatalog.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,7 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F6445830471F657ED4B38713 /* Pods_SegueCatalog.framework in Frameworks */,
+				F76C5F2AC084097BBE90192B /* Pods_SegueCatalog.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,6 +72,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		251C4E84E361662BC325ADAC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AFD60B772D7DBD5810CCBCC8 /* Pods_SegueCatalog.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		2759E03A1AC24EE500948321 = {
 			isa = PBXGroup;
 			children = (
@@ -82,8 +90,8 @@
 				2759E0441AC24EE500948321 /* Products */,
 				717897BD1E3175E800CB5B5A /* SegueCatalog copy-Info.plist */,
 				717897ED1E3175F200CB5B5A /* SegueCatalog copy2-Info.plist */,
-				E4ADAF07BBF9BEBDAE3291B0 /* Pods */,
-				70FFDAAC5A6963D4AB8DEEA1 /* Frameworks */,
+				5D56B89665C6B89E2CE009A5 /* Pods */,
+				251C4E84E361662BC325ADAC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -113,12 +121,14 @@
 			path = SegueCatalog;
 			sourceTree = "<group>";
 		};
-		70FFDAAC5A6963D4AB8DEEA1 /* Frameworks */ = {
+		5D56B89665C6B89E2CE009A5 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5D78230998B3B726A108D49C /* Pods_SegueCatalog.framework */,
+				C8671CA34D67B4473881F1EC /* Pods-SegueCatalog.debug.xcconfig */,
+				D0FDED002862E23AEEECA16D /* Pods-SegueCatalog.release.xcconfig */,
 			);
-			name = Frameworks;
+			name = Pods;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		71EBA7861DDCE02400813470 /* SegueCatalogTests */ = {
@@ -139,15 +149,6 @@
 			path = SegueCatalogTests;
 			sourceTree = "<group>";
 		};
-		E4ADAF07BBF9BEBDAE3291B0 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				D5FBC34F97B371EA60CA1F10 /* Pods-SegueCatalog.debug.xcconfig */,
-				F6FF62392FE2E76542841C21 /* Pods-SegueCatalog.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -155,11 +156,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2759E0601AC24EE500948321 /* Build configuration list for PBXNativeTarget "SegueCatalog" */;
 			buildPhases = (
-				A2D33A01E88BE45691B17512 /* [CP] Check Pods Manifest.lock */,
+				22FF7B5ADA7EB49455E68D5A /* [CP] Check Pods Manifest.lock */,
 				2759E03F1AC24EE500948321 /* Sources */,
 				2759E0401AC24EE500948321 /* Frameworks */,
 				2759E0411AC24EE500948321 /* Resources */,
-				29D6B7A8B918E91DA85BD9B4 /* [CP] Embed Pods Frameworks */,
+				5CD6E172F79D51BE2A387900 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -252,7 +253,29 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		29D6B7A8B918E91DA85BD9B4 /* [CP] Embed Pods Frameworks */ = {
+		22FF7B5ADA7EB49455E68D5A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SegueCatalog-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5CD6E172F79D51BE2A387900 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -270,24 +293,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SegueCatalog/Pods-SegueCatalog-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A2D33A01E88BE45691B17512 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-SegueCatalog-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -446,7 +451,7 @@
 		};
 		2759E0611AC24EE500948321 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D5FBC34F97B371EA60CA1F10 /* Pods-SegueCatalog.debug.xcconfig */;
+			baseConfigurationReference = C8671CA34D67B4473881F1EC /* Pods-SegueCatalog.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -466,7 +471,7 @@
 		};
 		2759E0621AC24EE500948321 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F6FF62392FE2E76542841C21 /* Pods-SegueCatalog.release.xcconfig */;
+			baseConfigurationReference = D0FDED002862E23AEEECA16D /* Pods-SegueCatalog.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
