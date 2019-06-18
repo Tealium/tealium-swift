@@ -179,13 +179,13 @@ class InterfaceController: WKInterfaceController {
                     guard let gameNodes = self?.gameNodes else { return }
                     
                     // Compute a random orientation for the object3D.
-                    let theta = Float(M_PI) * (Float(arc4random()) / 0x100000000)
-                    let phi = acosf(2.0 * Float(arc4random()) / 0x100000000 - 1) / Float(M_PI)
+                    let theta = Float(Double.pi) * (Float(arc4random()) / 0x100000000)
+                    let phi = acosf(2.0 * Float(arc4random()) / 0x100000000 - 1) / Float(Double.pi)
                     var axis = float3()
                     axis.x = cosf(theta) * sinf(phi)
                     axis.y = sinf(theta) * sinf(phi)
                     axis.z = cosf(theta)
-                    let angle = 2.0 * Float(M_PI) * (Float(arc4random()) / 0x100000000)
+                    let angle = 2.0 * Float(Double.pi) * (Float(arc4random()) / 0x100000000)
 
                     SCNTransaction.begin()
                     SCNTransaction.animationDuration = 0.3
@@ -228,7 +228,7 @@ class InterfaceController: WKInterfaceController {
     }
 
     /// Update countdown timer.
-    func updateText(timer: Timer) {
+    @objc func updateText(timer: Timer) {
         guard let gameNodes = gameNodes else { fatalError("Nodes not set") }
         
         gameNodes.countdownLabel.text = "\(countdown)"
@@ -327,15 +327,14 @@ class InterfaceController: WKInterfaceController {
     /// End the game if the object has its initial orientation with a 10 degree tolerance.
     func endGameOnCorrectOrientation() {
         guard let gameNodes = gameNodes, gameStarted else { return }
-        
-        let transform = SCNMatrix4ToMat4(gameNodes.object.transform)
+        let transform = float4x4.init(gameNodes.object.transform)
         let unitX: float4 = [1 , 0, 0, 0]
         let unitY: float4 = [0 , 1, 0, 0]
         let tX: float4 = matrix_multiply(unitX, transform)
         let tY: float4 = matrix_multiply(unitY, transform)
 
         let toleranceDegree : Float = 10.0
-        let max_cos_angle = cosf(toleranceDegree * Float(M_PI) / 180)
+        let max_cos_angle = cosf(toleranceDegree * Float(Double.pi) / 180)
         let cos_angleX = dot(unitX, tX)
         let cos_angleY = dot(unitY, tY)
         
@@ -382,7 +381,7 @@ class InterfaceController: WKInterfaceController {
     }
 
     // Remove the confetti particles.
-    func removeParticles(timer: Timer) {
+    @objc func removeParticles(timer: Timer) {
         guard let gameNodes = gameNodes else { fatalError("Nodes not set") }
 
         gameNodes.confetti.isHidden = true

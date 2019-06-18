@@ -128,7 +128,7 @@ class PickerViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
             NSAttributedString.Key.foregroundColor: foregroundColor
         ]
 
-        let title = NSMutableAttributedString(string: "\(Int(colorValue))", attributes: attributes)
+        let title = NSMutableAttributedString(string: "\(Int(colorValue))", attributes: convertToOptionalNSAttributedStringKeyDictionary(attributes))
 
         return title
     }
