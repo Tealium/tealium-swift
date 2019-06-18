@@ -29,14 +29,12 @@ public protocol TealiumModuleDelegate: class {
 
 }
 
-// Function(s) required by every subclass of the TealiumModule
+/// Function(s) required by every subclass of the TealiumModule
 public protocol TealiumModuleProtocol {
     func handle(_ request: TealiumRequest)
 }
 
-/**
- Base class for all Tealium feature modules.
- */
+/// Base class for all Tealium feature modules.
 open class TealiumModule: TealiumModuleProtocol {
 
     public weak var delegate: TealiumModuleDelegate?

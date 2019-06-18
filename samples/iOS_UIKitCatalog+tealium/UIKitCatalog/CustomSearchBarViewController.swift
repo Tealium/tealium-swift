@@ -33,7 +33,7 @@ class CustomSearchBarViewController: UIViewController, UISearchBarDelegate {
 
         // Set the bookmark image for both normal and highlighted states.
         let bookmarkImage = UIImage(named: "bookmark_icon")
-        searchBar.setImage(bookmarkImage, for: .bookmark, state: UIControlState())
+        searchBar.setImage(bookmarkImage, for: .bookmark, state: UIControl.State())
 
         let bookmarkHighlightedImage = UIImage(named: "bookmark_icon_highlighted")
         searchBar.setImage(bookmarkHighlightedImage, for: .bookmark, state: .highlighted)

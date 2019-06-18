@@ -51,7 +51,7 @@ class DefaultToolbarViewController: UIViewController {
 
     // MARK: - Actions
 
-    func barButtonItemClicked(_ barButtonItem: UIBarButtonItem) {
+    @objc func barButtonItemClicked(_ barButtonItem: UIBarButtonItem) {
         NSLog("A bar button item on the default toolbar was clicked: \(barButtonItem).")
     }
 }

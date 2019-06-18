@@ -18,6 +18,11 @@ class TealiumCollectPostDispatcher: TealiumCollectProtocol {
     var dispatchURL: String
     static var defaultDispatchURL = "https://collect.tealiumiq.com/event/"
 
+    /// Initializes dispatcher
+    ///
+    /// - Parameters:
+    /// - dispatchURL: String representation of the dispatch URL
+    /// - completion: Completion handler to run when the dispatcher has finished initializing
     init(dispatchURL: String, _ completion: @escaping ((_ dispatcher: TealiumCollectPostDispatcher?) -> Void)) {
         // not compatible with vdata endpoint - default to event endpoint
         if dispatchURL.contains("vdata/i.gif") {
@@ -31,6 +36,9 @@ class TealiumCollectPostDispatcher: TealiumCollectProtocol {
         }
     }
 
+    /// Sets up the URL session object for later use
+    ///
+    /// - Parameter completion: Optional completion to be called when session setup is complete
     func setupURLSession(_ completion: (() -> Void)?) {
         self.urlSessionConfiguration = URLSessionConfiguration.default
         if let urlSessionConfiguration = self.urlSessionConfiguration {
@@ -39,6 +47,11 @@ class TealiumCollectPostDispatcher: TealiumCollectProtocol {
         completion?()
     }
 
+    /// Dispatches data to an HTTP endpoint, then calls optional completion block when finished
+    ///
+    /// - Parameters:
+    /// - data: [String:Any] of variables to be dispatched
+    /// - completion: Optional completion block to be called when operation complete
     func dispatch(data: [String: Any],
                   completion: TealiumCompletion?) {
         if let jsonString = jsonStringWithDictionary(data), let urlRequest = urlPOSTRequestWithJSONString(jsonString, dispatchURL: dispatchURL) {
@@ -48,6 +61,11 @@ class TealiumCollectPostDispatcher: TealiumCollectProtocol {
         }
     }
 
+    /// Sends a URLRequest, then calls the completion handler, passing success/failures back to the completion handler
+    ///
+    /// - Parameters:
+    /// - request: URLRequest object
+    /// - completion: Optional completion block to handle success/failure
     func sendURLRequest(_ request: URLRequest, _ completion: TealiumCompletion?) {
         if let urlSession = self.urlSession {
             let task = urlSession.dataTask(with: request) { _, response, error in

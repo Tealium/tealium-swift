@@ -19,7 +19,7 @@ class TealiumAppDataTests: XCTestCase {
         super.setUp()
 
         let helper = TestTealiumHelper()
-        let enableRequest = TealiumEnableRequest(config: helper.getConfig())
+        let enableRequest = TealiumEnableRequest(config: helper.getConfig(), enableCompletion: nil)
         let module = TealiumAppDataModule(delegate: self)
         module.enable(enableRequest)
 
@@ -67,7 +67,7 @@ class TealiumAppDataTests: XCTestCase {
 
         let checkData = [
             "app_uuid": testUuid as AnyObject,
-            "tealium_visitor_id": manualVid as AnyObject
+            "tealium_visitor_id": manualVid as AnyObject,
         ]
 
         XCTAssertTrue(checkData == newData, "Mismatch between newPersistentData:\n\(newData) \nAnd manualCheckData:\n\(checkData)")
@@ -93,7 +93,8 @@ class TealiumAppDataTests: XCTestCase {
                             "app_rdns",
                             "app_version",
                             "app_uuid",
-                            "tealium_visitor_id"]
+                            "tealium_visitor_id",
+        ]
 
         let result = appData.getData()
         for key in expectedKeys where result[key] == nil {

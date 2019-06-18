@@ -148,7 +148,7 @@ class TealiumModulesTest: XCTestCase {
 
         let modulesManager = TealiumModulesManager()
         modulesManager.setupModulesFrom(config: initialConfig)
-        modulesManager.enable(config: initialConfig)
+        modulesManager.enable(config: initialConfig, enableCompletion: nil)
 
         XCTAssert(modulesManager.modules.count == (numberOfCurrentModules - modulesList.moduleNames.count), "Incorrect number of enabled modules: \(modulesManager.modules)")
 

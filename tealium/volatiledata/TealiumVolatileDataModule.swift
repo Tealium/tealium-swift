@@ -11,7 +11,6 @@ import Foundation
 import TealiumCore
 #endif
 
-// MARK: 
 // MARK: CONSTANTS
 
 public enum TealiumVolatileDataKey {
@@ -19,11 +18,16 @@ public enum TealiumVolatileDataKey {
     static let random = "tealium_random"
     static let sessionId = "tealium_session_id"
     public static let timestampEpoch = "tealium_timestamp_epoch"
-    static let timestamp = "event_timestamp_iso"
-    static let timestampLocal = "event_timestamp_local_iso"
-    static let timestampOffset = "event_timestamp_offset_hours"
-    static let timestampUnixMillis = "event_timestamp_unix_millis"
-    static let timestampUnix = "event_timestamp_unix"
+    static let timestampLegacy = "event_timestamp_iso"
+    static let timestamp = "timestamp"
+    static let timestampLocalLegacy = "event_timestamp_local_iso"
+    static let timestampLocal = "timestamp_local"
+    static let timestampOffsetLegacy = "event_timestamp_offset_hours"
+    static let timestampOffset = "timestamp_offset"
+    static let timestampUnixMillisecondsLegacy = "event_timestamp_unix_millis"
+    static let timestampUnixMilliseconds = "timestamp_unix_milliseconds"
+    static let timestampUnixLegacy = "event_timestamp_unix"
+    static let timestampUnix = "timestamp_unix"
 }
 
 // MARK: 
@@ -55,6 +59,22 @@ class TealiumVolatileDataModule: TealiumModule {
                                    enabled: true)
     }
 
+    override func handle(_ request: TealiumRequest) {
+        if let request = request as? TealiumEnableRequest {
+             enable(request)
+        } else if let request = request as? TealiumDisableRequest {
+            disable(request)
+        } else if let request = request as? TealiumTrackRequest {
+            track(request)
+        } else if let request = request as? TealiumJoinTraceRequest {
+            joinTrace(request: request)
+        } else if let request = request as? TealiumLeaveTraceRequest {
+            leaveTrace(request: request)
+        } else {
+            didFinishWithNoResponse(request)
+        }
+    }
+
     override func enable(_ request: TealiumEnableRequest) {
         isEnabled = true
         let config = request.config
@@ -64,7 +84,8 @@ class TealiumVolatileDataModule: TealiumModule {
                                                 TealiumKey.environment: config.environment,
                                                 TealiumKey.libraryName: TealiumValue.libraryName,
                                                 TealiumKey.libraryVersion: TealiumValue.libraryVersion,
-                                                TealiumVolatileDataKey.sessionId: TealiumVolatileData.newSessionId()]
+                                                TealiumVolatileDataKey.sessionId: TealiumVolatileData.newSessionId(),
+        ]
 
         volatileData.add(data: currentStaticData)
 
@@ -92,5 +113,21 @@ class TealiumVolatileDataModule: TealiumModule {
                                            completion: track.completion)
         didFinish(newTrack)
         volatileData.lastTrackEvent = Date()
+    }
+
+    /// Adds Trace ID to all outgoing track requests
+    ///
+    /// - Parameter request: TealiumJoinTraceRequest
+    func joinTrace(request: TealiumJoinTraceRequest) {
+        self.volatileData.add(data: [TealiumKey.traceId: request.traceId])
+        didFinish(request)
+    }
+
+    /// Removes trace ID from outgoing track requests
+    ///
+    /// - Parameter request: TealiumLeaveTraceRequest
+    func leaveTrace(request: TealiumLeaveTraceRequest) {
+        self.volatileData.deleteData(forKeys: [TealiumKey.traceId])
+        didFinish(request)
     }
 }

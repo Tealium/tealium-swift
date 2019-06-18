@@ -23,6 +23,11 @@ class TextViewController: UIViewController, UITextViewDelegate {
 
         configureTextView()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        TealiumHelper.shared.trackView(title: self.title ?? "View Controller", data: nil)
+        super.viewDidAppear(animated)
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -30,9 +35,9 @@ class TextViewController: UIViewController, UITextViewDelegate {
         // Listen for changes to keyboard visibility so that we can adjust the text view accordingly.
         let notificationCenter = NotificationCenter.default
 
-        notificationCenter.addObserver(self, selector: #selector(TextViewController.handleKeyboardNotification(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(TextViewController.handleKeyboardNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         
-        notificationCenter.addObserver(self, selector: #selector(TextViewController.handleKeyboardNotification(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(TextViewController.handleKeyboardNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -40,25 +45,25 @@ class TextViewController: UIViewController, UITextViewDelegate {
         
         let notificationCenter = NotificationCenter.default
 
-        notificationCenter.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        notificationCenter.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         
-        notificationCenter.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        notificationCenter.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     // MARK: - Keyboard Event Notifications
 
-    func handleKeyboardNotification(_ notification: Notification) {
+    @objc func handleKeyboardNotification(_ notification: Notification) {
         let userInfo = notification.userInfo!
 
         // Get information about the animation.
-        let animationDuration: TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
+        let animationDuration: TimeInterval = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
         
-        let rawAnimationCurveValue = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).uintValue
-        let animationCurve = UIViewAnimationOptions(rawValue: rawAnimationCurveValue)
+        let rawAnimationCurveValue = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as! NSNumber).uintValue
+        let animationCurve = UIView.AnimationOptions(rawValue: rawAnimationCurveValue)
         
         // Convert the keyboard frame from screen to view coordinates.
-        let keyboardScreenBeginFrame = (userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
-        let keyboardScreenEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let keyboardScreenBeginFrame = (userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
+        let keyboardScreenEndFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         
         let keyboardViewBeginFrame = view.convert(keyboardScreenBeginFrame, from: view.window)
         let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
@@ -71,7 +76,7 @@ class TextViewController: UIViewController, UITextViewDelegate {
         view.setNeedsUpdateConstraints()
 
         // Animate updating the view's layout by calling layoutIfNeeded inside a UIView animation block.
-        let animationOptions: UIViewAnimationOptions = [animationCurve, .beginFromCurrentState]
+        let animationOptions: UIView.AnimationOptions = [animationCurve, .beginFromCurrentState]
         UIView.animate(withDuration: animationDuration, delay: 0, options: animationOptions, animations: {
             self.view.layoutIfNeeded()
         }, completion: nil)
@@ -84,7 +89,7 @@ class TextViewController: UIViewController, UITextViewDelegate {
     // MARK: - Configuration
 
     func configureTextView() {
-        let bodyFontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyle.body)
+        let bodyFontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFont.TextStyle.body)
         let bodyFont = UIFont(descriptor: bodyFontDescriptor, size: 0)
             
         textView.font = bodyFont
@@ -118,16 +123,16 @@ class TextViewController: UIViewController, UITextViewDelegate {
         */
         let boldFontDescriptor = textView.font!.fontDescriptor.withSymbolicTraits(.traitBold)
         let boldFont = UIFont(descriptor: boldFontDescriptor!, size: 0)
-        attributedText.addAttribute(NSFontAttributeName, value: boldFont, range: boldRange)
+        attributedText.addAttribute(NSAttributedString.Key.font, value: boldFont, range: boldRange)
 
         // Add highlight.
-        attributedText.addAttribute(NSBackgroundColorAttributeName, value: UIColor.applicationGreenColor, range: highlightedRange)
+        attributedText.addAttribute(NSAttributedString.Key.backgroundColor, value: UIColor.applicationGreenColor, range: highlightedRange)
 
         // Add underline.
-        attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: underlinedRange)
+        attributedText.addAttribute(NSAttributedString.Key.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: underlinedRange)
 
         // Add tint.
-        attributedText.addAttribute(NSForegroundColorAttributeName, value: UIColor.applicationBlueColor, range: tintedRange)
+        attributedText.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.applicationBlueColor, range: tintedRange)
 
         // Add image attachment.
         let textAttachment = NSTextAttachment()
@@ -140,7 +145,7 @@ class TextViewController: UIViewController, UITextViewDelegate {
 
         // Append a space with matching font of the rest of the body text.
         let appendedSpace = NSMutableAttributedString.init(string: " ")
-        appendedSpace.addAttribute(NSFontAttributeName, value: bodyFont, range: NSMakeRange(0, 1))
+        appendedSpace.addAttribute(NSAttributedString.Key.font, value: bodyFont, range: NSMakeRange(0, 1))
         attributedText.append(appendedSpace)
         
         textView.attributedText = attributedText
@@ -160,7 +165,7 @@ class TextViewController: UIViewController, UITextViewDelegate {
     
     // MARK: - Actions
 
-    func doneBarButtonItemClicked() {
+    @objc func doneBarButtonItemClicked() {
         // Dismiss the keyboard by removing it as the first responder.
         textView.resignFirstResponder()
 

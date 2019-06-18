@@ -12,10 +12,6 @@ import SystemConfiguration
 import TealiumCore
 #endif
 
-public enum TealiumConnectivityConstants {
-    public static let defaultInterval: Int = 30
-}
-
 public class TealiumConnectivity {
 
     static var connectionType: String?
@@ -23,10 +19,13 @@ public class TealiumConnectivity {
     // used to simulate connection status for unit tests
     static var forceConnectionOverride: Bool?
     var timer: TealiumRepeatingTimer?
-    private var connectivityDelegates = TealiumMulticastDelegate<TealiumConnectivityDelegate>()
+    var connectivityDelegates = TealiumMulticastDelegate<TealiumConnectivityDelegate>()
     var currentConnectivityType = ""
     static var currentConnectionStatus: Bool?
 
+    /// Retrieves the current connection type used by the device
+    ///
+    /// - Returns: String containing the current connection type
     public class func currentConnectionType() -> String {
         let isConnected = TealiumConnectivity.isConnectedToNetwork()
         if isConnected == true {
@@ -35,7 +34,10 @@ public class TealiumConnectivity {
         return TealiumConnectivityKey.connectionTypeNone
     }
 
-    // Nod to RAJAMOHAN-S
+    // Credit: RAJAMOHAN-S: https://stackoverflow.com/questions/30743408/check-for-internet-connection-with-swift/39782859#39782859
+    /// Determines if the device has network connectivity
+    ///
+    /// - Returns: Bool (true if device has connectivity)
     class func isConnectedToNetwork() -> Bool {
         // used only for unit testing
         if forceConnectionOverride == true {
@@ -80,77 +82,6 @@ public class TealiumConnectivity {
     }
 
     deinit {
-        timer = nil
-    }
-
-}
-
-public extension TealiumConnectivity {
-
-    func addConnectivityDelegate(delegate: TealiumConnectivityDelegate) {
-        connectivityDelegates.add(delegate)
-    }
-
-    func removeAllConnectivityDelegates() {
-        connectivityDelegates.removeAll()
-    }
-
-    // MARK: Delegate Methods
-    func connectionTypeChanged(_ connectionType: String) {
-        connectivityDelegates.invoke {
-            $0.connectionTypeChanged(connectionType)
-        }
-    }
-
-    // MARK: Delegate Methods
-    func connectionLost() {
-        connectivityDelegates.invoke {
-            $0.connectionLost()
-        }
-    }
-
-    // MARK: Delegate Methods
-    func connectionRestored() {
-        connectivityDelegates.invoke {
-            $0.connectionRestored()
-        }
-    }
-
-    func refreshConnectivityStatus(_ interval: Int = TealiumConnectivityConstants.defaultInterval) {
-        // already an active timer, so don't start a new one
-        if timer != nil {
-            return
-        }
-        TealiumConnectivity.currentConnectionStatus = TealiumConnectivity.isConnectedToNetwork()
-        let queue = DispatchQueue(label: "com.tealium.connectivity")
-        guard let timeInterval = TimeInterval(exactly: interval) else {
-            return
-        }
-        timer = TealiumRepeatingTimer(timeInterval: timeInterval, dispatchQueue: queue)
-        timer?.eventHandler = {
-            let connected = TealiumConnectivity.isConnectedToNetwork()
-            if let connectionType = TealiumConnectivity.connectionType {
-                if connectionType != self.currentConnectivityType {
-                    self.connectionTypeChanged(connectionType)
-                }
-                self.currentConnectivityType = connectionType
-            }
-
-            if connected != TealiumConnectivity.currentConnectionStatus {
-                switch connected {
-                case true:
-                    self.connectionRestored()
-                case false:
-                    self.connectionLost()
-                }
-            }
-            TealiumConnectivity.currentConnectionStatus = TealiumConnectivity.isConnectedToNetwork()
-        }
-        timer?.resume()
-    }
-
-    func cancelAutoStatusRefresh() {
-        timer?.suspend()
         timer = nil
     }
 }

@@ -11,77 +11,7 @@ import Foundation
 import TealiumCore
 #endif
 
-// MARK: 
-// MARK: CONSTANTS
-
-enum TealiumCollectKey {
-    static let moduleName = "collect"
-    static let encodedURLString = "encoded_url"
-    static let overrideCollectUrl = "tealium_override_collect_url"
-    static let overrideCollectProfile = "tealium_override_collect_profile"
-    static let payload = "payload"
-    static let responseHeader = "response_headers"
-    public static let errorHeaderKey = "X-Error"
-    public static let legacyDispatchMethod = "legacy_dispatch_method"
-}
-
-enum TealiumCollectError: Error {
-    case collectNotInitialized
-    case unknownResponseType
-    case xErrorDetected
-    case non200Response
-    case noDataToTrack
-    case unknownIssueWithSend
-}
-
-// MARK: 
-// MARK: EXTENSIONS
-
-public extension Tealium {
-
-    func collect() -> TealiumCollectProtocol? {
-        guard let collectModule = modulesManager.getModule(forName: TealiumCollectKey.moduleName) as? TealiumCollectModule else {
-            return nil
-        }
-
-        return collectModule.collect
-    }
-}
-
-public extension TealiumConfig {
-
-    func setCollectOverrideURL(string: String) {
-        if string.contains("vdata") {
-            var urlString = string
-            var lastChar: Character?
-            lastChar = urlString.last
-
-            if lastChar != "&" {
-                urlString += "&"
-            }
-            optionalData[TealiumCollectKey.overrideCollectUrl] = urlString
-        } else {
-            optionalData[TealiumCollectKey.overrideCollectUrl] = string
-        }
-
-    }
-
-    func setCollectOverrideProfile(profile: String) {
-        optionalData[TealiumCollectKey.overrideCollectProfile] = profile
-    }
-
-    func setLegacyDispatchMethod(_ shouldUseLegacyDispatch: Bool) {
-        optionalData[TealiumCollectKey.legacyDispatchMethod] = shouldUseLegacyDispatch
-    }
-
-}
-
-// MARK: 
-// MARK: MODULE SUBCLASS
-
-/**
- Dispatch Service Module for sending track data to the Tealium Collect or custom endpoint.
- */
+/// Dispatch Service Module for sending track data to the Tealium Collect or custom endpoint.
 class TealiumCollectModule: TealiumModule {
 
     var collect: TealiumCollectProtocol?
@@ -93,6 +23,9 @@ class TealiumCollectModule: TealiumModule {
                                    enabled: true)
     }
 
+    /// Enables the module and loads sets up a dispatcher
+    ///
+    /// - Parameter request: TealiumEnableRequest - the request from the core library to enable this module
     override func enable(_ request: TealiumEnableRequest) {
         isEnabled = true
         config = request.config
@@ -113,12 +46,9 @@ class TealiumCollectModule: TealiumModule {
         }
     }
 
-    override func disable(_ request: TealiumDisableRequest) {
-        isEnabled = false
-        self.collect = nil
-        didFinish(request)
-    }
-
+    /// Adds relevant info to the track request, then passes the request to a dipatcher for processing
+    ///
+    /// - Parameter track: TealiumTrackRequest to be dispatched
     override func track(_ track: TealiumTrackRequest) {
         if isEnabled == false {
             didFinishWithNoResponse(track)
@@ -151,6 +81,11 @@ class TealiumCollectModule: TealiumModule {
 
     }
 
+    /// Called when the module successfully finished processing a request
+    ///
+    /// - Parameters:
+    /// - request: TealiumRequest that was processed
+    /// - info: [String: Any]? containing additional information about the request processing
     func didFinish(_ request: TealiumRequest,
                    info: [String: Any]?) {
         var newRequest = request
@@ -164,6 +99,12 @@ class TealiumCollectModule: TealiumModule {
                                         process: newRequest)
     }
 
+    /// Called when the module failed for to complete a request
+    ///
+    /// - Parameters:
+    /// - request: TealiumRequest that failed
+    /// - info: [String: Any]? containing information about the failure
+    /// - error: Error with precise information about the failure
     func didFailToFinish(_ request: TealiumRequest,
                          info: [String: Any]?,
                          error: Error) {
@@ -177,6 +118,11 @@ class TealiumCollectModule: TealiumModule {
                                         process: newRequest)
     }
 
+    /// Sends a track request to a specified dispatcher
+    ///
+    /// - Parameters:
+    /// - track: TealiumTrackRequest to be processed
+    /// - collect: TealiumCollectProtocol instance to be used for this dispatch
     func dispatch(_ track: TealiumTrackRequest,
                   collect: TealiumCollectProtocol) {
 
@@ -210,6 +156,15 @@ class TealiumCollectModule: TealiumModule {
             self.didFinish(track,
                            info: trackInfo)
         })
+    }
+
+    /// Disables the module
+    ///
+    /// - Parameter request: TealiumDisableRequest
+    override func disable(_ request: TealiumDisableRequest) {
+        isEnabled = false
+        self.collect = nil
+        didFinish(request)
     }
 
     deinit {

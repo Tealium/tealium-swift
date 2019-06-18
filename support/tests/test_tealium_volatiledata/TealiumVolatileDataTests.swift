@@ -17,7 +17,7 @@ class TealiumVolatileDataTests: XCTestCase {
         super.setUp()
 
         let helper = TestTealiumHelper()
-        let enableRequest = TealiumEnableRequest(config: helper.getConfig())
+        let enableRequest = TealiumEnableRequest(config: helper.getConfig(), enableCompletion: nil)
         let module = TealiumVolatileDataModule(delegate: nil)
         module.enable(enableRequest)
 
@@ -49,7 +49,7 @@ class TealiumVolatileDataTests: XCTestCase {
 
     func testGetDataInitialValues() {
         guard let volatileData = self.volatileData else {
-            XCTFail("TealiumVolatileData did not spin up expectedly.")
+            XCTFail("TealiumVolatileData did not spin up as expected.")
             return
         }
         let result = volatileData.getData(currentData: [String: Any]())
@@ -66,9 +66,11 @@ class TealiumVolatileDataTests: XCTestCase {
         XCTAssertNotNil(result[TealiumVolatileDataKey.random] as? String)
         XCTAssertNotNil(result[TealiumVolatileDataKey.timestampEpoch] as? String)
         XCTAssertNotNil(result[TealiumVolatileDataKey.timestamp] as? String)
+        XCTAssertNotNil(result[TealiumVolatileDataKey.timestampLegacy] as? String)
         XCTAssertNotNil(result[TealiumVolatileDataKey.timestampLocal] as? String)
-        XCTAssertNotNil(result[TealiumVolatileDataKey.timestampUnixMillis] as? String)
-        XCTAssertNotNil(result[TealiumVolatileDataKey.timestampOffset] as? String)
+        XCTAssertNotNil(result[TealiumVolatileDataKey.timestampLocalLegacy] as? String)
+        XCTAssertNotNil(result[TealiumVolatileDataKey.timestampUnixMilliseconds] as? String)
+        XCTAssertNotNil(result[TealiumVolatileDataKey.timestampUnixMillisecondsLegacy] as? String)
     }
 
     func testGetRandomWithIterator() {
@@ -175,7 +177,7 @@ class TealiumVolatileDataTests: XCTestCase {
         // TODO: test arrays and other value types
         let testData = [
             "a": "1",
-            "b": "2"
+            "b": "2",
         ] as [String: Any]
 
         guard let volatileData = self.volatileData else {
@@ -205,15 +207,20 @@ class TealiumVolatileDataTests: XCTestCase {
 
         XCTAssertNotNil(result[TealiumVolatileDataKey.timestampEpoch] as? String)
         XCTAssertNotNil(result[TealiumVolatileDataKey.timestamp] as? String)
+        XCTAssertNotNil(result[TealiumVolatileDataKey.timestampLegacy] as? String)
         XCTAssertNotNil(result[TealiumVolatileDataKey.timestampLocal] as? String)
-        XCTAssertNotNil(result[TealiumVolatileDataKey.timestampUnixMillis] as? String)
+        XCTAssertNotNil(result[TealiumVolatileDataKey.timestampLocalLegacy] as? String)
+        XCTAssertNotNil(result[TealiumVolatileDataKey.timestampUnixMilliseconds] as? String)
+        XCTAssertNotNil(result[TealiumVolatileDataKey.timestampUnixMillisecondsLegacy] as? String)
+
     }
 
     func testDeleteAll() {
         // TODO: test arrays and other value types
         let testData = [
             "a": "1",
-            "b": "2"] as [String: Any]
+            "b": "2",
+        ] as [String: Any]
 
         guard let volatileData = self.volatileData else {
             XCTFail("TealiumVolatileData did not spin up expectedly.")

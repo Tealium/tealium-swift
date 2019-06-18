@@ -12,6 +12,12 @@ import TealiumCore
 #endif
 
 public protocol TealiumCollectProtocol {
+
+    /// Dispatches data to an HTTP endpoint, then calls optional completion block when finished
+    ///
+    /// - Parameters:
+    /// - data: [String:Any] of variables to be dispatched
+    /// - completion: Optional completion block to be called when operation complete
     func dispatch(data: [String: Any],
                   completion: TealiumCompletion?)
 }

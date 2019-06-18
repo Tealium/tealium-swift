@@ -55,7 +55,7 @@ class TealiumConnectivityModuleTests: XCTestCase {
         self.delegateExpectation = self.expectation(description: "connectivityTrack queue test")
         self.delegateExpectation2 = self.expectation(description: "expected 2nd track request")
         let module = TealiumConnectivityModule(delegate: self)
-        let request = TealiumEnableRequest(config: TestTealiumHelper().getConfig())
+        let request = TealiumEnableRequest(config: TestTealiumHelper().getConfig(), enableCompletion: nil)
         module.enable(request)
         module.isEnabled = true
 
@@ -79,7 +79,7 @@ class TealiumConnectivityModuleTests: XCTestCase {
     func testTrack() {
         self.delegateExpectation = self.expectation(description: "connectivityTrack")
         let module = TealiumConnectivityModule(delegate: self)
-        let request = TealiumEnableRequest(config: TestTealiumHelper().getConfig())
+        let request = TealiumEnableRequest(config: TestTealiumHelper().getConfig(), enableCompletion: nil)
         module.enable(request)
         module.isEnabled = true
 
@@ -91,7 +91,7 @@ class TealiumConnectivityModuleTests: XCTestCase {
 
             let expectedKeys = [
                 "was_queued",
-                "network_connection_type"
+                "network_connection_type",
             ]
 
             for key in expectedKeys where trackData[key] != nil {
@@ -112,7 +112,7 @@ class TealiumConnectivityModuleTests: XCTestCase {
 
     func testDefaultConnectivityInterval() {
         let module = TealiumConnectivityModule(delegate: nil)
-        let request = TealiumEnableRequest(config: TestTealiumHelper().getConfig())
+        let request = TealiumEnableRequest(config: TestTealiumHelper().getConfig(), enableCompletion: nil)
         module.enable(request)
         module.isEnabled = true
         XCTAssertTrue(module.connectivity.timer?.timeInterval == TimeInterval(exactly: TealiumConnectivityConstants.defaultInterval))
@@ -123,7 +123,7 @@ class TealiumConnectivityModuleTests: XCTestCase {
         let config = TestTealiumHelper().getConfig()
         let testInterval = 5
         config.setConnectivityRefreshInterval(interval: testInterval)
-        let request = TealiumEnableRequest(config: TestTealiumHelper().getConfig())
+        let request = TealiumEnableRequest(config: TestTealiumHelper().getConfig(), enableCompletion: nil)
         module.enable(request)
         module.isEnabled = true
         XCTAssertTrue(module.connectivity.timer?.timeInterval == TimeInterval(exactly: testInterval))

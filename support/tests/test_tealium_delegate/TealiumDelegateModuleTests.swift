@@ -45,7 +45,7 @@ class TealiumDelegateModuleTests: XCTestCase {
                                    profile: "test",
                                    environment: "test",
                                    optionalData: nil)
-        module!.enable(TealiumEnableRequest(config: config))
+        module!.enable(TealiumEnableRequest(config: config, enableCompletion: nil))
 
         // Create an array of delegate objects
         let numberOfDelegates = 100

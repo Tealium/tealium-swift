@@ -25,7 +25,7 @@ class TealiumPersistentQueueTests: XCTestCase {
     }
 
     func testMultiple() {
-        for _ in 0...100 {
+        for _ in 0...10 {
             tesStorageKey()
             tesSaveDispatchNonEmptyQueue()
             tesSaveDispatchEmptyQueue()
@@ -55,8 +55,8 @@ class TealiumPersistentQueueTests: XCTestCase {
             assert(dispatches.count == 3, "Should be a total of 3 dispatches in the queue")
             var found = false
             dispatches.forEach { dispatch in
-                if let dis = dispatch as? [String: Any] {
-                    if dis[key] as? String == "true" {
+                if let dispatch = dispatch as? [String: Any] {
+                    if dispatch[key] as? String == "true" {
                         found = true
                     }
                 }
@@ -80,8 +80,8 @@ class TealiumPersistentQueueTests: XCTestCase {
             assert(dispatches.count == 1, "Should be a total of 1 dispatches in the queue")
             var found = false
             dispatches.forEach { dispatch in
-                if let dis = dispatch as? [String: Any] {
-                    if dis[key] as? String == "true" {
+                if let dispatch = dispatch as? [String: Any] {
+                    if dispatch[key] as? String == "true" {
                         found = true
                     }
                 }
@@ -101,7 +101,9 @@ class TealiumPersistentQueueTests: XCTestCase {
                 mockQueue.saveDispatch(track)
                 sleep(1)
                 mockQueue.clearQueue()
-                assert(mockDefaults.array(forKey: mockQueue.storageKey)?.count == 0, "Clear queue failed. Returned a non-empty queue")
+                // added sleep to avoid threading issue (assertion happening before queue has finished clearing)
+                sleep(1)
+                XCTAssertTrue(mockDefaults.array(forKey: mockQueue.storageKey)?.count == 0, "Clear queue failed. Returned a non-empty queue")
             }
         }
     }

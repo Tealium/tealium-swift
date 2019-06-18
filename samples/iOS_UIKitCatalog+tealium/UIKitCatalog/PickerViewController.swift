@@ -58,6 +58,11 @@ class PickerViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
 
         configurePickerView()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        TealiumHelper.shared.trackView(title: self.title ?? "View Controller", data: nil)
+        super.viewDidAppear(animated)
+    }
 
     // MARK: - Convenience
     
@@ -120,7 +125,7 @@ class PickerViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
 
         // Set the foreground color for the entire attributed string.
         let attributes = [
-            NSForegroundColorAttributeName: foregroundColor
+            NSAttributedString.Key.foregroundColor: foregroundColor
         ]
 
         let title = NSMutableAttributedString(string: "\(Int(colorValue))", attributes: attributes)

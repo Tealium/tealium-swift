@@ -35,6 +35,11 @@ class AlertControllerViewController : UITableViewController {
         ]
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        TealiumHelper.shared.trackView(title: self.title ?? "View Controller", data: nil)
+        super.viewDidAppear(animated)
+    }
+    
     // MARK: - UIAlertControllerStyleAlert Style Alerts
 
     /// Show an alert with an "Okay" button.
@@ -53,7 +58,9 @@ class AlertControllerViewController : UITableViewController {
         // Add the action.
         alertController.addAction(cancelAction)
 
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true) {
+            TealiumHelper.shared.track(title: "Simple Alert", data: nil)
+        }
     }
     
     /// Show an alert with an "Okay" and "Cancel" button.
@@ -78,7 +85,9 @@ class AlertControllerViewController : UITableViewController {
         alertCotroller.addAction(cancelAction)
         alertCotroller.addAction(otherAction)
 
-        present(alertCotroller, animated: true, completion: nil)
+        present(alertCotroller, animated: true) {
+            TealiumHelper.shared.track(title: "OK Cancel Alert", data: nil)
+        }
     }
 
     /// Show an alert with two custom buttons.
@@ -109,7 +118,9 @@ class AlertControllerViewController : UITableViewController {
         alertController.addAction(otherButtonOneAction)
         alertController.addAction(otherButtonTwoAction)
         
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true) {
+            TealiumHelper.shared.track(title: "Custom Alert", data: nil)
+        }
     }
 
     /// Show a text entry alert with two custom buttons.
@@ -139,7 +150,9 @@ class AlertControllerViewController : UITableViewController {
         alertController.addAction(cancelAction)
         alertController.addAction(otherAction)
         
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true) {
+            TealiumHelper.shared.track(title: "Text Entry Alert", data: nil)
+        }
     }
     
     /// Show a secure text entry alert with two custom buttons.
@@ -158,7 +171,7 @@ class AlertControllerViewController : UITableViewController {
                 action's enabled property based on whether the user has entered a sufficiently
                 secure entry.
             */
-            NotificationCenter.default.addObserver(self, selector: #selector(AlertControllerViewController.handleTextFieldTextDidChangeNotification(_:)), name: NSNotification.Name.UITextFieldTextDidChange, object: textField)
+            NotificationCenter.default.addObserver(self, selector: #selector(AlertControllerViewController.handleTextFieldTextDidChangeNotification(_:)), name: UITextField.textDidChangeNotification, object: textField)
             
             textField.isSecureTextEntry = true
         }
@@ -167,8 +180,8 @@ class AlertControllerViewController : UITableViewController {
             Stop listening for text change notifications on the text field. This
             closure will be called in the two action handlers.
         */
-        let removeTextFieldObserver: (Void) -> Void = {
-            NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UITextFieldTextDidChange, object: alertController.textFields!.first)
+        let removeTextFieldObserver: () -> Void = {
+            NotificationCenter.default.removeObserver(self, name: UITextField.textDidChangeNotification, object: alertController.textFields!.first)
         }
 
         // Create the actions.
@@ -197,7 +210,9 @@ class AlertControllerViewController : UITableViewController {
         alertController.addAction(cancelAction)
         alertController.addAction(otherAction)
         
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true) {
+            TealiumHelper.shared.track(title: "Secure Text Entry Alert", data: nil)
+        }
     }
     
     // MARK: - UIAlertControllerStyleActionSheet Style Alerts
@@ -231,7 +246,9 @@ class AlertControllerViewController : UITableViewController {
             popoverPresentationController.permittedArrowDirections = .up
         }
         
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true) {
+            TealiumHelper.shared.track(title: "OK Cancel Action Sheet Alert", data: nil)
+        }
     }
 
     /// Show a dialog with two custom buttons.
@@ -263,17 +280,19 @@ class AlertControllerViewController : UITableViewController {
             popoverPresentationController.permittedArrowDirections = .up
         }
         
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true) {
+            TealiumHelper.shared.track(title: "Other Action Sheet Alert", data: nil)
+        }
     }
     
     // MARK: - UITextFieldTextDidChangeNotification
 
-    func handleTextFieldTextDidChangeNotification(_ notification: Notification) {
+    @objc func handleTextFieldTextDidChangeNotification(_ notification: Notification) {
         let textField = notification.object as! UITextField
 
         // Enforce a minimum length of >= 5 characters for secure text alerts.
         if let text = textField.text {
-            secureTextAlertAction!.isEnabled = text.characters.count >= 5
+            secureTextAlertAction!.isEnabled = text.count >= 5
         }
         else {
             secureTextAlertAction!.isEnabled = false

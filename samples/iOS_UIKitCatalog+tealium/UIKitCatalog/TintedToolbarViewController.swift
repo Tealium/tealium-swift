@@ -56,7 +56,7 @@ class TintedToolbarViewController: UIViewController {
 
     // MARK: - Actions
 
-    func barButtonItemClicked(_ barButtonItem: UIBarButtonItem) {
+    @objc func barButtonItemClicked(_ barButtonItem: UIBarButtonItem) {
         NSLog("A bar button item on the tinted toolbar was clicked: \(barButtonItem).")
     }
 }

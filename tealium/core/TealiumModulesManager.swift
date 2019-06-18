@@ -8,9 +8,7 @@
 
 import Foundation
 
-/**
- Coordinates optional modules with primary Tealium class.
- */
+/// Coordinates optional modules with primary Tealium class.
 open class TealiumModulesManager: NSObject {
 
     weak var queue: DispatchQueue?
@@ -194,9 +192,7 @@ extension TealiumModulesManager: TealiumModuleDelegate {
 // MARK: MODULEMANAGER EXTENSIONS
 extension Array where Element: TealiumModule {
 
-    /**
-     Convenience for sorting Arrays of TealiumModules by priority number: Lower numbers going first.
-     */
+    /// Convenience for sorting Arrays of TealiumModules by priority number: Lower numbers going first.
     func prioritized() -> [TealiumModule] {
         return self.sorted {
             type(of: $0).moduleConfig().priority < type(of: $1).moduleConfig().priority
@@ -214,9 +210,7 @@ extension Array where Element: TealiumModule {
 }
 
 extension Array where Element: Equatable {
-    /**
-     Convenience for getting the next object in a given array.
-     */
+    /// Convenience for getting the next object in a given array.
     func next(after: Element) -> Element? {
         for itr in 0..<self.count {
             let object = self[itr]

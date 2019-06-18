@@ -8,10 +8,7 @@
 
 import Foundation
 
-/**
-    Configuration struct for TealiumModule subclasses.
- 
- */
+/// Configuration struct for TealiumModule subclasses.
 open class TealiumModuleConfig: CustomStringConvertible {
 
     public let name: String

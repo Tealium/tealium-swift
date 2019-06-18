@@ -10,6 +10,13 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    #if os(iOS)
+    private var sharedApplication: UIApplication? {
+        let selector = NSSelectorFromString("sharedApplication")
+        return UIApplication.perform(selector)?.takeUnretainedValue() as? UIApplication
+    }
+    #endif
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -26,7 +33,9 @@ class ViewController: UIViewController {
         helper.track(title: "hello", data:
             ["nested_object":["hello":123],
              "array_strings":["123","456"],
-             "complex_nested_array": ["hello_again":["123","456"]]
+             "complex_nested_array": [
+                "hello_again":["123","456"],
+                ],
             ])
     }
     

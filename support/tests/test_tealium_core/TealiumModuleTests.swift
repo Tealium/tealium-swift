@@ -62,7 +62,7 @@ class TealiumModuleTests: XCTestCase {
         expectationSuccess = self.expectation(description: "testSuccess")
 
         // Enable process
-        var processSuccess = TealiumEnableRequest(config: testTealiumConfig)
+        var processSuccess = TealiumEnableRequest(config: testTealiumConfig, enableCompletion: nil)
         let successResponse = TealiumModuleResponse(moduleName: "testModule",
                                                     success: true,
                                                     error: nil)

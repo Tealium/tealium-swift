@@ -23,6 +23,11 @@ class SwitchViewController: UITableViewController {
         configureDefaultSwitch()
         configureTintedSwitch()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        TealiumHelper.shared.trackView(title: self.title ?? "View Controller", data: nil)
+        super.viewDidAppear(animated)
+    }
 
     // MARK: - Configuration
 
@@ -42,7 +47,7 @@ class SwitchViewController: UITableViewController {
 
     // MARK: - Actions
 
-    func switchValueDidChange(_ aSwitch: UISwitch) {
+    @objc func switchValueDidChange(_ aSwitch: UISwitch) {
         NSLog("A switch changed its value: \(aSwitch).")
     }
 }

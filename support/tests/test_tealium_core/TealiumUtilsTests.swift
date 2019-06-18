@@ -28,7 +28,7 @@ class TealiumUtilsTests: XCTestCase {
     func testJSONStringWithDictionary() {
         let dictionary = ["tealium_account": "hello",
                           "tealium_environment": "dev",
-                          "tealium_profile": "tester"
+                          "tealium_profile": "tester",
         ]
 
         XCTAssertTrue(testJSONString == jsonStringWithDictionary(dictionary))

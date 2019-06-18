@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="eBF-vV-lGB">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Blue View Controller-->
+        <scene sceneID="b8j-GN-sfy">
+            <objects>
+                <viewController storyboardIdentifier="BlueViewController" title="Blue View Controller" id="1ig-aP-ulh" customClass="BlueViewController" customModule="Swift_WKWebView" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="gd6-YR-DyJ">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QGr-pS-k3u">
+                                <rect key="frame" x="170" y="96" width="74.5" height="30"/>
+                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Track">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="joinTrace:" destination="1ig-aP-ulh" eventType="editingDidEnd" id="Ggt-4D-iwe"/>
+                                    <action selector="trackButtonPress:" destination="1ig-aP-ulh" eventType="touchDown" id="mBr-ME-7pc"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Trace ID" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DAe-Ei-8J3">
+                                <rect key="frame" x="170" y="194" width="74.5" height="30"/>
+                                <accessibility key="accessibilityConfiguration" identifier="traceId"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad" returnKeyType="join" enablesReturnKeyAutomatically="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="QGr-pS-k3u" firstAttribute="centerX" secondItem="kfP-lz-uo1" secondAttribute="centerX" id="Dlh-7A-K3w"/>
+                            <constraint firstItem="DAe-Ei-8J3" firstAttribute="width" secondItem="QGr-pS-k3u" secondAttribute="width" id="HGu-Kh-xXA"/>
+                            <constraint firstItem="DAe-Ei-8J3" firstAttribute="top" secondItem="kfP-lz-uo1" secondAttribute="top" constant="106" id="NMZ-1U-CNZ"/>
+                            <constraint firstItem="QGr-pS-k3u" firstAttribute="top" secondItem="kfP-lz-uo1" secondAttribute="top" constant="8" id="WoQ-lh-6x6"/>
+                            <constraint firstItem="DAe-Ei-8J3" firstAttribute="centerX" secondItem="QGr-pS-k3u" secondAttribute="centerX" id="ulx-zn-5Tq"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="kfP-lz-uo1"/>
+                    </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Blue View Controller" id="vuM-Ck-3xw">
+                        <barButtonItem key="rightBarButtonItem" title="Green" id="sM4-wE-zii">
+                            <connections>
+                                <action selector="onPush:" destination="1ig-aP-ulh" id="4ea-zB-L5H"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="traceId" destination="DAe-Ei-8J3" id="fn7-NY-IUb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rea-aQ-zrK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1112" y="-889"/>
+        </scene>
+        <!--Green View Controller-->
+        <scene sceneID="fwc-9B-mLL">
+            <objects>
+                <viewController storyboardIdentifier="GreenViewController" title="Green View Controller" id="uUT-eF-Nnf" customClass="GreenViewController" customModule="Swift_WKWebView" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="kyS-D0-m96">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pU1-FC-jSz">
+                                <rect key="frame" x="180" y="96" width="54" height="30"/>
+                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Track">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="trackButtonPress:" destination="uUT-eF-Nnf" eventType="touchDown" id="aar-ld-Bgt"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ViD-qF-MxO">
+                                <rect key="frame" x="180" y="164" width="54" height="30"/>
+                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Dismiss">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="dismissFromView:" destination="uUT-eF-Nnf" eventType="touchDown" id="P4A-PM-fCj"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.038321777014774572" green="1" blue="0.46993351698005004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <accessibility key="accessibilityConfiguration" identifier="GreenViewController"/>
+                        <constraints>
+                            <constraint firstItem="ViD-qF-MxO" firstAttribute="width" secondItem="pU1-FC-jSz" secondAttribute="width" id="1pf-8U-sch"/>
+                            <constraint firstItem="pU1-FC-jSz" firstAttribute="top" secondItem="M4T-BZ-fot" secondAttribute="top" constant="8" id="Cfg-4q-gyD"/>
+                            <constraint firstItem="ViD-qF-MxO" firstAttribute="top" secondItem="M4T-BZ-fot" secondAttribute="top" constant="80" id="H5T-mk-4lc"/>
+                            <constraint firstItem="ViD-qF-MxO" firstAttribute="centerX" secondItem="M4T-BZ-fot" secondAttribute="centerX" id="KVZ-lw-Uoj"/>
+                            <constraint firstItem="ViD-qF-MxO" firstAttribute="height" secondItem="pU1-FC-jSz" secondAttribute="height" id="djZ-1v-Jg7"/>
+                            <constraint firstItem="pU1-FC-jSz" firstAttribute="centerX" secondItem="M4T-BZ-fot" secondAttribute="centerX" id="fws-ml-srX"/>
+                            <constraint firstItem="ViD-qF-MxO" firstAttribute="centerX" secondItem="pU1-FC-jSz" secondAttribute="centerX" id="hXD-rf-IWq"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="M4T-BZ-fot"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Green View Controller" id="LE4-fI-SH2">
+                        <barButtonItem key="rightBarButtonItem" title="Dismiss" id="6hS-If-CMY">
+                            <connections>
+                                <action selector="dismissFromView:" destination="uUT-eF-Nnf" id="Kzr-Q9-Bcr"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cxL-6D-UD1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1924.6376811594205" y="-889.28571428571422"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="8A4-do-lJr">
+            <objects>
+                <navigationController id="eBF-vV-lGB" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="A7H-kF-amG">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="1ig-aP-ulh" kind="relationship" relationship="rootViewController" id="wxC-m1-tqC"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="D1W-ad-aaR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-6" y="-889"/>
+        </scene>
+    </scenes>
+</document>

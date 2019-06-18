@@ -128,12 +128,10 @@ public class TealiumPLCrash: TealiumAppDataCollection {
         }
     }
 
-    /**
-     Provides thread state information
-     
-     - parameter truncate: If enabled, returns just the crashed thread only, otherwise returns all the threads. Default value is false.
-     - returns: an array of [String: Any]
-     */
+    /// Provides thread state information
+    ///
+    /// - Parameter truncate: If enabled, returns just the crashed thread only, otherwise returns all the threads. Default value is false.
+    /// - Returns: an array of [String: Any]
     func threads(truncate: Bool = false) -> [[String: Any]] {
         var array = [[String: Any]]()
         guard let threadInfos = threadInfos else {
@@ -183,12 +181,10 @@ public class TealiumPLCrash: TealiumAppDataCollection {
         return array
     }
 
-    /**
-     Gets the images that are loaded with the app
-     
-     - parameter truncate: If enabled, returns just the first image loaded, otherwise returns all the images. Default value is false.
-     - returns: an array of [String: Any]
-     */
+    /// Gets the images that are loaded with the app
+    ///
+    /// - Parameter truncate: If enabled, returns just the first image loaded, otherwise returns all the images. Default value is false.
+    /// - Returns: an array of [String: Any]
     func libraries(truncate: Bool = false) -> [[String: Any]] {
         var array = [[String: Any]]()
         var formatted = [String: Any]()
@@ -212,11 +208,20 @@ public class TealiumPLCrash: TealiumAppDataCollection {
         return array
     }
 
+    /// Gets all crash-related variables
+    ///
+    /// - Parameters:
+    /// - truncateLibraries: Bool indicating whether the libraries component of the report should be truncated
+    /// - truncateThreads: Bool indicating whether the threads component of the report should be truncated
+    ///
+    /// - Returns: [String: Any] containing all crash-related variables
     public func getData(truncateLibraries: Bool = false, truncateThreads: Bool = false) -> [String: Any] {
         // get last crash report if it exists
         return [TealiumKey.event: TealiumPLCrash.CrashEvent,
                 TealiumCrashKey.uuid: uuid,
+                TealiumCrashKey.deviceMemoryUsageLegacy: memoryUsage,
                 TealiumCrashKey.deviceMemoryUsage: memoryUsage,
+                TealiumCrashKey.deviceMemoryAvailableLegacy: deviceMemoryAvailable,
                 TealiumCrashKey.deviceMemoryAvailable: deviceMemoryAvailable,
                 TealiumCrashKey.deviceOsBuild: osBuild,
                 TealiumAppDataKey.build: appBuild(),
@@ -230,26 +235,18 @@ public class TealiumPLCrash: TealiumAppDataCollection {
                 TealiumCrashKey.signalName: signalName ?? TealiumPLCrash.CrashDataUnknown,
                 TealiumCrashKey.signalAddress: signalAddress ?? TealiumPLCrash.CrashDataUnknown,
                 TealiumCrashKey.libraries: libraries(truncate: truncateLibraries),
-                TealiumCrashKey.threads: threads(truncate: truncateThreads)]
+                TealiumCrashKey.threads: threads(truncate: truncateThreads),
+        ]
     }
 
+    /// Gets all crash-related variables
+    ///
+    /// - Parameters:
+    /// - truncate: Bool indicating whether the libraries and threads components of the report should be truncated
+    ///
+    /// - Returns: [String: Any] containing all crash-related variables
     public func getData(truncate: Bool) -> [String: Any] {
-        return [TealiumKey.event: TealiumPLCrash.CrashEvent,
-                TealiumCrashKey.uuid: uuid,
-                TealiumCrashKey.deviceMemoryUsage: memoryUsage,
-                TealiumCrashKey.deviceMemoryAvailable: deviceMemoryAvailable,
-                TealiumCrashKey.deviceOsBuild: osBuild,
-                TealiumAppDataKey.build: appBuild(),
-                TealiumCrashKey.processId: processIdentifier ?? TealiumPLCrash.CrashDataUnknown,
-                TealiumCrashKey.processPath: processPath ?? TealiumPLCrash.CrashDataUnknown,
-                TealiumCrashKey.parentProcess: parentProcessName ?? TealiumPLCrash.CrashDataUnknown,
-                TealiumCrashKey.parentProcessId: parentProcessIdentifier ?? TealiumPLCrash.CrashDataUnknown,
-                TealiumCrashKey.exceptionName: exceptionName ?? TealiumPLCrash.CrashDataUnknown,
-                TealiumCrashKey.exceptionReason: exceptionReason ?? TealiumPLCrash.CrashDataUnknown,
-                TealiumCrashKey.signalCode: signalCode ?? TealiumPLCrash.CrashDataUnknown,
-                TealiumCrashKey.signalName: signalName ?? TealiumPLCrash.CrashDataUnknown,
-                TealiumCrashKey.signalAddress: signalAddress ?? TealiumPLCrash.CrashDataUnknown,
-                TealiumCrashKey.libraries: libraries(truncate: truncate),
-                TealiumCrashKey.threads: threads(truncate: truncate)]
+
+        return getData(truncateLibraries: truncate, truncateThreads: truncate)
     }
 }

@@ -10,71 +10,11 @@ import Foundation
 #if tagmanagement
 import TealiumCore
 #endif
-// MARK: 
-// MARK: CONSTANTS
-// swiftlint:disable file_length
-enum TealiumTagManagementKey {
-    static let jsCommand = "js_command"
-    static let jsResult = "js_result"
-    static let moduleName = "tagmanagement"
-    static let responseHeader = "response_headers"
-    static let payload = "payload"
-}
 
-enum TealiumTagManagementConfigKey {
-    static let disable = "disable_tag_management"
-    static let maxQueueSize = "tagmanagement_queue_size"
-    static let overrideURL = "tagmanagement_override_url"
-}
-
-enum TealiumTagManagementValue {
-    static let defaultQueueSize = 100
-}
-
-enum TealiumTagManagementError: Error {
-    case couldNotCreateURL
-    case couldNotLoadURL
-    case couldNotJSONEncodeData
-    case noDataToTrack
-    case webViewNotYetReady
-    case unknownDispatchError
-}
-
-// MARK: 
-// MARK: EXTENSIONS
-
-public extension TealiumConfig {
-
-    func setTagManagementQueueSize(queueSize: Int) {
-        optionalData[TealiumTagManagementConfigKey.maxQueueSize] = queueSize
-    }
-
-    func setTagManagementOverrideURL(string: String) {
-        optionalData[TealiumTagManagementConfigKey.overrideURL] = string
-    }
-
-}
-
-// NOTE: UIWebview, the primary element of TealiumTagManagement can not run in XCTests.
-
-#if TEST
-#else
-public extension Tealium {
-
-    func tagManagement() -> TealiumTagManagement? {
-        guard let module = modulesManager.getModule(forName: TealiumTagManagementKey.moduleName) as? TealiumTagManagementModule else {
-            return nil
-        }
-
-        return module.tagManagement
-    }
-}
-#endif
-
-// MARK: 
 // MARK: MODULE SUBCLASS
-
 public class TealiumTagManagementModule: TealiumModule {
+    var tagManagement: TealiumTagManagementProtocol?
+    var remoteCommandResponseObserver: NSObjectProtocol?
 
     override public class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumTagManagementKey.moduleName,
@@ -83,37 +23,37 @@ public class TealiumTagManagementModule: TealiumModule {
                                    enabled: true)
     }
 
+    // NOTE: UIWebview, the primary element of TealiumTagManagement cannot run in XCTests.
     #if TEST
     #else
 
-    fileprivate weak var dispatchQueue: DispatchQueue?
-    var tagManagement = TealiumTagManagement()
-
+    /// Enables the module and sets up the webview instance
+    ///
+    /// - Parameter request: TealiumEnableRequest - the request from the core library to enable this module
     override public func enable(_ request: TealiumEnableRequest) {
+        if request.config.getShouldUseLegacyWebview() == true {
+            self.tagManagement = TealiumTagManagementUIWebView()
+        } else if #available(iOS 11.0, *) {
+            self.tagManagement = TealiumTagManagementWKWebView()
+        } else {
+            self.tagManagement = TealiumTagManagementUIWebView()
+        }
+
         let config = request.config
+        enableNotifications()
         if config.optionalData[TealiumTagManagementConfigKey.disable] as? Bool == true {
             DispatchQueue.main.async {
-                self.tagManagement.disable()
+                self.tagManagement?.disable()
             }
             self.didFinish(request,
                            info: nil)
             return
         }
 
-        let account = config.account
-        let profile = config.profile
-        let environment = config.environment
-        let overrideUrl = config.optionalData[TealiumTagManagementConfigKey.overrideURL] as? String
-
-        dispatchQueue = config.dispatchQueue()
-
         DispatchQueue.main.async {
-            self.tagManagement.enable(forAccount: account,
-                                      profile: profile,
-                                      environment: environment,
-                                      overrideUrl: overrideUrl,
-                                      completion: { _, error in
-                                         self.dispatchQueue?.async {
+            let config = request.config
+            self.tagManagement?.enable(webviewURL: config.webviewURL(), shouldMigrateCookies: true, delegates: config.getWebViewDelegates(), view: config.getRootView()) { _, error in
+                                          DispatchQueue.main.async {
                                              if let err = error {
                                                  self.didFailToFinish(request,
                                                                       error: err)
@@ -121,30 +61,53 @@ public class TealiumTagManagementModule: TealiumModule {
                                              }
                                              self.isEnabled = true
                                              self.didFinish(request)
-                                         }
-                                     })
+                                          }
+            }
         }
     }
 
+    /// Listens for notifications from the Remote Commands module. Typically these will be responses from a Remote Command that has finished executing.
+    func enableNotifications() {
+        remoteCommandResponseObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name(TealiumKey.jsNotificationName), object: nil, queue: OperationQueue.main) { notification in
+            if let userInfo = notification.userInfo, let jsCommand = userInfo[TealiumKey.jsCommand] as? String {
+                // Webview instance will ensure this is processed on the main thread
+                self.tagManagement?.evaluateJavascript(jsCommand, nil)
+            }
+        }
+    }
+
+    /// Disables the Tag Management module
+    ///
+    /// - Parameter request: TealiumDisableRequest indicating that the module should be disabled
     override public func disable(_ request: TealiumDisableRequest) {
         isEnabled = false
         DispatchQueue.main.async {
-            self.tagManagement.disable()
+            self.tagManagement?.disable()
         }
         didFinish(request,
                   info: nil)
     }
 
+    /// Handles the track request and forwards to the webview for processing
+    ///
+    /// - Parameter track: TealiumTrackRequest to be evaluated
     override public func track(_ track: TealiumTrackRequest) {
         if isEnabled == false {
             // Ignore while disabled
             didFinishWithNoResponse(track)
             return
         }
-
-        dispatchTrack(track)
+        var newTrackData = track.data
+        newTrackData[TealiumKey.dispatchService] = TealiumTagManagementKey.moduleName
+        let newTrack = TealiumTrackRequest(data: newTrackData, completion: track.completion)
+        dispatchTrack(newTrack)
     }
 
+    /// Called when the module has finished processing the request
+    ///
+    /// - Parameters:
+    /// - request: TealiumRequest that the module has finished processing
+    /// - info: [String: Any]? optional dictionary containing additional information from the module about how it handled the request
     func didFinish(_ request: TealiumRequest,
                    info: [String: Any]?) {
         var newRequest = request
@@ -158,6 +121,12 @@ public class TealiumTagManagementModule: TealiumModule {
                                              process: newRequest)
     }
 
+    /// Called when the module has failed to process the request
+    ///
+    /// - Parameters:
+    /// - request: TealiumRequest that the module has failed to process
+    /// - info: [String: Any]? optional dictionary containing additional information from the module about how it handled the request
+    /// - error: Error reason
     func didFailToFinish(_ request: TealiumRequest,
                          info: [String: Any]?,
                          error: Error) {
@@ -172,11 +141,14 @@ public class TealiumTagManagementModule: TealiumModule {
                                              process: newRequest)
     }
 
+    /// Sends the track request to the webview
+    ///
+    /// - Parameter track: TealiumTrackRequest to be sent to the webview
     func dispatchTrack(_ track: TealiumTrackRequest) {
         // Dispatch to main thread since webview requires main thread.
         DispatchQueue.main.async {
             // Webview has failed for some reason
-            if self.tagManagement.isWebViewReady() == false {
+            if self.tagManagement?.isWebViewReady() == false {
                 self.didFailToFinish(track,
                                      info: nil,
                                      error: TealiumTagManagementError.webViewNotYetReady)
@@ -185,10 +157,8 @@ public class TealiumTagManagementModule: TealiumModule {
 
             #if TEST
             #else
-            self.tagManagement.track(track.data,
-                                     completion: { success, info, error in
-                                        self.dispatchQueue?.async {
-
+            self.tagManagement?.track(track.data) { success, info, error in
+                                        DispatchQueue.main.async {
                                             track.completion?(success, info, error)
 
                                             if error != nil {
@@ -200,256 +170,9 @@ public class TealiumTagManagementModule: TealiumModule {
                                             self.didFinish(track,
                                                            info: info)
                                         }
-                                    })
+            }
             #endif
         }
     }
     #endif
 }
-
-// MARK: 
-// MARK: TAG MANAGEMENT
-
-#if TEST
-#else
-#if os(iOS)
-import UIKit
-#endif
-enum TealiumTagManagementNotificationKey {
-    static let urlRequestMade = "com.tealium.tagmanagement.urlrequest"
-    static let jsCommandRequested = "com.tealium.tagmanagement.jscommand"
-    static let jsCommand = "js"
-}
-
-/// TIQ Supported dispatch service Module. Utlizies older but simpler UIWebView vs. newer WKWebView.
-public class TealiumTagManagement: NSObject {
-
-    static let defaultUrlStringPrefix = "https://tags.tiqcdn.com/utag"
-
-    var delegates = TealiumMulticastDelegate<UIWebViewDelegate>()
-    var didWebViewFinishLoading = false
-    var account: String = ""
-    var profile: String = ""
-    var environment: String = ""
-    var urlString: String?
-    var webView: UIWebView?
-    var completion: ((Bool, Error?) -> Void)?
-
-    lazy var defaultUrlString: String = {
-        let urlString = "\(TealiumTagManagement.defaultUrlStringPrefix)/\(self.account)/\(self.profile)/\(self.environment)/mobile.html?"
-        return urlString
-    }()
-
-    lazy var urlRequest: URLRequest? = {
-        guard let url = URL(string: self.urlString ?? self.defaultUrlString) else {
-            return nil
-        }
-        let request = URLRequest(url: url)
-        return request
-    }()
-
-    // MARK: PUBLIC
-
-    /// Enable webview system.
-    ///
-    /// - Parameters:
-    ///   - forAccount: Tealium account.
-    ///   - profile: Tealium profile.
-    ///   - environment: Tealium environment.
-    ///   - overridUrl : Optional alternate url to load utag/tealium from.
-    /// - Returns: Boolean if a webview is ready to start.
-    func enable(forAccount: String,
-                profile: String,
-                environment: String,
-                overrideUrl: String?,
-                completion: ((_ success: Bool, _ error: Error?) -> Void)?) {
-        if self.webView != nil {
-            // WebView already enabled.
-            return
-        }
-
-        self.account = forAccount
-        self.profile = profile
-        self.environment = environment
-        if let overrideUrl = overrideUrl {
-            self.urlString = overrideUrl
-        } else {
-            self.urlString = defaultUrlString
-        }
-
-        guard let request = self.urlRequest else {
-            completion?(false, TealiumTagManagementError.couldNotCreateURL)
-            return
-        }
-        self.webView = UIWebView()
-        self.webView?.delegate = self
-        self.webView?.loadRequest(request)
-
-        self.enableNotifications()
-
-        self.completion = completion
-    }
-
-    func enableNotifications() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(processRequest),
-                                               name: Notification.Name(TealiumTagManagementNotificationKey.jsCommandRequested),
-                                               object: nil)
-    }
-
-    @objc
-    func processRequest(sender: Notification) {
-        guard let jsCommandString = sender.userInfo?[TealiumTagManagementNotificationKey.jsCommand] as? String else {
-            return
-        }
-        // Error reporting?
-        DispatchQueue.main.async {
-            _ = self.webView?.stringByEvaluatingJavaScript(from: jsCommandString)
-        }
-    }
-
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-        self.webView?.stopLoading()
-        self.webView?.delegate = nil
-        self.webView = nil
-    }
-
-    /// Disable the webview system.
-    func disable() {
-        self.webView?.stopLoading()
-        self.webView = nil
-    }
-
-    func isTagManagementEnabled() -> Bool {
-        return webView != nil
-    }
-
-    /// Internal webview status check.
-    ///
-    /// - Returns: Bool indicating whether or not the internal webview is ready for dispatching.
-    func isWebViewReady() -> Bool {
-        guard nil != webView else {
-            return false
-        }
-        if didWebViewFinishLoading == false {
-            return false
-        }
-
-        return true
-    }
-
-    /// Process event data for UTAG delivery.
-    ///
-    /// - Parameters:
-    ///   - data: [String:Any] Dictionary of preferrably String or [String] values.
-    ///   - completion: Optional completion handler to call when call completes.
-    public func track(_ data: [String: Any],
-                      completion: ((_ success: Bool, _ info: [String: Any], _ error: Error?) -> Void)?) {
-        var appendedData = data
-        appendedData[TealiumKey.dispatchService] = TealiumTagManagementKey.moduleName
-        guard let encodedPayloadString = jsonStringWithDictionary(appendedData) else {
-            completion?(false,
-                        ["original_payload": appendedData, "sanitized_payload": appendedData],
-                        TealiumTagManagementError.couldNotJSONEncodeData)
-            return
-        }
-
-        let legacyType = TealiumTagManagementUtils.getLegacyType(fromData: appendedData)
-        let javascript = "utag.track(\'\(legacyType)\',\(encodedPayloadString))"
-
-        var info = [String: Any]()
-        info[TealiumKey.dispatchService] = TealiumTagManagementKey.moduleName
-        info[TealiumTagManagementKey.jsCommand] = javascript
-        info += [TealiumTagManagementKey.payload: appendedData]
-        if let result = self.webView?.stringByEvaluatingJavaScript(from: javascript) {
-            info += [TealiumTagManagementKey.jsResult: result]
-        }
-
-        completion?(true, info, nil)
-    }
-
-}
-
-#if swift(>=4.2)
-public typealias WebViewNavigationTypeAlias = UIWebView.NavigationType
-#else
-public typealias WebViewNavigationTypeAlias = UIWebViewNavigationType
-#endif
-
-extension TealiumTagManagement: UIWebViewDelegate {
-    public func webView(_ webView: UIWebView,
-                        shouldStartLoadWith request: URLRequest,
-                        navigationType: WebViewNavigationTypeAlias) -> Bool {
-
-        var shouldStart = true
-
-        // Broadcast request for any listeners (Remote command module)
-        // NOTE: Remote command calls are prefixed with 'tealium://'
-        //  Because there is no direct link between Remote Command
-        //  and Tag Management, such a call would appear as a failed call
-        //  in any web console for this webview.
-        let notification = Notification(name: Notification.Name(TealiumTagManagementNotificationKey.urlRequestMade),
-                                        object: webView,
-                                        userInfo: [TealiumTagManagementNotificationKey.urlRequestMade: request])
-        NotificationCenter.default.post(notification)
-
-        // Look for false from any delegate
-        delegates.invoke {
-            if $0.webView?(webView,
-                           shouldStartLoadWith: request,
-                           navigationType: navigationType) == false {
-                shouldStart = false
-            }
-        }
-
-        return shouldStart
-    }
-
-    public func webViewDidStartLoad(_ webView: UIWebView) {
-        delegates.invoke {
-            $0.webViewDidStartLoad?(webView)
-        }
-    }
-
-    public func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
-        delegates.invoke {
-            $0.webView?(webView, didFailLoadWithError: error)
-        }
-        if didWebViewFinishLoading == true {
-            return
-        }
-        didWebViewFinishLoading = true
-        self.completion?(false, error)
-    }
-
-    public func webViewDidFinishLoad(_ webView: UIWebView) {
-        didWebViewFinishLoading = true
-        delegates.invoke {
-            $0.webViewDidFinishLoad?(webView)
-        }
-
-        DispatchQueue.global(qos: .background).async {
-            self.completion?(true, nil)
-            self.completion = nil
-        }
-    }
-}
-#endif
-
-// MARK: 
-// MARK: UTILS
-
-class TealiumTagManagementUtils {
-
-    class func getLegacyType(fromData: [String: Any]) -> String {
-        // default to link. view will always pass call_type = "view"
-        var legacyType = "link"
-        if let callType = fromData[TealiumKey.callType] as? String {
-            legacyType = callType
-        }
-        return legacyType
-    }
-
-}
-// swiftlint:enable file_length

@@ -16,16 +16,6 @@ import SystemConfiguration
 import TealiumCore
 #endif
 
-enum TealiumConnectivityKey {
-    static let moduleName = "connectivity"
-    static let connectionType = "network_connection_type"
-    static let connectionTypeWifi = "wifi"
-    static let connectionTypeCell = "cellular"
-    static let connectionTypeNone = "none"
-    static let refreshIntervalKey = "refresh_interval"
-    static let refreshEnabledKey = "refresh_enabled"
-}
-
 class TealiumConnectivityModule: TealiumModule {
 
     static var connectionType: String?
@@ -46,6 +36,9 @@ class TealiumConnectivityModule: TealiumModule {
                                    enabled: true)
     }
 
+    /// Custom handler for incoming module requests
+    ///
+    /// - Parameter request: TealiumRequest to be handled by the module
     override func handle(_ request: TealiumRequest) {
         if let request = request as? TealiumEnableRequest {
             enable(request)
@@ -58,6 +51,9 @@ class TealiumConnectivityModule: TealiumModule {
         }
     }
 
+    /// Enables the module and starts connectivity monitoring
+    ///
+    /// - Parameter request: TealiumEnableRequest - the request from the core library to enable this module
     override func enable(_ request: TealiumEnableRequest) {
         super.enable(request)
         connectivity.addConnectivityDelegate(delegate: self)
@@ -65,6 +61,9 @@ class TealiumConnectivityModule: TealiumModule {
         self.refreshConnectivityStatus()
     }
 
+    /// Handles the track request and queues if no connection available (requires DispatchQueue module)
+    ///
+    /// - Parameter track: TealiumTrackRequest to be processed
     override func track(_ request: TealiumTrackRequest) {
         if isEnabled == false {
             didFinishWithNoResponse(request)
@@ -72,7 +71,9 @@ class TealiumConnectivityModule: TealiumModule {
         }
 
         var newData = request.data
-        newData += [TealiumConnectivityKey.connectionType: TealiumConnectivity.currentConnectionType()]
+        newData += [TealiumConnectivityKey.connectionType: TealiumConnectivity.currentConnectionType(),
+                    TealiumConnectivityKey.connectionTypeLegacy: TealiumConnectivity.currentConnectionType(),
+        ]
         let newTrack = TealiumTrackRequest(data: newData,
                                            completion: request.completion)
 
@@ -86,8 +87,7 @@ class TealiumConnectivityModule: TealiumModule {
             delegate?.tealiumModuleRequests(module: self,
                                             process: report)
 
-            // No did finish call. Halting further processing of track within
-            //  module chain.
+            // No did finish call. Halting further processing of track within module chain.
             return
         }
 
@@ -101,6 +101,9 @@ class TealiumConnectivityModule: TealiumModule {
         didFinishWithNoResponse(newTrack)
     }
 
+    /// Enqueues the track request for later transmission
+    ///
+    /// - Parameter track: TealiumTrackRequest to be queued
     func queue(_ track: TealiumTrackRequest) {
         var newData = track.data
         newData[TealiumKey.queueReason] = TealiumConnectivityKey.moduleName
@@ -110,6 +113,7 @@ class TealiumConnectivityModule: TealiumModule {
         delegate?.tealiumModuleRequests(module: self, process: req)
     }
 
+    /// Releases all queued track calls for dispatch
     func release() {
         // queue will be released, but will only be allowed to continue if tracking is allowed when track call is resubmitted
         let req = TealiumReleaseQueuesRequest(typeId: "connectivity", moduleResponses: [TealiumModuleResponse]()) { _, _, _ in
@@ -120,6 +124,7 @@ class TealiumConnectivityModule: TealiumModule {
         delegate?.tealiumModuleRequests(module: self, process: req)
     }
 
+    /// Starts monitoring for connectivity changes
     func refreshConnectivityStatus() {
         if let interval = config?.optionalData[TealiumConnectivityKey.refreshIntervalKey] as? Int {
             connectivity.refreshConnectivityStatus(interval)
@@ -131,39 +136,8 @@ class TealiumConnectivityModule: TealiumModule {
         }
     }
 
+    /// Cancels automatic connectivity checks
     func cancelConnectivityRefresh() {
         connectivity.cancelAutoStatusRefresh()
-    }
-
-}
-
-extension TealiumConnectivityModule: TealiumConnectivityDelegate {
-    func connectionTypeChanged(_ connectionType: String) {
-        let report = TealiumReportRequest(message: "Connectivity: Connection type changed to \(connectionType)")
-        self.delegate?.tealiumModuleRequests(module: self,
-                                             process: report)
-    }
-
-    func connectionLost() {
-        let report = TealiumReportRequest(message: "Connectivity: Connection lost; queueing dispatches")
-        self.delegate?.tealiumModuleRequests(module: self,
-                                             process: report)
-    }
-
-    func connectionRestored() {
-        let report = TealiumReportRequest(message: "Connectivity: Connection restored; releasing queue")
-        self.delegate?.tealiumModuleRequests(module: self,
-                                             process: report)
-        release()
-    }
-}
-
-public extension TealiumConfig {
-    func setConnectivityRefreshInterval(interval: Int) {
-        optionalData[TealiumConnectivityKey.refreshIntervalKey] = interval
-    }
-
-    func setConnectivityRefreshEnabled(enabled: Bool) {
-        optionalData[TealiumConnectivityKey.refreshEnabledKey] = enabled
     }
 }

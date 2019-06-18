@@ -34,12 +34,17 @@ class ButtonViewController: UITableViewController {
         configureAttributedTextSystemButton()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        TealiumHelper.shared.trackView(title: self.title ?? "View Controller", data: nil)
+        super.viewDidAppear(animated)
+    }
+    
     // MARK: - Configuration
 
     func configureSystemTextButton() {
         let buttonTitle = NSLocalizedString("Button", comment: "")
 
-        systemTextButton.setTitle(buttonTitle, for: UIControlState())
+        systemTextButton.setTitle(buttonTitle, for: UIControl.State())
 
         systemTextButton.addTarget(self, action: #selector(ButtonViewController.buttonClicked(_:)), for: .touchUpInside)
     }
@@ -60,12 +65,12 @@ class ButtonViewController: UITableViewController {
         // To create this button in code you can use UIButton.buttonWithType() with a parameter value of .Custom.
 
         // Remove the title text.
-        imageButton.setTitle("", for: UIControlState())
+        imageButton.setTitle("", for: UIControl.State())
 
         imageButton.tintColor = UIColor.applicationPurpleColor
 
         let imageButtonNormalImage = UIImage(named: "x_icon")
-        imageButton.setImage(imageButtonNormalImage, for: UIControlState())
+        imageButton.setImage(imageButtonNormalImage, for: UIControl.State())
 
         // Add an accessibility label to the image.
         imageButton.accessibilityLabel = NSLocalizedString("X Button", comment: "")
@@ -77,18 +82,18 @@ class ButtonViewController: UITableViewController {
         let buttonTitle = NSLocalizedString("Button", comment: "")
         
         // Set the button's title for normal state.
-        let normalTitleAttributes = [
-            NSForegroundColorAttributeName: UIColor.applicationBlueColor,
-            NSStrikethroughStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue
-        ] as [String : Any]
+        let normalTitleAttributes: [NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.foregroundColor: UIColor.applicationBlueColor,
+            NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue
+            ]
         let normalAttributedTitle = NSAttributedString(string: buttonTitle, attributes: normalTitleAttributes)
-        attributedTextButton.setAttributedTitle(normalAttributedTitle, for: UIControlState())
+        attributedTextButton.setAttributedTitle(normalAttributedTitle, for: UIControl.State())
 
         // Set the button's title for highlighted state.
-        let highlightedTitleAttributes = [
-            NSForegroundColorAttributeName: UIColor.green,
-            NSStrikethroughStyleAttributeName: NSUnderlineStyle.styleThick.rawValue
-        ] as [String : Any]
+        let highlightedTitleAttributes: [NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.foregroundColor: UIColor.green,
+            NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.thick.rawValue
+            ]
         let highlightedAttributedTitle = NSAttributedString(string: buttonTitle, attributes: highlightedTitleAttributes)
         attributedTextButton.setAttributedTitle(highlightedAttributedTitle, for: .highlighted)
 
@@ -97,7 +102,8 @@ class ButtonViewController: UITableViewController {
 
     // MARK: - Actions
 
-    func buttonClicked(_ sender: UIButton) {
+    @objc func buttonClicked(_ sender: UIButton) {
         NSLog("A button was clicked: \(sender).")
+        TealiumHelper.shared.track(title: "Button Clicked", data: nil)
     }
 }

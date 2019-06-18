@@ -52,7 +52,7 @@ class TealiumLifecycleTests: XCTestCase {
                             "lifecycle_totalsleepcount",
                             "lifecycle_totalwakecount",
                             "lifecycle_type",
-                            "lifecycle_wakecount"
+                            "lifecycle_wakecount",
                             ]
 
         let missingKeys = TestTealiumHelper.missingKeys(fromDictionary: data, keys: expectedKeys)
@@ -85,7 +85,7 @@ class TealiumLifecycleTests: XCTestCase {
                             "lifecycle_totalsleepcount",
                             "lifecycle_totalwakecount",
                             "lifecycle_type",
-                            "lifecycle_wakecount"
+                            "lifecycle_wakecount",
         ]
 
         let missingKeys = TestTealiumHelper.missingKeys(fromDictionary: data, keys: expectedKeys)

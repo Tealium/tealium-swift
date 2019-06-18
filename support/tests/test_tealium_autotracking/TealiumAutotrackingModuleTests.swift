@@ -20,7 +20,7 @@ class TealiumAutotrackingModuleTests: XCTestCase {
     override func setUp() {
         super.setUp()
         module = TealiumAutotrackingModule(delegate: self)
-        module?.enable(TealiumEnableRequest(config: testTealiumConfig))
+        module?.enable(TealiumEnableRequest(config: testTealiumConfig, enableCompletion: nil))
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
 
@@ -83,7 +83,7 @@ class TealiumAutotrackingModuleTests: XCTestCase {
         XCTAssertTrue(requestProcess != nil, "Request process missing.")
 
         let data: [String: Any] = ["tealium_event": "TestObject",
-                                    "autotracked": "true"
+                                    "autotracked": "true",
         ]
 
         guard let process = requestProcess as? TealiumTrackRequest else {
@@ -127,7 +127,7 @@ class TealiumAutotrackingModuleTests: XCTestCase {
         XCTAssertTrue(requestProcess != nil)
 
         let data: [String: Any] = ["tealium_event": "TestObject",
-                                    "autotracked": "true"
+                                    "autotracked": "true",
         ]
 
         guard let request = requestProcess as? TealiumTrackRequest else {

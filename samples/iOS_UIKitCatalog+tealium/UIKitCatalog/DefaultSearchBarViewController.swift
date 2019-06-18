@@ -40,7 +40,7 @@ class DefaultSearchBarViewController: UIViewController, UISearchBarDelegate {
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        NSLog("The default search bar keyboard search button was tapped: \(searchBar.text).")
+        NSLog("The default search bar keyboard search button was tapped: \(String(describing: searchBar.text)).")
 
         searchBar.resignFirstResponder()
     }
