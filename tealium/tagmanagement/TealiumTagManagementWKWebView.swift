@@ -85,7 +85,7 @@ public class TealiumTagManagementWKWebView: NSObject, TealiumTagManagementProtoc
     /// Configures an instance of WKWebView for later use.
     ///
     /// - Parameter forURL: The URL (typically for mobile.html) to load in the webview
-    func setupWebview(forURL url: URL?, withSpecificView: UIView?) {
+    func setupWebview(forURL url: URL?, withSpecificView specificView: UIView?) {
         // required to force cookies to sync
         WKWebsiteDataStore.default().httpCookieStore.add(self)
         let config = WKWebViewConfiguration()
@@ -97,7 +97,7 @@ public class TealiumTagManagementWKWebView: NSObject, TealiumTagManagementProtoc
         }
 
         // attach the webview to the view before continuing
-        attachToUIView(specificView: view) { _ in
+        attachToUIView(specificView: specificView) { _ in
             migrateCookies(forWebView: webview) {
                 guard let url = url else {
                     self.enableCompletion?(false, TealiumWebviewError.webviewURLMissing)
