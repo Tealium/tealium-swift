@@ -31,9 +31,9 @@ extension TealiumTagManagementWKWebView {
             view = specificView
         } else if let application = self.sharedApplication, // auto-detect root view if no view passed in
             let window = application.keyWindow {
-            //             view has not already been set or has no window, and the detected top view controller is in the view hierarchy (window is not nil) => this is an auto-detected view
+            // view has not already been set or has no window
             if view?.window == nil {
-                // set the current view to the auto-detected view
+                // set the current view to the current keyWindow
                 view = window
             }
         }
