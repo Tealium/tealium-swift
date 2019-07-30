@@ -53,7 +53,7 @@ Pod::Spec.new do |s|
 
   s.authors            = { "Tealium Inc." => "tealium@tealium.com",
                            "craigrouse"   => "craig.rouse@tealium.com" }
-  s.social_media_url   = "http://twitter.com/tealium"
+  s.social_media_url   = "https://twitter.com/tealium"
 
   # ――― Platform Specifics ――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
