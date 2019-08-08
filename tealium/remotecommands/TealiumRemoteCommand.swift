@@ -19,7 +19,7 @@ open class TealiumRemoteCommand {
     weak var delegate: TealiumRemoteCommandDelegate?
     var description: String?
 
-    let remoteCommandCompletion: ((_ response: TealiumRemoteCommandResponse) -> Void)
+    public let remoteCommandCompletion: ((_ response: TealiumRemoteCommandResponse) -> Void)
 
     /// Constructor for a Tealium Remote Command.
     ///
