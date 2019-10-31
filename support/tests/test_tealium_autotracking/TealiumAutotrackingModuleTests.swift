@@ -6,8 +6,9 @@
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
+@testable import TealiumAutotracking
+@testable import TealiumCore
 import XCTest
-@testable import Tealium
 
 class TealiumAutotrackingModuleTests: XCTestCase {
 
@@ -90,7 +91,7 @@ class TealiumAutotrackingModuleTests: XCTestCase {
             XCTFail("Process was unavailable or of wrong type: \(String(describing: requestProcess))")
             return
         }
-        let receivedData = process.data
+        let receivedData = process.trackDictionary
 
         XCTAssertTrue(receivedData == data, "Mismatch between data expected: \n \(data as AnyObject) and data received post processing: \n \(receivedData as AnyObject)")
     }
@@ -135,7 +136,7 @@ class TealiumAutotrackingModuleTests: XCTestCase {
             return
         }
 
-        let receivedData = request.data
+        let receivedData = request.trackDictionary
 
         XCTAssertTrue(receivedData == data, "Mismatch between data expected: \n \(data as AnyObject) and data received post processing: \n \(receivedData as AnyObject)")
     }
@@ -180,7 +181,7 @@ class TealiumAutotrackingModuleTests: XCTestCase {
             return
         }
 
-        let receivedData = request.data
+        let receivedData = request.trackDictionary
 
         XCTAssertTrue(customData.contains(otherDictionary: receivedData), "Custom data: \(customData) missing from track payload: \(receivedData)")
     }
@@ -210,7 +211,7 @@ class TealiumAutotrackingModuleTests: XCTestCase {
             XCTFail("Request of incorrect type.")
             return
         }
-        let receivedData = request.data
+        let receivedData = request.trackDictionary
 
         XCTAssertFalse(receivedData.contains(otherDictionary: customData), "Custom data: \(customData) was unexpectedly found in track payload: \(receivedData)")
     }

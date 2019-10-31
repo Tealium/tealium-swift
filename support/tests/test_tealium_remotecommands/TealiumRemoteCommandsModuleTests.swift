@@ -6,8 +6,9 @@
 //  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 
+@testable import TealiumCore
+@testable import TealiumRemoteCommands
 import XCTest
-@testable import Tealium
 
 class TealiumRemoteCommandsModuleTests: XCTestCase {
 
@@ -83,7 +84,7 @@ class TealiumRemoteCommandsModuleTests: XCTestCase {
         let notification = Notification(name: Notification.Name(TealiumKey.tagmanagementNotification),
                                         object: nil,
                                         userInfo: [TealiumKey.tagmanagementNotification: urlRequest])
-        module.trigger(sender: notification)
+        module.remoteCommands!.triggerCommandFrom(notification: notification)
 
         waitForExpectations(timeout: 5.0, handler: nil)
 

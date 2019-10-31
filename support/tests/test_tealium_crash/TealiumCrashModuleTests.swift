@@ -6,9 +6,9 @@
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
-import XCTest
 @testable import TealiumCore
 @testable import TealiumCrash
+import XCTest
 
 class TealiumCrashModuleTests: XCTestCase {
 

@@ -13,7 +13,5 @@ public enum TealiumAppDataKey {
     public static let build = "app_build"
     public static let name = "app_name"
     public static let rdns = "app_rdns"
-    public static let uuid = "app_uuid"
     public static let version = "app_version"
-    public static let visitorId = "tealium_visitor_id"
 }

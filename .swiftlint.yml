@@ -2,11 +2,14 @@ included:
   - ../tealium
 excluded:
   - Tests/SwiftLintFrameworkTests/Resources
+  - ../tealium/core/DiskStorage/Disk/
+  - ../tealium/core/AnyCodable/
+  - ../tealium/core/CoreUtils/Data+Gzip.swift
 disabled_rules:
   - trailing_comma
   - unused_optional_binding
-opt_in_rules:
   - file_header
+opt_in_rules:
   - explicit_init
   - closure_spacing
   - overridden_super_call
@@ -27,6 +30,7 @@ opt_in_rules:
   - pattern_matching_keywords
   - array_init
   - literal_expression_end_indentation
+  - number_separator
 
 file_header:
   required_pattern: |
@@ -44,6 +48,7 @@ identifier_name:
 line_length: 200
 number_separator:
   minimum_length: 5
+large_tuple: 4
 
 custom_rules:
   rule_id:

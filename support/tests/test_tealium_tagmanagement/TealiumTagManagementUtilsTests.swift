@@ -6,8 +6,9 @@
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
+@testable import TealiumCore
+@testable import TealiumTagManagement
 import XCTest
-@testable import Tealium
 
 /// Can only test class level functions due to limitation of XCTest with WebViews
 class TealiumTagManagementUtilsTests: XCTestCase {

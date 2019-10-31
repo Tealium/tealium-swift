@@ -6,8 +6,8 @@
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
+@testable import TealiumCore
 import XCTest
-@testable import Tealium
 
 class TealiumModuleConfigTests: XCTestCase {
 
@@ -27,11 +27,11 @@ class TealiumModuleConfigTests: XCTestCase {
         super.tearDown()
     }
 
-    func testEquitableOperatorPass() {
+    func testEquatableOperatorPass() {
         XCTAssertTrue(configA == configA2)
     }
 
-    func testEquitableOperatorFail() {
+    func testEquatableOperatorFail() {
         XCTAssertFalse(configA == configB)
     }
 

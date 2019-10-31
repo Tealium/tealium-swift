@@ -6,8 +6,9 @@
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
-@testable import Tealium
 import Foundation
+@testable import TealiumConsentManager
+@testable import TealiumCore
 import XCTest
 
 class ConsentManagerModuleUnitTests: XCTestCase {
@@ -83,9 +84,10 @@ class ConsentManagerModuleUnitTests: XCTestCase {
             let config = helper.getConfig()
 
             let module = TealiumConsentManagerModule(delegate: self)
+            module.consentManager.diskStorage = ConsentMockDiskStorage()
             module.consentManager.resetUserConsentPreferences()
             let enableRequest = TealiumEnableRequest(config: config, enableCompletion: nil)
-            module.enable(enableRequest)
+            module.enable(enableRequest, diskStorage: ConsentMockDiskStorage())
             let track = TealiumTrackRequest(data: ["purge_test": "true"], completion: nil)
             module.track(track)
             module.consentManager.setUserConsentStatus(.notConsented)
@@ -205,7 +207,7 @@ extension ConsentManagerModuleUnitTests: TealiumModuleDelegate {
 
     func tealiumModuleFinished(module: TealiumModule, process: TealiumRequest) {
         if let process = process as? TealiumTrackRequest {
-            let trackData = process.data
+            let trackData = process.trackDictionary
             if trackData["consent_disabled"] as? String == "true" {
                 XCTAssertTrue(trackData["consent_categories"] == nil, "Consent Manager Module: \(#function) - Consent Categories unexpectedly found in track call")
                 XCTAssertTrue(trackData["was_queued"] == nil, "Consent Manager Module: \(#function) - Track call contained unexpected value")
@@ -217,21 +219,21 @@ extension ConsentManagerModuleUnitTests: TealiumModuleDelegate {
     // swiftlint:disable cyclomatic_complexity
     func tealiumModuleRequests(module: TealiumModule?, process: TealiumRequest) {
         if let process = process as? TealiumEnqueueRequest, currentTest == "testPurgeQueueOnConsentDeclined" {
-            let trackRequest = process.data, trackData = trackRequest.data
+            let trackRequest = process.data.first!, trackData = trackRequest.trackDictionary
             XCTAssertTrue(trackData["purge_test"] as? String == "true", "Consent Manager Module: \(#function) - Track call contained unexpected value")
         } else if let _ = process as? TealiumClearQueuesRequest, currentTest == "testPurgeQueueOnConsentDeclined" {
             if allTestsFinished {
                 self.getExpectation(forDescription: "testPurgeQueueOnConsentDeclined")?.fulfill()
             }
         } else if let process = process as? TealiumEnqueueRequest, currentTest == "testReleaseQueueOnConsentGranted" {
-            let trackRequest = process.data, trackData = trackRequest.data
+            let trackRequest = process.data.first!, trackData = trackRequest.trackDictionary
             XCTAssertTrue(trackData["release_test"] as? String == "true", "Consent Manager Module: \(#function) - Track call contained unexpected value")
         } else if let _ = process as? TealiumReleaseQueuesRequest, currentTest == "testReleaseQueueOnConsentGranted" {
             if allTestsFinished {
                 self.getExpectation(forDescription: "testReleaseQueueOnConsentGranted")?.fulfill()
             }
         } else if let process = process as? TealiumTrackRequest, currentTest == "testConsentLoggingFullConsent" {
-            let trackRequest = process.data
+            let trackRequest = process.trackDictionary
             if trackRequest[TealiumKey.event] as? String == TealiumKey.updateConsentCookieEventName {
                 return
             }
@@ -241,7 +243,7 @@ extension ConsentManagerModuleUnitTests: TealiumModuleDelegate {
                 getExpectation(forDescription: "testConsentLoggingFullConsent")?.fulfill()
             }
         } else if let process = process as? TealiumTrackRequest, currentTest == "testConsentLoggingPartialConsent" {
-            let trackRequest = process.data
+            let trackRequest = process.trackDictionary
             if trackRequest[TealiumKey.event] as? String == TealiumKey.updateConsentCookieEventName {
                 return
             }
@@ -251,7 +253,7 @@ extension ConsentManagerModuleUnitTests: TealiumModuleDelegate {
                 getExpectation(forDescription: "testConsentLoggingPartialConsent")?.fulfill()
             }
         } else if let process = process as? TealiumTrackRequest, currentTest == "testUpdateConsentCookieFullConsent" {
-            let trackRequest = process.data
+            let trackRequest = process.trackDictionary
             if trackRequest[TealiumKey.event] as? String != TealiumKey.updateConsentCookieEventName {
                 return
             }
@@ -261,7 +263,7 @@ extension ConsentManagerModuleUnitTests: TealiumModuleDelegate {
                 getExpectation(forDescription: "testUpdateConsentCookieFullConsent")?.fulfill()
             }
         } else if let process = process as? TealiumTrackRequest, currentTest == "testUpdateConsentCookiePartialConsent" {
-            let trackRequest = process.data
+            let trackRequest = process.trackDictionary
             if trackRequest[TealiumKey.event] as? String != TealiumKey.updateConsentCookieEventName {
                 return
             }
@@ -271,7 +273,7 @@ extension ConsentManagerModuleUnitTests: TealiumModuleDelegate {
                 getExpectation(forDescription: "testUpdateConsentCookiePartialConsent")?.fulfill()
             }
         } else if let process = process as? TealiumTrackRequest, currentTest == "testUpdateConsentCookieDeclineConsent" {
-            let trackRequest = process.data
+            let trackRequest = process.trackDictionary
             if trackRequest[TealiumKey.event] as? String != TealiumKey.updateConsentCookieEventName {
                 return
             }

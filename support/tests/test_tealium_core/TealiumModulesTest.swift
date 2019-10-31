@@ -1,13 +1,21 @@
+////
+////  TealiumModulesTest.swift
+////  tealium-swift
+////
+////  Created by Jason Koo on 6/8/17.
+////  Copyright © 2017 Tealium, Inc. All rights reserved.
+////
 //
-//  TealiumModulesTest.swift
-//  tealium-swift
-//
-//  Created by Jason Koo on 6/8/17.
-//  Copyright © 2017 Tealium, Inc. All rights reserved.
-//
-
+@testable import TealiumAppData
+@testable import TealiumCollect
+@testable import TealiumConsentManager
+@testable import TealiumCore
+@testable import TealiumDelegate
+@testable import TealiumDeviceData
+@testable import TealiumLogger
+@testable import TealiumPersistentData
+@testable import TealiumVisitorService
 import XCTest
-@testable import Tealium
 
 class TealiumModulesTest: XCTestCase {
 

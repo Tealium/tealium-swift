@@ -6,8 +6,8 @@
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
-import ObjectiveC
-@testable import Tealium
+//import ObjectiveC
+@testable import TealiumCore
 import XCTest
 
 class TealiumModuleTests: XCTestCase {

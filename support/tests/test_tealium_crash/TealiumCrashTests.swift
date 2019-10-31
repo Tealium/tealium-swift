@@ -6,13 +6,13 @@
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
-import XCTest
-@testable import TealiumCore
 @testable import TealiumAppData
-@testable import TealiumDeviceData
-@testable import TealiumVolatileData
+@testable import TealiumCore
 @testable import TealiumCrash
 @testable import TealiumCrashReporteriOS
+@testable import TealiumDeviceData
+@testable import TealiumVolatileData
+import XCTest
 
 class TealiumCrashTests: XCTestCase {
 

@@ -8,7 +8,8 @@
 
 //  Application Test do to UIKit not being available to Unit Test Bundle
 
-@testable import Tealium
+@testable import TealiumAttribution
+@testable import TealiumCore
 import XCTest
 
 class TealiumAttributionModuleTests: XCTestCase {
@@ -50,27 +51,18 @@ class TealiumAttributionModuleTests: XCTestCase {
     func testFullTrack() {
         expectation = self.expectation(description: "full track")
         testTealiumConfig.setSearchAdsEnabled(true)
-        let attributionData = TealiumAttributionData(identifierManager: TealiumASIdentifierManagerAdTrackingEnabled.shared, adClient: TestTealiumAdClient.shared)
+
+        let attributionData = TealiumAttributionData(diskStorage: AttributionMockDiskStorage(), isSearchAdsEnabled: true, identifierManager: TealiumASIdentifierManagerAdTrackingEnabled.shared)
+//        module?.enable(TealiumEnableRequest(config: testTealiumConfig, enableCompletion: nil), diskStorage: AttributionMockDiskStorage())
         module?.attributionData = attributionData
-        module?.enable(TealiumEnableRequest(config: testTealiumConfig, enableCompletion: nil))
+        module?.isEnabled = true
         let testTrack = TealiumTrackRequest(data: [String: AnyObject](),
                                             completion: { _, info, _ in
                                                 guard let trackData = info else {
                                                     return
                                                 }
                                                 // test for expected keys
-                                                let expectedKeys = [
-                                                    TealiumAttributionKey.adGroupId,
-                                                    TealiumAttributionKey.adKeyword,
-                                                    TealiumAttributionKey.campaignName,
-                                                    TealiumAttributionKey.campaignId,
-                                                    TealiumAttributionKey.clickedDate,
-                                                    TealiumAttributionKey.conversionDate,
-                                                    TealiumAttributionKey.clickedWithin30D,
-                                                    TealiumAttributionKey.idfv,
-                                                    TealiumAttributionKey.idfa,
-                                                    TealiumAttributionKey.isTrackingAllowed,
-                                                ]
+                                                let expectedKeys = TealiumAttributionKey.allCases
 
                                                 for key in expectedKeys where trackData[key] == nil {
                                                     XCTFail("Missing expected key: \(key)")
@@ -82,13 +74,14 @@ class TealiumAttributionModuleTests: XCTestCase {
         })
         module?.track(testTrack)
         self.waitForExpectations(timeout: 15.0, handler: nil)
+
     }
 
     func testWithLimitTrackingEnabled() {
         let expectation = self.expectation(description: "testWithLimitTrackingEnabled")
-        let attributionData = TealiumAttributionData(identifierManager: TealiumASIdentifierManagerAdTrackingDisabled.shared, adClient: TestTealiumAdClient.shared)
+        let attributionData = TealiumAttributionData(diskStorage: AttributionMockDiskStorage(), isSearchAdsEnabled: false, identifierManager: TealiumASIdentifierManagerAdTrackingDisabled.shared)
+        module?.enable(TealiumEnableRequest(config: testTealiumConfig, enableCompletion: nil), diskStorage: AttributionMockDiskStorage())
         module?.attributionData = attributionData
-        module?.enable(TealiumEnableRequest(config: testTealiumConfig, enableCompletion: nil))
         let testTrack = TealiumTrackRequest(data: [String: AnyObject](),
                                             completion: { _, info, _ in
                                                 guard let trackData = info else {
@@ -124,11 +117,10 @@ class TealiumAttributionModuleTests: XCTestCase {
     func testWithIDFA() {
         expectation = self.expectation(description: "attribution-enabled")
         let testID = TealiumTestValue.testIDFAString
-        let attributionData = TealiumAttributionData(identifierManager: TealiumASIdentifierManagerAdTrackingEnabled.shared, adClient: TestTealiumAdClient.shared)
-        module?.attributionData = attributionData
+        let attributionData = TealiumAttributionData(diskStorage: AttributionMockDiskStorage(), isSearchAdsEnabled: false, identifierManager: TealiumASIdentifierManagerAdTrackingEnabled.shared)
         testTealiumConfig.setSearchAdsEnabled(true)
-        module?.enable(TealiumEnableRequest(config: testTealiumConfig, enableCompletion: nil))
-
+        module?.enable(TealiumEnableRequest(config: testTealiumConfig, enableCompletion: nil), diskStorage: AttributionMockDiskStorage())
+        module?.attributionData = attributionData
         let testTrack = TealiumTrackRequest(data: [String: AnyObject](),
                                             completion: { success, info, _ in
 
@@ -175,7 +167,7 @@ extension TealiumAttributionModuleTests: TealiumModuleDelegate {
             trackRequest.completion?(false, nil, response.error)
             return
         }
-        payload = trackRequest.data
+        payload = trackRequest.trackDictionary
         expectation?.fulfill()
         trackRequest.completion?(true, payload, nil)
     }
@@ -186,18 +178,7 @@ extension TealiumAttributionModuleTests: TealiumModuleDelegate {
 
     func tealiumModuleRequests(module: TealiumModule?, process: TealiumRequest) {
         if let process = process as? TealiumLoadRequest {
-            let mockData = [
-                TealiumAttributionKey.adGroupId: "1234567890",
-                TealiumAttributionKey.adGroupName: "adGroupName",
-                TealiumAttributionKey.adKeyword: "Keyword",
-                TealiumAttributionKey.orgName: "OrgName",
-                TealiumAttributionKey.campaignName: "campaignName",
-                TealiumAttributionKey.campaignId: "1234567890",
-                TealiumAttributionKey.clickedDate: "2017-11-23T09:46:51Z",
-                TealiumAttributionKey.conversionDate: "2017-11-23T09:46:51Z",
-                TealiumAttributionKey.clickedWithin30D: "true",
-                TealiumAttributionKey.idfv: UUID().uuidString,
-            ]
+            let mockData: [String: String] = Dictionary(uniqueKeysWithValues: TealiumAttributionKey.allCases.map { ($0, "mockdata") })
             process.completion?(true, mockData, nil)
         }
     }

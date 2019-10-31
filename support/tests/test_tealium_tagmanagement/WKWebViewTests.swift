@@ -6,10 +6,12 @@
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 
-@testable import Tealium
+@testable import TealiumCore
+@testable import TealiumTagManagement
 import WebKit
 import XCTest
 
+@available(iOS 11.0, *)
 class WKWebViewTests: XCTestCase {
 
     let tagManagementWKWebView = TealiumTagManagementWKWebView()
@@ -28,8 +30,12 @@ class WKWebViewTests: XCTestCase {
     }
 
     func testEnableWebView() {
-        tagManagementWKWebView.enable(webviewURL: testURL, shouldMigrateCookies: false, delegates: nil, view: nil, completion: nil)
-        XCTAssertNotNil(tagManagementWKWebView.webview, "Webview instance was unexpectedly nil")
+        let expectation = self.expectation(description: "testEnableWebView")
+        tagManagementWKWebView.enable(webviewURL: testURL, shouldMigrateCookies: false, delegates: nil, view: nil) { _, _ in
+            XCTAssertNotNil(self.tagManagementWKWebView.webview, "Webview instance was unexpectedly nil")
+            expectation.fulfill()
+        }
+        self.wait(for: [expectation], timeout: 5.0)
     }
 
     func testDisableWebView() {
@@ -59,11 +65,16 @@ class WKWebViewTests: XCTestCase {
     }
 
     func testWebViewStateDidChange() {
-        XCTAssertFalse(tagManagementWKWebView.isWebViewReady(), "Webview Ready check should not be true yet")
-        tagManagementWKWebView.webviewStateDidChange(.loadSuccess, withError: nil)
+        let expectation = self.expectation(description: "testWebViewStateDidChange")
         XCTAssertFalse(tagManagementWKWebView.isWebViewReady(), "Webview should not be ready yet; webview has not been enabled")
-        tagManagementWKWebView.enable(webviewURL: testURL, shouldMigrateCookies: false, delegates: nil, view: nil, completion: nil)
-        XCTAssertTrue(tagManagementWKWebView.isWebViewReady(), "Webview should be ready, but was found to be nil")
+        tagManagementWKWebView.enable(webviewURL: testURL, shouldMigrateCookies: false, delegates: nil, view: nil) { _, _ in
+            XCTAssertTrue(self.tagManagementWKWebView.isWebViewReady(), "Webview should be ready, but was found to be nil")
+            self.tagManagementWKWebView.webviewStateDidChange(.loadFailure, withError: nil)
+            XCTAssertFalse(self.tagManagementWKWebView.isWebViewReady(), "Webview should not be ready - failure condition expected")
+            expectation.fulfill()
+        }
+
+        self.wait(for: [expectation], timeout: 5.0)
     }
 
     func testJavaScriptTrackCall() {
@@ -131,6 +142,7 @@ class MyCookieStorage: TealiumCookieProvider {
     }
 }
 
+@available(iOS 11.0, *)
 extension WKWebViewTests: WKHTTPCookieStoreObserver {
     public func cookiesDidChange(in cookieStore: WKHTTPCookieStore) {
         DispatchQueue.main.async {

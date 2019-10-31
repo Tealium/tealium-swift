@@ -8,74 +8,72 @@
 
 //  Application Test do to UIKit not being available to Unit Test Bundle
 
+@testable import TealiumAttribution
+@testable import TealiumCore
 import XCTest
-@testable import Tealium
 
-let attributionValues: NSObject = [
-    AppleInternalKeys.adGroupId: "1234567890" as NSObject,
-    AppleInternalKeys.adGroupName: "adGroupName" as NSObject,
-    AppleInternalKeys.keyword: "Keyword" as NSObject,
-    AppleInternalKeys.orgName: "OrgName" as NSObject,
-    AppleInternalKeys.campaignName: "campaignName" as NSObject,
-    AppleInternalKeys.campaignId: "1234567890" as NSObject,
-    AppleInternalKeys.clickDate: "2017-11-23T09:46:51Z" as NSObject,
-    AppleInternalKeys.conversionDate: "2017-11-23T09:46:51Z" as NSObject,
-    AppleInternalKeys.attribution: "true" as NSObject,
-] as NSObject
+let attributionValues = Dictionary(uniqueKeysWithValues: AppleInternalKeys.allCases.map { ($0, "mockdata" as NSObject) }) as NSObject
 private let mockAppleAttributionData: [String: NSObject] = ["Version3.1": attributionValues]
 
 let keyTranslation = [
+    AppleInternalKeys.attribution: TealiumAttributionKey.clickedWithin30D,
+    AppleInternalKeys.orgName: TealiumAttributionKey.orgName,
+    AppleInternalKeys.orgId: TealiumAttributionKey.orgId,
+    AppleInternalKeys.campaignId: TealiumAttributionKey.campaignId,
+    AppleInternalKeys.campaignName: TealiumAttributionKey.campaignName,
+    AppleInternalKeys.clickDate: TealiumAttributionKey.clickedDate,
+    AppleInternalKeys.purchaseDate: TealiumAttributionKey.purchaseDate,
+    AppleInternalKeys.conversionDate: TealiumAttributionKey.conversionDate,
+    AppleInternalKeys.conversionType: TealiumAttributionKey.conversionType,
     AppleInternalKeys.adGroupId: TealiumAttributionKey.adGroupId,
     AppleInternalKeys.adGroupName: TealiumAttributionKey.adGroupName,
     AppleInternalKeys.keyword: TealiumAttributionKey.adKeyword,
-    AppleInternalKeys.orgName: TealiumAttributionKey.orgName,
-    AppleInternalKeys.campaignName: TealiumAttributionKey.campaignName,
-    AppleInternalKeys.campaignId: TealiumAttributionKey.campaignId,
-    AppleInternalKeys.clickDate: TealiumAttributionKey.clickedDate,
-    AppleInternalKeys.conversionDate: TealiumAttributionKey.conversionDate,
-    AppleInternalKeys.attribution: TealiumAttributionKey.clickedWithin30D,
+    AppleInternalKeys.keywordMatchType: TealiumAttributionKey.adKeywordMatchType,
+    AppleInternalKeys.creativeSetId: TealiumAttributionKey.creativeSetId,
+    AppleInternalKeys.creativeSetName: TealiumAttributionKey.creativeSetName,
+    AppleInternalKeys.region: TealiumAttributionKey.region,
 ]
 
 class TealiumAttributionDataTests: XCTestCase {
 
     func testIDFAAdTrackingEnabled() {
-        let attributionData = TealiumAttributionData(identifierManager: TealiumASIdentifierManagerAdTrackingEnabled.shared)
+        let attributionData = TealiumAttributionData(diskStorage: AttributionMockDiskStorage(), isSearchAdsEnabled: false, identifierManager: TealiumASIdentifierManagerAdTrackingEnabled.shared)
         let idfa = attributionData.idfa
         XCTAssertEqual(idfa, TealiumTestValue.testIDFAString, "IDFA values were unexpectedly different")
     }
 
     func testIDFAAdTrackingDisabled() {
-        let attributionData = TealiumAttributionData(identifierManager: TealiumASIdentifierManagerAdTrackingDisabled.shared)
+        let attributionData = TealiumAttributionData(diskStorage: AttributionMockDiskStorage(), isSearchAdsEnabled: false, identifierManager: TealiumASIdentifierManagerAdTrackingDisabled.shared)
         let idfa = attributionData.idfa
         XCTAssertEqual(idfa, TealiumTestValue.testIDFAStringAdTrackingDisabled, "IDFA values were unexpectedly different")
     }
 
     func testIDFVAdTrackingEnabled() {
-        let attributionData = TealiumAttributionData(identifierManager: TealiumASIdentifierManagerAdTrackingEnabled.shared)
+        let attributionData = TealiumAttributionData(diskStorage: AttributionMockDiskStorage(), isSearchAdsEnabled: false, identifierManager: TealiumASIdentifierManagerAdTrackingEnabled.shared)
         let idfv = attributionData.idfv
         XCTAssertEqual(idfv, TealiumTestValue.testIDFVString, "IDFA values were unexpectedly different")
     }
 
     func testIDFVAdTrackingDisabled() {
-        let attributionData = TealiumAttributionData(identifierManager: TealiumASIdentifierManagerAdTrackingDisabled.shared)
+        let attributionData = TealiumAttributionData(diskStorage: AttributionMockDiskStorage(), isSearchAdsEnabled: false, identifierManager: TealiumASIdentifierManagerAdTrackingDisabled.shared)
         let idfv = attributionData.idfv
         XCTAssertEqual(idfv, TealiumTestValue.testIDFVString, "IDFA values were unexpectedly different")
     }
 
     func testIsLimitAdvertisingEnabled() {
-        let attributionData = TealiumAttributionData(identifierManager: TealiumASIdentifierManagerAdTrackingEnabled.shared)
+        let attributionData = TealiumAttributionData(diskStorage: AttributionMockDiskStorage(), isSearchAdsEnabled: false, identifierManager: TealiumASIdentifierManagerAdTrackingEnabled.shared)
         let isEnabled = attributionData.isAdvertisingTrackingEnabled
         XCTAssertEqual("true", isEnabled, "Limit Ad Trackingwas unexpectedly false")
     }
 
     func testIsLimitAdvertisingDisabled() {
-        let attributionData = TealiumAttributionData(identifierManager: TealiumASIdentifierManagerAdTrackingDisabled.shared)
+        let attributionData = TealiumAttributionData(diskStorage: AttributionMockDiskStorage(), isSearchAdsEnabled: false, identifierManager: TealiumASIdentifierManagerAdTrackingDisabled.shared)
         let isEnabled = attributionData.isAdvertisingTrackingEnabled
         XCTAssertEqual("false", isEnabled, "Limit Ad Trackingwas unexpectedly true")
     }
 
     func testSearchAds() {
-        let attributionData = TealiumAttributionData(identifierManager: TealiumASIdentifierManagerAdTrackingEnabled.shared, adClient: TestTealiumAdClient.shared)
+        let attributionData = TealiumAttributionData(diskStorage: AttributionMockDiskStorage(), isSearchAdsEnabled: true, identifierManager: TealiumASIdentifierManagerAdTrackingEnabled.shared, adClient: TestTealiumAdClient.shared)
         let expectation = self.expectation(description: "search_ads")
         let waiter = XCTWaiter()
         attributionData.appleSearchAdsData { _ in
@@ -93,7 +91,7 @@ class TealiumAttributionDataTests: XCTestCase {
             attributionValues.forEach { key, mockValue in
                 guard let tealiumKey = keyTranslation[key],
                       let mockValue = mockValue as? String,
-                      let tealiumValue = appleAttributionDetails[tealiumKey] as? String else {
+                      let tealiumValue = appleAttributionDetails[tealiumKey] else {
                     XCTFail("Key could not be found")
                     return
                 }

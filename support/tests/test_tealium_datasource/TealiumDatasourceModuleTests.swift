@@ -6,8 +6,8 @@
 //  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 
-import XCTest
 @testable import Tealium
+import XCTest
 
 class TealiumDatasourceModuleTests: XCTestCase {
 

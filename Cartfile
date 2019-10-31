@@ -1,1 +1,2 @@
-github "tealium/plcrashreporter"
+# github "tealium/plcrashreporter"
+binary "https://tags.tiqcdn.com/dle/tealiummobile/tealium-ios-carthage/tealium-carthage-plcrashreporter.json"

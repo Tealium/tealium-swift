@@ -6,8 +6,9 @@
 //  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 
+@testable import TealiumCore
+@testable import TealiumDeviceData
 import XCTest
-@testable import Tealium
 
 class TealiumDeviceDataModuleTests: XCTestCase {
 
@@ -336,7 +337,7 @@ extension TealiumDeviceDataModuleTests: TealiumModuleDelegate {
 
     func tealiumModuleFinished(module: TealiumModule, process: TealiumRequest) {
         if let process = process as? TealiumTrackRequest {
-            trackData = process.data
+            trackData = process.trackDictionary
             process.completion?(true,
                                 nil,
                                 nil)

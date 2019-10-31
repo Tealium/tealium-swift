@@ -6,8 +6,8 @@
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
+@testable import TealiumCore
 import XCTest
-@testable import Tealium
 
 class TealiumUtilsTests: XCTestCase {
 
@@ -31,16 +31,16 @@ class TealiumUtilsTests: XCTestCase {
                           "tealium_profile": "tester",
         ]
 
-        XCTAssertTrue(testJSONString == jsonStringWithDictionary(dictionary))
+        XCTAssertTrue(testJSONString == jsonString(from: dictionary))
     }
 
     func testURLRequest() {
 
         let urlRequest = urlPOSTRequestWithJSONString(testJSONString, dispatchURL: "https://collect.tealiumiq.com/event")
 
-        XCTAssertTrue(urlRequest != nil)
-        XCTAssertTrue(urlRequest?.httpMethod == "POST")
-        XCTAssertTrue(urlRequest?.httpBody == testJSONString.data(using: .utf8))
+        XCTAssertNotNil(urlRequest, "URLRequest was nil")
+        XCTAssertTrue(urlRequest?.httpMethod == "POST", "Unexpected request type")
+        XCTAssertTrue(try! urlRequest?.httpBody?.gunzipped() == testJSONString.data(using: .utf8), "Unexpected request body")
     }
 
 }

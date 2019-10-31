@@ -13,7 +13,7 @@ import TealiumCore
 
 public extension TealiumConfig {
 
-    /// Checks if Apple Search Ads API was enabled in the TealiumConfig object
+    /// Checks if Apple Search Ads API was enabled in the TealiumConfig object.
     ///
     /// - Returns: Bool - `true` if enabled
     func isSearchAdsEnabled() -> Bool {
@@ -27,9 +27,9 @@ public extension TealiumConfig {
 
     }
 
-    /// Enables (`true`) or disables (`false`) Apple Search Ads API in the Attribution module
+    /// Enables (`true`) or disables (`false`) Apple Search Ads API in the Attribution module￼.
     ///
-    /// - Parameter enabled: Bool - `true` if search ads should be enabled
+    /// - Parameter enabled: `Bool` - `true` if search ads should be enabled
     func setSearchAdsEnabled(_ enabled: Bool) {
         self.optionalData[TealiumAttributionKey.isSearchAdsEnabled] = enabled
     }

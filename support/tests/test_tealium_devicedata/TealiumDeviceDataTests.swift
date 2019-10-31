@@ -6,7 +6,8 @@
 //  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 
-@testable import Tealium
+@testable import TealiumCore
+@testable import TealiumDeviceData
 import XCTest
 
 class TealiumDeviceDataTests: XCTestCase {

@@ -6,8 +6,9 @@
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
+@testable import TealiumAppData
+@testable import TealiumCore
 import XCTest
-@testable import Tealium
 
 class TealiumAppDataModuleTests: XCTestCase {
 
@@ -17,10 +18,13 @@ class TealiumAppDataModuleTests: XCTestCase {
     var trackData: [String: Any]?
     var delegateModuleRequests = 0
     var delegateModuleFinished = 0
+    var helper = TestTealiumHelper()
+    var mockDiskStorage = MockDiskStorage()
 
     override func setUp() {
         super.setUp()
         appDataModule = TealiumAppDataModule(delegate: nil)
+        appDataModule?.diskStorage = MockDiskStorage()
         delegateModuleRequests = 0
         delegateModuleFinished = 0
     }
@@ -28,13 +32,15 @@ class TealiumAppDataModuleTests: XCTestCase {
     override func tearDown() {
         appDataModule = nil
         trackData = nil
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
 
     func testForFailingRequests() {
         let helper = TestTealiumHelper()
-        let module = TealiumAppDataModule(delegate: nil)
+        guard let module = appDataModule else {
+            XCTFail("AppData module not initialized")
+            return
+        }
 
         let failing = helper.failingRequestsFor(module: module)
         XCTAssert(failing.count == 0, "Unexpected failing requests: \(failing)")
@@ -54,10 +60,17 @@ class TealiumAppDataModuleTests: XCTestCase {
         self.waitForExpectations(timeout: 1.0, handler: nil)
     }
 
+    func testEnable() {
+        let module = TealiumAppDataModule(delegate: nil)
+        module.enable(testEnableRequest)
+        XCTAssertTrue(module.isEnabled, "Enable request failed. Module not enabled")
+    }
+
     func testTrack() {
         let expectation = self.expectation(description: "appDataTrack")
         let module = TealiumAppDataModule(delegate: self)
-        module.isEnabled = true
+        module.diskStorage = mockDiskStorage
+        module.enable(TealiumEnableRequest(config: helper.getConfig(), enableCompletion: nil))
 
         let track = TealiumTrackRequest(data: [:]) { success, _, _ in
             expectation.fulfill()
@@ -77,11 +90,35 @@ class TealiumAppDataModuleTests: XCTestCase {
         self.waitForExpectations(timeout: 1.0, handler: nil)
     }
 
+    func testTrackWasQueued() {
+        let expectation = self.expectation(description: "appDataTrack")
+        let module = TealiumAppDataModule(delegate: self)
+        module.diskStorage = mockDiskStorage
+        module.enable(TealiumEnableRequest(config: helper.getConfig(), enableCompletion: nil))
+
+        let track = TealiumTrackRequest(data: ["was_queued": "true"]) { success, _, _ in
+            expectation.fulfill()
+
+            guard let trackData = self.trackData else {
+                XCTFail("No track data detected from test.")
+                return
+            }
+
+            let isMissingKeys = TealiumAppData.isMissingPersistentKeys(data: trackData)
+            XCTAssert(success)
+            XCTAssertTrue(isMissingKeys, "Info missing from post track call: \(trackData)")
+        }
+
+        module.track(track)
+
+        self.waitForExpectations(timeout: 1.0, handler: nil)
+    }
+
     func testEnableCallsDelegateWhenDelegateNotNil() {
-        XCTAssertEqual(0, delegateModuleRequests)
+        XCTAssertEqual(0, delegateModuleFinished)
         appDataModule = TealiumAppDataModule(delegate: self)
         appDataModule?.handle(testEnableRequest)
-        XCTAssertEqual(1, delegateModuleRequests)
+        XCTAssertEqual(1, delegateModuleFinished)
     }
 
     func testEnableDoesNotCallDelegateWhenDelegateIsNil() {
@@ -103,6 +140,7 @@ class TealiumAppDataModuleTests: XCTestCase {
     func testDisableCallsDeleteAllData() {
         let mockAppData = MockTealiumAppData()
         appDataModule = TealiumAppDataModule(delegate: nil, appData: mockAppData)
+        appDataModule?.enable(testEnableRequest, diskStorage: mockDiskStorage)
         XCTAssertEqual(0, mockAppData.deleteAllDataCalledCount, "method should not be called yet")
         appDataModule?.disable(testDisableRequest)
         XCTAssertEqual(1, mockAppData.deleteAllDataCalledCount, "method should be called once")
@@ -113,7 +151,7 @@ class TealiumAppDataModuleTests: XCTestCase {
             XCTFail("appDataModule is nil")
             return
         }
-        appDataModule.handle(testEnableRequest)
+        appDataModule.enable(testEnableRequest, diskStorage: mockDiskStorage)
         XCTAssertTrue(appDataModule.isEnabled)
         appDataModule.handle(testDisableRequest)
         XCTAssertFalse(appDataModule.isEnabled)
@@ -142,24 +180,14 @@ class TealiumAppDataModuleTests: XCTestCase {
         module.track(TealiumTrackRequest(data: data, completion: nil))
         XCTAssertEqual(data["a"], trackData?["a"] as? String)
     }
-
-    func testTrackSetsNewAppDataWhenMissingPersistentKeys() {
-        let mockAppData = MockTealiumAppData()
-        appDataModule = TealiumAppDataModule(delegate: nil, appData: mockAppData)
-        appDataModule?.isEnabled = true
-        XCTAssertEqual(0, mockAppData.setNewAppDataCalledCount)
-        appDataModule?.track(testTrackRequest)
-        XCTAssertEqual(1, mockAppData.setNewAppDataCalledCount)
-    }
 }
 
-// For future tests
 extension TealiumAppDataModuleTests: TealiumModuleDelegate {
 
     func tealiumModuleFinished(module: TealiumModule, process: TealiumRequest) {
         delegateModuleFinished += 1
         if let process = process as? TealiumTrackRequest {
-            trackData = process.data
+            trackData = process.trackDictionary
             process.completion?(true,
                                 nil,
                                 nil)
@@ -171,13 +199,10 @@ extension TealiumAppDataModuleTests: TealiumModuleDelegate {
     }
 }
 
-extension TealiumAppDataModuleTests: TealiumSaveDelegate {
-    func savePersistentData(data: [String: Any]) {
+class MockTealiumAppData: TealiumAppDataProtocol {
+    func setLoadedAppData(data: PersistentAppData) {
 
     }
-}
-
-class MockTealiumAppData: TealiumAppDataProtocol {
 
     var deleteAllDataCalledCount = 0
     var setNewAppDataCalledCount = 0

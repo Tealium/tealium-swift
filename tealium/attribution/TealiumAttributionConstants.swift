@@ -8,32 +8,90 @@
 
 import Foundation
 
-public enum TealiumAttributionKey: CaseIterable {
+public struct TealiumAttributionKey {
+    public static let allCases = [
+        TealiumAttributionKey.idfa,
+        TealiumAttributionKey.idfv,
+        TealiumAttributionKey.isTrackingAllowed,
+        TealiumAttributionKey.clickedWithin30D,
+        TealiumAttributionKey.clickedDate,
+        TealiumAttributionKey.conversionDate,
+        TealiumAttributionKey.conversionType,
+        TealiumAttributionKey.orgName,
+        TealiumAttributionKey.orgId,
+        TealiumAttributionKey.purchaseDate,
+        TealiumAttributionKey.campaignId,
+        TealiumAttributionKey.campaignName,
+        TealiumAttributionKey.adGroupId,
+        TealiumAttributionKey.adGroupName,
+        TealiumAttributionKey.adKeyword,
+        TealiumAttributionKey.adKeywordMatchType,
+        TealiumAttributionKey.creativeSetId,
+        TealiumAttributionKey.creativeSetName,
+        TealiumAttributionKey.region,
+    ]
+
+    // Internal module keys
     static let moduleName = "attribution"
     static let isSearchAdsEnabled = "com.tealium.attribution.searchads.enable"
+    // Advertising IDs
     static let idfa = "device_advertising_id"
     static let idfv = "device_advertising_vendor_id"
     static let isTrackingAllowed = "device_advertising_enabled"
-    static let clickedWithin30D = "ad_user_clicked_last_30_days" // True if user clicked on a Search Ads impression within 30 days prior to app download.
-    static let clickedDate = "ad_user_date_clicked" // Date and time the user clicked on a corresponding ad
-    static let conversionDate = "ad_user_date_converted" // Date and time the user downloaded your app
-    static let orgName = "ad_org_name" //The organization that owns the campaign which the corresponding ad was part of.
-    static let campaignId = "ad_campaign_id" // The ID of the campaign which the corresponding ad was part of.
-    static let campaignName = "ad_campaign_name" // The name of the campaign which the corresponding ad was part of
-    static let adGroupId = "ad_group_id" // The ID of the ad group which the corresponding ad was part of
-    static let adGroupName = "ad_group_name" // The name of the ad group which the corresponding ad was part of.
-    static let adKeyword = "ad_keyword" // The keyword that drove the ad impression which led to the corresponding ad click.
+    // iAd Attribution keys
+    static let clickedWithin30D = "ad_user_clicked_last_30_days"
+    static let clickedDate = "ad_user_date_clicked"
+    static let conversionDate = "ad_user_date_converted"
+    static let conversionType = "ad_user_conversion_type"
+    static let orgName = "ad_org_name"
+    static let orgId = "ad_org_id"
+    static let purchaseDate = "ad_purchase_date"
+    static let campaignId = "ad_campaign_id"
+    static let campaignName = "ad_campaign_name"
+    static let adGroupId = "ad_group_id"
+    static let adGroupName = "ad_group_name"
+    static let adKeyword = "ad_keyword"
+    static let adKeywordMatchType = "ad_keyword_matchtype"
+    static let creativeSetId = "ad_creativeset_id"
+    static let creativeSetName = "ad_creativeset_name"
+    static let region = "ad_region"
 }
 
-public enum AppleInternalKeys {
+public struct AppleInternalKeys {
+    static let allCases = [
+        AppleInternalKeys.attribution,
+        AppleInternalKeys.orgName,
+        AppleInternalKeys.orgId,
+        AppleInternalKeys.campaignId,
+        AppleInternalKeys.campaignName,
+        AppleInternalKeys.clickDate,
+        AppleInternalKeys.purchaseDate,
+        AppleInternalKeys.conversionDate,
+        AppleInternalKeys.conversionType,
+        AppleInternalKeys.adGroupId,
+        AppleInternalKeys.adGroupName,
+        AppleInternalKeys.keyword,
+        AppleInternalKeys.keywordMatchType,
+        AppleInternalKeys.creativeSetId,
+        AppleInternalKeys.creativeSetName,
+        AppleInternalKeys.region,
+    ]
+
     static let attribution = "iad-attribution"
-    static let clickDate = "iad-click-date"
-    static let conversionDate = "iad-conversion-date"
     static let orgName = "iad-org-name"
+    static let orgId = "iad-org-id" //
     static let campaignId = "iad-campaign-id"
     static let campaignName = "iad-campaign-name"
+    static let clickDate = "iad-click-date"
+    static let purchaseDate = "iad-purchase-date" //
+    static let conversionDate = "iad-conversion-date"
+    static let conversionType = "iad-conversion-type" //
     static let adGroupId = "iad-adgroup-id"
     static let adGroupName = "iad-adgroup-name"
     static let keyword = "iad-keyword"
+    static let keywordMatchType = "iad-keyword-matchtype" //
+    static let creativeSetId = "iad-creativeset-id" //
+    static let creativeSetName = "iad-creativeset-name" //
+    static let region = "iad-country-or-region" //
     static let objectVersion = "Version3.1" // This is the root key for the returned data
 }

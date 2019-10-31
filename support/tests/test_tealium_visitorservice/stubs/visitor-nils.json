@@ -1,0 +1,39 @@
+{
+    "metrics":
+    {
+        "22": 25.0,
+        "25": 27.983333333333334,
+        "6113": 0.0
+    },
+    "dates":
+    {
+        "23": 1557421336000,
+        "5089": 1557777940471,
+        "24": 1557777339000
+    },
+    "properties": null,
+    "flags":
+    {
+        "27": true
+    },
+    "metric_sets": null,
+    "property_lists":
+    {
+        "8483": ["category 4", "category 5", "category 5", "category 5", "category 5", "category 5", "category 5", "category 5", "category 5", "category 5", "category 5", "category 5", "category 5"]
+    },
+    "metric_lists":
+    {
+        "8487": [3.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+    },
+    "current_visit": null,
+    "badges":
+    {
+        "8535": true,
+        "6301": true
+    },
+    "audiences":
+    {
+        "services-christina_advance_103": "Visitors - Unknown",
+        "services-christina_advance_110": "iOS Users"
+    }
+}

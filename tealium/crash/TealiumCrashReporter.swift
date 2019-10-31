@@ -51,15 +51,17 @@ public class TealiumCrashReporter: TealiumCrashReporterType {
         crashReporter.purgePendingCrashReport()
     }
 
-    /// Invokes a crash
-    /// - Parameters:
-    /// - name: name of the crash
-    /// - reason: reason for the crash
+    /// Invokes a crash￼.
+    ///
+    /// - Parameter name: `String` name of the crash￼
+    /// - Parameter reason: `String` reason for the crash
     public class func invokeCrash(name: String, reason: String) {
         NSException(name: NSExceptionName(rawValue: name), reason: reason, userInfo: nil).raise()
     }
 
     /// Gets crash data if crash module is enabled.
+    ///
+    /// - Returns: `[String: Any]` containing crash information
     public func getData() -> [String: Any]? {
         do {
             guard crashData == nil else {

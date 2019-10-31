@@ -6,13 +6,15 @@
 //  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 
+@testable import TealiumCore
+@testable import TealiumLifecycle
 import XCTest
-@testable import Tealium
 
 class TealiumLifecycleModuleTests: XCTestCase {
 
     var expectationRequest: XCTestExpectation?
     var requestProcess: TealiumRequest?
+    let helper = TestTealiumHelper()
 
     override func setUp() {
         super.setUp()
@@ -30,6 +32,7 @@ class TealiumLifecycleModuleTests: XCTestCase {
         let expectation = self.expectation(description: "minimumProtocolsReturned")
         let helper = TestTealiumHelper()
         let module = TealiumLifecycleModule(delegate: nil)
+        module.diskStorage = LifecycleMockDiskStorage()
         helper.modulesReturnsMinimumProtocols(module: module) { success, failingProtocols in
 
             expectation.fulfill()
@@ -67,18 +70,14 @@ class TealiumLifecycleModuleTests: XCTestCase {
         expectationRequest = expectation(description: "allKeysPresent")
 
         let lifecycleModule = TealiumLifecycleModule(delegate: self)
-        let config = TealiumConfig(account: "",
-                                   profile: "",
-                                   environment: "",
-                                   optionalData: nil)
-        lifecycleModule.enable(TealiumEnableRequest(config: config, enableCompletion: nil))
+        lifecycleModule.enable(TealiumEnableRequest(config: helper.getConfig(), enableCompletion: nil), diskStorage: LifecycleMockDiskStorage())
         self.waitForExpectations(timeout: 20.0, handler: nil)
 
         guard let request = requestProcess as? TealiumTrackRequest else {
             XCTFail("\n\nFailure: Process not a track request.\n")
             return
         }
-        let returnData = request.data
+        let returnData = request.trackDictionary
 
         let expectedKeys = ["tealium_event"]
 
@@ -100,9 +99,9 @@ extension TealiumLifecycleModuleTests: TealiumModuleDelegate {
     }
 
     func tealiumModuleRequests(module: TealiumModule?, process: TealiumRequest) {
-        if let p = process as? TealiumTrackRequest {
+        if let process = process as? TealiumTrackRequest {
             expectationRequest?.fulfill()
-            requestProcess = p
+            requestProcess = process
         }
     }
 

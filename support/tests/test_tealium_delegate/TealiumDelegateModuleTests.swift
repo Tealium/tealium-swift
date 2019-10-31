@@ -6,8 +6,9 @@
 //  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 
+@testable import TealiumCore
+@testable import TealiumDelegate
 import XCTest
-@testable import Tealium
 
 class TealiumDelegateModuleTests: XCTestCase {
 
@@ -37,7 +38,6 @@ class TealiumDelegateModuleTests: XCTestCase {
         self.waitForExpectations(timeout: 1.0, handler: nil)
     }
 
-    // Bit of a clunky test
     func testAddAndRemoveMultipleDelegates() {
         // Spin up test module
         module = TealiumDelegateModule(delegate: self)
@@ -57,9 +57,11 @@ class TealiumDelegateModuleTests: XCTestCase {
         }
 
         // Run a track call through the module
-        let track = TealiumTrackRequest(data: ["key": "value"],
+        var track = TealiumTrackRequest(data: ["key": "value"],
                                         completion: nil)
+        track.moduleResponses = [TealiumModuleResponse(moduleName: "delegate", success: true, error: nil)]
         module!.track(track)
+        module!.handleReport(track)
 
         // Check array
         XCTAssertTrue(arrayOfDelegates.count == numberOfDelegates)
@@ -81,6 +83,7 @@ class TealiumDelegateModuleTests: XCTestCase {
             delegate.reset()
         }
         module!.track(track)
+        module!.handleReport(track)
 
         // Check array again
         XCTAssertTrue(arrayOfDelegates.count == newNumber, "Array expected count of \(newNumber) different from found: \(arrayOfDelegates.count)" )

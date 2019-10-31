@@ -6,8 +6,9 @@
 //  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 
+@testable import TealiumConnectivity
+@testable import TealiumCore
 import XCTest
-@testable import Tealium
 
 class TealiumConnectivityModuleTests: XCTestCase {
 
@@ -122,7 +123,7 @@ class TealiumConnectivityModuleTests: XCTestCase {
         let module = TealiumConnectivityModule(delegate: nil)
         let config = TestTealiumHelper().getConfig()
         let testInterval = 5
-        config.setConnectivityRefreshInterval(interval: testInterval)
+        config.setConnectivityRefreshInterval(testInterval)
         let request = TealiumEnableRequest(config: TestTealiumHelper().getConfig(), enableCompletion: nil)
         module.enable(request)
         module.isEnabled = true
@@ -136,7 +137,7 @@ extension TealiumConnectivityModuleTests: TealiumModuleDelegate {
 
     func tealiumModuleFinished(module: TealiumModule, process: TealiumRequest) {
         if let process = process as? TealiumTrackRequest {
-            trackData = process.data
+            trackData = process.trackDictionary
             process.completion?(true,
                                 nil,
                                 nil)

@@ -6,8 +6,9 @@
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
+@testable import TealiumCore
+@testable import TealiumPersistentData
 import XCTest
-@testable import Tealium
 
 class TealiumPersistentDataTests: XCTestCase {
 
@@ -17,11 +18,11 @@ class TealiumPersistentDataTests: XCTestCase {
     var persistentData: TealiumPersistentData?
     var loadCompletion: TealiumCompletion?
     var loadShouldSucceed: Bool = false
+    static let testPersistentData = ["key": "value",
+                                           "anotherKey": "anotherValue"]
 
     override func setUp() {
         super.setUp()
-
-        persistentData = TealiumPersistentData(delegate: self)
     }
 
     override func tearDown() {
@@ -33,125 +34,115 @@ class TealiumPersistentDataTests: XCTestCase {
         super.tearDown()
     }
 
-    func testInitWithAutoLoadRequestWithPriorData() {
-        loadExpectation = self.expectation(description: "autoLoad")
-        testData = ["key": "value"]
-        loadShouldSucceed = true
+    func testSetExistingLegacyData() {
+        // use disk storage with saved data
+        // init persistent data
+        // check that expected data is in persistent data
 
-        let persistentData = TealiumPersistentData(delegate: self)
-        self.waitForExpectations(timeout: 1.0, handler: nil)
+        let diskStorage = PersistentDataMockDiskStorage()
+        persistentData = TealiumPersistentData(diskStorage: diskStorage, legacyMigrator: MockTealiumMigratorWithData.self)
 
-        XCTAssert(persistentData.persistentDataCache == testData!, "Unexpected data loaded: \(persistentData.persistentDataCache)")
+        let targetKeys = ["key", "anotherKey"]
 
+        guard let cache = persistentData?.persistentDataCache else {
+            XCTFail("Cache unexpectedly nil.")
+            return
+        }
+
+        targetKeys.forEach { key in
+            XCTAssertNotNil(cache.values()![key], "Expected data missing: \(key)")
+        }
     }
 
-    func testInitWithAutoLoadRequestWithNoPriorData() {
-        loadExpectation = self.expectation(description: "autoLoad")
-        loadShouldSucceed = true
+    func testSetExistingNoLegacyData() {
+        // use disk storage with saved data
+        // init persistent data
+        // check that expected data is in persistent data
 
-        let persistentData = TealiumPersistentData(delegate: self)
-        self.waitForExpectations(timeout: 1.0, handler: nil)
+        let diskStorage = PersistentDataMockDiskStorage()
+        var persistentDataStore = TealiumPersistentDataStorage()
+        let persistentKey = "newKey"
+        persistentDataStore.add(data: [persistentKey: "persistent"])
+        diskStorage.save(persistentDataStore, completion: nil)
+        persistentData = TealiumPersistentData(diskStorage: diskStorage, legacyMigrator: MockTealiumMigratorNoData.self)
 
-        XCTAssert(persistentData.persistentDataCache.isEmpty, "Unexpected data loaded: \(persistentData.persistentDataCache)")
+        let targetKeys = ["key", "anotherKey"]
 
+        guard let cache = persistentData?.persistentDataCache else {
+            XCTFail("Cache unexpectedly nil.")
+            return
+        }
+
+        targetKeys.forEach { key in
+            XCTAssertNil(cache.values()![key], "Unexpected data: \(key)")
+        }
+        XCTAssertNotNil(cache.values()![persistentKey], "Missing expected value: \(persistentKey)")
     }
 
     func testAddData() {
-        saveExpectation = self.expectation(description: "addData")
-        let expectedData = ["key": "value"]
+        let diskStorage = PersistentDataMockDiskStorage()
+        persistentData = TealiumPersistentData(diskStorage: diskStorage)
 
-        persistentData?.add(data: expectedData)
-        self.waitForExpectations(timeout: 1.0, handler: nil)
-
-        // Check cache
-        guard let cache = persistentData?.persistentDataCache else {
-            XCTFail("Cache did not retain data.")
-            return
-        }
-
-        if cache.isEmpty {
-            XCTFail("Cache unexpectedly empty.")
-        }
-
-        guard let results = testData else {
-            XCTFail("Test Data unexpectedly empty.")
-            return
-        }
-
-        XCTAssert(expectedData == results, "Unexpected saved data: \(results)")
-    }
-
-    func testRemoveDataForKeys() {
-        saveExpectation = self.expectation(description: "removeData")
         let targetKey = "key"
-        let expectedData = [targetKey: "value"]
+        var expectedData = TealiumPersistentDataStorage()
+        expectedData.add(data: TealiumPersistentDataTests.testPersistentData)
 
         persistentData?.persistentDataCache = expectedData
         persistentData?.deleteData(forKeys: [targetKey])
 
-        self.waitForExpectations(timeout: 1.0, handler: nil)
-
-        // Check cache
         guard let cache = persistentData?.persistentDataCache else {
             XCTFail("Cache unexpectedly nil.")
             return
         }
 
-        if cache.isEmpty == false {
-            XCTFail("Cache unexpectedly not empty.")
-        }
+        XCTAssertNotNil(cache.values()!["anotherKey"], "Expected data missing: anotherKey")
+        XCTAssertNil(cache.values()![targetKey], "Unexpected persistent data: \(targetKey)")
+    }
 
-        guard let results = testData else {
-            XCTFail("Test Data unexpectedly nil.")
+    func testRemoveDataForKeys() {
+        let diskStorage = PersistentDataMockDiskStorage()
+        persistentData = TealiumPersistentData(diskStorage: diskStorage)
+
+        let targetKey = "key"
+        var expectedData = TealiumPersistentDataStorage()
+        expectedData.add(data: TealiumPersistentDataTests.testPersistentData)
+
+        persistentData?.persistentDataCache = expectedData
+        persistentData?.deleteData(forKeys: [targetKey])
+
+        guard let cache = persistentData?.persistentDataCache else {
+            XCTFail("Cache unexpectedly nil.")
             return
         }
 
-        XCTAssert(results.isEmpty, "Unexpected persistent data: \(results)")
+        XCTAssertNotNil(cache.values()!["anotherKey"], "Expected data missing: anotherKey")
+        XCTAssertNil(cache.values()![targetKey], "Unexpected persistent data: \(targetKey)")
     }
 
     func testDeleteAllData() {
-        saveExpectation = self.expectation(description: "removeData")
-        let expectedData = ["key": "value",
-                            "anotherKey": "anotherValue"]
+        let expectation = self.expectation(description: "diskStorage")
+        let diskStorage = PersistentDataMockDiskStorage()
+        persistentData = TealiumPersistentData(diskStorage: diskStorage)
 
-        persistentData?.persistentDataCache = expectedData
+        persistentData?.add(data: TealiumPersistentDataTests.testPersistentData)
         persistentData?.deleteAllData()
 
-        self.waitForExpectations(timeout: 1.0, handler: nil)
-
         // Check cache
-        guard let cache = persistentData?.persistentDataCache else {
+        guard var cache = persistentData?.persistentDataCache else {
             XCTFail("Cache unexpectedly nil.")
             return
         }
 
-        if cache.isEmpty == false {
+        guard cache.isEmpty else {
             XCTFail("Cache unexpectedly not empty.")
-        }
-
-        guard let results = testData else {
-            XCTFail("Test Data unexpectedly nil.")
             return
         }
 
-        XCTAssert(results.isEmpty, "Unexpected persistent data: \(results)")
-    }
-
-}
-
-extension TealiumPersistentDataTests: TealiumPersistentDataDelegate {
-
-    func requestSave(data: [String: Any]) {
-        testData = data
-        saveExpectation?.fulfill()
-    }
-
-    func requestLoad(completion: @escaping TealiumCompletion) {
-        if loadShouldSucceed {
-            completion(true, testData, nil)
-        } else {
-            completion(false, testData, nil)
+        diskStorage.retrieve(as: TealiumPersistentDataStorage.self) { _, data, _ in
+            XCTAssertNil(data)
+            expectation.fulfill()
         }
-        loadExpectation?.fulfill()
+        self.waitForExpectations(timeout: 1.0, handler: nil)
     }
+
 }

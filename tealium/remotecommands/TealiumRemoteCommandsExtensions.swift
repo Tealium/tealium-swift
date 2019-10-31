@@ -35,8 +35,8 @@ public extension TealiumConfig {
     }
 
     /// Registers a Remote Command for later execution
-
-    /// - Parameter command: TealiumRemoteCommand instance
+    ///
+    /// - Parameter command: `TealiumRemoteCommand` instance
     func addRemoteCommand(_ command: TealiumRemoteCommand) {
         var commands = optionalData[TealiumRemoteCommandsKey.allCommands] as? [TealiumRemoteCommand] ?? [TealiumRemoteCommand]()
         commands.append(command)
@@ -45,7 +45,7 @@ public extension TealiumConfig {
 
     /// Retrieves all currently-registered Remote Commands
     ///
-    /// - Returns: [TealiumRemoteCommand]
+    /// - Returns: `[TealiumRemoteCommand]`
     func getRemoteCommands() -> [TealiumRemoteCommand]? {
         return optionalData[TealiumRemoteCommandsKey.allCommands] as? [TealiumRemoteCommand]
     }
@@ -53,10 +53,17 @@ public extension TealiumConfig {
 
 extension Array where Element: TealiumRemoteCommand {
 
+    /// Retrieves a command for a specific command ID
+    ///
+    /// - Parameter commandId: `String`
+    /// - Returns: `TealiumRemoteCommand?`
     func commandForId(_ commandId: String) -> TealiumRemoteCommand? {
         return self.first(where: { $0.commandId == commandId })
     }
 
+    /// Removes a command for a specific command ID
+    ///
+    /// - Parameter commandId: `String`
     mutating func removeCommandForId(_ commandId: String) {
         for (index, command) in self.reversed().enumerated() where command.commandId == commandId {
             self.remove(at: index)

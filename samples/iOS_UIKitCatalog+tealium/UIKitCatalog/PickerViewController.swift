@@ -58,6 +58,11 @@ class PickerViewController: UIViewController, UIPickerViewDataSource, UIPickerVi
         
         configurePickerView()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        TealiumHelper.shared.trackView(title: self.title ?? "View Controller", data: nil)
+        super.viewDidAppear(animated)
+    }
 
     override func viewDidAppear(_ animated: Bool) {
         TealiumHelper.shared.trackView(title: self.title ?? "View Controller", data: nil)

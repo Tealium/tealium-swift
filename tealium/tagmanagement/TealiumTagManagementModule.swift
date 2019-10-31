@@ -11,10 +11,11 @@ import Foundation
 import TealiumCore
 #endif
 
-// MARK: MODULE SUBCLASS
 public class TealiumTagManagementModule: TealiumModule {
     var tagManagement: TealiumTagManagementProtocol?
     var remoteCommandResponseObserver: NSObjectProtocol?
+    var errorState = AtomicInteger()
+    var pendingTrackRequests = [TealiumRequest]()
 
     override public class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumTagManagementKey.moduleName,
@@ -23,45 +24,43 @@ public class TealiumTagManagementModule: TealiumModule {
                                    enabled: true)
     }
 
-    // NOTE: UIWebview, the primary element of TealiumTagManagement cannot run in XCTests.
+    // NOTE: UIWebview cannot run in XCTests.
     #if TEST
     #else
 
-    /// Enables the module and sets up the webview instance
-    ///
-    /// - Parameter request: TealiumEnableRequest - the request from the core library to enable this module
-    override public func enable(_ request: TealiumEnableRequest) {
-        if request.config.getShouldUseLegacyWebview() == true {
-            self.tagManagement = TealiumTagManagementUIWebView()
-        } else if #available(iOS 11.0, *) {
-            self.tagManagement = TealiumTagManagementWKWebView()
-        } else {
-            self.tagManagement = TealiumTagManagementUIWebView()
+    override public func handle(_ request: TealiumRequest) {
+        switch request {
+        case let request as TealiumEnableRequest:
+            enable(request)
+        case let request as TealiumDisableRequest:
+            disable(request)
+        case let request as TealiumTrackRequest:
+            dynamicTrack(request)
+        case let request as TealiumBatchTrackRequest:
+            dynamicTrack(request)
+        default:
+            didFinish(request)
         }
+    }
+
+    /// Enables the module and sets up the webview instance.
+    ///￼
+    /// - Parameter request: `TealiumEnableRequest` - the request from the core library to enable this module
+    override public func enable(_ request: TealiumEnableRequest) {
+        self.tagManagement = TealiumTagManagementWKWebView()
 
         let config = request.config
         enableNotifications()
-        if config.optionalData[TealiumTagManagementConfigKey.disable] as? Bool == true {
-            DispatchQueue.main.async {
-                self.tagManagement?.disable()
-            }
-            self.didFinish(request,
-                           info: nil)
-            return
-        }
 
-        DispatchQueue.main.async {
-            let config = request.config
-            self.tagManagement?.enable(webviewURL: config.webviewURL(), shouldMigrateCookies: true, delegates: config.getWebViewDelegates(), view: config.getRootView()) { _, error in
-                                          DispatchQueue.main.async {
-                                             if let err = error {
-                                                 self.didFailToFinish(request,
-                                                                      error: err)
-                                                 return
-                                             }
-                                             self.isEnabled = true
-                                             self.didFinish(request)
-                                          }
+        self.tagManagement?.enable(webviewURL: config.webviewURL(), shouldMigrateCookies: true, delegates: config.getWebViewDelegates(), view: config.getRootView()) { _, error in
+            TealiumQueues.backgroundConcurrentQueue.write {
+                if let error = error {
+                    let logger = TealiumLogger(loggerId: TealiumTagManagementModule.moduleConfig().name, logLevel: request.config.getLogLevel())
+                    logger.log(message: (error.localizedDescription), logLevel: .warnings)
+                    self.errorState.incrementAndGet()
+                }
+                self.isEnabled = true
+                self.didFinish(request)
             }
         }
     }
@@ -76,38 +75,154 @@ public class TealiumTagManagementModule: TealiumModule {
         }
     }
 
-    /// Disables the Tag Management module
+    /// Adds dispatch service key to the dispatch.
     ///
-    /// - Parameter request: TealiumDisableRequest indicating that the module should be disabled
-    override public func disable(_ request: TealiumDisableRequest) {
-        isEnabled = false
-        DispatchQueue.main.async {
-            self.tagManagement?.disable()
-        }
-        didFinish(request,
-                  info: nil)
+    /// - Parameter request: `TealiumTrackRequest` to be insepcted/modified
+    /// - Returns: `TealiumTrackRequest`
+    func prepareForDispatch(_ request: TealiumTrackRequest) -> TealiumTrackRequest {
+        var newTrack = request.trackDictionary
+        newTrack[TealiumKey.dispatchService] = TealiumTagManagementKey.moduleName
+        var newRequest = TealiumTrackRequest(data: newTrack, completion: request.completion)
+        newRequest.moduleResponses = request.moduleResponses
+        return newRequest
     }
 
-    /// Handles the track request and forwards to the webview for processing
+    /// Detects track type and dispatches appropriately.
     ///
-    /// - Parameter track: TealiumTrackRequest to be evaluated
-    override public func track(_ track: TealiumTrackRequest) {
-        if isEnabled == false {
-            // Ignore while disabled
+    /// - Parameter track: `TealiumRequest`, which is expected to be either a `TealiumTrackRequest` or a `TealiumBatchTrackRequest`
+    func dynamicTrack(_ track: TealiumRequest) {
+        guard isEnabled else {
             didFinishWithNoResponse(track)
             return
         }
-        var newTrackData = track.data
-        newTrackData[TealiumKey.dispatchService] = TealiumTagManagementKey.moduleName
-        let newTrack = TealiumTrackRequest(data: newTrackData, completion: track.completion)
-        dispatchTrack(newTrack)
+
+        if self.errorState.value > 0 {
+            self.tagManagement?.reload { success, _, _ in
+                if success {
+                    self.errorState.value = 0
+                    self.dynamicTrack(track)
+                } else {
+                    _ = self.errorState.incrementAndGet()
+                    self.enqueue(track)
+                    let reportRequest = TealiumReportRequest(message: "WebView load failed. Will retry.")
+                    self.delegate?.tealiumModuleRequests(module: self, process: reportRequest)
+                }
+            }
+            return
+        }
+
+        let pending = self.pendingTrackRequests
+        self.pendingTrackRequests = []
+        pending.forEach {
+            self.dynamicTrack($0)
+        }
+
+        switch track {
+        case let track as TealiumTrackRequest:
+            self.dispatchTrack(prepareForDispatch(track))
+        case let track as TealiumBatchTrackRequest:
+            var newRequest = TealiumBatchTrackRequest(trackRequests: track.trackRequests.map { prepareForDispatch($0) },
+                                                      completion: track.completion)
+            newRequest.moduleResponses = track.moduleResponses
+            self.dispatchTrack(newRequest)
+        default:
+            self.didFinishWithNoResponse(track)
+            return
+        }
     }
 
-    /// Called when the module has finished processing the request
+    /// Enqueues a request for later dispatch if the webview isn't ready.
+    ///
+    /// - Parameter request: `TealiumRequest` to be enqueued
+    func enqueue(_ request: TealiumRequest) {
+        guard request is TealiumTrackRequest || request is TealiumBatchTrackRequest else {
+            return
+        }
+
+        switch request {
+        case let request as TealiumBatchTrackRequest:
+            var requests = request.trackRequests
+            requests = requests.map {
+                var trackData = $0.trackDictionary, track = $0
+                trackData[TealiumKey.wasQueued] = true
+                trackData[TealiumKey.queueReason] = "Tag Management Webview Not Ready"
+                track.data = trackData.encodable
+                return track
+            }
+            self.pendingTrackRequests.append(TealiumBatchTrackRequest(trackRequests: requests, completion: request.completion))
+        case let request as TealiumTrackRequest:
+            var track = request
+            var trackData = track.trackDictionary
+            trackData[TealiumKey.wasQueued] = true
+            trackData[TealiumKey.queueReason] = "Tag Management Webview Not Ready"
+            track.data = trackData.encodable
+            self.pendingTrackRequests.append(track)
+        default:
+            return
+        }
+    }
+
+    /// Sends the track request to the webview.
+    ///￼
+    /// - Parameter track: `TealiumTrackRequest` to be sent to the webview
+    func dispatchTrack(_ request: TealiumRequest) {
+        // Webview has failed for some reason
+        if tagManagement?.isWebViewReady() == false {
+            TealiumQueues.backgroundConcurrentQueue.write {
+                self.didFailToFinish(request,
+                                     info: nil,
+                                     error: TealiumTagManagementError.webViewNotYetReady)
+            }
+            return
+        }
+        switch request {
+        case let track as TealiumBatchTrackRequest:
+                let allTrackData = track.trackRequests.map {
+                    $0.trackDictionary
+                }
+
+                #if TEST
+                #else
+                self.tagManagement?.trackMultiple(allTrackData) { success, info, error in
+                    TealiumQueues.backgroundConcurrentQueue.write {
+                        track.completion?(success, info, error)
+                        guard error == nil else {
+                            self.didFailToFinish(track, info: info, error: error!)
+                            return
+                        }
+                        self.didFinish(track,
+                                       info: info)
+                    }
+                }
+                #endif
+        case let track as TealiumTrackRequest:
+                #if TEST
+                #else
+                self.tagManagement?.track(track.trackDictionary) { success, info, error in
+                    TealiumQueues.backgroundConcurrentQueue.write {
+                        track.completion?(success, info, error)
+                        guard error == nil else {
+                            self.didFailToFinish(track, info: info, error: error!)
+                            return
+                        }
+                        self.didFinish(track,
+                                       info: info)
+                    }
+                }
+                #endif
+        default:
+            let reportRequest = TealiumReportRequest(message: "Unexpected request type received. Will not process.")
+            self.delegate?.tealiumModuleRequests(module: self, process: reportRequest)
+            return
+        }
+    }
+    #endif
+
+    /// Called when the module has finished processing the request.
     ///
     /// - Parameters:
-    /// - request: TealiumRequest that the module has finished processing
-    /// - info: [String: Any]? optional dictionary containing additional information from the module about how it handled the request
+    ///     - request: `TealiumRequest` that the module has finished processing
+    ///     - info: `[String: Any]?`  containing additional information from the module about how it handled the request
     func didFinish(_ request: TealiumRequest,
                    info: [String: Any]?) {
         var newRequest = request
@@ -121,12 +236,12 @@ public class TealiumTagManagementModule: TealiumModule {
                                              process: newRequest)
     }
 
-    /// Called when the module has failed to process the request
+    /// Called when the module has failed to process the request.
     ///
     /// - Parameters:
-    /// - request: TealiumRequest that the module has failed to process
-    /// - info: [String: Any]? optional dictionary containing additional information from the module about how it handled the request
-    /// - error: Error reason
+    ///     - request: `TealiumRequest` that the module has failed to process
+    ///     - info: `[String: Any]?` containing additional information from the module about how it handled the request
+    ///     - error: `Error`
     func didFailToFinish(_ request: TealiumRequest,
                          info: [String: Any]?,
                          error: Error) {
@@ -141,38 +256,16 @@ public class TealiumTagManagementModule: TealiumModule {
                                              process: newRequest)
     }
 
-    /// Sends the track request to the webview
-    ///
-    /// - Parameter track: TealiumTrackRequest to be sent to the webview
-    func dispatchTrack(_ track: TealiumTrackRequest) {
-        // Dispatch to main thread since webview requires main thread.
+    /// Disables the Tag Management module.
+    ///￼
+    /// - Parameter request: `TealiumDisableRequest` indicating that the module should be disabled
+    override public func disable(_ request: TealiumDisableRequest) {
+        isEnabled = false
+        self.pendingTrackRequests = [TealiumRequest]()
         DispatchQueue.main.async {
-            // Webview has failed for some reason
-            if self.tagManagement?.isWebViewReady() == false {
-                self.didFailToFinish(track,
-                                     info: nil,
-                                     error: TealiumTagManagementError.webViewNotYetReady)
-                return
-            }
-
-            #if TEST
-            #else
-            self.tagManagement?.track(track.data) { success, info, error in
-                                        DispatchQueue.main.async {
-                                            track.completion?(success, info, error)
-
-                                            if error != nil {
-                                                self.didFailToFinish(track,
-                                                                     info: info,
-                                                                     error: error!)
-                                                return
-                                            }
-                                            self.didFinish(track,
-                                                           info: info)
-                                        }
-            }
-            #endif
+            self.tagManagement?.disable()
         }
+        didFinish(request,
+                  info: nil)
     }
-    #endif
 }

@@ -10,7 +10,10 @@
 
 public enum TealiumValue {
     public static let libraryName = "swift"
-    public static let libraryVersion = "1.7.1"
+    public static let libraryVersion = "1.8.0"
+    // This is the current limit for performance reasons. May be increased in future
+    public static let maxEventBatchSize = 10
+    public static let defaultMinimumDiskSpace: Int32 = 20_000_000
 }
 
 // MARK: ENUMS
@@ -36,6 +39,34 @@ public enum TealiumKey {
     public static let killVisitorSession = "kill_visitor_session"
     // used for remote commands
     public static let tealiumURLScheme = "tealium"
+    public static let dataSource = "tealium_datasource"
+    public static let sessionId = "tealium_session_id"
+    public static let visitorId = "tealium_visitor_id"
+    public static let random = "tealium_random"
+    public static let uuid = "app_uuid"
+    public static let simpleModel = "model_name" // e.g. iPhone 5s // OLD: device
+    public static let device = "device" // == model_name
+    public static let fullModel = "model_variant" // e.g. CDMA, GSM
+    public static let architectureLegacy = "cpu_architecture"
+    public static let architecture = "device_architecture"
+    public static let cpuTypeLegacy = "cpu_type"
+    public static let cpuType = "device_cputype"
+    public static let languageLegacy = "user_locale"
+    public static let language = "device_language"
+    public static let osName = "os_name"
+    public static let platform = "platform"
+    public static let resolution = "device_resolution"
+    public static let minimumFreeDiskSpace = "min_free_disk_space"
+    public static let diskStorageEnabled = "disk_storage"
+    public static let logLevelConfig = "com.tealium.logger.loglevel"
+    public static let timestampUnix = "timestamp_unix"
+    public static let prod = "prod"
+    public static let dev = "dev"
+    // swiftlint:disable identifier_name
+    public static let qa = "qa"
+    // swiftlint:enable identifier_name
+    public static let errorHeaderKey = "X-Error"
+    public static let diskStorageDirectory = "disk_storage_directory"
 }
 
 public enum TealiumModulesManagerError: Error {
@@ -54,7 +85,6 @@ public enum TealiumModuleError: Error {
     case isDisabled
 }
 
-// NOTE: These will be deprecated in a future release.
 public enum TealiumTrackType {
     case view           // Whenever content is displayed to the user.
     case event
@@ -70,7 +100,6 @@ public enum TealiumTrackType {
 
 }
 
-// MARK: 
 // MARK: STRUCTS
 
 /// White or black list of module names to enable. TealiumConfig can be set
@@ -87,7 +116,6 @@ public struct TealiumModulesList {
     }
 }
 
-// MARK: 
 // MARK: TYPEALIASES
 
 public typealias TealiumCompletion = ((_ successful: Bool, _ info: [String: Any]?, _ error: Error?) -> Void)

@@ -106,7 +106,7 @@ class TealiumCrashModule: TealiumModule {
     }
 
     override func track(_ track: TealiumTrackRequest) {
-        if !isEnabled {
+        guard isEnabled else {
             didFinishWithNoResponse(track)
             return
         }
@@ -116,18 +116,20 @@ class TealiumCrashModule: TealiumModule {
             return
         }
 
-        if crashReporter.hasPendingCrashReport() {
-            guard let data = crashReporter.getData() else {
-                return didFinishWithNoResponse(track)
-            }
-
-            let newTrack = TealiumTrackRequest(data: data, completion: { [weak crashReporter] _, _, _ in
-                _ = crashReporter?.purgePendingCrashReport()
-            })
-            didFinish(newTrack)
-        } else {
+        guard crashReporter.hasPendingCrashReport() else {
             // no pending crash report
             didFinishWithNoResponse(track)
+            return
         }
+
+        guard let data = crashReporter.getData() else {
+            didFinishWithNoResponse(track)
+            return
+        }
+
+        let newTrack = TealiumTrackRequest(data: data, completion: { [weak crashReporter] _, _, _ in
+            _ = crashReporter?.purgePendingCrashReport()
+        })
+        didFinish(newTrack)
     }
 }

@@ -1,5 +1,5 @@
 //
-//  TealiumTagManagementWKWebViewDelegate.swift
+//  TealiumTagManagementWKNavigationDelegate.swift
 //  tealium-swift
 //
 //  Created by Craig Rouse on 07/12/2018.
@@ -12,13 +12,18 @@ import WebKit
 import TealiumCore
 #endif
 
-@available(iOS 11.0, *)
 extension TealiumTagManagementWKWebView: WKNavigationDelegate {
 
     /// Called when the WebView has finished loading a resource (DOM Complete)
     public func webView(_ webView: WKWebView,
                         didFinish navigation: WKNavigation!) {
-        self.webviewStateDidChange(.loadSuccess, withError: nil)
+        if let url = webView.url,
+            url == self.url {
+            self.webviewStateDidChange(.loadSuccess, withError: nil)
+        } else {
+            self.webviewStateDidChange(.loadFailure, withError: TealiumTagManagementError.webViewNotYetReady)
+        }
+
         // forward to any listening delegates
         delegates.invoke {
             $0.webView?(webView, didFinish: navigation)
@@ -48,7 +53,9 @@ extension TealiumTagManagementWKWebView: WKNavigationDelegate {
         if let headerFields = response.allHeaderFields as? [String: String] {
             let cookies = HTTPCookie.cookies(withResponseHeaderFields: headerFields, for: url)
             cookies.forEach { cookie in
-                webView.configuration.websiteDataStore.httpCookieStore.setCookie(cookie)
+                if #available(iOS 11, *) {
+                    webView.configuration.websiteDataStore.httpCookieStore.setCookie(cookie)
+                }
             }
         }
 
@@ -103,6 +110,16 @@ extension TealiumTagManagementWKWebView: WKNavigationDelegate {
     public func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         delegates.invoke {
             $0.webView?(webView, didCommit: navigation)
+        }
+    }
+
+    public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        if self.currentState.value == WebViewState.didFailToLoad.rawValue {
+            return
+        }
+        self.webviewStateDidChange(.loadFailure, withError: error)
+        delegates.invoke {
+            $0.webView?(webView, didFail: navigation, withError: error)
         }
     }
 }

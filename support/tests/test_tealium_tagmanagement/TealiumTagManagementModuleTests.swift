@@ -6,7 +6,8 @@
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
-@testable import Tealium
+@testable import TealiumCore
+@testable import TealiumTagManagement
 import XCTest
 
 class TealiumTagManagementModuleTests: XCTestCase {

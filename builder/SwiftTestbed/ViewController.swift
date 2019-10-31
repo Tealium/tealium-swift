@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import SwiftUI
 
 class ViewController: UIViewController {
 
+    var window: UIWindow?
+    
     #if os(iOS)
     private var sharedApplication: UIApplication? {
         let selector = NSSelectorFromString("sharedApplication")
@@ -19,6 +22,10 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        window.rootViewController = UIHostingController(rootView: SwiftUIView())
+        self.window = window
+        self.window?.makeKeyAndVisible()
         // Do any additional setup after loading the view, typically from a nib.
     }
 

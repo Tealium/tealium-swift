@@ -6,8 +6,9 @@
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
+@testable import TealiumCore
+@testable import TealiumPersistentData
 import XCTest
-@testable import Tealium
 
 enum PersistentDataModuleTestKey {
     static let payload = "payload"
@@ -45,7 +46,7 @@ class TealiumPersistentDataModuleTests: XCTestCase {
     func testEnableDisable() {
         let module = TealiumPersistentDataModule(delegate: nil)
 
-        module.enable(TealiumEnableRequest(config: testTealiumConfig, enableCompletion: nil))
+        module.enable(TealiumEnableRequest(config: testTealiumConfig, enableCompletion: nil), diskStorage: PersistentDataMockDiskStorage())
 
         XCTAssertTrue(module.persistentData != nil, "Persistent Data did not init.")
 
@@ -54,61 +55,19 @@ class TealiumPersistentDataModuleTests: XCTestCase {
         XCTAssertTrue(module.persistentData == nil, "Persistent Data did not nil out.")
     }
 
-    // TODO: Decide if we want persistence to report ok even if unable to load persistence
-    //  rather than blocking further processing.
-
-//    func testTrackWhileEnabledDisabled(){
-//        
-//        delegateExpectationSuccess = self.expectation(description: "trackWhenEnabled")
-//        
-//        let module = TealiumPersistentDataModule(delegate: self)
-//        
-//        module.enable(config: testTealiumConfig)
-//        
-//        let testTrack = TealiumTrack(data: [String:AnyObject](),
-//                                     info: nil,
-//                                     completion: {(success, info, error) in
-//
-//                XCTAssertTrue(success, "Track mock did not return success.")
-//
-//                                        
-//        })
-//        
-//        module.track(testTrack)
-//        
-//        delegateExpectationFail = self.expectation(description: "trackWhenDisabled")
-//        
-//        module.disable()
-//        
-//        let testTrackAfter = TealiumTrack(data: [String:AnyObject](),
-//                                     info: nil,
-//                                     completion: {(success, info, error) in
-//                                        
-//            XCTAssertFalse(success, "Track mock did unexpectedly returned success.")
-//                                        
-//        })
-//        
-//        module.track(testTrackAfter)
-//        
-//        self.waitForExpectations(timeout: 1.0, handler: nil)
-//        
-//        
-//    }
-
     func testBasicTrackCall() {
-        // Double check that the typeless convenience track correctly converts the title arg to the expected data variables
         delegateExpectationSuccess = self.expectation(description: "trackWhenEnabled")
 
         let module = TealiumPersistentDataModule(delegate: self)
 
-        module.enable(TealiumEnableRequest(config: testTealiumConfig, enableCompletion: nil))
+        module.enable(TealiumEnableRequest(config: testTealiumConfig, enableCompletion: nil), diskStorage: PersistentDataMockDiskStorage())
 
         let testTrack = TealiumTrackRequest(data: testDataDictionary,
                                             completion: { success, info, _ in
 
                 XCTAssertTrue(success, "Track mock did not return success.")
 
-                guard let payload = info?[PersistentDataModuleTestKey.payload] as? [String: AnyObject] else {
+                guard let payload = info?[PersistentDataModuleTestKey.payload] as? [String: Any] else {
                     XCTFail("test failed")
                     return
                 }
@@ -139,9 +98,9 @@ extension TealiumPersistentDataModuleTests: TealiumModuleDelegate {
             trackRequest.completion?(false, nil, response.error)
             return
         }
-        let payload = trackRequest.data
+        let payload = trackRequest.trackDictionary
         delegateExpectationSuccess?.fulfill()
-        trackRequest.completion?(true, [PersistentDataModuleTestKey.payload: payload as AnyObject], nil)
+        trackRequest.completion?(true, [PersistentDataModuleTestKey.payload: payload], nil)
 
     }
 

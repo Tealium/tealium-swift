@@ -10,25 +10,26 @@ import Foundation
 
 public protocol TealiumAttributionDataProtocol {
 
-    /// - Returns: [String: Any] containing all attribution data
+    /// - Returns: `[String: Any]` containing all attribution data
     var allAttributionData: [String: Any] { get }
 
-    /// - Returns: [String: Any]? of all Apple Search Ads info, if available
-    var appleAttributionDetails: [String: Any]? { get set }
+    /// - Returns: `PersistentAttributionData` containing all Apple Search Ads info, if available
+    var appleAttributionDetails: `PersistentAttributionData`? { get set }
 
-    /// - Returns: String representation of IDFA
+    /// - Returns: `String` representation of IDFA
     var idfa: String { get }
 
-    /// - Returns: String representation of IDFV
+    /// - Returns: `String` representation of IDFV
     var idfv: String { get }
 
-    /// - Returns: All volatile data (collected at init time): IDFV, IDFA, isTrackingAllowed
+    /// - Returns: `[String: Any]` of all volatile data (collected at init time): IDFV, IDFA, isTrackingAllowed
     var volatileData: [String: Any] { get }
 
-    /// - Returns: String representation of Limit Ad Tracking setting (true if tracking allowed, false if disabled)
+    /// - Returns: `String` representation of Limit Ad Tracking setting (true if tracking allowed, false if disabled)
     var isAdvertisingTrackingEnabled: String { get }
 
-    /// Requests Apple Search Ads data from AdClient API
+    /// Requests Apple Search Ads data from AdClient API￼.
+    /// 
     /// - Parameter completion: Completion block to be executed asynchronously when Search Ads data is returned
-    func appleSearchAdsData(_ completion: @escaping ([String: Any]) -> Void)
+    func appleSearchAdsData(_ completion: @escaping (PersistentAttributionData) -> Void)
 }

@@ -21,7 +21,7 @@ public enum TealiumConsentConstants {
     static let defaultPolicy = "gdpr"
 }
 
-public enum TealiumConsentCategories: String {
+public enum TealiumConsentCategories: String, Codable {
     case analytics = "analytics"
     case affiliates = "affiliates"
     case displayAds = "display_ads"
@@ -38,10 +38,10 @@ public enum TealiumConsentCategories: String {
     case cookieMatch = "cookiematch"
     case misc = "misc"
 
-    /// Converts a string array of consent categories to an array of TealiumConsentCategories
-    ///
-    /// - Parameter categories: [String] of consent categories
-    /// - Returns: [TealiumConsentCategories]
+    /// Converts a string array of consent categories to an array of TealiumConsentCategories.
+    ///￼
+    /// - Parameter categories: `[String]` of consent categories
+    /// - Returns: `[TealiumConsentCategories]`
     public static func consentCategoriesStringArrayToEnum(_ categories: [String]) -> [TealiumConsentCategories] {
         var converted = [TealiumConsentCategories]()
         categories.forEach { category in
@@ -53,7 +53,7 @@ public enum TealiumConsentCategories: String {
         return converted
     }
 
-    /// - Returns: An array of all currently-implemented consent categories
+    /// - Returns: `[TealiumConsentCategories]` -  all currently-implemented consent categories
     public static func all() -> [TealiumConsentCategories] {
         return [
             .analytics,
@@ -75,7 +75,7 @@ public enum TealiumConsentCategories: String {
     }
 }
 
-public enum TealiumConsentStatus: String {
+public enum TealiumConsentStatus: String, Codable {
     case unknown
     case consented
     case notConsented

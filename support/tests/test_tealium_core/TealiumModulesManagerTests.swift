@@ -6,8 +6,15 @@
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
+@testable import TealiumAppData
+@testable import TealiumCollect
+@testable import TealiumConsentManager
+@testable import TealiumCore
+@testable import TealiumDelegate
+@testable import TealiumDeviceData
+@testable import TealiumLogger
+@testable import TealiumVisitorService
 import XCTest
-@testable import Tealium
 #if os(iOS)
 @testable import TealiumCrashReporteriOS
 #endif
@@ -37,6 +44,55 @@ class TealiumModulesManagerTests: XCTestCase {
         modulesManager = nil
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
+    }
+
+    // NOTE: This test must run first due to an as yet unidentified issue with something not tearing down as expected.
+    // This can only be guaranteed by ensuring it's first alphabetically (thanks, Xcode!)
+    func testaaaPublicTrackWithDefaultModules() {
+
+        let enableExpectation = self.expectation(description: "testEnable")
+
+        modulesManager = TealiumModulesManager()
+        testTealiumConfig.setInitialUserConsentStatus(.consented)
+        // tag management cannot work properly in tests due to UIKit dependency
+        let list = TealiumModulesList(isWhitelist: false, moduleNames: ["tagmanagement"])
+        testTealiumConfig.setModulesList(list)
+        // Tealium must be initialized in order for callback to work
+        let instance = Tealium(config: testTealiumConfig)
+        modulesManager?.enable(config: testTealiumConfig, enableCompletion: { _ in
+
+            enableExpectation.fulfill()
+            guard let modulesManager = self.modulesManager else {
+                XCTFail("Modules manager deallocated before test completed.")
+                return
+            }
+
+            XCTAssert(modulesManager.allModulesReady(), "All modules not ready: \(String(describing: self.modulesManager?.modules))")
+        }, tealiumInstance: instance)
+
+        self.wait(for: [enableExpectation], timeout: 5.0)
+
+                let trackExpectation = self.expectation(description: "testPublicTrack")
+                let testTrack = TealiumTrackRequest(data: [:],
+                                                    completion: { _, _, error in
+
+                        if let error = error {
+                            switch error {
+                            case TealiumCollectError.xErrorDetected:
+                                XCTAssertTrue(true, "Error is expected due to invalid account/profile")
+                            default:
+                                XCTFail("Track error detected:\(String(describing: error))")
+                            }
+                        }
+
+                        trackExpectation.fulfill()
+
+                })
+
+                modulesManager?.track(testTrack)
+
+                // Only testing that the completion handler is called.
+                self.wait(for: [trackExpectation], timeout: 5.0)
     }
 
     // Note: Set baseline of 0.5s in Xcode before running this test
@@ -81,56 +137,6 @@ class TealiumModulesManagerTests: XCTestCase {
         manager.track(testTrack)
 
         self.waitForExpectations(timeout: 5.0, handler: nil)
-    }
-
-    // NOTE: This integration test will fail if no dispatch services enabled
-    func testPublicTrackWithDefaultModules() {
-
-        let enableExpectation = self.expectation(description: "testEnable")
-
-        modulesManager = TealiumModulesManager()
-        testTealiumConfig.setInitialUserConsentStatus(.consented)
-        // tag management cannot work properly in tests due to UIKit dependency
-        let list = TealiumModulesList(isWhitelist: false, moduleNames: ["tagmanagement"])
-        testTealiumConfig.setModulesList(list)
-        // Tealium must be initialized in order for callback to work
-        _ = Tealium(config: testTealiumConfig)
-        sleep(2)
-        modulesManager?.enable(config: testTealiumConfig) { _ in
-
-            enableExpectation.fulfill()
-            guard let modulesManager = self.modulesManager else {
-                XCTFail("Modules manager deallocated before test completed.")
-                return
-            }
-
-            XCTAssert(modulesManager.allModulesReady(), "All modules not ready: \(String(describing: self.modulesManager?.modules))")
-        }
-
-        self.wait(for: [enableExpectation], timeout: 5.0)
-
-        let trackExpectation = self.expectation(description: "testPublicTrack")
-        let testTrack = TealiumTrackRequest(data: [:],
-                                            completion: { _, _, error in
-
-                if let error = error {
-                    switch error {
-                    case TealiumCollectError.xErrorDetected:
-                        XCTAssertTrue(true, "Error is expected due to invalid account/profile")
-                    default:
-                        XCTFail("Track error detected:\(String(describing: error))")
-                    }
-                }
-
-                trackExpectation.fulfill()
-
-        })
-
-        modulesManager?.track(testTrack)
-
-        // Only testing that the completion handler is called.
-        self.wait(for: [trackExpectation], timeout: 15.0)
-
     }
 
     func testPublicTrackWithFullBlackList() {

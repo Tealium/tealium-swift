@@ -32,30 +32,30 @@ PODS:
     - tealium-swift/Core
 
 DEPENDENCIES:
-  - tealium-swift/Core
-  - tealium-swift/TealiumAppData
-  - tealium-swift/TealiumAutotracking
-  - tealium-swift/TealiumCollect
-  - tealium-swift/TealiumConnectivity
-  - tealium-swift/TealiumConsentManager
-  - tealium-swift/TealiumDataSource
-  - tealium-swift/TealiumDefaultsStorage
-  - tealium-swift/TealiumDelegate
-  - tealium-swift/TealiumDeviceData
-  - tealium-swift/TealiumDispatchQueue
-  - tealium-swift/TealiumLifecycle
-  - tealium-swift/TealiumLogger
-  - tealium-swift/TealiumRemoteCommands
-  - tealium-swift/TealiumTagManagement
-  - tealium-swift/TealiumVolatileData
+  - tealium-swift/Core (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumAppData (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumAutotracking (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumCollect (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumConnectivity (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumConsentManager (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumDataSource (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumDefaultsStorage (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumDelegate (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumDeviceData (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumDispatchQueue (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumLifecycle (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumLogger (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumRemoteCommands (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumTagManagement (from `../../tealium-swift.podspec`)
+  - tealium-swift/TealiumVolatileData (from `../../tealium-swift.podspec`)
 
-SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
-    - tealium-swift
+EXTERNAL SOURCES:
+  tealium-swift:
+    :path: "../../tealium-swift.podspec"
 
 SPEC CHECKSUMS:
   tealium-swift: d297414e757130e6c26e76a75cb0cb2c90b39454
 
-PODFILE CHECKSUM: a4fbc75bd203caee2980857eca1b3e6b844518f1
+PODFILE CHECKSUM: a0be42ca0f23f5aff590fe372a619f7c30bf267f
 
 COCOAPODS: 1.7.0

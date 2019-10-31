@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 
-@available(iOS 11.0, *)
 extension TealiumTagManagementWKWebView {
 
     #if os(iOS)
@@ -22,8 +21,8 @@ extension TealiumTagManagementWKWebView {
     /// Attaches the webview to the current UIView (required to ensure proper operation of JavaScript operations).
     ///
     /// - Parameters:
-    /// - specificView: UIView instance to use
-    /// - withCompletion: Completion block to be called when webview was successfully attached to the UIView
+    ///     - specificView: `UIView` instance to use
+    ///     - completion: Completion block to be called when webview was successfully attached to the UIView
     func attachToUIView(specificView: UIView?,
                         withCompletion completion: (_ success: Bool) -> Void) {
         // attach to specific view passed from config override
@@ -39,12 +38,13 @@ extension TealiumTagManagementWKWebView {
         }
 
         // add webview as subview to whichever view is currently in the view hierarchy
-        if let view = view, let webview = self.webview {
-            view.addSubview(webview)
-            completion(true)
-        } else {
+        guard let view = view, let webview = self.webview else {
             // something went wrong; module should error
             completion(false)
+            return
         }
+
+        view.addSubview(webview)
+        completion(true)
     }
 }

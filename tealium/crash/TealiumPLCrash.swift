@@ -7,14 +7,14 @@
 //
 
 import Foundation
-
-import TealiumCrashReporteriOS
 #if !COCOAPODS
 import TealiumAppData
 import TealiumCore
 import TealiumDeviceData
 #endif
+import TealiumCrashReporteriOS
 
+// TealiumAppDataCollection protocol conformance is handled by default implementation in AppData module (TealiumAppDataExtensions.swift)
 public class TealiumPLCrash: TealiumAppDataCollection {
 
     static let CrashBuildUuid = "CrashBuildUuid"
@@ -128,8 +128,8 @@ public class TealiumPLCrash: TealiumAppDataCollection {
         }
     }
 
-    /// Provides thread state information
-    ///
+    /// Provides thread state information.
+    ///￼
     /// - Parameter truncate: If enabled, returns just the crashed thread only, otherwise returns all the threads. Default value is false.
     /// - Returns: an array of [String: Any]
     func threads(truncate: Bool = false) -> [[String: Any]] {
@@ -181,8 +181,8 @@ public class TealiumPLCrash: TealiumAppDataCollection {
         return array
     }
 
-    /// Gets the images that are loaded with the app
-    ///
+    /// Gets the images that are loaded with the app.
+    ///￼
     /// - Parameter truncate: If enabled, returns just the first image loaded, otherwise returns all the images. Default value is false.
     /// - Returns: an array of [String: Any]
     func libraries(truncate: Bool = false) -> [[String: Any]] {
@@ -208,7 +208,7 @@ public class TealiumPLCrash: TealiumAppDataCollection {
         return array
     }
 
-    /// Gets all crash-related variables
+    /// Gets all crash-related variables.
     ///
     /// - Parameters:
     /// - truncateLibraries: Bool indicating whether the libraries component of the report should be truncated
@@ -239,7 +239,7 @@ public class TealiumPLCrash: TealiumAppDataCollection {
         ]
     }
 
-    /// Gets all crash-related variables
+    /// Gets all crash-related variables.
     ///
     /// - Parameters:
     /// - truncate: Bool indicating whether the libraries and threads components of the report should be truncated
