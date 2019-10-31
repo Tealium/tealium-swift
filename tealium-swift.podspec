@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 
   s.name         = "tealium-swift"
   s.module_name  = "TealiumSwift"
-  s.version      = "1.8.0"
+  s.version      = "1.8.0-beta1"
   s.summary      = "Tealium Swift Integration Library"
 
   # This description is used to generate tags and improve search results.
@@ -141,11 +141,6 @@ Pod::Spec.new do |s|
     consentmanager.dependency "tealium-swift/Core"
   end
 
-  s.subspec "TealiumDefaultsStorage" do |defaultsstorage|
-    defaultsstorage.source_files = "tealium/defaultsstorage/*", "tealium/persistentdata/*"
-    defaultsstorage.dependency "tealium-swift/Core"
-  end
-
   s.subspec "TealiumDelegate" do |delegate|
     delegate.source_files = "tealium/delegate/*"
     delegate.dependency "tealium-swift/Core"
@@ -160,11 +155,6 @@ Pod::Spec.new do |s|
   s.subspec "TealiumDispatchQueue" do |dispatchqueue|
     dispatchqueue.source_files = "tealium/dispatchqueue/*"
     dispatchqueue.dependency "tealium-swift/Core"
-  end
-
-  s.subspec "TealiumFileStorage" do |filestorage|
-    filestorage.source_files = "tealium/filestorage/*", "tealium/persistentdata/*"
-    filestorage.dependency "tealium-swift/Core"
   end
 
   s.subspec "TealiumLifecycle" do |lifecycle|
