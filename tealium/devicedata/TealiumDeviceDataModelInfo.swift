@@ -54,13 +54,15 @@ extension TealiumDeviceData {
             if let currentModel = deviceInfo[model] as? [String: String],
                 let simpleModel = currentModel[TealiumKey.simpleModel],
                 let fullModel = currentModel[TealiumKey.fullModel] {
-                return [TealiumKey.simpleModel: simpleModel,
+                return [TealiumKey.deviceType: model,
+                        TealiumKey.simpleModel: simpleModel,
                         TealiumKey.device: simpleModel,
                         TealiumKey.fullModel: fullModel,
                 ]
             }
         }
-        return [TealiumKey.simpleModel: model,
+        return [TealiumKey.deviceType: model,
+                TealiumKey.simpleModel: model,
                 TealiumKey.fullModel: "",
         ]
     }

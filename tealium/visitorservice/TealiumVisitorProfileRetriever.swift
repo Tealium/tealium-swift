@@ -61,9 +61,8 @@ public class TealiumVisitorProfileRetriever {
             completion(.failure(.couldNotCreateSession))
             return
         }
-        var request = request
-        request.addValue("com.tealium.myapp", forHTTPHeaderField: "referer")
-        urlSession.dataTask(with: request) { data, response, error in
+
+        urlSession.tealiumDataTask(with: request) { data, response, error in
             guard error == nil else {
                 if let error = error as? URLError, error.code == URLError.notConnectedToInternet || error.code == URLError.networkConnectionLost || error.code == URLError.timedOut {
                     completion(.failure(.noInternet))
@@ -86,7 +85,11 @@ public class TealiumVisitorProfileRetriever {
 
     /// Generates the visitor service url
     var visitorProfileURL: String {
-        return "https://visitor-service.tealiumiq.com/\(tealiumConfig.account)/\(tealiumConfig.profile)/\(tealiumVisitorId)"
+        var url = TealiumVisitorProfileConstants.defaultVisitorServiceDomain
+        if let overrideURL = tealiumConfig.getVisitorServiceOverrideURL(), URL(string: overrideURL) != nil {
+            url = overrideURL
+        }
+        return "\(url)\(tealiumConfig.account)/\(tealiumConfig.getVisitorServiceOverrideProfile() ?? tealiumConfig.profile)/\(tealiumVisitorId)"
     }
 
     /// Should fetch visitor profile based on interval set in the config or defaults to every 5 minutes
@@ -158,7 +161,7 @@ public class TealiumVisitorProfileRetriever {
     }
 
     deinit {
-        urlSession?.finishTasksAndInvalidate()
+        urlSession?.finishTealiumTasksAndInvalidate()
         urlSession = nil
     }
 

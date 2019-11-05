@@ -11,9 +11,9 @@ import Foundation
 public typealias DataTaskCompletion = (Data?, URLResponse?, Error?) -> Void
 
 public protocol URLSessionProtocol {
-    func dataTask(with url: URL, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol
-    func dataTask(with: URLRequest, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol
-    func finishTasksAndInvalidate()
+    func tealiumDataTask(with url: URL, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol
+    func tealiumDataTask(with: URLRequest, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol
+    func finishTealiumTasksAndInvalidate()
 }
 
 public protocol URLSessionDataTaskProtocol {

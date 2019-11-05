@@ -34,7 +34,7 @@ public class TealiumVolatileData: NSObject, TealiumVolatileDataCollection {
     ///
     /// - Returns: `[String: Any]`
     public func getData() -> [String: Any] {
-        TealiumQueues.backgroundConcurrentQueue.read {
+        return TealiumQueues.backgroundConcurrentQueue.read { () -> [String: Any] in
             return getData(currentData: [String: Any]())
         }
     }
@@ -44,7 +44,7 @@ public class TealiumVolatileData: NSObject, TealiumVolatileDataCollection {
     /// - Parameter currentData: `[String: Any]` containing existing volatile data
     /// - Returns: `[String: Any]`
     func getData(currentData: [String: Any]) -> [String: Any] {
-        TealiumQueues.backgroundConcurrentQueue.read {
+       return TealiumQueues.backgroundConcurrentQueue.read { () -> [String: Any] in
             var data = [String: Any]()
 
             data[TealiumVolatileDataKey.random] = TealiumVolatileData.getRandom(length: 16)
@@ -58,7 +58,7 @@ public class TealiumVolatileData: NSObject, TealiumVolatileDataCollection {
             data += volatileData
 
             return data
-        }
+       }
     }
 
     /// Checks that the dispatch contains all expected timestamps.
@@ -66,13 +66,13 @@ public class TealiumVolatileData: NSObject, TealiumVolatileDataCollection {
     /// - Parameter currentData: `[String: Any]` containing existing volatile data
     /// - Returns: `Bool` `true` if dispatch contains existing timestamps
     func dispatchHasExistingTimestamps(_ currentData: [String: Any]) -> Bool {
-        TealiumQueues.backgroundConcurrentQueue.read {
+       return TealiumQueues.backgroundConcurrentQueue.read { () -> Bool in
         return (currentData[TealiumVolatileDataKey.timestampEpoch] != nil) &&
                 (currentData[TealiumVolatileDataKey.timestamp] != nil) &&
                 (currentData[TealiumVolatileDataKey.timestampLocal] != nil) &&
                 (currentData[TealiumVolatileDataKey.timestampOffset] != nil) &&
                 (currentData[TealiumVolatileDataKey.timestampUnix] != nil)
-        }
+       }
     }
 
     /// Deletes volatile data for specific keys.

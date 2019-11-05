@@ -16,6 +16,9 @@ enum TealiumVisitorProfileConstants {
     static let eventCountMetric = "22"
     static let defaultRefreshInterval: Int64 = 5
     static let visitorProfileDelegate = "visitor_profile_delegate"
+    static let visitorServiceOverrideProfile = "visitor_service_override_profile"
+    static let visitorServiceOverrideURL = "visitor_service_override_url"
+    static let defaultVisitorServiceDomain = "https://visitor-service.tealiumiq.com/"
 }
 
 public enum AttributeScope {

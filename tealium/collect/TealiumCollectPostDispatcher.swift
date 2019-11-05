@@ -118,7 +118,7 @@ class TealiumCollectPostDispatcher: TealiumCollectProtocol {
     func sendURLRequest(_ request: URLRequest,
                         _ completion: TealiumCompletion?) {
         if let urlSession = self.urlSession {
-            let task = urlSession.dataTask(with: request) { _, response, error in
+            let task = urlSession.tealiumDataTask(with: request) { _, response, error in
                 if let error = error as? URLError {
                     completion?(false, nil, error)
                 } else if let status = response as? HTTPURLResponse {
@@ -138,7 +138,7 @@ class TealiumCollectPostDispatcher: TealiumCollectProtocol {
 
     deinit {
         urlSessionConfiguration = nil
-        urlSession?.finishTasksAndInvalidate()
+        urlSession?.finishTealiumTasksAndInvalidate()
         urlSession = nil
     }
 

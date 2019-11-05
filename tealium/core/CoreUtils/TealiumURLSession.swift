@@ -12,12 +12,18 @@ import TealiumCore
 #endif
 
 extension URLSession: URLSessionProtocol {
-    public func dataTask(with url: URL, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol {
+    public func tealiumDataTask(with url: URL, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol {
         return (dataTask(with: url, completionHandler: completionHandler) as URLSessionDataTask) as URLSessionDataTaskProtocol
     }
-    public func dataTask(with: URLRequest, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol {
+    
+    public func tealiumDataTask(with: URLRequest, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol {
         return (dataTask(with: with, completionHandler: completionHandler) as URLSessionDataTask) as URLSessionDataTaskProtocol
     }
+    
+    public func finishTealiumTasksAndInvalidate() {
+        finishTasksAndInvalidate()
+    }
+    
 }
 
 extension URLSessionDataTask: URLSessionDataTaskProtocol {}

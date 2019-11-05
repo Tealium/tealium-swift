@@ -38,7 +38,7 @@ extension TealiumDeviceData {
         #else
         let networkInfo = CTTelephonyNetworkInfo()
         var carrier: CTCarrier?
-        if #available(iOS 12.0, *) {
+        if #available(iOS 12.1, *) {
             if let newCarrier = networkInfo.serviceSubscriberCellularProviders {
                 // pick up the first carrier in the list
                 for currentCarrier in newCarrier {

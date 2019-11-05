@@ -24,8 +24,8 @@ class TealiumRemoteHTTPCommand: TealiumRemoteCommand {
                                             return
                                         }
 
-                                        let task = TealiumRemoteCommand.urlSession.dataTask(with: request,
-                                                                                            completionHandler: { data, urlResponse, error in
+                                        let task = TealiumRemoteCommand.urlSession.tealiumDataTask(with: request,
+                                                                                                   completionHandler: { data, urlResponse, error in
                                                                                 // Legacy status reporting
                                                                                 if let err = error {
                                                                                     response.error = err

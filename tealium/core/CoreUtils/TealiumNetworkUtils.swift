@@ -13,7 +13,7 @@ import Foundation
 /// - Parameter dictionary: `[String: Any]`
 /// - Returns: `String?`
 public func jsonString(from dictionary: [String: Any]) -> String? {
-    TealiumQueues.backgroundConcurrentQueue.read {
+    return TealiumQueues.backgroundConcurrentQueue.read { () -> String? in
         var writingOptions: JSONEncoder.OutputFormatting
 
         if #available(iOS 11.0, tvOS 11.0, watchOS 4.0, OSX 10.13, *) {
@@ -37,7 +37,7 @@ public func jsonString(from dictionary: [String: Any]) -> String? {
 /// - Parameter array: `[[String: Any]]`
 /// - Returns: `String?`
 public func jsonString(from array: [[String: Any]]) -> String? {
-    TealiumQueues.backgroundConcurrentQueue.read {
+    return TealiumQueues.backgroundConcurrentQueue.read { () -> String? in
         var writingOptions: JSONEncoder.OutputFormatting
 
         if #available(iOS 11.0, tvOS 11.0, watchOS 4.0, OSX 10.13, *) {
@@ -64,7 +64,7 @@ public func jsonString(from array: [[String: Any]]) -> String? {
 ///     - dispatchURL: `String` containing a URL for the URLRequest
 public func urlPOSTRequestWithJSONString(_ jsonString: String,
                                          dispatchURL: String) -> URLRequest? {
-    TealiumQueues.backgroundConcurrentQueue.read {
+   return TealiumQueues.backgroundConcurrentQueue.read { () -> URLRequest? in
         if let dispatchURL = URL(string: dispatchURL) {
             var request = URLRequest(url: dispatchURL)
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")

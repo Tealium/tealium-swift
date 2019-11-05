@@ -7,9 +7,7 @@
 //
 
 import Foundation
-#if dispatchqueue
 import TealiumCore
-#endif
 
 enum TealiumDispatchQueueConstants {
     static let defaultMaxQueueSize = 40
