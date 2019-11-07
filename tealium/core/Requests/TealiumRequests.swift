@@ -243,6 +243,25 @@ public struct TealiumSaveRequest: TealiumRequest {
     }
 }
 
+// TODO: Remote API
+public struct TealiumRemoteAPIRequest: TealiumRequest {
+    public var typeId = TealiumRemoteAPIRequest.instanceTypeId()
+    public var moduleResponses = [TealiumModuleResponse]()
+    public var completion: TealiumCompletion?
+    public var trackRequest: TealiumTrackRequest
+
+    public init(trackRequest: TealiumTrackRequest) {
+        var trackRequestData = trackRequest.trackDictionary
+        trackRequestData[TealiumKey.callType] = TealiumKey.remoteAPICallType
+        self.trackRequest = TealiumTrackRequest(data: trackRequestData)
+    }
+
+    public static func instanceTypeId() -> String {
+        return "remote_api"
+    }
+
+}
+
 /// Request to deliver data.
 public struct TealiumTrackRequest: TealiumRequest, Codable {
     public var typeId = TealiumTrackRequest.instanceTypeId()
@@ -267,6 +286,10 @@ public struct TealiumTrackRequest: TealiumRequest, Codable {
                 completion: TealiumCompletion?) {
         self.data = data.encodable
         self.completion = completion
+    }
+    
+    public init(data: [String: Any]) {
+        self.init(data: data, completion: nil)
     }
 
     public static func instanceTypeId() -> String {

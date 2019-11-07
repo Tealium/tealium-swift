@@ -38,6 +38,8 @@ public class TealiumTagManagementModule: TealiumModule {
             dynamicTrack(request)
         case let request as TealiumBatchTrackRequest:
             dynamicTrack(request)
+        case let request as TealiumRemoteAPIRequest:
+            dynamicTrack(request)
         default:
             didFinish(request)
         }
@@ -125,6 +127,11 @@ public class TealiumTagManagementModule: TealiumModule {
                                                       completion: track.completion)
             newRequest.moduleResponses = track.moduleResponses
             self.dispatchTrack(newRequest)
+        case let track as TealiumRemoteAPIRequest:
+            self.dispatchTrack(prepareForDispatch(track.trackRequest))
+            let reportRequest = TealiumReportRequest(message: "Processing remote_api request.")
+            self.delegate?.tealiumModuleRequests(module: self, process: reportRequest)
+            return
         default:
             self.didFinishWithNoResponse(track)
             return

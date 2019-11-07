@@ -100,6 +100,19 @@ public extension TealiumConfig {
         return self.optionalData[TealiumDispatchQueueConstants.batchExpirationDaysKey] as? Int ?? TealiumDispatchQueueConstants.defaultBatchExpirationDays
     }
 
+    #if os(iOS)
+    /// Enables (`true`) or disables (`false`) `remote_api` event. Required for RemoteCommands module if DispatchQueue module in use.
+    ///
+    /// - Parameter enabled: `Bool`
+    func setIsRemoteAPIEnbled(_ enabled: Bool) {
+        self.optionalData[TealiumDispatchQueueConstants.isRemoteAPIEnabled] = enabled
+    }
+
+    /// - Returns: `Bool` if `remote_api` calls have been enabled (required for RemoteCommands module if DispatchQueue module in use).
+    func getIsRemoteAPIEnbled() -> Bool {
+        return self.optionalData[TealiumDispatchQueueConstants.isRemoteAPIEnabled] as? Bool ?? false
+    }
+    #endif
 }
 
 extension TealiumDispatchQueueModule: TealiumLifecycleEvents {

@@ -27,6 +27,7 @@ class TealiumDispatchQueueModule: TealiumModule {
     var isBatchingEnabled = true
     var batchingBypassKeys: [String]?
     var batchExpirationDays: Int = TealiumDispatchQueueConstants.defaultBatchExpirationDays
+    var isRemoteAPIEnabled = false
 
     #if os(iOS)
     class var sharedApplication: UIApplication? {
@@ -63,6 +64,9 @@ class TealiumDispatchQueueModule: TealiumModule {
         maxDispatchSize = request.config.getBatchSize()
         isBatchingEnabled = request.config.getIsEventBatchingEnabled()
         batchExpirationDays = request.config.getBatchExpirationDays()
+        #if os(iOS)
+        isRemoteAPIEnabled = request.config.getIsRemoteAPIEnbled()
+        #endif
         isEnabled = true
         Tealium.lifecycleListeners.addDelegate(delegate: self)
         didFinish(request)
@@ -167,7 +171,7 @@ class TealiumDispatchQueueModule: TealiumModule {
             didFinishWithNoResponse(request)
             return
         }
-
+        self.triggerRemoteAPIRequest(request)
         let canWrite = diskStorage.canWrite()
         var data = request.trackDictionary
         var shouldBypass = false
@@ -222,6 +226,14 @@ class TealiumDispatchQueueModule: TealiumModule {
         logQueue(request: newRequest)
     }
     // swiftlint:enable function_body_length
+
+    func triggerRemoteAPIRequest(_ request: TealiumTrackRequest) {
+        guard isRemoteAPIEnabled else {
+            return
+        }
+        let request = TealiumRemoteAPIRequest(trackRequest: request)
+        delegate?.tealiumModuleRequests(module: self, process: request)
+    }
 
     func logQueue(request: TealiumTrackRequest) {
         let message = """

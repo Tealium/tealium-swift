@@ -68,6 +68,7 @@ public enum TealiumKey {
     // swiftlint:enable identifier_name
     public static let errorHeaderKey = "X-Error"
     public static let diskStorageDirectory = "disk_storage_directory"
+    public static let remoteAPICallType = "remote_api"
 }
 
 public enum TealiumModulesManagerError: Error {
