@@ -67,7 +67,7 @@ class TealiumPersistentDispatchQueue {
             diskStorage.delete(completion: nil)
         }
 
-        return queuedDispatches
+        return queuedDispatches?.sorted()
     }
 
     func removeOldDispatches(_ maxQueueSize: Int,

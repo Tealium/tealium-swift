@@ -263,7 +263,23 @@ public struct TealiumRemoteAPIRequest: TealiumRequest {
 }
 
 /// Request to deliver data.
-public struct TealiumTrackRequest: TealiumRequest, Codable {
+public struct TealiumTrackRequest: TealiumRequest, Codable, Comparable {
+    public static func < (lhs: TealiumTrackRequest, rhs: TealiumTrackRequest) -> Bool {
+        guard let lhsTimestamp = lhs.trackDictionary[TealiumKey.timestampUnix] as? String,
+            let rhsTimestamp = rhs.trackDictionary[TealiumKey.timestampUnix] as? String else {
+                return false
+        }
+        guard let lhsTimestampInt = Int64(lhsTimestamp),
+            let rhsTimestampInt = Int64(rhsTimestamp) else {
+                return false
+        }
+        return lhsTimestampInt < rhsTimestampInt
+    }
+    
+    public static func == (lhs: TealiumTrackRequest, rhs: TealiumTrackRequest) -> Bool {
+        lhs.trackDictionary == rhs.trackDictionary
+    }
+    
     public var typeId = TealiumTrackRequest.instanceTypeId()
     public var moduleResponses = [TealiumModuleResponse]()
     public var completion: TealiumCompletion?
