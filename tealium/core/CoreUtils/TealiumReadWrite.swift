@@ -12,21 +12,28 @@ import Foundation
 
 public class ReadWrite {
     private let queueSpecificKey = DispatchSpecificKey<String>()
-    private var queueLabel: String
+    private let barrierSpecificKey = DispatchSpecificKey<Bool>()
+    private let specificValue: String
     private let queue: DispatchQueue
 
     private var isAlreadyInQueue: Bool {
-        return DispatchQueue.getSpecific(key: queueSpecificKey) == queueLabel
+        return DispatchQueue.getSpecific(key: queueSpecificKey) == specificValue
+    }
+    
+    private var isAlreadyBarriered: Bool {
+        return DispatchQueue.getSpecific(key: barrierSpecificKey) == true
     }
 
     public init(_ label: String) {
-        queueLabel = label
-        queue = DispatchQueue(label: queueLabel, qos: .background, attributes: .concurrent, autoreleaseFrequency: .inherit, target: .global())
-        queue.setSpecific(key: queueSpecificKey, value: queueLabel)
+        specificValue = label
+        queue = DispatchQueue(label: label, qos: .background, attributes: .concurrent, autoreleaseFrequency: .inherit, target: .global())
+        queue.setSpecific(key: queueSpecificKey, value: specificValue)
+        queue.setSpecific(key: barrierSpecificKey, value: false)
     }
 
     deinit {
         queue.setSpecific(key: queueSpecificKey, value: nil)
+        queue.setSpecific(key: barrierSpecificKey, value: nil)
     }
 
     // Solving readers-writers problem: any amount of readers can access data at a time, but only one writer is allowed at a time
@@ -40,10 +47,10 @@ public class ReadWrite {
     ///
     /// - Parameter work: Closure to be executed.
     public func write(_ work: @escaping () -> Void) {
-        if isAlreadyInQueue {
+        if isAlreadyBarriered {
             work()
         } else {
-            queue.async(flags: .barrier, execute: work)
+            queue.async(flags: .barrier, execute: barrieredWork(work))
         }
     }
 
@@ -53,8 +60,20 @@ public class ReadWrite {
     ///     - delay: `DispatchTime`￼
     ///     - work: Closure to be executed after delay
     public func write(after delay: DispatchTime, _ work: @escaping () -> Void) {
-        queue.asyncAfter(deadline: delay) {
-            self.write(work)
+        queue.asyncAfter(deadline: delay, flags: .barrier, execute: barrieredWork(work))
+    }
+    
+    /// Executes the closure while also setting the barrier flag up for other future, nested, barriered work
+    ///
+    /// This method's returned block should be passed inside every barriered execution on the queue.
+    ///
+    /// - Parameter work: Closure to be executed in between the barrierKey set
+    /// - Returns: A block that must be passed to the async (barriered) method of the queue
+    private func barrieredWork(_ work: @escaping () -> Void) -> (() -> Void) {
+        return {
+            self.queue.setSpecific(key: self.barrierSpecificKey, value: true)
+            work()
+            self.queue.setSpecific(key: self.barrierSpecificKey, value: false)
         }
     }
 
