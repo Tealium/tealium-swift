@@ -232,6 +232,10 @@ public class TealiumTagManagementModule: TealiumModule {
     ///     - info: `[String: Any]?`  containing additional information from the module about how it handled the request
     func didFinish(_ request: TealiumRequest,
                    info: [String: Any]?) {
+        // No didFinish call for remote api requests
+        guard request as? TealiumRemoteAPIRequest == nil else {
+            return
+        }
         var newRequest = request
         var response = TealiumModuleResponse(moduleName: type(of: self).moduleConfig().name,
                                              success: true,
@@ -252,6 +256,10 @@ public class TealiumTagManagementModule: TealiumModule {
     func didFailToFinish(_ request: TealiumRequest,
                          info: [String: Any]?,
                          error: Error) {
+        // No didFinish call for remote api requests
+        guard request as? TealiumRemoteAPIRequest == nil else {
+            return
+        }
         var newRequest = request
         var response = TealiumModuleResponse(moduleName: type(of: self).moduleConfig().name,
                                              success: false,
