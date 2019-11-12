@@ -2,11 +2,12 @@
 //  TealiumHelper.swift
 //  WatchPuzzle
 //
-//  Created by Jason Koo on 11/22/16.
-//  Copyright © 2016 Apple. All rights reserved.
+//  Created by Craig Rouse on 05/15/2018.
+//  Copyright © 2018 Tealium. All rights reserved.
 //
 
 import Foundation
+import TealiumSwift
 
 extension String: Error {
 }
@@ -28,7 +29,7 @@ class TealiumHelper: NSObject {
                 datasource: "test12",
                 optionalData: nil)
         // OPTIONALLY set log level
-        config.setLogLevel(logLevel: .verbose)
+        config.setLogLevel(.verbose)
         config.setConsentLoggingEnabled(true)
         // Example: set initial consent categories - only used on first launch
         // let consentCat: [TealiumConsentCategories] = [.bigData, .analytics, .cookieMatch]
