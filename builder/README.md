@@ -9,9 +9,9 @@
 
 
 ## Documentation
-For full documentation, please see the Tealium Learning Community: 
+For full documentation, please see the Tealium Developer Docs: 
 
-[https://docs.tealium.com/](https://docs.tealium.com/)
+[https://docs.tealium.com/platforms/ios-swift](https://docs.tealium.com/platforms/ios-swift)
 
 ## License
 
