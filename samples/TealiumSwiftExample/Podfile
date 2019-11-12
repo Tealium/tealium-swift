@@ -6,7 +6,7 @@ target 'TealiumSwiftExample' do
   use_frameworks!
 
   # Pods for TealiumSwiftExample
-  pod "tealium-swift", "1.8.0-beta3"
+  pod "tealium-swift", "1.8.0"
 
 end
 
@@ -15,18 +15,18 @@ target 'TealiumSwiftWatchExample Extension' do
   use_frameworks!
 
   # Pods for TealiumSwiftWatchExample Extension
-  #pod "tealium-swift", "1.8.0-beta3"
-  pod "tealium-swift/Core", "1.8.0-beta3"
-  pod "tealium-swift/TealiumAppData", "1.8.0-beta3"
-  pod "tealium-swift/TealiumCollect", "1.8.0-beta3"
-  pod "tealium-swift/TealiumConsentManager", "1.8.0-beta3"
-  pod "tealium-swift/TealiumDelegate", "1.8.0-beta3"
-  pod "tealium-swift/TealiumDeviceData", "1.8.0-beta3"
-  pod "tealium-swift/TealiumDispatchQueue", "1.8.0-beta3"
-  pod "tealium-swift/TealiumLifecycle", "1.8.0-beta3"
-  pod "tealium-swift/TealiumLogger", "1.8.0-beta3"
-  pod "tealium-swift/TealiumVolatileData", "1.8.0-beta3"
-  pod "tealium-swift/TealiumVisitorService", "1.8.0-beta3"
+  #pod "tealium-swift", "1.8.0"
+  pod "tealium-swift/Core", "1.8.0"
+  pod "tealium-swift/TealiumAppData", "1.8.0"
+  pod "tealium-swift/TealiumCollect", "1.8.0"
+  pod "tealium-swift/TealiumConsentManager", "1.8.0"
+  pod "tealium-swift/TealiumDelegate", "1.8.0"
+  pod "tealium-swift/TealiumDeviceData", "1.8.0"
+  pod "tealium-swift/TealiumDispatchQueue", "1.8.0"
+  pod "tealium-swift/TealiumLifecycle", "1.8.0"
+  pod "tealium-swift/TealiumLogger", "1.8.0"
+  pod "tealium-swift/TealiumVolatileData", "1.8.0"
+  pod "tealium-swift/TealiumVisitorService", "1.8.0"
 end
 
 target 'TealiumSwiftTVExample' do
@@ -34,17 +34,17 @@ target 'TealiumSwiftTVExample' do
   use_frameworks!
 
   # Pods for TealiumSwiftWatchExample Extension
-  #pod "tealium-swift", "1.8.0-beta3"
-  pod "tealium-swift/Core", "1.8.0-beta3"
-  pod "tealium-swift/TealiumAppData", "1.8.0-beta3"
-  pod "tealium-swift/TealiumCollect", "1.8.0-beta3"
-  pod "tealium-swift/TealiumConsentManager", "1.8.0-beta3"
-  pod "tealium-swift/TealiumConnectivity", "1.8.0-beta3"
-  pod "tealium-swift/TealiumDelegate", "1.8.0-beta3"
-  pod "tealium-swift/TealiumDeviceData", "1.8.0-beta3"
-  pod "tealium-swift/TealiumDispatchQueue", "1.8.0-beta3"
-  pod "tealium-swift/TealiumLifecycle", "1.8.0-beta3"
-  pod "tealium-swift/TealiumLogger", "1.8.0-beta3"
-  pod "tealium-swift/TealiumVolatileData", "1.8.0-beta3"
-  pod "tealium-swift/TealiumVisitorService", "1.8.0-beta3"
+  #pod "tealium-swift", "1.8.0"
+  pod "tealium-swift/Core", "1.8.0"
+  pod "tealium-swift/TealiumAppData", "1.8.0"
+  pod "tealium-swift/TealiumCollect", "1.8.0"
+  pod "tealium-swift/TealiumConsentManager", "1.8.0"
+  pod "tealium-swift/TealiumConnectivity", "1.8.0"
+  pod "tealium-swift/TealiumDelegate", "1.8.0"
+  pod "tealium-swift/TealiumDeviceData", "1.8.0"
+  pod "tealium-swift/TealiumDispatchQueue", "1.8.0"
+  pod "tealium-swift/TealiumLifecycle", "1.8.0"
+  pod "tealium-swift/TealiumLogger", "1.8.0"
+  pod "tealium-swift/TealiumVolatileData", "1.8.0"
+  pod "tealium-swift/TealiumVisitorService", "1.8.0"
 end  
