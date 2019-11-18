@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol TealiumAppDataProtocol {
+public protocol TealiumAppDataProtocol {
 
     /// Add app data to all dispatches for the remainder of an active session.
 

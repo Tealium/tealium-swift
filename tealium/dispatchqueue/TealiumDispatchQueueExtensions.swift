@@ -104,12 +104,12 @@ public extension TealiumConfig {
     /// Enables (`true`) or disables (`false`) `remote_api` event. Required for RemoteCommands module if DispatchQueue module in use.
     ///
     /// - Parameter enabled: `Bool`
-    func setIsRemoteAPIEnbled(_ enabled: Bool) {
+    func setIsRemoteAPIEnabled(_ enabled: Bool) {
         self.optionalData[TealiumDispatchQueueConstants.isRemoteAPIEnabled] = enabled
     }
 
     /// - Returns: `Bool` if `remote_api` calls have been enabled (required for RemoteCommands module if DispatchQueue module in use).
-    func getIsRemoteAPIEnbled() -> Bool {
+    func getIsRemoteAPIEnabled() -> Bool {
         return self.optionalData[TealiumDispatchQueueConstants.isRemoteAPIEnabled] as? Bool ?? false
     }
     #endif

@@ -7,7 +7,9 @@
 //
 
 import Foundation
-
+#if appdata
+import TealiumCore
+#endif
 public extension TealiumAppDataCollection {
 
     /// Retrieves app name from Bundle￼￼￼￼￼￼.
@@ -40,5 +42,21 @@ public extension TealiumAppDataCollection {
     /// - Returns: `String?` containing the app build number
     func build(bundle: Bundle) -> String? {
         return bundle.infoDictionary?[kCFBundleVersionKey as String] as? String
+    }
+}
+
+public extension Tealium {
+
+    func appData() -> TealiumAppDataProtocol? {
+        guard let module = modulesManager.getModule(forName: TealiumAppDataKey.moduleName) as? TealiumAppDataModule,
+            let appData = module.appData else {
+            return nil
+        }
+
+        return appData
+    }
+
+    func getVisitorId() -> String? {
+        return appData()?.getData()[TealiumKey.visitorId] as? String
     }
 }

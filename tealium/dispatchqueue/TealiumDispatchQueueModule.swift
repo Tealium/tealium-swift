@@ -65,7 +65,7 @@ class TealiumDispatchQueueModule: TealiumModule {
         isBatchingEnabled = request.config.getIsEventBatchingEnabled()
         batchExpirationDays = request.config.getBatchExpirationDays()
         #if os(iOS)
-        isRemoteAPIEnabled = request.config.getIsRemoteAPIEnbled()
+        isRemoteAPIEnabled = request.config.getIsRemoteAPIEnabled()
         #endif
         isEnabled = true
         Tealium.lifecycleListeners.addDelegate(delegate: self)

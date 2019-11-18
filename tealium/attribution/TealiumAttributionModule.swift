@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import UIKit
 #if attribution
 import TealiumCore
 #endif
