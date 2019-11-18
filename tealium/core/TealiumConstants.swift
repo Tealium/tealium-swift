@@ -61,7 +61,7 @@ public enum TealiumKey {
     public static let diskStorageEnabled = "disk_storage"
     public static let logLevelConfig = "com.tealium.logger.loglevel"
     public static let timestampUnix = "timestamp_unix"
-    static let timestampUnixMilliseconds = "timestamp_unix_milliseconds"
+    public static let timestampUnixMilliseconds = "timestamp_unix_milliseconds"
     public static let prod = "prod"
     public static let dev = "dev"
     // swiftlint:disable identifier_name
