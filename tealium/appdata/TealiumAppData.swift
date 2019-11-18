@@ -50,12 +50,12 @@ public class TealiumAppData: TealiumAppDataProtocol, TealiumAppDataCollection {
     /// Retrieve a copy of app data used with dispatches.
     ///
     /// - Returns: `[String: Any]`
-    func getData() -> [String: Any] {
+    public func getData() -> [String: Any] {
         return appData.toDictionary()
     }
 
     /// Deletes all app data, including persistent data.
-    func deleteAllData() {
+    public func deleteAllData() {
         appData.removeAll()
         diskStorage.delete(completion: nil)
     }
@@ -118,7 +118,7 @@ public class TealiumAppData: TealiumAppDataProtocol, TealiumAppDataCollection {
     }
 
     /// Stores current AppData in memory
-    func setNewAppData() {
+    public func setNewAppData() {
         let newUuid = UUID().uuidString
         appData.persistentData = newPersistentData(for: newUuid)
         newVolatileData()
@@ -128,7 +128,7 @@ public class TealiumAppData: TealiumAppDataProtocol, TealiumAppDataCollection {
     /// Populates in-memory AppData with existing values from persistent storage, if present.
     ///
     /// - Parameter data: `PersistentAppData` instance  containing existing AppData variables
-    func setLoadedAppData(data: PersistentAppData) {
+    public func setLoadedAppData(data: PersistentAppData) {
         guard !TealiumAppData.isMissingPersistentKeys(data: data.toDictionary()) else {
             setNewAppData()
             return

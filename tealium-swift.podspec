@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 
   s.name         = "tealium-swift"
   s.module_name  = "TealiumSwift"
-  s.version      = "1.8.0"
+  s.version      = "1.8.0-beta3"
   s.summary      = "Tealium Swift Integration Library"
 
   # This description is used to generate tags and improve search results.
@@ -178,6 +178,12 @@ Pod::Spec.new do |s|
     tagmanagement.source_files = "tealium/tagmanagement/*"
     tagmanagement.dependency "tealium-swift/Core"
   end
+
+  s.subspec "TealiumPersistentData" do |persistentdata|
+    persistentdata.source_files = "tealium/persistentdata/*"
+    persistentdata.dependency "tealium-swift/Core"
+  end
+
 
   s.subspec "TealiumVolatileData" do |volatiledata|
     volatiledata.source_files = "tealium/volatiledata/*"
