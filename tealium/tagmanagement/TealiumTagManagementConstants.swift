@@ -23,7 +23,6 @@ enum TealiumTagManagementConfigKey {
     static let maxQueueSize = "tagmanagement_queue_size"
     static let overrideURL = "tagmanagement_override_url"
     static let delegate = "delegate"
-    static let shouldUseLegacyWebview = "use_legacy_webview"
     static let uiview = "ui_view"
 }
 

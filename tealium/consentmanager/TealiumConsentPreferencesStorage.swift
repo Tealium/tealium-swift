@@ -17,51 +17,70 @@ class TealiumConsentPreferencesStorage {
     static let consentStorage = UserDefaults.standard
     static let key = "consentpreferences"
     let readWriteQueue = ReadWrite("\(TealiumConsentPreferencesStorage.key).label")
+    let diskStorage: TealiumDiskStorageProtocol
 
-    public init() {
-
+    /// - Parameter diskStorage: `TealiumDiskStorageProtocol` instance to use for storing consent preferences
+    public init(diskStorage: TealiumDiskStorageProtocol) {
+        self.diskStorage = diskStorage
+        if let preferences = retrieveConsentPreferencesFromUserDefaults() {
+            self.persist(preferences)
+        }
     }
 
-    /// Saves the consent preferences to persistent storage
+    /// Saves the consent preferences to persistent storage￼.
     ///
-    /// - Parameter prefs: [String: Any] containing the current consent preferences
-    func storeConsentPreferences(_ prefs: [String: Any]) {
-        persist(prefs)
+    /// - Parameter preferences: `[String: Any]` containing the current consent preferences
+    func storeConsentPreferences(_ preferences: TealiumConsentUserPreferences) {
+        persist(preferences)
     }
 
-    /// Gets the saved consent preferences from persistent storage
+    /// Gets the saved consent preferences from persistent storage.
     ///
-    /// - Returns: [String: Any]? containing the saved consent preferences. Nil if empty.
-    func retrieveConsentPreferences() -> [String: Any]? {
+    /// - Returns: `[String: Any]?` containing the saved consent preferences. `nil` if empty.
+    func retrieveConsentPreferences() -> TealiumConsentUserPreferences? {
         return read()
     }
 
-    /// Deletes all previously saved consent preferences from persistent storage
+    /// One-time migration from userdefaults
+    ///
+    /// - Returns: `TealiumConsentUserPreferences?` containing the saved consent preferences. `nil` if empty.
+    func retrieveConsentPreferencesFromUserDefaults() -> TealiumConsentUserPreferences? {
+        var consentPreferences: TealiumConsentUserPreferences?
+        if let data = UserDefaults.standard.dictionary(forKey: TealiumConsentPreferencesStorage.key) {
+            var temp = TealiumConsentUserPreferences(consentStatus: nil, consentCategories: nil)
+            temp.initWithDictionary(preferencesDictionary: data)
+            consentPreferences = temp
+            UserDefaults.standard.removeObject(forKey: TealiumConsentPreferencesStorage.key)
+        }
+        return consentPreferences
+    }
+
+    /// Deletes all previously saved consent preferences from persistent storage.
     func clearStoredPreferences() {
-        readWriteQueue.write {
-            TealiumConsentPreferencesStorage.consentStorage.removeObject(forKey: TealiumConsentPreferencesStorage.key)
-        }
+        diskStorage.delete(completion: nil)
     }
 
-    /// Saves the consent preferences to persistent storage
+    /// Saves the consent preferences to persistent storage￼.
     ///
-    /// - Parameter dict: [String: Any] containing the current consent preferences
-    private func persist(_ dict: [String: Any]) {
-        readWriteQueue.write {
-            TealiumConsentPreferencesStorage.consentStorage.set(dict, forKey: TealiumConsentPreferencesStorage.key)
-        }
+    /// - Parameter dictionary: `TealiumConsentUserPreferences` containing the current consent preferences
+    private func persist(_ preferences: TealiumConsentUserPreferences) {
+        diskStorage.save(preferences, completion: nil)
     }
 
-    /// Gets the saved consent preferences from persistent storage
-    ///
-    /// - Returns: [String: Any]? containing the saved consent preferences. Nil if empty.
-    private func read() -> [String: Any]? {
-        var preferences = [String: Any]()
+    /// Gets the saved consent preferences from persistent storage.
+    /// 
+    /// - Returns: `TealiumConsentUserPreferences?` containing the saved consent preferences. Nil if empty.
+    private func read() -> TealiumConsentUserPreferences? {
+        var consentPreferences: TealiumConsentUserPreferences?
         readWriteQueue.read {
-            if let prefs = TealiumConsentPreferencesStorage.consentStorage.dictionary(forKey: TealiumConsentPreferencesStorage.key) {
-                preferences = prefs
+            diskStorage.retrieve(as: TealiumConsentUserPreferences.self) { _, data, error in
+                guard error == nil else {
+                    consentPreferences = nil
+                    return
+                }
+                consentPreferences = data
             }
         }
-        return preferences.count > 0 ? preferences : nil
+        return consentPreferences
     }
 }

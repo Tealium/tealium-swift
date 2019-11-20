@@ -6,4 +6,5 @@ target 'ConsentManagerDemo' do
   use_frameworks!
   # Pods for ConsentManagerDemo
   pod 'Eureka', '~> 4.1.1'
+  pod 'tealium-swift', '1.8.0'
 end

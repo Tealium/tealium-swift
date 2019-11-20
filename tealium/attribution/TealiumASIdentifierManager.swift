@@ -10,7 +10,7 @@ import AdSupport
 import Foundation
 import UIKit
 
-/// Testable replacement for Apple's ASIdentifierManager
+/// Testable replacement for Apple's ASIdentifierManager.
 public protocol TealiumASIdentifierManagerProtocol {
     static var shared: TealiumASIdentifierManagerProtocol { get }
     var advertisingIdentifier: String { get }
@@ -18,7 +18,7 @@ public protocol TealiumASIdentifierManagerProtocol {
     var identifierForVendor: String { get }
 }
 
-/// Implements Apple's ASIdenfifierManager to advertising identifiers
+/// Implements Apple's ASIdenfifierManager to advertising identifiers.
 public class TealiumASIdentifierManager: TealiumASIdentifierManagerProtocol {
     var idManager = ASIdentifierManager.shared()
 
@@ -28,17 +28,17 @@ public class TealiumASIdentifierManager: TealiumASIdentifierManagerProtocol {
 
     }
 
-    /// - Returns: String representation of IDFA
+    /// - Returns: `String` representation of IDFA
     public lazy var advertisingIdentifier: String = {
         return idManager.advertisingIdentifier.uuidString
     }()
 
-    /// - Returns: String representation of Limit Ad Tracking setting (true if tracking allowed, false if disabled)
+    /// - Returns: `String` representation of Limit Ad Tracking setting (true if tracking allowed, false if disabled)
     public lazy var isAdvertisingTrackingEnabled: String = {
         return idManager.isAdvertisingTrackingEnabled.description
     }()
 
-    /// - Returns: String representation of IDFV
+    /// - Returns: `String` representation of IDFV
     public lazy var identifierForVendor: String = {
         return UIDevice.current.identifierForVendor?.uuidString ?? ""
     }()

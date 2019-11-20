@@ -13,74 +13,122 @@ import TealiumCore
 
 class TealiumCollectPostDispatcher: TealiumCollectProtocol {
 
-    var urlSession: URLSession?
+    var urlSession: URLSessionProtocol?
     var urlSessionConfiguration: URLSessionConfiguration?
-    var dispatchURL: String
-    static var defaultDispatchURL = "https://collect.tealiumiq.com/event/"
+    static var defaultDispatchBaseURL = "https://collect.tealiumiq.com"
+    static var singleEventPath = "/event/"
+    static var bulkEventPath = "/bulk-event/"
+    static var tealiumDomain = ".tealiumiq.com"
 
-    /// Initializes dispatcher
+    var bulkEventDispatchURL: String?
+    var singleEventDispatchURL: String?
+
+    /// Initializes dispatcher￼.
     ///
     /// - Parameters:
-    /// - dispatchURL: String representation of the dispatch URL
-    /// - completion: Completion handler to run when the dispatcher has finished initializing
-    init(dispatchURL: String, _ completion: @escaping ((_ dispatcher: TealiumCollectPostDispatcher?) -> Void)) {
-        // not compatible with vdata endpoint - default to event endpoint
-        if dispatchURL.contains("vdata/i.gif") {
-            self.dispatchURL = TealiumCollectPostDispatcher.defaultDispatchURL
+    ///     - dispatchURL:`String` representation of the dispatch URL￼
+    ///     - urlSession: `URLSession` to use for the dispatch (overridable for unit tests)￼
+    ///     - completion: Completion handler to run when the dispatcher has finished initializing
+    init(dispatchURL: String,
+         urlSession: URLSessionProtocol = TealiumCollectPostDispatcher.getURLSession(),
+         completion: ((_ success: Bool, _ error: TealiumCollectError) -> Void)? = nil) {
+        if TealiumCollectPostDispatcher.isValidUrl(url: dispatchURL) {
+            // if using a custom endpoint, we recommend disabling batching, otherwise custom endpoint must handle batched events using Tealium's proprietary format
+            // if using a CNAMEd domain, batching will work as normal.
+            if let baseURL = TealiumCollectPostDispatcher.getDomainFromURLString(url: dispatchURL) {
+                self.bulkEventDispatchURL = "https://\(baseURL)\(TealiumCollectPostDispatcher.bulkEventPath)"
+                self.singleEventDispatchURL = "https://\(baseURL)\(TealiumCollectPostDispatcher.singleEventPath)"
+            } else {
+                self.bulkEventDispatchURL = "\(TealiumCollectPostDispatcher.defaultDispatchBaseURL)\(TealiumCollectPostDispatcher.bulkEventPath)"
+                self.singleEventDispatchURL = "\(TealiumCollectPostDispatcher.defaultDispatchBaseURL)\(TealiumCollectPostDispatcher.singleEventPath)"
+            }
         } else {
-            self.dispatchURL = dispatchURL
+            completion?(false, .invalidDispatchURL)
         }
-        self.setupURLSession {
-            // pass instance of self for use in unit tests
-            completion(self)
-        }
+        self.urlSession = urlSession
     }
 
-    /// Sets up the URL session object for later use
-    ///
-    /// - Parameter completion: Optional completion to be called when session setup is complete
-    func setupURLSession(_ completion: (() -> Void)?) {
-        self.urlSessionConfiguration = URLSessionConfiguration.default
-        if let urlSessionConfiguration = self.urlSessionConfiguration {
-            self.urlSession = URLSession(configuration: urlSessionConfiguration, delegate: nil, delegateQueue: nil)
-        }
-        completion?()
+    class func getURLSession() -> URLSession {
+        let config = URLSessionConfiguration.ephemeral
+        return URLSession(configuration: config)
     }
 
-    /// Dispatches data to an HTTP endpoint, then calls optional completion block when finished
+    /// Gets the hostname from a url￼.
     ///
-    /// - Parameters:
-    /// - data: [String:Any] of variables to be dispatched
-    /// - completion: Optional completion block to be called when operation complete
+    /// - Parameter url: `String` representation of a URL
+    /// - Returns: `String?` containing the hostname
+    static func getDomainFromURLString(url: String) -> String? {
+        guard let url = URL(string: url) else {
+            return nil
+        }
+
+        return url.host
+    }
+
+    /// URL initializer does not actually validate web addresses successfully (it's too permissive), so this additional check is required￼.
+    ///
+    /// - Parameter url: `String` containing a URL to be validated
+    /// - Returns: `Bool` `true` if URL is a valid web address
+    static func isValidUrl(url: String) -> Bool {
+        let urlRegexPattern = "^(https?://)?(www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z0-9]{0,61}[a-z0-9]\\.[a-z]{2,6}(/[-\\w@\\+\\.~#\\?&/=%]*)?$"
+        guard let validURLRegex = try? NSRegularExpression(pattern: urlRegexPattern, options: []) else {
+            return false
+        }
+        return validURLRegex.rangeOfFirstMatch(in: url, options: [], range: NSRange(url.startIndex..., in: url)).location != NSNotFound
+    }
+
     func dispatch(data: [String: Any],
                   completion: TealiumCompletion?) {
-        if let jsonString = jsonStringWithDictionary(data), let urlRequest = urlPOSTRequestWithJSONString(jsonString, dispatchURL: dispatchURL) {
+        dispatch(data: data, url: nil, completion: completion)
+    }
+
+    /// Dispatches data to an HTTP endpoint, then calls optional completion block when finished￼.
+    ///
+    /// - Parameters:
+    ///     - data: `[String:Any]` of variables to be dispatched￼
+    ///     - url: `String?` containing the dispatch URL to use. Defaults to single event dispatch url.￼
+    ///     - completion: Optional completion block to be called when operation complete
+    func dispatch(data: [String: Any],
+                  url: String? = nil,
+                  completion: TealiumCompletion?) {
+        if let jsonString = jsonString(from: data),
+            let url = url ?? singleEventDispatchURL,
+            let urlRequest = urlPOSTRequestWithJSONString(jsonString, dispatchURL: url) {
             sendURLRequest(urlRequest, completion)
         } else {
             completion?(false, nil, TealiumCollectError.noDataToTrack)
         }
     }
 
-    /// Sends a URLRequest, then calls the completion handler, passing success/failures back to the completion handler
+    /// Dispatches data to an HTTP endpoint, then calls optional completion block when finished.
     ///
     /// - Parameters:
-    /// - request: URLRequest object
-    /// - completion: Optional completion block to handle success/failure
-    func sendURLRequest(_ request: URLRequest, _ completion: TealiumCompletion?) {
+    ///     - data: `[String:Any]` containing the nested data structure for a bulk dispatch
+    ///     - completion: Optional completion block to be called when operation complete
+    func dispatchBulk(data: [String: Any],
+                      completion: TealiumCompletion?) {
+        dispatch(data: data, url: bulkEventDispatchURL, completion: completion)
+    }
+
+    /// Sends a URLRequest, then calls the completion handler, passing success/failures back to the completion handler￼.
+    ///
+    /// - Parameters:
+    ///     - request: `URLRequest` object￼
+    ///     - completion: Optional completion block to handle success/failure
+    func sendURLRequest(_ request: URLRequest,
+                        _ completion: TealiumCompletion?) {
         if let urlSession = self.urlSession {
-            let task = urlSession.dataTask(with: request) { _, response, error in
-                if let status = response as? HTTPURLResponse {
+            let task = urlSession.tealiumDataTask(with: request) { _, response, error in
+                if let error = error as? URLError {
+                    completion?(false, nil, error)
+                } else if let status = response as? HTTPURLResponse {
                     // error only indicates "no response from server. 400 responses are considered successful
-                    if let error = error {
-                        completion?(false, nil, error)
+                    if let errorHeader = status.allHeaderFields[TealiumCollectKey.errorHeaderKey] as? String {
+                        completion?(false, ["error": errorHeader], TealiumCollectError.xErrorDetected)
+                    } else if status.statusCode != 200 {
+                        completion?(false, nil, TealiumCollectError.non200Response)
                     } else {
-                        if let errorHeader = status.allHeaderFields[TealiumCollectKey.errorHeaderKey] as? String {
-                            completion?(false, ["error": errorHeader], TealiumCollectError.xErrorDetected)
-                        } else if status.statusCode != 200 {
-                            completion?(false, nil, TealiumCollectError.non200Response)
-                        } else {
-                            completion?(true, nil, nil)
-                        }
+                        completion?(true, nil, nil)
                     }
                 }
             }
@@ -90,7 +138,7 @@ class TealiumCollectPostDispatcher: TealiumCollectProtocol {
 
     deinit {
         urlSessionConfiguration = nil
-        urlSession?.finishTasksAndInvalidate()
+        urlSession?.finishTealiumTasksAndInvalidate()
         urlSession = nil
     }
 

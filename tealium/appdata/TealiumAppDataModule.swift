@@ -15,13 +15,14 @@ import TealiumCore
 class TealiumAppDataModule: TealiumModule {
 
     var appData: TealiumAppDataProtocol!
+    var diskStorage: TealiumDiskStorageProtocol!
 
     required public init(delegate: TealiumModuleDelegate?) {
         super.init(delegate: delegate)
-        appData = TealiumAppData(delegate: self)
     }
 
-    init(delegate: TealiumModuleDelegate?, appData: TealiumAppDataProtocol) {
+    init(delegate: TealiumModuleDelegate?,
+         appData: TealiumAppDataProtocol) {
         super.init(delegate: delegate)
         self.appData = appData
     }
@@ -33,56 +34,48 @@ class TealiumAppDataModule: TealiumModule {
                                    enabled: true)
     }
 
-    /// Enables the module and loads AppData into memory
-    ///
-    /// - Parameter request: TealiumEnableRequest - the request from the core library to enable this module
+    /// Enable function required by TealiumModule.
     override func enable(_ request: TealiumEnableRequest) {
-        let loadRequest = TealiumLoadRequest(name: TealiumAppDataModule.moduleConfig().name) { [weak self] _, data, _ in
+        self.enable(request, diskStorage: nil)
+    }
 
-            // No prior saved data
-            guard let loadedData = data else {
-                self?.appData.setNewAppData()
-                return
-            }
-
-            // Loaded data does not contain expected keys
-            if TealiumAppData.isMissingPersistentKeys(data: loadedData) == true {
-                self?.appData.setNewAppData()
-                return
-            }
-
-            self?.appData.setLoadedAppData(data: loadedData)
+    /// Enables the module and loads AppData into memory￼￼￼.
+    ///
+    /// - Parameters:
+    ///     - request: `TealiumEnableRequest` - the request from the core library to enable this module￼￼
+    ///     - diskStorage: `TealiumDiskStorageProtocol` instance to allow overriding for unit testing
+    func enable(_ request: TealiumEnableRequest,
+                diskStorage: TealiumDiskStorageProtocol? = nil) {
+        // allows overriding for unit tests, indepdendently of enable call
+        if self.diskStorage == nil {
+            self.diskStorage = diskStorage ?? TealiumDiskStorage(config: request.config, forModule: TealiumAppDataKey.moduleName, isCritical: true)
         }
-
-        delegate?.tealiumModuleRequests(module: self,
-                                        process: loadRequest)
-
+        self.appData = self.appData ?? TealiumAppData(diskStorage: self.diskStorage, existingVisitorId: request.config.getExistingVisitorId())
         isEnabled = true
 
-        // We're not going to wait for the loadrequest to return because it may never
-        // if there are no persistence modules enabled.
         didFinish(request)
     }
 
-    /// Adds current AppData to the track request
+    /// Adds current AppData to the track request￼￼.
     ///
-    /// - Parameter track: TealiumTrackRequest to be modified
+    /// - Parameter track: `TealiumTrackRequest` to be modified
     override func track(_ track: TealiumTrackRequest) {
-        if isEnabled == false {
+        guard isEnabled else {
             // Ignore this module
             didFinishWithNoResponse(track)
             return
         }
 
-        // If no persistence modules enabled.
-        if TealiumAppData.isMissingPersistentKeys(data: appData.getData()) {
-            appData.setNewAppData()
+        // do not add data to queued hits
+        guard track.trackDictionary[TealiumKey.wasQueued] as? String == nil else {
+            didFinishWithNoResponse(track)
+            return
         }
 
         // Populate data stream
         var newData = [String: Any]()
         newData += appData.getData()
-        newData += track.data
+        newData += track.trackDictionary
 
         let newTrack = TealiumTrackRequest(data: newData,
                                            completion: track.completion)
@@ -90,13 +83,16 @@ class TealiumAppDataModule: TealiumModule {
         didFinish(newTrack)
     }
 
-    /// Disables the module and deletes all associated data
-    ///
-    /// - Parameter request: TealiumDisableRequest
+    /// Disables the module and deletes all associated data￼￼.
+    /// 
+    /// - Parameter request: `TealiumDisableRequest`
     override func disable(_ request: TealiumDisableRequest) {
-        appData.deleteAllData()
+        if appData != nil {
+            appData.deleteAllData()
+        }
         isEnabled = false
-
+        appData = nil
+        diskStorage = nil
         didFinish(request)
     }
 }

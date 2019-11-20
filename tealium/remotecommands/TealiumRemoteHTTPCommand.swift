@@ -13,7 +13,7 @@ import TealiumCore
 
 class TealiumRemoteHTTPCommand: TealiumRemoteCommand {
 
-    /// Returns an instance of the TealiumRemoteHTTPCommand
+    /// - Returns:`TealiumRemoteHTTPCommand`
     class func httpCommand() -> TealiumRemoteCommand {
         return TealiumRemoteCommand(commandId: TealiumRemoteHTTPCommandKey.commandId,
                                     description: "For processing tag-triggered HTTP requests") { response in
@@ -24,8 +24,8 @@ class TealiumRemoteHTTPCommand: TealiumRemoteCommand {
                                             return
                                         }
 
-                                        let task = URLSession.shared.dataTask(with: request,
-                                                                              completionHandler: { data, urlResponse, error in
+                                        let task = TealiumRemoteCommand.urlSession.tealiumDataTask(with: request,
+                                                                                                   completionHandler: { data, urlResponse, error in
                                                                                 // Legacy status reporting
                                                                                 if let err = error {
                                                                                     response.error = err
@@ -50,9 +50,9 @@ class TealiumRemoteHTTPCommand: TealiumRemoteCommand {
     }
 
     /// Forms a URLRequest from a dictionary payload containing predetermined config keys
-    ///
+    ///￼
     /// - Parameter payload: [String: Any] payload representing a set of key-value pairs to be sent with the URLRequest
-    /// - Returns: A tuple containing an optional URLRequest object and an optional Error object
+    /// - Returns: `(URLRequest?, Error?)`
     class func httpRequest(payload: [String: Any]) -> (request: URLRequest?, error: Error?) {
         guard let urlStringValue = payload[TealiumRemoteCommandsHTTPKey.url] as? String else {
             // This response is not intended for use as an HTTP command
@@ -106,9 +106,9 @@ class TealiumRemoteHTTPCommand: TealiumRemoteCommand {
     }
 
     /// Returns sorted queryItems from a dictionary.
-    ///
-    /// - Parameter dictionary: Dictionary of type [String:Any]
-    /// - Returns: Sorted [URLQueryItem] array by dictionary keys
+    ///￼
+    /// - Parameter dictionary: `[String:Any]`
+    /// - Returns: Sorted `[URLQueryItem]` array by dictionary keys
     class func paramItemsFrom(dictionary: [String: Any]) -> [URLQueryItem] {
         var queryItems = [URLQueryItem]()
         let sortedKeys = Array(dictionary.keys).sorted(by: <)

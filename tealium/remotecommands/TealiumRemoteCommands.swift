@@ -14,14 +14,14 @@ import TealiumCore
 /// Manages instances of TealiumRemoteCommand
 public class TealiumRemoteCommands: NSObject {
 
-    weak var queue: DispatchQueue?
+    weak var queue = TealiumQueues.backgroundSerialQueue
     var commands = [TealiumRemoteCommand]()
     var isEnabled = false
     static var pendingResponses = [String: Bool]()
 
-    /// Checks if a URLRequest object contains a valid Remote Command
-    ///
-    /// - Parameter request: URLRequest representing the Remote Command
+    /// Checks if a URLRequest object contains a valid Remote Command.
+    ///￼
+    /// - Parameter request: `URLRequest` representing the Remote Command
     /// - Returns: Bool indicating whether the command is valid
     func isAValidRemoteCommand(request: URLRequest) -> Bool {
         if request.url?.scheme == TealiumKey.tealiumURLScheme {
@@ -31,30 +31,28 @@ public class TealiumRemoteCommands: NSObject {
         return false
     }
 
-    /// Adds a remote command for later execution
+    /// Adds a remote command for later execution.
     ///
-    /// - Parameters:
-    /// - remoteCommand: TealiumRemoteCommand to be added for later execution
+    /// - Parameter remoteCommand: `TealiumRemoteCommand` to be added for later execution
     public func add(_ remoteCommand: TealiumRemoteCommand) {
         // NOTE: Multiple commands with the same command id are possible - OK
         remoteCommand.delegate = self
         commands.append(remoteCommand)
     }
 
-    /// Removes a Remote Command so it can no longer be called
+    /// Removes a Remote Command so it can no longer be called.
     ///
-    /// - Parameters:
-    /// - commandId: String containing the command ID to be removed
+    /// - Parameter commandId: `String` containing the command ID to be removed
     public func remove(commandWithId: String) {
         commands.removeCommandForId(commandWithId)
     }
 
-    /// Enables the Remote Commands feature
+    /// Enables the Remote Commands feature.
     func enable() {
         isEnabled = true
     }
 
-    /// Disables Remote Commands and removes all previously-added Remote Commands so they can no longer be executed
+    /// Disables Remote Commands and removes all previously-added Remote Commands so they can no longer be executed.
     func disable() {
         commands.removeAll()
         isEnabled = false
@@ -63,8 +61,8 @@ public class TealiumRemoteCommands: NSObject {
     /// Trigger an associated remote command from a string representation of a url request. Function
     ///     will presume the string is escaped, if not, will attempt to escape string
     ///     with .urlQueryAllowed. NOTE: using .urlHostAllowed for escaping will not work.
-    ///
-    /// - Parameter urlString: Url string including host, ie: tealium://commandId?request={}...
+    ///￼
+    /// - Parameter urlString:`String` containing a URL including host, ie: tealium://commandId?request={}...
     /// - Returns: Error if unable to trigger a remote command. Can ignore if the url was not
     ///     intended for a remote command.
     public func triggerCommandFrom(urlString: String) -> TealiumRemoteCommandsError? {
@@ -83,11 +81,19 @@ public class TealiumRemoteCommands: NSObject {
         return triggerCommandFrom(request: request)
     }
 
+    public func triggerCommandFrom(notification: Notification) {
+        guard let request = notification.userInfo?[TealiumKey.tagmanagementNotification] as? URLRequest else {
+            return
+        }
+        triggerCommandFrom(request: request)
+    }
+
     /// Trigger an associated remote command from a url request.
-    ///
-    /// - Parameter request: URLRequest to check for a remote command.
-    /// - Returns: Error if unable to trigger a remote command. If nil is returned,
+    ///￼
+    /// - Parameter request: `URLRequest` to check for a remote command.
+    /// - Returns: `TealiumRemoteCommandsError` if unable to trigger a remote command. If nil is returned,
     ///     then call was a successfully triggered remote command.
+    @discardableResult
     public func triggerCommandFrom(request: URLRequest) -> TealiumRemoteCommandsError? {
 
         if request.url?.scheme != TealiumKey.tealiumURLScheme {
@@ -122,12 +128,12 @@ public class TealiumRemoteCommands: NSObject {
 
 extension TealiumRemoteCommands: TealiumRemoteCommandDelegate {
 
-    /// Triggers the completion block registered for a specific remote command
+    /// Triggers the completion block registered for a specific remote command.
     ///
     /// - Parameters:
-    /// - command: The Remote Command to be executed
-    /// - response: The Response object passed back from TiQ. If the command needs to explictly handle the response (e.g. data needs passing back to webview),
-    ///    it must set the "hasCustomCompletionHandler" flag, otherwise the completion notification will be sent automatically
+    ///     - command: `TealiumRemoteCommand` to be executed
+    ///     - response: `TealiumRemoteCommandResponse` object passed back from TiQ. If the command needs to explictly handle the response (e.g. data needs passing back to webview),
+    ///      it must set the "hasCustomCompletionHandler" flag, otherwise the completion notification will be sent automatically
     func tealiumRemoteCommandRequestsExecution(_ command: TealiumRemoteCommand,
                                                response: TealiumRemoteCommandResponse) {
         self.queue?.async {

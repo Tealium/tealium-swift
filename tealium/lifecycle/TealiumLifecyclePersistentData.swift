@@ -7,6 +7,9 @@
 //
 
 import Foundation
+#if lifecycle
+import TealiumCore
+#endif
 
 enum TealiumLifecyclePersistentDataError: Error {
     case couldNotArchiveAsData
@@ -16,6 +19,56 @@ enum TealiumLifecyclePersistentDataError: Error {
 
 open class TealiumLifecyclePersistentData {
 
+    let diskStorage: TealiumDiskStorageProtocol
+
+    init(diskStorage: TealiumDiskStorageProtocol,
+         uniqueId: String? = nil) {
+        self.diskStorage = diskStorage
+        // one-time migration
+        if let uniqueId = uniqueId, let lifecycle = retrieveLegacyLifecycleData(uniqueId: uniqueId) {
+            _ = self.save(lifecycle)
+        }
+    }
+
+    func retrieveLegacyLifecycleData(uniqueId: String) -> TealiumLifecycle? {
+        guard let data = UserDefaults.standard.object(forKey: uniqueId) as? Data else {
+            // No saved data
+            return nil
+        }
+
+        do {
+            // CocoaPods & Carthage use different module names, so legacy storage requires different namespaces
+            #if COCOAPODS
+            NSKeyedUnarchiver.setClass(TealiumLifecycleLegacy.self, forClassName: "TealiumSwift.TealiumLifecycle")
+            NSKeyedUnarchiver.setClass(TealiumLifecycleLegacySession.self, forClassName: "TealiumSwift.TealiumLifecycleSession")
+            #elseif lifecycle
+            // carthage - individual schemes
+            NSKeyedUnarchiver.setClass(TealiumLifecycleLegacy.self, forClassName: "TealiumLifecycle.TealiumLifecycle")
+            NSKeyedUnarchiver.setClass(TealiumLifecycleLegacySession.self, forClassName: "TealiumLifecycle.TealiumLifecycleSession")
+            // For the "SwiftTestBed" app in 1.7.1 and below, the module namespace was "Tealium", but this shouldn't be the case in production apps.
+            // If testing migration from 1.7.1 in the builder project, you will need to uncomment the following 2 lines
+            // NSKeyedUnarchiver.setClass(TealiumLifecycleLegacy.self, forClassName: "Tealium.TealiumLifecycle")
+            // NSKeyedUnarchiver.setClass(TealiumLifecycleLegacySession.self, forClassName: "Tealium.TealiumLifecycleSession")
+            #endif
+            guard let lifecycle = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? TealiumLifecycleLegacy else {
+                return nil
+            }
+            let encoder = JSONEncoder()
+            guard let encoded = try? encoder.encode(lifecycle) else {
+                return nil
+            }
+            let decoder = JSONDecoder()
+            guard let decoded = try? decoder.decode(TealiumLifecycle.self, from: encoded) else {
+                return nil
+            }
+            UserDefaults.standard.removeObject(forKey: uniqueId)
+            return decoded
+        } catch {
+            // invalidArchiveOperationException
+            return nil
+        }
+    }
+
     class func dataExists(forUniqueId: String) -> Bool {
         guard UserDefaults.standard.object(forKey: forUniqueId) as? Data != nil else {
             return false
@@ -24,52 +77,21 @@ open class TealiumLifecyclePersistentData {
         return true
     }
 
-     class func load(uniqueId: String) -> TealiumLifecycle? {
-        guard let data = UserDefaults.standard.object(forKey: uniqueId) as? Data else {
-            // No saved data
-            return nil
+     func load() -> TealiumLifecycle? {
+        var lifecycle: TealiumLifecycle?
+        diskStorage.retrieve(as: TealiumLifecycle.self) { _, data, _ in
+            lifecycle = data
         }
-
-        do {
-            guard let lifecycle = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? TealiumLifecycle else {
-                return nil
-            }
-            return lifecycle
-        } catch {
-            // invalidArchiveOperationException
-            return nil
-        }
+        return lifecycle
     }
 
-    class func save(_ lifecycle: TealiumLifecycle, usingUniqueId: String) -> (success: Bool, error: Error?) {
-
-        let data = NSKeyedArchiver.archivedData(withRootObject: lifecycle)
-
-        UserDefaults.standard.set(data, forKey: usingUniqueId)
-        guard let defaultsCheckData = UserDefaults.standard.object(forKey: usingUniqueId) as? Data else {
-            return (false, TealiumLifecyclePersistentDataError.couldNotArchiveAsData)
-        }
-
-        do {
-            guard let defaultsCheck = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(defaultsCheckData) as? TealiumLifecycle else {
-                return (false, TealiumLifecyclePersistentDataError.couldNotUnarchiveData)
-            }
-
-            let checkPassed = (defaultsCheck == lifecycle) ? true : false
-
-            if checkPassed == true {
-                return (true, nil)
-            }
-
-            return (false, TealiumLifecyclePersistentDataError.archivedDataMismatchWithOriginalData)
-        } catch {
-            return (false, TealiumLifecyclePersistentDataError.couldNotUnarchiveData)
-        }
+    func save(_ lifecycle: TealiumLifecycle) -> (success: Bool, error: Error?) {
+        diskStorage.save(lifecycle, completion: nil)
+        return (true, nil)
     }
 
     class func deleteAllData(forUniqueId: String) -> Bool {
-        // False option not yet implemented
-        if dataExists(forUniqueId: forUniqueId) == false {
+        if !dataExists(forUniqueId: forUniqueId) {
             return true
         }
 

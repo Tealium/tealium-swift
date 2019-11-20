@@ -13,9 +13,9 @@ import WebKit
 extension TealiumTagManagementWKWebView: WKHTTPCookieStoreObserver {
 
     /// Listens for cookie changes in WKHTTPCookieStore
+    ///￼  NOTE: this exists purely to work around an issue where cookies are not properly synced to WKWebView instances
     ///
-    /// - Parameter in cookieStore: WKHTTPCookieStore instance
-    // NOTE: this exists purely to work around an issue where cookies are not properly synced to WKWebView instances
+    /// - Parameter cookieStore: `WKHTTPCookieStore` instance
     public func cookiesDidChange(in cookieStore: WKHTTPCookieStore) {
         DispatchQueue.main.async {
             cookieStore.getAllCookies { _ in

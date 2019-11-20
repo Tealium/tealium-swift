@@ -15,4 +15,5 @@ public enum TealiumCollectError: Error {
     case non200Response
     case noDataToTrack
     case unknownIssueWithSend
+    case invalidDispatchURL
 }

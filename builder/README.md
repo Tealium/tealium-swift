@@ -1,17 +1,17 @@
-# Tealium Swift Library Builder
+## Tealium Swift Library
 
-This project is used to generate the .framework files for Carthage support.
+[![License](https://img.shields.io/badge/license-Proprietary-blue.svg?style=flat
+           )](https://github.com/Tealium/tealium-swift/blob/master/LICENSE.txt)
+[![Platform](https://img.shields.io/badge/platform-iOS%20macOS%20tvOS%20watchOS-lightgrey.svg?style=flat
+             )](https://developer.apple.com/resources/)
+[![Language](https://img.shields.io/badge/language-Swift-orange.svg?style=flat
+             )](https://developer.apple.com/swift)
 
-## Contact Us
 
-* If you have **code questions** or have experienced **errors** please post an issue in the [issues page](../../issues)
-* If you have **general questions** or want to network with other users please visit the [Tealium Learning Community](https://community.tealiumiq.com)
-* If you have **account specific questions** please contact your Tealium account manager
+## Documentation
+For full documentation, please see the Tealium Developer Docs: 
 
-
-## Change Log
-
-- 1.1.0 Initial Release
+[https://docs.tealium.com/platforms/ios-swift](https://docs.tealium.com/platforms/ios-swift)
 
 ## License
 
@@ -19,4 +19,4 @@ Use of this software is subject to the terms and conditions of the license agree
 
  
 ---
-Copyright (C) 2012-2016, Tealium Inc.
+Copyright (C) 2012-2019, Tealium Inc.

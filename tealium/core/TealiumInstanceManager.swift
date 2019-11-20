@@ -18,6 +18,8 @@ public class TealiumInstanceManager {
 
     }
 
+    /// - Parameter instance: `Tealium` instance to be added to the Instance Manager￼
+    /// - Parameter config: `TealiumConfig` fort  this instance from which to generate the instance key
     func addInstance(_ instance: Tealium, config: TealiumConfig) {
         let account = config.account
         let profile = config.profile
@@ -26,6 +28,8 @@ public class TealiumInstanceManager {
         tealiumInstances[instanceKey] = instance
     }
 
+    /// - Parameter instanceKey: `String` containing the instance key for the requested instance
+    /// - Returns: `Tealium?` instance
     public func getInstanceByName(_ instanceKey: String) -> Tealium? {
         if let instance = tealiumInstances[instanceKey] {
             return instance

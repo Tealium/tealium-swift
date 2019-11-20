@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 
   s.name         = "tealium-swift"
   s.module_name  = "TealiumSwift"
-  s.version      = "1.7.1"
+  s.version      = "1.8.0-beta3"
   s.summary      = "Tealium Swift Integration Library"
 
   # This description is used to generate tags and improve search results.
@@ -53,7 +53,7 @@ Pod::Spec.new do |s|
 
   s.authors            = { "Tealium Inc." => "tealium@tealium.com",
                            "craigrouse"   => "craig.rouse@tealium.com" }
-  s.social_media_url   = "https://twitter.com/tealium"
+  s.social_media_url   = "http://twitter.com/tealium"
 
   # ――― Platform Specifics ――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
@@ -81,7 +81,6 @@ Pod::Spec.new do |s|
 
   s.source       = { :git => "https://github.com/Tealium/tealium-swift.git", :tag => "#{s.version}" }
 
-
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
   #  CocoaPods is smart about how it includes source code. For source files
@@ -93,7 +92,7 @@ Pod::Spec.new do |s|
   s.default_subspec = "TealiumFull"
 
   s.subspec "TealiumFull" do |full|
-    full.source_files  = "tealium/appdata/*", "tealium/core/*", "tealium/attribution/*", "tealium/autotracking/*", "tealium/collect/*", "tealium/connectivity/*", "tealium/consentmanager/*", "tealium/datasource/*", "tealium/defaultsstorage/*", "tealium/persistentdata/*", "tealium/delegate/*", "tealium/devicedata/TealiumDeviceData.swift", "tealium/devicedata/TealiumDeviceDataModule.swift", "tealium/dispatchqueue/*", "tealium/filestorage/*", "tealium/lifecycle/*", "tealium/logger/*", "tealium/remotecommands/*", "tealium/tagmanagement/*", "tealium/volatiledata/*", "tealium/crash/*"
+    full.source_files  = "tealium/appdata/*", "tealium/core/**/*", "tealium/attribution/*", "tealium/autotracking/*", "tealium/collect/*", "tealium/connectivity/*", "tealium/consentmanager/*", "tealium/persistentdata/*", "tealium/delegate/*", "tealium/devicedata/*.swift", "tealium/dispatchqueue/*", "tealium/lifecycle/*", "tealium/remotecommands/*", "tealium/tagmanagement/*", "tealium/volatiledata/*", "tealium/crash/*", "tealium/logger/*", "tealium/visitorservice/*"
     full.ios.exclude_files = "tealium/scripts/*"
     full.ios.dependency "TealiumCrashReporter"
     full.tvos.exclude_files = "tealium/tagmanagement/*", "tealium/remotecommands/*", "tealium/attribution/*", "tealium/crash/*", "tealium/scripts/*"
@@ -103,7 +102,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "Core" do |core|
-    core.source_files  = "tealium/core/*"
+    core.source_files  = "tealium/core/**/*"
   end
 
   s.subspec "TealiumAppData" do |appdata|
@@ -142,23 +141,13 @@ Pod::Spec.new do |s|
     consentmanager.dependency "tealium-swift/Core"
   end
 
-  s.subspec "TealiumDataSource" do |datasource|
-    datasource.source_files = "tealium/datasource/*"
-    datasource.dependency "tealium-swift/Core"
-  end
-
-  s.subspec "TealiumDefaultsStorage" do |defaultsstorage|
-    defaultsstorage.source_files = "tealium/defaultsstorage/*", "tealium/persistentdata/*"
-    defaultsstorage.dependency "tealium-swift/Core"
-  end
-
   s.subspec "TealiumDelegate" do |delegate|
     delegate.source_files = "tealium/delegate/*"
     delegate.dependency "tealium-swift/Core"
   end
 
   s.subspec "TealiumDeviceData" do |devicedata|
-    devicedata.source_files = "tealium/devicedata/TealiumDeviceData.swift", "tealium/devicedata/TealiumDeviceDataModule.swift"
+    devicedata.source_files = "tealium/devicedata/*.swift"
     devicedata.dependency "tealium-swift/Core"
     devicedata.resources = "tealium/devicedata/device-names.json"
   end
@@ -166,11 +155,6 @@ Pod::Spec.new do |s|
   s.subspec "TealiumDispatchQueue" do |dispatchqueue|
     dispatchqueue.source_files = "tealium/dispatchqueue/*"
     dispatchqueue.dependency "tealium-swift/Core"
-  end
-
-  s.subspec "TealiumFileStorage" do |filestorage|
-    filestorage.source_files = "tealium/filestorage/*", "tealium/persistentdata/*"
-    filestorage.dependency "tealium-swift/Core"
   end
 
   s.subspec "TealiumLifecycle" do |lifecycle|
@@ -195,9 +179,20 @@ Pod::Spec.new do |s|
     tagmanagement.dependency "tealium-swift/Core"
   end
 
+  s.subspec "TealiumPersistentData" do |persistentdata|
+    persistentdata.source_files = "tealium/persistentdata/*"
+    persistentdata.dependency "tealium-swift/Core"
+  end
+
+
   s.subspec "TealiumVolatileData" do |volatiledata|
     volatiledata.source_files = "tealium/volatiledata/*"
     volatiledata.dependency "tealium-swift/Core"
+  end
+
+  s.subspec "TealiumVisitorService" do |visitorservice|
+    visitorservice.source_files = "tealium/visitorservice/*"
+    visitorservice.dependency "tealium-swift/Core"
   end
 
   s.subspec "Crash" do |crash|

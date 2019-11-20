@@ -6,11 +6,18 @@
 #  Created by Jonathan Wong on 2/5/18.
 #  Copyright © 2018 Tealium, Inc. All rights reserved.
 if which swiftlint > /dev/null; then
-echo ${PROJECT_DIR}
-echo $SRCROOT
-cd $SRCROOT/../support/tests/ && swiftlint autocorrect --config ${PROJECT_DIR}/../.swiftlint-tests.yml
-cd $SRCROOT/
-swiftlint lint --config ${PROJECT_DIR}/../.swiftlint_tests.yml
+# SwiftLint struggles to work with lists of files and maintain a reference to the config file, so this is a workaround.
+# Xcode can pass in a list of files, but these have to be manually entered in the "input file list", which is prone to errors
+# if someone forgets to add a new file.
+FILE="${SCRIPT_INPUT_FILE_0}"
+IFS=' '
+read -ra file_array <<< $FILE
+
+for i in $file_array
+do
+    swiftlint autocorrect --config ${PROJECT_DIR}/../.swiftlint_tests.yml $i
+    swiftlint lint --config ${PROJECT_DIR}/../.swiftlint_tests.yml $i
+done
 else
 echo “warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint”
 fi

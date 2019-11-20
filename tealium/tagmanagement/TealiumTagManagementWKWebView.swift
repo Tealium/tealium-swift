@@ -13,31 +13,41 @@ import WebKit
 import TealiumCore
 #endif
 
-@available(iOS 11.0, *)
+public enum WebViewState: Int {
+    case isLoaded = 0
+    case isLoading = 1
+    case didFailToLoad = 2
+    case notYetLoaded = 3
+}
+
 public class TealiumTagManagementWKWebView: NSObject, TealiumTagManagementProtocol {
 
     var webview: WKWebView?
     var webviewConfig: WKWebViewConfiguration?
-    //    var navigationDelegate: TealiumWKNavigationDelegate?
     var webviewDidFinishLoading = false
     var enableCompletion: ((_ success: Bool, _ error: Error?) -> Void)?
     // current view being used for WKWebView
     weak var view: UIView?
+    var url: URL?
+    var reloadHandler: TealiumCompletion?
+    var currentState: AtomicInteger = AtomicInteger(value: WebViewState.notYetLoaded.rawValue)
 
     public var delegates = TealiumMulticastDelegate<WKNavigationDelegate>()
 
     /// Enables the webview. Called by the webview module at init time.
     ///
     /// - Parameters:
-    /// - webviewURL: The URL (typically for "mobile.html") to be loaded by the webview
-    /// - shouldMigrateCookies: Indicates whether cookies should be migrated from HTTPCookieStore (UIWebView)
-    /// - completion: completion block to be called when the webview has finished loading
+    ///     - webviewURL: `URL?` (typically for "mobile.html") to be loaded by the webview
+    ///     - shouldMigrateCookies: `Bool` indicating whether cookies should be migrated from `HTTPCookieStore` (`UIWebView`).
+    ///     - delegates: `[AnyObject]?` Array of delegates, downcast fromAnyObject to account for any future potential changes in WebView APIs
+    ///     - view: `UIView? ` - required `WKWebView`, if one is not provided we attach to the window object
+    ///     - completion: completion block to be called when the webview has finished loading
     public func enable(webviewURL: URL?,
                        shouldMigrateCookies: Bool,
                        delegates: [AnyObject]?,
                        view: UIView?,
                        completion: ((_ success: Bool, _ error: Error?) -> Void)?) {
-        if webview != nil {
+        guard webview == nil else {
             // webview already enabled
             return
         }
@@ -45,12 +55,15 @@ public class TealiumTagManagementWKWebView: NSObject, TealiumTagManagementProtoc
             setWebViewDelegates(delegates)
         }
         enableCompletion = completion
+        self.url = webviewURL
         setupWebview(forURL: webviewURL, withSpecificView: view)
     }
 
-    /// Sets a root view for WKWebView to be attached to. Only required for complex view hierarchies.
-    ///
-    /// - Parameter view: UIView instance for WKWebView to be attached to
+    /// Sets a root view for `WKWebView` to be attached to. Only required for complex view hierarchies.
+    ///￼
+    /// - Parameters:
+    ///     - view: `UIView` instance for WKWebView to be attached to
+    ///     - completion: Completion block to be run when the operation has completed
     public func setRootView(_ view: UIView,
                             completion: ((_ success: Bool) -> Void)?) {
         self.view = view
@@ -60,9 +73,9 @@ public class TealiumTagManagementWKWebView: NSObject, TealiumTagManagementProtoc
         }
     }
 
-    /// Adds optional delegates to the WebView instance
-    ///
-    /// - Parameter delegates: Array of delegates, downcast from AnyObject due to different delegate APIs for UIWebView and WKWebView
+    /// Adds optional delegates to the WebView instance.
+    ///￼
+    /// - Parameter delegates: `[AnyObject]` Array of delegates, downcast from AnyObject to account for any future potential changes in WebView APIs
     public func setWebViewDelegates(_ delegates: [AnyObject]) {
         delegates.forEach { delegate in
             if let delegate = delegate as? WKNavigationDelegate {
@@ -71,9 +84,9 @@ public class TealiumTagManagementWKWebView: NSObject, TealiumTagManagementProtoc
         }
     }
 
-    /// Removes optional delegates for the WebView instance
-    ///
-    /// - Parameter delegates: Array of delegates, downcast from AnyObject due to different delegate APIs for UIWebView and WKWebView
+    /// Removes optional delegates for the WebView instance.
+    ///￼
+    /// - Parameter delegates: `[AnyObject]` Array of delegates, downcast from AnyObject to account for any future potential changes in WebView APIs
     public func removeWebViewDelegates(_ delegates: [AnyObject]) {
         delegates.forEach { delegate in
             if let delegate = delegate as? WKNavigationDelegate {
@@ -83,60 +96,84 @@ public class TealiumTagManagementWKWebView: NSObject, TealiumTagManagementProtoc
     }
 
     /// Configures an instance of WKWebView for later use.
-    ///
-    /// - Parameter forURL: The URL (typically for mobile.html) to load in the webview
-    func setupWebview(forURL url: URL?, withSpecificView specificView: UIView?) {
-        // required to force cookies to sync
-        WKWebsiteDataStore.default().httpCookieStore.add(self)
-        let config = WKWebViewConfiguration()
-        self.webview = WKWebView(frame: .zero, configuration: config)
-        webview?.navigationDelegate = self
-        guard let webview = webview else {
-            self.enableCompletion?(false, TealiumWebviewError.webviewNotInitialized)
-            return
-        }
+    ///￼
+    /// - Parameters:
+    ///    - url: `URL` (typically for mobile.html) to load in the webview
+    ///    - specificView: `UIView?` to attach to
+    func setupWebview(forURL url: URL?,
+                      withSpecificView specificView: UIView?) {
+        TealiumQueues.mainQueue.async {
+            // required to force cookies to sync
+            if #available(iOS 11, *) {
+                WKWebsiteDataStore.default().httpCookieStore.add(self)
+            }
+            let config = WKWebViewConfiguration()
+            self.webview = WKWebView(frame: .zero, configuration: config)
+            self.webview?.navigationDelegate = self
+            guard let webview = self.webview else {
+                self.enableCompletion?(false, TealiumWebviewError.webviewNotInitialized)
+                return
+            }
 
-        // attach the webview to the view before continuing
-        attachToUIView(specificView: specificView) { _ in
-            migrateCookies(forWebView: webview) {
-                guard let url = url else {
-                    self.enableCompletion?(false, TealiumWebviewError.webviewURLMissing)
-                    return
-                }
-                let request = URLRequest(url: url)
-                DispatchQueue.main.async {
-                    webview.load(request)
+            // attach the webview to the view before continuing
+            self.attachToUIView(specificView: specificView) { _ in
+                self.migrateCookies(forWebView: webview) {
+                    guard let url = url else {
+                        self.enableCompletion?(false, TealiumWebviewError.webviewURLMissing)
+                        return
+                    }
+                    let request = URLRequest(url: url)
+                    TealiumQueues.mainQueue.async {
+                        webview.load(request)
+                    }
                 }
             }
         }
     }
 
-    /// Internal webview status check.
+    /// Reloads the webview.
+    ///
+    /// - Parameter completion: Completion block to be run when the webview has finished reloading
+    public func reload(_ completion: @escaping (Bool, [String: Any]?, Error?) -> Void) {
+        guard let url = url else {
+            return
+        }
+        reloadHandler = completion
+        let request = URLRequest(url: url)
+        TealiumQueues.mainQueue.async {
+            self.currentState = AtomicInteger(value: WebViewState.isLoading.rawValue)
+            self.webview?.load(request)
+        }
+    }
 
-    /// - Returns: Bool indicating whether or not the internal webview is ready for dispatching.
+    /// Internal webview status check.
+    ///
+    /// - Returns: `Bool` indicating whether or not the internal webview is ready for dispatching.
     public func isWebViewReady() -> Bool {
         guard webview != nil else {
             return false
         }
-        return webviewDidFinishLoading
+        return WebViewState(rawValue: currentState.value) == WebViewState.isLoaded
     }
 
     /// Process event data for UTAG delivery.
     ///
     /// - Parameters:
-    /// - data: [String:Any] Dictionary of preferably String or [String] values.
-    /// - completion: Optional completion handler to call when call completes.
-    public func track(_ data: [String: Any], completion: ((Bool, [String: Any], Error?) -> Void)?) {
+    ///     - data: `[String: Any]` representing a track request
+    ///     - completion: Optional completion handler to call when call completes.
+    public func track(_ data: [String: Any],
+                      completion: ((Bool, [String: Any], Error?) -> Void)?) {
         guard let javascriptString = data.tealiumJavaScriptTrackCall else {
             completion?(false,
                         ["original_payload": data, "sanitized_payload": data],
                         TealiumTagManagementError.couldNotJSONEncodeData)
             return
         }
-
-        // always re-attach to UIView. If specific view has been previously passed in, this will be used.
-        // nil is passed to force attachToUIView to auto-detect and check for a valid view, since this track call could be happening after the view was dismissed
-        self.attachToUIView(specificView: nil) { _ in }
+        TealiumQueues.mainQueue.async {
+            // always re-attach to UIView. If specific view has been previously passed in, this will be used.
+            // nil is passed to force attachToUIView to auto-detect and check for a valid view, since this track call could be happening after the view was dismissed
+            self.attachToUIView(specificView: nil) { _ in }
+        }
 
         var info = [String: Any]()
         info[TealiumKey.dispatchService] = TealiumTagManagementKey.moduleName
@@ -148,19 +185,45 @@ public class TealiumTagManagementWKWebView: NSObject, TealiumTagManagementProtoc
         }
     }
 
-    /// Handles JavaScript evaluation on the WKWebView instance
+    /// Processes a batch of track requests.
     ///
     /// - Parameters:
-    /// - jsString: The JavaScript call to be executed in the webview
-    /// - completion: Optional completion block to be called after the JavaScript call completes
+    ///     - data: `[[String: Any]]` of requests
+    ///     - completion: Optional completion handler to call when call completes.
+    public func trackMultiple(_ data: [[String: Any]],
+                              completion: ((Bool, [String: Any], Error?) -> Void)?) {
+
+        let totalSuccesses = AtomicInteger(value: 0)
+
+        data.forEach {
+            self.track($0) { success, _, _ in
+                if success {
+                    _ = totalSuccesses.incrementAndGet()
+                } else {
+                    _ = totalSuccesses.decrementAndGet()
+                }
+            }
+        }
+
+        let allCallsSuccessful = totalSuccesses.value == data.count
+
+        completion?(allCallsSuccessful, ["": ""], nil)
+
+    }
+
+    /// Handles JavaScript evaluation on the WKWebView instance.
+    ///
+    /// - Parameters:
+    ///     - jsString: `String` containing the JavaScript call to be executed in the webview
+    ///     - completion: Optional completion block to be called after the JavaScript call completes
     public func evaluateJavascript (_ jsString: String, _ completion: (([String: Any]) -> Void)?) {
         // webview js evaluation must be on main thread
-        DispatchQueue.main.async {
+        var info = [String: Any]()
+        TealiumQueues.mainQueue.async {
             if self.webview?.superview == nil {
                 self.attachToUIView(specificView: nil) { _ in }
             }
             self.webview?.evaluateJavaScript(jsString) { result, error in
-                var info = [String: Any]()
                 if let result = result {
                     info += [TealiumTagManagementKey.jsResult: result]
                 }
@@ -168,36 +231,62 @@ public class TealiumTagManagementWKWebView: NSObject, TealiumTagManagementProtoc
                 if let error = error {
                     info += [TealiumTagManagementKey.jsError: error]
                 }
-                completion?(info)
             }
         }
+        completion?(info)
     }
 
-    /// Called by the WKWebView delegate when the page finishes loading
-    ///
-    /// - Parameter state: The webview state after the state change
-    public func webviewStateDidChange(_ state: TealiumWebViewState, withError error: Error?) {
+    /// Called by the WKWebView delegate when the page finishes loading.
+    ///￼
+    /// - Parameters:
+    ///     - state: `TealiumWebViewState` -  The webview state after the state change
+    ///     - error: `Error?`
+    public func webviewStateDidChange(_ state: TealiumWebViewState,
+                                      withError error: Error?) {
         switch state {
         case .loadSuccess:
-            guard webviewDidFinishLoading == false else {
-                return
+            self.currentState = AtomicInteger(value: WebViewState.isLoaded.rawValue)
+            if let reloadHandler = self.reloadHandler {
+                self.webviewDidFinishLoading = true
+                reloadHandler(true, nil, nil)
+                self.reloadHandler = nil
+            } else {
+                guard webviewDidFinishLoading == false else {
+                    return
+                }
+                webviewDidFinishLoading = true
+
+                if let enableCompletion = enableCompletion {
+                    self.enableCompletion = nil
+                    enableCompletion(true, nil)
+                }
+
             }
-            webviewDidFinishLoading = true
-            self.enableCompletion?(true, nil)
         case .loadFailure:
-            self.enableCompletion?(false, error)
+            self.currentState = AtomicInteger(value: WebViewState.didFailToLoad.rawValue)
+            if let reloadHandler = self.reloadHandler {
+                self.webviewDidFinishLoading = true
+                reloadHandler(false, nil, error)
+                self.reloadHandler = nil
+            } else {
+                self.enableCompletion?(false, error)
+            }
         }
     }
 
-    /// Called when the module needs to disable the webview
+    /// Called when the module needs to disable the webview.
     public func disable() {
-        webview?.stopLoading()
-        webview = nil
+        TealiumQueues.mainQueue.async {
+            self.webview?.stopLoading()
+            self.webview = nil
+        }
     }
 
     deinit {
-        webview?.stopLoading()
-        webview?.navigationDelegate = nil
-        webview = nil
+        TealiumQueues.mainQueue.async {
+            self.webview?.stopLoading()
+            self.webview?.navigationDelegate = nil
+            self.webview = nil
+        }
     }
 }

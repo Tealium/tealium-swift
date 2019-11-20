@@ -7,6 +7,9 @@
 //
 
 import Foundation
+#if collect
+import TealiumCore
+#endif
 
 public enum TealiumCollectKey {
     static let moduleName = "collect"
@@ -15,6 +18,5 @@ public enum TealiumCollectKey {
     static let overrideCollectProfile = "tealium_override_collect_profile"
     static let payload = "payload"
     static let responseHeader = "response_headers"
-    public static let errorHeaderKey = "X-Error"
-    public static let legacyDispatchMethod = "legacy_dispatch_method"
+    public static let errorHeaderKey = TealiumKey.errorHeaderKey
 }

@@ -15,6 +15,7 @@ import TealiumCore
 public class TealiumRemoteCommandsModule: TealiumModule {
 
     public var remoteCommands: TealiumRemoteCommands?
+    var observer: NSObjectProtocol?
 
     override public class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumRemoteCommandsKey.moduleName,
@@ -23,23 +24,22 @@ public class TealiumRemoteCommandsModule: TealiumModule {
                                    enabled: true)
     }
 
-    /// Enables the module
-    ///
-    /// - Parameter request: TealiumEnableRequest from which to enable the module
+    /// Enables the module.
+    ///￼
+    /// - Parameter request: `TealiumEnableRequest` from which to enable the module
     override public func enable(_ request: TealiumEnableRequest) {
         isEnabled = true
         let config = request.config
         remoteCommands = TealiumRemoteCommands()
-        remoteCommands?.queue = config.dispatchQueue()
         remoteCommands?.enable()
         updateReservedCommands(config: config)
         self.addCommandsFromConfig(config)
         didFinish(request)
     }
 
-    /// Allows Remote Commands to be added from the TealiumConfig object
-    ///
-    /// - Parameter config: TealiumConfig object containing Remote Commands
+    /// Allows Remote Commands to be added from the TealiumConfig object.
+    ///￼
+    /// - Parameter config: `TealiumConfig` object containing Remote Commands
     private func addCommandsFromConfig(_ config: TealiumConfig) {
         if let commands = config.getRemoteCommands() {
             for command in commands {
@@ -48,29 +48,16 @@ public class TealiumRemoteCommandsModule: TealiumModule {
         }
     }
 
-    /// Enables listeners for notifications from the Tag Management module (WebView)
+    /// Enables listeners for notifications from the Tag Management module (WebView).
     func enableNotifications() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(trigger),
-                                               name: NSNotification.Name(rawValue: TealiumKey.tagmanagementNotification),
-                                               object: nil)
-    }
-
-    /// Triggers a remote command from a URLRequest (usually from WebView)
-    ///
-    /// - Parameter sender: Notification containing the URLRequest to trigger the Remote Command
-    @objc
-    func trigger(sender: Notification) {
-        guard let request = sender.userInfo?[TealiumKey.tagmanagementNotification] as? URLRequest else {
-            return
+        self.observer = NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: TealiumKey.tagmanagementNotification), object: nil, queue: OperationQueue.main) {
+            self.remoteCommands?.triggerCommandFrom(notification: $0)
         }
-
-        _ = remoteCommands?.triggerCommandFrom(request: request)
     }
 
     /// Identifies if any built-in Remote Commands should be disabled.
-    ///
-    /// - Parameter config: TealiumConfig object containing flags indicating which built-in commands should be disabled.
+    ///￼
+    /// - Parameter config: `TealiumConfig` object containing flags indicating which built-in commands should be disabled.
     func updateReservedCommands(config: TealiumConfig) {
         // Default option
         var shouldDisable = false
@@ -89,9 +76,9 @@ public class TealiumRemoteCommandsModule: TealiumModule {
         // No further processing required - HTTP remote command already up.
     }
 
-    /// Disables the Remote Commands module
-    ///
-    /// - Parameter request: TealiumDisableRequest indicating that the module should be disabled
+    /// Disables the Remote Commands module.
+    ///￼
+    /// - Parameter request: `TealiumDisableRequest` indicating that the module should be disabled
     override public func disable(_ request: TealiumDisableRequest) {
         isEnabled = false
         remoteCommands?.disable()
@@ -100,6 +87,8 @@ public class TealiumRemoteCommandsModule: TealiumModule {
     }
 
     deinit {
-        NotificationCenter.default.removeObserver(self)
+        if let observer = self.observer {
+            NotificationCenter.default.removeObserver(observer)
+        }
     }
 }
