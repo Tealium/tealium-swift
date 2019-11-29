@@ -232,8 +232,8 @@ public class TealiumTagManagementWKWebView: NSObject, TealiumTagManagementProtoc
                     info += [TealiumTagManagementKey.jsError: error]
                 }
             }
+            completion?(info)
         }
-        completion?(info)
     }
 
     /// Called by the WKWebView delegate when the page finishes loading.
