@@ -122,7 +122,7 @@ extension TealiumDispatchQueueModule: TealiumLifecycleEvents {
             backgroundTaskId = TealiumDispatchQueueModule.sharedApplication?.beginBackgroundTask {
                 if let taskId = backgroundTaskId {
                     TealiumDispatchQueueModule.sharedApplication?.endBackgroundTask(taskId)
-                    backgroundTaskId = UIBackgroundTaskInvalid
+                    backgroundTaskId = UIBackgroundTaskIdentifier.invalid
                 }
             }
 
@@ -132,7 +132,7 @@ extension TealiumDispatchQueueModule: TealiumLifecycleEvents {
         if let taskId = backgroundTaskId {
             TealiumQueues.backgroundSerialQueue.asyncAfter(deadline: DispatchTime.now() + 3.0) {
                 TealiumDispatchQueueModule.sharedApplication?.endBackgroundTask(taskId)
-                backgroundTaskId = UIBackgroundTaskInvalid
+                backgroundTaskId = UIBackgroundTaskIdentifier.invalid
             }
         }
         #elseif os(watchOS)

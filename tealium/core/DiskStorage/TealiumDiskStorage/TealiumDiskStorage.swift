@@ -381,13 +381,12 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
         retrieve(module, as: type.self) { _, data, _ in
             let encoder = JSONEncoder()
             guard let encoded = try? encoder.encode(data),
-                let dictionary = try? JSONSerialization.jsonObject(with: encoded, options: .allowFragments) as? [String: Any],
-                var dict = dictionary else {
+                var dictionary = try? JSONSerialization.jsonObject(with: encoded, options: .allowFragments) as? [String: Any] else {
                 return
             }
-            dict[key] = value
+            dictionary[key] = value
             let decoder = JSONDecoder()
-            if let jsonData = try? JSONSerialization.data(withJSONObject: dict, options: []),
+            if let jsonData = try? JSONSerialization.data(withJSONObject: dictionary, options: []),
                 let newData = try? decoder.decode(T.self, from: jsonData) {
                 self.save(newData, fileName: self.module, completion: completion)
             }
