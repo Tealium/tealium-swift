@@ -44,7 +44,7 @@ public struct TealiumLifecycle: Codable {
         countLaunchTotal = 0
         countWakeTotal = 0
         countSleepTotal = 0
-        sessionsSize = 100
+        sessionsSize = 20
         totalSecondsAwake = 0
     }
 

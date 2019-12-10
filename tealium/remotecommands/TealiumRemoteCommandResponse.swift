@@ -34,7 +34,7 @@ public class TealiumRemoteCommandResponse: CustomStringConvertible {
     /// Allows initialization from a String representing a valid URL
     ///￼
     /// - Parameter urlString: `String` representing a valid URL with which to initialize a RemoteCommandResponse
-    convenience init?(urlString: String) {
+    public convenience init?(urlString: String) {
         // Convert string to url request then process as usual
         guard let url = URL(string: urlString) else {
             return nil
@@ -47,7 +47,7 @@ public class TealiumRemoteCommandResponse: CustomStringConvertible {
     /// formatted correctly for remote command use.
     ///￼
     /// - Parameter request: `URLRequest` object with which to initialize a RemoteCommandResponse
-    init?(request: URLRequest) {
+    public init?(request: URLRequest) {
         self.urlRequest = request
 
         guard let requestData = requestDataFrom(request: request) else {
