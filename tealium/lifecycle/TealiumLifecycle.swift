@@ -28,7 +28,7 @@ public struct TealiumLifecycle: Codable {
     var sessions = [TealiumLifecycleSession]() {
         didSet {
             // Limit size of sessions records
-            if sessions.count > sessionsSize &&
+            while sessions.count > sessionsSize &&
                 sessionsSize > 1 {
                 sessions.remove(at: 1)
             }
@@ -44,8 +44,24 @@ public struct TealiumLifecycle: Codable {
         countLaunchTotal = 0
         countWakeTotal = 0
         countSleepTotal = 0
-        sessionsSize = 20
+        sessionsSize = TealiumLifecycleValue.defaultSessionsSize
         totalSecondsAwake = 0
+    }
+
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.countLaunch = try values.decode(Int.self, forKey: .countLaunch)
+        self.countSleep = try values.decode(Int.self, forKey: .countSleep)
+        self.countWake = try values.decode(Int.self, forKey: .countWake)
+        self.countCrashTotal = try values.decode(Int.self, forKey: .countCrashTotal)
+        self.countLaunchTotal = try values.decode(Int.self, forKey: .countLaunchTotal)
+        self.countSleepTotal = try values.decode(Int.self, forKey: .countSleepTotal)
+        self.countWakeTotal = try values.decode(Int.self, forKey: .countWakeTotal)
+        self.dateLastUpdate = try values.decodeIfPresent(Date.self, forKey: .dateLastUpdate)
+        self.totalSecondsAwake = try values.decode(Int.self, forKey: .totalSecondsAwake)
+        self.sessions = try values.decode([TealiumLifecycleSession].self, forKey: .sessions)
+        // Force sessions size to default. Forces old installs to trim session size to default.
+        self.sessionsSize = TealiumLifecycleValue.defaultSessionsSize
     }
 
     // MARK: PUBLIC

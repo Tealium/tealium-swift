@@ -25,7 +25,6 @@ public class TealiumConnectivity {
     var connectivityDelegates = TealiumMulticastDelegate<TealiumConnectivityDelegate>()
     var currentConnectivityType = ""
     static var currentConnectionStatus: Bool?
-    static var inBlackoutPeriod = false
 
     /// Retrieves the current connection type used by the device.
     /// 

@@ -25,31 +25,15 @@ class TealiumModules {
     /// - Returns: `[TealiumModule]` list containing all initialized modules
     class func initializeModulesFor(_ list: TealiumModulesList?,
                                     assigningDelegate: TealiumModuleDelegate) -> [TealiumModule] {
-        let modules = initializeModules(delegate: assigningDelegate)
-
-        // Default behavior
-        guard let list = list else {
-            return modules
-        }
-
-        // Whitelisting
-        if list.isWhitelist == true {
-            let whitelist = list.moduleNames.map { $0.lowercased() }
-            let result = modules.filter { whitelist.contains(type(of: $0).moduleConfig().name.lowercased()) == true }
-            return result
-        }
-
-        // Blacklisting
-        let blacklist = list.moduleNames.map { $0.lowercased() }
-        let result = modules.filter { blacklist.contains(type(of: $0).moduleConfig().name.lowercased()) == false }
-
-        return result
+        return initializeModules(modulesList: list,
+                                        delegate: assigningDelegate)
     }
 
     /// Initializes each module for the current platform￼.
     ///
     /// - Parameter delegate: `TealiumModuleDelegate`
-    class func initializeModules(delegate: TealiumModuleDelegate) -> [TealiumModule] {
+    class func initializeModules(modulesList: TealiumModulesList?,
+                                 delegate: TealiumModuleDelegate) -> [TealiumModule] {
         var modules = Set<TealiumModule>()
 
         let newModules = getTealiumClasses()
@@ -69,9 +53,22 @@ class TealiumModules {
                 continue
             }
 
-            let module = type.init(delegate: delegate)
-
-            modules.insert(module)
+            var shouldInit = false
+            
+            if let modulesList = modulesList {
+                if modulesList.isWhitelist {
+                    shouldInit = modulesList.moduleNames.contains(moduleConfig.name)
+                } else {
+                    shouldInit = !modulesList.moduleNames.contains(moduleConfig.name)
+                }
+            } else {
+                shouldInit = true
+            }
+            
+            if shouldInit {
+                let module = type.init(delegate: delegate)
+                modules.insert(module)
+            }
         }
 
         return Array(modules)

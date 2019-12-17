@@ -14,6 +14,10 @@ enum TealiumLifecycleModuleKey {
     static let queueName = "com.tealium.lifecycle"
 }
 
+enum TealiumLifecycleValue {
+    static let defaultSessionsSize = 20
+}
+
 enum TealiumLifecycleModuleError: Error {
     case unableToSaveToDisk
 }
