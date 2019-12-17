@@ -173,7 +173,10 @@ extension TealiumModulesManager: TealiumModuleDelegate {
     ///     - process: `TealiumRequest` that has been processed
     public func tealiumModuleFinished(module: TealiumModule,
                                       process: TealiumRequest) {
-        TealiumQueues.backgroundConcurrentQueue.write {
+        TealiumQueues.backgroundConcurrentQueue.write { [weak self] in
+            guard let self = self else {
+                return
+            }
             guard let nextModule = self.modules.next(after: module) else {
 
                 // If enable call set isEnable

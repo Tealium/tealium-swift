@@ -25,7 +25,7 @@ extension TealiumTagManagementWKWebView: WKNavigationDelegate {
         }
 
         // forward to any listening delegates
-        delegates.invoke {
+        delegates?.invoke {
             $0.webView?(webView, didFinish: navigation)
         }
     }
@@ -33,7 +33,7 @@ extension TealiumTagManagementWKWebView: WKNavigationDelegate {
     /// Inform webview of load failure. Forward to any listening delegates.
     public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         self.webviewStateDidChange(.loadFailure, withError: error)
-        delegates.invoke {
+        delegates?.invoke {
             $0.webView?(webView, didFail: navigation, withError: error)
         }
     }
@@ -79,7 +79,7 @@ extension TealiumTagManagementWKWebView: WKNavigationDelegate {
         }
 
         // Give any listening delegates a chance to respond
-        delegates.invoke {
+        delegates?.invoke {
             let customDecisionHandler: ((WKNavigationActionPolicy) -> Void) = { actionPolicy in
                 switch actionPolicy {
                 case .allow:
@@ -101,14 +101,14 @@ extension TealiumTagManagementWKWebView: WKNavigationDelegate {
 
     /// Not used by Tealium. Forward to any listening delegates
     public func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
-        delegates.invoke {
+        delegates?.invoke {
             $0.webViewWebContentProcessDidTerminate?(webView)
         }
     }
 
     /// Not used by Tealium. Forward to any listening delegates
     public func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-        delegates.invoke {
+        delegates?.invoke {
             $0.webView?(webView, didCommit: navigation)
         }
     }
@@ -118,7 +118,7 @@ extension TealiumTagManagementWKWebView: WKNavigationDelegate {
             return
         }
         self.webviewStateDidChange(.loadFailure, withError: error)
-        delegates.invoke {
+        delegates?.invoke {
             $0.webView?(webView, didFail: navigation, withError: error)
         }
     }

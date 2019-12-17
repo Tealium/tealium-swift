@@ -50,7 +50,10 @@ public class TealiumRemoteCommandsModule: TealiumModule {
 
     /// Enables listeners for notifications from the Tag Management module (WebView).
     func enableNotifications() {
-        self.observer = NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: TealiumKey.tagmanagementNotification), object: nil, queue: OperationQueue.main) {
+        self.observer = NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: TealiumKey.tagmanagementNotification), object: nil, queue: OperationQueue.main) { [weak self] in
+            guard let self = self else {
+                return
+            }
             self.remoteCommands?.triggerCommandFrom(notification: $0)
         }
     }

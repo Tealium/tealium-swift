@@ -70,7 +70,10 @@ public class ReadWrite {
     /// - Parameter work: Closure to be executed in between the barrierKey set
     /// - Returns: A block that must be passed to the async (barriered) method of the queue
     private func barrieredWork(_ work: @escaping () -> Void) -> (() -> Void) {
-        return {
+        return { [weak self] in
+            guard let self = self else {
+                return
+            }
             self.queue.setSpecific(key: self.barrierSpecificKey, value: true)
             work()
             self.queue.setSpecific(key: self.barrierSpecificKey, value: false)

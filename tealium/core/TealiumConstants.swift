@@ -10,7 +10,7 @@
 
 public enum TealiumValue {
     public static let libraryName = "swift"
-    public static let libraryVersion = "1.8.1"
+    public static let libraryVersion = "1.8.2"
     // This is the current limit for performance reasons. May be increased in future
     public static let maxEventBatchSize = 10
     public static let defaultMinimumDiskSpace: Int32 = 20_000_000
@@ -108,14 +108,16 @@ public enum TealiumTrackType {
 /// White or black list of module names to enable. TealiumConfig can be set
 ///     with this list which will be read by internal components to determine
 ///     which modules to spin up, if they are included with the existing build.
-public struct TealiumModulesList {
+public struct TealiumModulesList: Equatable {
     public let isWhitelist: Bool
     public let moduleNames: Set<String>
 
     public init(isWhitelist: Bool,
                 moduleNames: Set<String>) {
         self.isWhitelist = isWhitelist
-        self.moduleNames = moduleNames
+        self.moduleNames = Set(moduleNames.map {
+            $0.lowercased()
+        })
     }
 }
 

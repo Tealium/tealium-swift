@@ -20,11 +20,13 @@ public protocol TealiumTagManagementProtocol {
     ///     - webviewURL: `URL?` (typically for "mobile.html") to be loaded by the webview
     ///     - shouldMigrateCookies: `Bool` indicating whether cookies should be migrated from `HTTPCookieStore` (`UIWebView`).
     ///     - delegates: `[AnyObject]?` Array of delegates, downcast from AnyObject to account for any future potential changes in WebView APIs
+    ///     - shouldAddCookieObserver: `Bool` indicating whether the cookie observer should be added. Default `true`.
     ///     - view: `UIView? `- required `WKWebView`, if one is not provided we attach to the window object
     ///     - completion: completion block to be called when the webview has finished loading
     func enable (webviewURL: URL?,
                  shouldMigrateCookies: Bool,
                  delegates: [AnyObject]?,
+                 shouldAddCookieObserver: Bool,
                  view: UIView?,
                  completion: ((Bool, Error?) -> Void)?)
 

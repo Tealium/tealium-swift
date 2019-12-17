@@ -19,7 +19,7 @@ public class TealiumConsentManager {
     private var consentUserPreferences: TealiumConsentUserPreferences!
     private var consentPreferencesStorage: TealiumConsentPreferencesStorage?
     var consentLoggingEnabled = false
-    var consentManagerModuleInstance: TealiumConsentManagerModule?
+    weak var consentManagerModuleInstance: TealiumConsentManagerModule?
     var diskStorage: TealiumDiskStorageProtocol?
 
     /// Initialize consent manager￼.

@@ -47,7 +47,7 @@ public class TealiumLifecycleLegacy: NSObject, NSCoding, Encodable {
         self.countLaunchTotal = 0
         self.countWakeTotal = 0
         self.countSleepTotal = 0
-        self.sessionsSize = 100     // Need a wide birth to capture wakes, sleeps, and updates
+        self.sessionsSize = 100
         self.totalSecondsAwake = 0
         super.init()
     }

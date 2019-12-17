@@ -17,7 +17,7 @@ public class TealiumRemoteCommands: NSObject {
     weak var queue = TealiumQueues.backgroundSerialQueue
     var commands = [TealiumRemoteCommand]()
     var isEnabled = false
-    static var pendingResponses = [String: Bool]()
+    static var pendingResponses = Atomic<[String: Bool]>(value: [String: Bool]())
 
     /// Checks if a URLRequest object contains a valid Remote Command.
     ///￼
@@ -118,7 +118,7 @@ public class TealiumRemoteCommands: NSObject {
         }
 
         if let responseId = response.responseId() {
-         TealiumRemoteCommands.pendingResponses[responseId] = true
+            TealiumRemoteCommands.pendingResponses.value[responseId] = true
         }
         command.completeWith(response: response)
 

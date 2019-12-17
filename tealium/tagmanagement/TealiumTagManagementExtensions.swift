@@ -68,6 +68,17 @@ public extension TealiumConfig {
     func getRootView() -> UIView? {
         return optionalData[TealiumTagManagementConfigKey.uiview] as? UIView
     }
+
+    var shouldAddCookieObserver: Bool {
+        get {
+            return optionalData[TealiumTagManagementConfigKey.cookieObserver] as? Bool ?? true
+        }
+
+        set {
+            optionalData[TealiumTagManagementConfigKey.cookieObserver] = newValue
+        }
+    }
+
 }
 
 #if TEST

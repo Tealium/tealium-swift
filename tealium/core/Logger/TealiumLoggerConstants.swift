@@ -15,7 +15,7 @@ public enum TealiumLogLevelValue {
     static let warnings = "warnings"
 }
 
-let defaultTealiumLogLevel: TealiumLogLevel = .errors
+public let defaultTealiumLogLevel: TealiumLogLevel = .errors
 
 public enum TealiumLogLevel: Int, Comparable {
     case none = 0
