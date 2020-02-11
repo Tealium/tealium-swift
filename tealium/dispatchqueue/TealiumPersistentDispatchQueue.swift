@@ -53,13 +53,8 @@ class TealiumPersistentDispatchQueue {
     }
 
     func dequeueDispatches(clear clearQueue: Bool? = true) -> [TealiumTrackRequest]? {
-        var queuedDispatches: [TealiumTrackRequest]?
-        diskStorage.retrieve(as: [TealiumTrackRequest].self) { _, data, error in
-            guard error == nil else {
-                queuedDispatches = nil
-                return
-            }
-            queuedDispatches = data
+        guard let queuedDispatches = diskStorage.retrieve(as: [TealiumTrackRequest].self) else {
+                return nil
         }
 
         if clearQueue == true {
@@ -67,7 +62,7 @@ class TealiumPersistentDispatchQueue {
             diskStorage.delete(completion: nil)
         }
 
-        return queuedDispatches?.sorted()
+        return queuedDispatches.sorted()
     }
 
     func removeOldDispatches(_ maxQueueSize: Int,

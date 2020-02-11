@@ -11,7 +11,7 @@ import Foundation
 extension RangeReplaceableCollection where Iterator.Element: Equatable {
     @discardableResult
     mutating func remove(_ element: Iterator.Element) -> Iterator.Element? {
-        if let index = self.index(of: element) {
+        if let index = self.firstIndex(of: element) {
             return self.remove(at: index)
         }
         return nil

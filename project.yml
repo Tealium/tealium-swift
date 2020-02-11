@@ -1,0 +1,455 @@
+name: tealium-swift
+options:
+  bundleIdPrefix: com.tealium
+targets:
+  TealiumCore:
+    type: framework
+    platform: iOS
+    sources:
+      - path: tealium/core
+        buildPhase: sources
+      - path: tealium/core
+        buildPhase: headers
+    settings:
+      base:
+          INFOPLIST_FILE: "TealiumCore-Info.plist"
+          SUPPORTED_PLATFORMS: "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos"
+          TARGETED_DEVICE_FAMILY: "1,2,3,4"
+          TVOS_DEPLOYMENT_TARGET: 9.0
+          WATCHOS_DEPLOYMENT_TARGET: 3.0
+          IPHONEOS_DEPLOYMENT_TARGET: 9.0
+          MACOSX_DEPLOYMENT_TARGET: 10.11
+    info:
+      path: builder/TealiumCore-Info.plist
+  TealiumAppData:
+    type: framework
+    platform: iOS
+    sources:
+      - path: tealium/appdata
+        buildPhase: sources
+      - path: tealium/appdata
+        buildPhase: headers
+    settings:
+      base:
+          INFOPLIST_FILE: "TealiumAppData-Info.plist"
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: appdata
+watchsimulator watchos
+      configs:
+        debug:
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: appdata DEBUG
+    dependencies:
+      - target: TealiumCore
+    info:
+      path: builder/TealiumAppData-Info.plist
+  TealiumAttribution:
+    type: framework
+    platform: iOS
+    sources:
+      - path: tealium/attribution
+        buildPhase: sources
+      - path: tealium/attribution
+        buildPhase: headers
+    settings:
+      base:
+          INFOPLIST_FILE: "TealiumAttribution-Info.plist"
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: attribution
+          SUPPORTED_PLATFORMS: "iphonesimulator iphoneos"
+          TARGETED_DEVICE_FAMILY: "1,2,3,4"
+          IPHONEOS_DEPLOYMENT_TARGET: 9.0
+      configs:
+        debug:
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: attribution DEBUG
+    dependencies:
+      - target: TealiumCore
+    info:
+      path: builder/TealiumAttribution-Info.plist
+  TealiumAutotracking:
+    type: framework
+    platform: iOS
+    sources:
+      - path: tealium/autotracking
+        buildPhase: sources
+      - path: tealium/autotracking
+        buildPhase: headers
+    settings:
+      base:
+          INFOPLIST_FILE: "TealiumAutotracking-Info.plist"
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: autotracking
+          SUPPORTED_PLATFORMS: "iphonesimulator iphoneos appletvsimulator appletvos"
+          TARGETED_DEVICE_FAMILY: "1,2,3,4"
+          TVOS_DEPLOYMENT_TARGET: 9.0
+          IPHONEOS_DEPLOYMENT_TARGET: 9.0
+      configs:
+        debug:
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: autotracking DEBUG
+    dependencies:
+      - target: TealiumCore
+    info:
+      path: builder/TealiumAutotracking-Info.plist
+  TealiumCollect:
+    type: framework
+    platform: iOS
+    sources:
+      - path: tealium/collect
+        buildPhase: sources
+      - path: tealium/collect
+        buildPhase: headers
+    settings:
+      base:
+          INFOPLIST_FILE: "TealiumCollect-Info.plist"
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: collect
+          SUPPORTED_PLATFORMS: "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos"
+          TARGETED_DEVICE_FAMILY: "1,2,3,4"
+          TVOS_DEPLOYMENT_TARGET: 9.0
+          WATCHOS_DEPLOYMENT_TARGET: 3.0
+          IPHONEOS_DEPLOYMENT_TARGET: 9.0
+          MACOSX_DEPLOYMENT_TARGET: 10.11
+      configs:
+        debug:
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: collect DEBUG
+    dependencies:
+      - target: TealiumCore
+    info:
+      path: builder/TealiumCollect-Info.plist
+  TealiumConnectivity:
+    type: framework
+    platform: iOS
+    sources:
+      - path: tealium/connectivity
+        buildPhase: sources
+      - path: tealium/connectivity
+        buildPhase: headers
+    settings:
+      base:
+          INFOPLIST_FILE: "TealiumConnectivity-Info.plist"
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: connectivity
+          SUPPORTED_PLATFORMS: "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos"
+          TARGETED_DEVICE_FAMILY: "1,2,3,4"
+          TVOS_DEPLOYMENT_TARGET: 9.0
+          WATCHOS_DEPLOYMENT_TARGET: 3.0
+          IPHONEOS_DEPLOYMENT_TARGET: 9.0
+          MACOSX_DEPLOYMENT_TARGET: 10.11
+      configs:
+        debug:
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: connectivity DEBUG
+    dependencies:
+      - target: TealiumCore
+    info:
+      path: builder/TealiumConnectivity-Info.plist
+  TealiumConsentManager:
+    type: framework
+    platform: iOS
+    sources:
+      - path: tealium/consentmanager
+        buildPhase: sources
+      - path: tealium/consentmanager
+        buildPhase: headers
+    settings:
+      base:
+          INFOPLIST_FILE: "TealiumConsentManager-Info.plist"
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: consentmanager
+          SUPPORTED_PLATFORMS: "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos"
+          TARGETED_DEVICE_FAMILY: "1,2,3,4"
+          TVOS_DEPLOYMENT_TARGET: 9.0
+          WATCHOS_DEPLOYMENT_TARGET: 3.0
+          IPHONEOS_DEPLOYMENT_TARGET: 9.0
+          MACOSX_DEPLOYMENT_TARGET: 10.11
+      configs:
+        debug:
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: consentmanager DEBUG
+    dependencies:
+      - target: TealiumCore
+    info:
+      path: builder/TealiumConsentManager-Info.plist
+  TealiumCrash:
+    type: framework
+    platform: iOS
+    sources:
+      - path: tealium/crash
+        buildPhase: sources
+      - path: tealium/crash
+        buildPhase: headers
+    settings:
+      base:
+          INFOPLIST_FILE: "TealiumCrash-Info.plist"
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: crash
+          SUPPORTED_PLATFORMS: "iphonesimulator iphoneos"
+          TARGETED_DEVICE_FAMILY: "1,2,3,4"
+          IPHONEOS_DEPLOYMENT_TARGET: 9.0
+          FRAMEWORK_SEARCH_PATHS: "$(PROJECT_DIR)/../Carthage/Build/iOS"
+          OTHER_LDFLAGS: "-F$(SRCROOT)/../Carthage/Build/iOS"
+      configs:
+        debug:
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: crash DEBUG
+    dependencies:
+      - target: TealiumCore
+      - target: TealiumAppData
+      - target: TealiumDeviceData
+    info:
+      path: builder/TealiumCrash-Info.plist
+  TealiumDelegate:
+    type: framework
+    platform: iOS
+    sources:
+      - path: tealium/delegate
+        buildPhase: sources
+      - path: tealium/delegate
+        buildPhase: headers
+    settings:
+      base:
+          INFOPLIST_FILE: "TealiumDelegate-Info.plist"
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: delegate
+          SUPPORTED_PLATFORMS: "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos"
+          TARGETED_DEVICE_FAMILY: "1,2,3,4"
+          TVOS_DEPLOYMENT_TARGET: 9.0
+          WATCHOS_DEPLOYMENT_TARGET: 3.0
+          IPHONEOS_DEPLOYMENT_TARGET: 9.0
+          MACOSX_DEPLOYMENT_TARGET: 10.11
+      configs:
+        debug:
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: delegate DEBUG
+    dependencies:
+      - target: TealiumCore
+    info:
+      path: builder/TealiumDelegate-Info.plist
+  TealiumDeviceData:
+    type: framework
+    platform: iOS
+    sources:
+      - path: tealium/devicedata
+        buildPhase: sources
+      - path: tealium/devicedata
+        buildPhase: headers
+    settings:
+      base:
+          INFOPLIST_FILE: "TealiumDeviceData-Info.plist"
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: devicedata
+          SUPPORTED_PLATFORMS: "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos"
+          TARGETED_DEVICE_FAMILY: "1,2,3,4"
+          TVOS_DEPLOYMENT_TARGET: 9.0
+          WATCHOS_DEPLOYMENT_TARGET: 3.0
+          IPHONEOS_DEPLOYMENT_TARGET: 9.0
+          MACOSX_DEPLOYMENT_TARGET: 10.11
+      configs:
+        debug:
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: devicedata DEBUG
+    dependencies:
+      - target: TealiumCore
+    info:
+      path: builder/TealiumDeviceData-Info.plist
+  TealiumDispatchQueue:
+    type: framework
+    platform: iOS
+    sources:
+      - path: tealium/dispatchqueue
+        buildPhase: sources
+      - path: tealium/dispatchqueue
+        buildPhase: headers
+    settings:
+      base:
+          INFOPLIST_FILE: "TealiumDispatchQueue-Info.plist"
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: dispatchqueue
+          SUPPORTED_PLATFORMS: "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos"
+          TARGETED_DEVICE_FAMILY: "1,2,3,4"
+          TVOS_DEPLOYMENT_TARGET: 9.0
+          WATCHOS_DEPLOYMENT_TARGET: 3.0
+          IPHONEOS_DEPLOYMENT_TARGET: 9.0
+          MACOSX_DEPLOYMENT_TARGET: 10.11
+      configs:
+        debug:
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: dispatchqueue DEBUG
+    dependencies:
+      - target: TealiumCore
+    info:
+      path: builder/TealiumDispatchQueue-Info.plist
+  TealiumLifecycle:
+    type: framework
+    platform: iOS
+    sources:
+      - path: tealium/lifecycle
+        buildPhase: sources
+      - path: tealium/lifecycle
+        buildPhase: headers
+    settings:
+      base:
+          INFOPLIST_FILE: "TealiumLifecycle-Info.plist"
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: lifecycle
+          SUPPORTED_PLATFORMS: "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos"
+          TARGETED_DEVICE_FAMILY: "1,2,3,4"
+          TVOS_DEPLOYMENT_TARGET: 9.0
+          WATCHOS_DEPLOYMENT_TARGET: 3.0
+          IPHONEOS_DEPLOYMENT_TARGET: 9.0
+          MACOSX_DEPLOYMENT_TARGET: 10.11
+      configs:
+        debug:
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: lifecycle DEBUG
+    dependencies:
+      - target: TealiumCore
+    info:
+      path: builder/TealiumLifecycle-Info.plist
+  TealiumLocation:
+    type: framework
+    platform: iOS
+    sources:
+      - path: tealium/location
+        buildPhase: sources
+      - path: tealium/location
+        buildPhase: headers
+    settings:
+      base:
+          INFOPLIST_FILE: "TealiumLocation-Info.plist"
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: location
+          SUPPORTED_PLATFORMS: "iphonesimulator iphoneos"
+          TARGETED_DEVICE_FAMILY: "1,2,3,4"
+          IPHONEOS_DEPLOYMENT_TARGET: 9.0
+      configs:
+        debug:
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: location DEBUG
+    dependencies:
+      - target: TealiumCore
+    info:
+      path: builder/TealiumLocation-Info.plist
+  TealiumLogger:
+    type: framework
+    platform: iOS
+    sources:
+      - path: tealium/logger
+        buildPhase: sources
+      - path: tealium/logger
+        buildPhase: headers
+    settings:
+      base:
+          INFOPLIST_FILE: "TealiumLogger-Info.plist"
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: logger
+          SUPPORTED_PLATFORMS: "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos"
+          TARGETED_DEVICE_FAMILY: "1,2,3,4"
+          TVOS_DEPLOYMENT_TARGET: 9.0
+          WATCHOS_DEPLOYMENT_TARGET: 3.0
+          IPHONEOS_DEPLOYMENT_TARGET: 9.0
+          MACOSX_DEPLOYMENT_TARGET: 10.11
+      configs:
+        debug:
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: logger DEBUG
+    dependencies:
+      - target: TealiumCore
+    info:
+      path: builder/TealiumLogger-Info.plist
+  TealiumPersistentData:
+    type: framework
+    platform: iOS
+    sources:
+      - path: tealium/persistentdata
+        buildPhase: sources
+      - path: tealium/persistentdata
+        buildPhase: headers
+    settings:
+      base:
+          INFOPLIST_FILE: "TealiumPersistentData-Info.plist"
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: persistentdata
+          SUPPORTED_PLATFORMS: "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos"
+          TARGETED_DEVICE_FAMILY: "1,2,3,4"
+          TVOS_DEPLOYMENT_TARGET: 9.0
+          WATCHOS_DEPLOYMENT_TARGET: 3.0
+          IPHONEOS_DEPLOYMENT_TARGET: 9.0
+          MACOSX_DEPLOYMENT_TARGET: 10.11
+      configs:
+        debug:
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: persistentdata DEBUG
+    dependencies:
+      - target: TealiumCore
+    info:
+      path: builder/TealiumPersistentData-Info.plist
+  TealiumRemoteCommands:
+    type: framework
+    platform: iOS
+    sources:
+      - path: tealium/remotecommands
+        buildPhase: sources
+      - path: tealium/remotecommands
+        buildPhase: headers
+    settings:
+      base:
+          INFOPLIST_FILE: "TealiumRemoteCommands-Info.plist"
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: remotecommands
+          SUPPORTED_PLATFORMS: "iphonesimulator iphoneos"
+          TARGETED_DEVICE_FAMILY: "1,2,3,4"
+          IPHONEOS_DEPLOYMENT_TARGET: 9.0
+      configs:
+        debug:
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: remotecommands DEBUG
+    dependencies:
+      - target: TealiumCore
+    info:
+      path: builder/TealiumRemoteCommands-Info.plist
+  TealiumTagManagement:
+    type: framework
+    platform: iOS
+    sources:
+      - path: tealium/tagmanagement
+        buildPhase: sources
+      - path: tealium/tagmanagement
+        buildPhase: headers
+    settings:
+      base:
+          INFOPLIST_FILE: "TealiumTagManagement-Info.plist"
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: tagmanagement
+          SUPPORTED_PLATFORMS: "iphonesimulator iphoneos"
+          TARGETED_DEVICE_FAMILY: "1,2,3,4"
+          IPHONEOS_DEPLOYMENT_TARGET: 9.0
+      configs:
+        debug:
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: tagmanagement DEBUG
+    dependencies:
+      - target: TealiumCore
+    info:
+      path: builder/TealiumTagManagement-Info.plist
+  TealiumVisitorService:
+    type: framework
+    platform: iOS
+    sources:
+      - path: tealium/visitorservice
+        buildPhase: sources
+      - path: tealium/visitorservice
+        buildPhase: headers
+    settings:
+      base:
+          INFOPLIST_FILE: "TealiumVisitorService-Info.plist"
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: visitorservice
+          SUPPORTED_PLATFORMS: "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos"
+          TARGETED_DEVICE_FAMILY: "1,2,3,4"
+          TVOS_DEPLOYMENT_TARGET: 9.0
+          WATCHOS_DEPLOYMENT_TARGET: 3.0
+          IPHONEOS_DEPLOYMENT_TARGET: 9.0
+          MACOSX_DEPLOYMENT_TARGET: 10.11
+      configs:
+        debug:
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: visitorservice DEBUG
+    dependencies:
+      - target: TealiumCore
+    info:
+      path: builder/TealiumVisitorService-Info.plist
+  TealiumVolatileData:
+    type: framework
+    platform: iOS
+    sources:
+      - path: tealium/volatiledata
+        buildPhase: sources
+      - path: tealium/volatiledata
+        buildPhase: headers
+    settings:
+      base:
+          INFOPLIST_FILE: "TealiumVolatileData-Info.plist"
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: volatiledata
+          SUPPORTED_PLATFORMS: "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos"
+          TARGETED_DEVICE_FAMILY: "1,2,3,4"
+          TVOS_DEPLOYMENT_TARGET: 9.0
+          WATCHOS_DEPLOYMENT_TARGET: 3.0
+          IPHONEOS_DEPLOYMENT_TARGET: 9.0
+          MACOSX_DEPLOYMENT_TARGET: 10.11
+      configs:
+        debug:
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: volatiledata DEBUG
+    dependencies:
+      - target: TealiumCore
+    info:
+      path: builder/TealiumVolatileData-Info.plist                                                                     

@@ -49,12 +49,10 @@ public class TealiumVisitorProfileManager: TealiumVisitorProfileManagerProtocol 
             }
         }
         self.diskStorage = diskStorage
-        diskStorage.retrieve(as: TealiumVisitorProfile.self) { [weak self] _, profile, _ in
-            guard let self = self, let profile = profile else {
+        guard let profile = diskStorage.retrieve(as: TealiumVisitorProfile.self) else {
                 return
-            }
-            self.profileDidUpdate(profile: profile)
         }
+        self.profileDidUpdate(profile: profile)
     }
 
     public func startProfileUpdates(visitorId: String) {
@@ -225,8 +223,6 @@ public extension TealiumVisitorProfileManager {
     /// - Returns: `TealiumVisitorProfile?` - the currrent cached profile from persistent storage.
     ///             As long as a previous fetch has been made, this should always return a profile, even if the device is offline
     func getCachedProfile(completion: @escaping (TealiumVisitorProfile?) -> Void) {
-        diskStorage.retrieve(as: TealiumVisitorProfile.self) { _, data, _ in
-            completion(data)
-        }
+        completion(diskStorage.retrieve(as: TealiumVisitorProfile.self))
     }
 }

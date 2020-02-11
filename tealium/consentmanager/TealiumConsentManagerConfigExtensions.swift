@@ -16,65 +16,108 @@ public extension TealiumConfig {
     /// Determines whether consent logging events should be sent to Tealium UDH￼.
     ///
     /// - Parameter enabled: `Bool` `true` if enabled
+    @available(*, deprecated, message: "Please switch to config.consentLoggingEnabled")
     func setConsentLoggingEnabled(_ enabled: Bool) {
-        optionalData[TealiumConsentConstants.consentLoggingEnabled] = enabled
+        consentLoggingEnabled = enabled
     }
 
     /// Checks if consent logging is currently enabled.
     ///
     /// - Returns: `Bool` true if enabled
+    @available(*, deprecated, message: "Please switch to config.consentLoggingEnabled")
     func isConsentLoggingEnabled() -> Bool {
-        if let enabled = optionalData[TealiumConsentConstants.consentLoggingEnabled] as? Bool {
-            return enabled
+        consentLoggingEnabled
+    }
+
+    /// Determines whether consent logging events should be sent to Tealium UDH￼.
+    var consentLoggingEnabled: Bool {
+        get {
+            optionalData[TealiumConsentConstants.consentLoggingEnabled] as? Bool ?? false
         }
-        return false
+
+        set {
+            optionalData[TealiumConsentConstants.consentLoggingEnabled] = newValue
+        }
     }
 
     /// Overrides the consent policy (default GDPR)￼.
     ///
     /// - Parameter policy: `String` containing the policy (e.g. "CCPA)
+    @available(*, deprecated, message: "Please switch to config.consentPolicyOverride")
     func setOverrideConsentPolicy(_ policy: String) {
-        optionalData[TealiumConsentConstants.policyKey] = policy
+        consentPolicyOverride = policy
     }
 
     /// Retrieves the current overridden consent policy.
     ///
     /// - Returns: `String?` containing the consent policy
+    @available(*, deprecated, message: "Please switch to config.consentPolicyOverride")
     func getOverrideConsentPolicy() -> String? {
-        return optionalData[TealiumConsentConstants.policyKey] as? String
+        consentPolicyOverride
+    }
+
+    /// Overrides the consent policy (defaults to GDPR)￼. e.g. CCPA
+    var consentPolicyOverride: String? {
+        get {
+            optionalData[TealiumConsentConstants.policyKey] as? String
+        }
+
+        set {
+            optionalData[TealiumConsentConstants.policyKey] = newValue
+        }
     }
 
     /// Sets the initial consent status to be used before the user has selected an option￼.
     ///
     /// - Parameter status: `TealiumConsentStatus`
+    @available(*, deprecated, message: "Please switch to config.initialUserConsentStatus")
     func setInitialUserConsentStatus(_ status: TealiumConsentStatus) {
-        optionalData[TealiumConsentConstants.consentStatus] = status
-    }
-
-    /// Sets the initial consent categories to be used before the user has selected an option￼.
-    ///
-    /// - Parameter categories: `[TealiumConsentCategories]`
-    func setInitialUserConsentCategories(_ categories: [TealiumConsentCategories]) {
-        optionalData[TealiumConsentConstants.consentCategoriesKey] = categories
+        initialUserConsentStatus = status
     }
 
     /// Gets the initial consent status to be used before the user has selected an option.
     ///
     /// - Returns: `TealiumConsentStatus?`
+    @available(*, deprecated, message: "Please switch to config.initialUserConsentStatus")
     func getInitialUserConsentStatus() -> TealiumConsentStatus? {
-        if let status = optionalData[TealiumConsentConstants.consentStatus] as? TealiumConsentStatus {
-            return status
+        initialUserConsentStatus
+    }
+
+    /// Initial consent status to be used before the user has selected an option￼.
+    var initialUserConsentStatus: TealiumConsentStatus? {
+        get {
+            optionalData[TealiumConsentConstants.consentStatus] as? TealiumConsentStatus
         }
-        return nil
+
+        set {
+            optionalData[TealiumConsentConstants.consentStatus] = newValue
+        }
+    }
+
+    /// Sets the initial consent categories to be used before the user has selected an option￼.
+    ///
+    /// - Parameter categories: `[TealiumConsentCategories]`
+    @available(*, deprecated, message: "Please switch to config.initialUserConsentCategories")
+    func setInitialUserConsentCategories(_ categories: [TealiumConsentCategories]) {
+        initialUserConsentCategories = categories
     }
 
     /// Gets the initial consent status to be used before the user has selected an option.
     /// 
     /// - Returns: `[TealiumConsentCategories]?`
+    @available(*, deprecated, message: "Please switch to config.initialUserConsentCategories")
     func getInitialUserConsentCategories() -> [TealiumConsentCategories]? {
-        if let categories = optionalData[TealiumConsentConstants.consentCategoriesKey] as? [TealiumConsentCategories] {
-            return categories
+        initialUserConsentCategories
+    }
+
+    /// Initial consent categories to be used before the user has selected an option￼.
+    var initialUserConsentCategories: [TealiumConsentCategories]? {
+        get {
+            optionalData[TealiumConsentConstants.consentCategoriesKey] as? [TealiumConsentCategories]
         }
-        return nil
+
+        set {
+            optionalData[TealiumConsentConstants.consentCategoriesKey] = newValue
+        }
     }
 }

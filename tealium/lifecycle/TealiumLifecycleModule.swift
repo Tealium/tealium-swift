@@ -59,7 +59,9 @@ public class TealiumLifecycleModule: TealiumModule {
         lifecycle = savedOrNewLifeycle()
         save()
         isEnabled = true
-        Tealium.lifecycleListeners.addDelegate(delegate: self)
+        if config.lifecycleAutoTrackingEnabled {
+           Tealium.lifecycleListeners.addDelegate(delegate: self)
+        }
         didFinish(request)
     }
 
@@ -81,6 +83,7 @@ public class TealiumLifecycleModule: TealiumModule {
             didFinishWithNoResponse(track)
             return
         }
+        let track = addModuleName(to: track)
 
         // do not add data to queued hits
         guard track.trackDictionary[TealiumKey.wasQueued] as? String == nil else {
@@ -89,13 +92,14 @@ public class TealiumLifecycleModule: TealiumModule {
         }
 
         // Lifecycle ready?
-        guard var lifecycle = lifecycle else {
+        guard let lifecycle = lifecycle else {
             didFinish(track)
             return
         }
 
         var newData = lifecycle.newTrack(at: Date())
         newData += track.trackDictionary
+        newData[TealiumLifecycleKey.autotracked] = nil
         let newTrack = TealiumTrackRequest(data: newData,
                                            completion: track.completion)
         didFinish(newTrack)
@@ -110,7 +114,7 @@ public class TealiumLifecycleModule: TealiumModule {
         }
 
         lastProcess = type
-        self.process(type: type, at: date)
+        self.process(type: type, at: date, autotracked: true)
     }
 
     /// Determines if a lifecycle event should be triggered and requests a track.
@@ -119,7 +123,7 @@ public class TealiumLifecycleModule: TealiumModule {
     ///     - type: `TealiumLifecycleType`
     ///     - date: `Date` at which the event occurred
     func process(type: TealiumLifecycleType,
-                 at date: Date) {
+                 at date: Date, autotracked: Bool = false) {
         guard isEnabled else {
             return
         }
@@ -146,6 +150,8 @@ public class TealiumLifecycleModule: TealiumModule {
         // Save now in case we crash later
         save()
 
+        data[TealiumLifecycleKey.autotracked] = autotracked
+        
         // Make the track request to the modulesManager
         requestTrack(data: data)
     }

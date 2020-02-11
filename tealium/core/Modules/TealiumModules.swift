@@ -75,6 +75,7 @@ class TealiumModules {
     }
 
     // swiftlint:disable function_body_length
+    // NOTE: TealiumModulesList must also be updated if new modules are introduced
     /// Gets all valid Tealium Module classes.
     ///
     /// - Returns: `[AnyClass]`
@@ -99,6 +100,8 @@ class TealiumModules {
             "TealiumDeviceData.TealiumDeviceDataModule",
             "TealiumLifecycleModule",
             "TealiumLifecycle.TealiumLifecycleModule",
+            "TealiumLocationModule",
+            "TealiumLocation.TealiumLocationModule",
             "TealiumLoggerModule",
             "TealiumLogger.TealiumLoggerModule",
             "TealiumPersistentData.TealiumPersistentDataModule",
@@ -132,6 +135,8 @@ class TealiumModules {
             "TealiumDeviceData.TealiumDeviceDataModule",
             "TealiumLifecycleModule",
             "TealiumLifecycle.TealiumLifecycleModule",
+            "TealiumLocationModule",
+            "TealiumLocation.TealiumLocationModule",
             "TealiumLoggerModule",
             "TealiumLogger.TealiumLoggerModule",
             "TealiumPersistentDataModule",

@@ -16,29 +16,52 @@ public extension TealiumConfig {
     /// Overrides the default Collect endpoint URL￼.
     ///
     /// - Parameter string: `String` representing the URL to which all Collect module dispatches should be sent
+    @available(*, deprecated, message: "Please switch to config.collectOverrideURL")
     func setCollectOverrideURL(url: String) {
-        if url.contains("vdata") {
-            var urlString = url
-            var lastChar: Character?
-            lastChar = urlString.last
+        collectOverrideURL = url
+    }
 
-            if lastChar != "&" {
-                urlString += "&"
-            }
-            optionalData[TealiumCollectKey.overrideCollectUrl] = urlString
-        } else {
-            optionalData[TealiumCollectKey.overrideCollectUrl] = url
+    var collectOverrideURL: String? {
+        get {
+            optionalData[TealiumCollectKey.overrideCollectUrl] as? String
         }
 
+        set {
+            guard let newValue = newValue else {
+                return
+            }
+            if newValue.contains("vdata") {
+                var urlString = newValue
+                var lastChar: Character?
+                lastChar = urlString.last
+
+                if lastChar != "&" {
+                    urlString += "&"
+                }
+                optionalData[TealiumCollectKey.overrideCollectUrl] = urlString
+            } else {
+                optionalData[TealiumCollectKey.overrideCollectUrl] = newValue
+            }
+        }
     }
 
     /// Overrides the default Collect endpoint profile￼.
     ///
     /// - Parameter profile: `String` containing the name of the Tealium profile to which all Collect module dispatches should be sent
+    @available(*, deprecated, message: "Please switch to config.collectOverrideProfile")
     func setCollectOverrideProfile(profile: String) {
-        optionalData[TealiumCollectKey.overrideCollectProfile] = profile
+        collectOverrideProfile = profile
     }
 
+    var collectOverrideProfile: String? {
+        get {
+            optionalData[TealiumCollectKey.overrideCollectProfile] as? String
+        }
+
+        set {
+            optionalData[TealiumCollectKey.overrideCollectProfile] = newValue
+        }
+    }
 }
 
 public extension Tealium {

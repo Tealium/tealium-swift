@@ -139,13 +139,12 @@ public struct TealiumLifecycle: Codable {
     ///
     /// - Parameter date: `Date`for the event
     /// - Returns: `[String: Any]` containing current lifecycle data
-    public mutating func newTrack(at date: Date) -> [String: Any] {
+    public func newTrack(at date: Date) -> [String: Any] {
         guard sessions.last != nil else {
             // Track request before launch processed
             return [:]
         }
 
-        autotracked = nil
         return asDictionary(type: nil,
                             for: date)
     }

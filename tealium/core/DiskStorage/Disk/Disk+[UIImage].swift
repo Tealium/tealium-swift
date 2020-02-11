@@ -45,19 +45,11 @@ public extension Disk {
                 var imageName = "\(i)"
                 var pngData: Data?
                 var jpegData: Data?
-                #if swift(>=4.2)
                 if let data = image.pngData() {
                     pngData = data
                 } else if let data = image.jpegData(compressionQuality: 1) {
                     jpegData = data
                 }
-                #else
-                if let data = UIImagePNGRepresentation(image) {
-                    pngData = data
-                } else if let data = UIImageJPEGRepresentation(image, 1) {
-                    jpegData = data
-                }
-                #endif
                 if let data = pngData {
                     imageData = data
                     imageName = imageName + ".png"
@@ -105,19 +97,11 @@ public extension Disk {
                 var imageName = "\(newFileNameInt)"
                 var pngData: Data?
                 var jpegData: Data?
-                #if swift(>=4.2)
                 if let data = value.pngData() {
                     pngData = data
                 } else if let data = value.jpegData(compressionQuality: 1) {
                     jpegData = data
                 }
-                #else
-                if let data = UIImagePNGRepresentation(value) {
-                    pngData = data
-                } else if let data = UIImageJPEGRepresentation(value, 1) {
-                    jpegData = data
-                }
-                #endif
                 if let data = pngData {
                     imageData = data
                     imageName = imageName + ".png"

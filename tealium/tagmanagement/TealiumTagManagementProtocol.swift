@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import WebKit
 #if tagmanagement
 import TealiumCore
 #endif
@@ -25,7 +26,7 @@ public protocol TealiumTagManagementProtocol {
     ///     - completion: completion block to be called when the webview has finished loading
     func enable (webviewURL: URL?,
                  shouldMigrateCookies: Bool,
-                 delegates: [AnyObject]?,
+                 delegates: [WKNavigationDelegate]?,
                  shouldAddCookieObserver: Bool,
                  view: UIView?,
                  completion: ((Bool, Error?) -> Void)?)
@@ -36,7 +37,7 @@ public protocol TealiumTagManagementProtocol {
     /// Internal webview status check.
     ///
     /// - Returns: `Bool` indicating whether or not the internal webview is ready for dispatching.
-    func isWebViewReady() -> Bool
+    var isWebViewReady: Bool { get }
 
     /// Reloads the webview
     ///
@@ -69,12 +70,12 @@ public protocol TealiumTagManagementProtocol {
     /// Adds optional delegates to the WebView instance.
     ///￼
     /// - Parameter delegates: `[AnyObject]` Array of delegates, downcast from AAnyObject to account for any future potential changes in WebView APIs
-    func setWebViewDelegates(_ delegates: [AnyObject])
+    func setWebViewDelegates(_ delegates: [WKNavigationDelegate])
 
     /// Removes optional delegates for the WebView instance.
     ///￼
     /// - Parameter delegates: `[AnyObject]` Array of delegates, downcast from AnyObject to account for any future potential changes in WebView APIs
-    func removeWebViewDelegates(_ delegates: [AnyObject])
+    func removeWebViewDelegates(_ delegates: [WKNavigationDelegate])
 
     /// Sets a root view for `WKWebView` to be attached to. Only required for complex view hierarchies.
     ///￼

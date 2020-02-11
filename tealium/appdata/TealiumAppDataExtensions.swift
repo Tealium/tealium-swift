@@ -56,7 +56,13 @@ public extension Tealium {
         return appData
     }
 
+    @available(*, deprecated, message: "Please switch to tealium.visitorId")
     func getVisitorId() -> String? {
-        return appData()?.getData()[TealiumKey.visitorId] as? String
+        visitorId
+    }
+    
+    /// Returns the current Tealium visitor ID
+    var visitorId: String? {
+        appData()?.getData()[TealiumKey.visitorId] as? String
     }
 }

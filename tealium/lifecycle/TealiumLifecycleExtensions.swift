@@ -26,6 +26,20 @@ public extension Tealium {
 
 }
 
+public extension TealiumConfig {
+
+    var lifecycleAutoTrackingEnabled: Bool {
+        get {
+            return optionalData[TealiumLifecycleConfigKey.autotrackingEnabled] as? Bool ?? true
+        }
+
+        set {
+            optionalData[TealiumLifecycleConfigKey.autotrackingEnabled] = newValue
+        }
+    }
+
+}
+
 extension TealiumLifecycleModule: TealiumLifecycleEvents {
     public func sleep() {
         processDetected(type: .sleep)

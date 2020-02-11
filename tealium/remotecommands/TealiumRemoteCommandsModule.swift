@@ -34,6 +34,26 @@ public class TealiumRemoteCommandsModule: TealiumModule {
         remoteCommands?.enable()
         updateReservedCommands(config: config)
         self.addCommandsFromConfig(config)
+        if !request.bypassDidFinish {
+            didFinish(request)
+        }
+    }
+
+    override public func updateConfig(_ request: TealiumUpdateConfigRequest) {
+        let newConfig = request.config.copy
+        if newConfig != self.config {
+            self.config = newConfig
+            var existingCommands = self.remoteCommands?.commands
+            if let newCommands = newConfig.remoteCommands {
+                existingCommands?.append(contentsOf: newCommands)
+            }
+            existingCommands?.forEach {
+                newConfig.addRemoteCommand($0)
+            }
+            var enableRequest = TealiumEnableRequest(config: newConfig, enableCompletion: nil)
+            enableRequest.bypassDidFinish = true
+            enable(enableRequest)
+        }
         didFinish(request)
     }
 
@@ -41,7 +61,7 @@ public class TealiumRemoteCommandsModule: TealiumModule {
     ///￼
     /// - Parameter config: `TealiumConfig` object containing Remote Commands
     private func addCommandsFromConfig(_ config: TealiumConfig) {
-        if let commands = config.getRemoteCommands() {
+        if let commands = config.remoteCommands {
             for command in commands {
                 self.remoteCommands?.add(command)
             }
@@ -50,10 +70,7 @@ public class TealiumRemoteCommandsModule: TealiumModule {
 
     /// Enables listeners for notifications from the Tag Management module (WebView).
     func enableNotifications() {
-        self.observer = NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: TealiumKey.tagmanagementNotification), object: nil, queue: OperationQueue.main) { [weak self] in
-            guard let self = self else {
-                return
-            }
+        self.observer = NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: TealiumKey.tagmanagementNotification), object: nil, queue: OperationQueue.main) {
             self.remoteCommands?.triggerCommandFrom(notification: $0)
         }
     }

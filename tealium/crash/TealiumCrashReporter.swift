@@ -15,6 +15,7 @@ import TealiumCrashReporteriOS
 
 /// Defines the specifications for TealiumCrashReporterType.  Concrete TealiumCrashReporters must implement this protocol.
 public protocol TealiumCrashReporterType: class {
+    @discardableResult
     func enable() -> Bool
 
     func disable()

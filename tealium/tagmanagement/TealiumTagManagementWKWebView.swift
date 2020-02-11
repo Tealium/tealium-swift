@@ -45,7 +45,7 @@ public class TealiumTagManagementWKWebView: NSObject, TealiumTagManagementProtoc
     ///     - completion: completion block to be called when the webview has finished loading
     public func enable(webviewURL: URL?,
                        shouldMigrateCookies: Bool,
-                       delegates: [AnyObject]?,
+                       delegates: [WKNavigationDelegate]?,
                        shouldAddCookieObserver: Bool,
                        view: UIView?,
                        completion: ((_ success: Bool, _ error: Error?) -> Void)?) {
@@ -78,22 +78,18 @@ public class TealiumTagManagementWKWebView: NSObject, TealiumTagManagementProtoc
     /// Adds optional delegates to the WebView instance.
     ///￼
     /// - Parameter delegates: `[AnyObject]` Array of delegates, downcast from AnyObject to account for any future potential changes in WebView APIs
-    public func setWebViewDelegates(_ delegates: [AnyObject]) {
-        delegates.forEach { delegate in
-            if let delegate = delegate as? WKNavigationDelegate {
-                self.delegates?.add(delegate)
-            }
+    public func setWebViewDelegates(_ delegates: [WKNavigationDelegate]) {
+        delegates.forEach {
+            self.delegates?.add($0)
         }
     }
 
     /// Removes optional delegates for the WebView instance.
     ///￼
     /// - Parameter delegates: `[AnyObject]` Array of delegates, downcast from AnyObject to account for any future potential changes in WebView APIs
-    public func removeWebViewDelegates(_ delegates: [AnyObject]) {
-        delegates.forEach { delegate in
-            if let delegate = delegate as? WKNavigationDelegate {
-                self.delegates?.remove(delegate)
-            }
+    public func removeWebViewDelegates(_ delegates: [WKNavigationDelegate]) {
+        delegates.forEach {
+            self.delegates?.remove($0)
         }
     }
 
@@ -158,7 +154,7 @@ public class TealiumTagManagementWKWebView: NSObject, TealiumTagManagementProtoc
     /// Internal webview status check.
     ///
     /// - Returns: `Bool` indicating whether or not the internal webview is ready for dispatching.
-    public func isWebViewReady() -> Bool {
+    public var isWebViewReady: Bool {
         guard webview != nil else {
             return false
         }

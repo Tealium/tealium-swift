@@ -36,14 +36,14 @@ public class TealiumConsentManager {
         self.diskStorage = diskStorage
         consentPreferencesStorage = TealiumConsentPreferencesStorage(diskStorage: diskStorage)
         tealiumConfig = config
-        consentLoggingEnabled = config.isConsentLoggingEnabled()
+        consentLoggingEnabled = config.consentLoggingEnabled
         moduleDelegate = delegate
         // try to load config from persistent storage first
         if let preferences = getSavedPreferences() {
             consentUserPreferences = preferences
             // always need to update the consent cookie in TiQ, so this will trigger update_consent_cookie
             trackUserConsentPreferences(preferences: consentUserPreferences)
-        } else if tealiumConfig?.getInitialUserConsentStatus() != nil || tealiumConfig?.getInitialUserConsentCategories() != nil {
+        } else if tealiumConfig?.initialUserConsentStatus != nil || tealiumConfig?.initialUserConsentCategories != nil {
             updateConsentPreferencesFromConfig(tealiumConfig)
         } else {
             // not yet determined state.
@@ -64,8 +64,8 @@ public class TealiumConsentManager {
     /// - Parameter config: `TealiumConfig?`
     func updateConsentPreferencesFromConfig(_ config: TealiumConfig?) {
         if let config = config {
-            let status = config.getInitialUserConsentStatus(),
-                    categories = config.getInitialUserConsentCategories()
+            let status = config.initialUserConsentStatus,
+                    categories = config.initialUserConsentCategories
             if let stat = status, let cat = categories {
                 setUserConsentStatusWithCategories(status: stat, categories: cat)
             } else if let stat = status {
@@ -86,7 +86,7 @@ public class TealiumConsentManager {
                 return
             }
 
-            let policy = tealiumConfig?.getOverrideConsentPolicy() ?? TealiumConsentConstants.defaultPolicy
+            let policy = tealiumConfig?.consentPolicyOverride ?? TealiumConsentConstants.defaultPolicy
             consentData[TealiumConsentConstants.policyKey] = policy
 
             let totalCategories = TealiumConsentCategories.all().count

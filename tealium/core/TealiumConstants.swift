@@ -10,10 +10,14 @@
 
 public enum TealiumValue {
     public static let libraryName = "swift"
-    public static let libraryVersion = "1.8.2"
+    public static let libraryVersion = "1.9.0"
     // This is the current limit for performance reasons. May be increased in future
     public static let maxEventBatchSize = 10
     public static let defaultMinimumDiskSpace: Int32 = 20_000_000
+    public static let tiqBaseURL = "https://tags.tiqcdn.com/utag/"
+    public static let tiqURLSuffix = "mobile.html"
+    public static let defaultBatchExpirationDays = 7
+    public static let defaultMaxQueueSize = 40
 }
 
 // MARK: ENUMS
@@ -70,6 +74,23 @@ public enum TealiumKey {
     public static let errorHeaderKey = "X-Error"
     public static let diskStorageDirectory = "disk_storage_directory"
     public static let remoteAPICallType = "remote_api"
+    public static let publishSettings = "remote_publish_settings"
+    public static let publishSettingsURL = "publish_settings_url"
+    public static let publishSettingsProfile = "publish_settings_profile"
+    public static let enabledModules = "enabled_modules"
+    public static let libraryEnabled = "library_is_enabled"
+    public static let batterySaver = "battery_saver"
+    public static let queueSizeKey = "queue_size"
+    // number of events in a batch, max 10
+    public static let batchSizeKey = "batch_size"
+    // max stored events (e.g. if offline) to limit disk space consumed
+    public static let eventLimit = "event_limit"
+    public static let batchingEnabled = "batching_enabled"
+    public static let batchExpirationDaysKey = "batch_expiration_days"
+    public static let wifiOnlyKey = "wifi_only_sending"
+    public static let minutesBetweenRefresh = "minutes_between_refresh"
+    public static let collectModuleName = "collect"
+    public static let tagManagementModuleName = "tagmanagement"
 }
 
 public enum TealiumModulesManagerError: Error {
@@ -102,25 +123,5 @@ public enum TealiumTrackType {
     }
 
 }
-
-// MARK: STRUCTS
-
-/// White or black list of module names to enable. TealiumConfig can be set
-///     with this list which will be read by internal components to determine
-///     which modules to spin up, if they are included with the existing build.
-public struct TealiumModulesList: Equatable {
-    public let isWhitelist: Bool
-    public let moduleNames: Set<String>
-
-    public init(isWhitelist: Bool,
-                moduleNames: Set<String>) {
-        self.isWhitelist = isWhitelist
-        self.moduleNames = Set(moduleNames.map {
-            $0.lowercased()
-        })
-    }
-}
-
-// MARK: TYPEALIASES
 
 public typealias TealiumCompletion = ((_ successful: Bool, _ info: [String: Any]?, _ error: Error?) -> Void)

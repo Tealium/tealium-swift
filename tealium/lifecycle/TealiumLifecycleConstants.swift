@@ -14,6 +14,10 @@ enum TealiumLifecycleModuleKey {
     static let queueName = "com.tealium.lifecycle"
 }
 
+enum TealiumLifecycleConfigKey {
+    static let autotrackingEnabled = "enable_autotracking"
+}
+
 enum TealiumLifecycleValue {
     static let defaultSessionsSize = 20
 }

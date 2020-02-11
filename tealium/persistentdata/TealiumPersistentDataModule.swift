@@ -48,6 +48,20 @@ class TealiumPersistentDataModule: TealiumModule {
             self.diskStorage = diskStorage ?? TealiumDiskStorage(config: request.config, forModule: TealiumPersistentKey.moduleName, isCritical: true)
         }
         self.persistentData = TealiumPersistentData(diskStorage: self.diskStorage)
+        if !request.bypassDidFinish {
+            didFinish(request)
+        }
+    }
+
+    override public func updateConfig(_ request: TealiumUpdateConfigRequest) {
+        let newConfig = request.config.copy
+        if newConfig != self.config {
+            self.config = newConfig
+            self.diskStorage = TealiumDiskStorage(config: newConfig, forModule: TealiumPersistentKey.moduleName, isCritical: true)
+            var enableRequest = TealiumEnableRequest(config: newConfig, enableCompletion: nil)
+            enableRequest.bypassDidFinish = true
+            enable(enableRequest)
+        }
         didFinish(request)
     }
 
@@ -69,7 +83,7 @@ class TealiumPersistentDataModule: TealiumModule {
             didFinishWithNoResponse(track)
             return
         }
-
+        let track = addModuleName(to: track)
         guard let persistentData = self.persistentData else {
             // Unable to load persistent data - continue with track call
             didFinish(track)

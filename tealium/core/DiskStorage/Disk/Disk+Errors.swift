@@ -25,12 +25,12 @@ import Foundation
 extension Disk {
 
     /// Create custom error that FileManager can't account for
-    static func createError(_ errorCode: DiskError.Code, description: String?, failureReason: String?, recoverySuggestion: String?) -> DiskError {
+    static func createError(_ errorCode: DiskError.ErrorKind, description: String?, failureReason: String?, recoverySuggestion: String?) -> DiskError {
         let errorInfo: [String: Any] = [NSLocalizedDescriptionKey: description ?? "",
                                         NSLocalizedRecoverySuggestionErrorKey: recoverySuggestion ?? "",
                                         NSLocalizedFailureReasonErrorKey: failureReason ?? ""]
         // swiftlint:disable force_cast
-        return NSError(domain: DiskErrorDomain, code: errorCode.rawValue, userInfo: errorInfo) as! DiskError
+        return DiskError(kind: errorCode, errorInfo: errorInfo)
         // swiftlint:enable force_cast
     }
 }

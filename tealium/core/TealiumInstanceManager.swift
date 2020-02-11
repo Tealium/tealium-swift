@@ -12,7 +12,7 @@ public class TealiumInstanceManager {
 
     public lazy var tealiumInstances = [String: Tealium]()
 
-    public static let shared = TealiumInstanceManager()
+    public static var shared = TealiumInstanceManager()
 
     private init() {
 

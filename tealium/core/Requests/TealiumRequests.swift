@@ -61,6 +61,7 @@ public struct TealiumEnableRequest: TealiumRequest {
     public var completion: TealiumCompletion?
     public var enableCompletion: TealiumEnableCompletion?
     public let config: TealiumConfig
+    public var bypassDidFinish = false
 
     public init(config: TealiumConfig, enableCompletion: TealiumEnableCompletion?) {
         self.config = config
@@ -69,6 +70,21 @@ public struct TealiumEnableRequest: TealiumRequest {
 
     public static func instanceTypeId() -> String {
         return "enable"
+    }
+}
+
+public struct TealiumUpdateConfigRequest: TealiumRequest {
+    public var typeId = TealiumUpdateConfigRequest.instanceTypeId()
+    public var moduleResponses = [TealiumModuleResponse]()
+    public var completion: TealiumCompletion?
+    public let config: TealiumConfig
+
+    public init(config: TealiumConfig) {
+        self.config = config
+    }
+
+    public static func instanceTypeId() -> String {
+        return "updateconfig"
     }
 }
 
@@ -243,7 +259,6 @@ public struct TealiumSaveRequest: TealiumRequest {
     }
 }
 
-// TODO: Remote API
 public struct TealiumRemoteAPIRequest: TealiumRequest {
     public var typeId = TealiumRemoteAPIRequest.instanceTypeId()
     public var moduleResponses = [TealiumModuleResponse]()

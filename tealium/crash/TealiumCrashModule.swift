@@ -92,8 +92,10 @@ class TealiumCrashModule: TealiumModule {
 
     override func enable(_ request: TealiumEnableRequest) {
         isEnabled = true
-        _ = crashReporter?.enable()
-        didFinish(request)
+        crashReporter?.enable()
+        if !request.bypassDidFinish {
+            didFinish(request)
+        }
     }
 
     override func disable(_ request: TealiumDisableRequest) {
@@ -110,6 +112,8 @@ class TealiumCrashModule: TealiumModule {
             didFinishWithNoResponse(track)
             return
         }
+
+        let track = addModuleName(to: track)
 
         guard let crashReporter = crashReporter else {
             didFinishWithNoResponse(track)

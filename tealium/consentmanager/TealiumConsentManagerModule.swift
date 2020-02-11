@@ -46,9 +46,29 @@ class TealiumConsentManagerModule: TealiumModule {
         // start consent manager with completion block
         consentManager.start(config: request.config, delegate: delegate, diskStorage: self.diskStorage) {
             self.ready = true
-            self.didFinish(request)
+            if !request.bypassDidFinish {
+                self.didFinish(request)
+            }
         }
         consentManager.addConsentDelegate(self)
+    }
+
+    override func updateConfig(_ request: TealiumUpdateConfigRequest) {
+        let newConfig = request.config.copy
+        if newConfig != self.config,
+        newConfig.account != config?.account,
+        newConfig.profile != config?.profile,
+        newConfig.initialUserConsentCategories != config?.initialUserConsentCategories,
+        newConfig.initialUserConsentStatus != config?.initialUserConsentStatus {
+            ready = false
+            self.diskStorage = TealiumDiskStorage(config: request.config, forModule: TealiumConsentManagerModule.moduleConfig().name, isCritical: true)
+            consentManager.start(config: request.config, delegate: delegate, diskStorage: self.diskStorage) {
+                self.ready = true
+                self.didFinish(request)
+            }
+        }
+        config = newConfig
+        didFinish(request)
     }
 
     override func handle(_ request: TealiumRequest) {
@@ -61,6 +81,8 @@ class TealiumConsentManagerModule: TealiumModule {
             batchTrack(request)
         case let request as TealiumDisableRequest:
             disable(request)
+        case let request as TealiumUpdateConfigRequest:
+            updateConfig(request)
         default:
             didFinish(request)
         }
@@ -123,7 +145,7 @@ class TealiumConsentManagerModule: TealiumModule {
             didFinishWithNoResponse(track)
             return
         }
-
+        let track = addModuleName(to: track)
         // allow tracking calls to continue if they are for auditing purposes
         if let event = track.trackDictionary[TealiumKey.event] as? String, (event == TealiumConsentConstants.consentPartialEventName
                 || event == TealiumConsentConstants.consentGrantedEventName || event == TealiumConsentConstants.consentDeclinedEventName || event == TealiumKey.updateConsentCookieEventName) {

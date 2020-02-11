@@ -47,12 +47,24 @@ class TealiumAppDataModule: TealiumModule {
     func enable(_ request: TealiumEnableRequest,
                 diskStorage: TealiumDiskStorageProtocol? = nil) {
         // allows overriding for unit tests, indepdendently of enable call
+        self.config = request.config.copy
         if self.diskStorage == nil {
             self.diskStorage = diskStorage ?? TealiumDiskStorage(config: request.config, forModule: TealiumAppDataKey.moduleName, isCritical: true)
         }
-        self.appData = self.appData ?? TealiumAppData(diskStorage: self.diskStorage, existingVisitorId: request.config.getExistingVisitorId())
+        self.appData = self.appData ?? TealiumAppData(diskStorage: self.diskStorage, existingVisitorId: request.config.existingVisitorId)
         isEnabled = true
+        if !request.bypassDidFinish {
+            didFinish(request)
+        }
+    }
 
+    override func updateConfig(_ request: TealiumUpdateConfigRequest) {
+        let newConfig = request.config.copy
+        if newConfig != self.config {
+            self.diskStorage = TealiumDiskStorage(config: request.config, forModule: TealiumAppDataKey.moduleName, isCritical: true)
+            self.appData = TealiumAppData(diskStorage: self.diskStorage, existingVisitorId: request.config.existingVisitorId)
+        }
+        self.config = newConfig
         didFinish(request)
     }
 
@@ -65,7 +77,7 @@ class TealiumAppDataModule: TealiumModule {
             didFinishWithNoResponse(track)
             return
         }
-
+        let track = addModuleName(to: track)
         // do not add data to queued hits
         guard track.trackDictionary[TealiumKey.wasQueued] as? String == nil else {
             didFinishWithNoResponse(track)
