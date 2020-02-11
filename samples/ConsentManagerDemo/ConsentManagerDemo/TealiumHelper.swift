@@ -7,7 +7,20 @@
 //
 
 import Foundation
-import TealiumSwift
+import TealiumAppData
+import TealiumCore
+import TealiumCollect
+import TealiumConnectivity
+import TealiumConsentManager
+import TealiumDelegate
+import TealiumDeviceData
+import TealiumDispatchQueue
+import TealiumLifecycle
+import TealiumLocation
+import TealiumLogger
+import TealiumPersistentData
+import TealiumTagManagement
+import TealiumVolatileData
 
 extension String: Error {
 }
