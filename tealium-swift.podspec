@@ -60,17 +60,17 @@ Pod::Spec.new do |s|
   #  If this Pod runs only on iOS or OS X, then specify the platform and
   #  the deployment target. You can optionally include the target after the platform.
   #
-  s.swift_version = "1.9.0"
-  s.platform     = :ios, "1.9.0"
-  s.platform     = :osx, "1.9.0"
-  s.platform     = :watchos, "1.9.0"
-  s.platform     = :tvos, "1.9.0"
+  s.swift_version = "4.0"
+  s.platform     = :ios, "9.0"
+  s.platform     = :osx, "10.11"
+  s.platform     = :watchos, "3.0"
+  s.platform     = :tvos, "9.0"
 
   #  When using multiple platforms
-  s.ios.deployment_target = "1.9.0"
-  s.osx.deployment_target = "1.9.0"
-  s.watchos.deployment_target = "1.9.0"
-  s.tvos.deployment_target = "1.9.0"
+  s.ios.deployment_target = "9.0"
+  s.osx.deployment_target = "10.11"
+  s.watchos.deployment_target = "3.0"
+  s.tvos.deployment_target = "9.0"
 
 
   # ――― Source Location ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -92,12 +92,12 @@ Pod::Spec.new do |s|
   s.default_subspec = "TealiumFull"
 
   s.subspec "TealiumFull" do |full|
-    full.source_files  = "tealium/appdata/*"1.9.0"tealium/core/**/*"1.9.0"tealium/attribution/*"1.9.0"tealium/autotracking/*"1.9.0"tealium/collect/*"1.9.0"tealium/connectivity/*"1.9.0"tealium/consentmanager/*"1.9.0"tealium/persistentdata/*"1.9.0"tealium/delegate/*"1.9.0"tealium/devicedata/*.swift"1.9.0"tealium/dispatchqueue/*"1.9.0"tealium/lifecycle/*"1.9.0"tealium/remotecommands/*"1.9.0"tealium/tagmanagement/*"1.9.0"tealium/volatiledata/*"1.9.0"tealium/crash/*"1.9.0"tealium/logger/*"1.9.0"tealium/visitorservice/*"1.9.0"tealium/location/*"
+    full.source_files  = "tealium/appdata/*","tealium/core/**/*","tealium/attribution/*","tealium/autotracking/*","tealium/collect/*","tealium/connectivity/*","tealium/consentmanager/*","tealium/persistentdata/*","tealium/delegate/*","tealium/devicedata/*.swift","tealium/dispatchqueue/*","tealium/lifecycle/*","tealium/remotecommands/*","tealium/tagmanagement/*","tealium/volatiledata/*","tealium/crash/*","tealium/logger/*","tealium/visitorservice/*","tealium/location/*"
     full.ios.exclude_files = "tealium/scripts/*"
     full.ios.dependency "TealiumCrashReporter"
-    full.tvos.exclude_files = "tealium/tagmanagement/*"1.9.0"tealium/remotecommands/*"1.9.0"tealium/attribution/*"1.9.0"tealium/crash/*"1.9.0"tealium/scripts/*"1.9.0"tealium/location/*"
-    full.watchos.exclude_files = "tealium/tagmanagement/*"1.9.0"tealium/autotracking/*"1.9.0"tealium/connectivity/*"1.9.0"tealium/remotecommands/*"1.9.0"tealium/attribution/*"1.9.0"tealium/crash/*"1.9.0"tealium/scripts/*"1.9.0"tealium/location/*"
-    full.osx.exclude_files = "tealium/tagmanagement/*"1.9.0"tealium/autotracking/*"1.9.0"tealium/remotecommands/*"1.9.0"tealium/attribution/*"1.9.0"tealium/crash/*"1.9.0"tealium/scripts/*"1.9.0"tealium/location/*"
+    full.tvos.exclude_files = "tealium/tagmanagement/*","tealium/remotecommands/*","tealium/attribution/*","tealium/crash/*","tealium/scripts/*","tealium/location/*"
+    full.watchos.exclude_files = "tealium/tagmanagement/*","tealium/autotracking/*","tealium/connectivity/*","tealium/remotecommands/*","tealium/attribution/*","tealium/crash/*","tealium/scripts/*","tealium/location/*"
+    full.osx.exclude_files = "tealium/tagmanagement/*","tealium/autotracking/*","tealium/remotecommands/*","tealium/attribution/*","tealium/crash/*","tealium/scripts/*","tealium/location/*"
     full.resources = "tealium/devicedata/device-names.json"
   end
 
@@ -111,14 +111,14 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "TealiumAttribution" do |attribution|
-    attribution.platform = :ios, "1.9.0"
+    attribution.platform = :ios, "9.0"
     attribution.source_files = "tealium/attribution/*"
     attribution.dependency "tealium-swift/Core"
   end
 
   s.subspec "TealiumAutotracking" do |autotracking|
-    autotracking.ios.deployment_target = "1.9.0"
-    autotracking.tvos.deployment_target = "1.9.0"
+    autotracking.ios.deployment_target = "9.0"
+    autotracking.tvos.deployment_target = "9.0"
     autotracking.source_files = "tealium/autotracking/*"
     autotracking.dependency "tealium-swift/Core"
   end
@@ -129,9 +129,9 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "TealiumConnectivity" do |connectivity|
-    connectivity.ios.deployment_target = "1.9.0"
-    connectivity.osx.deployment_target = "1.9.0"
-    connectivity.tvos.deployment_target = "1.9.0"
+    connectivity.ios.deployment_target = "9.0"
+    connectivity.osx.deployment_target = "10.11"
+    connectivity.tvos.deployment_target = "9.0"
     connectivity.source_files = "tealium/connectivity/*"
     connectivity.dependency "tealium-swift/Core"
   end
@@ -173,13 +173,13 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "TealiumRemoteCommands" do |remotecommands|
-    remotecommands.platform = :ios, "1.9.0"
+    remotecommands.platform = :ios, "9.0"
     remotecommands.source_files = "tealium/remotecommands/*"
     remotecommands.dependency "tealium-swift/Core"
   end
 
   s.subspec "TealiumTagManagement" do |tagmanagement|
-    tagmanagement.platform = :ios, "1.9.0"
+    tagmanagement.platform = :ios, "9.0"
     tagmanagement.source_files = "tealium/tagmanagement/*"
     tagmanagement.dependency "tealium-swift/Core"
   end
@@ -201,7 +201,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "Crash" do |crash|
-    crash.platform = :ios, "1.9.0"
+    crash.platform = :ios, "9.0"
     crash.ios.source_files = "tealium/crash/*"
     crash.ios.dependency "tealium-swift/Core"
     crash.ios.dependency "tealium-swift/TealiumAppData"
