@@ -94,6 +94,8 @@
 		CF3CB85723F327E200BAD43A /* TealiumVisitorService in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB85623F327E200BAD43A /* TealiumVisitorService */; };
 		CF3CB85923F327E200BAD43A /* TealiumVolatileData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB85823F327E200BAD43A /* TealiumVolatileData */; };
 		CF3CB85A23F327EA00BAD43A /* TealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2E312823762361000CEDD3 /* TealiumHelper.swift */; };
+		CF3CB88423F32F4300BAD43A /* WalkAroundReading.gpx in Resources */ = {isa = PBXBuildFile; fileRef = CF3CB88223F32F4300BAD43A /* WalkAroundReading.gpx */; };
+		CF3CB88523F32F4300BAD43A /* WalkAroundSanDiego.gpx in Resources */ = {isa = PBXBuildFile; fileRef = CF3CB88323F32F4300BAD43A /* WalkAroundSanDiego.gpx */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -178,6 +180,8 @@
 		CF3CB83923F327CE00BAD43A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CF3CB83B23F327CE00BAD43A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CF3CB83C23F327CE00BAD43A /* TealiumSwiftMacOSExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TealiumSwiftMacOSExample.entitlements; sourceTree = "<group>"; };
+		CF3CB88223F32F4300BAD43A /* WalkAroundReading.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = WalkAroundReading.gpx; sourceTree = "<group>"; };
+		CF3CB88323F32F4300BAD43A /* WalkAroundSanDiego.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = WalkAroundSanDiego.gpx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -303,6 +307,7 @@
 		CF2E3113237622A9000CEDD3 /* TealiumSwiftExample */ = {
 			isa = PBXGroup;
 			children = (
+				CF3CB88123F32F1300BAD43A /* LocationSimulation */,
 				CF2E3172237639BF000CEDD3 /* TealiumSwiftExample.entitlements */,
 				CF2E312823762361000CEDD3 /* TealiumHelper.swift */,
 				CF2E3114237622A9000CEDD3 /* AppDelegate.swift */,
@@ -406,6 +411,15 @@
 				CF3CB83623F327CE00BAD43A /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		CF3CB88123F32F1300BAD43A /* LocationSimulation */ = {
+			isa = PBXGroup;
+			children = (
+				CF3CB88223F32F4300BAD43A /* WalkAroundReading.gpx */,
+				CF3CB88323F32F4300BAD43A /* WalkAroundSanDiego.gpx */,
+			);
+			path = LocationSimulation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -622,6 +636,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF3CB88523F32F4300BAD43A /* WalkAroundSanDiego.gpx in Resources */,
+				CF3CB88423F32F4300BAD43A /* WalkAroundReading.gpx in Resources */,
 				CF2E3121237622AB000CEDD3 /* LaunchScreen.storyboard in Resources */,
 				CF2E311E237622AB000CEDD3 /* Preview Assets.xcassets in Resources */,
 				CF2E311B237622AB000CEDD3 /* Assets.xcassets in Resources */,
