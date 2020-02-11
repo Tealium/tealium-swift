@@ -33,7 +33,12 @@ targets:
       base:
           INFOPLIST_FILE: "TealiumAppData-Info.plist"
           SWIFT_ACTIVE_COMPILATION_CONDITIONS: appdata
-watchsimulator watchos
+          SUPPORTED_PLATFORMS: "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos"
+          TARGETED_DEVICE_FAMILY: "1,2,3,4"
+          TVOS_DEPLOYMENT_TARGET: 9.0
+          WATCHOS_DEPLOYMENT_TARGET: 3.0
+          IPHONEOS_DEPLOYMENT_TARGET: 9.0
+          MACOSX_DEPLOYMENT_TARGET: 10.11
       configs:
         debug:
           SWIFT_ACTIVE_COMPILATION_CONDITIONS: appdata DEBUG
