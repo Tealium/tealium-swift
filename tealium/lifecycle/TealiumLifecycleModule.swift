@@ -23,11 +23,14 @@ import TealiumCore
 
 public class TealiumLifecycleModule: TealiumModule {
     var enabledPrior = false    // To differentiate between new launches and re-enables.
-    var lifecycle: TealiumLifecycle?
+    public var lifecycle: TealiumLifecycle?
     var uniqueId = ""
     var lastProcess: TealiumLifecycleType?
     var lifecyclePersistentData: TealiumLifecyclePersistentData!
     var diskStorage: TealiumDiskStorageProtocol!
+    public var dictionary: [String: Any]? {
+        lifecycle?.asDictionary(type: nil, for: Date())
+    }
 
     override public class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumLifecycleModuleKey.moduleName,

@@ -164,7 +164,7 @@ public struct TealiumLifecycle: Codable {
     /// - Parameters:
     ///     - type: `String` containing the lifecycle type to be tracked
     ///     - date: `Date` for the lifecycle event
-    func asDictionary(type: String?,
+    public func asDictionary(type: String?,
                       for date: Date) -> [String: Any] {
         var dict = [String: Any]()
 

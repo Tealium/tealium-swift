@@ -14,9 +14,12 @@ import Foundation
 
 public class TealiumPersistentData {
 
-    var persistentDataCache = TealiumPersistentDataStorage()
+    public var persistentDataCache = TealiumPersistentDataStorage()
     let diskStorage: TealiumDiskStorageProtocol
     var migrator: TealiumLegacyMigratorProtocol.Type
+    public var dictionary: [String: Any]? {
+        persistentDataCache.data.value as? [String: Any]
+    }
 
     /// - Parameters:
     ///     - diskStorage: `TealiumDiskStorageProtocol`
