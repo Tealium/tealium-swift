@@ -139,7 +139,9 @@ class TealiumAutotrackingModule: TealiumModule {
         NotificationCenter.default.addObserver(self, selector: #selector(requestViewTrack(sender:)), name: viewName, object: nil)
 
         notificationsEnabled = true
-        didFinish(request)
+        if !request.bypassDidFinish {
+            didFinish(request)
+        }
     }
 
     override func disable(_ request: TealiumDisableRequest) {

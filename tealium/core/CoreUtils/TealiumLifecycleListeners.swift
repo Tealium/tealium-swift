@@ -7,6 +7,10 @@
 //
 
 import Foundation
+#if os(macOS)
+#else
+import UIKit
+#endif
 
 public class TealiumLifecycleListeners {
 
@@ -70,16 +74,11 @@ public class TealiumLifecycleListeners {
         #else
         #if os(watchOS)
         #else
-        #if os(OSX)
+        #if os(macOS)
         #else
         // swiftlint:disable identifier_name
-        #if swift(>=4.2)
         let notificationNameApplicationDidBecomeActive = UIApplication.didBecomeActiveNotification
         let notificationNameApplicationWillResignActive = UIApplication.willResignActiveNotification
-        #else
-        let notificationNameApplicationDidBecomeActive = NSNotification.Name.UIApplicationDidBecomeActive
-        let notificationNameApplicationWillResignActive = NSNotification.Name.UIApplicationWillResignActive
-        #endif
         // swiftlint:enable identifier_name
 
         let operationQueue = OperationQueue()

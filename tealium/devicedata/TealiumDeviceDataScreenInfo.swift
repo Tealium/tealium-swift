@@ -86,6 +86,8 @@ extension TealiumDeviceData {
             appOrientationString = "Portrait Upside Down"
         case .unknown:
             appOrientationString = TealiumDeviceDataValue.unknown
+        @unknown default:
+            appOrientationString = TealiumDeviceDataValue.unknown
         }
         return appOrientationString
     }
@@ -108,6 +110,8 @@ extension TealiumDeviceData {
             deviceOrientationString = "Portrait Upside Down"
         case .unknown:
             deviceOrientationString = TealiumDeviceDataValue.unknown
+        @unknown default:
+           deviceOrientationString = TealiumDeviceDataValue.unknown
         }
         return deviceOrientationString
     }

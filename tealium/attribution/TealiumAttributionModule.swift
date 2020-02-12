@@ -55,8 +55,21 @@ class TealiumAttributionModule: TealiumModule {
             self.diskStorage = diskStorage ?? TealiumDiskStorage(config: request.config, forModule: TealiumAttributionKey.moduleName)
         }
         self.attributionData = TealiumAttributionData(diskStorage: self.diskStorage,
-                                                      isSearchAdsEnabled: request.config.isSearchAdsEnabled())
+                                                      isSearchAdsEnabled: request.config.searchAdsEnabled)
         isEnabled = true
+        if !request.bypassDidFinish {
+            didFinish(request)
+        }
+    }
+
+    override func updateConfig(_ request: TealiumUpdateConfigRequest) {
+        let newConfig = request.config.copy
+        if newConfig != self.config {
+            self.diskStorage = TealiumDiskStorage(config: request.config, forModule: TealiumAttributionKey.moduleName)
+            self.attributionData = TealiumAttributionData(diskStorage: self.diskStorage,
+                                                          isSearchAdsEnabled: request.config.searchAdsEnabled)
+        }
+        self.config = newConfig
         didFinish(request)
     }
 
@@ -73,7 +86,7 @@ class TealiumAttributionModule: TealiumModule {
             didFinish(track)
             return
         }
-
+        let track = addModuleName(to: track)
         // do not add data to queued hits
         guard track.trackDictionary[TealiumKey.wasQueued] as? String == nil else {
             didFinishWithNoResponse(track)
@@ -90,6 +103,7 @@ class TealiumAttributionModule: TealiumModule {
 
         didFinish(newTrack)
     }
+    
 
     /// Disables the module and deletes all associated data￼.
     /// 

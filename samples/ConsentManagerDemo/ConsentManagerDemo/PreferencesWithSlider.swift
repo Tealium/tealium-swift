@@ -73,8 +73,6 @@ class PreferencesWithSliderViewController: FormViewController {
             if let slideRow = row as SliderRow? {
                 slideRow.steps = 3
                 slideRow.title = "Consent"
-                slideRow.minimumValue = 0
-                slideRow.maximumValue = 3
                 slideRow.value = detectLevelOfConsent()
                 slideRow.tag = "consent-slider"
                 slideRow.shouldHideValue = true

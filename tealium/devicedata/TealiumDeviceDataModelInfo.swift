@@ -32,17 +32,7 @@ extension TealiumDeviceData {
     ///
     /// - Returns: `[String: Any]` containing the model name information
     func retrieveModelNamesFromJSONFile() -> [String: Any]? {
-        let bundle = Bundle(for: type(of: self))
-
-        guard let path = bundle.path(forResource: TealiumDeviceDataKey.fileName, ofType: "json") else {
-            return nil
-        }
-        if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe) {
-            if let result = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: [String: String]] {
-                return result
-            }
-        }
-        return nil
+        DeviceNamesLookup.data
     }
 
     /// Retrieves the full consumer device name, e.g. iPhone SE, and other supplementary info.

@@ -75,8 +75,7 @@ public protocol TealiumDiskStorageProtocol {
     /// - Parameters:
     ///     - type: `T.Type` type of data to be retrieved
     ///     - completion: completion to be called upon retrieval
-    func retrieve<T: Decodable>(as type: T.Type,
-                                completion: @escaping (Bool, T?, Error?) -> Void)
+    func retrieve<T: Decodable>(as type: T.Type) -> T?
 
     /// Retrieves a `Decodable` item from disk storage.
     ///
@@ -85,8 +84,7 @@ public protocol TealiumDiskStorageProtocol {
     ///     - fileName: `String` containing the filename for the data to be retrieved
     ///     - completion: completion to be called upon retrieval
     func retrieve<T: Decodable>(_ fileName: String,
-                                as type: T.Type,
-                                completion: @escaping (Bool, T?, Error?) -> Void)
+                                as type: T.Type) -> T?
 
     /// Retrieves a `[String: Any]` from disk storage.
     ///

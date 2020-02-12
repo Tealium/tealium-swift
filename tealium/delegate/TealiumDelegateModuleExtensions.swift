@@ -24,18 +24,19 @@ public extension Tealium {
 
 public extension TealiumConfig {
 
-    func delegates() -> TealiumDelegates {
-        if let delegates = self.optionalData[TealiumDelegateKey.multicastDelegates] as? TealiumDelegates {
-            return delegates
+    var delegates: TealiumDelegates {
+        get {
+            optionalData[TealiumDelegateKey.multicastDelegates] as? TealiumDelegates ?? TealiumDelegates()
         }
-
-        return TealiumDelegates()
+        set {
+            optionalData[TealiumDelegateKey.multicastDelegates] = newValue
+        }
     }
 
     func addDelegate(_ delegate: TealiumDelegate) {
-        let delegates = self.delegates()
+        let delegates = self.delegates
         delegates.add(delegate: delegate)
-        optionalData[TealiumDelegateKey.multicastDelegates] = delegates
+        self.delegates = delegates
     }
 
 }

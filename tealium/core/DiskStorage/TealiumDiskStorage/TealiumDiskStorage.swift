@@ -36,15 +36,15 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
     public init(config: TealiumConfig,
                 forModule module: String,
                 isCritical: Bool = false) {
-        self.logger = TealiumLogger(loggerId: "TealiumDiskStorage", logLevel: config.getLogLevel())
+        self.logger = TealiumLogger(loggerId: "TealiumDiskStorage", logLevel: config.logLevel ?? defaultTealiumLogLevel)
         // The subdirectory to use for this data
         filePrefix = "\(config.account).\(config.profile)/"
-        minimumDiskSpace = config.getMinimumFreeDiskSpace()
+        minimumDiskSpace = config.minimumFreeDiskSpace ?? TealiumValue.defaultMinimumDiskSpace
         self.module = module
         self.isCritical = isCritical
-        self.isDiskStorageEnabled = config.isDiskStorageEnabled()
+        self.isDiskStorageEnabled = config.diskStorageEnabled
         let defaultDirectory = self.defaultDirectory
-        currentDirectory = config.getOverrideDiskStorageDirectory() ?? defaultDirectory
+        currentDirectory = config.diskStorageDirectory ?? defaultDirectory
         // Provides userdefaults backing for critical data (e.g. appdata, consentmanager)
         if isCritical {
             self.defaultsStorage = UserDefaults(suiteName: filePath)
@@ -273,9 +273,8 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
     /// - Parameters:
     ///     - type: `T.Type` type of data to be retrieved
     ///     - completion: completion to be called upon retrieval
-    public func retrieve<T: Decodable>(as type: T.Type,
-                                       completion: @escaping (Bool, T?, Error?) -> Void) {
-        retrieve(module, as: type, completion: completion)
+    public func retrieve<T: Decodable>(as type: T.Type) -> T? {
+        retrieve(module, as: type)
     }
 
     /// Retrieves a `Decodable` item from disk storage.
@@ -285,28 +284,26 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
     ///     - fileName: `String` containing the filename for the data to be retrieved
     ///     - completion: completion to be called upon retrieval
     public func retrieve<T: Decodable>(_ fileName: String,
-                                       as type: T.Type,
-                                       completion: @escaping (Bool, T?, Error?) -> Void) {
+                                       as type: T.Type) -> T? {
         TealiumDiskStorage.readWriteQueue.read { [weak self] in
             guard let self = self else {
-                return
+                return nil
             }
             guard isDiskStorageEnabled else {
                 let decoder = JSONDecoder()
                 if let data = self.getFromDefaults(key: self.filePath(fileName)) as? Data,
                     let decoded = try? decoder.decode(type, from: data) {
-                    completion(true, decoded, nil)
+                    return decoded
                 } else {
                     log(error: DiskStorageErrors.couldNotDecode.rawValue)
-                    completion(false, nil, nil)
+                    return nil
                 }
-                return
             }
             do {
                 let data = try Disk.retrieve(self.filePath(fileName), from: self.currentDirectory, as: type)
-                completion(true, data, nil)
-            } catch let error {
-                completion(false, nil, error)
+                return data
+            } catch {
+                return nil
             }
         }
     }
@@ -325,7 +322,7 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
             guard self.isDiskStorageEnabled else {
                 let decoder = JSONDecoder()
                 if let data = self.getFromDefaults(key: self.filePath(fileName)) as? Data,
-                    let decoded = try? decoder.decode(AnyCodable.self, from: data).value as? [String: Any] {
+                    let decoded = ((try? decoder.decode(AnyCodable.self, from: data).value as? [String: Any]) as [String : Any]??) {
                     completion(true, decoded, nil)
                 } else {
                     log(error: DiskStorageErrors.couldNotDecode.rawValue)
@@ -378,19 +375,18 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
                                    for key: String,
                                    as type: T.Type,
                                    completion: TealiumCompletion?) {
-        retrieve(module, as: type.self) { _, data, _ in
-            let encoder = JSONEncoder()
-            guard let encoded = try? encoder.encode(data),
-                let dictionary = try? JSONSerialization.jsonObject(with: encoded, options: .allowFragments) as? [String: Any],
-                var dict = dictionary else {
-                return
-            }
-            dict[key] = value
-            let decoder = JSONDecoder()
-            if let jsonData = try? JSONSerialization.data(withJSONObject: dict, options: []),
-                let newData = try? decoder.decode(T.self, from: jsonData) {
-                self.save(newData, fileName: self.module, completion: completion)
-            }
+        let data = retrieve(module, as: type.self)
+        let encoder = JSONEncoder()
+        guard let encoded = try? encoder.encode(data),
+            let dictionary = ((try? JSONSerialization.jsonObject(with: encoded, options: .allowFragments) as? [String: Any]) as [String : Any]??),
+            var dict = dictionary else {
+            return
+        }
+        dict[key] = value
+        let decoder = JSONDecoder()
+        if let jsonData = try? JSONSerialization.data(withJSONObject: dict, options: []),
+            let newData = try? decoder.decode(T.self, from: jsonData) {
+            self.save(newData, fileName: self.module, completion: completion)
         }
     }
 

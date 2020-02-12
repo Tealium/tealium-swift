@@ -86,15 +86,15 @@ public class TealiumVisitorProfileRetriever {
     /// Generates the visitor service url
     var visitorProfileURL: String {
         var url = TealiumVisitorProfileConstants.defaultVisitorServiceDomain
-        if let overrideURL = tealiumConfig.getVisitorServiceOverrideURL(), URL(string: overrideURL) != nil {
+        if let overrideURL = tealiumConfig.visitorServiceOverrideURL, URL(string: overrideURL) != nil {
             url = overrideURL
         }
-        return "\(url)\(tealiumConfig.account)/\(tealiumConfig.getVisitorServiceOverrideProfile() ?? tealiumConfig.profile)/\(tealiumVisitorId)"
+        return "\(url)\(tealiumConfig.account)/\(tealiumConfig.visitorServiceOverrideProfile ?? tealiumConfig.profile)/\(tealiumVisitorId)"
     }
 
     /// Should fetch visitor profile based on interval set in the config or defaults to every 5 minutes
     var shouldFetchVisitorProfile: Bool {
-        guard let refresh = tealiumConfig.optionalData[TealiumVisitorProfileConstants.refreshInterval] as? Int64 else {
+        guard let refresh = tealiumConfig.visitorServiceRefreshInterval else {
             return shouldFetch(basedOn: lastFetch, interval: TealiumVisitorProfileConstants.defaultRefreshInterval.milliseconds, environment: tealiumConfig.environment)
         }
         return shouldFetch(basedOn: lastFetch, interval: refresh.milliseconds, environment: tealiumConfig.environment)

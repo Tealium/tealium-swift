@@ -28,11 +28,21 @@ class TealiumDelegateModule: TealiumModule {
     override func enable(_ request: TealiumEnableRequest) {
         isEnabled = true
 
-        delegates = request.config.delegates()
+        delegates = request.config.delegates
         delegate?.tealiumModuleRequests(module: self,
                                         process: TealiumReportNotificationsRequest())
+        if !request.bypassDidFinish {
+            didFinishWithNoResponse(request)
+        }
+    }
 
-        didFinishWithNoResponse(request)
+    override func updateConfig(_ request: TealiumUpdateConfigRequest) {
+        let newConfig = request.config.copy
+        if newConfig != self.config {
+            delegates = newConfig.delegates
+        }
+        self.config = newConfig
+        didFinish(request)
     }
 
     /// Notifies listening delegates of a completed track request.
@@ -57,6 +67,7 @@ class TealiumDelegateModule: TealiumModule {
     ///
     /// - Parameter track: `TealiumTrackRequest`
     override func track(_ track: TealiumTrackRequest) {
+        let track = addModuleName(to: track)
         if delegates?.invokeShouldTrack(data: track.trackDictionary) == false {
             // Suppress the event from further processing
             track.completion?(false, nil, TealiumDelegateError.suppressedByShouldTrackDelegate)

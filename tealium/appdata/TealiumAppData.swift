@@ -37,13 +37,11 @@ public class TealiumAppData: TealiumAppDataProtocol, TealiumAppDataCollection {
             let persistentData = PersistentAppData.initFromDictionary(data) {
             self.setLoadedAppData(data: persistentData)
         } else {
-            diskStorage.retrieve(as: PersistentAppData.self) {_, data, _ in
-                guard let data = data else {
-                    self.setNewAppData()
-                    return
-                }
-                self.setLoadedAppData(data: data)
+            guard let data = diskStorage.retrieve(as: PersistentAppData.self) else {
+                self.setNewAppData()
+                return
             }
+            self.setLoadedAppData(data: data)
         }
     }
 

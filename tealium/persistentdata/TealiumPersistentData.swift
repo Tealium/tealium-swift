@@ -14,9 +14,12 @@ import Foundation
 
 public class TealiumPersistentData {
 
-    var persistentDataCache = TealiumPersistentDataStorage()
+    public var persistentDataCache = TealiumPersistentDataStorage()
     let diskStorage: TealiumDiskStorageProtocol
     var migrator: TealiumLegacyMigratorProtocol.Type
+    public var dictionary: [String: Any]? {
+        persistentDataCache.data.value as? [String: Any]
+    }
 
     /// - Parameters:
     ///     - diskStorage: `TealiumDiskStorageProtocol`
@@ -34,13 +37,10 @@ public class TealiumPersistentData {
         if let data = migrator.getLegacyData(forModule: TealiumPersistentKey.moduleName) {
             add(data: data)
         } else {
-            diskStorage.retrieve(as: TealiumPersistentDataStorage.self) { [weak self] _, data, _ in
-                guard let self = self,
-                    let data = data else {
+            guard let data = diskStorage.retrieve(as: TealiumPersistentDataStorage.self) else {
                     return
-                }
-                self.persistentDataCache = data
             }
+            self.persistentDataCache = data
         }
     }
 

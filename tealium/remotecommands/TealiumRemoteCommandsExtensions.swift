@@ -25,29 +25,53 @@ public extension Tealium {
 public extension TealiumConfig {
 
     /// Disables the built-in HTTP command
+    @available(*, deprecated, message: "Please switch to config.remoteHTTPCommandDisabled")
     func disableRemoteHTTPCommand() {
-        optionalData[TealiumRemoteCommandsKey.disableHTTP] = true
+        remoteHTTPCommandDisabled = true
     }
 
     /// Re-enables the built-in HTTP command
+    @available(*, deprecated, message: "Please switch to config.remoteHTTPCommandDisabled")
     func enableRemoteHTTPCommand() {
-        optionalData[TealiumRemoteCommandsKey.disableHTTP] = false
+        remoteHTTPCommandDisabled = false
+    }
+
+    /// Enables or disables the built-in HTTP command. Default `false` (command is ENABLED). Set to `true` to disable
+    var remoteHTTPCommandDisabled: Bool {
+        get {
+            optionalData[TealiumRemoteCommandsKey.disableHTTP] as? Bool ?? false
+        }
+
+        set {
+            optionalData[TealiumRemoteCommandsKey.disableHTTP] = newValue
+        }
     }
 
     /// Registers a Remote Command for later execution
     ///
     /// - Parameter command: `TealiumRemoteCommand` instance
     func addRemoteCommand(_ command: TealiumRemoteCommand) {
-        var commands = optionalData[TealiumRemoteCommandsKey.allCommands] as? [TealiumRemoteCommand] ?? [TealiumRemoteCommand]()
+        var commands = remoteCommands ?? [TealiumRemoteCommand]()
         commands.append(command)
-        optionalData[TealiumRemoteCommandsKey.allCommands] = commands
+        remoteCommands = commands
     }
 
     /// Retrieves all currently-registered Remote Commands
     ///
     /// - Returns: `[TealiumRemoteCommand]`
+    @available(*, deprecated, message: "Please switch to config.remoteCommands")
     func getRemoteCommands() -> [TealiumRemoteCommand]? {
-        return optionalData[TealiumRemoteCommandsKey.allCommands] as? [TealiumRemoteCommand]
+        remoteCommands
+    }
+
+    var remoteCommands: [TealiumRemoteCommand]? {
+        get {
+            optionalData[TealiumRemoteCommandsKey.allCommands] as? [TealiumRemoteCommand]
+        }
+
+        set {
+            optionalData[TealiumRemoteCommandsKey.allCommands]  = newValue
+        }
     }
 }
 

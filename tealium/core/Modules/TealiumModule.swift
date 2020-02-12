@@ -38,7 +38,7 @@ open class TealiumModule: TealiumModuleProtocol {
 
     public weak var delegate: TealiumModuleDelegate?
     public var isEnabled: Bool = false
-
+    open var config: TealiumConfig?
     /// Constructor.￼
     ///
     /// - Parameter delegate: Delegate for module, usually the ModulesManager.
@@ -71,6 +71,8 @@ open class TealiumModule: TealiumModuleProtocol {
             disable(request)
         } else if let request = request as? TealiumTrackRequest {
             track(request)
+        } else if let request = request as? TealiumUpdateConfigRequest {
+            updateConfig(request)
         } else {
             didFinishWithNoResponse(request)
         }
@@ -94,7 +96,9 @@ open class TealiumModule: TealiumModuleProtocol {
     /// - Parameter request: `TealiumEnableRequest`.
     open func enable(_ request: TealiumEnableRequest) {
         isEnabled = true
-        didFinish(request)
+        if !request.bypassDidFinish {
+            didFinish(request)
+        }
     }
 
     /// Most modules will want to be able to be disabled.￼
@@ -105,6 +109,14 @@ open class TealiumModule: TealiumModuleProtocol {
         isEnabled = false
         didFinish(request)
 
+    }
+    
+    /// Updates the config of this module (if applicable)
+    ///
+    /// - Parameter request: `TealiumUpdateConfigRequest`.
+    open func updateConfig(_ request: TealiumUpdateConfigRequest) {
+        self.config = request.config
+        didFinish(request)
     }
 
     // MARK: SUBCLASS CONVENIENCE METHODS
@@ -182,7 +194,18 @@ open class TealiumModule: TealiumModuleProtocol {
     ///
     /// - Parameter request: `TealiumTrackRequest` to process.
     open func track(_ request: TealiumTrackRequest) {
-        didFinishWithNoResponse(request)
+        let newRequest = addModuleName(to: request)
+        didFinishWithNoResponse(newRequest)
+    }
+    
+    open func addModuleName(to request: TealiumTrackRequest) -> TealiumTrackRequest {
+        var requestData = request.trackDictionary
+        var modulesList = requestData[TealiumKey.enabledModules] as? [String] ?? [String]()
+        modulesList.append(description.replacingOccurrences(of: ".module", with: ""))
+        requestData[TealiumKey.enabledModules] = Array(Set(modulesList)).sorted()
+        var newRequest =  TealiumTrackRequest(data: requestData, completion: request.completion)
+        newRequest.moduleResponses = request.moduleResponses
+        return newRequest
     }
 
 }

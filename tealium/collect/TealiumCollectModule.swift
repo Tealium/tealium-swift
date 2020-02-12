@@ -15,7 +15,6 @@ import TealiumCore
 class TealiumCollectModule: TealiumModule {
 
     var collect: TealiumCollectProtocol?
-    var config: TealiumConfig?
     override class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumCollectKey.moduleName,
                                    priority: 1050,
@@ -31,6 +30,8 @@ class TealiumCollectModule: TealiumModule {
             dynamicTrack(request)
         case let request as TealiumBatchTrackRequest:
             dynamicTrack(request)
+        case let request as TealiumUpdateConfigRequest:
+            updateConfig(request)
         default:
             didFinish(request)
         }
@@ -42,15 +43,32 @@ class TealiumCollectModule: TealiumModule {
     override func enable(_ request: TealiumEnableRequest) {
         isEnabled = true
         config = request.config
-        if self.collect == nil {
+        if self.collect == nil,
+            let config = config {
             // Collect dispatch service
-            let urlString = config?.optionalData[TealiumCollectKey.overrideCollectUrl] as? String ?? TealiumCollectPostDispatcher.defaultDispatchBaseURL
-            self.collect = TealiumCollectPostDispatcher(dispatchURL: urlString) { _, _ in
+            updateCollectDispatcher(config: config, completion: nil)
+            if !request.bypassDidFinish {
                 self.didFinish(request)
-                return
             }
+            return
         }
         didFinishWithNoResponse(request)
+    }
+
+    override func updateConfig(_ request: TealiumUpdateConfigRequest) {
+        let newConfig = request.config.copy
+        if newConfig != self.config,
+        (newConfig.optionalData[TealiumCollectKey.overrideCollectUrl] as? String ?? TealiumCollectPostDispatcher.defaultDispatchBaseURL) != (config?.optionalData[TealiumCollectKey.overrideCollectUrl] as? String ?? TealiumCollectPostDispatcher.defaultDispatchBaseURL) {
+            updateCollectDispatcher(config: newConfig, completion: nil)
+            self.config = newConfig
+            self.didFinish(request)
+        }
+    }
+
+    func updateCollectDispatcher(config: TealiumConfig,
+                                 completion: ((_ success: Bool, _ error: TealiumCollectError) -> Void)?) {
+        let urlString = config.optionalData[TealiumCollectKey.overrideCollectUrl] as? String ?? TealiumCollectPostDispatcher.defaultDispatchBaseURL
+        collect = TealiumCollectPostDispatcher(dispatchURL: urlString, completion: completion)
     }
 
     /// Detects track type and dispatches appropriately, adding mandatory data (account and profile) to the track if missing.￼
@@ -96,6 +114,7 @@ class TealiumCollectModule: TealiumModule {
     /// - Parameter request: `TealiumTrackRequest` to be insepcted/modified
     /// - Returns: `TealiumTrackRequest`
     func prepareForDispatch(_ request: TealiumTrackRequest) -> TealiumTrackRequest {
+        let request = addModuleName(to: request)
         var newTrack = request.trackDictionary
         if newTrack[TealiumKey.account] == nil,
             newTrack[TealiumKey.profile] == nil {

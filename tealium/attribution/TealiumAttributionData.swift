@@ -46,17 +46,14 @@ public class TealiumAttributionData: TealiumAttributionDataProtocol {
             persistentAttributionData = persistentData
             diskStorage.save(self.persistentAttributionData, completion: nil)
         } else {
-            diskStorage.retrieve(as: PersistentAttributionData.self) {_, data, _ in
-
-                guard let data = data else {
+            guard let data = diskStorage.retrieve(as: PersistentAttributionData.self) else {
                     self.appleSearchAdsData { data in
                         self.persistentAttributionData = data
                         self.diskStorage.save(self.persistentAttributionData, completion: nil)
                     }
                     return
                 }
-                self.persistentAttributionData = data
-            }
+            self.persistentAttributionData = data
         }
     }
 

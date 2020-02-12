@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		414A1738781FF8B506DF5EE4 /* Pods_TealiumSwiftWatchExample_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E51C3C5FFB23C730DA5FA93 /* Pods_TealiumSwiftWatchExample_Extension.framework */; };
-		99977510FEC7BD0BFDB77ECB /* Pods_TealiumSwiftExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BE40DA281D0F83BF5224ED7 /* Pods_TealiumSwiftExample.framework */; };
-		B8C0DA2EF2D9C0A74706D510 /* Pods_TealiumSwiftTVExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB02AEF267521D87C8B6C257 /* Pods_TealiumSwiftTVExample.framework */; };
 		CF2E3115237622A9000CEDD3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2E3114237622A9000CEDD3 /* AppDelegate.swift */; };
 		CF2E3117237622A9000CEDD3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2E3116237622A9000CEDD3 /* SceneDelegate.swift */; };
 		CF2E3119237622A9000CEDD3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2E3118237622A9000CEDD3 /* ContentView.swift */; };
@@ -35,6 +32,70 @@
 		CF2E31692376359A000CEDD3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF2E31682376359A000CEDD3 /* Preview Assets.xcassets */; };
 		CF2E316C2376359A000CEDD3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF2E316A2376359A000CEDD3 /* LaunchScreen.storyboard */; };
 		CF2E3171237635C3000CEDD3 /* TealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2E312823762361000CEDD3 /* TealiumHelper.swift */; };
+		CF3CB7B923F3262500BAD43A /* TealiumAttribution in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7B823F3262500BAD43A /* TealiumAttribution */; };
+		CF3CB7BB23F3262500BAD43A /* TealiumDelegate in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7BA23F3262500BAD43A /* TealiumDelegate */; };
+		CF3CB7BD23F3262500BAD43A /* TealiumVolatileData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7BC23F3262500BAD43A /* TealiumVolatileData */; };
+		CF3CB7BF23F3262500BAD43A /* TealiumLocation in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7BE23F3262500BAD43A /* TealiumLocation */; };
+		CF3CB7C123F3262500BAD43A /* TealiumLifecycle in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7C023F3262500BAD43A /* TealiumLifecycle */; };
+		CF3CB7C323F3262500BAD43A /* TealiumAppData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7C223F3262500BAD43A /* TealiumAppData */; };
+		CF3CB7C523F3262500BAD43A /* TealiumLogger in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7C423F3262500BAD43A /* TealiumLogger */; };
+		CF3CB7C723F3262500BAD43A /* TealiumPersistentData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7C623F3262500BAD43A /* TealiumPersistentData */; };
+		CF3CB7C923F3262500BAD43A /* TealiumRemoteCommands in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7C823F3262500BAD43A /* TealiumRemoteCommands */; };
+		CF3CB7CB23F3262500BAD43A /* TealiumTagManagement in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7CA23F3262500BAD43A /* TealiumTagManagement */; };
+		CF3CB7CD23F3262500BAD43A /* TealiumConsentManager in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7CC23F3262500BAD43A /* TealiumConsentManager */; };
+		CF3CB7CF23F3262500BAD43A /* TealiumVisitorService in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7CE23F3262500BAD43A /* TealiumVisitorService */; };
+		CF3CB7D123F3262500BAD43A /* TealiumConnectivity in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7D023F3262500BAD43A /* TealiumConnectivity */; };
+		CF3CB7D323F3262500BAD43A /* TealiumCollect in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7D223F3262500BAD43A /* TealiumCollect */; };
+		CF3CB7D523F3262500BAD43A /* TealiumDispatchQueue in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7D423F3262500BAD43A /* TealiumDispatchQueue */; };
+		CF3CB7D723F3262500BAD43A /* TealiumCore in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7D623F3262500BAD43A /* TealiumCore */; };
+		CF3CB7D923F3262500BAD43A /* TealiumDeviceData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7D823F3262500BAD43A /* TealiumDeviceData */; };
+		CF3CB7F623F3274100BAD43A /* TealiumAppData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7F523F3274100BAD43A /* TealiumAppData */; };
+		CF3CB7F823F3274100BAD43A /* TealiumCollect in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7F723F3274100BAD43A /* TealiumCollect */; };
+		CF3CB7FA23F3274100BAD43A /* TealiumConnectivity in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7F923F3274100BAD43A /* TealiumConnectivity */; };
+		CF3CB7FC23F3274100BAD43A /* TealiumConsentManager in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7FB23F3274100BAD43A /* TealiumConsentManager */; };
+		CF3CB7FE23F3274100BAD43A /* TealiumCore in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7FD23F3274100BAD43A /* TealiumCore */; };
+		CF3CB80023F3274100BAD43A /* TealiumDelegate in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7FF23F3274100BAD43A /* TealiumDelegate */; };
+		CF3CB80223F3274100BAD43A /* TealiumDeviceData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB80123F3274100BAD43A /* TealiumDeviceData */; };
+		CF3CB80423F3274100BAD43A /* TealiumDispatchQueue in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB80323F3274100BAD43A /* TealiumDispatchQueue */; };
+		CF3CB80623F3274100BAD43A /* TealiumLifecycle in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB80523F3274100BAD43A /* TealiumLifecycle */; };
+		CF3CB80823F3274100BAD43A /* TealiumLogger in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB80723F3274100BAD43A /* TealiumLogger */; };
+		CF3CB80A23F3274100BAD43A /* TealiumPersistentData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB80923F3274100BAD43A /* TealiumPersistentData */; };
+		CF3CB80C23F3274100BAD43A /* TealiumVisitorService in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB80B23F3274100BAD43A /* TealiumVisitorService */; };
+		CF3CB80E23F3274100BAD43A /* TealiumVolatileData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB80D23F3274100BAD43A /* TealiumVolatileData */; };
+		CF3CB81023F3275600BAD43A /* TealiumAppData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB80F23F3275600BAD43A /* TealiumAppData */; };
+		CF3CB81223F3275600BAD43A /* TealiumCollect in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB81123F3275600BAD43A /* TealiumCollect */; };
+		CF3CB81423F3275600BAD43A /* TealiumConnectivity in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB81323F3275600BAD43A /* TealiumConnectivity */; };
+		CF3CB81623F3275600BAD43A /* TealiumConsentManager in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB81523F3275600BAD43A /* TealiumConsentManager */; };
+		CF3CB81823F3275600BAD43A /* TealiumCore in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB81723F3275600BAD43A /* TealiumCore */; };
+		CF3CB81A23F3275600BAD43A /* TealiumDelegate in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB81923F3275600BAD43A /* TealiumDelegate */; };
+		CF3CB81C23F3275600BAD43A /* TealiumDeviceData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB81B23F3275600BAD43A /* TealiumDeviceData */; };
+		CF3CB81E23F3275600BAD43A /* TealiumDispatchQueue in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB81D23F3275600BAD43A /* TealiumDispatchQueue */; };
+		CF3CB82023F3275600BAD43A /* TealiumLifecycle in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB81F23F3275600BAD43A /* TealiumLifecycle */; };
+		CF3CB82223F3275600BAD43A /* TealiumLogger in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB82123F3275600BAD43A /* TealiumLogger */; };
+		CF3CB82423F3275600BAD43A /* TealiumPersistentData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB82323F3275600BAD43A /* TealiumPersistentData */; };
+		CF3CB82623F3275600BAD43A /* TealiumVisitorService in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB82523F3275600BAD43A /* TealiumVisitorService */; };
+		CF3CB82823F3275600BAD43A /* TealiumVolatileData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB82723F3275600BAD43A /* TealiumVolatileData */; };
+		CF3CB83023F327CC00BAD43A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3CB82F23F327CC00BAD43A /* AppDelegate.swift */; };
+		CF3CB83223F327CC00BAD43A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3CB83123F327CC00BAD43A /* ContentView.swift */; };
+		CF3CB83423F327CE00BAD43A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF3CB83323F327CE00BAD43A /* Assets.xcassets */; };
+		CF3CB83723F327CE00BAD43A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF3CB83623F327CE00BAD43A /* Preview Assets.xcassets */; };
+		CF3CB83A23F327CE00BAD43A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF3CB83823F327CE00BAD43A /* Main.storyboard */; };
+		CF3CB84123F327E200BAD43A /* TealiumAppData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB84023F327E200BAD43A /* TealiumAppData */; };
+		CF3CB84323F327E200BAD43A /* TealiumCollect in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB84223F327E200BAD43A /* TealiumCollect */; };
+		CF3CB84523F327E200BAD43A /* TealiumConnectivity in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB84423F327E200BAD43A /* TealiumConnectivity */; };
+		CF3CB84723F327E200BAD43A /* TealiumConsentManager in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB84623F327E200BAD43A /* TealiumConsentManager */; };
+		CF3CB84923F327E200BAD43A /* TealiumCore in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB84823F327E200BAD43A /* TealiumCore */; };
+		CF3CB84B23F327E200BAD43A /* TealiumDelegate in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB84A23F327E200BAD43A /* TealiumDelegate */; };
+		CF3CB84D23F327E200BAD43A /* TealiumDeviceData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB84C23F327E200BAD43A /* TealiumDeviceData */; };
+		CF3CB84F23F327E200BAD43A /* TealiumDispatchQueue in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB84E23F327E200BAD43A /* TealiumDispatchQueue */; };
+		CF3CB85123F327E200BAD43A /* TealiumLifecycle in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB85023F327E200BAD43A /* TealiumLifecycle */; };
+		CF3CB85323F327E200BAD43A /* TealiumLogger in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB85223F327E200BAD43A /* TealiumLogger */; };
+		CF3CB85523F327E200BAD43A /* TealiumPersistentData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB85423F327E200BAD43A /* TealiumPersistentData */; };
+		CF3CB85723F327E200BAD43A /* TealiumVisitorService in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB85623F327E200BAD43A /* TealiumVisitorService */; };
+		CF3CB85923F327E200BAD43A /* TealiumVolatileData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB85823F327E200BAD43A /* TealiumVolatileData */; };
+		CF3CB85A23F327EA00BAD43A /* TealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2E312823762361000CEDD3 /* TealiumHelper.swift */; };
+		CF3CB88423F32F4300BAD43A /* WalkAroundReading.gpx in Resources */ = {isa = PBXBuildFile; fileRef = CF3CB88223F32F4300BAD43A /* WalkAroundReading.gpx */; };
+		CF3CB88523F32F4300BAD43A /* WalkAroundSanDiego.gpx in Resources */ = {isa = PBXBuildFile; fileRef = CF3CB88323F32F4300BAD43A /* WalkAroundSanDiego.gpx */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,13 +141,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		01A074449ECB277D4F9326EF /* Pods-TealiumSwiftTVExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TealiumSwiftTVExample.release.xcconfig"; path = "Target Support Files/Pods-TealiumSwiftTVExample/Pods-TealiumSwiftTVExample.release.xcconfig"; sourceTree = "<group>"; };
-		1AE5C651AA0A04D80D93A2BF /* Pods-TealiumSwiftWatchExample Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TealiumSwiftWatchExample Extension.release.xcconfig"; path = "Target Support Files/Pods-TealiumSwiftWatchExample Extension/Pods-TealiumSwiftWatchExample Extension.release.xcconfig"; sourceTree = "<group>"; };
-		2E51C3C5FFB23C730DA5FA93 /* Pods_TealiumSwiftWatchExample_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TealiumSwiftWatchExample_Extension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		37DF63161A3D5371A1C6AF4D /* Pods-TealiumSwiftTVExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TealiumSwiftTVExample.debug.xcconfig"; path = "Target Support Files/Pods-TealiumSwiftTVExample/Pods-TealiumSwiftTVExample.debug.xcconfig"; sourceTree = "<group>"; };
-		53B6051A8E13D4971C6E7838 /* Pods-TealiumSwiftExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TealiumSwiftExample.release.xcconfig"; path = "Target Support Files/Pods-TealiumSwiftExample/Pods-TealiumSwiftExample.release.xcconfig"; sourceTree = "<group>"; };
-		7BE40DA281D0F83BF5224ED7 /* Pods_TealiumSwiftExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TealiumSwiftExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C1BB212D51186B731C871826 /* Pods-TealiumSwiftExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TealiumSwiftExample.debug.xcconfig"; path = "Target Support Files/Pods-TealiumSwiftExample/Pods-TealiumSwiftExample.debug.xcconfig"; sourceTree = "<group>"; };
 		CF2E3111237622A9000CEDD3 /* TealiumSwiftExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TealiumSwiftExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF2E3114237622A9000CEDD3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CF2E3116237622A9000CEDD3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -118,8 +172,16 @@
 		CF2E316B2376359A000CEDD3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CF2E316D2376359A000CEDD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CF2E3172237639BF000CEDD3 /* TealiumSwiftExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TealiumSwiftExample.entitlements; sourceTree = "<group>"; };
-		DA0B35F771E3092971804967 /* Pods-TealiumSwiftWatchExample Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TealiumSwiftWatchExample Extension.debug.xcconfig"; path = "Target Support Files/Pods-TealiumSwiftWatchExample Extension/Pods-TealiumSwiftWatchExample Extension.debug.xcconfig"; sourceTree = "<group>"; };
-		FB02AEF267521D87C8B6C257 /* Pods_TealiumSwiftTVExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TealiumSwiftTVExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF3CB82D23F327CC00BAD43A /* TealiumSwiftMacOSExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TealiumSwiftMacOSExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF3CB82F23F327CC00BAD43A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		CF3CB83123F327CC00BAD43A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		CF3CB83323F327CE00BAD43A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CF3CB83623F327CE00BAD43A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		CF3CB83923F327CE00BAD43A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		CF3CB83B23F327CE00BAD43A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CF3CB83C23F327CE00BAD43A /* TealiumSwiftMacOSExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TealiumSwiftMacOSExample.entitlements; sourceTree = "<group>"; };
+		CF3CB88223F32F4300BAD43A /* WalkAroundReading.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = WalkAroundReading.gpx; sourceTree = "<group>"; };
+		CF3CB88323F32F4300BAD43A /* WalkAroundSanDiego.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = WalkAroundSanDiego.gpx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,7 +196,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				99977510FEC7BD0BFDB77ECB /* Pods_TealiumSwiftExample.framework in Frameworks */,
+				CF3CB7CD23F3262500BAD43A /* TealiumConsentManager in Frameworks */,
+				CF3CB7CB23F3262500BAD43A /* TealiumTagManagement in Frameworks */,
+				CF3CB7D523F3262500BAD43A /* TealiumDispatchQueue in Frameworks */,
+				CF3CB7D923F3262500BAD43A /* TealiumDeviceData in Frameworks */,
+				CF3CB7C323F3262500BAD43A /* TealiumAppData in Frameworks */,
+				CF3CB7D323F3262500BAD43A /* TealiumCollect in Frameworks */,
+				CF3CB7D723F3262500BAD43A /* TealiumCore in Frameworks */,
+				CF3CB7C723F3262500BAD43A /* TealiumPersistentData in Frameworks */,
+				CF3CB7BD23F3262500BAD43A /* TealiumVolatileData in Frameworks */,
+				CF3CB7C523F3262500BAD43A /* TealiumLogger in Frameworks */,
+				CF3CB7BF23F3262500BAD43A /* TealiumLocation in Frameworks */,
+				CF3CB7B923F3262500BAD43A /* TealiumAttribution in Frameworks */,
+				CF3CB7C123F3262500BAD43A /* TealiumLifecycle in Frameworks */,
+				CF3CB7D123F3262500BAD43A /* TealiumConnectivity in Frameworks */,
+				CF3CB7BB23F3262500BAD43A /* TealiumDelegate in Frameworks */,
+				CF3CB7C923F3262500BAD43A /* TealiumRemoteCommands in Frameworks */,
+				CF3CB7CF23F3262500BAD43A /* TealiumVisitorService in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,7 +220,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				414A1738781FF8B506DF5EE4 /* Pods_TealiumSwiftWatchExample_Extension.framework in Frameworks */,
+				CF3CB7F623F3274100BAD43A /* TealiumAppData in Frameworks */,
+				CF3CB80E23F3274100BAD43A /* TealiumVolatileData in Frameworks */,
+				CF3CB80023F3274100BAD43A /* TealiumDelegate in Frameworks */,
+				CF3CB80423F3274100BAD43A /* TealiumDispatchQueue in Frameworks */,
+				CF3CB7F823F3274100BAD43A /* TealiumCollect in Frameworks */,
+				CF3CB80823F3274100BAD43A /* TealiumLogger in Frameworks */,
+				CF3CB7FA23F3274100BAD43A /* TealiumConnectivity in Frameworks */,
+				CF3CB7FE23F3274100BAD43A /* TealiumCore in Frameworks */,
+				CF3CB80623F3274100BAD43A /* TealiumLifecycle in Frameworks */,
+				CF3CB7FC23F3274100BAD43A /* TealiumConsentManager in Frameworks */,
+				CF3CB80223F3274100BAD43A /* TealiumDeviceData in Frameworks */,
+				CF3CB80A23F3274100BAD43A /* TealiumPersistentData in Frameworks */,
+				CF3CB80C23F3274100BAD43A /* TealiumVisitorService in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -150,7 +240,39 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B8C0DA2EF2D9C0A74706D510 /* Pods_TealiumSwiftTVExample.framework in Frameworks */,
+				CF3CB81023F3275600BAD43A /* TealiumAppData in Frameworks */,
+				CF3CB82823F3275600BAD43A /* TealiumVolatileData in Frameworks */,
+				CF3CB81A23F3275600BAD43A /* TealiumDelegate in Frameworks */,
+				CF3CB81E23F3275600BAD43A /* TealiumDispatchQueue in Frameworks */,
+				CF3CB81223F3275600BAD43A /* TealiumCollect in Frameworks */,
+				CF3CB82223F3275600BAD43A /* TealiumLogger in Frameworks */,
+				CF3CB81423F3275600BAD43A /* TealiumConnectivity in Frameworks */,
+				CF3CB81823F3275600BAD43A /* TealiumCore in Frameworks */,
+				CF3CB82023F3275600BAD43A /* TealiumLifecycle in Frameworks */,
+				CF3CB81623F3275600BAD43A /* TealiumConsentManager in Frameworks */,
+				CF3CB81C23F3275600BAD43A /* TealiumDeviceData in Frameworks */,
+				CF3CB82423F3275600BAD43A /* TealiumPersistentData in Frameworks */,
+				CF3CB82623F3275600BAD43A /* TealiumVisitorService in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CF3CB82A23F327CC00BAD43A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CF3CB84123F327E200BAD43A /* TealiumAppData in Frameworks */,
+				CF3CB85923F327E200BAD43A /* TealiumVolatileData in Frameworks */,
+				CF3CB84B23F327E200BAD43A /* TealiumDelegate in Frameworks */,
+				CF3CB84F23F327E200BAD43A /* TealiumDispatchQueue in Frameworks */,
+				CF3CB84323F327E200BAD43A /* TealiumCollect in Frameworks */,
+				CF3CB85323F327E200BAD43A /* TealiumLogger in Frameworks */,
+				CF3CB84523F327E200BAD43A /* TealiumConnectivity in Frameworks */,
+				CF3CB84923F327E200BAD43A /* TealiumCore in Frameworks */,
+				CF3CB85123F327E200BAD43A /* TealiumLifecycle in Frameworks */,
+				CF3CB84723F327E200BAD43A /* TealiumConsentManager in Frameworks */,
+				CF3CB84D23F327E200BAD43A /* TealiumDeviceData in Frameworks */,
+				CF3CB85523F327E200BAD43A /* TealiumPersistentData in Frameworks */,
+				CF3CB85723F327E200BAD43A /* TealiumVisitorService in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -164,9 +286,9 @@
 				CF2E312D2376313D000CEDD3 /* TealiumSwiftWatchExample */,
 				CF2E313C2376313E000CEDD3 /* TealiumSwiftWatchExample Extension */,
 				CF2E316023763598000CEDD3 /* TealiumSwiftTVExample */,
+				CF3CB82E23F327CC00BAD43A /* TealiumSwiftMacOSExample */,
 				CF2E3112237622A9000CEDD3 /* Products */,
-				DB35D9AAEE9ABF90614C1E9C /* Pods */,
-				E8064743241EAF1ECFB6E377 /* Frameworks */,
+				CF3CB7DA23F3272C00BAD43A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -177,6 +299,7 @@
 				CF2E312C2376313D000CEDD3 /* TealiumSwiftWatchExample.app */,
 				CF2E31382376313E000CEDD3 /* TealiumSwiftWatchExample Extension.appex */,
 				CF2E315F23763598000CEDD3 /* TealiumSwiftTVExample.app */,
+				CF3CB82D23F327CC00BAD43A /* TealiumSwiftMacOSExample.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -184,6 +307,7 @@
 		CF2E3113237622A9000CEDD3 /* TealiumSwiftExample */ = {
 			isa = PBXGroup;
 			children = (
+				CF3CB88123F32F1300BAD43A /* LocationSimulation */,
 				CF2E3172237639BF000CEDD3 /* TealiumSwiftExample.entitlements */,
 				CF2E312823762361000CEDD3 /* TealiumHelper.swift */,
 				CF2E3114237622A9000CEDD3 /* AppDelegate.swift */,
@@ -260,27 +384,42 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		DB35D9AAEE9ABF90614C1E9C /* Pods */ = {
+		CF3CB7DA23F3272C00BAD43A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C1BB212D51186B731C871826 /* Pods-TealiumSwiftExample.debug.xcconfig */,
-				53B6051A8E13D4971C6E7838 /* Pods-TealiumSwiftExample.release.xcconfig */,
-				37DF63161A3D5371A1C6AF4D /* Pods-TealiumSwiftTVExample.debug.xcconfig */,
-				01A074449ECB277D4F9326EF /* Pods-TealiumSwiftTVExample.release.xcconfig */,
-				DA0B35F771E3092971804967 /* Pods-TealiumSwiftWatchExample Extension.debug.xcconfig */,
-				1AE5C651AA0A04D80D93A2BF /* Pods-TealiumSwiftWatchExample Extension.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
-		E8064743241EAF1ECFB6E377 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				7BE40DA281D0F83BF5224ED7 /* Pods_TealiumSwiftExample.framework */,
-				FB02AEF267521D87C8B6C257 /* Pods_TealiumSwiftTVExample.framework */,
-				2E51C3C5FFB23C730DA5FA93 /* Pods_TealiumSwiftWatchExample_Extension.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CF3CB82E23F327CC00BAD43A /* TealiumSwiftMacOSExample */ = {
+			isa = PBXGroup;
+			children = (
+				CF3CB82F23F327CC00BAD43A /* AppDelegate.swift */,
+				CF3CB83123F327CC00BAD43A /* ContentView.swift */,
+				CF3CB83323F327CE00BAD43A /* Assets.xcassets */,
+				CF3CB83823F327CE00BAD43A /* Main.storyboard */,
+				CF3CB83B23F327CE00BAD43A /* Info.plist */,
+				CF3CB83C23F327CE00BAD43A /* TealiumSwiftMacOSExample.entitlements */,
+				CF3CB83523F327CE00BAD43A /* Preview Content */,
+			);
+			path = TealiumSwiftMacOSExample;
+			sourceTree = "<group>";
+		};
+		CF3CB83523F327CE00BAD43A /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				CF3CB83623F327CE00BAD43A /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		CF3CB88123F32F1300BAD43A /* LocationSimulation */ = {
+			isa = PBXGroup;
+			children = (
+				CF3CB88223F32F4300BAD43A /* WalkAroundReading.gpx */,
+				CF3CB88323F32F4300BAD43A /* WalkAroundSanDiego.gpx */,
+			);
+			path = LocationSimulation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -290,12 +429,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CF2E3125237622AB000CEDD3 /* Build configuration list for PBXNativeTarget "TealiumSwiftExample" */;
 			buildPhases = (
-				8E3C5F62EE3898DE93A0AF19 /* [CP] Check Pods Manifest.lock */,
 				CF2E310D237622A9000CEDD3 /* Sources */,
 				CF2E310E237622A9000CEDD3 /* Frameworks */,
 				CF2E310F237622A9000CEDD3 /* Resources */,
 				CF2E31512376313E000CEDD3 /* Embed Watch Content */,
-				32FD05B0555CBF8F49384C3F /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -303,6 +440,25 @@
 				CF2E314F2376313E000CEDD3 /* PBXTargetDependency */,
 			);
 			name = TealiumSwiftExample;
+			packageProductDependencies = (
+				CF3CB7B823F3262500BAD43A /* TealiumAttribution */,
+				CF3CB7BA23F3262500BAD43A /* TealiumDelegate */,
+				CF3CB7BC23F3262500BAD43A /* TealiumVolatileData */,
+				CF3CB7BE23F3262500BAD43A /* TealiumLocation */,
+				CF3CB7C023F3262500BAD43A /* TealiumLifecycle */,
+				CF3CB7C223F3262500BAD43A /* TealiumAppData */,
+				CF3CB7C423F3262500BAD43A /* TealiumLogger */,
+				CF3CB7C623F3262500BAD43A /* TealiumPersistentData */,
+				CF3CB7C823F3262500BAD43A /* TealiumRemoteCommands */,
+				CF3CB7CA23F3262500BAD43A /* TealiumTagManagement */,
+				CF3CB7CC23F3262500BAD43A /* TealiumConsentManager */,
+				CF3CB7CE23F3262500BAD43A /* TealiumVisitorService */,
+				CF3CB7D023F3262500BAD43A /* TealiumConnectivity */,
+				CF3CB7D223F3262500BAD43A /* TealiumCollect */,
+				CF3CB7D423F3262500BAD43A /* TealiumDispatchQueue */,
+				CF3CB7D623F3262500BAD43A /* TealiumCore */,
+				CF3CB7D823F3262500BAD43A /* TealiumDeviceData */,
+			);
 			productName = TealiumSwiftExample;
 			productReference = CF2E3111237622A9000CEDD3 /* TealiumSwiftExample.app */;
 			productType = "com.apple.product-type.application";
@@ -321,6 +477,8 @@
 				CF2E313B2376313E000CEDD3 /* PBXTargetDependency */,
 			);
 			name = TealiumSwiftWatchExample;
+			packageProductDependencies = (
+			);
 			productName = TealiumSwiftWatchExample;
 			productReference = CF2E312C2376313D000CEDD3 /* TealiumSwiftWatchExample.app */;
 			productType = "com.apple.product-type.application.watchapp2";
@@ -329,17 +487,30 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CF2E31572376313E000CEDD3 /* Build configuration list for PBXNativeTarget "TealiumSwiftWatchExample Extension" */;
 			buildPhases = (
-				2A3CCE1E7E648CBF6006966A /* [CP] Check Pods Manifest.lock */,
 				CF2E31342376313E000CEDD3 /* Sources */,
 				CF2E31352376313E000CEDD3 /* Frameworks */,
 				CF2E31362376313E000CEDD3 /* Resources */,
-				F15873ABCDD4670EDEDAD058 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = "TealiumSwiftWatchExample Extension";
+			packageProductDependencies = (
+				CF3CB7F523F3274100BAD43A /* TealiumAppData */,
+				CF3CB7F723F3274100BAD43A /* TealiumCollect */,
+				CF3CB7F923F3274100BAD43A /* TealiumConnectivity */,
+				CF3CB7FB23F3274100BAD43A /* TealiumConsentManager */,
+				CF3CB7FD23F3274100BAD43A /* TealiumCore */,
+				CF3CB7FF23F3274100BAD43A /* TealiumDelegate */,
+				CF3CB80123F3274100BAD43A /* TealiumDeviceData */,
+				CF3CB80323F3274100BAD43A /* TealiumDispatchQueue */,
+				CF3CB80523F3274100BAD43A /* TealiumLifecycle */,
+				CF3CB80723F3274100BAD43A /* TealiumLogger */,
+				CF3CB80923F3274100BAD43A /* TealiumPersistentData */,
+				CF3CB80B23F3274100BAD43A /* TealiumVisitorService */,
+				CF3CB80D23F3274100BAD43A /* TealiumVolatileData */,
+			);
 			productName = "TealiumSwiftWatchExample Extension";
 			productReference = CF2E31382376313E000CEDD3 /* TealiumSwiftWatchExample Extension.appex */;
 			productType = "com.apple.product-type.watchkit2-extension";
@@ -348,19 +519,64 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CF2E31702376359A000CEDD3 /* Build configuration list for PBXNativeTarget "TealiumSwiftTVExample" */;
 			buildPhases = (
-				F62DD246F9D5D6877F8188DF /* [CP] Check Pods Manifest.lock */,
 				CF2E315B23763598000CEDD3 /* Sources */,
 				CF2E315C23763598000CEDD3 /* Frameworks */,
 				CF2E315D23763598000CEDD3 /* Resources */,
-				3218D7E21FF6D872A130765C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = TealiumSwiftTVExample;
+			packageProductDependencies = (
+				CF3CB80F23F3275600BAD43A /* TealiumAppData */,
+				CF3CB81123F3275600BAD43A /* TealiumCollect */,
+				CF3CB81323F3275600BAD43A /* TealiumConnectivity */,
+				CF3CB81523F3275600BAD43A /* TealiumConsentManager */,
+				CF3CB81723F3275600BAD43A /* TealiumCore */,
+				CF3CB81923F3275600BAD43A /* TealiumDelegate */,
+				CF3CB81B23F3275600BAD43A /* TealiumDeviceData */,
+				CF3CB81D23F3275600BAD43A /* TealiumDispatchQueue */,
+				CF3CB81F23F3275600BAD43A /* TealiumLifecycle */,
+				CF3CB82123F3275600BAD43A /* TealiumLogger */,
+				CF3CB82323F3275600BAD43A /* TealiumPersistentData */,
+				CF3CB82523F3275600BAD43A /* TealiumVisitorService */,
+				CF3CB82723F3275600BAD43A /* TealiumVolatileData */,
+			);
 			productName = TealiumSwiftTVExample;
 			productReference = CF2E315F23763598000CEDD3 /* TealiumSwiftTVExample.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CF3CB82C23F327CC00BAD43A /* TealiumSwiftMacOSExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CF3CB83D23F327CE00BAD43A /* Build configuration list for PBXNativeTarget "TealiumSwiftMacOSExample" */;
+			buildPhases = (
+				CF3CB82923F327CC00BAD43A /* Sources */,
+				CF3CB82A23F327CC00BAD43A /* Frameworks */,
+				CF3CB82B23F327CC00BAD43A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TealiumSwiftMacOSExample;
+			packageProductDependencies = (
+				CF3CB84023F327E200BAD43A /* TealiumAppData */,
+				CF3CB84223F327E200BAD43A /* TealiumCollect */,
+				CF3CB84423F327E200BAD43A /* TealiumConnectivity */,
+				CF3CB84623F327E200BAD43A /* TealiumConsentManager */,
+				CF3CB84823F327E200BAD43A /* TealiumCore */,
+				CF3CB84A23F327E200BAD43A /* TealiumDelegate */,
+				CF3CB84C23F327E200BAD43A /* TealiumDeviceData */,
+				CF3CB84E23F327E200BAD43A /* TealiumDispatchQueue */,
+				CF3CB85023F327E200BAD43A /* TealiumLifecycle */,
+				CF3CB85223F327E200BAD43A /* TealiumLogger */,
+				CF3CB85423F327E200BAD43A /* TealiumPersistentData */,
+				CF3CB85623F327E200BAD43A /* TealiumVisitorService */,
+				CF3CB85823F327E200BAD43A /* TealiumVolatileData */,
+			);
+			productName = TealiumSwiftMacOSExample;
+			productReference = CF3CB82D23F327CC00BAD43A /* TealiumSwiftMacOSExample.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -369,7 +585,7 @@
 		CF2E3109237622A9000CEDD3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1120;
+				LastSwiftUpdateCheck = 1130;
 				LastUpgradeCheck = 1120;
 				ORGANIZATIONNAME = Tealium;
 				TargetAttributes = {
@@ -385,6 +601,9 @@
 					CF2E315E23763598000CEDD3 = {
 						CreatedOnToolsVersion = 11.2;
 					};
+					CF3CB82C23F327CC00BAD43A = {
+						CreatedOnToolsVersion = 11.3.1;
+					};
 				};
 			};
 			buildConfigurationList = CF2E310C237622A9000CEDD3 /* Build configuration list for PBXProject "TealiumSwiftExample" */;
@@ -396,6 +615,9 @@
 				Base,
 			);
 			mainGroup = CF2E3108237622A9000CEDD3;
+			packageReferences = (
+				CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */,
+			);
 			productRefGroup = CF2E3112237622A9000CEDD3 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -404,6 +626,7 @@
 				CF2E312B2376313D000CEDD3 /* TealiumSwiftWatchExample */,
 				CF2E31372376313E000CEDD3 /* TealiumSwiftWatchExample Extension */,
 				CF2E315E23763598000CEDD3 /* TealiumSwiftTVExample */,
+				CF3CB82C23F327CC00BAD43A /* TealiumSwiftMacOSExample */,
 			);
 		};
 /* End PBXProject section */
@@ -413,6 +636,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF3CB88523F32F4300BAD43A /* WalkAroundSanDiego.gpx in Resources */,
+				CF3CB88423F32F4300BAD43A /* WalkAroundReading.gpx in Resources */,
 				CF2E3121237622AB000CEDD3 /* LaunchScreen.storyboard in Resources */,
 				CF2E311E237622AB000CEDD3 /* Preview Assets.xcassets in Resources */,
 				CF2E311B237622AB000CEDD3 /* Assets.xcassets in Resources */,
@@ -447,127 +672,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CF3CB82B23F327CC00BAD43A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CF3CB83A23F327CE00BAD43A /* Main.storyboard in Resources */,
+				CF3CB83723F327CE00BAD43A /* Preview Assets.xcassets in Resources */,
+				CF3CB83423F327CE00BAD43A /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		2A3CCE1E7E648CBF6006966A /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TealiumSwiftWatchExample Extension-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		3218D7E21FF6D872A130765C /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TealiumSwiftTVExample/Pods-TealiumSwiftTVExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TealiumSwiftTVExample/Pods-TealiumSwiftTVExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TealiumSwiftTVExample/Pods-TealiumSwiftTVExample-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		32FD05B0555CBF8F49384C3F /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TealiumSwiftExample/Pods-TealiumSwiftExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TealiumSwiftExample/Pods-TealiumSwiftExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TealiumSwiftExample/Pods-TealiumSwiftExample-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8E3C5F62EE3898DE93A0AF19 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TealiumSwiftExample-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F15873ABCDD4670EDEDAD058 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TealiumSwiftWatchExample Extension/Pods-TealiumSwiftWatchExample Extension-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TealiumSwiftWatchExample Extension/Pods-TealiumSwiftWatchExample Extension-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TealiumSwiftWatchExample Extension/Pods-TealiumSwiftWatchExample Extension-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F62DD246F9D5D6877F8188DF /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TealiumSwiftTVExample-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		CF2E310D237622A9000CEDD3 /* Sources */ = {
@@ -601,6 +716,16 @@
 				CF2E316423763598000CEDD3 /* ContentView.swift in Sources */,
 				CF2E3171237635C3000CEDD3 /* TealiumHelper.swift in Sources */,
 				CF2E316223763598000CEDD3 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CF3CB82923F327CC00BAD43A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CF3CB83223F327CC00BAD43A /* ContentView.swift in Sources */,
+				CF3CB85A23F327EA00BAD43A /* TealiumHelper.swift in Sources */,
+				CF3CB83023F327CC00BAD43A /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -643,6 +768,14 @@
 				CF2E316B2376359A000CEDD3 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		CF3CB83823F327CE00BAD43A /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CF3CB83923F327CE00BAD43A /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -764,7 +897,6 @@
 		};
 		CF2E3126237622AB000CEDD3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C1BB212D51186B731C871826 /* Pods-TealiumSwiftExample.debug.xcconfig */;
 			buildSettings = {
 				ADDITIONAL_SDKS = "";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -781,13 +913,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-framework",
-					"\"TealiumCrashReporteriOS\"",
-					"-framework",
-					"\"TealiumSwift\"",
-				);
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumSwiftExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
@@ -799,7 +925,6 @@
 		};
 		CF2E3127237622AB000CEDD3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 53B6051A8E13D4971C6E7838 /* Pods-TealiumSwiftExample.release.xcconfig */;
 			buildSettings = {
 				ADDITIONAL_SDKS = "";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -816,13 +941,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-framework",
-					"\"TealiumCrashReporteriOS\"",
-					"-framework",
-					"\"TealiumSwift\"",
-				);
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumSwiftExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
@@ -872,7 +991,6 @@
 		};
 		CF2E31552376313E000CEDD3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DA0B35F771E3092971804967 /* Pods-TealiumSwiftWatchExample Extension.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_STYLE = Automatic;
@@ -897,7 +1015,6 @@
 		};
 		CF2E31562376313E000CEDD3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1AE5C651AA0A04D80D93A2BF /* Pods-TealiumSwiftWatchExample Extension.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_STYLE = Automatic;
@@ -922,7 +1039,6 @@
 		};
 		CF2E316E2376359A000CEDD3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 37DF63161A3D5371A1C6AF4D /* Pods-TealiumSwiftTVExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				CODE_SIGN_STYLE = Automatic;
@@ -944,7 +1060,6 @@
 		};
 		CF2E316F2376359A000CEDD3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 01A074449ECB277D4F9326EF /* Pods-TealiumSwiftTVExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				CODE_SIGN_STYLE = Automatic;
@@ -961,6 +1076,54 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 13.2;
+			};
+			name = Release;
+		};
+		CF3CB83E23F327CE00BAD43A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TealiumSwiftMacOSExample/TealiumSwiftMacOSExample.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"TealiumSwiftMacOSExample/Preview Content\"";
+				DEVELOPMENT_TEAM = XC939GDC9P;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = TealiumSwiftMacOSExample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumSwiftMacOSExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		CF3CB83F23F327CE00BAD43A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TealiumSwiftMacOSExample/TealiumSwiftMacOSExample.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"TealiumSwiftMacOSExample/Preview Content\"";
+				DEVELOPMENT_TEAM = XC939GDC9P;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = TealiumSwiftMacOSExample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumSwiftMacOSExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -1012,7 +1175,310 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		CF3CB83D23F327CE00BAD43A /* Build configuration list for PBXNativeTarget "TealiumSwiftMacOSExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CF3CB83E23F327CE00BAD43A /* Debug */,
+				CF3CB83F23F327CE00BAD43A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Tealium/tealium-swift-builder.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.9.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CF3CB7B823F3262500BAD43A /* TealiumAttribution */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumAttribution;
+		};
+		CF3CB7BA23F3262500BAD43A /* TealiumDelegate */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumDelegate;
+		};
+		CF3CB7BC23F3262500BAD43A /* TealiumVolatileData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumVolatileData;
+		};
+		CF3CB7BE23F3262500BAD43A /* TealiumLocation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumLocation;
+		};
+		CF3CB7C023F3262500BAD43A /* TealiumLifecycle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumLifecycle;
+		};
+		CF3CB7C223F3262500BAD43A /* TealiumAppData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumAppData;
+		};
+		CF3CB7C423F3262500BAD43A /* TealiumLogger */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumLogger;
+		};
+		CF3CB7C623F3262500BAD43A /* TealiumPersistentData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumPersistentData;
+		};
+		CF3CB7C823F3262500BAD43A /* TealiumRemoteCommands */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumRemoteCommands;
+		};
+		CF3CB7CA23F3262500BAD43A /* TealiumTagManagement */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumTagManagement;
+		};
+		CF3CB7CC23F3262500BAD43A /* TealiumConsentManager */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumConsentManager;
+		};
+		CF3CB7CE23F3262500BAD43A /* TealiumVisitorService */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumVisitorService;
+		};
+		CF3CB7D023F3262500BAD43A /* TealiumConnectivity */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumConnectivity;
+		};
+		CF3CB7D223F3262500BAD43A /* TealiumCollect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumCollect;
+		};
+		CF3CB7D423F3262500BAD43A /* TealiumDispatchQueue */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumDispatchQueue;
+		};
+		CF3CB7D623F3262500BAD43A /* TealiumCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumCore;
+		};
+		CF3CB7D823F3262500BAD43A /* TealiumDeviceData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumDeviceData;
+		};
+		CF3CB7F523F3274100BAD43A /* TealiumAppData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumAppData;
+		};
+		CF3CB7F723F3274100BAD43A /* TealiumCollect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumCollect;
+		};
+		CF3CB7F923F3274100BAD43A /* TealiumConnectivity */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumConnectivity;
+		};
+		CF3CB7FB23F3274100BAD43A /* TealiumConsentManager */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumConsentManager;
+		};
+		CF3CB7FD23F3274100BAD43A /* TealiumCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumCore;
+		};
+		CF3CB7FF23F3274100BAD43A /* TealiumDelegate */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumDelegate;
+		};
+		CF3CB80123F3274100BAD43A /* TealiumDeviceData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumDeviceData;
+		};
+		CF3CB80323F3274100BAD43A /* TealiumDispatchQueue */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumDispatchQueue;
+		};
+		CF3CB80523F3274100BAD43A /* TealiumLifecycle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumLifecycle;
+		};
+		CF3CB80723F3274100BAD43A /* TealiumLogger */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumLogger;
+		};
+		CF3CB80923F3274100BAD43A /* TealiumPersistentData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumPersistentData;
+		};
+		CF3CB80B23F3274100BAD43A /* TealiumVisitorService */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumVisitorService;
+		};
+		CF3CB80D23F3274100BAD43A /* TealiumVolatileData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumVolatileData;
+		};
+		CF3CB80F23F3275600BAD43A /* TealiumAppData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumAppData;
+		};
+		CF3CB81123F3275600BAD43A /* TealiumCollect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumCollect;
+		};
+		CF3CB81323F3275600BAD43A /* TealiumConnectivity */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumConnectivity;
+		};
+		CF3CB81523F3275600BAD43A /* TealiumConsentManager */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumConsentManager;
+		};
+		CF3CB81723F3275600BAD43A /* TealiumCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumCore;
+		};
+		CF3CB81923F3275600BAD43A /* TealiumDelegate */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumDelegate;
+		};
+		CF3CB81B23F3275600BAD43A /* TealiumDeviceData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumDeviceData;
+		};
+		CF3CB81D23F3275600BAD43A /* TealiumDispatchQueue */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumDispatchQueue;
+		};
+		CF3CB81F23F3275600BAD43A /* TealiumLifecycle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumLifecycle;
+		};
+		CF3CB82123F3275600BAD43A /* TealiumLogger */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumLogger;
+		};
+		CF3CB82323F3275600BAD43A /* TealiumPersistentData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumPersistentData;
+		};
+		CF3CB82523F3275600BAD43A /* TealiumVisitorService */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumVisitorService;
+		};
+		CF3CB82723F3275600BAD43A /* TealiumVolatileData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumVolatileData;
+		};
+		CF3CB84023F327E200BAD43A /* TealiumAppData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumAppData;
+		};
+		CF3CB84223F327E200BAD43A /* TealiumCollect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumCollect;
+		};
+		CF3CB84423F327E200BAD43A /* TealiumConnectivity */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumConnectivity;
+		};
+		CF3CB84623F327E200BAD43A /* TealiumConsentManager */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumConsentManager;
+		};
+		CF3CB84823F327E200BAD43A /* TealiumCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumCore;
+		};
+		CF3CB84A23F327E200BAD43A /* TealiumDelegate */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumDelegate;
+		};
+		CF3CB84C23F327E200BAD43A /* TealiumDeviceData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumDeviceData;
+		};
+		CF3CB84E23F327E200BAD43A /* TealiumDispatchQueue */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumDispatchQueue;
+		};
+		CF3CB85023F327E200BAD43A /* TealiumLifecycle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumLifecycle;
+		};
+		CF3CB85223F327E200BAD43A /* TealiumLogger */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumLogger;
+		};
+		CF3CB85423F327E200BAD43A /* TealiumPersistentData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumPersistentData;
+		};
+		CF3CB85623F327E200BAD43A /* TealiumVisitorService */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumVisitorService;
+		};
+		CF3CB85823F327E200BAD43A /* TealiumVolatileData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			productName = TealiumVolatileData;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CF2E3109237622A9000CEDD3 /* Project object */;
 }

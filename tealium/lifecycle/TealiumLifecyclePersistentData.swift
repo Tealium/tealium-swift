@@ -78,11 +78,7 @@ open class TealiumLifecyclePersistentData {
     }
 
      func load() -> TealiumLifecycle? {
-        var lifecycle: TealiumLifecycle?
-        diskStorage.retrieve(as: TealiumLifecycle.self) { _, data, _ in
-            lifecycle = data
-        }
-        return lifecycle
+        return diskStorage.retrieve(as: TealiumLifecycle.self)
     }
 
     func save(_ lifecycle: TealiumLifecycle) -> (success: Bool, error: Error?) {

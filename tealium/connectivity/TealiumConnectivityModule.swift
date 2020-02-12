@@ -18,7 +18,6 @@ class TealiumConnectivityModule: TealiumModule {
     static var isConnected: Bool?
     // used to simulate connection status for unit tests
     lazy var connectivity = TealiumConnectivity()
-    var config: TealiumConfig?
 
     @available(*, deprecated, message: "Internal only. Used only for unit tests. Using this method will disable connectivity checks.")
     public static func setConnectionOverride(shouldOverride override: Bool) {
@@ -47,6 +46,8 @@ class TealiumConnectivityModule: TealiumModule {
             dynamicDispatch(request)
         case let request as TealiumConnectivityRequest:
             handleConnectivityReport(request: request)
+        case let request as TealiumUpdateConfigRequest:
+            updateConfig(request)
         default:
             didFinishWithNoResponse(request)
         }
@@ -83,6 +84,7 @@ class TealiumConnectivityModule: TealiumModule {
     /// - Parameter request: `TealiumTrackRequest` to be insepcted/modified
     /// - Returns: `TealiumTrackRequest`
     func prepareForDispatch(_ request: TealiumTrackRequest) -> TealiumTrackRequest {
+        let request = addModuleName(to: request)
         var newData = request.trackDictionary
         // do not add data to queued hits
         if newData[TealiumKey.wasQueued] as? String == nil {
@@ -105,7 +107,9 @@ class TealiumConnectivityModule: TealiumModule {
         connectivity.addConnectivityDelegate(delegate: self)
         self.config = request.config
         self.refreshConnectivityStatus()
-        didFinishWithNoResponse(request)
+        if !request.bypassDidFinish {
+            didFinishWithNoResponse(request)
+        }
     }
 
     /// Handles the track request and queues if no connection available (requires DispatchQueue module).
@@ -117,7 +121,8 @@ class TealiumConnectivityModule: TealiumModule {
             return
         }
 
-        if TealiumConnectivity.isConnectedToNetwork() == false {
+        if TealiumConnectivity.isConnectedToNetwork() == false || (config?.wifiOnlySending == true &&
+        TealiumConnectivity.currentConnectionType() != TealiumConnectivityKey.connectionTypeWifi) {
             self.refreshConnectivityStatus()
             // Save in cache
             enqueue(request)
@@ -198,10 +203,10 @@ class TealiumConnectivityModule: TealiumModule {
 
     /// Starts monitoring for connectivity changes.
     func refreshConnectivityStatus() {
-        if let interval = config?.optionalData[TealiumConnectivityKey.refreshIntervalKey] as? Int {
+        if let interval = config?.connectivityRefreshInterval {
             connectivity.refreshConnectivityStatus(interval)
         } else {
-            if config?.optionalData[TealiumConnectivityKey.refreshEnabledKey] as? Bool == false {
+            if config?.connectivityRefreshEnabled == false {
                 return
             }
             connectivity.refreshConnectivityStatus()
