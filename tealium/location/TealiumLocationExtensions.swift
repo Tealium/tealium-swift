@@ -8,6 +8,7 @@
 //
 
 import Foundation
+import UIKit
 #if location
     import TealiumCore
 #endif
@@ -30,11 +31,11 @@ public extension Tealium {
 
 public extension TealiumConfig {
 
-    /// Adds desired location accuracy to the Config instance
-    /// Gets the current high accuracy setting
+    /// The desired location accuracy
     ///
-    /// - `Bool` true if high accuracy location updates are wanted,
-    /// else false for lower accuracy location updates (more battery friendly)
+    ///
+    /// - `Bool` true if more frequent location updates are wanted,
+    /// or false if only significant location updates are desired (more battery friendly)
     var useHighAccuracy: Bool {
         get {
             optionalData[TealiumLocationConfigKey.useHighAccuracy] as? Bool ?? false
@@ -45,8 +46,8 @@ public extension TealiumConfig {
         }
     }
     
-    /// Sets the distance at which location updates should be received, e.g. 500.0 for every 500 meters
-    /// Gets desired update distance from the Config instance
+    /// The distance at which location updates should be received, e.g. 500.0 for every 500 meters
+    ///
     ///
     /// - `Double` distance in meters
     var updateDistance: Double {
@@ -59,8 +60,8 @@ public extension TealiumConfig {
         }
     }
     
-    /// Sets the name of the local file to be read that contains geofence json data
-    /// Gets the name of the local file to read geofence data from
+    /// The name of the local file to be read that contains geofence json data
+    ///
     ///
     /// - `String` name of local file to read
     var geofenceFileName: String? {
@@ -73,8 +74,8 @@ public extension TealiumConfig {
         }
     }
     
-    /// Sets the url to be read that contains geofence json data
-    /// Gets the url to read geofence data from
+    /// The url to be read that contains geofence json data
+    ///
     ///
     /// - `String` name of the url to read
     var geofenceUrl: String? {
@@ -87,43 +88,12 @@ public extension TealiumConfig {
         }
     }
     
-    /// Sets the String to be read that contains geofence json data
-    /// Gets the url to read geofence data from
-    ///
-    /// - `String` String to read
-    var geofenceJsonString: String? {
-        get {
-            optionalData[TealiumLocationConfigKey.geofenceJsonString] as? String
-        }
-        
-        set {
-            optionalData[TealiumLocationConfigKey.geofenceJsonString] = newValue
-        }
-    }
-    
-    /// Handles whether TealiumLocation requests location permission on behalf of the app.
-    /// Gets the result of whether TealiumLocation should request location permission on behalf of the app.
-    ///
-    /// - `Bool` String to read
-    var shouldRequestPermission: Bool {
-        get {
-            optionalData[TealiumLocationConfigKey.shouldRequestLocationPermission] as? Bool ?? true
-        }
-        
-        set {
-            optionalData[TealiumLocationConfigKey.shouldRequestLocationPermission] = newValue
-        }
-    }
-    
-    
-    /// `TealiumLocationConfig`: The Geofences data retrieved from either a local file, url, or DLE 
+    /// `TealiumLocationConfig`: The Geofences data retrieved from either a local file, url, or DLE
     var initializeGeofenceDataFrom: TealiumLocationConfig {
         if let geofenceAsset = self.geofenceFileName {
             return .localFile(geofenceAsset)
         } else if let geofenceUrl = self.geofenceUrl {
             return .customUrl(geofenceUrl)
-        } else if let geofenceString = self.geofenceJsonString {
-            return .json(geofenceString)
         }
         return .tealium
     }

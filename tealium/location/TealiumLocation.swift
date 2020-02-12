@@ -43,8 +43,6 @@ public class TealiumLocation: NSObject, CLLocationManagerDelegate {
                 geofences = GeofenceData(file: file, bundle: bundle)?.geofences ?? Geofences()
             case .customUrl(let url):
                 geofences = GeofenceData(url: url)?.geofences ?? Geofences()
-            case .json(let jsonString):
-                geofences = GeofenceData(json: jsonString)?.geofences ?? Geofences()
             default:
                 geofences = GeofenceData(url: geofencesUrl)?.geofences ?? Geofences()
                 break
@@ -86,9 +84,7 @@ public class TealiumLocation: NSObject, CLLocationManagerDelegate {
     /// Prompts the user to enable permission for location servies
     public func requestPermissions() {
         let permissionStatus = type(of: locationManager).self.authorizationStatus()
-        guard config.shouldRequestPermission else {
-            return
-        }
+        
         if permissionStatus != .authorizedAlways {
             locationManager.requestAlwaysAuthorization()
         }

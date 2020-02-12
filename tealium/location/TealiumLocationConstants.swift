@@ -32,15 +32,12 @@ public enum TealiumLocationConfigKey {
     static let updateDistance = "update_distance"
     static let geofenceAssetName = "geofence_asset_name"
     static let geofenceJsonUrl = "geofence_json_url"
-    static let geofenceJsonString = "geofence_json_string"
-    static let shouldRequestLocationPermission = "should_request_location_permission"
 }
 
 public enum TealiumLocationConfig {
     case tealium
     case localFile(String)
     case customUrl(String)
-    case json(String)
 }
 
 public enum TealiumLocationErrors: String {
