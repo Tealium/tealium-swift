@@ -8,7 +8,6 @@
 //
 
 import Foundation
-import UIKit
 #if location
     import TealiumCore
 #endif
