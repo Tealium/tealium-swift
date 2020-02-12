@@ -163,8 +163,8 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "TealiumLocation" do |location|
-    logger.source_files = "tealium/location/*"
-    logger.dependency "tealium-swift/Core"
+    location.source_files = "tealium/location/*"
+    location.dependency "tealium-swift/Core"
   end
 
   s.subspec "TealiumLogger" do |logger|
