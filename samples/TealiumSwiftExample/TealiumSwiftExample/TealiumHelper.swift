@@ -73,7 +73,6 @@ class TealiumHelper {
         config.useHighAccuracy = true
         config.updateDistance = 150.0
         config.geofenceUrl = "https://tags.tiqcdn.com/dle/tealiummobile/location/geofences.json"
-        config.shouldRequestPermission = true
         #endif
         
         // External and Visitor Service delegate

@@ -3,10 +3,10 @@
     "pins": [
       {
         "package": "TealiumSwift",
-        "repositoryURL": "https://github.com/Tealium/tealium-swift-builder.git",
+        "repositoryURL": "https://github.com/Tealium/tealium-swift.git",
         "state": {
           "branch": null,
-          "revision": "4aeabb371d992182ef56d6b9d54007e0f21a0df0",
+          "revision": "83c6f498b8b216b9803d219ddc8ea288e141941d",
           "version": "1.9.0"
         }
       }

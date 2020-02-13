@@ -16,14 +16,10 @@ import TealiumDelegate
 import TealiumDeviceData
 import TealiumDispatchQueue
 import TealiumLifecycle
-import TealiumLocation
 import TealiumLogger
 import TealiumPersistentData
 import TealiumTagManagement
 import TealiumVolatileData
-
-extension String: Error {
-}
 
 /// Example of a shared helper to handle all 3rd party tracking services. This
 /// paradigm is recommended to reduce burden of future code updates for external services
@@ -41,23 +37,24 @@ class TealiumHelper: NSObject {
                 environment: "dev",
                 datasource: "test12",
                 optionalData: nil)
+        
         // OPTIONALLY set log level
-        config.setLogLevel(.verbose)
-        config.setConsentLoggingEnabled(true)
+        config.logLevel = .verbose
+        config.consentLoggingEnabled = true
+        
         // Example: set initial consent categories - only used on first launch
         // let consentCat: [TealiumConsentCategories] = [.bigData, .analytics, .cookieMatch]
-        // config.setInitialUserConsentCategories(consentCat)
+        // config.initialUserConsentCategories = consentCat
+        
         // Example: change default behavior to notConsented. Prevents library queueing requests before consent granted
-        // config.setInitialUserConsentStatus(.notConsented)
+        // config.initialUserConsentStatus = .notConsented
+        
         // OPTIONALLY add an external delegate
         config.addDelegate(self)
-        // disable autotracking
-        let list = TealiumModulesList(isWhitelist:false, moduleNames: ["autotracking"])
-        config.setModulesList(list)
+        
         // REQUIRED Initialization
         self.tealium = Tealium(config: config) { _ in
                     // Interact with Tealium inside callback to guarantee successful initialization
-                    
                     self.tealium?.persistentData()?.add(data: ["testPersistentKey": "testPersistentValue"])
                     self.tealium?.volatileData()?.add(data: ["testVolatileKey": "testVolatileValue"])
                     self.tealium?.consentManager()?.addConsentDelegate(self)
@@ -115,9 +112,6 @@ class TealiumHelper: NSObject {
                 })
     }
 
-    func crash() {
-        NSException.raise(NSExceptionName(rawValue: "Exception"), format: "This is a test exception", arguments: getVaList(["nil"]))
-    }
 }
 
 extension TealiumHelper: TealiumDelegate {

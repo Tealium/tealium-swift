@@ -9,6 +9,15 @@
           "revision": "567d4e172fa3f50952eb2462cb7a9785403530f2",
           "version": "5.2.0"
         }
+      },
+      {
+        "package": "TealiumSwift",
+        "repositoryURL": "https://github.com/Tealium/tealium-swift.git",
+        "state": {
+          "branch": null,
+          "revision": "83c6f498b8b216b9803d219ddc8ea288e141941d",
+          "version": "1.9.0"
+        }
       }
     ]
   },

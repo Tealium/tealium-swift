@@ -32,70 +32,70 @@
 		CF2E31692376359A000CEDD3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF2E31682376359A000CEDD3 /* Preview Assets.xcassets */; };
 		CF2E316C2376359A000CEDD3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF2E316A2376359A000CEDD3 /* LaunchScreen.storyboard */; };
 		CF2E3171237635C3000CEDD3 /* TealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2E312823762361000CEDD3 /* TealiumHelper.swift */; };
-		CF3CB7B923F3262500BAD43A /* TealiumAttribution in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7B823F3262500BAD43A /* TealiumAttribution */; };
-		CF3CB7BB23F3262500BAD43A /* TealiumDelegate in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7BA23F3262500BAD43A /* TealiumDelegate */; };
-		CF3CB7BD23F3262500BAD43A /* TealiumVolatileData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7BC23F3262500BAD43A /* TealiumVolatileData */; };
-		CF3CB7BF23F3262500BAD43A /* TealiumLocation in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7BE23F3262500BAD43A /* TealiumLocation */; };
-		CF3CB7C123F3262500BAD43A /* TealiumLifecycle in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7C023F3262500BAD43A /* TealiumLifecycle */; };
-		CF3CB7C323F3262500BAD43A /* TealiumAppData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7C223F3262500BAD43A /* TealiumAppData */; };
-		CF3CB7C523F3262500BAD43A /* TealiumLogger in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7C423F3262500BAD43A /* TealiumLogger */; };
-		CF3CB7C723F3262500BAD43A /* TealiumPersistentData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7C623F3262500BAD43A /* TealiumPersistentData */; };
-		CF3CB7C923F3262500BAD43A /* TealiumRemoteCommands in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7C823F3262500BAD43A /* TealiumRemoteCommands */; };
-		CF3CB7CB23F3262500BAD43A /* TealiumTagManagement in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7CA23F3262500BAD43A /* TealiumTagManagement */; };
-		CF3CB7CD23F3262500BAD43A /* TealiumConsentManager in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7CC23F3262500BAD43A /* TealiumConsentManager */; };
-		CF3CB7CF23F3262500BAD43A /* TealiumVisitorService in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7CE23F3262500BAD43A /* TealiumVisitorService */; };
-		CF3CB7D123F3262500BAD43A /* TealiumConnectivity in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7D023F3262500BAD43A /* TealiumConnectivity */; };
-		CF3CB7D323F3262500BAD43A /* TealiumCollect in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7D223F3262500BAD43A /* TealiumCollect */; };
-		CF3CB7D523F3262500BAD43A /* TealiumDispatchQueue in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7D423F3262500BAD43A /* TealiumDispatchQueue */; };
-		CF3CB7D723F3262500BAD43A /* TealiumCore in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7D623F3262500BAD43A /* TealiumCore */; };
-		CF3CB7D923F3262500BAD43A /* TealiumDeviceData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7D823F3262500BAD43A /* TealiumDeviceData */; };
-		CF3CB7F623F3274100BAD43A /* TealiumAppData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7F523F3274100BAD43A /* TealiumAppData */; };
-		CF3CB7F823F3274100BAD43A /* TealiumCollect in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7F723F3274100BAD43A /* TealiumCollect */; };
-		CF3CB7FA23F3274100BAD43A /* TealiumConnectivity in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7F923F3274100BAD43A /* TealiumConnectivity */; };
-		CF3CB7FC23F3274100BAD43A /* TealiumConsentManager in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7FB23F3274100BAD43A /* TealiumConsentManager */; };
-		CF3CB7FE23F3274100BAD43A /* TealiumCore in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7FD23F3274100BAD43A /* TealiumCore */; };
-		CF3CB80023F3274100BAD43A /* TealiumDelegate in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB7FF23F3274100BAD43A /* TealiumDelegate */; };
-		CF3CB80223F3274100BAD43A /* TealiumDeviceData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB80123F3274100BAD43A /* TealiumDeviceData */; };
-		CF3CB80423F3274100BAD43A /* TealiumDispatchQueue in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB80323F3274100BAD43A /* TealiumDispatchQueue */; };
-		CF3CB80623F3274100BAD43A /* TealiumLifecycle in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB80523F3274100BAD43A /* TealiumLifecycle */; };
-		CF3CB80823F3274100BAD43A /* TealiumLogger in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB80723F3274100BAD43A /* TealiumLogger */; };
-		CF3CB80A23F3274100BAD43A /* TealiumPersistentData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB80923F3274100BAD43A /* TealiumPersistentData */; };
-		CF3CB80C23F3274100BAD43A /* TealiumVisitorService in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB80B23F3274100BAD43A /* TealiumVisitorService */; };
-		CF3CB80E23F3274100BAD43A /* TealiumVolatileData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB80D23F3274100BAD43A /* TealiumVolatileData */; };
-		CF3CB81023F3275600BAD43A /* TealiumAppData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB80F23F3275600BAD43A /* TealiumAppData */; };
-		CF3CB81223F3275600BAD43A /* TealiumCollect in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB81123F3275600BAD43A /* TealiumCollect */; };
-		CF3CB81423F3275600BAD43A /* TealiumConnectivity in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB81323F3275600BAD43A /* TealiumConnectivity */; };
-		CF3CB81623F3275600BAD43A /* TealiumConsentManager in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB81523F3275600BAD43A /* TealiumConsentManager */; };
-		CF3CB81823F3275600BAD43A /* TealiumCore in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB81723F3275600BAD43A /* TealiumCore */; };
-		CF3CB81A23F3275600BAD43A /* TealiumDelegate in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB81923F3275600BAD43A /* TealiumDelegate */; };
-		CF3CB81C23F3275600BAD43A /* TealiumDeviceData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB81B23F3275600BAD43A /* TealiumDeviceData */; };
-		CF3CB81E23F3275600BAD43A /* TealiumDispatchQueue in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB81D23F3275600BAD43A /* TealiumDispatchQueue */; };
-		CF3CB82023F3275600BAD43A /* TealiumLifecycle in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB81F23F3275600BAD43A /* TealiumLifecycle */; };
-		CF3CB82223F3275600BAD43A /* TealiumLogger in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB82123F3275600BAD43A /* TealiumLogger */; };
-		CF3CB82423F3275600BAD43A /* TealiumPersistentData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB82323F3275600BAD43A /* TealiumPersistentData */; };
-		CF3CB82623F3275600BAD43A /* TealiumVisitorService in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB82523F3275600BAD43A /* TealiumVisitorService */; };
-		CF3CB82823F3275600BAD43A /* TealiumVolatileData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB82723F3275600BAD43A /* TealiumVolatileData */; };
 		CF3CB83023F327CC00BAD43A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3CB82F23F327CC00BAD43A /* AppDelegate.swift */; };
 		CF3CB83223F327CC00BAD43A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3CB83123F327CC00BAD43A /* ContentView.swift */; };
 		CF3CB83423F327CE00BAD43A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF3CB83323F327CE00BAD43A /* Assets.xcassets */; };
 		CF3CB83723F327CE00BAD43A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF3CB83623F327CE00BAD43A /* Preview Assets.xcassets */; };
 		CF3CB83A23F327CE00BAD43A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF3CB83823F327CE00BAD43A /* Main.storyboard */; };
-		CF3CB84123F327E200BAD43A /* TealiumAppData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB84023F327E200BAD43A /* TealiumAppData */; };
-		CF3CB84323F327E200BAD43A /* TealiumCollect in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB84223F327E200BAD43A /* TealiumCollect */; };
-		CF3CB84523F327E200BAD43A /* TealiumConnectivity in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB84423F327E200BAD43A /* TealiumConnectivity */; };
-		CF3CB84723F327E200BAD43A /* TealiumConsentManager in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB84623F327E200BAD43A /* TealiumConsentManager */; };
-		CF3CB84923F327E200BAD43A /* TealiumCore in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB84823F327E200BAD43A /* TealiumCore */; };
-		CF3CB84B23F327E200BAD43A /* TealiumDelegate in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB84A23F327E200BAD43A /* TealiumDelegate */; };
-		CF3CB84D23F327E200BAD43A /* TealiumDeviceData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB84C23F327E200BAD43A /* TealiumDeviceData */; };
-		CF3CB84F23F327E200BAD43A /* TealiumDispatchQueue in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB84E23F327E200BAD43A /* TealiumDispatchQueue */; };
-		CF3CB85123F327E200BAD43A /* TealiumLifecycle in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB85023F327E200BAD43A /* TealiumLifecycle */; };
-		CF3CB85323F327E200BAD43A /* TealiumLogger in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB85223F327E200BAD43A /* TealiumLogger */; };
-		CF3CB85523F327E200BAD43A /* TealiumPersistentData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB85423F327E200BAD43A /* TealiumPersistentData */; };
-		CF3CB85723F327E200BAD43A /* TealiumVisitorService in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB85623F327E200BAD43A /* TealiumVisitorService */; };
-		CF3CB85923F327E200BAD43A /* TealiumVolatileData in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB85823F327E200BAD43A /* TealiumVolatileData */; };
 		CF3CB85A23F327EA00BAD43A /* TealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2E312823762361000CEDD3 /* TealiumHelper.swift */; };
 		CF3CB88423F32F4300BAD43A /* WalkAroundReading.gpx in Resources */ = {isa = PBXBuildFile; fileRef = CF3CB88223F32F4300BAD43A /* WalkAroundReading.gpx */; };
 		CF3CB88523F32F4300BAD43A /* WalkAroundSanDiego.gpx in Resources */ = {isa = PBXBuildFile; fileRef = CF3CB88323F32F4300BAD43A /* WalkAroundSanDiego.gpx */; };
+		CF739D3623F4E17300BD96D9 /* TealiumAttribution in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D3523F4E17300BD96D9 /* TealiumAttribution */; };
+		CF739D3823F4E17300BD96D9 /* TealiumDelegate in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D3723F4E17300BD96D9 /* TealiumDelegate */; };
+		CF739D3A23F4E17300BD96D9 /* TealiumVolatileData in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D3923F4E17300BD96D9 /* TealiumVolatileData */; };
+		CF739D3C23F4E17300BD96D9 /* TealiumLocation in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D3B23F4E17300BD96D9 /* TealiumLocation */; };
+		CF739D3E23F4E17300BD96D9 /* TealiumLifecycle in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D3D23F4E17300BD96D9 /* TealiumLifecycle */; };
+		CF739D4023F4E17300BD96D9 /* TealiumAppData in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D3F23F4E17300BD96D9 /* TealiumAppData */; };
+		CF739D4223F4E17300BD96D9 /* TealiumLogger in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D4123F4E17300BD96D9 /* TealiumLogger */; };
+		CF739D4423F4E17300BD96D9 /* TealiumPersistentData in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D4323F4E17300BD96D9 /* TealiumPersistentData */; };
+		CF739D4623F4E17300BD96D9 /* TealiumRemoteCommands in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D4523F4E17300BD96D9 /* TealiumRemoteCommands */; };
+		CF739D4823F4E17300BD96D9 /* TealiumTagManagement in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D4723F4E17300BD96D9 /* TealiumTagManagement */; };
+		CF739D4A23F4E17300BD96D9 /* TealiumConsentManager in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D4923F4E17300BD96D9 /* TealiumConsentManager */; };
+		CF739D4C23F4E17300BD96D9 /* TealiumVisitorService in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D4B23F4E17300BD96D9 /* TealiumVisitorService */; };
+		CF739D4E23F4E17300BD96D9 /* TealiumConnectivity in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D4D23F4E17300BD96D9 /* TealiumConnectivity */; };
+		CF739D5023F4E17300BD96D9 /* TealiumCollect in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D4F23F4E17300BD96D9 /* TealiumCollect */; };
+		CF739D5223F4E17300BD96D9 /* TealiumDispatchQueue in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D5123F4E17300BD96D9 /* TealiumDispatchQueue */; };
+		CF739D5423F4E17300BD96D9 /* TealiumCore in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D5323F4E17300BD96D9 /* TealiumCore */; };
+		CF739D5623F4E17300BD96D9 /* TealiumDeviceData in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D5523F4E17300BD96D9 /* TealiumDeviceData */; };
+		CF739D5823F4E19500BD96D9 /* TealiumAppData in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D5723F4E19500BD96D9 /* TealiumAppData */; };
+		CF739D5A23F4E19500BD96D9 /* TealiumCollect in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D5923F4E19500BD96D9 /* TealiumCollect */; };
+		CF739D5C23F4E19500BD96D9 /* TealiumConnectivity in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D5B23F4E19500BD96D9 /* TealiumConnectivity */; };
+		CF739D5E23F4E19500BD96D9 /* TealiumConsentManager in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D5D23F4E19500BD96D9 /* TealiumConsentManager */; };
+		CF739D6023F4E19500BD96D9 /* TealiumCore in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D5F23F4E19500BD96D9 /* TealiumCore */; };
+		CF739D6223F4E19500BD96D9 /* TealiumDelegate in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D6123F4E19500BD96D9 /* TealiumDelegate */; };
+		CF739D6423F4E19500BD96D9 /* TealiumDeviceData in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D6323F4E19500BD96D9 /* TealiumDeviceData */; };
+		CF739D6623F4E19500BD96D9 /* TealiumDispatchQueue in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D6523F4E19500BD96D9 /* TealiumDispatchQueue */; };
+		CF739D6823F4E19500BD96D9 /* TealiumLifecycle in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D6723F4E19500BD96D9 /* TealiumLifecycle */; };
+		CF739D6A23F4E19500BD96D9 /* TealiumLogger in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D6923F4E19500BD96D9 /* TealiumLogger */; };
+		CF739D6C23F4E19500BD96D9 /* TealiumPersistentData in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D6B23F4E19500BD96D9 /* TealiumPersistentData */; };
+		CF739D6E23F4E19500BD96D9 /* TealiumVisitorService in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D6D23F4E19500BD96D9 /* TealiumVisitorService */; };
+		CF739D7023F4E19500BD96D9 /* TealiumVolatileData in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D6F23F4E19500BD96D9 /* TealiumVolatileData */; };
+		CF739D7223F4E1A500BD96D9 /* TealiumAppData in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D7123F4E1A500BD96D9 /* TealiumAppData */; };
+		CF739D7423F4E1A500BD96D9 /* TealiumCollect in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D7323F4E1A500BD96D9 /* TealiumCollect */; };
+		CF739D7623F4E1A500BD96D9 /* TealiumConnectivity in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D7523F4E1A500BD96D9 /* TealiumConnectivity */; };
+		CF739D7823F4E1A500BD96D9 /* TealiumConsentManager in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D7723F4E1A500BD96D9 /* TealiumConsentManager */; };
+		CF739D7A23F4E1A500BD96D9 /* TealiumCore in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D7923F4E1A500BD96D9 /* TealiumCore */; };
+		CF739D7C23F4E1A500BD96D9 /* TealiumDelegate in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D7B23F4E1A500BD96D9 /* TealiumDelegate */; };
+		CF739D7E23F4E1A500BD96D9 /* TealiumDeviceData in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D7D23F4E1A500BD96D9 /* TealiumDeviceData */; };
+		CF739D8023F4E1A500BD96D9 /* TealiumDispatchQueue in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D7F23F4E1A500BD96D9 /* TealiumDispatchQueue */; };
+		CF739D8223F4E1A500BD96D9 /* TealiumLifecycle in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D8123F4E1A500BD96D9 /* TealiumLifecycle */; };
+		CF739D8423F4E1A500BD96D9 /* TealiumLogger in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D8323F4E1A500BD96D9 /* TealiumLogger */; };
+		CF739D8623F4E1A500BD96D9 /* TealiumPersistentData in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D8523F4E1A500BD96D9 /* TealiumPersistentData */; };
+		CF739D8823F4E1A500BD96D9 /* TealiumVisitorService in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D8723F4E1A500BD96D9 /* TealiumVisitorService */; };
+		CF739D8A23F4E1A500BD96D9 /* TealiumVolatileData in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D8923F4E1A500BD96D9 /* TealiumVolatileData */; };
+		CF739D8C23F4E1B200BD96D9 /* TealiumAppData in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D8B23F4E1B200BD96D9 /* TealiumAppData */; };
+		CF739D8E23F4E1B200BD96D9 /* TealiumCollect in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D8D23F4E1B200BD96D9 /* TealiumCollect */; };
+		CF739D9023F4E1B200BD96D9 /* TealiumConnectivity in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D8F23F4E1B200BD96D9 /* TealiumConnectivity */; };
+		CF739D9223F4E1B200BD96D9 /* TealiumConsentManager in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D9123F4E1B200BD96D9 /* TealiumConsentManager */; };
+		CF739D9423F4E1B300BD96D9 /* TealiumCore in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D9323F4E1B300BD96D9 /* TealiumCore */; };
+		CF739D9623F4E1B300BD96D9 /* TealiumDelegate in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D9523F4E1B300BD96D9 /* TealiumDelegate */; };
+		CF739D9823F4E1B300BD96D9 /* TealiumDeviceData in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D9723F4E1B300BD96D9 /* TealiumDeviceData */; };
+		CF739D9A23F4E1B300BD96D9 /* TealiumDispatchQueue in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D9923F4E1B300BD96D9 /* TealiumDispatchQueue */; };
+		CF739D9C23F4E1B300BD96D9 /* TealiumLifecycle in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D9B23F4E1B300BD96D9 /* TealiumLifecycle */; };
+		CF739D9E23F4E1B300BD96D9 /* TealiumLogger in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D9D23F4E1B300BD96D9 /* TealiumLogger */; };
+		CF739DA023F4E1B300BD96D9 /* TealiumPersistentData in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D9F23F4E1B300BD96D9 /* TealiumPersistentData */; };
+		CF739DA223F4E1B300BD96D9 /* TealiumVisitorService in Frameworks */ = {isa = PBXBuildFile; productRef = CF739DA123F4E1B300BD96D9 /* TealiumVisitorService */; };
+		CF739DA423F4E1B300BD96D9 /* TealiumVolatileData in Frameworks */ = {isa = PBXBuildFile; productRef = CF739DA323F4E1B300BD96D9 /* TealiumVolatileData */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -196,23 +196,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF3CB7CD23F3262500BAD43A /* TealiumConsentManager in Frameworks */,
-				CF3CB7CB23F3262500BAD43A /* TealiumTagManagement in Frameworks */,
-				CF3CB7D523F3262500BAD43A /* TealiumDispatchQueue in Frameworks */,
-				CF3CB7D923F3262500BAD43A /* TealiumDeviceData in Frameworks */,
-				CF3CB7C323F3262500BAD43A /* TealiumAppData in Frameworks */,
-				CF3CB7D323F3262500BAD43A /* TealiumCollect in Frameworks */,
-				CF3CB7D723F3262500BAD43A /* TealiumCore in Frameworks */,
-				CF3CB7C723F3262500BAD43A /* TealiumPersistentData in Frameworks */,
-				CF3CB7BD23F3262500BAD43A /* TealiumVolatileData in Frameworks */,
-				CF3CB7C523F3262500BAD43A /* TealiumLogger in Frameworks */,
-				CF3CB7BF23F3262500BAD43A /* TealiumLocation in Frameworks */,
-				CF3CB7B923F3262500BAD43A /* TealiumAttribution in Frameworks */,
-				CF3CB7C123F3262500BAD43A /* TealiumLifecycle in Frameworks */,
-				CF3CB7D123F3262500BAD43A /* TealiumConnectivity in Frameworks */,
-				CF3CB7BB23F3262500BAD43A /* TealiumDelegate in Frameworks */,
-				CF3CB7C923F3262500BAD43A /* TealiumRemoteCommands in Frameworks */,
-				CF3CB7CF23F3262500BAD43A /* TealiumVisitorService in Frameworks */,
+				CF739D4A23F4E17300BD96D9 /* TealiumConsentManager in Frameworks */,
+				CF739D4823F4E17300BD96D9 /* TealiumTagManagement in Frameworks */,
+				CF739D5223F4E17300BD96D9 /* TealiumDispatchQueue in Frameworks */,
+				CF739D5623F4E17300BD96D9 /* TealiumDeviceData in Frameworks */,
+				CF739D4023F4E17300BD96D9 /* TealiumAppData in Frameworks */,
+				CF739D5023F4E17300BD96D9 /* TealiumCollect in Frameworks */,
+				CF739D5423F4E17300BD96D9 /* TealiumCore in Frameworks */,
+				CF739D4423F4E17300BD96D9 /* TealiumPersistentData in Frameworks */,
+				CF739D3A23F4E17300BD96D9 /* TealiumVolatileData in Frameworks */,
+				CF739D4223F4E17300BD96D9 /* TealiumLogger in Frameworks */,
+				CF739D3C23F4E17300BD96D9 /* TealiumLocation in Frameworks */,
+				CF739D3623F4E17300BD96D9 /* TealiumAttribution in Frameworks */,
+				CF739D3E23F4E17300BD96D9 /* TealiumLifecycle in Frameworks */,
+				CF739D4E23F4E17300BD96D9 /* TealiumConnectivity in Frameworks */,
+				CF739D3823F4E17300BD96D9 /* TealiumDelegate in Frameworks */,
+				CF739D4623F4E17300BD96D9 /* TealiumRemoteCommands in Frameworks */,
+				CF739D4C23F4E17300BD96D9 /* TealiumVisitorService in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -220,19 +220,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF3CB7F623F3274100BAD43A /* TealiumAppData in Frameworks */,
-				CF3CB80E23F3274100BAD43A /* TealiumVolatileData in Frameworks */,
-				CF3CB80023F3274100BAD43A /* TealiumDelegate in Frameworks */,
-				CF3CB80423F3274100BAD43A /* TealiumDispatchQueue in Frameworks */,
-				CF3CB7F823F3274100BAD43A /* TealiumCollect in Frameworks */,
-				CF3CB80823F3274100BAD43A /* TealiumLogger in Frameworks */,
-				CF3CB7FA23F3274100BAD43A /* TealiumConnectivity in Frameworks */,
-				CF3CB7FE23F3274100BAD43A /* TealiumCore in Frameworks */,
-				CF3CB80623F3274100BAD43A /* TealiumLifecycle in Frameworks */,
-				CF3CB7FC23F3274100BAD43A /* TealiumConsentManager in Frameworks */,
-				CF3CB80223F3274100BAD43A /* TealiumDeviceData in Frameworks */,
-				CF3CB80A23F3274100BAD43A /* TealiumPersistentData in Frameworks */,
-				CF3CB80C23F3274100BAD43A /* TealiumVisitorService in Frameworks */,
+				CF739D5823F4E19500BD96D9 /* TealiumAppData in Frameworks */,
+				CF739D7023F4E19500BD96D9 /* TealiumVolatileData in Frameworks */,
+				CF739D6223F4E19500BD96D9 /* TealiumDelegate in Frameworks */,
+				CF739D6623F4E19500BD96D9 /* TealiumDispatchQueue in Frameworks */,
+				CF739D5A23F4E19500BD96D9 /* TealiumCollect in Frameworks */,
+				CF739D6A23F4E19500BD96D9 /* TealiumLogger in Frameworks */,
+				CF739D5C23F4E19500BD96D9 /* TealiumConnectivity in Frameworks */,
+				CF739D6023F4E19500BD96D9 /* TealiumCore in Frameworks */,
+				CF739D6823F4E19500BD96D9 /* TealiumLifecycle in Frameworks */,
+				CF739D5E23F4E19500BD96D9 /* TealiumConsentManager in Frameworks */,
+				CF739D6423F4E19500BD96D9 /* TealiumDeviceData in Frameworks */,
+				CF739D6C23F4E19500BD96D9 /* TealiumPersistentData in Frameworks */,
+				CF739D6E23F4E19500BD96D9 /* TealiumVisitorService in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,19 +240,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF3CB81023F3275600BAD43A /* TealiumAppData in Frameworks */,
-				CF3CB82823F3275600BAD43A /* TealiumVolatileData in Frameworks */,
-				CF3CB81A23F3275600BAD43A /* TealiumDelegate in Frameworks */,
-				CF3CB81E23F3275600BAD43A /* TealiumDispatchQueue in Frameworks */,
-				CF3CB81223F3275600BAD43A /* TealiumCollect in Frameworks */,
-				CF3CB82223F3275600BAD43A /* TealiumLogger in Frameworks */,
-				CF3CB81423F3275600BAD43A /* TealiumConnectivity in Frameworks */,
-				CF3CB81823F3275600BAD43A /* TealiumCore in Frameworks */,
-				CF3CB82023F3275600BAD43A /* TealiumLifecycle in Frameworks */,
-				CF3CB81623F3275600BAD43A /* TealiumConsentManager in Frameworks */,
-				CF3CB81C23F3275600BAD43A /* TealiumDeviceData in Frameworks */,
-				CF3CB82423F3275600BAD43A /* TealiumPersistentData in Frameworks */,
-				CF3CB82623F3275600BAD43A /* TealiumVisitorService in Frameworks */,
+				CF739D7223F4E1A500BD96D9 /* TealiumAppData in Frameworks */,
+				CF739D8A23F4E1A500BD96D9 /* TealiumVolatileData in Frameworks */,
+				CF739D7C23F4E1A500BD96D9 /* TealiumDelegate in Frameworks */,
+				CF739D8023F4E1A500BD96D9 /* TealiumDispatchQueue in Frameworks */,
+				CF739D7423F4E1A500BD96D9 /* TealiumCollect in Frameworks */,
+				CF739D8423F4E1A500BD96D9 /* TealiumLogger in Frameworks */,
+				CF739D7623F4E1A500BD96D9 /* TealiumConnectivity in Frameworks */,
+				CF739D7A23F4E1A500BD96D9 /* TealiumCore in Frameworks */,
+				CF739D8223F4E1A500BD96D9 /* TealiumLifecycle in Frameworks */,
+				CF739D7823F4E1A500BD96D9 /* TealiumConsentManager in Frameworks */,
+				CF739D7E23F4E1A500BD96D9 /* TealiumDeviceData in Frameworks */,
+				CF739D8623F4E1A500BD96D9 /* TealiumPersistentData in Frameworks */,
+				CF739D8823F4E1A500BD96D9 /* TealiumVisitorService in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,19 +260,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF3CB84123F327E200BAD43A /* TealiumAppData in Frameworks */,
-				CF3CB85923F327E200BAD43A /* TealiumVolatileData in Frameworks */,
-				CF3CB84B23F327E200BAD43A /* TealiumDelegate in Frameworks */,
-				CF3CB84F23F327E200BAD43A /* TealiumDispatchQueue in Frameworks */,
-				CF3CB84323F327E200BAD43A /* TealiumCollect in Frameworks */,
-				CF3CB85323F327E200BAD43A /* TealiumLogger in Frameworks */,
-				CF3CB84523F327E200BAD43A /* TealiumConnectivity in Frameworks */,
-				CF3CB84923F327E200BAD43A /* TealiumCore in Frameworks */,
-				CF3CB85123F327E200BAD43A /* TealiumLifecycle in Frameworks */,
-				CF3CB84723F327E200BAD43A /* TealiumConsentManager in Frameworks */,
-				CF3CB84D23F327E200BAD43A /* TealiumDeviceData in Frameworks */,
-				CF3CB85523F327E200BAD43A /* TealiumPersistentData in Frameworks */,
-				CF3CB85723F327E200BAD43A /* TealiumVisitorService in Frameworks */,
+				CF739D8C23F4E1B200BD96D9 /* TealiumAppData in Frameworks */,
+				CF739DA423F4E1B300BD96D9 /* TealiumVolatileData in Frameworks */,
+				CF739D9623F4E1B300BD96D9 /* TealiumDelegate in Frameworks */,
+				CF739D9A23F4E1B300BD96D9 /* TealiumDispatchQueue in Frameworks */,
+				CF739D8E23F4E1B200BD96D9 /* TealiumCollect in Frameworks */,
+				CF739D9E23F4E1B300BD96D9 /* TealiumLogger in Frameworks */,
+				CF739D9023F4E1B200BD96D9 /* TealiumConnectivity in Frameworks */,
+				CF739D9423F4E1B300BD96D9 /* TealiumCore in Frameworks */,
+				CF739D9C23F4E1B300BD96D9 /* TealiumLifecycle in Frameworks */,
+				CF739D9223F4E1B200BD96D9 /* TealiumConsentManager in Frameworks */,
+				CF739D9823F4E1B300BD96D9 /* TealiumDeviceData in Frameworks */,
+				CF739DA023F4E1B300BD96D9 /* TealiumPersistentData in Frameworks */,
+				CF739DA223F4E1B300BD96D9 /* TealiumVisitorService in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -441,23 +441,23 @@
 			);
 			name = TealiumSwiftExample;
 			packageProductDependencies = (
-				CF3CB7B823F3262500BAD43A /* TealiumAttribution */,
-				CF3CB7BA23F3262500BAD43A /* TealiumDelegate */,
-				CF3CB7BC23F3262500BAD43A /* TealiumVolatileData */,
-				CF3CB7BE23F3262500BAD43A /* TealiumLocation */,
-				CF3CB7C023F3262500BAD43A /* TealiumLifecycle */,
-				CF3CB7C223F3262500BAD43A /* TealiumAppData */,
-				CF3CB7C423F3262500BAD43A /* TealiumLogger */,
-				CF3CB7C623F3262500BAD43A /* TealiumPersistentData */,
-				CF3CB7C823F3262500BAD43A /* TealiumRemoteCommands */,
-				CF3CB7CA23F3262500BAD43A /* TealiumTagManagement */,
-				CF3CB7CC23F3262500BAD43A /* TealiumConsentManager */,
-				CF3CB7CE23F3262500BAD43A /* TealiumVisitorService */,
-				CF3CB7D023F3262500BAD43A /* TealiumConnectivity */,
-				CF3CB7D223F3262500BAD43A /* TealiumCollect */,
-				CF3CB7D423F3262500BAD43A /* TealiumDispatchQueue */,
-				CF3CB7D623F3262500BAD43A /* TealiumCore */,
-				CF3CB7D823F3262500BAD43A /* TealiumDeviceData */,
+				CF739D3523F4E17300BD96D9 /* TealiumAttribution */,
+				CF739D3723F4E17300BD96D9 /* TealiumDelegate */,
+				CF739D3923F4E17300BD96D9 /* TealiumVolatileData */,
+				CF739D3B23F4E17300BD96D9 /* TealiumLocation */,
+				CF739D3D23F4E17300BD96D9 /* TealiumLifecycle */,
+				CF739D3F23F4E17300BD96D9 /* TealiumAppData */,
+				CF739D4123F4E17300BD96D9 /* TealiumLogger */,
+				CF739D4323F4E17300BD96D9 /* TealiumPersistentData */,
+				CF739D4523F4E17300BD96D9 /* TealiumRemoteCommands */,
+				CF739D4723F4E17300BD96D9 /* TealiumTagManagement */,
+				CF739D4923F4E17300BD96D9 /* TealiumConsentManager */,
+				CF739D4B23F4E17300BD96D9 /* TealiumVisitorService */,
+				CF739D4D23F4E17300BD96D9 /* TealiumConnectivity */,
+				CF739D4F23F4E17300BD96D9 /* TealiumCollect */,
+				CF739D5123F4E17300BD96D9 /* TealiumDispatchQueue */,
+				CF739D5323F4E17300BD96D9 /* TealiumCore */,
+				CF739D5523F4E17300BD96D9 /* TealiumDeviceData */,
 			);
 			productName = TealiumSwiftExample;
 			productReference = CF2E3111237622A9000CEDD3 /* TealiumSwiftExample.app */;
@@ -497,19 +497,19 @@
 			);
 			name = "TealiumSwiftWatchExample Extension";
 			packageProductDependencies = (
-				CF3CB7F523F3274100BAD43A /* TealiumAppData */,
-				CF3CB7F723F3274100BAD43A /* TealiumCollect */,
-				CF3CB7F923F3274100BAD43A /* TealiumConnectivity */,
-				CF3CB7FB23F3274100BAD43A /* TealiumConsentManager */,
-				CF3CB7FD23F3274100BAD43A /* TealiumCore */,
-				CF3CB7FF23F3274100BAD43A /* TealiumDelegate */,
-				CF3CB80123F3274100BAD43A /* TealiumDeviceData */,
-				CF3CB80323F3274100BAD43A /* TealiumDispatchQueue */,
-				CF3CB80523F3274100BAD43A /* TealiumLifecycle */,
-				CF3CB80723F3274100BAD43A /* TealiumLogger */,
-				CF3CB80923F3274100BAD43A /* TealiumPersistentData */,
-				CF3CB80B23F3274100BAD43A /* TealiumVisitorService */,
-				CF3CB80D23F3274100BAD43A /* TealiumVolatileData */,
+				CF739D5723F4E19500BD96D9 /* TealiumAppData */,
+				CF739D5923F4E19500BD96D9 /* TealiumCollect */,
+				CF739D5B23F4E19500BD96D9 /* TealiumConnectivity */,
+				CF739D5D23F4E19500BD96D9 /* TealiumConsentManager */,
+				CF739D5F23F4E19500BD96D9 /* TealiumCore */,
+				CF739D6123F4E19500BD96D9 /* TealiumDelegate */,
+				CF739D6323F4E19500BD96D9 /* TealiumDeviceData */,
+				CF739D6523F4E19500BD96D9 /* TealiumDispatchQueue */,
+				CF739D6723F4E19500BD96D9 /* TealiumLifecycle */,
+				CF739D6923F4E19500BD96D9 /* TealiumLogger */,
+				CF739D6B23F4E19500BD96D9 /* TealiumPersistentData */,
+				CF739D6D23F4E19500BD96D9 /* TealiumVisitorService */,
+				CF739D6F23F4E19500BD96D9 /* TealiumVolatileData */,
 			);
 			productName = "TealiumSwiftWatchExample Extension";
 			productReference = CF2E31382376313E000CEDD3 /* TealiumSwiftWatchExample Extension.appex */;
@@ -529,19 +529,19 @@
 			);
 			name = TealiumSwiftTVExample;
 			packageProductDependencies = (
-				CF3CB80F23F3275600BAD43A /* TealiumAppData */,
-				CF3CB81123F3275600BAD43A /* TealiumCollect */,
-				CF3CB81323F3275600BAD43A /* TealiumConnectivity */,
-				CF3CB81523F3275600BAD43A /* TealiumConsentManager */,
-				CF3CB81723F3275600BAD43A /* TealiumCore */,
-				CF3CB81923F3275600BAD43A /* TealiumDelegate */,
-				CF3CB81B23F3275600BAD43A /* TealiumDeviceData */,
-				CF3CB81D23F3275600BAD43A /* TealiumDispatchQueue */,
-				CF3CB81F23F3275600BAD43A /* TealiumLifecycle */,
-				CF3CB82123F3275600BAD43A /* TealiumLogger */,
-				CF3CB82323F3275600BAD43A /* TealiumPersistentData */,
-				CF3CB82523F3275600BAD43A /* TealiumVisitorService */,
-				CF3CB82723F3275600BAD43A /* TealiumVolatileData */,
+				CF739D7123F4E1A500BD96D9 /* TealiumAppData */,
+				CF739D7323F4E1A500BD96D9 /* TealiumCollect */,
+				CF739D7523F4E1A500BD96D9 /* TealiumConnectivity */,
+				CF739D7723F4E1A500BD96D9 /* TealiumConsentManager */,
+				CF739D7923F4E1A500BD96D9 /* TealiumCore */,
+				CF739D7B23F4E1A500BD96D9 /* TealiumDelegate */,
+				CF739D7D23F4E1A500BD96D9 /* TealiumDeviceData */,
+				CF739D7F23F4E1A500BD96D9 /* TealiumDispatchQueue */,
+				CF739D8123F4E1A500BD96D9 /* TealiumLifecycle */,
+				CF739D8323F4E1A500BD96D9 /* TealiumLogger */,
+				CF739D8523F4E1A500BD96D9 /* TealiumPersistentData */,
+				CF739D8723F4E1A500BD96D9 /* TealiumVisitorService */,
+				CF739D8923F4E1A500BD96D9 /* TealiumVolatileData */,
 			);
 			productName = TealiumSwiftTVExample;
 			productReference = CF2E315F23763598000CEDD3 /* TealiumSwiftTVExample.app */;
@@ -561,19 +561,19 @@
 			);
 			name = TealiumSwiftMacOSExample;
 			packageProductDependencies = (
-				CF3CB84023F327E200BAD43A /* TealiumAppData */,
-				CF3CB84223F327E200BAD43A /* TealiumCollect */,
-				CF3CB84423F327E200BAD43A /* TealiumConnectivity */,
-				CF3CB84623F327E200BAD43A /* TealiumConsentManager */,
-				CF3CB84823F327E200BAD43A /* TealiumCore */,
-				CF3CB84A23F327E200BAD43A /* TealiumDelegate */,
-				CF3CB84C23F327E200BAD43A /* TealiumDeviceData */,
-				CF3CB84E23F327E200BAD43A /* TealiumDispatchQueue */,
-				CF3CB85023F327E200BAD43A /* TealiumLifecycle */,
-				CF3CB85223F327E200BAD43A /* TealiumLogger */,
-				CF3CB85423F327E200BAD43A /* TealiumPersistentData */,
-				CF3CB85623F327E200BAD43A /* TealiumVisitorService */,
-				CF3CB85823F327E200BAD43A /* TealiumVolatileData */,
+				CF739D8B23F4E1B200BD96D9 /* TealiumAppData */,
+				CF739D8D23F4E1B200BD96D9 /* TealiumCollect */,
+				CF739D8F23F4E1B200BD96D9 /* TealiumConnectivity */,
+				CF739D9123F4E1B200BD96D9 /* TealiumConsentManager */,
+				CF739D9323F4E1B300BD96D9 /* TealiumCore */,
+				CF739D9523F4E1B300BD96D9 /* TealiumDelegate */,
+				CF739D9723F4E1B300BD96D9 /* TealiumDeviceData */,
+				CF739D9923F4E1B300BD96D9 /* TealiumDispatchQueue */,
+				CF739D9B23F4E1B300BD96D9 /* TealiumLifecycle */,
+				CF739D9D23F4E1B300BD96D9 /* TealiumLogger */,
+				CF739D9F23F4E1B300BD96D9 /* TealiumPersistentData */,
+				CF739DA123F4E1B300BD96D9 /* TealiumVisitorService */,
+				CF739DA323F4E1B300BD96D9 /* TealiumVolatileData */,
 			);
 			productName = TealiumSwiftMacOSExample;
 			productReference = CF3CB82D23F327CC00BAD43A /* TealiumSwiftMacOSExample.app */;
@@ -616,7 +616,7 @@
 			);
 			mainGroup = CF2E3108237622A9000CEDD3;
 			packageReferences = (
-				CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */,
+				CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */,
 			);
 			productRefGroup = CF2E3112237622A9000CEDD3 /* Products */;
 			projectDirPath = "";
@@ -1187,9 +1187,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */ = {
+		CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Tealium/tealium-swift-builder.git";
+			repositoryURL = "https://github.com/Tealium/tealium-swift.git";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.9.0;
@@ -1198,284 +1198,284 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		CF3CB7B823F3262500BAD43A /* TealiumAttribution */ = {
+		CF739D3523F4E17300BD96D9 /* TealiumAttribution */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumAttribution;
 		};
-		CF3CB7BA23F3262500BAD43A /* TealiumDelegate */ = {
+		CF739D3723F4E17300BD96D9 /* TealiumDelegate */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumDelegate;
 		};
-		CF3CB7BC23F3262500BAD43A /* TealiumVolatileData */ = {
+		CF739D3923F4E17300BD96D9 /* TealiumVolatileData */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumVolatileData;
 		};
-		CF3CB7BE23F3262500BAD43A /* TealiumLocation */ = {
+		CF739D3B23F4E17300BD96D9 /* TealiumLocation */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumLocation;
 		};
-		CF3CB7C023F3262500BAD43A /* TealiumLifecycle */ = {
+		CF739D3D23F4E17300BD96D9 /* TealiumLifecycle */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumLifecycle;
 		};
-		CF3CB7C223F3262500BAD43A /* TealiumAppData */ = {
+		CF739D3F23F4E17300BD96D9 /* TealiumAppData */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumAppData;
 		};
-		CF3CB7C423F3262500BAD43A /* TealiumLogger */ = {
+		CF739D4123F4E17300BD96D9 /* TealiumLogger */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumLogger;
 		};
-		CF3CB7C623F3262500BAD43A /* TealiumPersistentData */ = {
+		CF739D4323F4E17300BD96D9 /* TealiumPersistentData */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumPersistentData;
 		};
-		CF3CB7C823F3262500BAD43A /* TealiumRemoteCommands */ = {
+		CF739D4523F4E17300BD96D9 /* TealiumRemoteCommands */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumRemoteCommands;
 		};
-		CF3CB7CA23F3262500BAD43A /* TealiumTagManagement */ = {
+		CF739D4723F4E17300BD96D9 /* TealiumTagManagement */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumTagManagement;
 		};
-		CF3CB7CC23F3262500BAD43A /* TealiumConsentManager */ = {
+		CF739D4923F4E17300BD96D9 /* TealiumConsentManager */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumConsentManager;
 		};
-		CF3CB7CE23F3262500BAD43A /* TealiumVisitorService */ = {
+		CF739D4B23F4E17300BD96D9 /* TealiumVisitorService */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumVisitorService;
 		};
-		CF3CB7D023F3262500BAD43A /* TealiumConnectivity */ = {
+		CF739D4D23F4E17300BD96D9 /* TealiumConnectivity */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumConnectivity;
 		};
-		CF3CB7D223F3262500BAD43A /* TealiumCollect */ = {
+		CF739D4F23F4E17300BD96D9 /* TealiumCollect */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumCollect;
 		};
-		CF3CB7D423F3262500BAD43A /* TealiumDispatchQueue */ = {
+		CF739D5123F4E17300BD96D9 /* TealiumDispatchQueue */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumDispatchQueue;
 		};
-		CF3CB7D623F3262500BAD43A /* TealiumCore */ = {
+		CF739D5323F4E17300BD96D9 /* TealiumCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumCore;
 		};
-		CF3CB7D823F3262500BAD43A /* TealiumDeviceData */ = {
+		CF739D5523F4E17300BD96D9 /* TealiumDeviceData */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumDeviceData;
 		};
-		CF3CB7F523F3274100BAD43A /* TealiumAppData */ = {
+		CF739D5723F4E19500BD96D9 /* TealiumAppData */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumAppData;
 		};
-		CF3CB7F723F3274100BAD43A /* TealiumCollect */ = {
+		CF739D5923F4E19500BD96D9 /* TealiumCollect */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumCollect;
 		};
-		CF3CB7F923F3274100BAD43A /* TealiumConnectivity */ = {
+		CF739D5B23F4E19500BD96D9 /* TealiumConnectivity */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumConnectivity;
 		};
-		CF3CB7FB23F3274100BAD43A /* TealiumConsentManager */ = {
+		CF739D5D23F4E19500BD96D9 /* TealiumConsentManager */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumConsentManager;
 		};
-		CF3CB7FD23F3274100BAD43A /* TealiumCore */ = {
+		CF739D5F23F4E19500BD96D9 /* TealiumCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumCore;
 		};
-		CF3CB7FF23F3274100BAD43A /* TealiumDelegate */ = {
+		CF739D6123F4E19500BD96D9 /* TealiumDelegate */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumDelegate;
 		};
-		CF3CB80123F3274100BAD43A /* TealiumDeviceData */ = {
+		CF739D6323F4E19500BD96D9 /* TealiumDeviceData */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumDeviceData;
 		};
-		CF3CB80323F3274100BAD43A /* TealiumDispatchQueue */ = {
+		CF739D6523F4E19500BD96D9 /* TealiumDispatchQueue */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumDispatchQueue;
 		};
-		CF3CB80523F3274100BAD43A /* TealiumLifecycle */ = {
+		CF739D6723F4E19500BD96D9 /* TealiumLifecycle */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumLifecycle;
 		};
-		CF3CB80723F3274100BAD43A /* TealiumLogger */ = {
+		CF739D6923F4E19500BD96D9 /* TealiumLogger */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumLogger;
 		};
-		CF3CB80923F3274100BAD43A /* TealiumPersistentData */ = {
+		CF739D6B23F4E19500BD96D9 /* TealiumPersistentData */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumPersistentData;
 		};
-		CF3CB80B23F3274100BAD43A /* TealiumVisitorService */ = {
+		CF739D6D23F4E19500BD96D9 /* TealiumVisitorService */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumVisitorService;
 		};
-		CF3CB80D23F3274100BAD43A /* TealiumVolatileData */ = {
+		CF739D6F23F4E19500BD96D9 /* TealiumVolatileData */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumVolatileData;
 		};
-		CF3CB80F23F3275600BAD43A /* TealiumAppData */ = {
+		CF739D7123F4E1A500BD96D9 /* TealiumAppData */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumAppData;
 		};
-		CF3CB81123F3275600BAD43A /* TealiumCollect */ = {
+		CF739D7323F4E1A500BD96D9 /* TealiumCollect */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumCollect;
 		};
-		CF3CB81323F3275600BAD43A /* TealiumConnectivity */ = {
+		CF739D7523F4E1A500BD96D9 /* TealiumConnectivity */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumConnectivity;
 		};
-		CF3CB81523F3275600BAD43A /* TealiumConsentManager */ = {
+		CF739D7723F4E1A500BD96D9 /* TealiumConsentManager */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumConsentManager;
 		};
-		CF3CB81723F3275600BAD43A /* TealiumCore */ = {
+		CF739D7923F4E1A500BD96D9 /* TealiumCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumCore;
 		};
-		CF3CB81923F3275600BAD43A /* TealiumDelegate */ = {
+		CF739D7B23F4E1A500BD96D9 /* TealiumDelegate */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumDelegate;
 		};
-		CF3CB81B23F3275600BAD43A /* TealiumDeviceData */ = {
+		CF739D7D23F4E1A500BD96D9 /* TealiumDeviceData */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumDeviceData;
 		};
-		CF3CB81D23F3275600BAD43A /* TealiumDispatchQueue */ = {
+		CF739D7F23F4E1A500BD96D9 /* TealiumDispatchQueue */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumDispatchQueue;
 		};
-		CF3CB81F23F3275600BAD43A /* TealiumLifecycle */ = {
+		CF739D8123F4E1A500BD96D9 /* TealiumLifecycle */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumLifecycle;
 		};
-		CF3CB82123F3275600BAD43A /* TealiumLogger */ = {
+		CF739D8323F4E1A500BD96D9 /* TealiumLogger */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumLogger;
 		};
-		CF3CB82323F3275600BAD43A /* TealiumPersistentData */ = {
+		CF739D8523F4E1A500BD96D9 /* TealiumPersistentData */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumPersistentData;
 		};
-		CF3CB82523F3275600BAD43A /* TealiumVisitorService */ = {
+		CF739D8723F4E1A500BD96D9 /* TealiumVisitorService */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumVisitorService;
 		};
-		CF3CB82723F3275600BAD43A /* TealiumVolatileData */ = {
+		CF739D8923F4E1A500BD96D9 /* TealiumVolatileData */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumVolatileData;
 		};
-		CF3CB84023F327E200BAD43A /* TealiumAppData */ = {
+		CF739D8B23F4E1B200BD96D9 /* TealiumAppData */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumAppData;
 		};
-		CF3CB84223F327E200BAD43A /* TealiumCollect */ = {
+		CF739D8D23F4E1B200BD96D9 /* TealiumCollect */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumCollect;
 		};
-		CF3CB84423F327E200BAD43A /* TealiumConnectivity */ = {
+		CF739D8F23F4E1B200BD96D9 /* TealiumConnectivity */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumConnectivity;
 		};
-		CF3CB84623F327E200BAD43A /* TealiumConsentManager */ = {
+		CF739D9123F4E1B200BD96D9 /* TealiumConsentManager */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumConsentManager;
 		};
-		CF3CB84823F327E200BAD43A /* TealiumCore */ = {
+		CF739D9323F4E1B300BD96D9 /* TealiumCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumCore;
 		};
-		CF3CB84A23F327E200BAD43A /* TealiumDelegate */ = {
+		CF739D9523F4E1B300BD96D9 /* TealiumDelegate */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumDelegate;
 		};
-		CF3CB84C23F327E200BAD43A /* TealiumDeviceData */ = {
+		CF739D9723F4E1B300BD96D9 /* TealiumDeviceData */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumDeviceData;
 		};
-		CF3CB84E23F327E200BAD43A /* TealiumDispatchQueue */ = {
+		CF739D9923F4E1B300BD96D9 /* TealiumDispatchQueue */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumDispatchQueue;
 		};
-		CF3CB85023F327E200BAD43A /* TealiumLifecycle */ = {
+		CF739D9B23F4E1B300BD96D9 /* TealiumLifecycle */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumLifecycle;
 		};
-		CF3CB85223F327E200BAD43A /* TealiumLogger */ = {
+		CF739D9D23F4E1B300BD96D9 /* TealiumLogger */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumLogger;
 		};
-		CF3CB85423F327E200BAD43A /* TealiumPersistentData */ = {
+		CF739D9F23F4E1B300BD96D9 /* TealiumPersistentData */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumPersistentData;
 		};
-		CF3CB85623F327E200BAD43A /* TealiumVisitorService */ = {
+		CF739DA123F4E1B300BD96D9 /* TealiumVisitorService */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumVisitorService;
 		};
-		CF3CB85823F327E200BAD43A /* TealiumVolatileData */ = {
+		CF739DA323F4E1B300BD96D9 /* TealiumVolatileData */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CF3CB7B723F3262500BAD43A /* XCRemoteSwiftPackageReference "tealium-swift-builder" */;
+			package = CF739D3423F4E17300BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
 			productName = TealiumVolatileData;
 		};
 /* End XCSwiftPackageProductDependency section */
