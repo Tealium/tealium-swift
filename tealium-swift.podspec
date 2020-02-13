@@ -60,7 +60,7 @@ Pod::Spec.new do |s|
   #  If this Pod runs only on iOS or OS X, then specify the platform and
   #  the deployment target. You can optionally include the target after the platform.
   #
-  s.swift_version = "4.0"
+  s.swift_version = "5.0"
   s.platform     = :ios, "9.0"
   s.platform     = :osx, "10.11"
   s.platform     = :watchos, "3.0"
@@ -163,6 +163,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "TealiumLocation" do |location|
+    location.platform = :ios, "9.0"
     location.source_files = "tealium/location/*"
     location.dependency "tealium-swift/Core"
   end
