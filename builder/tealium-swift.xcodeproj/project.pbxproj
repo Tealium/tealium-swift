@@ -680,6 +680,7 @@
 		D55C5E69C072CFF0EE2BBE31 /* TealiumModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TealiumModule.swift; sourceTree = "<group>"; };
 		D62F7D4D159D413F3439EE60 /* TealiumDiskStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TealiumDiskStorage.swift; sourceTree = "<group>"; };
 		D664F02DF0DE46807E1F9DF1 /* TealiumLoggerModuleConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TealiumLoggerModuleConstants.swift; sourceTree = "<group>"; };
+		D722A7492416920900048619 /* TealiumCrashReporteriOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TealiumCrashReporteriOS.framework; path = ../Carthage/Build/Mac/TealiumCrashReporteriOS.framework; sourceTree = "<group>"; };
 		D796F31F0B8ADCEEF2911706 /* TealiumCookieProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TealiumCookieProvider.swift; sourceTree = "<group>"; };
 		D7A7655D53CF46D7DCB8617A /* TealiumConsentManagerConfigExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TealiumConsentManagerConfigExtensions.swift; sourceTree = "<group>"; };
 		D92AE3575DBC300E70A82AB2 /* UIApplication+TealiumTracker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIApplication+TealiumTracker.h"; sourceTree = "<group>"; };
@@ -1196,6 +1197,14 @@
 			path = Logger;
 			sourceTree = "<group>";
 		};
+		D722A7482416920900048619 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D722A7492416920900048619 /* TealiumCrashReporteriOS.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D75F23F89D1E38B0517B5A7C /* tagmanagement */ = {
 			isa = PBXGroup;
 			children = (
@@ -1265,6 +1274,7 @@
 				EB6F911402FB2F21A1A61291 /* visitorservice */,
 				9C05408E09591C37E598FC78 /* volatiledata */,
 				76D97916D143186DDC891DC6 /* Products */,
+				D722A7482416920900048619 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
