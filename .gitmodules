@@ -1,4 +1,0 @@
-
-[submodule "Carthage/Checkouts/plcrashreporter"]
-	path = Carthage/Checkouts/plcrashreporter
-	url = https://github.com/tealium/plcrashreporter.git

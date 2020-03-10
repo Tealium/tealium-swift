@@ -8,7 +8,6 @@
 //
 
 import Foundation
-import UIKit
 #if location
     import TealiumCore
 #endif
@@ -88,7 +87,7 @@ public extension TealiumConfig {
         }
     }
     
-    /// `TealiumLocationConfig`: The Geofences data retrieved from either a local file, url, or DLE 
+    /// `TealiumLocationConfig`: The Geofences data retrieved from either a local file, url, or DLE
     var initializeGeofenceDataFrom: TealiumLocationConfig {
         if let geofenceAsset = self.geofenceFileName {
             return .localFile(geofenceAsset)

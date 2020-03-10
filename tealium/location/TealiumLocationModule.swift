@@ -62,8 +62,9 @@ class TealiumLocationModule: TealiumModule {
         
         // May not have location data on very first launch of app (waiting on user to grant permission)
         if location.coordinate.latitude != 0.0 && location.coordinate.longitude != 0.0 {
-            newData = [TealiumLocationKey.latitude: "\(location.coordinate.latitude)",
-                TealiumLocationKey.longitude: "\(location.coordinate.longitude)"]
+            newData = [TealiumLocationKey.deviceLatitude: "\(location.coordinate.latitude)",
+                TealiumLocationKey.deviceLongitude: "\(location.coordinate.longitude)",
+                TealiumLocationKey.accuracy: tealiumLocationManager.locationAccuracy]
         }
         
         newData.merge(track.trackDictionary) { $1 }
@@ -75,8 +76,9 @@ class TealiumLocationModule: TealiumModule {
     
     func addLocationData(to track: TealiumTrackRequest) {
         let location = tealiumLocationManager.latestLocation
-        var newData: [String: Any] = [TealiumLocationKey.latitude: "\(location.coordinate.latitude)",
-            TealiumLocationKey.longitude: "\(location.coordinate.longitude)"]
+        var newData: [String: Any] = [TealiumLocationKey.deviceLatitude: "\(location.coordinate.latitude)",
+            TealiumLocationKey.deviceLongitude: "\(location.coordinate.longitude)",
+            TealiumLocationKey.accuracy: tealiumLocationManager.locationAccuracy]
         newData.merge(track.trackDictionary) { $1 }
         
         let newTrack = TealiumTrackRequest(data: newData,
