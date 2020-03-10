@@ -1,2 +1,4 @@
-# github "tealium/plcrashreporter"
-binary "https://tags.tiqcdn.com/dle/tealiummobile/tealium-ios-carthage/tealium-carthage-plcrashreporter.json"
+ github "tealium/plcrashreporter" "tealium"
+# binary "https://tags.tiqcdn.com/dle/tealiummobile/tealium-ios-carthage/tealium-carthage-plcrashreporter.json"
+# git "file:///Users/craigrouse/mobiledev/swift-library/plcrashreporter/" "92c4904cd416c18f95ed8eb1b3540f239d4df74f"
+# git "file:///Users/craigrouse/mobiledev/swift-library/plcrashreporter/" "tealium"

@@ -212,7 +212,6 @@ public struct TealiumLifecycle: Codable {
             // We've just reset values
             dict[TealiumLifecycleKey.updateLaunchDate] = dateLastUpdate?.iso8601String
         }
-
         return dict
     }
 

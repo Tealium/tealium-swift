@@ -23,7 +23,10 @@ class TealiumDispatchQueueModule: TealiumModule {
 
     // when to start trimming the queue (default 20) - e.g. if offline
     var maxQueueSize: Int {
-        config?.dispatchQueueLimit ?? TealiumValue.defaultMaxQueueSize
+        if let maxQueueSize = config?.dispatchQueueLimit, maxQueueSize >= 0 {
+            return maxQueueSize
+        }
+        return TealiumValue.defaultMaxQueueSize
     }
 
     // max number of events in a single batch

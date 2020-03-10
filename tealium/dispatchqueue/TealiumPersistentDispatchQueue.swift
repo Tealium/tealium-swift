@@ -76,7 +76,7 @@ class TealiumPersistentDispatchQueue {
         var newData = currentData
         var hasModified = false
         let totalDispatches = newData.count
-        if totalDispatches >= maxQueueSize {
+        if totalDispatches >= maxQueueSize, maxQueueSize > 0 {
             // take suffix to get most recent events and discard oldest first
             // want to remove only 1 event, so if current total is 20, max is 20, we want to be
             // left with 19 elements => 20 - (20-1) = 19

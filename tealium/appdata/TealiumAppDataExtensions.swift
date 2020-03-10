@@ -60,7 +60,7 @@ public extension Tealium {
     func getVisitorId() -> String? {
         visitorId
     }
-    
+
     /// Returns the current Tealium visitor ID
     var visitorId: String? {
         appData()?.getData()[TealiumKey.visitorId] as? String

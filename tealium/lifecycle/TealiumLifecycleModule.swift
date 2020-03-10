@@ -28,6 +28,7 @@ public class TealiumLifecycleModule: TealiumModule {
     var lastProcess: TealiumLifecycleType?
     var lifecyclePersistentData: TealiumLifecyclePersistentData!
     var diskStorage: TealiumDiskStorageProtocol!
+
     public var dictionary: [String: Any]? {
         lifecycle?.asDictionary(type: nil, for: Date())
     }
@@ -154,7 +155,7 @@ public class TealiumLifecycleModule: TealiumModule {
         save()
 
         data[TealiumLifecycleKey.autotracked] = autotracked
-        
+
         // Make the track request to the modulesManager
         requestTrack(data: data)
     }

@@ -21,7 +21,6 @@ public class TealiumLocation: NSObject, CLLocationManagerDelegate {
     var locationListener: LocationListener?
     var logger: TealiumLogger?
     var didEnterRegionWorking = false
-    var locationAccuracy = TealiumLocationKey.lowAccuracy
     
     init(config: TealiumConfig,
         bundle: Bundle = Bundle.main,
@@ -52,9 +51,6 @@ public class TealiumLocation: NSObject, CLLocationManagerDelegate {
         self.locationManager.distanceFilter = config.updateDistance
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        if config.useHighAccuracy {
-            locationAccuracy = TealiumLocationKey.highAccuracy
-        }
         
         requestPermissions()
         clearMonitoredGeofences()
@@ -84,7 +80,7 @@ public class TealiumLocation: NSObject, CLLocationManagerDelegate {
     /// Prompts the user to enable permission for location servies
     public func requestPermissions() {
         let permissionStatus = type(of: locationManager).self.authorizationStatus()
-        
+
         if permissionStatus != .authorizedAlways {
             locationManager.requestAlwaysAuthorization()
         }
@@ -185,15 +181,14 @@ public class TealiumLocation: NSObject, CLLocationManagerDelegate {
     public func sendGeofenceTrackingEvent(region: CLRegion, triggeredTransition: String) {
         var data = [String : Any]()
         data[TealiumLocationKey.geofenceName] = "\(region.identifier)"
-        data[TealiumLocationKey.geofenceTransition] = "\(triggeredTransition)"
+        data[TealiumLocationKey.geofenceTransition] = triggeredTransition
         data[TealiumKey.event] = triggeredTransition
         
         if let lastLocation = lastLocation {
-            data[TealiumLocationKey.deviceLatitude] = "\(lastLocation.coordinate.latitude)"
-            data[TealiumLocationKey.deviceLongitude] = "\(lastLocation.coordinate.longitude)"
+            data[TealiumLocationKey.latitude] = "\(lastLocation.coordinate.latitude)"
+            data[TealiumLocationKey.longitude] = "\(lastLocation.coordinate.longitude)"
             data[TealiumLocationKey.timestamp] = "\(lastLocation.timestamp)"
             data[TealiumLocationKey.speed] = "\(lastLocation.speed)"
-            data[TealiumLocationKey.accuracy] = locationAccuracy
         }
         
         if triggeredTransition == TealiumLocationKey.exited {

@@ -17,9 +17,6 @@ public class TealiumPersistentData {
     public var persistentDataCache = TealiumPersistentDataStorage()
     let diskStorage: TealiumDiskStorageProtocol
     var migrator: TealiumLegacyMigratorProtocol.Type
-    public var dictionary: [String: Any]? {
-        persistentDataCache.data.value as? [String: Any]
-    }
 
     /// - Parameters:
     ///     - diskStorage: `TealiumDiskStorageProtocol`
@@ -30,6 +27,10 @@ public class TealiumPersistentData {
         self.diskStorage = diskStorage
         self.setExistingPersistentData()
 
+    }
+
+    public var dictionary: [String: Any]? {
+        persistentDataCache.data.value as? [String: Any]
     }
 
     /// Retrieves data from persistent storage and adds to cache.
