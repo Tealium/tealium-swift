@@ -2438,8 +2438,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumCollect;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "collect DEBUG";
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -2467,8 +2466,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumCore;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos";
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
 				TVOS_DEPLOYMENT_TARGET = 9.0;
@@ -2495,8 +2493,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumDeviceData;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "devicedata DEBUG";
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -2523,8 +2520,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumRemoteCommands;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = remotecommands;
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -2550,8 +2546,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumPersistentData;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "persistentdata DEBUG";
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -2578,8 +2573,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumLocation;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = location;
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -2605,8 +2599,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumAppData;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "appdata DEBUG";
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -2634,8 +2627,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumLogger;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "logger DEBUG";
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -2663,8 +2655,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumVolatileData;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = volatiledata;
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -2691,8 +2682,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumLocation;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "location DEBUG";
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -2718,8 +2708,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumLifecycle;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = lifecycle;
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -2747,8 +2736,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumDeviceData;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = devicedata;
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -2776,8 +2764,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumConnectivity;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "connectivity DEBUG";
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -2804,8 +2791,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumAutotracking;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = autotracking;
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -2831,8 +2817,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumAutotracking;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "autotracking DEBUG";
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -2859,8 +2844,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumVolatileData;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "volatiledata DEBUG";
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -2888,8 +2872,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumDelegate;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = delegate;
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -2916,8 +2899,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTagManagement;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "tagmanagement DEBUG";
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -2944,8 +2926,7 @@
 				);
 				OTHER_LDFLAGS = "-F$(SRCROOT)/../Carthage/Build/iOS";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumCrash;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = crash;
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -2970,8 +2951,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumAttribution;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "attribution DEBUG";
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -2997,8 +2977,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumLifecycle;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "lifecycle DEBUG";
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -3025,8 +3004,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumRemoteCommands;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "remotecommands DEBUG";
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -3052,8 +3030,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumDispatchQueue;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = dispatchqueue;
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -3081,8 +3058,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumCollect;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = collect;
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -3110,8 +3086,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumAppData;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = appdata;
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -3139,8 +3114,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumVisitorService;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "visitorservice DEBUG";
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -3168,8 +3142,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumPersistentData;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = persistentdata;
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -3197,8 +3170,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumVisitorService;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = visitorservice;
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -3260,8 +3232,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+								SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
@@ -3285,8 +3256,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumLogger;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = logger;
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -3314,8 +3284,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumDispatchQueue;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "dispatchqueue DEBUG";
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -3343,8 +3312,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumConnectivity;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = connectivity;
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -3372,8 +3340,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumCore;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos";
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
 				TVOS_DEPLOYMENT_TARGET = 9.0;
@@ -3400,8 +3367,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumConsentManager;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = consentmanager;
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -3455,8 +3421,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SWIFT_COMPILATION_MODE = wholemodule;
+								SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -3481,8 +3446,7 @@
 				);
 				OTHER_LDFLAGS = "-F$(SRCROOT)/../Carthage/Build/iOS";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumCrash;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "crash DEBUG";
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -3508,8 +3472,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumConsentManager;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "consentmanager DEBUG";
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -3537,8 +3500,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumDelegate;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator watchos macosx appletvsimulator appletvos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "delegate DEBUG";
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -3565,8 +3527,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTagManagement;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = tagmanagement;
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
@@ -3591,8 +3552,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumAttribution;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+								SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = attribution;
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
