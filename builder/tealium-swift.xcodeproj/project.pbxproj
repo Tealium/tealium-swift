@@ -316,7 +316,6 @@
 		D6D2820F6127BC254536E733 /* TealiumDeviceDataMemoryInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC16E22813DB2B9093B61AE /* TealiumDeviceDataMemoryInfo.swift */; };
 		D74BEC1AC26C55CF98417524 /* TealiumPersistentDispatchQueue.swift in Headers */ = {isa = PBXBuildFile; fileRef = 03C1D529CCFD56E4C984E2D1 /* TealiumPersistentDispatchQueue.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		D7996F5F2432802300E548BC /* TealiumCrashReporteriOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7996F5E2432802300E548BC /* TealiumCrashReporteriOS.framework */; };
-		D7996F602432802300E548BC /* TealiumCrashReporteriOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7996F5E2432802300E548BC /* TealiumCrashReporteriOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D8E0FDF9C50BCE01467CC670 /* TealiumAppDataCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1F59619A7B85CEAC4DAC6F /* TealiumAppDataCollection.swift */; };
 		D8EBF1C5D18A2070FF7C2B28 /* TealiumRemoteCommandsModule.swift in Headers */ = {isa = PBXBuildFile; fileRef = 0F82057C854F8B66448E34AD /* TealiumRemoteCommandsModule.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA26E0E266F0602E0749DEC8 /* TealiumDeviceDataMemoryInfo.swift in Headers */ = {isa = PBXBuildFile; fileRef = DEC16E22813DB2B9093B61AE /* TealiumDeviceDataMemoryInfo.swift */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -515,20 +514,6 @@
 			remoteInfo = TealiumCore;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		D7996F612432802300E548BC /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				D7996F602432802300E548BC /* TealiumCrashReporteriOS.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0195B54E14EC35476FB6430B /* TealiumRemoteCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TealiumRemoteCommands.swift; sourceTree = "<group>"; };
@@ -1918,7 +1903,6 @@
 				717C3EB70AC057BD9852B9DB /* Headers */,
 				7E8A9BE0A311995882B384CB /* Sources */,
 				6F714CD6C5733D950B5B2C1C /* Frameworks */,
-				D7996F612432802300E548BC /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
