@@ -5,11 +5,9 @@
 //  Created by Jonathan Wong on 1/17/19.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
-#if os(OSX)
-#else
+#if os(iOS)
 import UIKit
 import UserNotifications
-#endif
 
 public protocol TealiumRegistration {
 
@@ -32,3 +30,4 @@ public extension TealiumRegistration {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) { }
 
 }
+#endif

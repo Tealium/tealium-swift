@@ -5,7 +5,7 @@
 //  Created by Craig Rouse on 2/5/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
-
+#if os(iOS)
 import Foundation
 
 /// allows overriding default cookie store for unit testing
@@ -28,3 +28,5 @@ public class TealiumHTTPCookieStorage: TealiumCookieProvider {
 
     }
 }
+#else
+#endif

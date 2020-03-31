@@ -6,7 +6,7 @@
 //  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 //  See https://github.com/Tealium/tagbridge for spec reference.
-
+#if os(iOS)
 import Foundation
 #if remotecommands
 import TealiumCore
@@ -112,3 +112,4 @@ public class TealiumRemoteCommandsModule: TealiumModule {
         }
     }
 }
+#endif

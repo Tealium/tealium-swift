@@ -5,7 +5,7 @@
 //  Created by Jason Koo on 11/16/16.
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
-
+#if os(iOS)
 import Foundation
 #if attribution
 import TealiumCore
@@ -116,3 +116,4 @@ class TealiumAttributionModule: TealiumModule {
         didFinish(request)
     }
 }
+#endif

@@ -5,7 +5,7 @@
 //  Created by Craig Rouse on 07/12/2018.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
-
+#if os(iOS)
 import Foundation
 import WebKit
 #if tagmanagement
@@ -125,3 +125,4 @@ extension TealiumTagManagementWKWebView: WKNavigationDelegate {
         }
     }
 }
+#endif

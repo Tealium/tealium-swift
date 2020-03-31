@@ -5,7 +5,7 @@
 //  Created by Craig Rouse on 06/12/2018.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
-
+#if os(iOS)
 import Foundation
 import UIKit
 import WebKit
@@ -311,3 +311,4 @@ public class TealiumTagManagementWKWebView: NSObject, TealiumTagManagementProtoc
           self.disable()
       }
 }
+#endif

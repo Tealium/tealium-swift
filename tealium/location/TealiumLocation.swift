@@ -6,7 +6,7 @@
 //  Updated by Christina Sund on 1/13/2020.
 //  Copyright © 2019 Harry Cassell. All rights reserved.
 //
-
+#if os(iOS)
 import Foundation
 import CoreLocation
 #if location
@@ -305,4 +305,4 @@ public class TealiumLocation: NSObject, CLLocationManagerDelegate {
     }
 
 }
-
+#endif

@@ -5,7 +5,7 @@
 //  Created by Craig Rouse on 12/8/2018
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
-
+#if os(iOS)
 import Foundation
 #if tagmanagement
 import TealiumCore
@@ -31,3 +31,4 @@ public extension Dictionary where Key == String, Value == Any {
         return self[TealiumKey.callType] as? String ?? "link"
     }
 }
+#endif

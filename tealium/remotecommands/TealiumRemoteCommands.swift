@@ -5,7 +5,7 @@
 //  Created by Jonathan Wong on 1/31/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
-
+#if os(iOS)
 import Foundation
 #if remotecommands
 import TealiumCore
@@ -145,3 +145,4 @@ extension TealiumRemoteCommands: TealiumRemoteCommandDelegate {
         }
     }
 }
+#endif
