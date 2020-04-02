@@ -35,6 +35,17 @@ extension TealiumDeviceData {
             TealiumDeviceDataKey.carrierISOLegacy: "us",
             TealiumDeviceDataKey.carrierLegacy: "simulator",
         ]
+        #elseif targetEnvironment(macCatalyst)
+        carrierInfo = [
+            TealiumDeviceDataKey.carrierMNC: "00",
+            TealiumDeviceDataKey.carrierMCC: "000",
+            TealiumDeviceDataKey.carrierISO: "us",
+            TealiumDeviceDataKey.carrier: "macCatalyst",
+            TealiumDeviceDataKey.carrierMNCLegacy: "00",
+            TealiumDeviceDataKey.carrierMCCLegacy: "000",
+            TealiumDeviceDataKey.carrierISOLegacy: "us",
+            TealiumDeviceDataKey.carrierLegacy: "macCatalyst",
+        ]
         #else
         let networkInfo = CTTelephonyNetworkInfo()
         var carrier: CTCarrier?

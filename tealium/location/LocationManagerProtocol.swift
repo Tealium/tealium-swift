@@ -5,7 +5,7 @@
 //  Created by Harry Cassell on 10/09/2019.
 //  Copyright © 2019 Harry Cassell. All rights reserved.
 //
-
+#if os(iOS)
 import Foundation
 import CoreLocation
 
@@ -27,3 +27,4 @@ public protocol LocationManager {
 
 
 extension CLLocationManager: LocationManager { }
+#endif

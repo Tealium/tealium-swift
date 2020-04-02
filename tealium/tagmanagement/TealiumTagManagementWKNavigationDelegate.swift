@@ -5,7 +5,7 @@
 //  Created by Craig Rouse on 07/12/2018.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
-
+#if os(iOS)
 import Foundation
 import WebKit
 #if tagmanagement
@@ -71,7 +71,7 @@ extension TealiumTagManagementWKWebView: WKNavigationDelegate {
         var decisionAction: WKNavigationActionPolicy?
         if let urlString = urlRequest.url?.absoluteString, urlString.hasPrefix(TealiumKey.tealiumURLScheme) {
             // notifies Remote Commands module of a remote command requesting execution
-            let notification = Notification(name: Notification.Name(TealiumKey.tagmanagementNotification), object: webView, userInfo: [TealiumKey.tagmanagementNotification: urlRequest])
+            let notification = Notification(name: Notification.Name.tagmanagement, object: webView, userInfo: [TealiumKey.tagmanagementNotification: urlRequest])
             NotificationCenter.default.post(notification)
             // prevents errors in webview by canceling load
             decisionHandler(.cancel)
@@ -125,3 +125,4 @@ extension TealiumTagManagementWKWebView: WKNavigationDelegate {
         }
     }
 }
+#endif

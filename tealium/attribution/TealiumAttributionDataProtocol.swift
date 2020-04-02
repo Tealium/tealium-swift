@@ -5,7 +5,7 @@
 //  Created by Craig Rouse on 14/03/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
-
+#if os(iOS)
 import Foundation
 
 public protocol TealiumAttributionDataProtocol {
@@ -33,3 +33,4 @@ public protocol TealiumAttributionDataProtocol {
     /// - Parameter completion: Completion block to be executed asynchronously when Search Ads data is returned
     func appleSearchAdsData(_ completion: @escaping (PersistentAttributionData) -> Void)
 }
+#endif

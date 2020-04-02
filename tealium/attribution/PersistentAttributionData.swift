@@ -5,7 +5,7 @@
 //  Created by Craig Rouse on 09/07/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
-
+#if os(iOS)
 import Foundation
 
 public struct PersistentAttributionData: Codable {
@@ -93,3 +93,4 @@ public struct PersistentAttributionData: Codable {
     }
 
 }
+#endif

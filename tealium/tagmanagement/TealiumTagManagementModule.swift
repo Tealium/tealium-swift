@@ -5,7 +5,7 @@
 //  Created by Jason Koo on 12/14/16.
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
-
+#if os(iOS)
 import Foundation
 #if tagmanagement
 import TealiumCore
@@ -337,3 +337,4 @@ public class TealiumTagManagementModule: TealiumModule {
     }
 
 }
+#endif

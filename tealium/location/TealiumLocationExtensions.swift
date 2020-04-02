@@ -6,7 +6,7 @@
 //  Updated by Christina Sund on 1/13/2020.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
-
+#if os(iOS)
 import Foundation
 #if location
     import TealiumCore
@@ -97,3 +97,4 @@ public extension TealiumConfig {
         return .tealium
     }
 }
+#endif
