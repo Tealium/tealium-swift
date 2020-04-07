@@ -1,0 +1,65 @@
+{
+    "metrics":
+    {
+        "22": 25.0,
+        "25": 27.983333333333334,
+        "6113": 0.0
+    },
+    "dates":
+    {
+        "23": 1557421336000,
+        "5089": 1557777940471,
+        "24": 1557777339000
+    },
+    "metric_sets":
+    {
+        "8481":
+        {
+            "category 3": 1.0,
+            "category 2": 1.0,
+            "category 1": 2.0,
+            "category 4": 1.0,
+            "category 5": 12.0
+        },
+        "61":
+        {
+            "browser": 5.0
+        },
+        "8489":
+        {
+            "category 5": 89.0,
+            "category 4": 11.0,
+            "category 3": 11.0,
+            "category 2": 11.0,
+            "category 1": 22.0
+        }
+    },
+    "property_lists":
+    {
+        "8483": ["category 4", "category 5", "category 5", "category 5", "category 5", "category 5", "category 5", "category 5", "category 5", "category 5", "category 5", "category 5", "category 5"]
+    },
+    "current_visit":
+    {
+        "metrics":
+        {
+            "12": 0.2,
+            "6111": 0.0,
+            "6101": -1.0,
+            "80": 0.7142857142857143
+        },
+        "dates":
+        {
+            "11": 1557857591000
+        },
+        "flag_lists":
+        {
+            "8479": [true, false, true, false, true, false, true, false]
+        }
+    },
+    "badges":
+    {
+        "8535": true,
+        "6301": true
+    }
+}
+
