@@ -5,7 +5,7 @@
 //  Created by Craig Rouse on 19/03/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
-
+#if os(iOS)
 import AdSupport
 import Foundation
 import UIKit
@@ -43,3 +43,4 @@ public class TealiumASIdentifierManager: TealiumASIdentifierManagerProtocol {
         return UIDevice.current.identifierForVendor?.uuidString ?? ""
     }()
 }
+#endif

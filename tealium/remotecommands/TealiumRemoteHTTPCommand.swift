@@ -5,7 +5,7 @@
 //  Created by Craig Rouse on 3/4/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
-
+#if os(iOS)
 import Foundation
 #if remotecommands
 import TealiumCore
@@ -126,3 +126,4 @@ class TealiumRemoteHTTPCommand: TealiumRemoteCommand {
     }
 
 }
+#endif

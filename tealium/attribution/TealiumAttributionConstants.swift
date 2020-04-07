@@ -5,7 +5,7 @@
 //  Created by Craig Rouse on 14/03/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
-
+#if os(iOS)
 import Foundation
 
 public struct TealiumAttributionKey {
@@ -95,3 +95,4 @@ public struct AppleInternalKeys {
     static let region = "iad-country-or-region" //
     static let objectVersion = "Version3.1" // This is the root key for the returned data
 }
+#endif

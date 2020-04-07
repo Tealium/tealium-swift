@@ -5,7 +5,7 @@
 //  Created by Craig Rouse on 12/8/2018
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
-
+#if os(iOS)
 import Foundation
 import UIKit
 import WebKit
@@ -86,3 +86,4 @@ public protocol TealiumTagManagementProtocol {
                      completion: ((_ success: Bool) -> Void)?)
 
 }
+#endif

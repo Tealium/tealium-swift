@@ -6,7 +6,7 @@
 //  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 //  See https://github.com/Tealium/tagbridge for spec reference.
-
+#if os(iOS)
 import Foundation
 #if remotecommands
 import TealiumCore
@@ -16,6 +16,7 @@ public class TealiumRemoteCommandsModule: TealiumModule {
 
     public var remoteCommands: TealiumRemoteCommands?
     var observer: NSObjectProtocol?
+    var reservedCommandsAdded = false
 
     override public class func moduleConfig() -> TealiumModuleConfig {
         return TealiumModuleConfig(name: TealiumRemoteCommandsKey.moduleName,
@@ -34,6 +35,7 @@ public class TealiumRemoteCommandsModule: TealiumModule {
         remoteCommands?.enable()
         updateReservedCommands(config: config)
         self.addCommandsFromConfig(config)
+        enableNotifications()
         if !request.bypassDidFinish {
             didFinish(request)
         }
@@ -43,16 +45,15 @@ public class TealiumRemoteCommandsModule: TealiumModule {
         let newConfig = request.config.copy
         if newConfig != self.config {
             self.config = newConfig
-            var existingCommands = self.remoteCommands?.commands
-            if let newCommands = newConfig.remoteCommands {
-                existingCommands?.append(contentsOf: newCommands)
+            let existingCommands = self.remoteCommands?.commands
+            if let newCommands = newConfig.remoteCommands, newCommands.count > 0 {
+                existingCommands?.forEach {
+                    newConfig.addRemoteCommand($0)
+                }
+                var enableRequest = TealiumEnableRequest(config: newConfig, enableCompletion: nil)
+                enableRequest.bypassDidFinish = true
+                enable(enableRequest)
             }
-            existingCommands?.forEach {
-                newConfig.addRemoteCommand($0)
-            }
-            var enableRequest = TealiumEnableRequest(config: newConfig, enableCompletion: nil)
-            enableRequest.bypassDidFinish = true
-            enable(enableRequest)
         }
         didFinish(request)
     }
@@ -70,7 +71,10 @@ public class TealiumRemoteCommandsModule: TealiumModule {
 
     /// Enables listeners for notifications from the Tag Management module (WebView).
     func enableNotifications() {
-        self.observer = NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: TealiumKey.tagmanagementNotification), object: nil, queue: OperationQueue.main) {
+        guard observer == nil else {
+            return
+        }
+        observer = NotificationCenter.default.addObserver(forName: Notification.Name.tagmanagement, object: nil, queue: OperationQueue.main) {
             self.remoteCommands?.triggerCommandFrom(notification: $0)
         }
     }
@@ -79,6 +83,9 @@ public class TealiumRemoteCommandsModule: TealiumModule {
     ///￼
     /// - Parameter config: `TealiumConfig` object containing flags indicating which built-in commands should be disabled.
     func updateReservedCommands(config: TealiumConfig) {
+        guard reservedCommandsAdded == false else {
+            return
+        }
         // Default option
         var shouldDisable = false
 
@@ -91,8 +98,8 @@ public class TealiumRemoteCommandsModule: TealiumModule {
         } else if remoteCommands?.commands.commandForId(TealiumRemoteHTTPCommandKey.commandId) == nil {
             let httpCommand = TealiumRemoteHTTPCommand.httpCommand()
             remoteCommands?.add(httpCommand)
-            enableNotifications()
         }
+        reservedCommandsAdded = true
         // No further processing required - HTTP remote command already up.
     }
 
@@ -103,6 +110,11 @@ public class TealiumRemoteCommandsModule: TealiumModule {
         isEnabled = false
         remoteCommands?.disable()
         remoteCommands = nil
+        reservedCommandsAdded = false
+        if let observer = self.observer {
+            NotificationCenter.default.removeObserver(observer)
+            self.observer = nil
+        }
         didFinish(request)
     }
 
@@ -112,3 +124,4 @@ public class TealiumRemoteCommandsModule: TealiumModule {
         }
     }
 }
+#endif

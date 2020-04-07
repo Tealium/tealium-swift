@@ -5,7 +5,7 @@
 //  Created by Craig Rouse on 11/03/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
-
+#if os(iOS)
 import Foundation
 #if remotecommands
 import TealiumCore
@@ -22,3 +22,4 @@ protocol TealiumRemoteCommandDelegate: class {
     func tealiumRemoteCommandRequestsExecution(_ command: TealiumRemoteCommand,
                                                response: TealiumRemoteCommandResponse)
 }
+#endif

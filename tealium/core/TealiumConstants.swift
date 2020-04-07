@@ -5,12 +5,14 @@
 //  Created by Jason Koo on 9/1/16.
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
-
+#if os(iOS)
+import UIKit
 // MARK: VALUES
+#endif
 
 public enum TealiumValue {
     public static let libraryName = "swift"
-    public static let libraryVersion = "1.9.3"
+    public static let libraryVersion = "1.9.4"
     // This is the current limit for performance reasons. May be increased in future
     public static let maxEventBatchSize = 10
     public static let defaultMinimumDiskSpace: Int32 = 20_000_000
@@ -21,6 +23,11 @@ public enum TealiumValue {
 }
 
 // MARK: ENUMS
+#if os(iOS)
+extension Notification.Name {
+    public static let tagmanagement = Notification.Name(TealiumKey.tagmanagementNotification)
+}
+#endif
 
 public enum TealiumKey {
     public static let account = "tealium_account"

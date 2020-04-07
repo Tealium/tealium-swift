@@ -5,7 +5,7 @@
 //  Created by Craig Rouse on 3/6/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
-
+#if os(iOS)
 import Foundation
 
 enum TealiumRemoteCommandsKey {
@@ -46,3 +46,4 @@ enum TealiumRemoteCommandResponseError: Error {
     case missingURLMethod
     case couldNotConvertDataToURL
 }
+#endif

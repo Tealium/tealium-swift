@@ -5,7 +5,7 @@
 //  Created by Craig Rouse on 14/03/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
-
+#if os(iOS)
 import Foundation
 #if attribution
 import TealiumCore
@@ -156,3 +156,4 @@ public class TealiumAttributionData: TealiumAttributionDataProtocol {
     }
     // swiftlint:enable cyclomatic_complexity
 }
+#endif
