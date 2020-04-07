@@ -52,6 +52,9 @@ extension TealiumDeviceData {
             }
         } else {
             appOrientation = TealiumDeviceData.sharedApplication?.statusBarOrientation
+            #if targetEnvironment(simulator)
+            appOrientation = .portrait
+            #endif
         }
 
         let isLandscape = orientation.isLandscape
