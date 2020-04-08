@@ -8,15 +8,15 @@
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "13F18080FA2C72C6E211BA4F"
-               BuildableName = "TealiumVolatileDataTests-tvOS.xctest"
-               BlueprintName = "TealiumVolatileDataTests-tvOS"
+               BlueprintIdentifier = "EAF9EA92B9CD3A0CC36949E9"
+               BuildableName = "TealiumRemoteCommands.framework"
+               BlueprintName = "TealiumRemoteCommands"
                ReferencedContainer = "container:tealium-swift.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -26,50 +26,26 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      codeCoverageEnabled = "YES"
       onlyGenerateCoverageForSpecifiedTargets = "NO"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "13F18080FA2C72C6E211BA4F"
-               BuildableName = "TealiumVolatileDataTests-tvOS.xctest"
-               BlueprintName = "TealiumVolatileDataTests-tvOS"
-               ReferencedContainer = "container:tealium-swift.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A2DC212B2E8FCD9BF0B22341"
-               BuildableName = "TealiumVolatileData.framework"
-               BlueprintName = "TealiumVolatileData"
-               ReferencedContainer = "container:tealium-swift.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "13F18080FA2C72C6E211BA4F"
-            BuildableName = "TealiumVolatileDataTests-tvOS.xctest"
-            BlueprintName = "TealiumVolatileDataTests-tvOS"
+            BlueprintIdentifier = "EAF9EA92B9CD3A0CC36949E9"
+            BuildableName = "TealiumRemoteCommands.framework"
+            BlueprintName = "TealiumRemoteCommands"
             ReferencedContainer = "container:tealium-swift.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
-      <CommandLineArguments>
-      </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
       <CodeCoverageTargets>
       </CodeCoverageTargets>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -78,16 +54,17 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "13F18080FA2C72C6E211BA4F"
-            BuildableName = "TealiumVolatileDataTests-tvOS.xctest"
-            BlueprintName = "TealiumVolatileDataTests-tvOS"
+            BlueprintIdentifier = "EAF9EA92B9CD3A0CC36949E9"
+            BuildableName = "TealiumRemoteCommands.framework"
+            BlueprintName = "TealiumRemoteCommands"
             ReferencedContainer = "container:tealium-swift.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
+      <CommandLineArguments>
+      </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -101,9 +78,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "13F18080FA2C72C6E211BA4F"
-            BuildableName = "TealiumVolatileDataTests-tvOS.xctest"
-            BlueprintName = "TealiumVolatileDataTests-tvOS"
+            BlueprintIdentifier = "EAF9EA92B9CD3A0CC36949E9"
+            BuildableName = "TealiumRemoteCommands.framework"
+            BlueprintName = "TealiumRemoteCommands"
             ReferencedContainer = "container:tealium-swift.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
