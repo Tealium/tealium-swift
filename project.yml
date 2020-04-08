@@ -1261,6 +1261,9 @@ schemes:
     run:
       config: Release
   TealiumCollect:
+    build:
+      targets:
+        TealiumCollect: all
     run:
       config: Release
   TealiumConnectivity:

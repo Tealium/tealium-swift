@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "98C751A5C86A2A97A043CE74"
-               BuildableName = "TealiumCore.framework"
-               BlueprintName = "TealiumCore"
+               BlueprintIdentifier = "9DD016422977C830C0F51D96"
+               BuildableName = "TealiumCollect.framework"
+               BlueprintName = "TealiumCollect"
                ReferencedContainer = "container:tealium-swift.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -33,9 +33,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "98C751A5C86A2A97A043CE74"
-            BuildableName = "TealiumCore.framework"
-            BlueprintName = "TealiumCore"
+            BlueprintIdentifier = "9DD016422977C830C0F51D96"
+            BuildableName = "TealiumCollect.framework"
+            BlueprintName = "TealiumCollect"
             ReferencedContainer = "container:tealium-swift.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -57,9 +57,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "98C751A5C86A2A97A043CE74"
-            BuildableName = "TealiumCore.framework"
-            BlueprintName = "TealiumCore"
+            BlueprintIdentifier = "9DD016422977C830C0F51D96"
+            BuildableName = "TealiumCollect.framework"
+            BlueprintName = "TealiumCollect"
             ReferencedContainer = "container:tealium-swift.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -78,9 +78,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "98C751A5C86A2A97A043CE74"
-            BuildableName = "TealiumCore.framework"
-            BlueprintName = "TealiumCore"
+            BlueprintIdentifier = "9DD016422977C830C0F51D96"
+            BuildableName = "TealiumCollect.framework"
+            BlueprintName = "TealiumCollect"
             ReferencedContainer = "container:tealium-swift.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
