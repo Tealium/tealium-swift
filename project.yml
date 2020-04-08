@@ -1263,7 +1263,7 @@ schemes:
   TealiumCollect:
     build:
       targets:
-        TealiumCore: all
+        TealiumCollect: all
     run:
       config: Release
   TealiumConnectivity:
