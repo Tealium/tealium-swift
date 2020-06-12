@@ -1,0 +1,22 @@
+[
+    {
+        "name": "ErrorLat",
+        "latitude": -92.0457782,
+        "longitude": -0.9707625,
+        "radius": 100,
+        "expire_after": -1,
+        "trigger_on_enter": true,
+        "trigger_on_exit": true,
+        "minimum_dwell_time": 0
+    },
+    {
+        "name": "ErrorLon",
+        "latitude": 32.9061189,
+        "longitude": 190.45623,
+        "radius": 100,
+        "expire_after": -1,
+        "trigger_on_enter": true,
+        "trigger_on_exit": false,
+        "minimum_dwell_time": 0
+    }
+]

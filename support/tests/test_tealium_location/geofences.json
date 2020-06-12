@@ -1,0 +1,18 @@
+  [
+    {
+        "name": "Tealium_Reading",
+        "latitude": 51.4610304,
+        "longitude": -0.9707625,
+        "radius": 100,
+        "trigger_on_enter": true,
+        "trigger_on_exit": true,
+      },
+      {
+        "name": "Tealium_San_Diego",
+        "latitude": 32.84173,
+        "longitude": -117.02026,
+        "radius": 100,
+        "trigger_on_enter": true,
+        "trigger_on_exit": true,
+      }
+  ]

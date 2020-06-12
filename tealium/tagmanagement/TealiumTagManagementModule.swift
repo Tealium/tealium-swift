@@ -25,7 +25,6 @@ public class TealiumTagManagementModule: TealiumModule {
                                    enabled: true)
     }
 
-    // NOTE: UIWebview cannot run in XCTests.
     #if TEST
     #else
 
