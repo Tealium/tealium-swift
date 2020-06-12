@@ -134,6 +134,7 @@ class TealiumLocationUnitTests: XCTestCase {
         config.geofenceFileName = "validGeofences.json"
 
         let tealiumLocation = TealiumLocation(config: config,
+                                              bundle: Bundle(for: type(of: self)),
             locationManager: locationManager)
 
         locationManager.delegate = tealiumLocation
@@ -501,8 +502,8 @@ extension TealiumLocationUnitTests: LocationListener {
         let expected: [String: Any] = [TealiumKey.event: TealiumLocationKey.entered,
             TealiumLocationKey.geofenceName: "testRegion",
             TealiumLocationKey.geofenceTransition: TealiumLocationKey.entered,
-            TealiumLocationKey.latitude: "37.3317",
-            TealiumLocationKey.longitude: "-122.0325086",
+            TealiumLocationKey.deviceLatitude: "37.3317",
+            TealiumLocationKey.deviceLongitude: "-122.0325086",
             TealiumLocationKey.timestamp: "2020-01-15 06:31:00 +0000",
             TealiumLocationKey.speed: "40.0"]
         XCTAssertEqual(expected.keys, data.keys)

@@ -329,6 +329,7 @@ public class TealiumTagManagementModule: TealiumModule {
         } else {
             self.tagManagement = nil
         }
+        didFinish(request)
     }
 
     deinit {

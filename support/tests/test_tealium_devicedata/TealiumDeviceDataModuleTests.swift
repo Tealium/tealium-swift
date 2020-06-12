@@ -89,7 +89,7 @@ class TealiumDeviceDataModuleTests: XCTestCase {
                 "device_is_charging",
                 "device_language",
                 "user_locale",
-                "app_orientation",
+//                "app_orientation", // does not work correctly without a host app currently
                 "device_orientation",
                 "device_orientation_extended",
                 "carrier",
@@ -156,7 +156,7 @@ class TealiumDeviceDataModuleTests: XCTestCase {
         let expectation = self.expectation(description: "deviceDataTrack")
         let module = TealiumDeviceDataModule(delegate: self)
         let config = TestTealiumHelper().getConfig()
-        config.setMemoryReportingEnabled(true)
+        config.memoryReportingEnabled = true
         let request = TealiumEnableRequest(config: config, enableCompletion: nil)
         module.enable(request)
         module.isEnabled = true
@@ -189,7 +189,7 @@ class TealiumDeviceDataModuleTests: XCTestCase {
                 "battery_percent",
                 "device_is_charging",
                 "user_locale",
-                "app_orientation",
+//                "app_orientation", // does not work correctly without a host app currently
                 "device_orientation",
                 "device_orientation_extended",
                 "carrier",
@@ -288,7 +288,7 @@ class TealiumDeviceDataModuleTests: XCTestCase {
                 "battery_percent",
                 "device_is_charging",
                 "user_locale",
-                "app_orientation",
+//                "app_orientation", // does not work correctly without a host app currently
                 "device_orientation",
                 "device_orientation_extended",
                 "carrier",

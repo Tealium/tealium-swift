@@ -134,7 +134,8 @@ class TestTealiumHelper {
             "collect",
             "tagmanagement",
             "remotecommands",
-            //            "crash", // crash is excluded; separate tests exist for crash
+            "location",
+            "crash", // crash is excluded; separate tests exist for crash
             "consentmanager",
             "dispatchqueue",
             "visitorservice",

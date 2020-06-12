@@ -13,12 +13,12 @@ import XCTest
 class TealiumAppDataTests: XCTestCase {
 
     var appData: TealiumAppData?
-    var bundle: Bundle?
+    var bundle: Bundle!
 
     override func setUp() {
         super.setUp()
-        appData = TealiumAppData(diskStorage: MockDiskStorage())
-        bundle = Bundle(for: TealiumAppData.self)
+        bundle = Bundle(for: type(of: self))
+        appData = TealiumAppData(diskStorage: MockDiskStorage(), bundle: bundle)
     }
 
     override func tearDown() {

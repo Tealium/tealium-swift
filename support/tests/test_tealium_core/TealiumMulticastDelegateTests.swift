@@ -7,6 +7,8 @@
 //
 
 @testable import TealiumCore
+@testable import TealiumDeviceData
+@testable import TealiumAppData
 import XCTest
 
 class TealiumMulticastDelegateTests: XCTestCase {

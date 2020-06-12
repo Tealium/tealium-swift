@@ -30,8 +30,8 @@ class TealiumTagManagementModuleTests: XCTestCase {
     func testMinimumProtocolsReturn() {
         let expectation = self.expectation(description: "minimumProtocolsReturned")
         let helper = TestTealiumHelper()
-        let module = TealiumTagManagementModule(delegate: nil)
-        helper.modulesReturnsMinimumProtocols(module: module) { success, failingProtocols in
+        module = TealiumTagManagementModule(delegate: nil)
+        helper.modulesReturnsMinimumProtocols(module: module!) { success, failingProtocols in
 
             expectation.fulfill()
             XCTAssertTrue(success, "Not all protocols returned. Failing protocols: \(failingProtocols)")

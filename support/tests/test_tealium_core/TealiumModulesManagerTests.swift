@@ -16,7 +16,7 @@
 @testable import TealiumVisitorService
 import XCTest
 #if os(iOS)
-@testable import TealiumCrashReporteriOS
+//@testable import TealiumCrashReporteriOS
 #endif
 let defaultTealiumConfig = TealiumConfig(account: "tealiummobile",
                                          profile: "demo",
