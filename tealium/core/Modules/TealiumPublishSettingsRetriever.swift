@@ -103,7 +103,6 @@ class TealiumPublishSettingsRetriever {
                 self.delegate?.didUpdate(settings)
             } else {
                 self.cachedSettings?.lastFetch = Date()
-                self.diskStorage.save(settings, completion: nil)
             }
         }
 
@@ -142,22 +141,24 @@ class TealiumPublishSettingsRetriever {
         }.resume()
     }
     
-    
     func getPublishSettings(from data: Data) -> RemotePublishSettings? {
         guard let dataString = String(data: data, encoding: .utf8),
-            let startScript = dataString.range(of: "var mps = "),
-            let endScript = dataString.range(of: "</script>") else {
+            let startScript = dataString.range(of: "var mps = ") else {
             return nil
         }
         
-        let string = dataString[..<endScript.lowerBound]
-        let newSubString = string[startScript.upperBound...]
+        
+        let mpsJSON = dataString[startScript.upperBound...]
+        guard let mpsJSONEnd = mpsJSON.range(of: "</script>") else {
+            return nil
+        }
+        
+        let fullMPSScript = mpsJSON[..<mpsJSONEnd.lowerBound]
 
-        guard let data = newSubString.data(using: .utf8) else {
+        guard let data = fullMPSScript.data(using: .utf8) else {
             return nil
         }
-        
+    
         return try? JSONDecoder().decode(RemotePublishSettings.self, from: data)
-
     }
 }
