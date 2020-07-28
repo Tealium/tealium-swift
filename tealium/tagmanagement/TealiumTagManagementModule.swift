@@ -329,7 +329,12 @@ public class TealiumTagManagementModule: TealiumModule {
         } else {
             self.tagManagement = nil
         }
-        didFinish(request)
+        TealiumQueues.backgroundConcurrentQueue.write { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.didFinish(request)
+        }
     }
 
     deinit {

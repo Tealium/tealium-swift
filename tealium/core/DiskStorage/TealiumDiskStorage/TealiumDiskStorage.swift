@@ -8,7 +8,7 @@ import Foundation
 // swiftlint:disable type_body_length
 public class TealiumDiskStorage: TealiumDiskStorageProtocol {
 
-    static let readWriteQueue = ReadWrite("TealiumDiskStorage.label")
+    static let readWriteQueue = TealiumQueues.backgroundConcurrentQueue
     let defaultDirectory = Disk.Directory.caches
     var currentDirectory: Disk.Directory
     let filePrefix: String
@@ -196,7 +196,7 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
                         completion?(false, nil, nil)
                         return
                 }
-	                try Disk.save(data, to: self.currentDirectory, as: self.filePath(fileName))
+                try Disk.save(data, to: self.currentDirectory, as: self.filePath(fileName))
             } catch let error {
                 completion?(false, nil, error)
             }
