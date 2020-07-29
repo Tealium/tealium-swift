@@ -18,6 +18,7 @@ class TealiumPersistentDataTests: XCTestCase {
     var persistentData: TealiumPersistentData?
     var loadCompletion: TealiumCompletion?
     var loadShouldSucceed: Bool = false
+    var tealium: Tealium?
     static let testPersistentData = ["key": "value",
                                            "anotherKey": "anotherValue"]
 
@@ -162,6 +163,66 @@ class TealiumPersistentDataTests: XCTestCase {
         data?.forEach {
             XCTAssertNotNil(data![$0.key], "Expected data missing: \($0.key)")
         }
+    }
+
+    func testAddPersistendDataFromBackgroundThread() {
+        saveExpectation = expectation(description: "testAddPersistendDataFromBackgroundThread")
+        testTealiumConfig.shouldUseRemotePublishSettings = false
+        testTealiumConfig.batchingEnabled = false
+        tealium = Tealium(config: testTealiumConfig) { [weak self] _ in
+            self?.tealium?.persistentData()?.deleteAllData()
+            for i in 0...100 {
+                DispatchQueue.global(qos: .background).async {
+                    self?.tealium?.persistentData()?.add(data: ["testkey\(i)": "testval"])
+                }
+            }
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
+            let data = self.tealium?.persistentData()?.dictionary
+            self.saveExpectation?.fulfill()
+            self.largeDataSet.forEach {
+                XCTAssertNotNil(data![$0.key], "Expected data missing: \($0.key)")
+            }
+        }
+
+        wait(for: [saveExpectation!], timeout: 20)
+    }
+
+    func testAddPersistendDataFromUtilityThread() {
+        saveExpectation = expectation(description: "testAddPersistendDataFromUtilityThread")
+        testTealiumConfig.shouldUseRemotePublishSettings = false
+        testTealiumConfig.batchingEnabled = false
+        tealium = Tealium(config: testTealiumConfig) { [weak self] _ in
+            self?.tealium?.persistentData()?.deleteAllData()
+            for i in 0...100 {
+                DispatchQueue.global(qos: .utility).async {
+                    self?.tealium?.persistentData()?.add(data: ["testkey\(i)": "testval"])
+                }
+            }
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
+            let data = self.tealium?.persistentData()?.dictionary
+            self.saveExpectation?.fulfill()
+            self.largeDataSet.forEach {
+                XCTAssertNotNil(data![$0.key], "Expected data missing: \($0.key)")
+            }
+        }
+
+        wait(for: [saveExpectation!], timeout: 20)
+    }
+
+}
+
+extension TealiumPersistentDataTests {
+
+    var largeDataSet: [String: Any] {
+        var dictionary = [String: Any]()
+        for i in 1...100 {
+            dictionary["testkey\(i)"] = "testval"
+        }
+        return dictionary
     }
 
 }

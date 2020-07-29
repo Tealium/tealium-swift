@@ -11,16 +11,15 @@ import Foundation
 import TealiumCore
 #endif
 
-//// MARK:
-//// MARK: PERSISTENT DATA
-
-public struct TealiumPersistentDataStorage: Codable {
+public class TealiumPersistentDataStorage: Codable {
     var data: AnyCodable
     lazy var isEmpty: Bool = {
-        guard let totalValues = (self.data.value as? [String: Any])?.count else {
-            return true
+        TealiumQueues.backgroundConcurrentQueue.read { [weak self] in
+            guard let totalValues = (self?.data.value as? [String: Any])?.count else {
+                return true
+            }
+            return totalValues == 0
         }
-        return !(totalValues > 0)
     }()
 
     public init() {
@@ -28,28 +27,39 @@ public struct TealiumPersistentDataStorage: Codable {
     }
 
     public func values() -> [String: Any]? {
-        return self.data.value as? [String: Any]
+        TealiumQueues.backgroundConcurrentQueue.read { [weak self] in
+            guard let self = self else {
+                return nil
+            }
+            return self.data.value as? [String: Any]
+        }
     }
 
-    public mutating func add(data: [String: Any]) {
+    public func add(data: [String: Any]) {
         var newData = [String: Any]()
-
-        if let existingData = self.data.value as? [String: Any] {
-            newData += existingData
+        TealiumQueues.backgroundConcurrentQueue.write { [weak self] in
+            guard let self = self else {
+                return
+            }
+            if let existingData = self.data.value as? [String: Any] {
+                newData += existingData
+            }
+            newData += data
+            self.data = newData.codable
         }
-
-        newData += data
-        self.data = newData.codable
     }
 
-    public mutating func delete(forKey key: String) {
-        guard var data = self.data.value as? [String: Any] else {
-            return
+    public func delete(forKey key: String) {
+        TealiumQueues.backgroundConcurrentQueue.write { [weak self] in
+            guard let self = self else {
+                return
+            }
+            guard var data = self.data.value as? [String: Any] else {
+                return
+            }
+            data[key] = nil
+            self.data = data.codable
         }
-
-        data[key] = nil
-
-        self.data = data.codable
     }
 
 }
