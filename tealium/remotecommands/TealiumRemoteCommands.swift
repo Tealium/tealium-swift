@@ -14,7 +14,7 @@ import TealiumCore
 /// Manages instances of TealiumRemoteCommand
 public class TealiumRemoteCommands: NSObject {
 
-    weak var queue = TealiumQueues.backgroundSerialQueue
+    weak var queue = TealiumQueues.backgroundSerialDispatchQueue
     var commands = [TealiumRemoteCommand]()
     var isEnabled = false
     static var pendingResponses = Atomic<[String: Bool]>(value: [String: Bool]())

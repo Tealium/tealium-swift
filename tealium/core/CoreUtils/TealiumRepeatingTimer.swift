@@ -20,7 +20,7 @@ public class TealiumRepeatingTimer {
     /// - Parameters:
     ///     - timeInterval: TimeInterval between runs of the timed event￼
     ///     - dispatchQueue: The queue to use for the timer
-    public init(timeInterval: TimeInterval, dispatchQueue: DispatchQueue = TealiumQueues.backgroundSerialQueue) {
+    public init(timeInterval: TimeInterval, dispatchQueue: DispatchQueue = TealiumQueues.backgroundSerialDispatchQueue) {
         self.timeInterval = timeInterval
         self.dispatchQueue = dispatchQueue
     }

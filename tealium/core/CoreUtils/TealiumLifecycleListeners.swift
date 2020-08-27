@@ -82,7 +82,7 @@ public class TealiumLifecycleListeners {
         // swiftlint:enable identifier_name
 
         let operationQueue = OperationQueue()
-        operationQueue.underlyingQueue = TealiumQueues.backgroundSerialQueue
+        operationQueue.underlyingQueue = TealiumQueues.backgroundSerialDispatchQueue
 
         wakeNotificationObserver = NotificationCenter.default.addObserver(forName: notificationNameApplicationDidBecomeActive, object: nil, queue: operationQueue) { _ in
             self.wake()

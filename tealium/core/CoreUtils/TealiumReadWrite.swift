@@ -24,9 +24,9 @@ public class ReadWrite {
         return DispatchQueue.getSpecific(key: barrierSpecificKey) == true
     }
 
-    public init(_ label: String) {
+    public init(_ label: String, type: DispatchQueue.Attributes? = nil) {
         specificValue = label
-        queue = DispatchQueue(label: label, qos: .background, attributes: .concurrent, autoreleaseFrequency: .inherit, target: .global())
+        queue = DispatchQueue(label: label, qos: .utility, attributes: type ?? [], autoreleaseFrequency: .inherit, target: .global(qos: .utility))
         queue.setSpecific(key: queueSpecificKey, value: specificValue)
         queue.setSpecific(key: barrierSpecificKey, value: false)
     }

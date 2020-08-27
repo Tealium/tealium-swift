@@ -41,10 +41,13 @@ open class TealiumRemoteCommand {
     ///￼
     /// - Parameter response: `TealiumRemoteCommandResponse` object containing information from the TiQ webview
     func completeWith(response: TealiumRemoteCommandResponse) {
-
-        delegate?.tealiumRemoteCommandRequestsExecution(self,
-                                                        response: response)
-
+        TealiumQueues.backgroundSerialDispatchQueue.async { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.delegate?.tealiumRemoteCommandRequestsExecution(self,
+                                                            response: response)
+        }
     }
 
     /// Sends a notification to the TiQ webview when the remote command has finished executing.

@@ -8,7 +8,7 @@ import Foundation
 // swiftlint:disable type_body_length
 public class TealiumDiskStorage: TealiumDiskStorageProtocol {
 
-    static let readWriteQueue = TealiumQueues.backgroundConcurrentQueue
+    static let readWriteQueue = TealiumQueues.backgroundSerialQueue
     let defaultDirectory = Disk.Directory.caches
     var currentDirectory: Disk.Directory
     let filePrefix: String
@@ -397,8 +397,8 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
     ///     - value: `String`
     public func saveStringToDefaults(key: String,
                                      value: String) {
-        TealiumDiskStorage.readWriteQueue.write {
-            self.defaultsStorage?.set(value, forKey: key)
+        TealiumDiskStorage.readWriteQueue.write { [weak self] in
+            self?.defaultsStorage?.set(value, forKey: key)
         }
     }
 
@@ -407,10 +407,9 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
     /// - Parameter key: `String`
     /// - Returns: `String?`
     public func getStringFromDefaults(key: String) -> String? {
-        TealiumDiskStorage.readWriteQueue.read {
-            return self.defaultsStorage?.value(forKey: key) as? String
+        TealiumDiskStorage.readWriteQueue.read { [weak self] in
+            return self?.defaultsStorage?.value(forKey: key) as? String
         }
-        return nil
     }
 
     /// Saves `Any` value to UserDefaults.
@@ -420,8 +419,8 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
     ///     - value: `Any`
     public func saveToDefaults(key: String,
                                value: Any) {
-        TealiumDiskStorage.readWriteQueue.write {
-            self.defaultsStorage?.set(value, forKey: key)
+        TealiumDiskStorage.readWriteQueue.write { [weak self] in
+            self?.defaultsStorage?.set(value, forKey: key)
         }
     }
 
@@ -430,18 +429,17 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
     /// - Parameter key: `String`
     /// - Returns: `Any?`
     public func getFromDefaults(key: String) -> Any? {
-        TealiumDiskStorage.readWriteQueue.read {
-            return self.defaultsStorage?.value(forKey: key)
+        TealiumDiskStorage.readWriteQueue.read { [weak self] in
+            return self?.defaultsStorage?.value(forKey: key)
         }
-        return nil
     }
 
     /// Deletes a value from UserDefaults
     ///
     /// - Parameter key: `String`
     public func removeFromDefaults(key: String) {
-        TealiumDiskStorage.readWriteQueue.write {
-            self.defaultsStorage?.removeObject(forKey: key)
+        TealiumDiskStorage.readWriteQueue.write { [weak self] in
+            self?.defaultsStorage?.removeObject(forKey: key)
         }
     }
 
