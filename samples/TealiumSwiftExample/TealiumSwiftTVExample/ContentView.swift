@@ -14,15 +14,15 @@ struct ContentView: View {
         NavigationView {
             VStack(spacing: 40) {
                 Button(action: {
-                    TealiumHelper.trackView(title: "screen_view", data: nil)
+                    TealiumHelper.trackView(title: "screen_view", dataLayer: nil)
                 }) {
                     Text("Track View")
                 }
                 Button(action: {
                     TealiumHelper.trackView(title: "button_click",
-                                            data: ["event_category": "example",
-                                                   "event_action": "click",
-                                                   "event_label": "Track Event"])
+                                            dataLayer: ["event_category": "example",
+                                                        "event_action": "click",
+                                                        "event_label": "Track Event"])
                 }) {
                     Text("Track Event")
                 }

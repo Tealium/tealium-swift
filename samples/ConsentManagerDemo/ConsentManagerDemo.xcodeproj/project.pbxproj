@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -16,20 +16,7 @@
 		43DE5AFA360FFEF742BBEB74 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DE583BE6055ECA50C044DE /* AppDelegate.swift */; };
 		43DE5CBB82CA9E083903B577 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43DE5A805439041A9E22BD0D /* Main.storyboard */; };
 		43DE5E51A748A462BCEB9D55 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DE5C1B728C561D14D7ED3C /* ViewController.swift */; };
-		CF3CB85D23F32A1900BAD43A /* Eureka in Frameworks */ = {isa = PBXBuildFile; productRef = CF3CB85C23F32A1900BAD43A /* Eureka */; };
-		CF739D1B23F4DF3200BD96D9 /* TealiumDelegate in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D1A23F4DF3200BD96D9 /* TealiumDelegate */; };
-		CF739D1D23F4DF3200BD96D9 /* TealiumVolatileData in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D1C23F4DF3200BD96D9 /* TealiumVolatileData */; };
-		CF739D1F23F4DF3200BD96D9 /* TealiumLifecycle in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D1E23F4DF3200BD96D9 /* TealiumLifecycle */; };
-		CF739D2123F4DF3200BD96D9 /* TealiumAppData in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D2023F4DF3200BD96D9 /* TealiumAppData */; };
-		CF739D2323F4DF3200BD96D9 /* TealiumLogger in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D2223F4DF3200BD96D9 /* TealiumLogger */; };
-		CF739D2523F4DF3200BD96D9 /* TealiumPersistentData in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D2423F4DF3200BD96D9 /* TealiumPersistentData */; };
-		CF739D2723F4DF3200BD96D9 /* TealiumTagManagement in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D2623F4DF3200BD96D9 /* TealiumTagManagement */; };
-		CF739D2923F4DF3200BD96D9 /* TealiumConsentManager in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D2823F4DF3200BD96D9 /* TealiumConsentManager */; };
-		CF739D2B23F4DF3200BD96D9 /* TealiumConnectivity in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D2A23F4DF3200BD96D9 /* TealiumConnectivity */; };
-		CF739D2D23F4DF3200BD96D9 /* TealiumCollect in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D2C23F4DF3200BD96D9 /* TealiumCollect */; };
-		CF739D2F23F4DF3200BD96D9 /* TealiumDispatchQueue in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D2E23F4DF3200BD96D9 /* TealiumDispatchQueue */; };
-		CF739D3123F4DF3200BD96D9 /* TealiumCore in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D3023F4DF3200BD96D9 /* TealiumCore */; };
-		CF739D3323F4DF3200BD96D9 /* TealiumDeviceData in Frameworks */ = {isa = PBXBuildFile; productRef = CF739D3223F4DF3200BD96D9 /* TealiumDeviceData */; };
+		D22AB216C5290DEBF755CC72 /* Pods_ConsentManagerDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EE7051B6BCC13D58EC209EA /* Pods_ConsentManagerDemo.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +50,9 @@
 		43DE5C1B728C561D14D7ED3C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		43DE5CB2165F35C4FAF232AD /* ConsentManagerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ConsentManagerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43DE5DD7E78F37888A1E8868 /* ConsentManagerDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ConsentManagerDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5EE7051B6BCC13D58EC209EA /* Pods_ConsentManagerDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ConsentManagerDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5FD01BB4497AF8AA71E0A7B1 /* Pods-ConsentManagerDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ConsentManagerDemo.debug.xcconfig"; path = "Target Support Files/Pods-ConsentManagerDemo/Pods-ConsentManagerDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		BB3F552547EDF8840F1D4479 /* Pods-ConsentManagerDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ConsentManagerDemo.release.xcconfig"; path = "Target Support Files/Pods-ConsentManagerDemo/Pods-ConsentManagerDemo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,26 +74,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF739D2923F4DF3200BD96D9 /* TealiumConsentManager in Frameworks */,
-				CF739D2523F4DF3200BD96D9 /* TealiumPersistentData in Frameworks */,
-				CF739D2F23F4DF3200BD96D9 /* TealiumDispatchQueue in Frameworks */,
-				CF739D3123F4DF3200BD96D9 /* TealiumCore in Frameworks */,
-				CF739D1D23F4DF3200BD96D9 /* TealiumVolatileData in Frameworks */,
-				CF739D2B23F4DF3200BD96D9 /* TealiumConnectivity in Frameworks */,
-				CF739D3323F4DF3200BD96D9 /* TealiumDeviceData in Frameworks */,
-				CF739D1F23F4DF3200BD96D9 /* TealiumLifecycle in Frameworks */,
-				CF3CB85D23F32A1900BAD43A /* Eureka in Frameworks */,
-				CF739D1B23F4DF3200BD96D9 /* TealiumDelegate in Frameworks */,
-				CF739D2323F4DF3200BD96D9 /* TealiumLogger in Frameworks */,
-				CF739D2D23F4DF3200BD96D9 /* TealiumCollect in Frameworks */,
-				CF739D2723F4DF3200BD96D9 /* TealiumTagManagement in Frameworks */,
-				CF739D2123F4DF3200BD96D9 /* TealiumAppData in Frameworks */,
+				D22AB216C5290DEBF755CC72 /* Pods_ConsentManagerDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		373C6B6AEEAF5AF478C000FD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5EE7051B6BCC13D58EC209EA /* Pods_ConsentManagerDemo.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		43DE54679C539A8C535C5308 /* ConsentManagerDemo */ = {
 			isa = PBXGroup;
 			children = (
@@ -136,7 +121,19 @@
 			children = (
 				43DE55015317FF15E74F9D3E /* Products */,
 				43DE54679C539A8C535C5308 /* ConsentManagerDemo */,
+				E1774365A732ECE2E91C1D33 /* Pods */,
+				373C6B6AEEAF5AF478C000FD /* Frameworks */,
 			);
+			sourceTree = "<group>";
+		};
+		E1774365A732ECE2E91C1D33 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5FD01BB4497AF8AA71E0A7B1 /* Pods-ConsentManagerDemo.debug.xcconfig */,
+				BB3F552547EDF8840F1D4479 /* Pods-ConsentManagerDemo.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -146,31 +143,17 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 43DE50BBC38B6266F993544B /* Build configuration list for PBXNativeTarget "ConsentManagerDemo" */;
 			buildPhases = (
+				5B649084D4237D160510F17D /* [CP] Check Pods Manifest.lock */,
 				43DE51561B1BBCB2297DAF88 /* Sources */,
 				43DE5FD7ACD3C40F5CE5236A /* Frameworks */,
 				43DE5158E867469CC2357E4B /* Resources */,
+				946905C21153A6A65058A45C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = ConsentManagerDemo;
-			packageProductDependencies = (
-				CF3CB85C23F32A1900BAD43A /* Eureka */,
-				CF739D1A23F4DF3200BD96D9 /* TealiumDelegate */,
-				CF739D1C23F4DF3200BD96D9 /* TealiumVolatileData */,
-				CF739D1E23F4DF3200BD96D9 /* TealiumLifecycle */,
-				CF739D2023F4DF3200BD96D9 /* TealiumAppData */,
-				CF739D2223F4DF3200BD96D9 /* TealiumLogger */,
-				CF739D2423F4DF3200BD96D9 /* TealiumPersistentData */,
-				CF739D2623F4DF3200BD96D9 /* TealiumTagManagement */,
-				CF739D2823F4DF3200BD96D9 /* TealiumConsentManager */,
-				CF739D2A23F4DF3200BD96D9 /* TealiumConnectivity */,
-				CF739D2C23F4DF3200BD96D9 /* TealiumCollect */,
-				CF739D2E23F4DF3200BD96D9 /* TealiumDispatchQueue */,
-				CF739D3023F4DF3200BD96D9 /* TealiumCore */,
-				CF739D3223F4DF3200BD96D9 /* TealiumDeviceData */,
-			);
 			productName = ConsentManagerDemo;
 			productReference = 43DE5CB2165F35C4FAF232AD /* ConsentManagerDemo.app */;
 			productType = "com.apple.product-type.application";
@@ -218,7 +201,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = "";
-				ORGANIZATIONNAME = "___FULLUSERNAME___";
+				ORGANIZATIONNAME = ___FULLUSERNAME___;
 				TargetAttributes = {
 					43DE55A6C155C73D2EC3DECF = {
 						DevelopmentTeam = XC939GDC9P;
@@ -241,10 +224,6 @@
 				Base,
 			);
 			mainGroup = 43DE5F59111DC87781A7F32E;
-			packageReferences = (
-				CF3CB85B23F32A1900BAD43A /* XCRemoteSwiftPackageReference "Eureka" */,
-				CF739D1923F4DF3200BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */,
-			);
 			productRefGroup = 43DE55015317FF15E74F9D3E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -282,6 +261,51 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5B649084D4237D160510F17D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ConsentManagerDemo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		946905C21153A6A65058A45C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ConsentManagerDemo/Pods-ConsentManagerDemo-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
+				"${BUILT_PRODUCTS_DIR}/tealium-swift/TealiumSwift.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Eureka.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TealiumSwift.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ConsentManagerDemo/Pods-ConsentManagerDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		43DE51561B1BBCB2297DAF88 /* Sources */ = {
@@ -350,11 +374,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = ConsentManagerDemoUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.ConsentManagerDemoUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -420,9 +440,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -475,24 +493,19 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_INSTALL_OBJC_HEADER = NO;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 5.0;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
 		43DE54DEEE06479E7AEE39D6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BB3F552547EDF8840F1D4479 /* Pods-ConsentManagerDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = XC939GDC9P;
 				INFOPLIST_FILE = ConsentManagerDemo/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.ConsentManagerDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -504,11 +517,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = ConsentManagerDemoUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.ConsentManagerDemoUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -519,14 +528,12 @@
 		};
 		43DE5787212D2C79C05189BE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5FD01BB4497AF8AA71E0A7B1 /* Pods-ConsentManagerDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = XC939GDC9P;
 				INFOPLIST_FILE = ConsentManagerDemo/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.ConsentManagerDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -539,11 +546,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ConsentManagerDemo.app/ConsentManagerDemo";
 				INFOPLIST_FILE = ConsentManagerDemoTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.ConsentManagerDemoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -557,11 +560,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ConsentManagerDemo.app/ConsentManagerDemo";
 				INFOPLIST_FILE = ConsentManagerDemoTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.ConsentManagerDemoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -610,98 +609,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		CF3CB85B23F32A1900BAD43A /* XCRemoteSwiftPackageReference "Eureka" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/xmartlabs/Eureka.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.2.0;
-			};
-		};
-		CF739D1923F4DF3200BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Tealium/tealium-swift.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.9.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		CF3CB85C23F32A1900BAD43A /* Eureka */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CF3CB85B23F32A1900BAD43A /* XCRemoteSwiftPackageReference "Eureka" */;
-			productName = Eureka;
-		};
-		CF739D1A23F4DF3200BD96D9 /* TealiumDelegate */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CF739D1923F4DF3200BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
-			productName = TealiumDelegate;
-		};
-		CF739D1C23F4DF3200BD96D9 /* TealiumVolatileData */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CF739D1923F4DF3200BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
-			productName = TealiumVolatileData;
-		};
-		CF739D1E23F4DF3200BD96D9 /* TealiumLifecycle */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CF739D1923F4DF3200BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
-			productName = TealiumLifecycle;
-		};
-		CF739D2023F4DF3200BD96D9 /* TealiumAppData */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CF739D1923F4DF3200BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
-			productName = TealiumAppData;
-		};
-		CF739D2223F4DF3200BD96D9 /* TealiumLogger */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CF739D1923F4DF3200BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
-			productName = TealiumLogger;
-		};
-		CF739D2423F4DF3200BD96D9 /* TealiumPersistentData */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CF739D1923F4DF3200BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
-			productName = TealiumPersistentData;
-		};
-		CF739D2623F4DF3200BD96D9 /* TealiumTagManagement */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CF739D1923F4DF3200BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
-			productName = TealiumTagManagement;
-		};
-		CF739D2823F4DF3200BD96D9 /* TealiumConsentManager */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CF739D1923F4DF3200BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
-			productName = TealiumConsentManager;
-		};
-		CF739D2A23F4DF3200BD96D9 /* TealiumConnectivity */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CF739D1923F4DF3200BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
-			productName = TealiumConnectivity;
-		};
-		CF739D2C23F4DF3200BD96D9 /* TealiumCollect */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CF739D1923F4DF3200BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
-			productName = TealiumCollect;
-		};
-		CF739D2E23F4DF3200BD96D9 /* TealiumDispatchQueue */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CF739D1923F4DF3200BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
-			productName = TealiumDispatchQueue;
-		};
-		CF739D3023F4DF3200BD96D9 /* TealiumCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CF739D1923F4DF3200BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
-			productName = TealiumCore;
-		};
-		CF739D3223F4DF3200BD96D9 /* TealiumDeviceData */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CF739D1923F4DF3200BD96D9 /* XCRemoteSwiftPackageReference "tealium-swift" */;
-			productName = TealiumDeviceData;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 43DE50FCD3556644E4CC1F17 /* Project object */;
 }

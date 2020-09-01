@@ -1,0 +1,42 @@
+PODS:
+  - SCLAlertView (0.8)
+  - SwiftConfettiView (0.1.0)
+  - tealium-swift/Collect (2.0.0):
+    - tealium-swift/Core
+  - tealium-swift/Core (2.0.0)
+  - tealium-swift/Lifecycle (2.0.0):
+    - tealium-swift/Core
+  - tealium-swift/Location (2.0.0):
+    - tealium-swift/Core
+  - tealium-swift/TagManagement (2.0.0):
+    - tealium-swift/Core
+  - tealium-swift/VisitorService (2.0.0):
+    - tealium-swift/Core
+
+DEPENDENCIES:
+  - SCLAlertView
+  - SwiftConfettiView
+  - tealium-swift/Collect (from `../..`)
+  - tealium-swift/Core (from `../..`)
+  - tealium-swift/Lifecycle (from `../..`)
+  - tealium-swift/Location (from `../..`)
+  - tealium-swift/TagManagement (from `../..`)
+  - tealium-swift/VisitorService (from `../..`)
+
+SPEC REPOS:
+  trunk:
+    - SCLAlertView
+    - SwiftConfettiView
+
+EXTERNAL SOURCES:
+  tealium-swift:
+    :path: "../.."
+
+SPEC CHECKSUMS:
+  SCLAlertView: 6a77bb2edfc65e04dbe57725546cb4107a506b85
+  SwiftConfettiView: 1bdbc2e6913b6b1c76d8070802b212508ad5c352
+  tealium-swift: c0b58cc749d23805790de1472407723fa41da2dc
+
+PODFILE CHECKSUM: 90caa9f73ff21f41966a1c7699ab1b38ce3ee0b0
+
+COCOAPODS: 1.9.3

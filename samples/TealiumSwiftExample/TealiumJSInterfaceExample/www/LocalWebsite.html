@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title>WebView Without Utag JS</title>
+  <style>
+      h1 {
+          font-size: 60px;
+      }
+
+    h2 {
+        font-size: 40px;
+    }
+
+    p {
+        font-size: 30px;
+    }
+  .buttonA {
+  background-color: Blue;
+  border: none;
+  color: white;
+  padding: 24px 140px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 20px, 4px, 20px;
+  cursor: pointer;
+  font-size:40px;
+  }
+  </style>
+</head>
+<body>
+    <h1>JS Interface Example - No Utag JS</h1>
+
+    <p>This example shows how to interact between Tealium in an iOS native SDK and a web app that is not loading utag.js</p>
+    
+     <button class="buttonA" onclick="utagLink('button_click', {button_name: 'submit', conversion: true})">utagLink</button>
+     <span>&emsp;&emsp;&emsp;&emsp;</span>
+     <button class="buttonA" onclick="utagView('product_view', {product_id: ['abc123'], product_price: [19.99]})">utagView</button>
+
+    <script type = "text/javascript">
+
+        function utagLink(tealiumEvent, data) {
+            var message = {
+                command: 'track',
+                title: tealiumEvent,
+                data: data
+            }
+            window.webkit.messageHandlers.tealium.postMessage(message);
+        }
+    
+        function utagView(tealiumEvent, data) {
+            var message = {
+               command: 'trackView',
+               title: tealiumEvent,
+               data: data
+            }
+            window.webkit.messageHandlers.tealium.postMessage(message);
+        }
+        
+    </script>
+</body>
+</html>

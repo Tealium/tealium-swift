@@ -15,7 +15,7 @@ read -ra file_array <<< $FILE
 
 for i in $file_array
 do
-    swiftlint autocorrect --config ${PROJECT_DIR}/../.swiftlint_tests.yml $i
+    swiftlint autocorrect --format --config ${PROJECT_DIR}/../.swiftlint_tests.yml $i
     swiftlint lint --config ${PROJECT_DIR}/../.swiftlint_tests.yml $i
 done
 else

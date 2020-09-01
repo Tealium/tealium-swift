@@ -1,0 +1,18 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'TealiumVisitorProfileDemo' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for TealiumVisitorProfileDemo
+  pod 'SwiftConfettiView'
+  pod 'SCLAlertView'
+  pod 'tealium-swift/Core', :path=> '../..'
+  pod 'tealium-swift/TagManagement', :path=> '../..'
+  pod 'tealium-swift/Collect', :path=> '../..'
+  pod 'tealium-swift/Lifecycle', :path=> '../..'
+  pod 'tealium-swift/Location', :path=> '../..'
+  pod 'tealium-swift/VisitorService', :path=> '../..'
+  
+end

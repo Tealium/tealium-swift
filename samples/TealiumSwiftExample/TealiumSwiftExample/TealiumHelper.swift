@@ -1,30 +1,12 @@
 //
 //  TealiumHelper.swift
 //
-//  Created by Christina S on 11/8/19.
+//  Created by Christina S on 7/6/20.
 //  Copyright © 2019 Tealium. All rights reserved.
 //
 
 import Foundation
-import TealiumAppData
-import TealiumCore
-import TealiumCollect
-import TealiumConnectivity
-import TealiumConsentManager
-import TealiumDelegate
-import TealiumDeviceData
-import TealiumDispatchQueue
-import TealiumLifecycle
-import TealiumLogger
-import TealiumPersistentData
-import TealiumVisitorService
-import TealiumVolatileData
-#if os(iOS)
-import TealiumAttribution
-import TealiumLocation
-import TealiumRemoteCommands
-import TealiumTagManagement
-#endif
+import TealiumSwift
 
 enum TealiumConfiguration {
     static let account = "tealiummobile"
@@ -33,65 +15,80 @@ enum TealiumConfiguration {
     static let dataSourceKey = "abc123"
 }
 
-let enableLogs = true // change to false to disable logging
+let enableLogs = true
+
+public enum WebViewExampleType: Equatable {
+    case noUtag // example webview without utag
+    case withUtag // example webview with mobile.html/utag.js
+}
 
 class TealiumHelper {
 
     static let shared = TealiumHelper()
 
     let config = TealiumConfig(account: TealiumConfiguration.account,
-        profile: TealiumConfiguration.profile,
-        environment: TealiumConfiguration.environment,
-        datasource: TealiumConfiguration.dataSourceKey)
+                               profile: TealiumConfiguration.profile,
+                               environment: TealiumConfiguration.environment,
+                               dataSource: TealiumConfiguration.dataSourceKey)
 
     var tealium: Tealium?
+    
+    // set this to change the example that loads - JSInterfaceExample
+    public var exampleType: WebViewExampleType = .withUtag
 
     // MARK: Tealium Initilization
     private init() {
         // Optional Config Settings
-        if enableLogs { config.logLevel = .verbose }
-        config.connectivityRefreshInterval = 5
-        config.consentLoggingEnabled = true
-        config.initialUserConsentStatus = .consented
+        if enableLogs { config.logLevel = .info }
+
         config.shouldUseRemotePublishSettings = false
         config.memoryReportingEnabled = true
-        config.visitorServiceRefreshInterval = 0
-        config.visitorServiceOverrideProfile = "main"
         config.diskStorageEnabled = true
-        config.batterySaverEnabled = true
-        // Batching
-        config.batchSize = 5
-        config.dispatchAfter = 5
-        config.dispatchQueueLimit = 200
-        config.batchingEnabled = true
+        config.visitorServiceDelegate = self
+        config.consentLoggingEnabled = true
+        config.consentPolicy = .ccpa
         
         #if os(iOS)
-        config.searchAdsEnabled = true
-        config.shouldAddCookieObserver = false
-        config.remoteAPIEnabled = true
-        // Location
-        config.useHighAccuracy = true
-        config.updateDistance = 150.0
+        // Add dispatchers
+        config.dispatchers = [Dispatchers.TagManagement, Dispatchers.RemoteCommands]
+        #else
+        config.dispatchers = [Dispatchers.Collect]
+        #endif
+        
+        // Add collectors
+        #if os(iOS)
+        config.collectors = [Collectors.Attribution, Collectors.VisitorService, Collectors.Location]
+        
+        // To enable batching:
+        // config.batchSize = 5
+        // config.batchingEnabled = true
+        
+        // Location - Geofence Monitoring
         config.geofenceUrl = "https://tags.tiqcdn.com/dle/tealiummobile/location/geofences.json"
+        config.useHighAccuracy = true
+        config.updateDistance = 200.0
+        
+        // Remote Commands
+        let remoteCommand = RemoteCommand(commandId: "hello", description: "world") { response in
+            guard let payload = response.payload else {
+                return
+            }
+            // Do something w/remote command payload
+            if enableLogs {
+                print(payload)
+            }
+        }
+        config.addRemoteCommand(remoteCommand)
         #endif
         
-        // External and Visitor Service delegate
-        config.addDelegate(self)
-        config.addVisitorServiceDelegate(self)
-
-        // Remote command example
-        #if os(iOS)
-            let remoteCommand = TealiumRemoteCommand(commandId: "example",
-                description: "Example Remote Command") { response in
-                // use the respose payload from the webview to do something
-                print(response.payload())
-            }
-            config.addRemoteCommand(remoteCommand)
-        #endif
-
         tealium = Tealium(config: config) { response in
             // Optional post init processing
-            self.tealium?.volatileData()?.add(data: ["key1": "value1"])
+            self.tealium?.dataLayer.add(data: ["somekey": "someval"], expiry: .afterCustom((.months, 1)))
+            self.tealium?.dataLayer.add(key: "someotherkey", value: "someotherval", expiry: .forever)
+            #if os(iOS)
+            // Location
+            self.tealium?.location?.requestAuthorization()
+            #endif
         }
 
     }
@@ -100,17 +97,19 @@ class TealiumHelper {
         _ = TealiumHelper.shared
     }
 
-    class func trackView(title: String, data: [String: Any]?) {
-        TealiumHelper.shared.tealium?.track(title: title, data: data, completion: nil)
+    class func trackView(title: String, dataLayer: [String: Any]?) {
+        let dispatch = TealiumView(title, dataLayer: dataLayer)
+        TealiumHelper.shared.tealium?.track(dispatch)
     }
 
-    class func trackEvent(title: String, data: [String: Any]?) {
-        TealiumHelper.shared.tealium?.track(title: title, data: data, completion: nil)
+    class func trackEvent(title: String, dataLayer: [String: Any]?) {
+        let dispatch = TealiumEvent(title, dataLayer: dataLayer)
+        TealiumHelper.shared.tealium?.track(dispatch)
     }
-
+    
     class func joinTrace(_ traceID: String) {
-        TealiumHelper.shared.tealium?.joinTrace(traceId: traceID)
-        TealiumHelper.trackEvent(title: "trace_started", data: nil)
+        TealiumHelper.shared.tealium?.joinTrace(id: traceID)
+        TealiumHelper.trackEvent(title: "trace_started", dataLayer: nil)
     }
 
     class func leaveTrace() {
@@ -119,62 +118,13 @@ class TealiumHelper {
 }
 
 // MARK: Visitor Service Module Delegate
-extension TealiumHelper: TealiumVisitorServiceDelegate {
-    func profileDidUpdate(profile: TealiumVisitorProfile?) {
-        guard let profile = profile else {
-            return
-        }
-        if let json = try? JSONEncoder().encode(profile), let string = String(data: json, encoding: .utf8) {
+extension TealiumHelper: VisitorServiceDelegate {
+    func didUpdate(visitorProfile: TealiumVisitorProfile) {
+        if let json = try? JSONEncoder().encode(visitorProfile),
+            let string = String(data: json, encoding: .utf8) {
             if enableLogs {
                 print(string)
             }
         }
     }
-}
-
-// MARK: Tealium Delegate
-extension TealiumHelper: TealiumDelegate {
-
-    func tealiumShouldTrack(data: [String: Any]) -> Bool {
-        return true
-    }
-
-    func tealiumTrackCompleted(success: Bool, info: [String: Any]?, error: Error?) {
-        if enableLogs {
-            print("\n*** Tealium Helper: Tealium Delegate : tealiumTrackCompleted *** Track finished. Was successful:\(success)\nInfo:\(info as AnyObject)\((error != nil) ? "\nError:\(String(describing: error))" : "")")
-        }
-    }
-}
-
-// MARK: Tealium Consent Manager Delegate
-extension TealiumHelper: TealiumConsentManagerDelegate {
-    func willDropTrackingCall(_ request: TealiumTrackRequest) {
-        // ...
-    }
-
-    func willQueueTrackingCall(_ request: TealiumTrackRequest) {
-        // ...
-    }
-
-    func willSendTrackingCall(_ request: TealiumTrackRequest) {
-        // ...
-    }
-
-    func consentStatusChanged(_ status: TealiumConsentStatus) {
-        // ...
-    }
-
-    func userConsentedToTracking() {
-        // ...
-    }
-
-    func userOptedOutOfTracking() {
-        // ...
-    }
-
-    func userChangedConsentCategories(categories: [TealiumConsentCategories]) {
-        // ...
-    }
-
-
 }

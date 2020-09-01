@@ -12,12 +12,12 @@ import XCTest
 
 class TealiumLifecycleTests: XCTestCase {
 
-    var lifecycle: TealiumLifecycle!
+    var lifecycle: Lifecycle!
 
     override func setUp() {
         super.setUp()
 
-        lifecycle = TealiumLifecycle()
+        lifecycle = Lifecycle()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
 
@@ -32,7 +32,7 @@ class TealiumLifecycleTests: XCTestCase {
         _ = lifecycle!.newLaunch(at: Date(),
                                  overrideSession: nil)
         let data = lifecycle.asDictionary(type: "launch",
-                                                 for: Date())
+                                          for: Date())
 
         let expectedKeys = ["lifecycle_dayofweek_local",
                             "lifecycle_dayssincelaunch",
@@ -50,12 +50,12 @@ class TealiumLifecycleTests: XCTestCase {
                             "lifecycle_totalsleepcount",
                             "lifecycle_totalwakecount",
                             "lifecycle_type",
-                            "lifecycle_wakecount",
-                            ]
+                            "lifecycle_wakecount"
+        ]
 
         let missingKeys = TestTealiumHelper.missingKeys(fromDictionary: data, keys: expectedKeys)
 
-        XCTAssertTrue(missingKeys.count == 0, "Unexpected keys missing:\(missingKeys)")
+        XCTAssertTrue(missingKeys.isEmpty, "Unexpected keys missing:\(missingKeys)")
     }
 
     func testAllExpectedRegularTrackRequestKeys() {
@@ -79,12 +79,12 @@ class TealiumLifecycleTests: XCTestCase {
                             "lifecycle_totalsleepcount",
                             "lifecycle_totalwakecount",
                             "lifecycle_type",
-                            "lifecycle_wakecount",
+                            "lifecycle_wakecount"
         ]
 
         let missingKeys = TestTealiumHelper.missingKeys(fromDictionary: data, keys: expectedKeys)
 
-        XCTAssertTrue(missingKeys.count == 0, "Unexpected keys missing:\(missingKeys)")
+        XCTAssertTrue(missingKeys.isEmpty, "Unexpected keys missing:\(missingKeys)")
     }
 
     func testDayOfWeekLocal() {
@@ -93,7 +93,7 @@ class TealiumLifecycleTests: XCTestCase {
         if tz.identifier.contains("London") {
             // in 1970, the UK observed Daylight Savings (British Summer Time) for the whole year, hence local time at UTC 00:00:00 was 01:00:00
             expectedDay = "5"
-        } else if tz.identifier.contains("Los_Angeles") {
+        } else if tz.identifier.contains("Los_Angeles") || tz.identifier.contains("Phoenix") {
             expectedDay = "4"
         } else if tz.identifier.contains("Berlin") {
             expectedDay = "5"
@@ -145,6 +145,8 @@ class TealiumLifecycleTests: XCTestCase {
             expectedHour = "1"
         } else if tz.identifier.contains("Los_Angeles") {
             expectedHour = "16"
+        } else if tz.identifier.contains("Phoenix") {
+            expectedHour = "17"
         } else if tz.identifier.contains("Berlin") {
             expectedHour = "1"
         }
@@ -158,7 +160,7 @@ class TealiumLifecycleTests: XCTestCase {
     func testIsFirstWakeTodayOneWake() {
         let date1 = Date(timeIntervalSince1970: 0)
         _ = lifecycle!.newWake(at: date1, overrideSession: nil)
-        let isFirstWake = lifecycle!.isFirstWakeToday()
+        let isFirstWake = lifecycle!.firstWakeToday
 
         XCTAssertTrue(isFirstWake, "FirstWakeToday returned:\(String(describing: isFirstWake))")
     }
@@ -168,7 +170,7 @@ class TealiumLifecycleTests: XCTestCase {
         let date2 = Date(timeIntervalSince1970: 10)
         _ = lifecycle!.newWake(at: date1, overrideSession: nil)
         _ = lifecycle!.newWake(at: date2, overrideSession: nil)
-        let isFirstWake = lifecycle!.isFirstWakeToday()
+        let isFirstWake = lifecycle!.firstWakeToday
 
         XCTAssertFalse(isFirstWake, "FirstWakeToday returned:\(String(describing: isFirstWake))")
     }
@@ -181,7 +183,7 @@ class TealiumLifecycleTests: XCTestCase {
         _ = lifecycle!.newWake(at: date2, overrideSession: nil)
         _ = lifecycle!.newWake(at: date3, overrideSession: nil)
 
-        let isFirstWake = lifecycle!.isFirstWakeToday()
+        let isFirstWake = lifecycle!.firstWakeToday
 
         XCTAssertTrue(isFirstWake, "FirstWakeToday returned:\(String(describing: isFirstWake)), expected:\"true\"")
     }
@@ -192,7 +194,7 @@ class TealiumLifecycleTests: XCTestCase {
         _ = lifecycle!.newWake(at: date1, overrideSession: nil)
         _ = lifecycle!.newWake(at: date2, overrideSession: nil)
 
-        let isFirstWake = lifecycle!.isFirstWakeThisMonth()
+        let isFirstWake = lifecycle!.firstWakeThisMonth
 
         XCTAssertFalse(isFirstWake, "FirstWakeToday returned:\(String(describing: isFirstWake))")
     }
@@ -203,7 +205,7 @@ class TealiumLifecycleTests: XCTestCase {
         _ = lifecycle!.newWake(at: date1, overrideSession: nil)
         _ = lifecycle!.newWake(at: date2, overrideSession: nil)
 
-        let isFirstWake = lifecycle!.isFirstWakeThisMonth()
+        let isFirstWake = lifecycle!.firstWakeThisMonth
 
         XCTAssertTrue(isFirstWake, "FirstWakeThisMonth returned:\(String(describing: isFirstWake)), expected:\"true\"")
     }
@@ -272,12 +274,12 @@ class TealiumLifecycleTests: XCTestCase {
         let date1 = Date(timeIntervalSince1970: 0)
         let date2 = Date(timeIntervalSince1970: 10)
 
-        let initialSession = TealiumLifecycleSession(withLaunchDate: date1)
-        let session = TealiumLifecycleSession(withLaunchDate: date2)
+        let initialSession = LifecycleSession(launchDate: date1)
+        let session = LifecycleSession(launchDate: date2)
         let sizeLimit = 50
         let testQueue = sizeLimit * 10
 
-        var lifecycle = TealiumLifecycle()
+        var lifecycle = Lifecycle()
         lifecycle.sessionsSize = sizeLimit
 
         lifecycle.sessions.append(initialSession)

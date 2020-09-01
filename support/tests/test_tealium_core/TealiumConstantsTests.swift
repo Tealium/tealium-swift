@@ -22,8 +22,8 @@ class TealiumConstantsTests: XCTestCase {
     }
 
     func testConstantsStrings() {
-        XCTAssertTrue(TealiumTrackType.view.description() == "view")
-        XCTAssertTrue(TealiumTrackType.event.description() == "event")
+        XCTAssertTrue(TealiumTrackType.view.description == "view")
+        XCTAssertTrue(TealiumTrackType.event.description == "event")
     }
 
 }

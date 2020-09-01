@@ -26,12 +26,12 @@ class TealiumUtilsTests: XCTestCase {
     }
 
     func testJSONStringWithDictionary() {
-        let dictionary = ["tealium_account": "hello",
-                          "tealium_environment": "dev",
-                          "tealium_profile": "tester",
+        let dictionary: [String: Any] = ["tealium_account": "hello",
+                                         "tealium_environment": "dev",
+                                         "tealium_profile": "tester"
         ]
 
-        XCTAssertTrue(testJSONString == jsonString(from: dictionary))
+        XCTAssertTrue(testJSONString == dictionary.toJSONString)
     }
 
     func testURLRequest() {
@@ -41,4 +41,32 @@ class TealiumUtilsTests: XCTestCase {
         XCTAssertTrue(try! urlRequest?.httpBody?.gunzipped() == self.testJSONString.data(using: .utf8), "Unexpected request body")
     }
 
+    func testURLRequestWithNaN() {
+        let testDictionaries = [generateTestDict(), generateTestDict(), generateTestDict(), generateTestDict()]
+
+        measure {
+            let jsonString = testDictionaries[(Int.random(in: 0..<4))].toJSONString
+            _ = urlPOSTRequestWithJSONString(jsonString!, dispatchURL: "https://collect.tealiumiq.com/event")
+            _ = urlPOSTRequestWithJSONString(jsonString!, dispatchURL: "https://collect.tealiumiq.com/event")
+            _ = urlPOSTRequestWithJSONString(jsonString!, dispatchURL: "https://collect.tealiumiq.com/event")
+            _ = urlPOSTRequestWithJSONString(jsonString!, dispatchURL: "https://collect.tealiumiq.com/event")
+        }
+
+    }
+
+}
+
+func generateTestDict() -> [String: Any] {
+    var dict = [String: Any]()
+
+    for _ in 0..<200 {
+        dict["\(Int.random(in: 1..<1_000_000_000))"] = "\(Int.random(in: 1..<1_000_000_000))"
+    }
+
+    dict["nan"] = Double.nan
+    dict["infinity"] = Double.infinity
+    dict["tealium_account"] = "hello"
+    dict["tealium_environment"] = "dev"
+    dict["tealium_profile"] = "tester"
+    return dict
 }
