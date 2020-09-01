@@ -26,7 +26,7 @@ class TealiumLifecycleSessionTests: XCTestCase {
         let start = Date(timeIntervalSince1970: 1_480_554_000)     // 2016 DEC 1 - 01:00 UTC
         let end = Date(timeIntervalSince1970: 1_480_557_600)       // 2016 DEC 2 - 02:00 UTC
 
-        var session = TealiumLifecycleSession(withWakeDate: start)
+        var session = LifecycleSession(wakeDate: start)
         session.sleepDate = end
 
         XCTAssertTrue(session.secondsElapsed == 3600, "Unexpected seconds elapsed returned: \(session.secondsElapsed))")
@@ -36,40 +36,11 @@ class TealiumLifecycleSessionTests: XCTestCase {
         let start = Date(timeIntervalSince1970: 1_480_554_000)     // 2016 DEC 1 - 01:00 UTC
         let end = Date(timeIntervalSince1970: 1_480_557_600)       // 2016 DEC 2 - 02:00 UTC
 
-        var session = TealiumLifecycleSession(withLaunchDate: start)
+        var session = LifecycleSession(launchDate: start)
         session.sleepDate = end
 
         XCTAssertTrue(session.secondsElapsed == 3600, "Unexpected seconds elapsed returned: \(session.secondsElapsed))")
         XCTAssertTrue(session.wasLaunch == true, "wasLaunch flag was not flipped by init(withLaunchDate:) command")
-    }
-
-    func testSessionArchiveUnarchive() {
-        let start = Date(timeIntervalSince1970: 1_480_554_000)     // 2016 DEC 1 - 01:00 UTC
-        let end = Date(timeIntervalSince1970: 1_480_557_600)       // 2016 DEC 2 - 02:00 UTC
-
-        let session = TealiumLifecycleLegacySession(withWakeDate: start)
-        session.sleepDate = end
-
-        let sessionId = "testSession"
-
-        let data = NSKeyedArchiver.archivedData(withRootObject: session)
-
-        UserDefaults.standard.set(data, forKey: sessionId)
-
-        guard let defaultsCheckData = UserDefaults.standard.object(forKey: sessionId) as? Data else {
-            XCTFail("Could not unarchive data.")
-            return
-        }
-
-        guard let defaultsCheck = NSKeyedUnarchiver.unarchiveObject(with: defaultsCheckData) as? TealiumLifecycleLegacySession else {
-            XCTFail("Could not unarchive saved data as LifecycleSession")
-            return
-        }
-
-        XCTAssertEqual(defaultsCheck.appVersion, session.appVersion, "Unarchived session: \(defaultsCheck) was different from the original: \(session)")
-        XCTAssertEqual(defaultsCheck.sleepDate, session.sleepDate, "Unarchived session: \(defaultsCheck) was different from the original: \(session)")
-        XCTAssertEqual(defaultsCheck.secondsElapsed, session.secondsElapsed, "Unarchived session: \(defaultsCheck) was different from the original: \(session)")
-        XCTAssertEqual(defaultsCheck.wasLaunch, session.wasLaunch, "Unarchived session: \(defaultsCheck) was different from the original: \(session)")
     }
 
 }

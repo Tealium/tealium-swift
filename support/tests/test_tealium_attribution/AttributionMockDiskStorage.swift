@@ -11,6 +11,9 @@ import Foundation
 @testable import TealiumCore
 
 class AttributionMockDiskStorage: TealiumDiskStorageProtocol {
+
+    var retrieveCount = 0
+
     func append(_ data: [String: Any], fileName: String, completion: TealiumCompletion?) {
 
     }
@@ -24,9 +27,11 @@ class AttributionMockDiskStorage: TealiumDiskStorageProtocol {
     }
 
     func save(_ data: AnyCodable, fileName: String, completion: TealiumCompletion?) {
+
     }
 
     func save<T>(_ data: T, completion: TealiumCompletion?) where T: Encodable {
+
     }
 
     func save<T>(_ data: T, fileName: String, completion: TealiumCompletion?) where T: Encodable {
@@ -44,7 +49,8 @@ class AttributionMockDiskStorage: TealiumDiskStorageProtocol {
             else {
                 return
         }
-        let mockData: [String: String] = Dictionary(uniqueKeysWithValues: TealiumAttributionKey.allCases.map { ($0, "mockdata") })
+        let mockData: [String: String] = Dictionary(uniqueKeysWithValues: AttributionKey.allCases.map { ($0, "mockdata") })
+        retrieveCount += 1
         completion(true, PersistentAttributionData(withDictionary: mockData), nil)
     }
 
@@ -53,9 +59,10 @@ class AttributionMockDiskStorage: TealiumDiskStorageProtocol {
 
     func retrieve<T>(as type: T.Type) -> T? where T: Decodable {
         guard T.self == PersistentAttributionData.self else {
-                return nil
+            return nil
         }
-        let mockData: [String: String] = Dictionary(uniqueKeysWithValues: TealiumAttributionKey.allCases.map { ($0, "mockdata") })
+        let mockData: [String: String] = Dictionary(uniqueKeysWithValues: AttributionKey.allCases.map { ($0, "mockdata") })
+        retrieveCount += 1
         return PersistentAttributionData(withDictionary: mockData) as? T
     }
 

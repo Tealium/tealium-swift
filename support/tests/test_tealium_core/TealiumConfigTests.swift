@@ -18,7 +18,7 @@ class TealiumConfigTests: XCTestCase {
         config = TealiumConfig(account: TealiumTestValue.account,
                                profile: TealiumTestValue.profile,
                                environment: TealiumTestValue.environment,
-                               optionalData: testOptionalData)
+                               options: testOptionalData)
     }
 
     override func tearDown() {
@@ -36,15 +36,15 @@ class TealiumConfigTests: XCTestCase {
         // TODO: Update this to read from a json file of various options
         let key = "key"
         let value = "value"
-        config.optionalData[key] = value
+        config.options[key] = value
 
-        if let retrievedValue = config.optionalData[key] as? String {
+        if let retrievedValue = config.options[key] as? String {
             XCTAssertTrue(retrievedValue == value)
             return
         }
 
         // Value was not as expected
-        print("testSetOptionalData: retrievedValue: \(String(describing: config.optionalData[key]))")
+        print("testSetOptionalData: retrievedValue: \(String(describing: config.options[key]))")
         XCTFail("test failed")
     }
 

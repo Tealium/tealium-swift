@@ -1,20 +1,24 @@
 //
-//  TealiumRemoteCommandsTests.swift
-//  tealium-swift
+//  TealiumRemoteCommandsManagerTests.swift
+//  TealiumRemoteCommandsTests-iOS
 //
-//  Created by Jason Koo on 3/15/17.
-//  Copyright © 2017 Tealium, Inc. All rights reserved.
+//  Created by Christina S on 6/16/20.
+//  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 
 @testable import TealiumCore
 @testable import TealiumRemoteCommands
 import XCTest
 
-class TealiumRemoteCommandsTests: XCTestCase {
+class TealiumRemoteCommandsManagerTests: XCTestCase {
+
+    var tealiumRemoteCommandsManager: RemoteCommandsManager!
 
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        let rc = RemoteCommand(commandId: "webview", description: "test") { _ in }
+        tealiumRemoteCommandsManager = RemoteCommandsManager(delegate: self)
+        tealiumRemoteCommandsManager.add(rc)
     }
 
     override func tearDown() {
@@ -22,82 +26,26 @@ class TealiumRemoteCommandsTests: XCTestCase {
         super.tearDown()
     }
 
-    func testTriggerWithUnescapedString() {
-        let commandId = "test"
-        let testExpectation = expectation(description: "addRemove")
-        let command = TealiumRemoteCommand(commandId: commandId,
-                                           description: "") { _ in
-
-            testExpectation.fulfill()
-
-        }
-
-        let remoteCommands = TealiumRemoteCommands()
-        remoteCommands.queue = OperationQueue.current?.underlyingQueue
-        remoteCommands.enable()
-        remoteCommands.add(command)
-
-        let urlString = "tealium://\(commandId)?request={\"config\":{},\"payload\":{}}"
-        let error = remoteCommands.triggerCommandFrom(urlString: urlString)
-        if error != nil {
-            XCTFail("Error detected: \(String(describing: error))")
-        }
-
-        self.waitForExpectations(timeout: 1.0, handler: nil)
-    }
-
-    func testTriggerWithEscapedString() {
-
-        let commandId = "test"
-        let testExpectation = expectation(description: "addRemove")
-        let command = TealiumRemoteCommand(commandId: commandId,
-                                           description: "") { _ in
-                    testExpectation.fulfill()
-        }
-
-        let remoteCommands = TealiumRemoteCommands()
-        remoteCommands.queue = OperationQueue.current?.underlyingQueue
-        remoteCommands.enable()
-        remoteCommands.add(command)
-
-        let urlString = "tealium://\(commandId)?request={\"config\":{},\"payload\":{}}"
-        let escapedString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-        XCTAssertTrue(escapedString != nil, "Could not escape test string.")
-
-        let error = remoteCommands.triggerCommandFrom(urlString: escapedString!)
-        if error != nil {
-            XCTFail("Error detected: \(String(describing: error))")
-        }
-
-        self.waitForExpectations(timeout: 1.0, handler: nil)
-    }
-
     func testRemove() {
         let commandId = "test"
-        let command = TealiumRemoteCommand(commandId: commandId,
-                                           description: "") { _ in
+        let command = RemoteCommand(commandId: commandId,
+                                    description: "") { _ in }
 
-                // Unused
-        }
+        let remoteCommandsManager = RemoteCommandsManager(delegate: nil)
+        remoteCommandsManager.queue = OperationQueue.current?.underlyingQueue
+        remoteCommandsManager.add(command)
 
-        let remoteCommands = TealiumRemoteCommands()
-        remoteCommands.queue = OperationQueue.current?.underlyingQueue
-        remoteCommands.enable()
-        remoteCommands.add(command)
+        XCTAssertTrue(remoteCommandsManager.commands.count == 1)
 
-        XCTAssertTrue(remoteCommands.commands.count == 1)
+        remoteCommandsManager.remove(commandWithId: commandId)
 
-        remoteCommands.remove(commandWithId: commandId)
-
-        XCTAssertTrue(remoteCommands.commands.count == 0)
+        XCTAssertTrue(remoteCommandsManager.commands.isEmpty)
     }
 
     func testCommandForId() {
         let commandId = "test"
-        let remoteCommand = TealiumRemoteCommand(commandId: commandId,
-                                                 description: "test") { _ in
-                //
-        }
+        let remoteCommand = RemoteCommand(commandId: commandId,
+                                          description: "test") { _ in }
 
         let array = [remoteCommand]
 
@@ -110,4 +58,133 @@ class TealiumRemoteCommandsTests: XCTestCase {
         XCTAssertTrue(returnCommand != nil, "Expected command for id: \(commandId) missing from array: \(array)")
     }
 
+    func testRemoveAll() {
+        XCTAssertEqual(tealiumRemoteCommandsManager.commands.count, 1)
+        tealiumRemoteCommandsManager.removeAll()
+        XCTAssertEqual(tealiumRemoteCommandsManager.commands.count, 0)
+    }
+
+    func testTriggerCommandFromRequestWhenSchemeDoesNotEqualTealium() {
+        let expected: TealiumRemoteCommandsError = .invalidScheme
+        let urlString = "https://www.tealium.com"
+
+        guard let escapedString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            XCTFail("Could not encode url string: \(urlString)")
+            return
+        }
+        guard let url = URL(string: escapedString) else {
+            XCTFail("Could not create URL from string: \(urlString)")
+            return
+        }
+        let urlRequest = URLRequest(url: url)
+
+        let actual = tealiumRemoteCommandsManager.triggerCommand(from: urlRequest)
+        XCTAssertEqual(actual, expected)
+    }
+
+    func testTriggerCommandFromRequestWhenCommandIdNotPresent() {
+        let expected: TealiumRemoteCommandsError = .noCommandIdFound
+        let urlString = "tealium://"
+
+        guard let escapedString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            XCTFail("Could not encode url string: \(urlString)")
+            return
+        }
+        guard let url = URL(string: escapedString) else {
+            XCTFail("Could not create URL from string: \(urlString)")
+            return
+        }
+        let urlRequest = URLRequest(url: url)
+
+        let actual = tealiumRemoteCommandsManager.triggerCommand(from: urlRequest)
+        XCTAssertEqual(actual, expected)
+    }
+
+    func testTriggerCommandFromRequestWhenNoCommandFound() {
+        let expected: TealiumRemoteCommandsError = .noCommandForCommandIdFound
+        let urlString = "tealium://test?request={\"config\":{\"response_id\":\"123\"}, \"payload\":{}}"
+
+        guard let escapedString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            XCTFail("Could not encode url string: \(urlString)")
+            return
+        }
+        guard let url = URL(string: escapedString) else {
+            XCTFail("Could not create URL from string: \(urlString)")
+            return
+        }
+        let urlRequest = URLRequest(url: url)
+        let actual = tealiumRemoteCommandsManager.triggerCommand(from: urlRequest)
+        XCTAssertEqual(actual, expected)
+    }
+
+    func testTriggerCommandFromRequestWhenRequestNotProperlyFormatted() {
+        let expected: TealiumRemoteCommandsError = .requestNotProperlyFormatted
+        let urlString = "tealium://webview?something={\"config\":{\"response_id\":\"123\"}, \"payload\":{}}"
+        guard let escapedString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            XCTFail("Could not encode url string: \(urlString)")
+            return
+        }
+        guard let url = URL(string: escapedString) else {
+            XCTFail("Could not create URL from string: \(urlString)")
+            return
+        }
+        let urlRequest = URLRequest(url: url)
+
+        let actual = tealiumRemoteCommandsManager.triggerCommand(from: urlRequest)
+        XCTAssertEqual(actual, expected)
+    }
+
+    func testTriggerCommandFromRequestSetsPendingResponseToTrueAndTriggersDelegate() {
+        let urlString = "tealium://webview?request={\"config\":{\"response_id\":\"123\"}, \"payload\":{\"hello\": \"world\"}}"
+
+        guard let escapedString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            XCTFail("Could not encode url string: \(urlString)")
+            return
+        }
+        guard let url = URL(string: escapedString) else {
+            XCTFail("Could not create URL from string: \(urlString)")
+            return
+        }
+        let urlRequest = URLRequest(url: url)
+
+        let mockDelegate = MockRemoteCommandDelegate()
+        let expect = expectation(description: "delegate method is executed")
+        tealiumRemoteCommandsManager.commands.forEach { command in
+            var command = command
+            command.delegate = mockDelegate
+            mockDelegate.asyncExpectation = expect
+
+            tealiumRemoteCommandsManager.triggerCommand(from: urlRequest)
+
+            XCTAssertEqual(RemoteCommandsManager.pendingResponses.value["123"], true)
+        }
+        waitForExpectations(timeout: 2) { error in
+            if let error = error {
+                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
+            }
+
+            guard let result = mockDelegate.remoteCommandResult else {
+                XCTFail("Expected delegate to be called")
+                return
+            }
+
+            XCTAssertNotNil(result)
+            XCTAssertFalse(result.payload!.isEmpty)
+        }
+    }
+
+}
+
+extension TealiumRemoteCommandsManagerTests: ModuleDelegate {
+    func requestTrack(_ track: TealiumTrackRequest) {
+
+    }
+
+    func requestDequeue(reason: String) {
+
+    }
+
+    func processRemoteCommandRequest(_ request: TealiumRequest) {
+
+    }
 }

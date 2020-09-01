@@ -53,7 +53,7 @@ public class MockTealiumDiskStorage: TealiumDiskStorageProtocol {
         return nil
     }
 
-   public func retrieve(fileName: String, completion: (Bool, [String: Any]?, Error?) -> Void) {
+    public func retrieve(fileName: String, completion: (Bool, [String: Any]?, Error?) -> Void) {
         retrieveCount += 1
     }
 

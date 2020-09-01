@@ -43,7 +43,7 @@ class TealiumRemoteHTTPCommandTests: XCTestCase {
                                       "parameters": params,
                                       "body": body,
                                       "method": method]
-        let result = TealiumRemoteHTTPCommand.httpRequest(payload: payload)
+        let result = RemoteHTTPCommand.httpRequest(from: payload)
         XCTAssertTrue(result.error == nil, "Unexpected error: \(String(describing: result.error))")
 
         guard let request = result.request else {
@@ -62,9 +62,9 @@ class TealiumRemoteHTTPCommandTests: XCTestCase {
         //  url = tealium://test?1=2&3=4
 
         let expectedHeaderFields: [String: String] = ["Authorization": "Basic dGVzdFVzZXJuYW1lOnRlc3RQYXNzd29yZA==",
-                                    "Content-Type": "application/json; charset=utf-8",
-                                    "a": "b",
-                                    "c": "d"]
+                                                      "Content-Type": "application/json; charset=utf-8",
+                                                      "a": "b",
+                                                      "c": "d"]
         let returnedHeaderFields = request.allHTTPHeaderFields!
 
         XCTAssertTrue(expectedHeaderFields == returnedHeaderFields, "Unexpected result from returned header fields: \(returnedHeaderFields)")
@@ -84,11 +84,11 @@ class TealiumRemoteHTTPCommandTests: XCTestCase {
 
     func testParamItemsFromDictionary() {
         let params: [String: Any] = ["1": 2,
-                                    "a": "b",
-                                    "array": ["x", "y", "z"]
-                                    ]
+                                     "a": "b",
+                                     "array": ["x", "y", "z"]
+        ]
 
-        let queryItems = TealiumRemoteHTTPCommand.paramItemsFrom(dictionary: params)
+        let queryItems = RemoteHTTPCommand.queryItems(from: params)
 
         let itemA = URLQueryItem(name: "1", value: "2")
         let itemB = URLQueryItem(name: "a", value: "b")
@@ -99,6 +99,14 @@ class TealiumRemoteHTTPCommandTests: XCTestCase {
                                   itemC]
 
         XCTAssertTrue(expectedQueryItems == queryItems, "Unexpected query items returned: \(queryItems), expected: \(expectedQueryItems)")
+    }
+
+    func testHTTPCommand() {
+        let expected = RemoteCommand(commandId: "_http", description: "For processing tag-triggered HTTP requests") { _ in
+            // ....
+        }
+        let actual = RemoteHTTPCommand.create(with: nil)
+        XCTAssertEqual(expected.description, actual.description)
     }
 
 }

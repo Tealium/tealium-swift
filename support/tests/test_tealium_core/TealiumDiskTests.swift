@@ -28,17 +28,17 @@ class TealiumDiskTests: XCTestCase {
     }
 
     func testInit() {
-       let diskstorage = TealiumDiskStorage(config: config, forModule: "Tests")
-       XCTAssertNotNil(diskstorage)
-       XCTAssertEqual(diskstorage.filePrefix, "\(TealiumTestValue.account).\(TealiumTestValue.profile)/")
-       XCTAssertFalse(diskstorage.isCritical, "Default should be false")
-       XCTAssertTrue(diskstorage.isDiskStorageEnabled)
+        let diskstorage = TealiumDiskStorage(config: config, forModule: "Tests")
+        XCTAssertNotNil(diskstorage)
+        XCTAssertEqual(diskstorage.filePrefix, "\(TealiumTestValue.account).\(TealiumTestValue.profile)/")
+        XCTAssertFalse(diskstorage.isCritical, "Default should be false")
+        XCTAssertTrue(diskstorage.isDiskStorageEnabled)
     }
 
     // test that item saved to disk can be retrieved
     func testSave() {
         let diskstorage = TealiumDiskStorage(config: config, forModule: "Tests")
-        diskstorage.save(TealiumTrackRequest(data: ["hello": "testing"], completion: nil), completion: nil)
+        diskstorage.save(TealiumTrackRequest(data: ["hello": "testing"]), completion: nil)
         let data = diskstorage.retrieve(as: TealiumTrackRequest.self)
         XCTAssertNotNil(data?.trackDictionary["hello"], "data unexpectedly missing")
         XCTAssertEqual(data?.trackDictionary["hello"] as! String, "testing", "unexpected data retrieved")
@@ -46,8 +46,8 @@ class TealiumDiskTests: XCTestCase {
 
     func testAppend() {
         let diskstorage = TealiumDiskStorage(config: config, forModule: "Tests")
-        diskstorage.save(TealiumTrackRequest(data: ["hello": "testing"], completion: nil), completion: nil)
-        diskstorage.append(TealiumTrackRequest(data: ["newkey": "testing"], completion: nil)) { _, _, _ in
+        diskstorage.save(TealiumTrackRequest(data: ["hello": "testing"]), completion: nil)
+        diskstorage.append(TealiumTrackRequest(data: ["newkey": "testing"])) { _, _, _ in
             let data = diskstorage.retrieve(as: TealiumTrackRequest.self)
             XCTAssertNotNil(data?.trackDictionary["hello"], "data unexpectedly missing")
             XCTAssertEqual(data?.trackDictionary["hello"] as? String, "testing", "unexpected data retrieved")

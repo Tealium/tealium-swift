@@ -1,5 +1,5 @@
 //
-//  TealiumRemoteCommandsModuleTests.swift
+//  RemoteCommandsModuleTests.swift
 //  tealium-swift
 //
 //  Created by Jason Koo on 3/15/17.
@@ -10,11 +10,18 @@
 @testable import TealiumRemoteCommands
 import XCTest
 
-class TealiumRemoteCommandsModuleTests: XCTestCase {
+class RemoteCommandsModuleTests: XCTestCase {
+
+    let helper = TestTealiumHelper()
+    var config: TealiumConfig!
+    var module: RemoteCommandsModule!
+    var remoteCommandsManager = MockRemoteCommandsManager()
+    let remoteCommand = MockRemoteCommand()
+    var processExpectation: XCTestExpectation?
 
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        config = helper.getConfig()
     }
 
     override func tearDown() {
@@ -22,52 +29,27 @@ class TealiumRemoteCommandsModuleTests: XCTestCase {
         super.tearDown()
     }
 
-    func testMinimumProtocolsReturn() {
-        let expectation = self.expectation(description: "minimumProtocolsReturned")
-        let helper = TestTealiumHelper()
-        let module = TealiumRemoteCommandsModule(delegate: nil)
-        helper.modulesReturnsMinimumProtocols(module: module) { success, failingProtocols in
-
-            expectation.fulfill()
-            XCTAssertTrue(success, "Not all protocols returned. Failing protocols: \(failingProtocols)")
-
+    func testDisableHTTPCommandsViaConfig() {
+        config.remoteHTTPCommandDisabled = true
+        module = RemoteCommandsModule(config: config, delegate: self, remoteCommands: remoteCommandsManager)
+        guard let remoteCommands = module.remoteCommands else {
+            XCTFail("remoteCommands array should not be nil")
+            return
         }
 
-        self.waitForExpectations(timeout: 1.0, handler: nil)
-    }
-
-    func testDisableHTTPCommandsViaConfig() {
-        let config = TealiumConfig(account: "test",
-                                   profile: "test",
-                                   environment: "test",
-                                   datasource: "test",
-                                   optionalData: nil)
-        config.remoteHTTPCommandDisabled = true
-        let module = TealiumRemoteCommandsModule(delegate: nil)
-        module.enable(TealiumEnableRequest(config: config, enableCompletion: nil))
-
-        XCTAssertTrue(module.remoteCommands?.commands.count == 0, "Unexpected number of reserve commands found: \(String(describing: module.remoteCommands?.commands))")
+        XCTAssertTrue((remoteCommands.commands.isEmpty), "Unexpected number of reserve commands found: \(String(describing: module.remoteCommands?.commands))")
     }
 
     // Integration Test
-    func testMockTriggerFromNotification() {
-        // Spin up module
-        let config = TealiumConfig(account: "test",
-                                   profile: "test",
-                                   environment: "test",
-                                   datasource: "test",
-                                   optionalData: nil)
+    func testMockProcessTealiumRemoteCommandRequest() {
+        processExpectation = expectation(description: "testMockProcessTealiumRemoteCommandRequest")
         config.remoteHTTPCommandDisabled = false
-        let module = TealiumRemoteCommandsModule(delegate: nil)
-        module.enable(TealiumEnableRequest(config: config, enableCompletion: nil))
 
+        module = RemoteCommandsModule(config: config, delegate: self, completion: { _ in })
         // Add remote command
-        let testExpectation = expectation(description: "triggerTest")
         let commandId = "test"
-        let remoteCommand = TealiumRemoteCommand(commandId: commandId,
-                                                 description: "") { _ in
-            testExpectation.fulfill()
-        }
+        let remoteCommand = RemoteCommand(commandId: commandId,
+                                          description: "") { _ in }
         module.remoteCommands?.add(remoteCommand)
 
         // Send trigger
@@ -81,10 +63,8 @@ class TealiumRemoteCommandsModuleTests: XCTestCase {
             return
         }
         let urlRequest = URLRequest(url: url)
-        let notification = Notification(name: Notification.Name.tagmanagement,
-                                        object: nil,
-                                        userInfo: [TealiumKey.tagmanagementNotification: urlRequest])
-        module.remoteCommands!.triggerCommandFrom(notification: notification)
+        let request = TealiumRemoteCommandRequest(data: [TealiumKey.tagmanagementNotification: urlRequest])
+        module.remoteCommands?.moduleDelegate?.processRemoteCommandRequest(request)
 
         waitForExpectations(timeout: 5.0, handler: nil)
 
@@ -92,26 +72,18 @@ class TealiumRemoteCommandsModuleTests: XCTestCase {
     }
 
     func testUpdateConfig() {
-        // Spin up module
-        let config = TealiumConfig(account: "test",
-                                   profile: "test",
-                                   environment: "test",
-                                   datasource: "test",
-                                   optionalData: nil)
         config.remoteHTTPCommandDisabled = false
-        let module = TealiumRemoteCommandsModule(delegate: nil)
-        let enableRequest = TealiumEnableRequest(config: config, enableCompletion: nil)
-        module.enable(enableRequest)
+        module = RemoteCommandsModule(config: config, delegate: self, completion: { _ in })
         XCTAssertEqual(module.remoteCommands?.commands.count, 1)
-        var newRemoteCommand = TealiumRemoteCommand(commandId: "test", description: "test") { _ in
+        var newRemoteCommand = RemoteCommand(commandId: "test", description: "test") { _ in
 
         }
         var newConfig = config.copy
         newConfig.addRemoteCommand(newRemoteCommand)
         var updateRequest = TealiumUpdateConfigRequest(config: newConfig)
         module.updateConfig(updateRequest)
-        XCTAssertEqual(module.remoteCommands?.commands.count, 2)
-        newRemoteCommand = TealiumRemoteCommand(commandId: "test2", description: "test") { _ in
+        XCTAssertEqual(module.remoteCommands?.commands.count, 1)
+        newRemoteCommand = RemoteCommand(commandId: "test2", description: "test") { _ in
 
         }
         newConfig.remoteCommands = nil
@@ -119,45 +91,42 @@ class TealiumRemoteCommandsModuleTests: XCTestCase {
         newConfig.addRemoteCommand(newRemoteCommand)
         updateRequest = TealiumUpdateConfigRequest(config: newConfig)
         module.updateConfig(updateRequest)
-        XCTAssertEqual(module.remoteCommands?.commands.count, 3)
+        XCTAssertEqual(module.remoteCommands?.commands.count, 1)
     }
 
-    func testEnableWithDefaultCommands() {
-        // Spin up module
-        let config = TealiumConfig(account: "test",
-                                   profile: "test",
-                                   environment: "test",
-                                   datasource: "test",
-                                   optionalData: nil)
+    func testUpdateReservedCommandsWhenAlreadyAdded() {
+        module = RemoteCommandsModule(config: config, delegate: self, remoteCommands: remoteCommandsManager)
+        module.reservedCommandsAdded = true
+        XCTAssertEqual(remoteCommandsManager.addCount, 0)
+        XCTAssertEqual(remoteCommandsManager.removeCommandWithIdCount, 0)
+    }
+
+    func testInitializeWithDefaultCommands() {
         config.remoteHTTPCommandDisabled = false
-        let module = TealiumRemoteCommandsModule(delegate: nil)
-        let enableRequest = TealiumEnableRequest(config: config, enableCompletion: nil)
-        module.enable(enableRequest)
-        XCTAssertEqual(module.remoteCommands?.commands.count, 1)
-        module.disable(TealiumDisableRequest())
-        XCTAssertNil(module.remoteCommands)
-        module.enable(enableRequest)
+        module = RemoteCommandsModule(config: config, delegate: self, completion: { _ in })
         XCTAssertEqual(module.remoteCommands?.commands.count, 1)
     }
 
-    func testEnableDefaultCommandsDisabled() {
-        // Spin up module
-        let config = TealiumConfig(account: "test",
-                                   profile: "test",
-                                   environment: "test",
-                                   datasource: "test",
-                                   optionalData: nil)
+    func testInitializeDefaultCommandsDisabled() {
         config.remoteHTTPCommandDisabled = true
-        let module = TealiumRemoteCommandsModule(delegate: nil)
-        let enableRequest = TealiumEnableRequest(config: config, enableCompletion: nil)
-        module.enable(enableRequest)
-        XCTAssertEqual(module.remoteCommands?.commands.count, 0)
-        module.disable(TealiumDisableRequest())
-        XCTAssertNil(module.observer)
-        XCTAssertNil(module.remoteCommands)
-        module.enable(enableRequest)
-        XCTAssertNotNil(module.observer)
+        module = RemoteCommandsModule(config: config, delegate: self, remoteCommands: remoteCommandsManager)
         XCTAssertEqual(module.remoteCommands?.commands.count, 0)
     }
 
+}
+
+extension RemoteCommandsModuleTests: ModuleDelegate {
+    func processRemoteCommandRequest(_ request: TealiumRequest) {
+        if let _ = request as? TealiumRemoteCommandRequest {
+            self.processExpectation?.fulfill()
+        }
+    }
+
+    func requestTrack(_ track: TealiumTrackRequest) {
+
+    }
+
+    func requestDequeue(reason: String) {
+
+    }
 }

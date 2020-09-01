@@ -1,5 +1,5 @@
 //
-//  TealiumTagManagementModuleTests.swift
+//  TagManagementModuleTests.swift
 //  tealium-swift
 //
 //  Created by Jason Koo on 12/16/16.
@@ -10,62 +10,169 @@
 @testable import TealiumTagManagement
 import XCTest
 
-class TealiumTagManagementModuleTests: XCTestCase {
+class TagManagementModuleTests: XCTestCase {
 
-    var delegateExpectationSuccess: XCTestExpectation?
-    var delegateExpectationFail: XCTestExpectation?
-    var module: TealiumTagManagementModule?
-    var queueName: String?
+    var expect: XCTestExpectation!
+    var module: TagManagementModule!
+    var config: TealiumConfig!
+    var mockTagmanagement: MockTagManagementWebView!
 
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        config = TealiumConfig(account: "testAccount", profile: "testProfile", environment: "testEnv")
     }
 
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
+    func testDispatchTrackCreatesTrackRequest() {
+        expect = expectation(description: "trackRequest")
+        module = TagManagementModule(config: config, delegate: self, completion: { _ in })
+        let track = TealiumTrackRequest(data: ["test_track": true])
+        module?.dispatchTrack(track, completion: { result in
+            switch result.0 {
+            case .failure(let error):
+                XCTFail("Unexpected error: \(error.localizedDescription)")
+            case .success(let success):
+                XCTAssertTrue(success)
+                self.expect.fulfill()
+            }
+        })
+        wait(for: [expect], timeout: 2.0)
     }
 
-    func testMinimumProtocolsReturn() {
-        let expectation = self.expectation(description: "minimumProtocolsReturned")
-        let helper = TestTealiumHelper()
-        module = TealiumTagManagementModule(delegate: nil)
-        helper.modulesReturnsMinimumProtocols(module: module!) { success, failingProtocols in
+    func testDispatchTrackCreatesBatchTrackRequest() {
+        expect = expectation(description: "batchTrackRequest")
+        module = TagManagementModule(config: config, delegate: self, completion: { _ in })
+        let track = TealiumTrackRequest(data: ["test_track": true])
+        let batchTrack = TealiumBatchTrackRequest(trackRequests: [track, track, track])
+        module?.dispatchTrack(batchTrack, completion: { result in
+            switch result.0 {
+            case .failure(let error):
+                XCTFail("Unexpected error: \(error.localizedDescription)")
+            case .success(let success):
+                XCTAssertTrue(success)
+                self.expect.fulfill()
+            }
+        })
+        wait(for: [expect], timeout: 2.0)
+    }
 
-            expectation.fulfill()
-            XCTAssertTrue(success, "Not all protocols returned. Failing protocols: \(failingProtocols)")
+    func testDynamicTrackWithErrorReloadsAndSucceeds() {
+        expect = expectation(description: "dynamicTrackWithErrorReloadsAndSucceeds")
+        mockTagmanagement = MockTagManagementWebView(success: true)
+        module = TagManagementModule(config: config, delegate: self, tagManagement: mockTagmanagement)
+        module?.errorState = AtomicInteger(value: 1)
+        let track = TealiumTrackRequest(data: ["test_track": true])
+        module?.dynamicTrack(track, completion: nil)
+        XCTAssertEqual(mockTagmanagement.reloadCallCount, 1)
+        XCTAssertEqual(module.errorState.value, 0)
+        expect.fulfill()
+        wait(for: [expect], timeout: 2.0)
+    }
 
+    func testDynamicTrackWithErrorReloadsAndFails() {
+        expect = expectation(description: "dynamicTrackWithErrorReloadsAndFails")
+        mockTagmanagement = MockTagManagementWebView(success: false)
+        module = TagManagementModule(config: config, delegate: self, tagManagement: mockTagmanagement)
+        module?.errorState = AtomicInteger(value: 1)
+        let track = TealiumTrackRequest(data: ["test_track": true])
+        module?.dynamicTrack(track, completion: nil)
+        XCTAssertEqual(mockTagmanagement.reloadCallCount, 1)
+        XCTAssertEqual(module.errorState.value, 2)
+        expect.fulfill()
+        wait(for: [expect], timeout: 2.0)
+    }
+
+    func testEnqueueWhenRequestIsAcceptable() {
+        expect = expectation(description: "testEnqueueWhenRequestIsAcceptable")
+        module = TagManagementModule(config: config, delegate: self, completion: nil)
+        let track = TealiumTrackRequest(data: ["test": "track"])
+        let batch = TealiumBatchTrackRequest(trackRequests: [track, track, track])
+        let remote = TealiumRemoteAPIRequest(trackRequest: track)
+
+        module.enqueue(track, completion: nil)
+        XCTAssertEqual(module.pendingTrackRequests.count, 1)
+        if let request = module.pendingTrackRequests[0].0 as? TealiumTrackRequest {
+            XCTAssertEqual(request.trackDictionary["test"] as! String, "track")
         }
 
-        self.waitForExpectations(timeout: 5.0, handler: nil)
+        module = TagManagementModule(config: config, delegate: self, completion: nil)
+
+        module.enqueue(batch, completion: nil)
+        XCTAssertEqual(module.pendingTrackRequests.count, 1)
+        if let request = module.pendingTrackRequests[0].0 as? TealiumTrackRequest {
+            XCTAssertEqual(request.trackDictionary["test"] as! String, "track")
+        }
+
+        module = TagManagementModule(config: config, delegate: self, completion: nil)
+
+        module.enqueue(remote, completion: nil)
+        XCTAssertEqual(module.pendingTrackRequests.count, 1)
+        if let request = module.pendingTrackRequests[0].0 as? TealiumTrackRequest {
+            XCTAssertEqual(request.trackDictionary["test"] as! String, "track")
+        }
+        expect.fulfill()
+        wait(for: [expect], timeout: 2.0)
+    }
+
+    func testEnqueueWhenRequestIsNotAcceptable() {
+        expect = expectation(description: "testEnqueueWhenRequestIsNotAcceptable")
+        module = TagManagementModule(config: config, delegate: self, completion: nil)
+        let req = TealiumEnqueueRequest(data: TealiumTrackRequest(data: ["test": "track"]))
+
+        module.enqueue(req, completion: nil)
+        XCTAssertEqual(module.pendingTrackRequests.count, 0)
+
+        expect.fulfill()
+        wait(for: [expect], timeout: 2.0)
+    }
+
+    func testflushQueueSuccess() {
+        expect = expectation(description: "testflushQueueSuccess")
+        mockTagmanagement = MockTagManagementWebView(success: true)
+        module = TagManagementModule(config: config, delegate: self, tagManagement: mockTagmanagement)
+        let track = TealiumTrackRequest(data: ["test": "track"])
+        module.pendingTrackRequests.append((track, nil))
+        module.webViewState = Atomic(value: .loadSuccess)
+        module.flushQueue()
+
+        XCTAssertEqual(module.pendingTrackRequests.count, 0)
+
+        expect.fulfill()
+        wait(for: [expect], timeout: 2.0)
+    }
+
+    func testflushQueueFail() {
+        expect = expectation(description: "testflushQueueFail")
+        mockTagmanagement = MockTagManagementWebView(success: false)
+        module = TagManagementModule(config: config, delegate: self, tagManagement: mockTagmanagement)
+        let track = TealiumTrackRequest(data: ["test": "track"])
+        module.pendingTrackRequests.append((track, nil))
+        module.webViewState = Atomic(value: .loadSuccess)
+        module.flushQueue()
+
+        XCTAssertEqual(module.pendingTrackRequests.count, 1)
+
+        expect.fulfill()
+        wait(for: [expect], timeout: 2.0)
+    }
+
+    func testPrepareforDispatchAddsModuleName() {
+        let incomingTrack = TealiumTrackRequest(data: ["incoming": "track"])
+        module = TagManagementModule(config: config, delegate: self, completion: nil)
+        let result = module.prepareForDispatch(incomingTrack).trackDictionary
+        XCTAssertEqual(result[TealiumKey.dispatchService] as! String, TagManagementKey.moduleName)
     }
 
 }
 
-func currentQueueName() -> String? {
-    let name = __dispatch_queue_get_label(nil)
-    return String(cString: name, encoding: .utf8)
-}
+extension TagManagementModuleTests: ModuleDelegate {
+    func processRemoteCommandRequest(_ request: TealiumRequest) {
 
-extension TealiumTagManagementModuleTests: TealiumModuleDelegate {
-
-    func tealiumModuleFinished(module: TealiumModule, process: TealiumRequest) {
-        delegateExpectationSuccess?.fulfill()
-
-        queueName = currentQueueName()
     }
 
-    func tealiumModuleRequests(module: TealiumModule?, process: TealiumRequest) {
-        delegateExpectationSuccess?.fulfill()
+    func requestDequeue(reason: String) {
 
-        queueName = currentQueueName()
     }
 
-    func tealiumModuleFinishedReport(fromModule: TealiumModule, module: TealiumModule, process: TealiumRequest) {
-        delegateExpectationSuccess?.fulfill()
-
-        queueName = currentQueueName()
+    func requestTrack(_ track: TealiumTrackRequest) {
     }
-
 }

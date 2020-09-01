@@ -2,38 +2,42 @@
 //  TealiumModulesManagerTests.swift
 //  tealium-swift
 //
-//  Created by Jason Koo on 10/11/16.
-//  Copyright © 2016 Tealium, Inc. All rights reserved.
+//  Created by Craig Rouse on 04/30/20.
+//  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 
-@testable import TealiumAppData
 @testable import TealiumCollect
-@testable import TealiumConsentManager
 @testable import TealiumCore
-@testable import TealiumDelegate
-@testable import TealiumDeviceData
-@testable import TealiumLogger
-@testable import TealiumVisitorService
-import XCTest
 #if os(iOS)
-//@testable import TealiumCrashReporteriOS
+@testable import TealiumTagManagement
 #endif
-let defaultTealiumConfig = TealiumConfig(account: "tealiummobile",
-                                         profile: "demo",
-                                         environment: "dev",
-                                         optionalData: nil)
+import XCTest
 
-class TealiumTestModule: TealiumModule {
-
-    override func enable(_ request: TealiumEnableRequest) {
-        super.enable(request)
-    }
+var defaultTealiumConfig: TealiumConfig { TealiumConfig(account: "tealiummobile",
+                                                        profile: "demo",
+                                                        environment: "dev",
+                                                        options: nil)
 }
 
 class TealiumModulesManagerTests: XCTestCase {
 
-    let numberOfCurrentModules = 16
-    var modulesManager: TealiumModulesManager?
+    static var expectatations = [String: XCTestExpectation]()
+
+    var modulesManager: ModulesManager {
+        let config = testTealiumConfig
+        #if os(iOS)
+        config.dispatchers = [Dispatchers.TagManagement, Dispatchers.Collect]
+        #else
+        config.dispatchers = [Dispatchers.Collect]
+        #endif
+        config.logLevel = TealiumLogLevel.error
+        config.loggerType = .print
+        return ModulesManager(config, dataLayer: nil)
+    }
+
+    func modulesManagerForConfig(config: TealiumConfig) -> ModulesManager {
+        return ModulesManager(config, dataLayer: nil)
+    }
 
     override func setUp() {
         super.setUp()
@@ -41,256 +45,571 @@ class TealiumModulesManagerTests: XCTestCase {
     }
 
     override func tearDown() {
-        modulesManager = nil
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
+        TealiumModulesManagerTests.expectatations = [:]
     }
 
-    // NOTE: This test must run first due to an as yet unidentified issue with something not tearing down as expected.
-    // This can only be guaranteed by ensuring it's first alphabetically (thanks, Xcode!)
-    func testaaaPublicTrackWithDefaultModules() {
+    func testUpdateConfig() {
+        let modulesManager = self.modulesManager
 
-        let enableExpectation = self.expectation(description: "testEnable")
+        #if os(iOS)
+        XCTAssertTrue(testTealiumConfig.isTagManagementEnabled)
+        #endif
 
-        modulesManager = TealiumModulesManager()
-        testTealiumConfig.initialUserConsentStatus = .consented
-        // tag management cannot work properly in tests due to UIKit dependency
-        let list = TealiumModulesList(isWhitelist: false, moduleNames: ["tagmanagement"])
-        testTealiumConfig.modulesList = list
-        // Tealium must be initialized in order for callback to work
-        let instance = Tealium(config: testTealiumConfig)
-        modulesManager?.enable(config: testTealiumConfig, enableCompletion: { _ in
-
-            enableExpectation.fulfill()
-            guard let modulesManager = self.modulesManager else {
-                XCTFail("Modules manager deallocated before test completed.")
-                return
-            }
-
-            XCTAssert(modulesManager.allModulesReady(), "All modules not ready: \(String(describing: self.modulesManager?.modules))")
-        }, tealiumInstance: instance)
-
-        self.wait(for: [enableExpectation], timeout: 5.0)
-
-                let trackExpectation = self.expectation(description: "testPublicTrack")
-                let testTrack = TealiumTrackRequest(data: [:],
-                                                    completion: { _, _, error in
-
-                        if let error = error {
-                            switch error {
-                            case TealiumCollectError.xErrorDetected:
-                                XCTAssertTrue(true, "Error is expected due to invalid account/profile")
-                            default:
-                                XCTFail("Track error detected:\(String(describing: error))")
-                            }
-                        }
-
-                        trackExpectation.fulfill()
-
-                })
-
-                modulesManager?.track(testTrack)
-
-                // Only testing that the completion handler is called.
-                self.wait(for: [trackExpectation], timeout: 5.0)
+        let config = testTealiumConfig
+        config.shouldUseRemotePublishSettings = false
+        config.isCollectEnabled = false
+        config.isTagManagementEnabled = true
+        modulesManager.updateConfig(config: config)
+        XCTAssertFalse(modulesManager.dispatchers.contains(where: { $0.id == "Collect" }))
+        #if os(iOS)
+        XCTAssertTrue(modulesManager.dispatchers.contains(where: { $0.id == "TagManagement" }))
+        #endif
+        config.isTagManagementEnabled = false
+        modulesManager.updateConfig(config: config)
+        XCTAssertFalse(modulesManager.dispatchers.contains(where: { $0.id == "TagManagement" }))
+        config.isTagManagementEnabled = true
+        config.isCollectEnabled = true
+        modulesManager.updateConfig(config: config)
+        #if os(iOS)
+        XCTAssertTrue(modulesManager.dispatchers.contains(where: { $0.id == "TagManagement" }))
+        #endif
+        XCTAssertTrue(modulesManager.dispatchers.contains(where: { $0.id == "Collect" }))
     }
 
-    // Note: Set baseline of 0.5s in Xcode before running this test
-    func testInitPerformance() {
-        let iterations = 100
+    func testAddCollector() {
+        let collector = DummyCollector(config: testTealiumConfig, delegate: self, diskStorage: nil) { _ in
 
-        self.measure {
+        }
+        let modulesManager = self.modulesManager
 
-            for _ in 0..<iterations {
+        modulesManager.collectors = []
+        modulesManager.dispatchListeners = []
+        modulesManager.dispatchValidators = []
 
-                let modulesManager = TealiumModulesManager()
-                modulesManager.enable(config: defaultTealiumConfig, enableCompletion: nil)
+        modulesManager.addCollector(collector)
+        XCTAssertTrue(modulesManager.collectors.contains(where: { $0.id == "Dummy" }))
+
+        XCTAssertTrue(modulesManager.dispatchListeners.contains(where: { ($0 as! Collector).id == "Dummy" }))
+        XCTAssertTrue(modulesManager.dispatchValidators.contains(where: { ($0 as! Collector).id == "Dummy" }))
+
+        XCTAssertEqual(modulesManager.collectors.count, 1)
+        XCTAssertEqual(modulesManager.dispatchListeners.count, 1)
+
+        modulesManager.addCollector(collector)
+        modulesManager.addCollector(collector)
+
+        XCTAssertEqual(modulesManager.collectors.count, 1)
+        XCTAssertEqual(modulesManager.dispatchListeners.count, 1)
+        XCTAssertEqual(modulesManager.dispatchValidators.count, 1)
+    }
+
+    func testDisableModule() {
+        let modulesManager = self.modulesManager
+
+        modulesManager.dataLayerManager = DummyDataManagerNoData()
+        let collector = DummyCollector(config: testTealiumConfig, delegate: self, diskStorage: nil) { _ in
+
+        }
+        let dispatcher = DummyDispatcher(config: testTealiumConfig, delegate: self) { _ in
+
+        }
+        modulesManager.collectors = [collector]
+        modulesManager.dispatchers = [dispatcher]
+        XCTAssertEqual(modulesManager.collectors.count, 1)
+        modulesManager.disableModule(id: "Dummy")
+        XCTAssertEqual(modulesManager.collectors.count, 0)
+        XCTAssertEqual(modulesManager.dispatchers.count, 1)
+        modulesManager.disableModule(id: "DummyDispatcher")
+        XCTAssertEqual(modulesManager.dispatchers.count, 0)
+
+    }
+
+    func testGatherTrackData() {
+        let modulesManager = self.modulesManager
+        modulesManager.collectors = []
+        modulesManager.dataLayerManager = DummyDataManagerNoData()
+        let collector = DummyCollector(config: testTealiumConfig, delegate: self, diskStorage: nil) { _ in
+
+        }
+        modulesManager.addCollector(collector)
+        var data = modulesManager.gatherTrackData(for: ["testGatherTrackData": true])
+        data["enabled_modules"] = nil
+        XCTAssertEqual(["testGatherTrackData": true, "dummy": true], data as! [String: Bool])
+        modulesManager.dataLayerManager = DummyDataManager()
+        var dataWithEventData = modulesManager.gatherTrackData(for: ["testGatherTrackData": true])
+        dataWithEventData["enabled_modules"] = nil
+        XCTAssertEqual(["testGatherTrackData": true, "dummy": true, "eventData": true, "sessionData": true], dataWithEventData as! [String: Bool])
+    }
+
+    func testGatherTrackDataWithModulesList() {
+        let modulesManager = self.modulesManager
+        modulesManager.collectors = []
+        modulesManager.dataLayerManager = DummyDataManagerNoData()
+        let collector = DummyCollector(config: testTealiumConfig, delegate: self, diskStorage: nil) { _ in
+
+        }
+        modulesManager.addCollector(collector)
+        let data = modulesManager.gatherTrackData(for: ["testGatherTrackData": true])
+        XCTAssertNotNil(data["enabled_modules"]!)
+        #if os(iOS)
+        XCTAssertTrue((data["enabled_modules"] as! [String]).contains("Dummy"))
+        #else
+        XCTAssertEqual(["Collect", "Dummy"], data["enabled_modules"] as! [String])
+        #endif
+        modulesManager.dataLayerManager = DummyDataManager()
+        let dataWithEventData = modulesManager.gatherTrackData(for: ["testGatherTrackData": true])
+        XCTAssertNotNil(dataWithEventData["enabled_modules"]!)
+    }
+
+    func testConnectionRestored() {
+        let modulesManager = self.modulesManager
+        modulesManager.collectors = []
+        modulesManager.dispatchers = []
+        modulesManager.dataLayerManager = DummyDataManagerNoData()
+
+        XCTAssertEqual(modulesManager.dispatchers.count, 0)
+
+        modulesManager.connectionRestored()
+
+        #if os(iOS)
+        XCTAssertEqual(modulesManager.dispatchers.count, 2)
+        #else
+        XCTAssertEqual(modulesManager.dispatchers.count, 1)
+        #endif
+    }
+
+    func testSendTrack() {
+        TealiumModulesManagerTests.expectatations["sendTrack"] = expectation(description: "sendTrack")
+        let modulesManager = self.modulesManager
+        modulesManager.collectors = []
+        modulesManager.dispatchers = []
+        modulesManager.dataLayerManager = DummyDataManagerNoData()
+        let connectivity = ConnectivityModule(config: testTealiumConfig, delegate: nil, diskStorage: nil) { _ in }
+        modulesManager.dispatchManager = DummyDispatchManagerSendTrack(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: connectivity, config: testTealiumConfig)
+
+        let track = TealiumTrackRequest(data: [:])
+        modulesManager.sendTrack(track)
+        wait(for: [TealiumModulesManagerTests.expectatations["sendTrack"]!], timeout: 1.0)
+    }
+
+    func testRequestTrack() {
+        TealiumModulesManagerTests.expectatations["requestTrack"] = expectation(description: "requestTrack")
+        let modulesManager = self.modulesManager
+        modulesManager.collectors = []
+        modulesManager.dispatchers = []
+        modulesManager.dataLayerManager = DummyDataManagerNoData()
+        let connectivity = ConnectivityModule(config: testTealiumConfig, delegate: nil, diskStorage: nil) { _ in }
+        modulesManager.dispatchManager = DummyDispatchManagerRequestTrack(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: connectivity, config: testTealiumConfig)
+
+        let track = TealiumTrackRequest(data: [:])
+        modulesManager.sendTrack(track)
+        wait(for: [TealiumModulesManagerTests.expectatations["requestTrack"]!], timeout: 1.0)
+    }
+
+    func testDequeue() {
+        TealiumModulesManagerTests.expectatations["dequeue"] = expectation(description: "dequeue")
+        let modulesManager = self.modulesManager
+        modulesManager.collectors = []
+        modulesManager.dispatchers = []
+        modulesManager.dataLayerManager = DummyDataManagerNoData()
+        let connectivity = ConnectivityModule(config: testTealiumConfig, delegate: nil, diskStorage: nil) { _ in }
+        modulesManager.dispatchManager = DummyDispatchManagerdequeue(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: connectivity, config: testTealiumConfig)
+
+        modulesManager.requestDequeue(reason: "test")
+        wait(for: [TealiumModulesManagerTests.expectatations["dequeue"]!], timeout: 1.0)
+    }
+
+    func testSetupDispatchListeners() {
+        let collector = DummyCollector(config: testTealiumConfig, delegate: self, diskStorage: nil) { _ in
+
+        }
+        let modulesManager = self.modulesManager
+
+        modulesManager.collectors = []
+        modulesManager.dispatchListeners = []
+        modulesManager.dispatchValidators = []
+        let config = testTealiumConfig
+        config.dispatchListeners = [collector]
+        modulesManager.setupDispatchListeners(config: config)
+        XCTAssertEqual(modulesManager.dispatchListeners.count, 1)
+        XCTAssertTrue(modulesManager.dispatchListeners.contains(where: { ($0 as! Collector).id == "Dummy" }))
+    }
+
+    func testSetupDispatchValidators() {
+        let collector = DummyCollector(config: testTealiumConfig, delegate: self, diskStorage: nil) { _ in
+
+        }
+        let modulesManager = self.modulesManager
+
+        modulesManager.collectors = []
+        modulesManager.dispatchListeners = []
+        modulesManager.dispatchValidators = []
+        let config = testTealiumConfig
+        config.dispatchValidators = [collector]
+        modulesManager.setupDispatchValidators(config: config)
+        XCTAssertEqual(modulesManager.dispatchValidators.count, 1)
+        XCTAssertTrue(modulesManager.dispatchValidators.contains(where: { ($0 as! Collector).id == "Dummy" }))
+    }
+
+    func testConfigPropertyUpdate() {
+        let collector = DummyCollector(config: testTealiumConfig, delegate: self, diskStorage: nil) { _ in
+
+        }
+        TealiumModulesManagerTests.expectatations["configPropertyUpdate"] = expectation(description: "configPropertyUpdate")
+        TealiumModulesManagerTests.expectatations["configPropertyUpdateModule"] = expectation(description: "configPropertyUpdateModule")
+        let modulesManager = self.modulesManager
+
+        modulesManager.collectors = [collector]
+        modulesManager.dispatchListeners = []
+        modulesManager.dispatchValidators = []
+        let connectivity = ConnectivityModule(config: testTealiumConfig, delegate: nil, diskStorage: nil) { _ in }
+        modulesManager.dispatchManager = DummyDispatchManagerConfigUpdate(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: connectivity, config: testTealiumConfig)
+        let config = testTealiumConfig
+        config.logLevel = .info
+        modulesManager.config = config
+        XCTAssertEqual(modulesManager.config, modulesManager.dispatchManager!.config)
+        if let configPropertyUpdateModule = TealiumModulesManagerTests.expectatations["configPropertyUpdateModule"] {
+            if let configPropertyUpdate = TealiumModulesManagerTests.expectatations["configPropertyUpdate"] {
+                wait(for: [configPropertyUpdate, configPropertyUpdateModule], timeout: 1.0)
+            } else {
+                wait(for: [configPropertyUpdateModule], timeout: 1.0)
             }
+            return
+        } else if let configPropertyUpdate = TealiumModulesManagerTests.expectatations["configPropertyUpdate"] {
+            wait(for: [configPropertyUpdate], timeout: 1.0)
         }
     }
 
-    func testPublicTrackWithEmptyWhitelist() {
-        let config = TealiumConfig(account: "test",
-                                   profile: "test",
-                                   environment: "test")
-        let list = TealiumModulesList(isWhitelist: true,
-                                      moduleNames: Set<String>())
-        config.modulesList = list
-
-        let manager = TealiumModulesManager()
-        manager.enable(config: config, enableCompletion: nil)
-
-        let expectation = self.expectation(description: "testPublicTrack")
-
-        let testTrack = TealiumTrackRequest(data: [:],
-                                            completion: { success, _, error in
-                guard let error = error else {
-                    XCTFail("Error should have returned")
-                    return
-                }
-
-                XCTAssertFalse(success, "Track did not fail as expected. Error: \(error)")
-
-                expectation.fulfill()
-        })
-
-        manager.track(testTrack)
-
-        self.waitForExpectations(timeout: 5.0, handler: nil)
-    }
-
-    func testPublicTrackWithFullBlackList() {
-        let config = TealiumConfig(account: "test",
-                                   profile: "test",
-                                   environment: "test")
-        let list = TealiumModulesList(isWhitelist: false,
-                                      moduleNames: Set(TestTealiumHelper.allTealiumModuleNames()))
-        config.modulesList = list
-
-        let manager = TealiumModulesManager()
-        manager.enable(config: config, enableCompletion: nil)
-
-        XCTAssert(manager.modules!.count == 0, "Unexpected number of modules initialized: \(manager.modules!)")
-
-        let expectation = self.expectation(description: "testPublicTrackOneModule")
-
-        let testTrack = TealiumTrackRequest(data: [:],
-                                            completion: { success, _, error in
-
-                guard let error = error else {
-                    XCTFail("Error should have returned")
-                    return
-                }
-
-                XCTAssertFalse(success, "Track did not fail as expected. Error: \(error)")
-
-                expectation.fulfill()
-
-        })
-
-        manager.track(testTrack)
-
-        self.waitForExpectations(timeout: 10.0, handler: nil)
-    }
-
-    func testStringToBool() {
-        // Not entirely necessary as long as we're using NSString.boolValue
-        // ...but just in case it gets swapped out
-
-        let stringTrue = "true"
-        let stringYes = "yes"
-        let stringFalse = "false"
-        let stringFALSE = "FALSE"
-        let stringNo = "no"
-        let stringOtherTrue = "35a"
-        let stringOtherFalse = "xyz"
-
-        XCTAssertTrue(stringTrue.boolValue)
-        XCTAssertTrue(stringYes.boolValue)
-        XCTAssertFalse(stringFalse.boolValue)
-        XCTAssertFalse(stringFALSE.boolValue)
-        XCTAssertFalse(stringNo.boolValue)
-        XCTAssertTrue(stringOtherTrue.boolValue, "String other converted to \(stringOtherTrue.boolValue)")
-        XCTAssertFalse(stringOtherFalse.boolValue, "String other converted to \(stringOtherFalse.boolValue)")
-    }
-
-    func testGetModuleForName() {
-        let config = TealiumConfig(account: "test",
-                                   profile: "test",
-                                   environment: "test")
-
-        let manager = TealiumModulesManager()
-        manager.setupModulesFrom(config: config)
-
-        let module = manager.getModule(forName: "logger")
-
-        XCTAssert((module is TealiumLoggerModule), "Incorrect module received: \(String(describing: module))")
-    }
-
-    func testTrackWhenDisabled() {
-        let modulesManager = TealiumModulesManager()
-        modulesManager.enable(config: testTealiumConfig, enableCompletion: nil)
-        modulesManager.disable()
-        let trackExpectation = self.expectation(description: "track")
-
-        let track = TealiumTrackRequest(data: [:]) { success, _, _ in
-
-            XCTAssert(success == false, "Track succeeded unexpectedly.")
-            trackExpectation.fulfill()
+    func testSetModules() {
+        let collector = DummyCollector(config: testTealiumConfig, delegate: self, diskStorage: nil) { _ in
 
         }
-
-        modulesManager.track(track)
-        self.wait(for: [trackExpectation],
-                  timeout: 1.0)
-
+        let modulesManager = self.modulesManager
+        modulesManager.dispatchListeners = []
+        modulesManager.dispatchValidators = []
+        modulesManager.dispatchers = []
+        modulesManager.collectors = [collector]
+        XCTAssertEqual(modulesManager.modules.count, modulesManager.collectors.count)
+        modulesManager.modules = [collector, collector]
+        XCTAssertEqual(modulesManager.modules.count, modulesManager.collectors.count)
+        modulesManager.modules = []
+        XCTAssertEqual(modulesManager.modules.count, modulesManager.collectors.count)
+        XCTAssertEqual(modulesManager.modules.count, 0)
     }
 
-    func testAllModulesReady() {
-        // Assign
-        let moduleA = TealiumModule(delegate: nil)
-        moduleA.isEnabled = true
-        let moduleB = TealiumModule(delegate: nil)
-        moduleB.isEnabled = true
-        let manager = TealiumModulesManager()
-        manager.modules = [moduleA, moduleB]
+    func testDispatchValidatorAddedFromConfig() {
+        let validator = DummyCollector(config: testTealiumConfig, delegate: self, diskStorage: nil) { _ in
 
-        // Act
-        let result = manager.allModulesReady()
-
-        // Assert
-        XCTAssert(result == true, "Unexpected result from modules: \(manager.modules!)")
+        }
+        let config = testTealiumConfig
+        config.dispatchValidators = [validator]
+        let modulesManager = self.modulesManagerForConfig(config: config)
+        XCTAssertTrue(modulesManager.dispatchValidators.contains(where: { $0.id == "Dummy" }))
     }
 
-    func testTrackAllModulesNotYetReady() {
-        // Assign
-        let moduleA = TealiumModule(delegate: nil)
-        moduleA.isEnabled = true
-        let moduleB = TealiumModule(delegate: nil)
-        moduleB.isEnabled = false
-        let manager = TealiumModulesManager()
-        manager.modules = [moduleA, moduleB]
+    func testDispatchListenerAddedFromConfig() {
+        let listener = DummyCollector(config: testTealiumConfig, delegate: self, diskStorage: nil) { _ in
 
-        // Act
-        let result = manager.allModulesReady()
-
-        // Assert
-        XCTAssert(result == false, "Unexpected result from modules: \(manager.modules!)")
-    }
-
-    func testTealiumModulesArray_ModuleNames() {
-        let allModules = TealiumModules.initializeModules(modulesList: nil, delegate: self)
-
-        // Alphabetically instead of by priority
-        let result = allModules.moduleNames().sorted()
-
-        let expected = TestTealiumHelper.allTealiumModuleNames().sorted()
-
-        let missing = TestTealiumHelper.missingStrings(fromArray: expected,
-                                                       anotherArray: result)
-
-        XCTAssert(result == expected, "Mismatch in module names returned: \(missing)")
+        }
+        let config = testTealiumConfig
+        config.dispatchListeners = [listener]
+        let modulesManager = self.modulesManagerForConfig(config: config)
+        XCTAssertTrue(modulesManager.dispatchListeners.contains(where: { ($0 as! DispatchValidator).id == "Dummy" }))
     }
 
 }
 
-extension TealiumModulesManagerTests: TealiumModuleDelegate {
+extension TealiumModulesManagerTests: ModuleDelegate {
+    func processRemoteCommandRequest(_ request: TealiumRequest) {
 
-    func tealiumModuleFinished(module: TealiumModule, process: TealiumRequest) {
-        if module == modulesManager?.modules!.last {
-            process.completion?(true, nil, nil)
+    }
+
+    func requestTrack(_ track: TealiumTrackRequest) {
+
+    }
+
+    func requestDequeue(reason: String) {
+
+    }
+
+}
+
+class DummyCollector: Collector, DispatchListener, DispatchValidator {
+    var id: String
+
+    func shouldQueue(request: TealiumRequest) -> (Bool, [String: Any]?) {
+        return (false, nil)
+    }
+
+    func shouldDrop(request: TealiumRequest) -> Bool {
+        return false
+    }
+
+    func shouldPurge(request: TealiumRequest) -> Bool {
+        return false
+    }
+
+    func willTrack(request: TealiumRequest) {
+
+    }
+
+    var data: [String: Any]? {
+        ["dummy": true]
+    }
+
+    required init(config: TealiumConfig, delegate: ModuleDelegate?, diskStorage: TealiumDiskStorageProtocol?, completion: (ModuleResult) -> Void) {
+        self.config = config
+        self.id = "Dummy"
+    }
+
+    var config: TealiumConfig {
+        willSet {
+            TealiumModulesManagerTests.expectatations["configPropertyUpdateModule"]?.fulfill()
         }
-
-        let nextModule = modulesManager?.modules!.next(after: module)
-
-        nextModule?.handle(process)
     }
 
-    func tealiumModuleRequests(module: TealiumModule?, process: TealiumRequest) {
+}
+
+class DummyDataManager: DataLayerManagerProtocol {
+    var all: [String: Any] = ["eventData": true, "sessionData": true]
+
+    var allSessionData: [String: Any] = ["sessionData": true]
+
+    var minutesBetweenSessionIdentifier: TimeInterval = TimeInterval(floatLiteral: 0.0)
+
+    var secondsBetweenTrackEvents: TimeInterval = TimeInterval(floatLiteral: 0.0)
+
+    var sessionId: String?
+
+    var sessionData: [String: Any] = ["sessionData": true]
+
+    var sessionStarter: SessionStarterProtocol = SessionStarter(config: testTealiumConfig)
+
+    var isTagManagementEnabled: Bool = true
+
+    func add(data: [String: Any], expiry: Expiry?) {
 
     }
 
-    func tealiumModuleFinishedReport(fromModule: TealiumModule, module: TealiumModule, process: TealiumRequest) {
+    func add(key: String, value: Any, expiry: Expiry?) {
 
     }
+
+    func joinTrace(id: String) {
+
+    }
+
+    func delete(for Keys: [String]) {
+
+    }
+
+    func delete(for key: String) {
+
+    }
+
+    func deleteAll() {
+
+    }
+
+    func leaveTrace() {
+
+    }
+
+    func refreshSessionData() {
+
+    }
+
+    func sessionRefresh() {
+
+    }
+
+    func startNewSession(with sessionStarter: SessionStarterProtocol) {
+
+    }
+
+}
+
+class DummyDispatchManagerConfigUpdate: DispatchManagerProtocol {
+    var dispatchers: [Dispatcher]?
+
+    var dispatchListeners: [DispatchListener]?
+
+    var dispatchValidators: [DispatchValidator]?
+
+    var config: TealiumConfig {
+        willSet {
+            TealiumModulesManagerTests.expectatations["configPropertyUpdate"]?.fulfill()
+            //TealiumModulesManagerTests.expectatations["configPropertyUpdate"] = nil
+        }
+    }
+
+    required init(dispatchers: [Dispatcher]?, dispatchValidators: [DispatchValidator]?, dispatchListeners: [DispatchListener]?, connectivityManager: ConnectivityModule, config: TealiumConfig) {
+        self.dispatchers = dispatchers
+        self.dispatchValidators = dispatchValidators
+        self.dispatchListeners = dispatchListeners
+        self.config = config
+    }
+
+    func processTrack(_ request: TealiumTrackRequest) {
+
+    }
+
+    func handleDequeueRequest(reason: String) {
+
+    }
+
+}
+
+class DummyDispatchManagerdequeue: DispatchManagerProtocol {
+    var dispatchers: [Dispatcher]?
+
+    var dispatchListeners: [DispatchListener]?
+
+    var dispatchValidators: [DispatchValidator]?
+
+    var config: TealiumConfig {
+        willSet {
+            TealiumModulesManagerTests.expectatations["configPropertyUpdate"]?.fulfill()
+        }
+    }
+
+    required init(dispatchers: [Dispatcher]?, dispatchValidators: [DispatchValidator]?, dispatchListeners: [DispatchListener]?, connectivityManager: ConnectivityModule, config: TealiumConfig) {
+        self.dispatchers = dispatchers
+        self.dispatchValidators = dispatchValidators
+        self.dispatchListeners = dispatchListeners
+        self.config = config
+    }
+
+    func processTrack(_ request: TealiumTrackRequest) {
+
+    }
+
+    func handleDequeueRequest(reason: String) {
+        TealiumModulesManagerTests.expectatations["dequeue"]?.fulfill()
+    }
+
+}
+
+class DummyDispatchManagerRequestTrack: DispatchManagerProtocol {
+    var dispatchers: [Dispatcher]?
+
+    var dispatchListeners: [DispatchListener]?
+
+    var dispatchValidators: [DispatchValidator]?
+
+    var config: TealiumConfig {
+        willSet {
+            TealiumModulesManagerTests.expectatations["configPropertyUpdate"]?.fulfill()
+        }
+    }
+
+    required init(dispatchers: [Dispatcher]?, dispatchValidators: [DispatchValidator]?, dispatchListeners: [DispatchListener]?, connectivityManager: ConnectivityModule, config: TealiumConfig) {
+        self.dispatchers = dispatchers
+        self.dispatchValidators = dispatchValidators
+        self.dispatchListeners = dispatchListeners
+        self.config = config
+    }
+
+    func processTrack(_ request: TealiumTrackRequest) {
+        XCTAssertTrue(request.trackDictionary.count > 0)
+        XCTAssertNotNil(request.trackDictionary["request_uuid"])
+        TealiumModulesManagerTests.expectatations["requestTrack"]?.fulfill()
+    }
+
+    func handleDequeueRequest(reason: String) {
+    }
+
+}
+
+class DummyDispatchManagerSendTrack: DispatchManagerProtocol {
+    var dispatchers: [Dispatcher]?
+
+    var dispatchListeners: [DispatchListener]?
+
+    var dispatchValidators: [DispatchValidator]?
+
+    var config: TealiumConfig {
+        willSet {
+            TealiumModulesManagerTests.expectatations["configPropertyUpdate"]?.fulfill()
+        }
+    }
+
+    required init(dispatchers: [Dispatcher]?, dispatchValidators: [DispatchValidator]?, dispatchListeners: [DispatchListener]?, connectivityManager: ConnectivityModule, config: TealiumConfig) {
+        self.dispatchers = dispatchers
+        self.dispatchValidators = dispatchValidators
+        self.dispatchListeners = dispatchListeners
+        self.config = config
+    }
+
+    func processTrack(_ request: TealiumTrackRequest) {
+        XCTAssertTrue(request.trackDictionary.count > 0)
+        XCTAssertNotNil(request.trackDictionary["request_uuid"])
+        TealiumModulesManagerTests.expectatations["sendTrack"]?.fulfill()
+    }
+
+    func handleDequeueRequest(reason: String) {
+
+    }
+
+}
+
+class DummyDataManagerNoData: DataLayerManagerProtocol {
+    var all: [String: Any] = [:]
+
+    var allSessionData: [String: Any] = [:]
+
+    var minutesBetweenSessionIdentifier: TimeInterval = TimeInterval(floatLiteral: 0.0)
+
+    var secondsBetweenTrackEvents: TimeInterval = TimeInterval(floatLiteral: 0.0)
+
+    var sessionId: String?
+
+    var sessionData: [String: Any] = [:]
+
+    var sessionStarter: SessionStarterProtocol = SessionStarter(config: testTealiumConfig)
+
+    var isTagManagementEnabled: Bool = true
+
+    func add(data: [String: Any], expiry: Expiry) {
+
+    }
+
+    func add(key: String, value: Any, expiry: Expiry) {
+
+    }
+
+    func joinTrace(id: String) {
+
+    }
+
+    func delete(for Keys: [String]) {
+
+    }
+
+    func delete(for key: String) {
+
+    }
+
+    func deleteAll() {
+
+    }
+
+    func leaveTrace() {
+
+    }
+
+    func refreshSessionData() {
+
+    }
+
+    func sessionRefresh() {
+
+    }
+
+    func startNewSession(with sessionStarter: SessionStarterProtocol) {
+
+    }
+
 }

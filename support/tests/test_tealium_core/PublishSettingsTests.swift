@@ -12,8 +12,8 @@ import XCTest
 
 class PublishSettingsTests: XCTestCase {
     static var delegateExpectationSuccess: XCTestExpectation?
-//    var delegateExpectationFail: XCTestExpectation?
-//    var process: TealiumRequest?
+    //    var delegateExpectationFail: XCTestExpectation?
+    //    var process: TealiumRequest?
 
     override func setUp() {
         super.setUp()
@@ -51,7 +51,7 @@ class PublishSettingsTests: XCTestCase {
         XCTAssertEqual(publishSettings?.tagManagementEnabled, true, "Tag management not enabled")
         XCTAssertEqual(publishSettings?.minutesBetweenRefresh, 1.0, "Minutes between refresh incorrect")
         XCTAssertEqual(publishSettings?.dispatchQueueLimit, 30, "Dispatch queue limit incorrect")
-        XCTAssertEqual(publishSettings?.overrideLog, .verbose, "Log level incorrect")
+        //XCTAssertEqual(publishSettings?.overrideLog, .verbose, "Log level incorrect")
     }
 
     func testGetRemoteSettings() {

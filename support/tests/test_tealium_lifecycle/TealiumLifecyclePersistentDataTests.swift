@@ -22,12 +22,12 @@ class TealiumLifecyclePersistentDataTests: XCTestCase {
 
     func testLoad() {
         let mockStorage = LifecycleMockDiskStorage()
-        let persistentData = TealiumLifecyclePersistentData(diskStorage: mockStorage)
-        var lifecycle = TealiumLifecycle()
+        let persistentData = LifecyclePersistentData(diskStorage: mockStorage)
+        var lifecycle = Lifecycle()
         lifecycle.countCrashTotal = 5
         let date = Date()
         lifecycle.sessions = [
-            TealiumLifecycleSession(withLaunchDate: date)
+            LifecycleSession(launchDate: date)
         ]
         persistentData.save(lifecycle)
         guard let data = persistentData.load() else {
@@ -40,15 +40,15 @@ class TealiumLifecyclePersistentDataTests: XCTestCase {
 
     func testSave() {
         let mockStorage = LifecycleMockDiskStorage()
-        let persistentData = TealiumLifecyclePersistentData(diskStorage: mockStorage)
-        var lifecycle = TealiumLifecycle()
+        let persistentData = LifecyclePersistentData(diskStorage: mockStorage)
+        var lifecycle = Lifecycle()
         lifecycle.countCrashTotal = 5
         let date = Date()
         lifecycle.sessions = [
-        TealiumLifecycleSession(withLaunchDate: date)
+            LifecycleSession(launchDate: date)
         ]
         persistentData.save(lifecycle)
-        let data = mockStorage.retrieve(as: TealiumLifecycle.self)
+        let data = mockStorage.retrieve(as: Lifecycle.self)
         XCTAssertEqual(data!.countCrashTotal, 5)
         XCTAssertEqual(data!.sessions, lifecycle.sessions)
     }
