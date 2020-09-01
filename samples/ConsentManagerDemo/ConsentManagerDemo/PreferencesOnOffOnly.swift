@@ -22,7 +22,7 @@ class PreferencesOnOffViewController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let helper = TealiumHelper.shared
-        let consentPrefs = helper.getCurrentConsentPreferences()
+        let consentPrefs = helper.currentConsentPreferences
         let initialStatus: Bool = {
             if let pref = consentPrefs?["tracking_consented"] as? String {
                 return pref == "consented" ? true : false
@@ -34,7 +34,7 @@ class PreferencesOnOffViewController: FormViewController {
         form +++ Section("Current Settings")
                 // MARK: Current Consent Status
         <<< LabelRow { row in
-            let consentPrefs = helper.getCurrentConsentPreferences()
+            let consentPrefs = helper.currentConsentPreferences
             var stat = "Not Consented"
             if let pref = consentPrefs?["tracking_consented"] as? String, pref == "consented" {
                 stat = "Consented"
@@ -46,7 +46,7 @@ class PreferencesOnOffViewController: FormViewController {
 
         // MARK: Current Consent Categories
         <<< LabelRow { row in
-            let consentPrefs = helper.getCurrentConsentPreferences()
+            let consentPrefs = helper.currentConsentPreferences
             var cats = ""
             if let prefCats = consentPrefs?["consent_categories"] as? [String] {
                 cats = prefCats.joined(separator: ", ")
@@ -57,7 +57,7 @@ class PreferencesOnOffViewController: FormViewController {
             row.tag = "statuscats"
             row.cell.textLabel?.numberOfLines = 5
         }.cellUpdate { _, row in
-            let consentPrefs = helper.getCurrentConsentPreferences()
+            let consentPrefs = helper.currentConsentPreferences
             var cats = ""
             if let prefCats = consentPrefs?["consent_categories"] as? [String] {
                 cats = prefCats.joined(separator: ", ")

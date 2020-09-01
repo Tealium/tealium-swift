@@ -5,37 +5,28 @@
 //  Created by Christina S on 11/8/19.
 //  Copyright © 2019 Tealium. All rights reserved.
 //
-
 import SwiftUI
 
 struct ContentView: View {
-    @State var traceId: String = ""
+    @State private var traceId: String = ""
     var body: some View {
         NavigationView {
             VStack(spacing: 40) {
-                Button(action: {
-                    TealiumHelper.trackView(title: "screen_view", data: nil)
-                }) {
-                    Text("Track View")
+                ButtonView(title: "Track View") {
+                    TealiumHelper.trackView(title: "screen_view", dataLayer: nil)
                 }
-                Button(action: {
-                    TealiumHelper.trackView(title: "button_click",
-                                            data: ["event_category": "example",
-                                                   "event_action": "click",
+                ButtonView(title: "Track Event") {
+                    TealiumHelper.trackEvent(title: "button_tapped",
+                                            dataLayer: ["event_category": "example",
+                                                   "event_action": "tap",
                                                    "event_label": "Track Event"])
-                }) {
-                    Text("Track Event")
                 }
-                TextField("Trace ID", text: $traceId).textFieldStyle(RoundedBorderTextFieldStyle()).frame(width: 150)
-                Button(action: {
+                TraceIdTextField(traceId: $traceId)
+                ButtonView(title: "Start Trace") {
                     TealiumHelper.joinTrace(self.traceId)
-                }) {
-                    Text("Start Trace")
                 }
-                Button(action: {
+                ButtonView(title: "Leave Trace") {
                     TealiumHelper.leaveTrace()
-                }) {
-                    Text("Leave Trace")
                 }
             Spacer()
                 }.navigationBarTitle("TealiumSwiftExample", displayMode: .inline).padding(50)
@@ -43,12 +34,53 @@ struct ContentView: View {
     }
 }
 
+struct ButtonView: View {
+    var title: String
+    var action: () -> Void
+    
+    init(title: String, _ action: @escaping () -> Void) {
+        self.title = title
+        self.action = action
+    }
+    
+    var body: some View {
+        Button(action: action) {
+                Text(title)
+                   .frame(width: 200.0)
+                   .padding()
+                   .background(Color.gray)
+                   .foregroundColor(.white)
+                   .cornerRadius(10)
+                   .shadow(radius: 8)
+                   .overlay(
+                       RoundedRectangle(cornerRadius: 10)
+                           .stroke(Color.purple, lineWidth: 2)
+                   )
+        }
+    }
+}
+
+struct TraceIdTextField: View {
+    @Binding var traceId: String
+    var body: some View {
+        HStack {
+              Image(systemName: "person").foregroundColor(.gray)
+              TextField("Enter your Trace ID", text: $traceId)
+          }
+        .frame(width: 200.0)
+        .padding()
+        .overlay(RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.gray, lineWidth: 1))
+    }
+}
+
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-          ContentView().previewDevice(PreviewDevice(rawValue: "iPhone X"))
+            ContentView().previewDevice(PreviewDevice(rawValue: "iPhone X"))
             ContentView().previewDevice(PreviewDevice(rawValue: "iPhone 8"))
             ContentView().previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
+            ContentView().previewDevice(PreviewDevice(rawValue: "iPhone 11 SE (1st generation)"))
         }
         
     }

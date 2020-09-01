@@ -11,6 +11,16 @@ import Foundation
 @testable import TealiumCore
 
 class MockURLSession: URLSessionProtocol {
+    func tealiumDataTask(with url: URL, completionHandler: @escaping (DataTaskResult) -> Void) -> URLSessionDataTaskProtocol {
+        return DataTask(completionHandler: { data, response, error in
+            if let error = error {
+                completionHandler(.failure(error))
+            } else if let data = data, let response = response {
+                completionHandler(.success((response as? HTTPURLResponse, data)))
+            }
+        }, url: url)
+    }
+    
     func tealiumDataTask(with url: URL, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol {
         return DataTask(completionHandler: completionHandler, url: url)
     }
@@ -40,6 +50,16 @@ class DataTask: URLSessionDataTaskProtocol {
 }
 
 class MockURLSessionError: URLSessionProtocol {
+    func tealiumDataTask(with url: URL, completionHandler: @escaping (DataTaskResult) -> Void) -> URLSessionDataTaskProtocol {
+        return DataTaskError(completionHandler: { data, response, error in
+            if let error = error {
+                completionHandler(.failure(error))
+            } else if let data = data, let response = response {
+                completionHandler(.success((response as? HTTPURLResponse, data)))
+            }
+        }, url: url)
+    }
+    
     func tealiumDataTask(with url: URL, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol {
         return DataTaskError(completionHandler: completionHandler, url: url)
     }
@@ -69,6 +89,16 @@ class DataTaskError: URLSessionDataTaskProtocol {
 }
 
 class MockURLSessionNon200: URLSessionProtocol {
+    func tealiumDataTask(with url: URL, completionHandler: @escaping (DataTaskResult) -> Void) -> URLSessionDataTaskProtocol {
+        return DataTaskErrorNon200(completionHandler: { data, response, error in
+            if let error = error {
+                completionHandler(.failure(error))
+            } else if let data = data, let response = response {
+                completionHandler(.success((response as? HTTPURLResponse, data)))
+            }
+        }, url: url)
+    }
+    
     func tealiumDataTask(with url: URL, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol {
         return DataTaskErrorNon200(completionHandler: completionHandler, url: url)
     }
@@ -100,6 +130,16 @@ class DataTaskErrorNon200: URLSessionDataTaskProtocol {
 }
 
 class MockURLSessionURLError: URLSessionProtocol {
+    func tealiumDataTask(with url: URL, completionHandler: @escaping (DataTaskResult) -> Void) -> URLSessionDataTaskProtocol {
+        return DataTaskURLError(completionHandler: { data, response, error in
+            if let error = error {
+                completionHandler(.failure(error))
+            } else if let data = data, let response = response {
+                completionHandler(.success((response as? HTTPURLResponse, data)))
+            }
+        }, url: url)
+    }
+    
     func tealiumDataTask(with url: URL, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol {
         return DataTaskURLError(completionHandler: completionHandler, url: url)
     }

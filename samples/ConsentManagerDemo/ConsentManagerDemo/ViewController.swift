@@ -24,7 +24,7 @@ class ViewController: FormViewController {
             <<< ButtonRow { row in
                 row.title = "Trigger"
             }.onCellSelection { _,_ in
-                helper.track(title: "Button Clicked", data: ["demo" : true])
+                TealiumHelper.trackEvent(title: "Button Clicked", dataLayer: ["demo" : true])
             }
 
             // MARK: Preferences Button

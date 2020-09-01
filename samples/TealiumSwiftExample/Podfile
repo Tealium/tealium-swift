@@ -1,0 +1,42 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'TealiumSwiftExample' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for TealiumSwiftExample
+  pod "tealium-swift", :path=> "../.."
+
+end
+
+target 'TealiumJSInterfaceExample' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for TealiumSwiftExample
+  pod "tealium-swift", :path=> "../.."
+
+end
+
+target 'TealiumSwiftWatchExample Extension' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for TealiumSwiftWatchExample Extension
+  pod "tealium-swift/Core", :path=> "../.."
+  pod "tealium-swift/Collect", :path=> "../.."
+  pod "tealium-swift/Lifecycle", :path=> "../.."
+  pod "tealium-swift/VisitorService", :path=> "../.."
+end
+
+target 'TealiumSwiftTVExample' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for TealiumSwiftWatchExample Extension
+  pod "tealium-swift/Core", :path=> "../.."
+  pod "tealium-swift/Collect", :path=> "../.."
+  pod "tealium-swift/Lifecycle", :path=> "../.."
+  pod "tealium-swift/VisitorService", :path=> "../.."
+end  

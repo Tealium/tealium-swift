@@ -11,6 +11,16 @@ import Foundation
 
 class MockURLSessionHTTPRemoteCommand: URLSessionProtocol {
     
+    func tealiumDataTask(with url: URL, completionHandler: @escaping (DataTaskResult) -> Void) -> URLSessionDataTaskProtocol {
+        return HTTPRemoteCommandDataTask(completionHandler: { data, response, error in
+            if let error = error {
+                completionHandler(.failure(error))
+            } else if let data = data, let response = response {
+                completionHandler(.success((response as? HTTPURLResponse, data)))
+            }
+        }, url: url)
+    }
+    
     func tealiumDataTask(with url: URL, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol {
         return HTTPRemoteCommandDataTask(completionHandler: completionHandler, url: url)
     }
