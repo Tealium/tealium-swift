@@ -505,7 +505,8 @@ extension TealiumLocationUnitTests: LocationListener {
             TealiumLocationKey.deviceLatitude: "37.3317",
             TealiumLocationKey.deviceLongitude: "-122.0325086",
             TealiumLocationKey.timestamp: "2020-01-15 06:31:00 +0000",
-            TealiumLocationKey.speed: "40.0"]
+            TealiumLocationKey.speed: "40.0",
+            TealiumLocationKey.accuracy: "low"]
         XCTAssertEqual(expected.keys, data.keys)
         data.forEach {
             guard let value = $0.value as? String,

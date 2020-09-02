@@ -34,7 +34,7 @@ public class TealiumVolatileData: NSObject, TealiumVolatileDataCollection {
     ///
     /// - Returns: `[String: Any]`
     public func getData() -> [String: Any] {
-        return TealiumQueues.backgroundConcurrentQueue.read { () -> [String: Any] in
+        return TealiumQueues.backgroundConcurrent.read { () -> [String: Any] in
             return getData(currentData: [String: Any]())
         }
     }
@@ -44,7 +44,7 @@ public class TealiumVolatileData: NSObject, TealiumVolatileDataCollection {
     /// - Parameter currentData: `[String: Any]` containing existing volatile data
     /// - Returns: `[String: Any]`
     func getData(currentData: [String: Any]) -> [String: Any] {
-       return TealiumQueues.backgroundConcurrentQueue.read { () -> [String: Any] in
+       return TealiumQueues.backgroundConcurrent.read { () -> [String: Any] in
             var data = [String: Any]()
 
             data[TealiumVolatileDataKey.random] = TealiumVolatileData.getRandom(length: 16)
@@ -79,7 +79,7 @@ public class TealiumVolatileData: NSObject, TealiumVolatileDataCollection {
     ///
     /// - Parameter keys: `[String]` to remove from the internal volatile data store.
     public func deleteData(forKeys keys: [String]) {
-        TealiumQueues.backgroundConcurrentQueue.write {
+        TealiumQueues.backgroundConcurrent.write {
             keys.forEach {
                 self.volatileData.removeValue(forKey: $0)
             }
@@ -88,7 +88,7 @@ public class TealiumVolatileData: NSObject, TealiumVolatileDataCollection {
 
     /// Deletes all volatile data.
     public func deleteAllData() {
-        TealiumQueues.backgroundConcurrentQueue.write {
+        TealiumQueues.backgroundConcurrent.write {
             self.volatileData.forEach {
                 self.volatileData.removeValue(forKey: $0.key)
             }

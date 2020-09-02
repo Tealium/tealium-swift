@@ -40,7 +40,7 @@ public class Tealium {
                 self.config = remoteConfig
             }
         }
-        TealiumQueues.backgroundConcurrentQueue.write { [weak self] in
+        TealiumQueues.backgroundConcurrent.write { [weak self] in
             guard let self = self else {
                 return
             }
@@ -60,7 +60,7 @@ public class Tealium {
     /// Enable call used after disable() to re-enable library activites. Unnecessary to call after
     /// initial init. Does NOT override individual module enabled flags.
     public func enable(tealiumInstance: Tealium? = nil) {
-        TealiumQueues.backgroundConcurrentQueue.write { [weak self] in
+        TealiumQueues.backgroundConcurrent.write { [weak self] in
             guard let self = self else {
                 return
             }
@@ -74,7 +74,7 @@ public class Tealium {
     ///￼
     /// - Parameter config: TealiumConfiguration to update library with.
     public func update(config: TealiumConfig) {
-        TealiumQueues.backgroundConcurrentQueue.write {
+        TealiumQueues.backgroundConcurrent.write {
             self.modulesManager.update(config: config.copy, oldConfig: self.config.copy)
             let updateConfigRequest = TealiumUpdateConfigRequest(config: config)
             self.modulesManager.tealiumModuleRequests(module: nil, process: updateConfigRequest)
@@ -84,7 +84,7 @@ public class Tealium {
 
     /// Suspends all library activity, may release internal objects.
     public func disable() {
-        TealiumQueues.backgroundConcurrentQueue.write {
+        TealiumQueues.backgroundConcurrent.write {
             self.modulesManager.disable()
         }
     }
@@ -93,7 +93,7 @@ public class Tealium {
     ///￼
     /// - Parameter title: String name of the event. This converts to 'tealium_event'
     public func track(title: String) {
-        TealiumQueues.backgroundConcurrentQueue.write {
+        TealiumQueues.backgroundConcurrent.write {
             self.track(title: title,
                        data: nil,
                        completion: nil)
@@ -112,7 +112,7 @@ public class Tealium {
     public func track(title: String,
                       data: [String: Any]?,
                       completion: ((_ successful: Bool, _ info: [String: Any]?, _ error: Error?) -> Void)?) {
-        TealiumQueues.backgroundConcurrentQueue.write { [weak self] in
+        TealiumQueues.backgroundConcurrent.write { [weak self] in
             guard let self = self else {
                 return
             }
@@ -139,7 +139,7 @@ public class Tealium {
     public func trackView(title: String,
                           data: [String: Any]?,
                           completion: ((_ successful: Bool, _ info: [String: Any]?, _ error: Error?) -> Void)?) {
-        TealiumQueues.backgroundConcurrentQueue.write {
+        TealiumQueues.backgroundConcurrent.write {
             var newData = [String: Any]()
 
             if let data = data {

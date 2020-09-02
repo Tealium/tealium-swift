@@ -8,7 +8,7 @@ import Foundation
 // swiftlint:disable type_body_length
 public class TealiumDiskStorage: TealiumDiskStorageProtocol {
 
-    static let readWriteQueue = TealiumQueues.backgroundSerialQueue
+    static let readWriteQueue = TealiumQueues.backgroundSerial
     let defaultDirectory = Disk.Directory.caches
     var currentDirectory: Disk.Directory
     let filePrefix: String

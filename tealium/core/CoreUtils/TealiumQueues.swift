@@ -10,19 +10,19 @@ import Foundation
 
 public class TealiumQueues {
 
-    public static let backgroundConcurrentQueue = {
-        return ReadWrite("com.tealium.backgroundconcurrentqueue", type: .concurrent)
+    public static let backgroundConcurrent = {
+        return ReadWrite("com.tealium.backgroundconcurrentqueue")
+    }()
+    
+    public static let backgroundSerial = {
+        return ReadWriteSerial("com.tealium.backgroundserialqueue")
     }()
 
-    public static let mainQueue = DispatchQueue.main
+    public static let main = DispatchQueue.main
 
-    public static let backgroundSerialDispatchQueue = DispatchQueue(label: "com.tealium.backgroundserialqueue",
+    public static let backgroundDispatch = DispatchQueue(label: "com.tealium.backgroundserialdispatchqueue",
                                                             qos: .utility,
                                                             attributes: [],
                                                             autoreleaseFrequency: .inherit,
                                                             target: .global(qos: .utility))
-    
-    public static let backgroundSerialQueue = {
-        return ReadWrite("com.tealium.backgroundserialqueue")
-    }()
 }

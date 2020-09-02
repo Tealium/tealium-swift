@@ -14,7 +14,7 @@ import TealiumCore
 public class TealiumPersistentDataStorage: Codable {
     var data: AnyCodable
     lazy var isEmpty: Bool = {
-        TealiumQueues.backgroundSerialQueue.read { [weak self] in
+        TealiumQueues.backgroundConcurrent.read { [weak self] in
             guard let totalValues = (self?.data.value as? [String: Any])?.count else {
                 return true
             }
@@ -27,7 +27,7 @@ public class TealiumPersistentDataStorage: Codable {
     }
 
     public func values() -> [String: Any]? {
-        TealiumQueues.backgroundSerialQueue.read { [weak self] in
+        TealiumQueues.backgroundConcurrent.read { [weak self] in
             guard let self = self else {
                 return nil
             }
@@ -37,7 +37,7 @@ public class TealiumPersistentDataStorage: Codable {
 
     public func add(data: [String: Any]) {
         var newData = [String: Any]()
-        TealiumQueues.backgroundSerialQueue.write { [weak self] in
+        TealiumQueues.backgroundConcurrent.write { [weak self] in
             guard let self = self else {
                 return
             }
@@ -50,7 +50,7 @@ public class TealiumPersistentDataStorage: Codable {
     }
 
     public func delete(forKey key: String) {
-        TealiumQueues.backgroundSerialQueue.write { [weak self] in
+        TealiumQueues.backgroundConcurrent.write { [weak self] in
             guard let self = self else {
                 return
             }

@@ -6,6 +6,25 @@
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
+public class ReadWriteSerial {
+
+    private let queue: DispatchQueue
+
+    public init(_ label: String) {
+        queue = DispatchQueue(label: label, qos: .utility, attributes: [], autoreleaseFrequency: .inherit, target: .global())
+    }
+
+    public func write(_ work: @escaping () -> Void) {
+        queue.async {
+            work()
+        }
+    }
+
+    public func read<T>(_  work: () throws -> T) rethrows -> T {
+        return try queue.sync(execute: work)
+    }
+}
+
 import Foundation
 // credit: https://medium.com/@oyalhi/dispatch-barriers-in-swift-3-6c4a295215d6
 // credit: https://swiftexample.info/snippet/read-writeswift_a-voronov_swift
@@ -24,9 +43,9 @@ public class ReadWrite {
         return DispatchQueue.getSpecific(key: barrierSpecificKey) == true
     }
 
-    public init(_ label: String, type: DispatchQueue.Attributes? = nil) {
+    public init(_ label: String) {
         specificValue = label
-        queue = DispatchQueue(label: label, qos: .utility, attributes: type ?? [], autoreleaseFrequency: .inherit, target: .global(qos: .utility))
+        queue = DispatchQueue(label: label, qos: .utility, attributes: .concurrent, autoreleaseFrequency: .inherit, target: .global())
         queue.setSpecific(key: queueSpecificKey, value: specificValue)
         queue.setSpecific(key: barrierSpecificKey, value: false)
     }

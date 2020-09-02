@@ -95,7 +95,7 @@ open class TealiumModulesManager: NSObject {
                        tealiumInstance: Tealium? = nil) {
         self.setupModulesFrom(config: config)
         self.tealiumInstance = tealiumInstance
-        self.queue = TealiumQueues.backgroundConcurrentQueue
+        self.queue = TealiumQueues.backgroundConcurrent
         let request = TealiumEnableRequest(config: config,
                                            enableCompletion: enableCompletion)
         self.modules?.first?.handle(request)
@@ -223,7 +223,7 @@ extension TealiumModulesManager: TealiumModuleDelegate {
     ///     - process: `TealiumRequest` that has been processed
     public func tealiumModuleFinished(module: TealiumModule,
                                       process: TealiumRequest) {
-        TealiumQueues.backgroundConcurrentQueue.write { [weak self] in
+        TealiumQueues.backgroundConcurrent.write { [weak self] in
             guard let self = self else {
                 return
             }

@@ -167,11 +167,11 @@ extension TealiumDispatchQueueModule: TealiumLifecycleEvents {
                 }
             }
 
-        TealiumQueues.backgroundSerialDispatchQueue.asyncAfter(deadline: DispatchTime.now() + 1.5) {
+        TealiumQueues.backgroundDispatch.asyncAfter(deadline: DispatchTime.now() + 1.5) {
             self.releaseQueue()
         }
         if let taskId = backgroundTaskId {
-            TealiumQueues.backgroundSerialDispatchQueue.asyncAfter(deadline: DispatchTime.now() + 3.0) {
+            TealiumQueues.backgroundDispatch.asyncAfter(deadline: DispatchTime.now() + 3.0) {
                 TealiumDispatchQueueModule.sharedApplication?.endBackgroundTask(taskId)
                 backgroundTaskId = UIBackgroundTaskIdentifier(rawValue: convertFromUIBackgroundTaskIdentifier(UIBackgroundTaskIdentifier.invalid))
             }
@@ -180,7 +180,7 @@ extension TealiumDispatchQueueModule: TealiumLifecycleEvents {
         let pInfo = ProcessInfo()
         pInfo.performExpiringActivity(withReason: "Tealium Swift: Dispatch Queued Events") { willBeSuspended in
             if !willBeSuspended {
-                TealiumQueues.backgroundSerialDispatchQueue.asyncAfter(deadline: DispatchTime.now() + 1.5) {
+                TealiumQueues.backgroundDispatch.asyncAfter(deadline: DispatchTime.now() + 1.5) {
                     self.releaseQueue()
                 }
             }
@@ -191,13 +191,13 @@ extension TealiumDispatchQueueModule: TealiumLifecycleEvents {
     }
 
     func wake() {
-        TealiumQueues.backgroundSerialDispatchQueue.asyncAfter(deadline: DispatchTime.now() + 3.0) {
+        TealiumQueues.backgroundDispatch.asyncAfter(deadline: DispatchTime.now() + 3.0) {
             self.releaseQueue()
         }
     }
 
     func launch(at date: Date) {
-        TealiumQueues.backgroundSerialDispatchQueue.asyncAfter(deadline: DispatchTime.now() + 3.0) {
+        TealiumQueues.backgroundDispatch.asyncAfter(deadline: DispatchTime.now() + 3.0) {
             self.releaseQueue()
         }
     }

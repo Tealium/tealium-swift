@@ -133,7 +133,7 @@ public class TealiumVisitorServiceModule: TealiumModule {
 
     func retrieveProfile(visitorId: String) {
         // wait before triggering refresh, to give event time to process
-        TealiumQueues.backgroundConcurrentQueue.write(after: .now() + 2.1) {
+        TealiumQueues.backgroundConcurrent.write(after: .now() + 2.1) {
             guard self.firstEventSent else {
                 self.firstEventSent = true
                 self.visitorProfileManager?.startProfileUpdates(visitorId: visitorId)

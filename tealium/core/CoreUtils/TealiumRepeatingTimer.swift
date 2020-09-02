@@ -15,12 +15,12 @@ public class TealiumRepeatingTimer {
 
     let timeInterval: TimeInterval
     let dispatchQueue: DispatchQueue
-    let readWriteQueue = TealiumQueues.backgroundConcurrentQueue
+    let readWriteQueue = TealiumQueues.backgroundConcurrent
 
     /// - Parameters:
     ///     - timeInterval: TimeInterval between runs of the timed event￼
     ///     - dispatchQueue: The queue to use for the timer
-    public init(timeInterval: TimeInterval, dispatchQueue: DispatchQueue = TealiumQueues.backgroundSerialDispatchQueue) {
+    public init(timeInterval: TimeInterval, dispatchQueue: DispatchQueue = TealiumQueues.backgroundDispatch) {
         self.timeInterval = timeInterval
         self.dispatchQueue = dispatchQueue
     }

@@ -16,7 +16,7 @@ class TealiumConsentPreferencesStorage {
 
     static let consentStorage = UserDefaults.standard
     static let key = "consentpreferences"
-    let readWriteQueue = TealiumQueues.backgroundConcurrentQueue
+    let readWriteQueue = TealiumQueues.backgroundConcurrent
     let diskStorage: TealiumDiskStorageProtocol
 
     /// - Parameter diskStorage: `TealiumDiskStorageProtocol` instance to use for storing consent preferences

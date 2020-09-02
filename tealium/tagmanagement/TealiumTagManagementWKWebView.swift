@@ -242,7 +242,7 @@ public class TealiumTagManagementWKWebView: NSObject, TealiumTagManagementProtoc
                 if let error = error {
                     info.value += [TealiumTagManagementKey.jsError: error]
                 }
-                TealiumQueues.backgroundConcurrentQueue.write {
+                TealiumQueues.backgroundConcurrentwrite {
                     completion?(info.value)
                 }
             }

@@ -60,7 +60,7 @@ public class TealiumTagManagementModule: TealiumModule {
             guard let self = self else {
                 return
             }
-            TealiumQueues.backgroundConcurrentQueue.write { [weak self] in
+            TealiumQueues.backgroundConcurrent.write { [weak self] in
                 guard let self = self else {
                     return
                 }
@@ -77,7 +77,7 @@ public class TealiumTagManagementModule: TealiumModule {
             }
         }
         self.isEnabled = true
-        TealiumQueues.backgroundConcurrentQueue.write { [weak self] in
+        TealiumQueues.backgroundConcurrent.write { [weak self] in
             guard let self = self else {
                 return
             }
@@ -229,7 +229,7 @@ public class TealiumTagManagementModule: TealiumModule {
                 #if TEST
                 #else
                 self.tagManagement?.trackMultiple(allTrackData) { success, info, error in
-                    TealiumQueues.backgroundConcurrentQueue.write { [weak self] in
+                    TealiumQueues.backgroundConcurrent.write { [weak self] in
                         guard let self = self else {
                             return
                         }
@@ -247,7 +247,7 @@ public class TealiumTagManagementModule: TealiumModule {
                 #if TEST
                 #else
                 self.tagManagement?.track(track.trackDictionary) { success, info, error in
-                    TealiumQueues.backgroundConcurrentQueue.write { [weak self] in
+                    TealiumQueues.backgroundConcurrent.write { [weak self] in
                         guard let self = self else {
                             return
                         }
@@ -329,7 +329,7 @@ public class TealiumTagManagementModule: TealiumModule {
         } else {
             self.tagManagement = nil
         }
-        TealiumQueues.backgroundConcurrentQueue.write { [weak self] in
+        TealiumQueues.backgroundConcurrent.write { [weak self] in
             guard let self = self else {
                 return
             }

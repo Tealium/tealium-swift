@@ -41,7 +41,7 @@ open class TealiumRemoteCommand {
     ///￼
     /// - Parameter response: `TealiumRemoteCommandResponse` object containing information from the TiQ webview
     func completeWith(response: TealiumRemoteCommandResponse) {
-        TealiumQueues.backgroundSerialDispatchQueue.async { [weak self] in
+        TealiumQueues.backgroundDispatch.async { [weak self] in
             guard let self = self else {
                 return
             }
