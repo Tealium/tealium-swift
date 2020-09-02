@@ -101,7 +101,7 @@ public class TealiumTagManagementWKWebView: NSObject, TealiumTagManagementProtoc
     func setupWebview(forURL url: URL?,
                       shouldAddCookieObserver: Bool,
                       withSpecificView specificView: UIView?) {
-        TealiumQueues.mainQueue.async { [weak self] in
+        TealiumQueues.main.async { [weak self] in
             guard let self = self else {
                return
             }
@@ -125,7 +125,7 @@ public class TealiumTagManagementWKWebView: NSObject, TealiumTagManagementProtoc
                         return
                     }
                     let request = URLRequest(url: url)
-                    TealiumQueues.mainQueue.async {
+                    TealiumQueues.main.async {
                         webview.load(request)
                     }
                 }
@@ -142,7 +142,7 @@ public class TealiumTagManagementWKWebView: NSObject, TealiumTagManagementProtoc
         }
         reloadHandler = completion
         let request = URLRequest(url: url)
-        TealiumQueues.mainQueue.async { [weak self] in
+        TealiumQueues.main.async { [weak self] in
             guard let self = self else {
                return
             }
@@ -174,7 +174,7 @@ public class TealiumTagManagementWKWebView: NSObject, TealiumTagManagementProtoc
                         TealiumTagManagementError.couldNotJSONEncodeData)
             return
         }
-        TealiumQueues.mainQueue.async { [weak self] in
+        TealiumQueues.main.async { [weak self] in
             guard let self = self else {
                 return
             }
@@ -226,7 +226,7 @@ public class TealiumTagManagementWKWebView: NSObject, TealiumTagManagementProtoc
     ///     - completion: Optional completion block to be called after the JavaScript call completes
     public func evaluateJavascript (_ jsString: String, _ completion: (([String: Any]) -> Void)?) {
         // webview js evaluation must be on main thread
-        TealiumQueues.mainQueue.async { [weak self] in
+        TealiumQueues.main.async { [weak self] in
             guard let self = self else {
                return
             }
@@ -242,7 +242,7 @@ public class TealiumTagManagementWKWebView: NSObject, TealiumTagManagementProtoc
                 if let error = error {
                     info.value += [TealiumTagManagementKey.jsError: error]
                 }
-                TealiumQueues.backgroundConcurrentwrite {
+                TealiumQueues.backgroundConcurrent.write {
                     completion?(info.value)
                 }
             }
@@ -292,7 +292,7 @@ public class TealiumTagManagementWKWebView: NSObject, TealiumTagManagementProtoc
           self.delegates = nil
           // these methods MUST be called on the main thread. Cannot be async, or self will be deallocated before these run
           if !Thread.isMainThread {
-              TealiumQueues.mainQueue.sync {
+              TealiumQueues.main.sync {
                 self.webview?.navigationDelegate = nil
                 // if this isn't run, the webview will remain attached in a kind of zombie state
                 self.webview?.removeFromSuperview()

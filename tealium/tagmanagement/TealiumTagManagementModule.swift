@@ -323,7 +323,7 @@ public class TealiumTagManagementModule: TealiumModule {
         self.remoteCommandResponseObserver = nil
         self.pendingTrackRequests = [TealiumRequest]()
         if !Thread.isMainThread {
-            TealiumQueues.mainQueue.sync {
+            TealiumQueues.main.sync {
                 self.tagManagement = nil
             }
         } else {

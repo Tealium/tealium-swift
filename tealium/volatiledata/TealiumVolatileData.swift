@@ -25,7 +25,7 @@ public class TealiumVolatileData: NSObject, TealiumVolatileDataCollection {
     ///
     /// - Parameter data: `[String: Any]`. Values should be of type `String` or `[String]`
     public func add(data: [String: Any]) {
-        TealiumQueues.backgroundConcurrentQueue.write {
+        TealiumQueues.backgroundConcurrent.write {
             self.volatileData += data
         }
     }
@@ -66,7 +66,7 @@ public class TealiumVolatileData: NSObject, TealiumVolatileDataCollection {
     /// - Parameter currentData: `[String: Any]` containing existing volatile data
     /// - Returns: `Bool` `true` if dispatch contains existing timestamps
     func dispatchHasExistingTimestamps(_ currentData: [String: Any]) -> Bool {
-       return TealiumQueues.backgroundConcurrentQueue.read { () -> Bool in
+       return TealiumQueues.backgroundConcurrent.read { () -> Bool in
         return (currentData[TealiumVolatileDataKey.timestampEpoch] != nil) &&
                 (currentData[TealiumVolatileDataKey.timestamp] != nil) &&
                 (currentData[TealiumVolatileDataKey.timestampLocal] != nil) &&

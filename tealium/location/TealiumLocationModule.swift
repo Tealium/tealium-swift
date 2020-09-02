@@ -32,7 +32,7 @@ class TealiumLocationModule: TealiumModule {
         if Thread.isMainThread {
             tealiumLocationManager = TealiumLocation(config: request.config, locationListener: self)
         } else {
-            TealiumQueues.mainQueue.sync {
+            TealiumQueues.main.sync {
                 tealiumLocationManager = TealiumLocation(config: request.config, locationListener: self)
             }
         }
