@@ -103,6 +103,7 @@ Pod::Spec.new do |s|
 
   s.subspec "Core" do |core|
     core.source_files  = "tealium/core/**/*.swift"
+    core.resources = "tealium/core/devicedata/device-names.json"
   end
 
   s.subspec "Attribution" do |attribution|
