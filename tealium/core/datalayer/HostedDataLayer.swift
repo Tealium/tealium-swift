@@ -25,7 +25,7 @@ public class HostedDataLayer: HostedDataLayerProtocol {
 
         set {
             if var newValue = newValue,
-                newValue != self.cache {
+               newValue != self.cache {
                 while newValue.count > TealiumValue.hdlCacheSizeMax {
                     newValue.removeFirst()
                 }
@@ -46,7 +46,7 @@ public class HostedDataLayer: HostedDataLayerProtocol {
         return "https://tags.tiqcdn.com/dle/\(config.account)/\(config.profile)/"
     }
 
-    required public init(config: TealiumConfig, delegate: ModuleDelegate?, diskStorage: TealiumDiskStorageProtocol?, completion: (ModuleResult) -> Void) {
+    required public init(config: TealiumConfig, delegate: ModuleDelegate?, diskStorage: TealiumDiskStorageProtocol?, completion: (Result<Bool, Error>, [String: Any]?) -> Void) {
         self.config = config
         self.delegate = delegate
         self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config, forModule: "hdl")
@@ -58,7 +58,7 @@ public class HostedDataLayer: HostedDataLayerProtocol {
     func expireCache(referenceDate date: Date = Date()) {
         let expiry = config.hostedDataLayerExpiry
         if let cache = self.cache,
-            !cache.isEmpty {
+           !cache.isEmpty {
             var components = DateComponents()
             components.calendar = Calendar.autoupdatingCurrent
             components.setValue(-expiry.0, for: expiry.unit.component)

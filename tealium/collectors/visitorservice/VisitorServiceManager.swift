@@ -75,8 +75,8 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
         }
 
         guard currentState.value == VisitorServiceStatus.ready.rawValue,
-            let _ = visitorId else {
-                return
+              let _ = visitorId else {
+            return
         }
         self.blockState()
         fetchProfile { profile, error in
@@ -158,14 +158,14 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
             switch result {
             case .success(let profile):
                 guard let profile = profile,
-                    !profile.isEmpty else {
-                        completion(nil, nil)
-                        return
+                      !profile.isEmpty else {
+                    completion(nil, nil)
+                    return
                 }
                 guard let lifetimeEventCount = profile.numbers?[VisitorServiceConstants.eventCountMetric],
-                    self.lifetimeEventCountHasBeenUpdated(lifetimeEventCount) else {
-                        completion(nil, nil)
-                        return
+                      self.lifetimeEventCountHasBeenUpdated(lifetimeEventCount) else {
+                    completion(nil, nil)
+                    return
                 }
                 completion(profile, nil)
             case .failure(let error):

@@ -22,16 +22,19 @@ public enum LocationKey {
     static let timestamp = "location_timestamp"
     static let speed = "movement_speed"
     static let accuracy = "location_accuracy"
+    static let accuracyExtended = "location_accuracy_extended"
     static let additionRange = 500.0
     static let highAccuracy = "high"
     static let lowAccuracy = "low"
 }
 
 public enum LocationConfigKey {
-    static let useHighAccuracy = "is_high_accuracy"
+    static let desiredAccuracy = "desired_accuracy"
     static let updateDistance = "update_distance"
+    static let useHighAccuracy = "is_high_accuracy"
     static let geofenceAssetName = "geofence_asset_name"
     static let geofenceJsonUrl = "geofence_json_url"
+    static let geofenceTrackingEnabled = "geofence_tracking_enabled"
 }
 
 public enum LocationConfig {
@@ -48,4 +51,15 @@ enum LocationErrors {
     static let couldNotRetrieve = "Could not retrieve JSON."
     static let couldNotDecode = "Could not decode JSON."
 }
+
+public enum LocationAccuracy: String {
+    case bestForNavigation = "best_for_navigation"
+    case best
+    case nearestTenMeters = "nearest_ten_meters"
+    case nearestHundredMeters = "nearest_hundred_meters"
+    case reduced
+    case withinOneKilometer = "within_one_kilometer"
+    case withinThreeKilometers = "within_three_kilometers"
+}
+
 #endif

@@ -40,8 +40,8 @@ class ConsentManagerModule: Collector, DispatchValidator {
             return
         }
         if newConfig != self.config,
-            newConfig.account != config.account,
-            newConfig.profile != config.profile {
+           newConfig.account != config.account,
+           newConfig.profile != config.profile {
             self.diskStorage = TealiumDiskStorage(config: request.config, forModule: ConsentKey.moduleName, isCritical: true)
             consentManager = ConsentManager(config: config, delegate: delegate, diskStorage: self.diskStorage)
         }
@@ -58,7 +58,7 @@ class ConsentManagerModule: Collector, DispatchValidator {
 
         // allow tracking calls to continue if they are for auditing purposes
         if let event = request.trackDictionary[TealiumKey.event] as? String,
-            (event == ConsentKey.consentPartialEventName ||
+           (event == ConsentKey.consentPartialEventName ||
                 event == ConsentKey.consentGrantedEventName ||
                 event == ConsentKey.consentDeclinedEventName ||
                 event == ConsentKey.gdprConsentCookieEventName ||

@@ -48,9 +48,9 @@ class MockAppDataDiskStorage: TealiumDiskStorageProtocol {
 
     func retrieve<T>(as type: T.Type, completion: @escaping (Bool, T?, Error?) -> Void) where T: Decodable {
         guard T.self == PersistentAppData.self,
-            let completion = completion as? (Bool, PersistentAppData?, Error?) -> Void
-            else {
-                return
+              let completion = completion as? (Bool, PersistentAppData?, Error?) -> Void
+        else {
+            return
         }
         completion(true, PersistentAppData(visitorId: TealiumTestValue.visitorID, uuid: TealiumTestValue.visitorID), nil)
     }

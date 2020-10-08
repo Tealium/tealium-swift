@@ -98,15 +98,12 @@ class TealiumPersistentQueueTests: XCTestCase {
 
     func testRemoveOldDispatches() {
         let date = Date()
-        var components = DateComponents()
+        let timeTraveler = TimeTraveler()
         persistentQueue?.appendDispatch(TealiumTrackRequest(data: ["tealium_event": "current_date", TealiumKey.timestampUnix: date.unixTimeSeconds]))
         persistentQueue?.appendDispatch(TealiumTrackRequest(data: ["tealium_event": "no_timestamp"]))
-        components.day = -2
-        persistentQueue?.appendDispatch(TealiumTrackRequest(data: ["tealium_event": "old_date", TealiumKey.timestampUnix: Calendar.current.date(byAdding: components, to: date)!.unixTimeSeconds]))
-        components.day = -1
-        let newDate = Calendar.current.date(byAdding: components, to: date)
+        persistentQueue?.appendDispatch(TealiumTrackRequest(data: ["tealium_event": "old_date", TealiumKey.timestampUnix: timeTraveler.travel(by: daysInFuture(2)).unixTimeSeconds]))
         XCTAssertEqual(persistentQueue?.currentEvents, 3)
-        persistentQueue?.removeOldDispatches(5, since: newDate)
+        persistentQueue?.removeOldDispatches(5, since: timeTraveler.travel(by: daysInFuture(1)))
         XCTAssertEqual(persistentQueue?.currentEvents, 2)
         persistentQueue?.removeOldDispatches(1)
         XCTAssertEqual(persistentQueue?.currentEvents, 1)
@@ -114,6 +111,10 @@ class TealiumPersistentQueueTests: XCTestCase {
         persistentQueue?.appendDispatch(TealiumTrackRequest(data: ["tealium_event": "no_timestamp"]))
         persistentQueue?.removeOldDispatches(2)
         XCTAssertEqual(persistentQueue?.currentEvents, 2)
+    }
+
+    private func daysInFuture(_ days: Int) -> TimeInterval {
+        TimeInterval((days * -86_400))
     }
 
 }

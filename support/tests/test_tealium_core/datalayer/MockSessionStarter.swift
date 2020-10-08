@@ -40,7 +40,6 @@ class MockURLSessionSessionStarter: URLSessionProtocol {
             }
         }, url: url)
     }
-    
 
     func tealiumDataTask(with url: URL, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol {
         return SessionStarterDataTask(completionHandler: completionHandler, url: url)
@@ -79,7 +78,6 @@ class MockURLSessionSessionStarterInvalidResponse: URLSessionProtocol {
             }
         }, url: url)
     }
-    
 
     func tealiumDataTask(with url: URL, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol {
         return SessionStarterDataTaskInvalidResponse(completionHandler: completionHandler, url: url)
@@ -119,7 +117,6 @@ class MockURLSessionSessionStarterRequestError: URLSessionProtocol {
             }
         }, url: url)
     }
-    
 
     func tealiumDataTask(with url: URL, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol {
         return SessionStarterDataTaskError(completionHandler: completionHandler, url: url)

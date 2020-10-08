@@ -22,39 +22,6 @@ class TagManagementModuleTests: XCTestCase {
         config = TealiumConfig(account: "testAccount", profile: "testProfile", environment: "testEnv")
     }
 
-    func testDispatchTrackCreatesTrackRequest() {
-        expect = expectation(description: "trackRequest")
-        module = TagManagementModule(config: config, delegate: self, completion: { _ in })
-        let track = TealiumTrackRequest(data: ["test_track": true])
-        module?.dispatchTrack(track, completion: { result in
-            switch result.0 {
-            case .failure(let error):
-                XCTFail("Unexpected error: \(error.localizedDescription)")
-            case .success(let success):
-                XCTAssertTrue(success)
-                self.expect.fulfill()
-            }
-        })
-        wait(for: [expect], timeout: 2.0)
-    }
-
-    func testDispatchTrackCreatesBatchTrackRequest() {
-        expect = expectation(description: "batchTrackRequest")
-        module = TagManagementModule(config: config, delegate: self, completion: { _ in })
-        let track = TealiumTrackRequest(data: ["test_track": true])
-        let batchTrack = TealiumBatchTrackRequest(trackRequests: [track, track, track])
-        module?.dispatchTrack(batchTrack, completion: { result in
-            switch result.0 {
-            case .failure(let error):
-                XCTFail("Unexpected error: \(error.localizedDescription)")
-            case .success(let success):
-                XCTAssertTrue(success)
-                self.expect.fulfill()
-            }
-        })
-        wait(for: [expect], timeout: 2.0)
-    }
-
     func testDynamicTrackWithErrorReloadsAndSucceeds() {
         expect = expectation(description: "dynamicTrackWithErrorReloadsAndSucceeds")
         mockTagmanagement = MockTagManagementWebView(success: true)

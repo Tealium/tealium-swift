@@ -10,6 +10,7 @@ import Foundation
 @testable import TealiumCore
 
 class DispatchQueueMockDiskStorage: TealiumDiskStorageProtocol {
+
     func append(_ data: [String: Any], fileName: String, completion: TealiumCompletion?) {
 
     }
@@ -29,8 +30,8 @@ class DispatchQueueMockDiskStorage: TealiumDiskStorageProtocol {
 
     func save<T>(_ data: T, completion: TealiumCompletion?) where T: Encodable {
         guard T.self == [TealiumTrackRequest].self,
-            let data = data as? [TealiumTrackRequest] else {
-                return
+              let data = data as? [TealiumTrackRequest] else {
+            return
         }
         self.dispatchQueueData = data
         completion?(true, nil, nil)
@@ -41,9 +42,9 @@ class DispatchQueueMockDiskStorage: TealiumDiskStorageProtocol {
 
     func append<T>(_ data: T, completion: TealiumCompletion?) where T: Decodable, T: Encodable {
         guard T.self == TealiumTrackRequest.self,
-            let data = data as? TealiumTrackRequest else {
-                completion?(false, nil, nil)
-                return
+              let data = data as? TealiumTrackRequest else {
+            completion?(false, nil, nil)
+            return
         }
         self.dispatchQueueData.append(data)
     }

@@ -11,8 +11,6 @@ import Foundation
 import TealiumCore
 #endif
 
-public typealias DataTaskResult = Result<(HTTPURLResponse?, Data?), Error>
-
 public enum HTTPError: Error {
     case transportError(Error)
     case serverSideError(Int)

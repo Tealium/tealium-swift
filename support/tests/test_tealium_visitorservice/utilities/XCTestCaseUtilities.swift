@@ -6,8 +6,8 @@
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 
-import XCTest
 import Foundation
+import XCTest
 
 extension XCTestCase {
 

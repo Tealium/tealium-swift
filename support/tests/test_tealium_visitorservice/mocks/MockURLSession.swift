@@ -7,11 +7,11 @@
 //
 
 import Foundation
-@testable import TealiumVisitorService
 @testable import TealiumCore
+@testable import TealiumVisitorService
 
 class MockURLSession: URLSessionProtocol {
-    
+
     func tealiumDataTask(with url: URL, completionHandler: @escaping (DataTaskResult) -> Void) -> URLSessionDataTaskProtocol {
         return DataTask(completionHandler: { data, response, error in
             if let error = error {
@@ -21,7 +21,7 @@ class MockURLSession: URLSessionProtocol {
             }
         }, url: url)
     }
-    
+
     func tealiumDataTask(with url: URL, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol {
         return DataTask(completionHandler: completionHandler, url: url)
     }
@@ -52,7 +52,7 @@ class DataTask: URLSessionDataTaskProtocol {
 }
 
 class MockURLSessionError: URLSessionProtocol {
-    
+
     func tealiumDataTask(with url: URL, completionHandler: @escaping (DataTaskResult) -> Void) -> URLSessionDataTaskProtocol {
         return DataTaskError(completionHandler: { data, response, error in
             if let error = error {
@@ -62,7 +62,7 @@ class MockURLSessionError: URLSessionProtocol {
             }
         }, url: url)
     }
-    
+
     func tealiumDataTask(with url: URL, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol {
         return DataTaskError(completionHandler: completionHandler, url: url)
     }

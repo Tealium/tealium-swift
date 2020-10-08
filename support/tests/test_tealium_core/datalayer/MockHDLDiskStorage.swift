@@ -17,7 +17,7 @@ class MockHDLDiskStorageFullCache: TealiumDiskStorageProtocol {
 
     init() {
         for _ in 0...50 {
-            mockCache.append(HostedDataLayerCacheItem(id: "\(Int.random(in: 0...10000))", data: ["product_name": "test"]))
+            mockCache.append(HostedDataLayerCacheItem(id: "\(Int.random(in: 0...10_000))", data: ["product_name": "test"]))
         }
     }
 
@@ -31,12 +31,12 @@ class MockHDLDiskStorageFullCache: TealiumDiskStorageProtocol {
 
     func save<T>(_ data: T, completion: TealiumCompletion?) where T: Encodable {
         guard T.self == [HostedDataLayerCacheItem].self,
-            let data = data as? [HostedDataLayerCacheItem] else {
-                return
+              let data = data as? [HostedDataLayerCacheItem] else {
+            return
         }
-        
+
         self.mockCache = data
-        
+
         completion?(true, nil, nil)
     }
 
@@ -91,7 +91,7 @@ class MockHDLDiskStorageEmptyCache: TealiumDiskStorageProtocol {
     var mockCache = [HostedDataLayerCacheItem]()
 
     init() {
-        
+
     }
 
     func append(_ data: [String: Any], fileName: String, completion: TealiumCompletion?) { }
@@ -104,12 +104,12 @@ class MockHDLDiskStorageEmptyCache: TealiumDiskStorageProtocol {
 
     func save<T>(_ data: T, completion: TealiumCompletion?) where T: Encodable {
         guard T.self == [HostedDataLayerCacheItem].self,
-            let data = data as? [HostedDataLayerCacheItem] else {
-                return
+              let data = data as? [HostedDataLayerCacheItem] else {
+            return
         }
-        
+
         self.mockCache = data
-        
+
         completion?(true, nil, nil)
     }
 
@@ -159,24 +159,23 @@ class MockHDLDiskStorageEmptyCache: TealiumDiskStorageProtocol {
     }
 }
 
-
 class MockHDLDiskStorageExpiringCache: TealiumDiskStorageProtocol {
 
     var mockCache = [HostedDataLayerCacheItem]()
 
     var referenceDate = Calendar.autoupdatingCurrent.date(from: DateComponents(year: 2020, month: 1, day: 1, hour: 0, minute: 0, second: 0))
-    
+
     init() {
         mockCache = [
-            HostedDataLayerCacheItem(id: "abc123", data: ["product_color":"blue"], retrievalDate: Calendar.autoupdatingCurrent.date(from: DateComponents(year: 2019, month: 1, day: 1, hour: 0, minute: 0, second: 0))!),
-            HostedDataLayerCacheItem(id: "bcd234", data: ["product_color":"blue"], retrievalDate: Calendar.autoupdatingCurrent.date(from: DateComponents(year: 2019, month: 1, day: 1, hour: 0, minute: 0, second: 0))!),
-            HostedDataLayerCacheItem(id: "cde345", data: ["product_color":"blue"], retrievalDate: Calendar.autoupdatingCurrent.date(from: DateComponents(year: 2019, month: 1, day: 1, hour: 0, minute: 0, second: 0))!),
-            HostedDataLayerCacheItem(id: "def456", data: ["product_color":"blue"], retrievalDate: Calendar.autoupdatingCurrent.date(from: DateComponents(year: 2019, month: 1, day: 1, hour: 0, minute: 0, second: 0))!),
-            HostedDataLayerCacheItem(id: "efg567", data: ["product_color":"blue"], retrievalDate: Calendar.autoupdatingCurrent.date(from: DateComponents(year: 2020, month: 2, day: 1, hour: 0, minute: 0, second: 0))!),
-            HostedDataLayerCacheItem(id: "fgh678", data: ["product_color":"blue"], retrievalDate: Calendar.autoupdatingCurrent.date(from: DateComponents(year: 2020, month: 2, day: 1, hour: 0, minute: 0, second: 0))!),
-            HostedDataLayerCacheItem(id: "ghi789", data: ["product_color":"blue"], retrievalDate: Calendar.autoupdatingCurrent.date(from: DateComponents(year: 2020, month: 2, day: 1, hour: 0, minute: 0, second: 0))!),
-            HostedDataLayerCacheItem(id: "hij890", data: ["product_color":"blue"], retrievalDate: Calendar.autoupdatingCurrent.date(from: DateComponents(year: 2020, month: 2, day: 1, hour: 0, minute: 0, second: 0))!),
-            HostedDataLayerCacheItem(id: "ijk901", data: ["product_color":"blue"], retrievalDate: Calendar.autoupdatingCurrent.date(from: DateComponents(year: 2050, month: 2, day: 1, hour: 0, minute: 0, second: 0))!),
+            HostedDataLayerCacheItem(id: "abc123", data: ["product_color": "blue"], retrievalDate: Calendar.autoupdatingCurrent.date(from: DateComponents(year: 2019, month: 1, day: 1, hour: 0, minute: 0, second: 0))!),
+            HostedDataLayerCacheItem(id: "bcd234", data: ["product_color": "blue"], retrievalDate: Calendar.autoupdatingCurrent.date(from: DateComponents(year: 2019, month: 1, day: 1, hour: 0, minute: 0, second: 0))!),
+            HostedDataLayerCacheItem(id: "cde345", data: ["product_color": "blue"], retrievalDate: Calendar.autoupdatingCurrent.date(from: DateComponents(year: 2019, month: 1, day: 1, hour: 0, minute: 0, second: 0))!),
+            HostedDataLayerCacheItem(id: "def456", data: ["product_color": "blue"], retrievalDate: Calendar.autoupdatingCurrent.date(from: DateComponents(year: 2019, month: 1, day: 1, hour: 0, minute: 0, second: 0))!),
+            HostedDataLayerCacheItem(id: "efg567", data: ["product_color": "blue"], retrievalDate: Calendar.autoupdatingCurrent.date(from: DateComponents(year: 2020, month: 2, day: 1, hour: 0, minute: 0, second: 0))!),
+            HostedDataLayerCacheItem(id: "fgh678", data: ["product_color": "blue"], retrievalDate: Calendar.autoupdatingCurrent.date(from: DateComponents(year: 2020, month: 2, day: 1, hour: 0, minute: 0, second: 0))!),
+            HostedDataLayerCacheItem(id: "ghi789", data: ["product_color": "blue"], retrievalDate: Calendar.autoupdatingCurrent.date(from: DateComponents(year: 2020, month: 2, day: 1, hour: 0, minute: 0, second: 0))!),
+            HostedDataLayerCacheItem(id: "hij890", data: ["product_color": "blue"], retrievalDate: Calendar.autoupdatingCurrent.date(from: DateComponents(year: 2020, month: 2, day: 1, hour: 0, minute: 0, second: 0))!),
+            HostedDataLayerCacheItem(id: "ijk901", data: ["product_color": "blue"], retrievalDate: Calendar.autoupdatingCurrent.date(from: DateComponents(year: 2050, month: 2, day: 1, hour: 0, minute: 0, second: 0))!),
         ]
     }
 
@@ -190,12 +189,12 @@ class MockHDLDiskStorageExpiringCache: TealiumDiskStorageProtocol {
 
     func save<T>(_ data: T, completion: TealiumCompletion?) where T: Encodable {
         guard T.self == [HostedDataLayerCacheItem].self,
-            let data = data as? [HostedDataLayerCacheItem] else {
-                return
+              let data = data as? [HostedDataLayerCacheItem] else {
+            return
         }
-        
+
         self.mockCache = data
-        
+
         completion?(true, nil, nil)
     }
 

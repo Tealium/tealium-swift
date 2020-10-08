@@ -45,9 +45,9 @@ class AttributionMockDiskStorage: TealiumDiskStorageProtocol {
 
     func retrieve<T>(as type: T.Type, completion: @escaping (Bool, T?, Error?) -> Void) where T: Decodable {
         guard T.self == PersistentAttributionData.self,
-            let completion = completion as? (Bool, PersistentAttributionData?, Error?) -> Void
-            else {
-                return
+              let completion = completion as? (Bool, PersistentAttributionData?, Error?) -> Void
+        else {
+            return
         }
         let mockData: [String: String] = Dictionary(uniqueKeysWithValues: AttributionKey.allCases.map { ($0, "mockdata") })
         retrieveCount += 1

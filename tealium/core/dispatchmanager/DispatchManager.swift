@@ -138,9 +138,6 @@ class DispatchManager: DispatchManagerProtocol {
             handleDequeueRequest(reason: "Processing track request")
         }
         var newRequest = request
-        #if os(iOS)
-        triggerRemoteAPIRequest(request)
-        #endif
 
         if checkShouldQueue(request: &newRequest) {
             enqueue(newRequest, reason: nil)
@@ -155,6 +152,10 @@ class DispatchManager: DispatchManagerProtocol {
             self.clearQueue()
             return
         }
+
+        #if os(iOS)
+        triggerRemoteAPIRequest(request)
+        #endif
 
         self.connectivityManager.checkIsConnected { result in
             switch result {
@@ -209,12 +210,12 @@ class DispatchManager: DispatchManagerProtocol {
         self.logTrackSuccess([], request: request)
         dispatchers?.forEach { module in
             let moduleId = module.id
-            module.dynamicTrack(request) { result in
-                switch result.0 {
+            module.dynamicTrack(request) { result, data in
+                switch result {
                 case .failure(let error):
-                    self.logModuleResponse(for: moduleId, request: request, info: result.1, success: false, error: error)
+                    self.logModuleResponse(for: moduleId, request: request, info: data, success: false, error: error)
                 case .success:
-                    self.logModuleResponse(for: moduleId, request: request, info: result.1, success: true, error: nil)
+                    self.logModuleResponse(for: moduleId, request: request, info: data, success: true, error: nil)
                 }
 
             }
@@ -267,17 +268,17 @@ class DispatchManager: DispatchManagerProtocol {
                 }
 
                 guard !self.checkShouldQueue(request: &request),
-                    !self.checkShouldDrop(request: request),
-                    !self.checkShouldPurge(request: request) else {
-                        return
+                      !self.checkShouldDrop(request: request),
+                      !self.checkShouldPurge(request: request) else {
+                    return
                 }
 
                 if let count = self.persistentQueue.peek()?.count, count > 0 {
                     let logRequest = TealiumLogRequest(title: "Dispatch Manager",
                                                        message: "Releasing queued dispatches. Reason: \(reason)",
-                        info: nil,
-                        logLevel: .info,
-                        category: .track)
+                                                       info: nil,
+                                                       logLevel: .info,
+                                                       category: .track)
                     self.logger?.log(logRequest)
 
                     self.dequeue()
@@ -437,7 +438,7 @@ extension DispatchManager {
         return dispatchValidators.filter {
             let response = $0.shouldQueue(request: request)
             if response.0 == true,
-                let data = response.1 {
+               let data = response.1 {
                 request = TealiumBatchTrackRequest(trackRequests: request.trackRequests.map { request in
                     let singleRequestUUID = request.uuid
                     var newData = request.trackDictionary

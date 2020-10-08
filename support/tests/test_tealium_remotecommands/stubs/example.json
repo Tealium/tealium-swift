@@ -1,0 +1,50 @@
+{
+    "config": {
+        "enabled": true,
+        "timeout_seconds": 30,
+        "log_level": "max",
+        "score": 100
+    },
+    "mappings": {
+        "campaign_keywords": "cp1",
+        "campaign": "campaign",
+        "checkout_option": "checkout_option",
+        "checkout_step": "checkout_step",
+        "content": "content",
+        "content_type": "content_type",
+        "coupon": "coupon",
+        "product_brand": "item_brand",
+        "product_category": "item_category",
+        "product_id": "item_id",
+        "product_list": "item_list",
+        "product_location_id": "item_location_id",
+        "product_name": "item_name",
+        "product_variant": "item_variant",
+        "campaign_medium": "medium",
+        "product_unit_price": "price",
+        "product_quantity": "quantity",
+        "search_keyword": "search_term",
+        "order_shipping_amount": "shipping",
+        "order_tax_amount": "tax",
+        "order_id": "transaction_id",
+        "order_total": "value",
+        "event_title": "event_name",
+        "tealium_event": "command_name",
+        "customer_id": "user_id",
+        "event_properties": "event_parameters"
+    },
+    "commands": {
+        "launch": "initialize",
+        "screen_view": "setscreename",
+        "click_thru": "logevent",
+        "social_media_activity": "setuserid",
+        "user_login": "logevent",
+        "lead_generation": "logevent",
+        "custom_event": "logevent",
+        "event_with_properties": "logevent",
+        "update_profile": "setuserproperty",
+        "join_group": "logevent",
+        "complete_tutorial": "logevent",
+        "purchase": "logevent"
+    }
+}

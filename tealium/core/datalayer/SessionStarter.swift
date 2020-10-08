@@ -43,9 +43,9 @@ public struct SessionStarter: SessionStarterProtocol {
                 return
             }
             guard let response = response as? HTTPURLResponse,
-                HttpStatusCodes(rawValue: response.statusCode) == .ok else {
-                    completion(.failure(SessionError.invalidResponse))
-                    return
+                  HttpStatusCodes(rawValue: response.statusCode) == .ok else {
+                completion(.failure(SessionError.invalidResponse))
+                return
             }
             completion(.success(response))
         }.resume()

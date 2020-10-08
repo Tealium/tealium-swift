@@ -12,7 +12,7 @@ import XCTest
 class DataLayerTests: XCTestCase {
 
     var mockDataLayerItem: DataLayerItem!
-    var eventData: DataLayerCollection!
+    var eventData: Set<DataLayerItem>!
 
     override func setUpWithError() throws {
         mockDataLayerItem = DataLayerItem(key: "itemOne", value: "test1", expires: .distantFuture)
@@ -29,7 +29,7 @@ class DataLayerTests: XCTestCase {
     }
 
     func testInsertSingleExpires() {
-        eventData = DataLayerCollection()
+        eventData = Set<DataLayerItem>()
         eventData.insert(key: "itemOne", value: "test1", expires: .distantPast)
         let eventDataExpired = eventData.removeExpired()
         XCTAssertEqual(eventDataExpired.count, 0)
@@ -43,7 +43,7 @@ class DataLayerTests: XCTestCase {
     }
 
     func testInsertMultiExpires() {
-        eventData = DataLayerCollection()
+        eventData = Set<DataLayerItem>()
         let multi = ["itemTwo": "test2", "itemThree": "test3"]
         eventData.insert(from: multi, expires: .distantPast)
         let eventDataExpired = eventData.removeExpired()

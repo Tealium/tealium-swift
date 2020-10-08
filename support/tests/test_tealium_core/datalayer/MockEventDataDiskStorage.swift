@@ -11,12 +11,12 @@ import Foundation
 
 class MockDataLayerDiskStorage: TealiumDiskStorageProtocol {
 
-    var mockEventData: DataLayerCollection?
+    var mockEventData: Set<DataLayerItem>?
 
     init() {
         let dataItem1 = DataLayerItem(key: "singleDataItemKey1", value: "singleDataItemValue1", expires: .distantFuture)
         let dataItem2 = DataLayerItem(key: "singleDataItemKey2", value: "singleDataItemValue2", expires: .distantFuture)
-        mockEventData = DataLayerCollection(arrayLiteral: dataItem1, dataItem2)
+        mockEventData = Set<DataLayerItem>(arrayLiteral: dataItem1, dataItem2)
     }
 
     func append(_ data: [String: Any], fileName: String, completion: TealiumCompletion?) { }
@@ -28,9 +28,9 @@ class MockDataLayerDiskStorage: TealiumDiskStorageProtocol {
     func save(_ data: AnyCodable, fileName: String, completion: TealiumCompletion?) { }
 
     func save<T>(_ data: T, completion: TealiumCompletion?) where T: Encodable {
-        guard T.self == DataLayerCollection.self,
-            let data = data as? DataLayerCollection else {
-                return
+        guard T.self == Set<DataLayerItem>.self,
+              let data = data as? Set<DataLayerItem> else {
+            return
         }
         mockEventData = data
         completion?(true, nil, nil)
@@ -43,7 +43,7 @@ class MockDataLayerDiskStorage: TealiumDiskStorageProtocol {
     func append<T>(_ data: T, fileName: String, completion: TealiumCompletion?) where T: Decodable, T: Encodable { }
 
     func retrieve<T>(as type: T.Type) -> T? where T: Decodable {
-        guard T.self == DataLayerCollection.self else {
+        guard T.self == Set<DataLayerItem>.self else {
             return nil
         }
         if let mockEventData = self.mockEventData {

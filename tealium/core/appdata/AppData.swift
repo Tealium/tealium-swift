@@ -10,10 +10,10 @@ import Foundation
 
 struct AppData: Codable {
     var name: String?,
-    rdns: String?,
-    version: String?,
-    build: String?,
-    persistentData: PersistentAppData?
+        rdns: String?,
+        version: String?,
+        build: String?,
+        persistentData: PersistentAppData?
 
     public var dictionary: [String: Any] {
         var allData = [String: Any]()

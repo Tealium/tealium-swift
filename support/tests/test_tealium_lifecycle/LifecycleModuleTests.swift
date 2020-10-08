@@ -39,6 +39,83 @@ class LifecycleModuleTests: XCTestCase {
         super.tearDown()
     }
 
+    func testLongRunning() throws {
+        // Load up the input/expected out put JSON file
+        guard let lifecycleEvents = try? loadLifecycleStubs(from: "lifecycle_events_with_crashes", with: "json") else {
+            XCTFail("Test file missing.")
+            return
+        }
+
+        var lifecycle = Lifecycle()
+        guard let events = lifecycleEvents.events else {
+            XCTFail("Events empty")
+            return
+        }
+        let count = events.count
+        for i in 0..<count {
+            let event = events[i]
+            let appVersion = event.app_version!
+            let ts = Double(event.timestamp_unix!)
+            let time = Date(timeIntervalSince1970: ts!)
+            let expectedData = event.expected_data.dictionary
+            let type = event.expected_data?.lifecycle_type!
+            var returnedData = [String: Any]()
+            switch type {
+            case "launch":
+                var overrideSession = LifecycleSession(launchDate: time)
+                overrideSession.appVersion = appVersion
+                returnedData = lifecycle.newLaunch(at: time, overrideSession: overrideSession)
+                if i == 0 {
+                    XCTAssertNotNil(returnedData["lifecycle_isfirstlaunch"])
+                } else {
+                    XCTAssertNil(returnedData["lifecycle_isfirstlaunch"])
+                }
+            case "sleep":
+                returnedData = lifecycle.newSleep(at: time)
+                XCTAssertNil(returnedData["lifecycle_isfirstlaunch"])
+            case "wake":
+                var overrideSession = LifecycleSession(wakeDate: time)
+                overrideSession.appVersion = appVersion
+                returnedData = lifecycle.newWake(at: time, overrideSession: overrideSession)
+                XCTAssertNil(returnedData["lifecycle_isfirstlaunch"])
+            default:
+                XCTFail("Unexpected lifecycyle_type: \(String(describing: type)) for event:\(i)")
+            }
+
+            // test for expected keys in payload, excluding keys that may not be present on every event
+            for (key, _) in expectedData! where key != "lifecycle_diddetectcrash" && key != "lifecycle_isfirstwakemonth" && key != "lifecycle_isfirstwaketoday" {
+                XCTAssertTrue(returnedData[key] != nil, "Key \(key) was unexpectedly nil")
+            }
+        }
+    }
+
+    func testNewCrashDetected() {
+        // Creating test sessions, only interested in secondsElapsed here.
+        let start = Date(timeIntervalSince1970: 1_480_554_000)     // 2016 DEC 1 - 01:00 UTC
+        let end = Date(timeIntervalSince1970: 1_480_557_600)       // 2016 DEC 2 - 02:00 UTC
+        var sessionSuccess = LifecycleSession(wakeDate: start)
+        sessionSuccess.sleepDate = end
+        let sessionCrashed = LifecycleSession(wakeDate: start)
+
+        var lifecycle = Lifecycle()
+        _ = lifecycle.newLaunch(at: start, overrideSession: nil)
+
+        // Double checking that we aren't returning "true" if we're still in the first launch session.
+        let initialDetection = lifecycle.crashDetected
+        XCTAssert(initialDetection == nil, "")
+
+        // Check if first launch session resulted in a crash on subsequent launch
+        _ = lifecycle.newLaunch(at: Date(), overrideSession: nil)
+        XCTAssert(lifecycle.crashDetected == "true", "Should have logged crash as initial launch did not have sleep data. FirstSession: \(String(describing: lifecycle.sessions.first))")
+
+        lifecycle.sessions[0].sleepDate = end
+        XCTAssert(lifecycle.crashDetected == nil, "Should not have logged crash as initial launch has sleep data. SessionFirst: \(String(describing: lifecycle.sessions.first)) \nall sessions:\(lifecycle.sessions)")
+
+        lifecycle.sessions.append(sessionCrashed)
+        _ = lifecycle.newLaunch(at: Date(), overrideSession: nil)
+        XCTAssertTrue(lifecycle.crashDetected == "true", "Crashed prior session not caught. Sessions: \(lifecycle.sessions)")
+    }
+
     func testLifecycleLoadedFromStorage() {
         lifecycleModule = LifecycleModule(config: config, delegate: self, diskStorage: LifecycleMockDiskStorage(), completion: { _ in })
         let stored = lifecycleModule.lifecycle
@@ -311,4 +388,22 @@ extension LifecycleModuleTests: TealiumLifecycleEvents {
         lifecycleModule.process(type: .launch, at: Date())
     }
 
+}
+
+fileprivate extension XCTestCase {
+
+    func loadLifecycleStubs(from file: String, with extension: String) throws -> LifecycleStubs {
+        let bundle = Bundle(for: classForCoder)
+        let url = bundle.url(forResource: file, withExtension: `extension`)
+        let data = try Data(contentsOf: url!)
+        return try JSONDecoder().decode(LifecycleStubs.self, from: data)
+    }
+
+}
+
+fileprivate extension Encodable {
+    var dictionary: [String: Any]? {
+        guard let data = try? JSONEncoder().encode(self) else { return nil }
+        return (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)).flatMap { $0 as? [String: Any] }
+    }
 }

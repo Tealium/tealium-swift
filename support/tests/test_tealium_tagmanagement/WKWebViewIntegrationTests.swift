@@ -1,5 +1,5 @@
 //
-//  WKWebViewTests.swift
+//  WKWebViewIntegrationTests.swift
 //  tealium-swift-tests-ios
 //
 //  Created by Craig Rouse on 04/02/2019.
@@ -12,15 +12,21 @@ import WebKit
 import XCTest
 
 @available(iOS 11.0, *)
-class WKWebViewTests: XCTestCase {
+class WKWebViewIntegrationTests: XCTestCase {
 
     let tagManagementWKWebView: TagManagementWKWebView = TagManagementWKWebView(config: testTealiumConfig.copy, delegate: TagManagementModuleDelegate())
     let testURL = TestTealiumHelper().newConfig().webviewURL
     let userDefaults = UserDefaults(suiteName: #file)
 
+    var expect: XCTestExpectation!
+    var module: TagManagementModule!
+    var config: TealiumConfig!
+    var mockTagmanagement: MockTagManagementWebView!
+
     override func setUp() {
         super.setUp()
         userDefaults?.removePersistentDomain(forName: #file)
+        config = TealiumConfig(account: "testAccount", profile: "testProfile", environment: "testEnv")
     }
 
     func testWKWebViewInstance() {
@@ -55,7 +61,7 @@ class WKWebViewTests: XCTestCase {
         tagManagementWKWebView.track(data) { _, info, error in
             XCTAssertNil(error, "Error returned from track call")
             if let jsFromInfoDictionary = info[TagManagementKey.jsCommand] as? String,
-                let payload = info[TagManagementKey.payload] as? [String: Any] {
+               let payload = info[TagManagementKey.payload] as? [String: Any] {
                 XCTAssertEqual(expectedJS, jsFromInfoDictionary, "Track call contained invalid data")
                 XCTAssertEqual(data.description, payload.description, "Data and Payload should be equal")
                 expectation.fulfill()
@@ -120,6 +126,39 @@ class WKWebViewTests: XCTestCase {
         self.wait(for: [expectation], timeout: 5.0)
     }
 
+    func testDispatchTrackCreatesTrackRequest() {
+        expect = expectation(description: "trackRequest")
+        module = TagManagementModule(config: config, delegate: TagManagementModuleDelegate(), completion: { _ in })
+        let track = TealiumTrackRequest(data: ["test_track": true])
+        module?.dispatchTrack(track, completion: { result in
+            switch result.0 {
+            case .failure(let error):
+                XCTFail("Unexpected error: \(error.localizedDescription)")
+            case .success(let success):
+                XCTAssertTrue(success)
+                self.expect.fulfill()
+            }
+        })
+        wait(for: [expect], timeout: 2.0)
+    }
+
+    func testDispatchTrackCreatesBatchTrackRequest() {
+        expect = expectation(description: "batchTrackRequest")
+        module = TagManagementModule(config: config, delegate: TagManagementModuleDelegate(), completion: { _ in })
+        let track = TealiumTrackRequest(data: ["test_track": true])
+        let batchTrack = TealiumBatchTrackRequest(trackRequests: [track, track, track])
+        module?.dispatchTrack(batchTrack, completion: { result in
+            switch result.0 {
+            case .failure(let error):
+                XCTFail("Unexpected error: \(error.localizedDescription)")
+            case .success(let success):
+                XCTAssertTrue(success)
+                self.expect.fulfill()
+            }
+        })
+        wait(for: [expect], timeout: 2.0)
+    }
+
 }
 
 class MyCookieStorage: TealiumCookieProvider {
@@ -143,7 +182,7 @@ class MyCookieStorage: TealiumCookieProvider {
 }
 
 @available(iOS 11.0, *)
-extension WKWebViewTests: WKHTTPCookieStoreObserver {
+extension WKWebViewIntegrationTests: WKHTTPCookieStoreObserver {
     public func cookiesDidChange(in cookieStore: WKHTTPCookieStore) {
         DispatchQueue.main.async {
             cookieStore.getAllCookies { _ in

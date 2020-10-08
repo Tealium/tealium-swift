@@ -11,46 +11,63 @@ import Foundation
 @testable import TealiumRemoteCommands
 
 class MockRemoteCommandsManager: RemoteCommandsManagerProtocol {
-    
+
+    var jsonCommands = [RemoteCommandProtocol]()
+    var mockJSONCommand = MockJSONRemoteCommand()
+    var webviewCommands = [RemoteCommandProtocol]()
+    weak var moduleDelegate: ModuleDelegate?
+
     var addCount = 0
     var removeCommandWithIdCount = 0
+    var removeJSONCommandCount = 0
     var triggerCount = 0
-    
-    var moduleDelegate: ModuleDelegate?
-    var commands = RemoteCommandArray()
-    
-    init() {
+    var refreshCount = 0
+
+    init(jsonCommand: MockJSONRemoteCommand? = nil) {
         moduleDelegate = self
+        jsonCommands.append(jsonCommand ?? mockJSONCommand)
     }
 
-    func add(_ remoteCommand: RemoteCommandProtocol) {
-        addCount += 1
-    }
-
-    func removeAll() {
-        
+    func refresh(_ command: RemoteCommandProtocol, url: URL, file: String) {
+        refreshCount += 1
     }
 
     func remove(commandWithId: String) {
         removeCommandWithIdCount += 1
     }
 
-    func triggerCommand(with data: [String : Any]) {
-        triggerCount +=  1
+    func remove(jsonCommand name: String) {
+        removeJSONCommandCount += 1
     }
-    
+
+    func removeAll() {
+
+    }
+
+    func trigger(command type: SimpleCommandType, with data: [String: Any], completion: ModuleCompletion?) {
+        triggerCount += 1
+    }
+
     func triggerCommand(from request: URLRequest) -> TealiumRemoteCommandsError? {
-        return TealiumRemoteCommandsError.invalidScheme
+        nil
+    }
+
+    func add(_ remoteCommand: RemoteCommandProtocol) {
+        addCount += 1
+    }
+
+    func disable() {
+
     }
 
 }
 
 extension MockRemoteCommandsManager: ModuleDelegate {
-    func requestTrack(_ track: TealiumTrackRequest) {
+    func requestDequeue(reason: String) {
 
     }
 
-    func requestDequeue(reason: String) {
+    func requestTrack(_ track: TealiumTrackRequest) {
 
     }
 

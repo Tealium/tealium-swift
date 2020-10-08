@@ -68,3 +68,5 @@ public extension AppDataCollection {
         return bundle.infoDictionary?[kCFBundleVersionKey as String] as? String
     }
 }
+
+public class AppDataCollector: AppDataCollection { }

@@ -66,12 +66,12 @@ public extension Disk {
     @available(iOS 11.0, *)
     static var availableCapacityForImportantUsage: Int? {
         get {
-        let resourceValues = getVolumeResourceValues(for: .volumeAvailableCapacityForImportantUsageKey)
-        if let result = resourceValues?.volumeAvailableCapacityForImportantUsage {
-        return Int(exactly: result)
-        } else {
-        return nil
-        }
+            let resourceValues = getVolumeResourceValues(for: .volumeAvailableCapacityForImportantUsageKey)
+            if let result = resourceValues?.volumeAvailableCapacityForImportantUsage {
+                return Int(exactly: result)
+            } else {
+                return nil
+            }
         }
     }
 
@@ -82,12 +82,12 @@ public extension Disk {
     @available(iOS 11.0, *)
     static var availableCapacityForOpportunisticUsage: Int? {
         get {
-        let resourceValues = getVolumeResourceValues(for: .volumeAvailableCapacityForOpportunisticUsageKey)
-        if let result = resourceValues?.volumeAvailableCapacityForOpportunisticUsage {
-        return Int(exactly: result)
-        } else {
-        return nil
-        }
+            let resourceValues = getVolumeResourceValues(for: .volumeAvailableCapacityForOpportunisticUsageKey)
+            if let result = resourceValues?.volumeAvailableCapacityForOpportunisticUsage {
+                return Int(exactly: result)
+            } else {
+                return nil
+            }
         }
     }
     #endif

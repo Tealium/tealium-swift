@@ -19,7 +19,7 @@ public extension TealiumConfig {
     /// Sets the logger type. Defaults to os_log on iOS 10+
     var loggerType: TealiumLoggerType {
         get {
-            options[TealiumKey.loggerType] as? TealiumLoggerType ?? TealiumConstants.defaultLoggerType
+            options[TealiumKey.loggerType] as? TealiumLoggerType ?? TealiumValue.defaultLoggerType
         }
 
         set {

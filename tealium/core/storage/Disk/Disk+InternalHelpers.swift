@@ -37,8 +37,8 @@ extension Disk {
         }
         var searchPathDirectory: FileManager.SearchPathDirectory
         switch directory {
-            #if os(tvOS)
-            #else
+        #if os(tvOS)
+        #else
         case .documents:
             searchPathDirectory = .documentDirectory
         case .applicationSupport:
@@ -61,7 +61,7 @@ extension Disk {
                     recoverySuggestion: "Check that the app-group name in the entitlement matches the string provided."
                 )
             }
-            #endif
+        #endif
         case .caches:
             searchPathDirectory = .cachesDirectory
         case .temporary:

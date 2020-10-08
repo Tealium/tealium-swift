@@ -14,8 +14,8 @@ class LifecycleMockDiskStorage: TealiumDiskStorageProtocol {
 
     func retrieve<T>(as type: T.Type) -> T? where T: Decodable {
         guard T.self == Lifecycle.self
-            else {
-                return nil
+        else {
+            return nil
         }
         if let lifecycleData = self.lifecycleData {
             return lifecycleData as? T
@@ -47,8 +47,8 @@ class LifecycleMockDiskStorage: TealiumDiskStorageProtocol {
 
     func save<T>(_ data: T, completion: TealiumCompletion?) where T: Encodable {
         guard T.self == Lifecycle.self,
-            let data = data as? Lifecycle else {
-                return
+              let data = data as? Lifecycle else {
+            return
         }
         self.lifecycleData = data
         completion?(true, nil, nil)

@@ -50,21 +50,21 @@ public class TagManagementModule: Dispatcher {
                                    delegates: config.webViewDelegates,
                                    shouldAddCookieObserver: config.shouldAddCookieObserver,
                                    view: config.rootView) { [weak self] _, error in
-                                    guard let self = self else {
-                                        return
-                                    }
-                                    TealiumQueues.backgroundConcurrentQueue.write {
-                                        if error != nil {
-                                            self.errorState.incrementAndGet()
-                                            self.webViewState?.value = .loadFailure
-                                            completion?((.failure(TagManagementError.webViewNotYetReady), nil))
-                                        } else {
-                                            self.errorState.resetToZero()
-                                            self.webViewState = Atomic(value: .loadSuccess)
-                                            self.flushQueue()
-                                            completion?((.success(true), nil))
-                                        }
-                                    }
+            guard let self = self else {
+                return
+            }
+            TealiumQueues.backgroundConcurrentQueue.write {
+                if error != nil {
+                    self.errorState.incrementAndGet()
+                    self.webViewState?.value = .loadFailure
+                    completion?((.failure(TagManagementError.webViewNotYetReady), nil))
+                } else {
+                    self.errorState.resetToZero()
+                    self.webViewState = Atomic(value: .loadSuccess)
+                    self.flushQueue()
+                    completion?((.success(true), nil))
+                }
+            }
         }
     }
 

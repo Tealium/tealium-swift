@@ -6,6 +6,7 @@
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 
+@testable import TealiumCollect
 @testable import TealiumCore
 import XCTest
 

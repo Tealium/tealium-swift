@@ -26,10 +26,11 @@ public class LocationModule: Collector {
             return nil
         }
         if let location = tealiumLocationManager.lastLocation,
-            location.coordinate.latitude != 0.0 && location.coordinate.longitude != 0.0 {
+           location.coordinate.latitude != 0.0 && location.coordinate.longitude != 0.0 {
             newData = [LocationKey.deviceLatitude: "\(location.coordinate.latitude)",
-                LocationKey.deviceLongitude: "\(location.coordinate.longitude)",
-                LocationKey.accuracy: tealiumLocationManager.locationAccuracy]
+                       LocationKey.deviceLongitude: "\(location.coordinate.longitude)",
+                       LocationKey.accuracy: tealiumLocationManager.locationAccuracy,
+                       LocationKey.accuracyExtended: config.desiredAccuracy.rawValue]
         }
         return newData
     }
@@ -40,7 +41,7 @@ public class LocationModule: Collector {
     /// - Parameter delegate: `ModuleDelegate` instance
     /// - Parameter diskStorage: `TealiumDiskStorageProtocol` instance
     /// - Parameter completion: `ModuleCompletion` block to be called when init is finished
-    required public init(config: TealiumConfig, delegate: ModuleDelegate?, diskStorage: TealiumDiskStorageProtocol?, completion: (ModuleResult) -> Void) {
+    required public init(config: TealiumConfig, delegate: ModuleDelegate?, diskStorage: TealiumDiskStorageProtocol?, completion: ((Result<Bool, Error>, [String: Any]?)) -> Void) {
         self.config = config
         self.delegate = delegate
 
@@ -91,6 +92,31 @@ public class LocationModule: Collector {
         }
     }
 
+    /// - Returns: `Bool` Whether or not the user has authorized location tracking/updates
+    var isAuthorized: Bool? {
+        var authorized: Bool?
+        TealiumQueues.mainQueue.async { [weak self] in
+            guard let self = self else {
+                return
+            }
+            authorized = self.tealiumLocationManager?.isAuthorized
+        }
+        return authorized
+    }
+
+    /// - Returns: `Bool` Whether or not the user has allowed "Precise" location tracking/updates
+    @available(iOS 14.0, *)
+    var isFullAccuracy: Bool? {
+        var fullAccuracy: Bool?
+        TealiumQueues.mainQueue.async { [weak self] in
+            guard let self = self else {
+                return
+            }
+            fullAccuracy = self.tealiumLocationManager?.isFullAccuracy
+        }
+        return fullAccuracy
+    }
+
     /// Gets the user's last known location
     ///
     /// - returns: `CLLocation?` location object
@@ -103,20 +129,6 @@ public class LocationModule: Collector {
             latest = self.tealiumLocationManager?.lastLocation
         }
         return latest
-    }
-
-    /// Gets the permission status of Location Services
-    ///
-    /// - return: `Bool` LocationManager services enabled true/false
-    public var locationServiceEnabled: Bool {
-        var enabled = false
-        TealiumQueues.mainQueue.async { [weak self] in
-            guard let self = self else {
-                return
-            }
-            enabled = self.tealiumLocationManager?.locationServiceEnabled ?? false
-        }
-        return enabled
     }
 
     /// Returns the names of all the geofences that are currently being monitored
@@ -198,6 +210,19 @@ public class LocationModule: Collector {
                 return
             }
             self.tealiumLocationManager?.requestAuthorization()
+        }
+    }
+
+    /// Automatically request temporary full accuracy if precise accuracy is disabled.
+    ///
+    /// - Parameter purposeKey: `String` A key in the `NSLocationTemporaryUsageDescriptionDictionary` dictionary of the app’s `Info.plist` file.
+    @available(iOS 14, *)
+    public func requestTemporaryFullAccuracyAuthorization(purposeKey: String) {
+        TealiumQueues.mainQueue.async { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.tealiumLocationManager?.requestTemporaryFullAccuracyAuthorization(purposeKey: purposeKey)
         }
     }
 

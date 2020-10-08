@@ -14,21 +14,21 @@ import TealiumCore
 public struct PersistentAttributionData: Codable {
 
     var clickedWithin30D: String?,
-    clickedDate: String?,
-    conversionDate: String?,
-    conversionType: String?,
-    purchaseDate: String?,
-    orgName: String?,
-    orgId: String?,
-    campaignId: String?,
-    campaignName: String?,
-    adGroupId: String?,
-    adGroupName: String?,
-    adKeyword: String?,
-    adKeywordMatchType: String?,
-    creativeSetName: String?,
-    creativeSetId: String?,
-    region: String?
+        clickedDate: String?,
+        conversionDate: String?,
+        conversionType: String?,
+        purchaseDate: String?,
+        orgName: String?,
+        orgId: String?,
+        campaignId: String?,
+        campaignName: String?,
+        adGroupId: String?,
+        adGroupName: String?,
+        adKeyword: String?,
+        adKeywordMatchType: String?,
+        creativeSetName: String?,
+        creativeSetId: String?,
+        region: String?
 
     public subscript(_ key: String) -> String? {
         return self.dictionary[key]

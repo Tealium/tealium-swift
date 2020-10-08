@@ -54,8 +54,8 @@ public extension Tealium {
         let queryItems = URLComponents(string: link.absoluteString)?.queryItems
 
         if let queryItems = queryItems,
-            let traceId = extractTraceId(from: queryItems),
-            zz_internal_modulesManager?.config.qrTraceEnabled == true {
+           let traceId = extractTraceId(from: queryItems),
+           zz_internal_modulesManager?.config.qrTraceEnabled == true {
             // Kill visitor session to trigger session end events
             // Session can be killed without needing to leave the trace
             if link.query?.contains(TealiumKey.killVisitorSession) == true {

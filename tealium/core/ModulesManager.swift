@@ -27,7 +27,7 @@ public class ModulesManager {
         if let optionalCollectors = config.collectors {
             return [AppDataModule.self,
                     ConsentManagerModule.self,
-                ] + optionalCollectors
+            ] + optionalCollectors
         } else {
             return [AppDataModule.self,
                     DeviceDataModule.self,
@@ -106,7 +106,7 @@ public class ModulesManager {
           knownDispatchers: [String]? = nil) {
         self.originalConfig = config.copy
         self.config = config
-        self.connectivityManager = ConnectivityModule(config: self.config, delegate: nil, diskStorage: nil) { _ in
+        self.connectivityManager = ConnectivityModule(config: self.config, delegate: nil, diskStorage: nil) { _, _  in
         }
         self.dataLayerManager = dataLayer
         connectivityManager.addConnectivityDelegate(delegate: self)
@@ -117,6 +117,7 @@ public class ModulesManager {
             }
         }
         self.logger = self.config.logger
+        self.setupDispatchers(config: self.config)
         self.setupHostedDataLayer(config: self.config)
         self.setupDispatchValidators(config: self.config)
         self.setupDispatchListeners(config: self.config)
@@ -129,10 +130,10 @@ public class ModulesManager {
         self.setupCollectors(config: self.config)
         TealiumQueues.backgroundSerialQueue.async {
             let logRequest = TealiumLogRequest(title: ModulesManagerLogMessages.modulesManagerInitialized, messages:
-                ["\(ModulesManagerLogMessages.collectorsInitialized): \(self.collectors.map { $0.id })",
-                    "\(ModulesManagerLogMessages.dispatchValidatorsInitialized): \(self.dispatchValidators.map { $0.id })",
-                    "\(ModulesManagerLogMessages.dispatchersInitialized): \(self.dispatchers.map { $0.id })"
-            ], info: nil, logLevel: .info, category: .`init`)
+                                                ["\(ModulesManagerLogMessages.collectorsInitialized): \(self.collectors.map { $0.id })",
+                                                 "\(ModulesManagerLogMessages.dispatchValidatorsInitialized): \(self.dispatchValidators.map { $0.id })",
+                                                 "\(ModulesManagerLogMessages.dispatchersInitialized): \(self.dispatchers.map { $0.id })"
+                                                ], info: nil, logLevel: .info, category: .`init`)
             self.logger?.log(logRequest)
         }
     }
@@ -204,7 +205,7 @@ public class ModulesManager {
                 return
             }
 
-            let collector = collector.init(config: config, delegate: self, diskStorage: nil) { _ in
+            let collector = collector.init(config: config, delegate: self, diskStorage: nil) { _, _  in
 
             }
 
@@ -224,12 +225,12 @@ public class ModulesManager {
             }
 
             if dispatcherTypeDescription.contains(ModuleNames.collect),
-                config.isCollectEnabled == false {
+               config.isCollectEnabled == false {
                 return
             }
 
-            let dispatcher = dispatcherType.init(config: config, delegate: self) { result in
-                switch result.0 {
+            let dispatcher = dispatcherType.init(config: config, delegate: self) { result, _ in
+                switch result {
                 case .failure:
                     print("log error")
                 default:
@@ -258,7 +259,7 @@ public class ModulesManager {
 
     func setupHostedDataLayer(config: TealiumConfig) {
         if config.hostedDataLayerKeys != nil {
-            let hostedDataLayer = HostedDataLayer(config: config, delegate: self, diskStorage: nil) { _ in }
+            let hostedDataLayer = HostedDataLayer(config: config, delegate: self, diskStorage: nil) { _, _ in }
             addDispatchValidator(hostedDataLayer)
         }
     }
@@ -343,11 +344,8 @@ extension ModulesManager: ConnectivityDelegate {
     }
 
     public func connectionRestored() {
-        if self.dispatchers.isEmpty {
-            self.setupDispatchers(config: config)
-        }
         TealiumQueues.backgroundSerialQueue.async {
-            self.requestDequeue(reason: TealiumConstants.connectionRestoredReason)
+            self.requestDequeue(reason: TealiumValue.connectionRestoredReason)
         }
     }
 

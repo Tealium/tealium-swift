@@ -20,7 +20,7 @@ class MockURLSession: URLSessionProtocol {
             }
         }, url: url)
     }
-    
+
     func tealiumDataTask(with url: URL, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol {
         return DataTask(completionHandler: completionHandler, url: url)
     }
@@ -59,7 +59,7 @@ class MockURLSessionError: URLSessionProtocol {
             }
         }, url: url)
     }
-    
+
     func tealiumDataTask(with url: URL, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol {
         return DataTaskError(completionHandler: completionHandler, url: url)
     }
@@ -98,7 +98,7 @@ class MockURLSessionNon200: URLSessionProtocol {
             }
         }, url: url)
     }
-    
+
     func tealiumDataTask(with url: URL, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol {
         return DataTaskErrorNon200(completionHandler: completionHandler, url: url)
     }
@@ -139,7 +139,7 @@ class MockURLSessionURLError: URLSessionProtocol {
             }
         }, url: url)
     }
-    
+
     func tealiumDataTask(with url: URL, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol {
         return DataTaskURLError(completionHandler: completionHandler, url: url)
     }

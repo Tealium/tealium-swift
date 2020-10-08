@@ -13,11 +13,16 @@ import XCTest
 class TealiumRemoteCommandTests: XCTestCase {
 
     var remoteCommand: RemoteCommand!
+    var jsonRemoteCommand: RemoteCommand!
     var helper = TestTealiumHelper()
     var processRemoteCommandRequestCounter = 0
 
     override func setUpWithError() throws {
+        let testBundle = Bundle(for: type(of: self))
         remoteCommand = RemoteCommand(commandId: "test", description: "Test", completion: { _ in
+            // ...
+        })
+        jsonRemoteCommand = RemoteCommand(commandId: "test", description: "Test", type: .local(file: "example", bundle: testBundle), completion: { _ in
             // ...
         })
     }
@@ -47,7 +52,32 @@ class TealiumRemoteCommandTests: XCTestCase {
         remoteCommand.delegate = mockDelegate
         mockDelegate.asyncExpectation = expect
 
-        remoteCommand.complete(with: response)
+        remoteCommand.completeWith(response: response)
+
+        waitForExpectations(timeout: 2) { error in
+            if let error = error {
+                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
+            }
+
+            guard let result = mockDelegate.remoteCommandResult else {
+                XCTFail("Expected delegate to be called")
+                return
+            }
+            XCTAssertNotNil(result)
+        }
+    }
+
+    func testCompleteWithTrackData() {
+        let expect = expectation(description: "delegate method is executed via the complete with trackdata method")
+        let mockDelegate = MockRemoteCommandDelegate()
+
+        let exampleData = loadStub(from: "example", type(of: self))
+        let rcConfig = try! JSONDecoder().decode(RemoteCommandConfig.self, from: exampleData)
+
+        jsonRemoteCommand.delegate = mockDelegate
+        mockDelegate.asyncExpectation = expect
+
+        jsonRemoteCommand.complete(with: ["tealium_event": "launch"], config: rcConfig, completion: nil)
 
         waitForExpectations(timeout: 2) { error in
             if let error = error {
@@ -133,7 +163,7 @@ class TealiumRemoteCommandTests: XCTestCase {
     func testRemoteCommandResponse() {
         let commandId = "test"
         let responseId = "123"
-        let expectedJSKey = "try { utag.mobile.remote_api.response[\'\(commandId)\'][\'\(responseId)\']('204',\'{\"hello\":\"world\"}\')}catch(err){console.error(err)}".replacingOccurrences(of: " ", with: "")
+        let expectedJSKey = "try { utag.mobile.remote_api.response[\'\(commandId)\'][\'\(responseId)\']('Optional(204)',\'{\"hello\":\"world\"}\')}catch(err){console.error(err)}".replacingOccurrences(of: " ", with: "")
 
         let urlString = "tealium://\(commandId)?request={\"config\":{\"response_id\":\"\(responseId)\"}, \"payload\":{\"tealium_event\": \"launch\"}}"
         guard let escapedString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
@@ -186,14 +216,60 @@ class TealiumRemoteCommandTests: XCTestCase {
 
     }
 
+    func testProcessWithNoMappings() {
+        let noMappings = loadStub(from: "noMappingsKey", type(of: self))
+        let rcConfig = try! JSONDecoder().decode(RemoteCommandConfig.self, from: noMappings)
+        _ = remoteCommand.process(trackData: ["test": "this"], commandConfig: rcConfig) { result in
+            switch result.0 {
+            case .success:
+                XCTFail("Should not be successful")
+            case .failure(let error):
+                XCTAssertEqual(error as? TealiumRemoteCommandsError, .mappingsNotFound)
+            }
+        }
+    }
+
+    func testProcessWithNoCommands() {
+        let noCommands = loadStub(from: "noCommandsKey", type(of: self))
+        let rcConfig = try! JSONDecoder().decode(RemoteCommandConfig.self, from: noCommands)
+        _ = remoteCommand.process(trackData: ["test": "this"], commandConfig: rcConfig) { result in
+            switch result.0 {
+            case .success:
+                XCTFail("Should not be successful")
+            case .failure(let error):
+                XCTAssertEqual(error as? TealiumRemoteCommandsError, .commandsNotFound)
+            }
+        }
+    }
+
+    func testProcessNoCommandNameMatch() {
+        let noCommandMatch = loadStub(from: "example", type(of: self))
+        let rcConfig = try! JSONDecoder().decode(RemoteCommandConfig.self, from: noCommandMatch)
+        _ = remoteCommand.process(trackData: ["test": "this"], commandConfig: rcConfig) { result in
+            switch result.0 {
+            case .success:
+                XCTFail("Should not be successful")
+            case .failure(let error):
+                XCTAssertEqual(error as? TealiumRemoteCommandsError, .commandNameNotFound)
+            }
+        }
+    }
+
+    func testProcessWithNoConfig() {
+        let noConfig = loadStub(from: "exampleNoConfig", type(of: self))
+        let rcConfig = try! JSONDecoder().decode(RemoteCommandConfig.self, from: noConfig)
+        let mapped = remoteCommand.process(trackData: ["tealium_event": "launch"], commandConfig: rcConfig, completion: nil)
+        XCTAssertNil(mapped?["config"])
+    }
+
 }
 
 extension TealiumRemoteCommandTests: ModuleDelegate {
-    func requestTrack(_ track: TealiumTrackRequest) {
+    func requestDequeue(reason: String) {
 
     }
 
-    func requestDequeue(reason: String) {
+    func requestTrack(_ track: TealiumTrackRequest) {
 
     }
 

@@ -7,32 +7,7 @@
 //
 import Foundation
 
-extension Date {
-    var httpIfModifiedHeader: String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "E, dd MMM YYYY HH:mm:ss"
-        return "\(dateFormatter.string(from: self)) GMT"
-    }
-    func addMinutes(_ mins: Double?) -> Date? {
-        guard let mins = mins else {
-            return nil
-        }
-        let seconds = mins * 60
-        guard let timeInterval = TimeInterval(exactly: seconds) else {
-            return nil
-        }
-        return addingTimeInterval(timeInterval)
-    }
-}
-// swiftlint:disable identifier_name
-public enum HttpStatusCodes: Int {
-    case notModified = 304
-    case ok = 200
-}
-// swiftlint:enable identifier_name
-
 protocol TealiumPublishSettingsDelegate: class {
-
     func didUpdate(_ publishSettings: RemotePublishSettings)
 }
 
@@ -46,7 +21,7 @@ class TealiumPublishSettingsRetriever {
     var hasFetched = false
     var publishSettingsURL: URL? {
         if let urlString = config.publishSettingsURL,
-            let url = URL(string: urlString) {
+           let url = URL(string: urlString) {
             return url
         } else if let profile = config.publishSettingsProfile {
             return URL(string: "\(TealiumValue.tiqBaseURL)\(config.account)/\(profile)/\(config.environment)/\(TealiumValue.tiqURLSuffix)")
@@ -93,13 +68,13 @@ class TealiumPublishSettingsRetriever {
 
         getRemoteSettings(url: mobileHTML,
                           lastFetch: cachedSettings?.lastFetch) { settings in
-                            if let settings = settings {
-                                self.cachedSettings = settings
-                                self.diskStorage.save(settings, completion: nil)
-                                self.delegate?.didUpdate(settings)
-                            } else {
-                                self.cachedSettings?.lastFetch = Date()
-                            }
+            if let settings = settings {
+                self.cachedSettings = settings
+                self.diskStorage.save(settings, completion: nil)
+                self.delegate?.didUpdate(settings)
+            } else {
+                self.cachedSettings?.lastFetch = Date()
+            }
         }
 
     }
@@ -139,8 +114,8 @@ class TealiumPublishSettingsRetriever {
 
     func getPublishSettings(from data: Data) -> RemotePublishSettings? {
         guard let dataString = String(data: data, encoding: .utf8),
-            let startScript = dataString.range(of: "var mps = ") else {
-                return nil
+              let startScript = dataString.range(of: "var mps = ") else {
+            return nil
         }
 
         let mpsJSON = dataString[startScript.upperBound...]

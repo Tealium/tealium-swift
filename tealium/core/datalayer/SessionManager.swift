@@ -21,7 +21,7 @@ public extension DataLayer {
             let current = Date()
             if let lastTrackDate = lastTrackDate {
                 if let date = lastTrackDate.addSeconds(secondsBetweenTrackEvents),
-                    date > current {
+                   date > current {
                     let tracks = numberOfTrackRequests + 1
                     if tracks == 2 {
                         startNewSession(with: sessionStarter)

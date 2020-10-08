@@ -34,7 +34,8 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
                                  TealiumKey.profile: config.profile,
                                  TealiumKey.environment: config.environment,
                                  TealiumKey.libraryName: TealiumValue.libraryName,
-                                 TealiumKey.libraryVersion: TealiumValue.libraryVersion]
+                                 TealiumKey.libraryVersion: TealiumValue.libraryVersion,
+                                 TealiumKey.origin: TealiumValue.mobile]
 
         if let dataSource = config.dataSource {
             currentStaticData[TealiumKey.dataSource] = dataSource
@@ -86,12 +87,12 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
         ]
     }
 
-    /// - Returns: `DataLayerCollection` containing all stored event data.
-    public var persistentDataStorage: DataLayerCollection? {
+    /// - Returns: `Set<DataLayerItem>` containing all stored event data.
+    public var persistentDataStorage: Set<DataLayerItem>? {
         get {
             TealiumQueues.backgroundConcurrentQueue.read {
-                guard let storedData = self.diskStorage.retrieve(as: DataLayerCollection.self) else {
-                    return DataLayerCollection()
+                guard let storedData = self.diskStorage.retrieve(as: Set<DataLayerItem>.self) else {
+                    return Set<DataLayerItem>()
                 }
                 return storedData
             }

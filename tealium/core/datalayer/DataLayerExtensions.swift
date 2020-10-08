@@ -12,7 +12,9 @@ public extension Tealium {
 
     /// - Returns: `String` The Tealium Visitor Id
     var visitorId: String? {
-        dataLayer.all[TealiumKey.visitorId] as? String
+        zz_internal_modulesManager?.collectors.first {
+            $0 is AppDataModule
+        }?.data?[TealiumKey.visitorId] as? String
     }
 
 }
@@ -61,16 +63,6 @@ extension Date {
     var timestampInMilliseconds: String {
         let timestamp = self.unixTimeMilliseconds
         return timestamp
-    }
-
-    func addSeconds(_ seconds: Double?) -> Date? {
-        guard let seconds = seconds else {
-            return nil
-        }
-        guard let timeInterval = TimeInterval(exactly: seconds) else {
-            return nil
-        }
-        return addingTimeInterval(timeInterval)
     }
 }
 

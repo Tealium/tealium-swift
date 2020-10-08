@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 
   s.name         = "tealium-swift"
   s.module_name  = "TealiumSwift"
-  s.version      = "2.0.0"
+  s.version      = "2.1.0"
   s.summary      = "Tealium Swift Integration Library"
 
   # This description is used to generate tags and improve search results.
@@ -93,16 +93,15 @@ Pod::Spec.new do |s|
   s.default_subspec = "TealiumFull"
 
   s.subspec "TealiumFull" do |full|
-    full.source_files  = "tealium/core/**/*","tealium/collectors/**/*","tealium/dispatchers/**/*","tealium/scripts/*"
+    full.source_files  = "tealium/core/**/*.swift","tealium/collectors/**/*","tealium/dispatchers/**/*","tealium/scripts/*"
     full.ios.exclude_files = "tealium/scripts/*", "tealium/collectors/crash/*"
     full.tvos.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*" 
     full.watchos.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/collectors/autotracking/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*"
     full.osx.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/collectors/autotracking/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*"
-    full.resources = "tealium/core/devicedata/device-names.json"
   end
 
   s.subspec "Core" do |core|
-    core.source_files  = "tealium/core/**/*"
+    core.source_files  = "tealium/core/**/*.swift"
   end
 
   s.subspec "Attribution" do |attribution|

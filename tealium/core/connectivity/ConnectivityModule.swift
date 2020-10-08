@@ -49,7 +49,7 @@ public class ConnectivityModule: Collector, ConnectivityDelegate {
     required public init(config: TealiumConfig,
                          delegate: ModuleDelegate?,
                          diskStorage: TealiumDiskStorageProtocol?,
-                         completion: (ModuleResult) -> Void) {
+                         completion: ((Result<Bool, Error>, [String: Any]?)) -> Void) {
         self.config = config
 
         if #available(iOS 12.0, tvOS 12.0, watchOS 5.0, OSX 10.14, *) {
