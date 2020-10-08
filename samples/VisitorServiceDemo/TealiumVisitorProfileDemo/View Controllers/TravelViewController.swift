@@ -6,12 +6,12 @@
 //  Copyright © 2019 Tealium. All rights reserved.
 //
 
-import UIKit
 import SCLAlertView
 import TealiumSwift
+import UIKit
 
 class TravelViewController: UIViewController {
-    
+
     @IBOutlet weak var originTextField: UITextField!
     @IBOutlet weak var destinationTextField: UITextField!
     @IBOutlet weak var startDateTextField: UITextField!
@@ -20,14 +20,14 @@ class TravelViewController: UIViewController {
     @IBOutlet weak var numberOfRoomsLabel: UILabel!
     @IBOutlet weak var travelClassLabel: UISegmentedControl!
     var alertShown = false
-    
+
     var data = [String: Any]()
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         TealiumHelper.trackScreen(self, name: "travel")
-        
+
         TealiumHelper.updateExperience(basedOn: .travelers) {
             DispatchQueue.main.async {
                 if !self.alertShown { // remove this if block to show alert every time tab is clicked
@@ -37,40 +37,40 @@ class TravelViewController: UIViewController {
             }
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         originTextField.delegate = self
         destinationTextField.delegate = self
         startDateTextField.delegate = self
         endDateTextField.delegate = self
-        
+
         travelClassLabel.selectedSegmentIndex = 2
         tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(share))
     }
-    
+
     @objc func share() {
         TealiumHelper.trackEvent(name: "share", dataLayer: [TravelViewController.contentType: "travel screen", TravelViewController.shareId: "traqwe123"])
         let vc = UIActivityViewController(activityItems: ["Travel"], applicationActivities: [])
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(vc, animated: true)
     }
-    
+
     @IBAction func changeNumberOfPassengers(_ sender: UIStepper) {
         numberOfPassengersLabel.text = String(Int(sender.value))
         data[TravelViewController.passengers] = String(Int(sender.value))
     }
-    
+
     @IBAction func changeNumberOfRooms(_ sender: UIStepper) {
         numberOfRoomsLabel.text = String(Int(sender.value))
         data[TravelViewController.rooms] = String(Int(sender.value))
     }
-    
+
     @IBAction func changeTravelClass(_ sender: UISegmentedControl) {
         data[TravelViewController.travelClass] = sender.titleForSegment(at: sender.selectedSegmentIndex)
     }
-    
+
     @IBAction func submit(_ sender: UIButton) {
         guard let stringStartDate = startDateTextField.text else { return }
         guard let stringEndDate = endDateTextField.text else { return }
@@ -84,7 +84,7 @@ class TravelViewController: UIViewController {
         data[TravelViewController.nights] = numberOfNights
         TealiumHelper.trackEvent(name: "travel_order", dataLayer: data)
     }
-    
+
     func showAlert() {
         let appearance = SCLAlertView.SCLAppearance(
             kTitleFont: UIFont(name: "HelveticaNeue", size: 24)!,

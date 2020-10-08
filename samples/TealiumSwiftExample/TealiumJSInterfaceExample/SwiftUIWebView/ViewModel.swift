@@ -2,12 +2,11 @@
 //  File.swift
 //  SwiftUIWebView
 //
-//  Created by Md. Yamin on 4/25/20.
-//  Copyright © 2020 Md. Yamin. All rights reserved.
+//  Copyright © 2020 Tealium. All rights reserved.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 class ViewModel: ObservableObject {
     var webViewNavigationPublisher = PassthroughSubject<WebViewNavigation, Never>()

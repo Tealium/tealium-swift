@@ -6,9 +6,9 @@
 //  Copyright © 2019 Tealium. All rights reserved.
 //
 
-import UIKit
 import SCLAlertView
 import TealiumSwift
+import UIKit
 
 // Image Credit: https://www.flaticon.com/authors/freepik 🙏
 class EcommerceMainViewController: UIViewController {
@@ -26,9 +26,9 @@ class EcommerceMainViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         TealiumHelper.trackScreen(self, name: "ecommerce_home")
-        
+
         TealiumHelper.updateExperience(basedOn: .cartabandoners) {
             DispatchQueue.main.async {
                 if !self.alertShown { // remove this if block to show alert every time tab is clicked
@@ -41,14 +41,14 @@ class EcommerceMainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         emailTextField.delegate = self
         views = [homeStackView, orderView, checkoutView, productView, categoryView]
         hideAllViews(except: homeStackView)
         tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(share))
         enableNotifications()
     }
-    
+
     func showEcommAlert() {
         let appearance = SCLAlertView.SCLAppearance(
             kTitleFont: UIFont(name: "HelveticaNeue", size: 24)!,
@@ -57,19 +57,18 @@ class EcommerceMainViewController: UIViewController {
             showCloseButton: true
         )
         let alert = SCLAlertView(appearance: appearance)
-        alert.addButton("Go to Checkout", target:self, selector:#selector(self.goToCheckout))
+        alert.addButton("Go to Checkout", target: self, selector: #selector(self.goToCheckout))
         alert.showNotice("Forget Something?",
-                          subTitle: "There are still items in your cart!",
-                          closeButtonTitle: "OK",
-                          animationStyle: .leftToRight)
+                         subTitle: "There are still items in your cart!",
+                         closeButtonTitle: "OK",
+                         animationStyle: .leftToRight)
     }
-    
+
     @objc func goToCheckout() {
         navigationControl.selectedSegmentIndex = 3
         hideAllViews(except: checkoutView)
         TealiumHelper.trackView(title: "checkout", dataLayer: [CheckoutViewController.screenClass: "CheckoutViewController"])
     }
-    
 
     @objc func share() {
         TealiumHelper.trackEvent(name: "share", dataLayer: [EcommerceMainViewController.contentType: "shop home screen", EcommerceMainViewController.shareId: "shopqwe123"])
@@ -86,9 +85,9 @@ class EcommerceMainViewController: UIViewController {
         case 2:
             hideAllViews(except: productView)
             TealiumHelper.trackView(title: "product", dataLayer: [ProductViewController.screenClass: "ProductViewController", ProductViewController.productId: ["PROD\(Int.random(in: 1...1000))"],
-            ProductViewController.productPrice: [100],
-            ProductViewController.productName: ["Fridge"],
-            ProductViewController.productCategory: ["appliances"]])
+                                                                  ProductViewController.productPrice: [100],
+                                                                  ProductViewController.productName: ["Fridge"],
+                                                                  ProductViewController.productCategory: ["appliances"]])
         case 3:
             hideAllViews(except: checkoutView)
             TealiumHelper.trackView(title: "checkout", dataLayer: [CheckoutViewController.screenClass: "CheckoutViewController"])

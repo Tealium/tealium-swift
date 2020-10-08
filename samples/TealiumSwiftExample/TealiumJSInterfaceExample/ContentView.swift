@@ -13,7 +13,7 @@ struct ContentView: View {
     @State var showLoader = false
     @State var message = ""
     @State var webTitle = ""
-    
+
     var webViewNavigationBar: some View {
         VStack(spacing: 0) {
             Divider()
@@ -58,18 +58,18 @@ struct ContentView: View {
             Divider()
         }
     }
-    
+
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
                 Text(webTitle).font(.title).onReceive(self.viewModel.showWebTitle.receive(on: RunLoop.main)) { value in
                     self.webTitle = value
                 }
-                WebView(url: TealiumHelper.shared.webViewType, viewModel: viewModel).overlay (
+                WebView(url: TealiumHelper.shared.webViewType, viewModel: viewModel).overlay(
                     RoundedRectangle(cornerRadius: 4, style: .circular)
                         .stroke(Color.gray, lineWidth: 0.5)
                 ).padding(.leading, 20).padding(.trailing, 20)
-                
+
                 webViewNavigationBar
             }.onReceive(self.viewModel.showLoader.receive(on: RunLoop.main)) { value in
                 self.showLoader = value

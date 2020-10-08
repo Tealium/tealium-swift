@@ -3,11 +3,11 @@
 //  ConsentManagerDemo
 //
 //  Created by Craig Rouse on 15/05/2018.
-//  Copyright © 2018 Craig Rouse. All rights reserved.
+//  Copyright © 2018 Tealium. All rights reserved.
 //
 
-import UIKit
 import Eureka
+import UIKit
 
 class PreferencesDialogViewController: FormViewController {
 
@@ -34,99 +34,99 @@ class PreferencesDialogViewController: FormViewController {
 
         // MARK: Current Settings
         form +++ Section("Current Settings")
-        // MARK: Current Consent Status
-        <<< LabelRow { row in
-            let consentPrefs = helper.currentConsentPreferences
-            var stat = "Not Consented"
-            if let pref = consentPrefs?["tracking_consented"] as? String, pref == "consented" {
-                stat = "Consented"
+            // MARK: Current Consent Status
+            <<< LabelRow { row in
+                let consentPrefs = helper.currentConsentPreferences
+                var stat = "Not Consented"
+                if let pref = consentPrefs?["tracking_consented"] as? String, pref == "consented" {
+                    stat = "Consented"
+                }
+
+                row.title = "Current Status: \(stat)"
+                row.tag = "status"
             }
 
-            row.title = "Current Status: \(stat)"
-            row.tag = "status"
-        }
+            // MARK: Current Consent Categories
+            <<< LabelRow { row in
+                let consentPrefs = helper.currentConsentPreferences
+                var cats = ""
+                if let prefCats = consentPrefs?["consent_categories"] as? [String] {
+                    cats = prefCats.joined(separator: ", ")
+                }
 
-        // MARK: Current Consent Categories
-        <<< LabelRow { row in
-            let consentPrefs = helper.currentConsentPreferences
-            var cats = ""
-            if let prefCats = consentPrefs?["consent_categories"] as? [String] {
-                cats = prefCats.joined(separator: ", ")
+                cats = cats == "" ? "None" : cats
+                row.title = "Current Categories: \(cats)"
+                row.tag = "statuscats"
+                row.cell.textLabel?.numberOfLines = 5
             }
-
-            cats = cats == "" ? "None" : cats
-            row.title = "Current Categories: \(cats)"
-            row.tag = "statuscats"
-            row.cell.textLabel?.numberOfLines = 5
-        }
 
         // MARK: Consent On/Off Selection
         form +++ Section("Data Collection Settings")
-        <<< SwitchRow() { row in
-            row.title = "Consent Status"
-            row.tag = "enable"
-            row.value = initialStatus
-        }.onChange { row in
-            let sect = self.form.sectionBy(tag: "Preferences")
-            if let sec = sect, self.lastLoadFromCategories == false {
-                for switchrow in sec {
-                    if let r = switchrow as? SwitchRow {
-                        self.lastLoadFromMaster = true
-                        r.value = row.value ?? false
-                        r.updateCell()
-                        self.lastLoadFromMaster = false
-                    }
-                }
-            }
-            let statusUpdate = self.form.rowBy(tag: "status")
-            statusUpdate?.updateCell()
-        }
-        <<< LabelRow { row in
-            row.title = "We would like to collect data about your app experience to help us improve our products. Please choose your preferences here."
-            row.cell.textLabel?.numberOfLines = 3
-        }.cellUpdate { cell, row in
-            cell.textLabel?.font = .italicSystemFont(ofSize: 14.0)
-            cell.backgroundColor = UIColor(red:0.95, green:0.94, blue:1.00, alpha:1.0)
-        }
-
-        // MARK: Category Preferences
-        +++ Section("Preferences") { section in
-            section.tag = "Preferences"
-        }
-
-        // MARK: Save/Discard
-        +++ Section()
-        <<< ButtonRow { row in
-            row.title = "Save and exit"
-        }.onCellSelection { cell, row in
-            var settingsDict = [String: Any]()
-            var categoriesArray = [String]()
-            if let enabled = self.form.rowBy(tag: "enable") as? SwitchRow {
-                if let val = enabled.value {
-                    settingsDict["consentStatus"] = val ? "consented" : "notConsented"
-                }
-            }
-            let sect = self.form.sectionBy(tag: "Preferences")
-            if let sec = sect {
-                for switchrow in sec {
-                    if let r = switchrow as? SwitchRow {
-                        if let title = r.tag, r.value == true {
-                            categoriesArray.append(title)
+            <<< SwitchRow { row in
+                row.title = "Consent Status"
+                row.tag = "enable"
+                row.value = initialStatus
+            }.onChange { row in
+                let sect = self.form.sectionBy(tag: "Preferences")
+                if let sec = sect, self.lastLoadFromCategories == false {
+                    for switchrow in sec {
+                        if let r = switchrow as? SwitchRow {
+                            self.lastLoadFromMaster = true
+                            r.value = row.value ?? false
+                            r.updateCell()
+                            self.lastLoadFromMaster = false
                         }
                     }
                 }
+                let statusUpdate = self.form.rowBy(tag: "status")
+                statusUpdate?.updateCell()
             }
-            settingsDict["consentCategories"] = categoriesArray
-            self.savePreferences(settingsDict)
-            self.dismiss(animated: true)
-        }
+            <<< LabelRow { row in
+                row.title = "We would like to collect data about your app experience to help us improve our products. Please choose your preferences here."
+                row.cell.textLabel?.numberOfLines = 3
+            }.cellUpdate { cell, _ in
+                cell.textLabel?.font = .italicSystemFont(ofSize: 14.0)
+                cell.backgroundColor = UIColor(red: 0.95, green: 0.94, blue: 1.00, alpha: 1.0)
+            }
 
-        // MARK: Discard changes and exit
-        <<< ButtonRow { row in
-            row.title = "Discard Changes"
-        }.onCellSelection({_,_ in
-            self.dismiss(animated: true)
-        })
+            // MARK: Category Preferences
+            +++ Section("Preferences") { section in
+                section.tag = "Preferences"
+            }
+
+            // MARK: Save/Discard
+            +++ Section()
+            <<< ButtonRow { row in
+                row.title = "Save and exit"
+            }.onCellSelection { _, _ in
+                var settingsDict = [String: Any]()
+                var categoriesArray = [String]()
+                if let enabled = self.form.rowBy(tag: "enable") as? SwitchRow {
+                    if let val = enabled.value {
+                        settingsDict["consentStatus"] = val ? "consented" : "notConsented"
+                    }
+                }
+                let sect = self.form.sectionBy(tag: "Preferences")
+                if let sec = sect {
+                    for switchrow in sec {
+                        if let r = switchrow as? SwitchRow {
+                            if let title = r.tag, r.value == true {
+                                categoriesArray.append(title)
+                            }
+                        }
+                    }
+                }
+                settingsDict["consentCategories"] = categoriesArray
+                self.savePreferences(settingsDict)
+                self.dismiss(animated: true)
+            }
+
+            // MARK: Discard changes and exit
+            <<< ButtonRow { row in
+                row.title = "Discard Changes"
+            }.onCellSelection({_, _ in
+                self.dismiss(animated: true)
+            })
 
         // Customize your categories
         let consentCategories = [
@@ -151,13 +151,13 @@ class PreferencesDialogViewController: FormViewController {
         let sect = form.sectionBy(tag: "Preferences")
         for cat in consentCategories {
             if let sec = sect, let name = cat["name"], let tealiumName = cat["tealiumName"], let desc = cat["desc"] {
-                sec <<< SwitchRow() { row in
+                sec <<< SwitchRow { row in
                     row.title = "\(name)"
                     row.tag = tealiumName
                     if let tag = row.tag, initialCats.contains(tag) {
                         row.value = true
                     }
-                }.onChange { row in
+                }.onChange { _ in
                     if self.lastLoadFromMaster == true {
                         return
                     }
@@ -184,17 +184,17 @@ class PreferencesDialogViewController: FormViewController {
                         }
                     }
                 }
-                sec <<< LabelRow() { row in
-                    row.cell.backgroundColor = UIColor(red:0.95, green:0.94, blue:1.00, alpha:1.0)
+                sec <<< LabelRow { row in
+                    row.cell.backgroundColor = UIColor(red: 0.95, green: 0.94, blue: 1.00, alpha: 1.0)
                     row.title = desc
-                }.cellUpdate { cell, row in
+                }.cellUpdate { cell, _ in
                     cell.textLabel?.font = .italicSystemFont(ofSize: 14.0)
                 }
             }
         }
     }
 
-    func savePreferences(_ dict: [String:Any]) {
+    func savePreferences(_ dict: [String: Any]) {
         let helper = TealiumHelper.shared
         helper.updateConsentPreferences(dict)
 

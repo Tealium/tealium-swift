@@ -22,9 +22,9 @@ class TealiumHelper {
     static let shared = TealiumHelper()
 
     let config = TealiumConfig(account: TealiumConfiguration.account,
-        profile: TealiumConfiguration.profile,
-        environment: TealiumConfiguration.environment,
-        dataSource: TealiumConfiguration.dataSourceKey)
+                               profile: TealiumConfiguration.profile,
+                               environment: TealiumConfiguration.environment,
+                               dataSource: TealiumConfiguration.dataSourceKey)
 
     var tealium: Tealium?
 
@@ -86,13 +86,12 @@ class TealiumHelper {
 
     var currentConsentPreferences: [String: Any]? {
         guard let status = self.tealium?.consentManager?.userConsentStatus,
-            let categories = self.tealium?.consentManager?.userConsentCategories else {
+              let categories = self.tealium?.consentManager?.userConsentCategories else {
             return nil
         }
         let stringStatus = status == .consented ? "consented" : "notConsented"
         let stringCategories = categories.map { $0.rawValue }
         return ["tracking_consented": stringStatus, "consent_categories": stringCategories]
     }
-    
-}
 
+}

@@ -6,9 +6,9 @@
 //  Copyright © 2019 Tealium. All rights reserved.
 //
 
-import WatchKit
 import SwiftUI
 import UserNotifications
+import WatchKit
 
 class NotificationController: WKUserNotificationHostingController<NotificationView> {
 

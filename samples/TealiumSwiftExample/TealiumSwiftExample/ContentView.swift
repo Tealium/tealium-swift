@@ -77,7 +77,7 @@ struct TraceIdTextField: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            ContentView().previewDevice(PreviewDevice(rawValue: "iPhone X"))
+          ContentView().previewDevice(PreviewDevice(rawValue: "iPhone X"))
             ContentView().previewDevice(PreviewDevice(rawValue: "iPhone 8"))
             ContentView().previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
             ContentView().previewDevice(PreviewDevice(rawValue: "iPhone 11 SE (1st generation)"))
