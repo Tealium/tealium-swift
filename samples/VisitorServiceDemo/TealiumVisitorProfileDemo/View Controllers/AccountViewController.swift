@@ -14,12 +14,12 @@ class AccountViewController: UIViewController {
 
     @IBOutlet weak var offersImage: UIImageView!
     @IBOutlet weak var groupNameTextField: UITextField!
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         TealiumHelper.trackScreen(self, name: "account")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         groupNameTextField.delegate = self
@@ -32,7 +32,7 @@ class AccountViewController: UIViewController {
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(vc, animated: true)
     }
-    
+
     @IBAction func showOfferTapped(_ sender: UIButton) {
         TealiumHelper.trackEvent(name: "show_offers", dataLayer: [AccountViewController.productId: ["12"], AccountViewController.productQuantity: ["1"], AccountViewController.productName: ["vacuum"], AccountViewController.productCategory: ["household"]])
         offersImage.image = UIImage(named: "bank")
@@ -40,7 +40,7 @@ class AccountViewController: UIViewController {
         ac.addAction(UIAlertAction(title: "OK", style: .default))
         present(ac, animated: true)
     }
-    
+
     @IBAction func joinGroupTapped(_ sender: UIButton) {
         guard let name = groupNameTextField.text else { return }
         var message = "You have joined a group."
@@ -54,7 +54,7 @@ class AccountViewController: UIViewController {
         ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         present(ac, animated: true)
     }
-    
+
 }
 
 extension AccountViewController: UITextFieldDelegate {

@@ -13,9 +13,10 @@ class AppDataModuleTests: XCTestCase {
 
     var appDataModule: AppDataModule?
     let mockDiskStorage = MockAppDataDiskStorage()
+    let appDataCollector = MockAppDataCollector()
 
     override func setUp() {
-        appDataModule = AppDataModule(config: TestTealiumHelper().getConfig(), delegate: self, diskStorage: mockDiskStorage, bundle: Bundle(for: type(of: self)))
+        appDataModule = AppDataModule(config: TestTealiumHelper().getConfig(), delegate: self, diskStorage: mockDiskStorage, bundle: Bundle(for: type(of: self)), appDataCollector: appDataCollector)
     }
 
     func testInitSetsExistingAppData() {
@@ -66,10 +67,26 @@ class AppDataModuleTests: XCTestCase {
         XCTAssertNotNil(appDataModule?.appData.persistentData?.uuid)
     }
 
+    func testNewVolatileData() {
+        appDataModule?.newVolatileData()
+        guard let appData = appDataModule?.appData else {
+            XCTFail("AppData should not be nil")
+            return
+        }
+        if appData.name == nil {
+            XCTFail("app_name should not be nil")
+            return
+        }
+        XCTAssertEqual(appData.name, "DummyAppName" )
+        XCTAssertEqual(appData.rdns, "DummyRdns")
+        XCTAssertEqual(appData.version, "DummyVersion")
+        XCTAssertNotNil(appData.build, "DummyBuild")
+    }
+
     func testSetLoadedAppData() {
         let config = TestTealiumHelper().getConfig()
         config.existingVisitorId = "someOtherVisitorId"
-        let module = AppDataModule(config: config, delegate: self, diskStorage: mockDiskStorage, bundle: Bundle(for: type(of: self)))
+        let module = AppDataModule(config: config, delegate: self, diskStorage: mockDiskStorage, bundle: Bundle(for: type(of: self)), appDataCollector: appDataCollector)
         let testPersistentData = PersistentAppData(visitorId: "someVisitorId", uuid: "someUUID")
         module.loadPersistentAppData(data: testPersistentData)
         // 2x because of init in setUp
@@ -114,4 +131,23 @@ extension AppDataModuleTests: ModuleDelegate {
 
     }
 
+}
+
+class MockAppDataCollector: AppDataCollection {
+
+    func name(bundle: Bundle) -> String? {
+        "DummyAppName"
+    }
+
+    func rdns(bundle: Bundle) -> String? {
+        "DummyRdns"
+    }
+
+    func version(bundle: Bundle) -> String? {
+        "DummyVersion"
+    }
+
+    func build(bundle: Bundle) -> String? {
+        "DummyBuild"
+    }
 }

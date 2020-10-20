@@ -6,17 +6,23 @@
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 
-import XCTest
-@testable import TealiumCore
 @testable import TealiumCollect
+@testable import TealiumCore
+import XCTest
 
 class TealiumTraceTests: XCTestCase {
+    
+    var defaultTealiumConfig: TealiumConfig { TealiumConfig(account: "tealiummobile",
+                                                            profile: "demo",
+                                                            environment: "dev",
+                                                            options: nil)
+    }
 
     var mockDataLayer = DummyDataManagerTrace()
     static var expectation: XCTestExpectation!
     var semaphore: DispatchSemaphore!
     var testTraceId: String {
-        "\(Int.random(in: 100000...999999))"
+        "\(Int.random(in: 100_000...999_999))"
     }
     func tealiumForConfig(config: TealiumConfig, _ completion: (Tealium) -> Void) {
         let localSempahore = DispatchSemaphore(value: 0)
@@ -27,7 +33,7 @@ class TealiumTraceTests: XCTestCase {
         localSempahore.wait()
         completion(tealium)
     }
-    
+
     var testTealium: Tealium {
         let config = defaultTealiumConfig
         config.logLevel = .silent
@@ -39,7 +45,7 @@ class TealiumTraceTests: XCTestCase {
         }
         return tealium
     }
-    
+
     var tealium: Tealium!
     override func setUpWithError() throws {
         semaphore = DispatchSemaphore(value: 0)
@@ -57,7 +63,7 @@ class TealiumTraceTests: XCTestCase {
         tealium.joinTrace(id: testTraceId)
         XCTAssertEqual(mockDataLayer.traceId, testTraceId)
     }
-    
+
     func testLeaveTrace() {
         let testTraceId = self.testTraceId
         tealium.joinTrace(id: testTraceId)
@@ -65,7 +71,7 @@ class TealiumTraceTests: XCTestCase {
         tealium.leaveTrace()
         XCTAssertNil(mockDataLayer.traceId)
     }
-    
+
     func testKillVisitorSession() {
         TealiumTraceTests.expectation = self.expectation(description: "testKillVisitorSession")
         let testTraceId = self.testTraceId
@@ -73,14 +79,14 @@ class TealiumTraceTests: XCTestCase {
         tealium.killTraceVisitorSession()
         wait(for: [TealiumTraceTests.expectation], timeout: 3.0)
     }
-    
+
     func testHandleDeepLink_joinTrace() {
         let testTraceId = self.testTraceId
         let link = URL(string: "https://tealium.com?tealium_trace_id=\(testTraceId)")!
         tealium.handleDeepLink(link)
         XCTAssertEqual(mockDataLayer.traceId!, testTraceId)
     }
-    
+
     func testHandleDeepLink_joinTraceDoesNotRunIfQRTraceDisabled() {
         TealiumTraceTests.expectation = self.expectation(description: "testHandleDeepLink_joinTraceDoesNotRunIfQRTraceDisabled")
         let config = defaultTealiumConfig
@@ -97,7 +103,7 @@ class TealiumTraceTests: XCTestCase {
 
         wait(for: [TealiumTraceTests.expectation], timeout: 3.0)
     }
-    
+
     func testHandleDeepLink_leaveTrace() {
         let testTraceId = self.testTraceId
         tealium.joinTrace(id: testTraceId)
@@ -106,7 +112,7 @@ class TealiumTraceTests: XCTestCase {
         tealium.handleDeepLink(link)
         XCTAssertNil(mockDataLayer.traceId)
     }
-    
+
     func testHandleDeepLink_leaveTraceWithKillVisitorSession() {
         TealiumTraceTests.expectation = self.expectation(description: "testHandleDeepLink_leaveTraceWithKillVisitorSession")
         let testTraceId = self.testTraceId
@@ -117,7 +123,7 @@ class TealiumTraceTests: XCTestCase {
             XCTAssertNil(self.mockDataLayer.traceId)
         }
     }
-    
+
     func testHandleDeepLink_killVisitorSessionOnly() {
         TealiumTraceTests.expectation = self.expectation(description: "testHandleDeepLink_killVisitorSessionOnly")
         let testTraceId = self.testTraceId
@@ -126,7 +132,7 @@ class TealiumTraceTests: XCTestCase {
         tealium.handleDeepLink(link)
         wait(for: [TealiumTraceTests.expectation], timeout: 3.0)
     }
-    
+
     func testHandleDeepLink() {
         let link = URL(string: "https://tealium.com?tealium_trace_id=abc123&utm_param_1=hello&utm_param_2=test")!
         tealium.handleDeepLink(link)
@@ -134,7 +140,7 @@ class TealiumTraceTests: XCTestCase {
         XCTAssertEqual(mockDataLayer.all["deep_link_param_utm_param_1"] as! String, "hello")
         XCTAssertEqual(mockDataLayer.all["deep_link_param_utm_param_2"] as! String, "test")
     }
-    
+
     func testHandleDeepLinkDoesNotAddDataIfDisabled() {
         TealiumTraceTests.expectation = self.expectation(description: "testHandleDeepLinkDoesNotAddDataIfDisabled")
         let config = defaultTealiumConfig
@@ -164,6 +170,7 @@ extension TealiumTraceTests: DispatchListener {
 }
 
 class DummyDataManagerTrace: DataLayerManagerProtocol {
+
     var traceId: String? {
         willSet {
             all["cp.trace_id"] = newValue
@@ -190,7 +197,7 @@ class DummyDataManagerTrace: DataLayerManagerProtocol {
     var isTagManagementEnabled: Bool = true
 
     func add(data: [String: Any], expiry: Expiry?) {
-        
+
     }
 
     func add(key: String, value: Any, expiry: Expiry?) {

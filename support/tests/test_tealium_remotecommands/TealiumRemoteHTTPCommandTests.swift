@@ -7,7 +7,7 @@
 //
 
 @testable import TealiumCore
-@testable import TealiumRemoteCommands
+import TealiumRemoteCommands
 import XCTest
 
 class TealiumRemoteHTTPCommandTests: XCTestCase {

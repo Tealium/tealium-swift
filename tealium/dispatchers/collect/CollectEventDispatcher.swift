@@ -104,8 +104,8 @@ class CollectEventDispatcher: CollectProtocol {
                   url: String? = nil,
                   completion: ModuleCompletion?) {
         if let jsonString = data.toJSONString,
-            let url = url ?? singleEventDispatchURL,
-            let urlRequest = urlPOSTRequestWithJSONString(jsonString, dispatchURL: url) {
+           let url = url ?? singleEventDispatchURL,
+           let urlRequest = urlPOSTRequestWithJSONString(jsonString, dispatchURL: url) {
             sendURLRequest(urlRequest, completion)
         } else {
             completion?((.failure(CollectError.noDataToTrack), nil))

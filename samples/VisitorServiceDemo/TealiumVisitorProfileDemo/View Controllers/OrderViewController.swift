@@ -10,7 +10,7 @@ import UIKit
 
 // Image Credit: https://www.flaticon.com/authors/smashicons 🙏
 class OrderViewController: UIViewController {
-    
+
     @IBOutlet weak var orderNumber: UILabel!
 
     override func viewDidLoad() {

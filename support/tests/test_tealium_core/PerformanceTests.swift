@@ -23,6 +23,8 @@ class PerformanceTests: XCTestCase {
 
     var tealium: Tealium!
     var config: TealiumConfig!
+    var json: Data!
+    let decoder = JSONDecoder()
 
     var standardMetrics: [XCTPerformanceMetric] = [.wallClockTime,
                                                    XCTPerformanceMetric(rawValue: "com.apple.XCTPerformanceMetric_UserTime"),
@@ -44,6 +46,7 @@ class PerformanceTests: XCTestCase {
                                               XCTPerformanceMetric(rawValue: "com.apple.XCTPerformanceMetric_TransientHeapAllocationsNodes")]
 
     override func setUpWithError() throws {
+        json = loadStub(from: "big-visitor", with: "json")
     }
 
     override func tearDownWithError() throws {
@@ -270,7 +273,7 @@ class PerformanceTests: XCTestCase {
     //        let eventData = EventDataManager(config: defaultTealiumConfig)
     //        eventData.deleteAll()
     //        self.measureMetrics(allMetrics, automaticallyStartMeasuring: true) {
-    //            _ = eventData.allEventData
+    //            _ = eventData.all
     //            self.stopMeasuring()
     //        }
     //    }
@@ -290,7 +293,7 @@ class PerformanceTests: XCTestCase {
             eventDataManager.add(key: $0.key, value: $0.value, expiry: .forever)
         }
         self.measureMetrics(allMetrics, automaticallyStartMeasuring: true) {
-            _ = eventDataManager.allEventData
+            _ = eventDataManager.all
             self.stopMeasuring()
         }
     }
@@ -377,6 +380,32 @@ class PerformanceTests: XCTestCase {
         self.measureMetrics(allMetrics, automaticallyStartMeasuring: true) {
             _ = VisitorServiceModule(config: defaultTealiumConfig, delegate: self, diskStorage: nil, completion: { _ in })
             self.stopMeasuring()
+        }
+    }
+
+    func testPerformanceVisitorProfileWithHelperMethods() throws {
+        self.measure {
+            let profile = try! decoder.decode(TealiumVisitorProfile.self, from: json)
+            XCTAssertEqual(profile.audiences?.count, 188)
+            XCTAssertEqual(profile.badges?.count, 256)
+            XCTAssertEqual(profile.dates?.count, 448)
+            XCTAssertEqual(profile.booleans?.count, 176)
+            XCTAssertEqual(profile.arraysOfBooleans?.count, 80)
+            XCTAssertEqual(profile.numbers?.count, 464)
+            XCTAssertEqual(profile.arraysOfNumbers?.count, 48)
+            XCTAssertEqual(profile.tallies?.count, 6)
+            XCTAssertEqual(profile.strings?.count, 288)
+            XCTAssertEqual(profile.arraysOfStrings?.count, 50)
+            XCTAssertEqual(profile.setsOfStrings?.count, 100)
+            XCTAssertEqual(profile.currentVisit?.dates?.count, 448)
+            XCTAssertEqual(profile.currentVisit?.booleans?.count, 176)
+            XCTAssertEqual(profile.currentVisit?.arraysOfBooleans?.count, 80)
+            XCTAssertEqual(profile.currentVisit?.numbers?.count, 464)
+            XCTAssertEqual(profile.currentVisit?.arraysOfNumbers?.count, 48)
+            XCTAssertEqual(profile.currentVisit?.tallies?.count, 6)
+            XCTAssertEqual(profile.currentVisit?.strings?.count, 288)
+            XCTAssertEqual(profile.currentVisit?.arraysOfStrings?.count, 50)
+            XCTAssertEqual(profile.currentVisit?.setsOfStrings?.count, 100)
         }
     }
 

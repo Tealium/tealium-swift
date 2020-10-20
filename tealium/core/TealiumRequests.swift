@@ -124,12 +124,12 @@ public struct TealiumRemoteCommandRequestResponse: TealiumRequest {
 public struct TealiumTrackRequest: TealiumRequest, Codable, Comparable {
     public static func < (lhs: TealiumTrackRequest, rhs: TealiumTrackRequest) -> Bool {
         guard let lhsTimestamp = lhs.trackDictionary[TealiumKey.timestampUnixMilliseconds] as? String,
-            let rhsTimestamp = rhs.trackDictionary[TealiumKey.timestampUnixMilliseconds] as? String else {
-                return false
+              let rhsTimestamp = rhs.trackDictionary[TealiumKey.timestampUnixMilliseconds] as? String else {
+            return false
         }
         guard let lhsTimestampInt = Int64(lhsTimestamp),
-            let rhsTimestampInt = Int64(rhsTimestamp) else {
-                return false
+              let rhsTimestampInt = Int64(rhsTimestamp) else {
+            return false
         }
         return lhsTimestampInt < rhsTimestampInt
     }

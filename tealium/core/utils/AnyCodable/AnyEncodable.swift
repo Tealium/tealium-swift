@@ -70,7 +70,7 @@ extension _AnyEncodable {
         var container = encoder.singleValueContainer()
 
         switch value {
-            #if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
+        #if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
         case let number as NSNumber:
             if Double(truncating: number) == Double.nan {
                 try container.encode("NaN")
@@ -79,7 +79,7 @@ extension _AnyEncodable {
             } else {
                 try encode(nsnumber: number, into: &container)
             }
-            #endif
+        #endif
         case is NSNull, is Void:
             try container.encodeNil()
         case let bool as Bool:
@@ -165,10 +165,10 @@ extension _AnyEncodable {
             } else {
                 try container.encode(nsnumber.decimalValue)
             }
-            #if swift(>=5.0)
+        #if swift(>=5.0)
         @unknown default:
             fatalError("Data type not yet supported. Error in \(#file) at \(#line)")
-            #endif
+        #endif
         }
     }
     #endif

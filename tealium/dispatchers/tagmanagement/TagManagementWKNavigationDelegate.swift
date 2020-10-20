@@ -18,7 +18,7 @@ extension TagManagementWKWebView: WKNavigationDelegate {
     func webView(_ webView: WKWebView,
                  didFinish navigation: WKNavigation!) {
         if let url = webView.url,
-            url == self.url {
+           url == self.url {
             self.webviewStateDidChange(.loadSuccess, withError: nil)
         } else {
             self.webviewStateDidChange(.loadFailure, withError: TagManagementError.webViewNotYetReady)
@@ -43,9 +43,9 @@ extension TagManagementWKWebView: WKNavigationDelegate {
                  decidePolicyFor navigationResponse: WKNavigationResponse,
                  decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
         guard let response = navigationResponse.response as? HTTPURLResponse,
-            let url = navigationResponse.response.url else {
-                decisionHandler(.cancel)
-                return
+              let url = navigationResponse.response.url else {
+            decisionHandler(.cancel)
+            return
         }
 
         /// Forces WKWebView to respect `Set-Cookie` response headers.

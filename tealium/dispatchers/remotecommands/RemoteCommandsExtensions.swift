@@ -42,58 +42,44 @@ public extension TealiumConfig {
     ///
     /// - Parameter command: `TealiumRemoteCommandProtocol` instance
     func addRemoteCommand(_ command: RemoteCommandProtocol) {
-        var commands = remoteCommands ?? RemoteCommandArray()
+        var commands = remoteCommands ?? [RemoteCommandProtocol]()
         commands.append(command)
         remoteCommands = commands
     }
 
-    var remoteCommands: RemoteCommandArray? {
+    var remoteCommands: [RemoteCommandProtocol]? {
         get {
-            options[RemoteCommandsKey.allCommands] as? RemoteCommandArray
+            options[RemoteCommandsKey.allCommands] as? [RemoteCommandProtocol]
         }
 
         set {
             options[RemoteCommandsKey.allCommands]  = newValue
         }
     }
-}
 
-extension Array where Element: RemoteCommand {
-
-    /// Retrieves a command for a specific command ID
-    ///
-    /// - Parameter commandId: `String`
-    /// - Returns: `TealiumRemoteCommand?`
-    func commandForId(_ commandId: String) -> RemoteCommand? {
-        return self.first(where: { $0.commandId == commandId })
-    }
-
-    /// Removes a command for a specific command ID
-    ///
-    /// - Parameter commandId: `String`
-    mutating func removeCommandForId(_ commandId: String) {
-        for (index, command) in self.reversed().enumerated() where command.commandId == commandId {
-            self.remove(at: index)
+    /// Sets the refresh interval for which to fetch the JSON remote command config
+    /// - Returns: `TealiumRefreshInterval` default is `.every(1, .hours)`
+    var remoteCommandConfigRefresh: TealiumRefreshInterval {
+        get {
+            return options[RemoteCommandsKey.refreshInterval] as? TealiumRefreshInterval ?? .every(1, .hours)
+        }
+        set {
+            options[RemoteCommandsKey.refreshInterval] = newValue
         }
     }
 
 }
 
-public extension RemoteCommandArray {
+public extension Array where Element == RemoteCommandProtocol {
     subscript(_ id: String) -> RemoteCommandProtocol? {
         return self.first {
             $0.commandId == id
         }
     }
-
     /// Removes a command by id from the RemoteCommandArray
     /// - Parameter id: Parameter id: `String`
     mutating func removeCommand(_ id: String) {
-        var copy = self
-        for (index, command) in copy.reversed().enumerated() where command.commandId == id {
-            copy.remove(at: index)
-        }
-        self = copy
+        self = self.filter { $0.commandId != id }
     }
 
 }
@@ -132,5 +118,33 @@ extension URLRequest {
             self.addValue(value, forHTTPHeaderField: key)
         }
     }
+}
+
+public extension String {
+
+    /// URL initializer does not actually validate web addresses successfully (it's too permissive), so this additional check is required￼.
+    ///
+    /// - Returns: `Bool` `true` if URL is a valid web address
+    var isValidUrl: Bool {
+        let urlRegexPattern = "^(https?://)?(www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z0-9]{0,61}[a-z0-9]\\.[a-z]{2,6}(/[-\\w@\\+\\.~#\\?&/=%]*)?$"
+        guard let validURLRegex = try? NSRegularExpression(pattern: urlRegexPattern, options: []) else {
+            return false
+        }
+        return validURLRegex.rangeOfFirstMatch(in: self, options: [], range: NSRange(self.startIndex..., in: self)).location != NSNotFound
+    }
+
+    /// Adds the key _cb= to the end of the url with a random number to clear the cached file from the CDN
+    var cacheBuster: String {
+        return ("\(self)?_cb=\(Int.random(in: 1...10_000))")
+    }
+
+    var fileName: String {
+        guard let jsonFile = self.components(separatedBy: "/").last,
+              jsonFile.contains(".json") else {
+            return ""
+        }
+        return jsonFile.components(separatedBy: ".json")[0]
+    }
+
 }
 #endif

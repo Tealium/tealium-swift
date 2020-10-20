@@ -16,7 +16,7 @@ public enum Dispatchers {}
 
 public enum TealiumValue {
     public static let libraryName = "swift"
-    public static let libraryVersion = "2.0.0"
+    public static let libraryVersion = "2.1.0"
     // This is the current limit for performance reasons. May be increased in future
     public static let maxEventBatchSize = 10
     public static let defaultMinimumDiskSpace: Int32 = 20_000_000
@@ -24,9 +24,12 @@ public enum TealiumValue {
     public static let tiqURLSuffix = "mobile.html?sdk_session_count=true"
     public static let defaultBatchExpirationDays = 7
     public static let defaultMaxQueueSize = 40
+    static let defaultLoggerType: TealiumLoggerType = .os
+    static let connectionRestoredReason = "Connection Restored"
     static let hdlMaxRetries = 3
     static let hdlCacheSizeMax = 50
     static let defaultHDLExpiry: (Int, unit: TimeUnit) = (7, unit: .days)
+    static let mobile = "mobile"
 }
 
 public enum ModuleNames {
@@ -130,6 +133,7 @@ public enum TealiumKey {
     static let appDelegateProxy = "app_delegate_proxy"
     static let hostedDataLayerKeys = "hosted_data_layer_keys"
     static let hostedDataLayerExpiry = "hosted_data_layer_expiry"
+    static let origin = "origin"
 }
 
 public enum TealiumTrackType {
@@ -149,10 +153,9 @@ public enum TealiumTrackType {
 
 public typealias TealiumCompletion = ((_ successful: Bool, _ info: [String: Any]?, _ error: Error?) -> Void)
 
-public enum TealiumConstants {
-    static let libraryVersion = "2.0.0"
-    static let defaultBatchSize = 10
-    static let defaultLoggerType: TealiumLoggerType = .os
-    static let defaultMinimumDiskSpace: Int32 = 20_000_000
-    static let connectionRestoredReason = "Connection Restored"
+// swiftlint:disable identifier_name
+public enum HttpStatusCodes: Int {
+    case notModified = 304
+    case ok = 200
 }
+// swiftlint:enable identifier_name

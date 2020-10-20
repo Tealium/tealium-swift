@@ -18,38 +18,38 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     var logger: TealiumLoggerProtocol? {
         config.logger
     }
-    var locationManager: LocationManager
-    var geofences = Geofences()
+    var locationManager: LocationManagerProtocol
+    var geofences = [Geofence]()
     weak var locationDelegate: LocationDelegate?
     var didEnterRegionWorking = false
-    public var locationAccuracy = LocationKey.lowAccuracy
+    public var locationAccuracy: String = LocationKey.highAccuracy
     private var _lastLocation: CLLocation?
 
     init(config: TealiumConfig,
          bundle: Bundle = Bundle.main,
          locationDelegate: LocationDelegate? = nil,
-         locationManager: LocationManager = CLLocationManager()) {
+         locationManager: LocationManagerProtocol = CLLocationManager()) {
         self.config = config
         self.locationDelegate = locationDelegate
         self.locationManager = locationManager
+        self.locationAccuracy = config.useHighAccuracy ? LocationKey.highAccuracy : LocationKey.lowAccuracy
 
         super.init()
 
-        switch config.initializeGeofenceDataFrom {
-        case .localFile(let file):
-            geofences = GeofenceData(file: file, bundle: bundle, logger: config.logger)?.geofences ?? Geofences()
-        case .customUrl(let url):
-            geofences = GeofenceData(url: url, logger: config.logger)?.geofences ?? Geofences()
-        default:
-            geofences = GeofenceData(url: geofencesUrl, logger: config.logger)?.geofences ?? Geofences()
+        if let locationConfig = config.initializeGeofenceDataFrom {
+            switch locationConfig {
+            case .localFile(let file):
+                geofences = GeofenceData(file: file, bundle: bundle, logger: config.logger)?.geofences ?? [Geofence]()
+            case .customUrl(let url):
+                geofences = GeofenceData(url: url, logger: config.logger)?.geofences ?? [Geofence]()
+            default:
+                geofences = GeofenceData(url: geofencesUrl, logger: config.logger)?.geofences ?? [Geofence]()
+            }
         }
 
         self.locationManager.distanceFilter = config.updateDistance
         self.locationManager.delegate = self
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        if config.useHighAccuracy {
-            locationAccuracy = LocationKey.highAccuracy
-        }
+        self.locationManager.desiredAccuracy = CLLocationAccuracy(config.desiredAccuracy)
 
         clearMonitoredGeofences()
     }
@@ -59,50 +59,89 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
         return "\(LocationKey.dleBaseUrl)\(config.account)/\(config.profile)/\(LocationKey.fileName).json"
     }
 
-    /// Gets the permission status of Location Services
+    /// - Returns: `Bool` Whether or not the user has authorized location tracking/updates
+    public var isAuthorized: Bool {
+        type(of: locationManager).self.authorizationStatus() == .authorizedAlways ||
+            type(of: locationManager).self.authorizationStatus() == .authorizedWhenInUse
+    }
+
+    /// - Returns: `Bool` Whether or not the user has allowed "Precise" location tracking/updates
+    @available(iOS 14.0, *)
+    public var isFullAccuracy: Bool {
+        return locationManager.accuracyAuthorization == .fullAccuracy
+    }
+
+    /// Gets the user's last known location
     ///
-    /// - return: `Bool` LocationManager services enabled true/false
-    public var locationServiceEnabled: Bool {
-        let permissionStatus = type(of: locationManager).self.authorizationStatus()
-        guard (permissionStatus == .authorizedAlways || permissionStatus == .authorizedWhenInUse),
-            type(of: locationManager).self.locationServicesEnabled() else {
-                return false
+    /// - returns: `CLLocation ` location object
+    public var lastLocation: CLLocation? {
+        get {
+            guard isAuthorized else {
+                return nil
+            }
+            return _lastLocation
         }
-        return true
+        set {
+            if let newValue = newValue {
+                _lastLocation = newValue
+            }
+        }
     }
 
     /// Prompts the user to enable permission for location servies
     public func requestAuthorization() {
-        let permissionStatus = type(of: locationManager).self.authorizationStatus()
+        let authorizationStatus = type(of: locationManager).self.authorizationStatus()
 
-        if permissionStatus != .authorizedAlways {
+        if authorizationStatus != .authorizedAlways {
             locationManager.requestAlwaysAuthorization()
         }
 
-        if  permissionStatus != .authorizedWhenInUse {
+        if  authorizationStatus != .authorizedWhenInUse {
             locationManager.requestWhenInUseAuthorization()
         }
     }
 
+    /// Automatically request temporary full accuracy if precise accuracy is disabled.
+    ///
+    /// - Parameter purposeKey: `String` A key in the `NSLocationTemporaryUsageDescriptionDictionary` dictionary of the app’s `Info.plist` file.
+    @available(iOS 14.0, *)
+    public func requestTemporaryFullAccuracyAuthorization(purposeKey: String) {
+        guard isAuthorized else {
+            return
+        }
+        locationManager.requestTemporaryFullAccuracyAuthorization(withPurposeKey: purposeKey) { [weak self] error in
+            if let self = self,
+               let error = error as? CLError {
+                if error.code == .denied {
+                    self.logError(message: "🌎🌎 Temporary Full Authorization Denied 🌎🌎")
+                } else {
+                    self.logError(message: "🌎🌎 Error Requesting Temporary Full Authorization: \(error) 🌎🌎")
+                }
+
+            }
+        }
+    }
+
     /// Enables regular updates of location data through the location client
-    /// Update frequency is dependant on config.useHighAccuracy, a parameter passed on initisalizatuion of this class.
+    /// Update frequency is dependant on config.useHighAccuracy, a parameter passed on initialization of this class.
     public func startLocationUpdates() {
-        guard locationServiceEnabled else {
+        guard isAuthorized else {
             logInfo(message: "🌎🌎 Location Updates Service Not Enabled 🌎🌎")
             return
         }
-        guard config.useHighAccuracy else {
-            locationManager.startMonitoringSignificantLocationChanges()
-            logInfo(message: "🌎🌎 Location Updates Significant Location Change Accuracy Started 🌎🌎")
+        guard !config.useHighAccuracy,
+              CLLocationManager.significantLocationChangeMonitoringAvailable() else {
+            locationManager.startUpdatingLocation()
+            logInfo(message: "🌎🌎 Starting Location Updates With Frequent Monitoring 🌎🌎")
             return
         }
-        locationManager.startUpdatingLocation()
-        logInfo(message: "🌎🌎 Location Updates High Accuracy Started 🌎🌎")
+        locationManager.startMonitoringSignificantLocationChanges()
+        logInfo(message: "🌎🌎 Starting Location Updates With Significant Location Changes Only 🌎🌎")
     }
 
     /// Stops the updating of location data through the location client.
     public func stopLocationUpdates() {
-        guard locationServiceEnabled else {
+        guard isAuthorized else {
             return
         }
         locationManager.stopUpdatingLocation()
@@ -124,9 +163,9 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
             let geofenceLocation = CLLocation(latitude: $0.center.latitude, longitude: $0.center.longitude)
 
             guard let distance = lastLocation?.distance(from: geofenceLocation),
-                distance.isLess(than: config.updateDistance) else {
-                    stopMonitoring(geofence: $0)
-                    return
+                  distance.isLess(than: config.updateDistance) else {
+                stopMonitoring(geofence: $0)
+                return
             }
             startMonitoring(geofence: $0)
         }
@@ -139,9 +178,11 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     /// - parameter error: `error` an error that has occured
     public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         if let error = error as? CLError,
-            error.code == .denied {
-            logError(message: "🌎🌎 An error has occured: \(String(describing: error.localizedDescription)) 🌎🌎")
+           error.code == .denied {
+            logError(message: "🌎🌎 Location Authorization Denied 🌎🌎")
             locationManager.stopUpdatingLocation()
+        } else {
+            logError(message: "🌎🌎 An Error Has Occured: \(String(describing: error.localizedDescription)) 🌎🌎")
         }
     }
 
@@ -159,12 +200,21 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
         }
     }
 
-    /// CLLocationManagerDelegate method
-    /// Calls for the sending of a Tealium tracking calls on geofence enter and exit event
+    /// `CLLocationManagerDelegate` method
+    /// Calls for the sending of a Tealium tracking calls on geofence enter and exit event. Deprecated in iOS 14
     ///
     /// - parameter manager: `CLLocationManager` instance
     /// - parameter status: `CLAuthorizationStatus` authorization state of the application.
     public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        startLocationUpdates()
+    }
+
+    /// `CLLocationManagerDelegate` method
+    /// Calls for the sending of a Tealium tracking calls on geofence enter and exit event. Available in iOS 14 only
+    ///
+    /// - parameter manager: `CLLocationManager` instance
+    @available(iOS 14.0, *)
+    public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         startLocationUpdates()
     }
 
@@ -184,29 +234,13 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
             data[LocationKey.timestamp] = "\(lastLocation.timestamp)"
             data[LocationKey.speed] = "\(lastLocation.speed)"
             data[LocationKey.accuracy] = locationAccuracy
+            data[LocationKey.accuracyExtended] = config.desiredAccuracy.rawValue
         }
 
         if triggeredTransition == LocationKey.exited {
             locationDelegate?.didExitGeofence(data)
         } else if triggeredTransition == LocationKey.entered {
             locationDelegate?.didEnterGeofence(data)
-        }
-    }
-
-    /// Gets the user's last known location
-    ///
-    /// - returns: `CLLocation` location object
-    public var lastLocation: CLLocation? {
-        get {
-            guard locationServiceEnabled else {
-                return nil
-            }
-            return _lastLocation
-        }
-        set {
-            if let newValue = newValue {
-                _lastLocation = newValue
-            }
         }
     }
 
@@ -260,7 +294,7 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     ///
     /// - return: `[String]?` Array containing the names of monitored geofences
     public var monitoredGeofences: [String]? {
-        guard locationServiceEnabled else {
+        guard isAuthorized else {
             return nil
         }
         return locationManager.monitoredRegions.map { $0.identifier }
@@ -270,7 +304,7 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     ///
     /// - return: `[String]?` Array containing the names of all geofences
     public var createdGeofences: [String]? {
-        guard locationServiceEnabled else {
+        guard isAuthorized else {
             return nil
         }
         return geofences.map { $0.name }
@@ -288,7 +322,7 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     public func disable() {
         stopLocationUpdates()
         clearMonitoredGeofences()
-        self.geofences = Geofences()
+        self.geofences = [Geofence]()
     }
 
     /// Logs errors about events occuring in the `TealiumLocation` module
@@ -306,4 +340,30 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     }
 
 }
+
+extension CLLocationAccuracy {
+    init(_ accuracy: LocationAccuracy) {
+        switch accuracy {
+        case .bestForNavigation:
+            self = kCLLocationAccuracyBestForNavigation
+        case .best:
+            self = kCLLocationAccuracyBest
+        case .nearestTenMeters:
+            self = kCLLocationAccuracyNearestTenMeters
+        case .nearestHundredMeters:
+            self = kCLLocationAccuracyHundredMeters
+        case .reduced:
+            if #available(iOS 14.0, *) {
+                self = kCLLocationAccuracyReduced
+            } else {
+                self = kCLLocationAccuracyHundredMeters
+            }
+        case .withinOneKilometer:
+            self = kCLLocationAccuracyKilometer
+        case .withinThreeKilometers:
+            self = kCLLocationAccuracyThreeKilometers
+        }
+    }
+}
+
 #endif

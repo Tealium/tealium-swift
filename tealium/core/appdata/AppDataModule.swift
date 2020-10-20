@@ -8,12 +8,13 @@
 
 import Foundation
 
-public class AppDataModule: Collector, AppDataCollection {
+public class AppDataModule: Collector {
 
     public let id: String = ModuleNames.appdata
     private(set) var uuid: String?
     private var diskStorage: TealiumDiskStorageProtocol!
     private var bundle: Bundle
+    private var appDataCollector: AppDataCollection
     var appData = AppData()
 
     /// Retrieves current appdata
@@ -56,8 +57,10 @@ public class AppDataModule: Collector, AppDataCollection {
     convenience init(config: TealiumConfig,
                      delegate: ModuleDelegate,
                      diskStorage: TealiumDiskStorageProtocol?,
-                     bundle: Bundle) {
-        self.init(config: config, delegate: delegate, diskStorage: diskStorage) { _ in }
+                     bundle: Bundle,
+                     appDataCollector: AppDataCollection) {
+        self.init(config: config, delegate: delegate, diskStorage: diskStorage) { _, _ in }
+        self.appDataCollector = appDataCollector
         self.bundle = bundle
     }
 
@@ -73,6 +76,7 @@ public class AppDataModule: Collector, AppDataCollection {
                          completion: ModuleCompletion) {
         self.config = config
         self.bundle = Bundle.main
+        self.appDataCollector = AppDataCollector()
         self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config, forModule: "appdata", isCritical: true)
         fillCache()
         completion((.success(true), nil))
@@ -130,19 +134,19 @@ public class AppDataModule: Collector, AppDataCollection {
 
     /// Generates a new set of Volatile Data (usually once per app launch)
     func newVolatileData() {
-        if let name = name(bundle: bundle) {
+        if let name = appDataCollector.name(bundle: bundle) {
             appData.name = name
         }
 
-        if let rdns = rdns(bundle: bundle) {
+        if let rdns = appDataCollector.rdns(bundle: bundle) {
             appData.rdns = rdns
         }
 
-        if let version = version(bundle: bundle) {
+        if let version = appDataCollector.version(bundle: bundle) {
             appData.version = version
         }
 
-        if let build = build(bundle: bundle) {
+        if let build = appDataCollector.build(bundle: bundle) {
             appData.build = build
         }
     }
@@ -166,7 +170,7 @@ public class AppDataModule: Collector, AppDataCollection {
 
         appData.persistentData = data
         if let existingVisitorId = self.existingVisitorId,
-            let persistentData = appData.persistentData {
+           let persistentData = appData.persistentData {
             let newPersistentData = PersistentAppData(visitorId: existingVisitorId, uuid: persistentData.uuid)
             diskStorage.saveToDefaults(key: TealiumKey.visitorId, value: existingVisitorId)
             diskStorage.save(newPersistentData, completion: nil)

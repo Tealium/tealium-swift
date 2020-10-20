@@ -3,16 +3,16 @@
 //  ConsentManagerDemo
 //
 //  Created by Craig Rouse on 15/05/2018.
-//  Copyright © 2018 Craig Rouse. All rights reserved.
+//  Copyright © 2018 Tealium. All rights reserved.
 //
 
-import UIKit
 import Eureka
+import UIKit
 
 class ViewController: FormViewController {
 
     override func viewDidLoad() {
-    super.viewDidLoad()
+        super.viewDidLoad()
         let helper = TealiumHelper.shared
         // MARK: Demo Tracking Call
         form +++ Section("Demo Tracking Call")
@@ -23,8 +23,8 @@ class ViewController: FormViewController {
 
             <<< ButtonRow { row in
                 row.title = "Trigger"
-            }.onCellSelection { _,_ in
-                TealiumHelper.trackEvent(title: "Button Clicked", dataLayer: ["demo" : true])
+            }.onCellSelection { _, _ in
+                TealiumHelper.trackEvent(title: "Button Clicked", dataLayer: ["demo": true])
             }
 
             // MARK: Preferences Button
@@ -34,7 +34,7 @@ class ViewController: FormViewController {
             <<< ButtonRow { row in
                 row.title = "Preferences List View"
             }.onCellSelection { _, _ in
-                 self.present(PreferencesDialogViewController(), animated: true)
+                self.present(PreferencesDialogViewController(), animated: true)
             }
             <<< ButtonRow { row in
                 row.title = "Preferences Slider View"
@@ -54,8 +54,8 @@ class ViewController: FormViewController {
     }
 
     override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-    // Dispose of any resources that can be recreated.
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
 
 }

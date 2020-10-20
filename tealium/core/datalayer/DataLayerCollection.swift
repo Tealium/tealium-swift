@@ -8,15 +8,13 @@
 
 import Foundation
 
-public typealias DataLayerCollection = Set<DataLayerItem>
+public extension Set where Element == DataLayerItem {
 
-public extension DataLayerCollection {
-
-    /// Inserts a new `DataLayerItem` into the `DataLayerCollection` store
+    /// Inserts a new `DataLayerItem` into the `Set<DataLayerItem>` store
     /// If a value for that key already exists, it will be removed before
     /// the new value is inserted.
     /// - Parameters:
-    ///   - dictionary: `[String: Any]` values being inserted into the `DataLayerCollection` store
+    ///   - dictionary: `[String: Any]` values being inserted into the `Set<DataLayerItem>` store
     ///   - expires: `Date` expiration date
     mutating func insert(from dictionary: [String: Any], expires: Date) {
         dictionary.forEach { item in
@@ -30,7 +28,7 @@ public extension DataLayerCollection {
         }
     }
 
-    /// Inserts a new `DataLayerItem` into the `DataLayerCollection` store
+    /// Inserts a new `DataLayerItem` into the `Set<DataLayerItem>` store
     /// If a value for that key already exists, it will be removed before
     /// the new value is inserted.
     /// - Parameters:
@@ -51,9 +49,9 @@ public extension DataLayerCollection {
         }
     }
 
-    /// Removes expired data from the `DataLayerCollection` store
-    /// - Returns: `DataLayerCollection` after removal
-    func removeExpired() -> DataLayerCollection {
+    /// Removes expired data from the `Set<DataLayerItem>` store
+    /// - Returns: `Set<DataLayerItem>` after removal
+    func removeExpired() -> Set<DataLayerItem> {
         let currentDate = Date()
         let newDataLayer = self.filter {
             $0.expires > currentDate
@@ -61,7 +59,7 @@ public extension DataLayerCollection {
         return newDataLayer
     }
 
-    /// - Returns: `[String: Any]` all the data currently in the `DataLayerCollection` store
+    /// - Returns: `[String: Any]` all the data currently in the `Set<DataLayerItem>` store
     var all: [String: Any] {
         var returnData = [String: Any]()
         self.forEach { eventDataItem in

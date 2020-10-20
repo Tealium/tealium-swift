@@ -10,26 +10,26 @@ import UIKit
 
 // Image Credit: https://www.flaticon.com/authors/freepik 🙏
 class LoginViewController: UIViewController {
-    
+
     @IBOutlet weak var username: UITextField!
     @IBOutlet weak var password: UITextField!
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         TealiumHelper.trackScreen(self, name: "login")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         password.isSecureTextEntry = true
         username.delegate = self
         password.delegate = self
     }
-    
+
     @IBAction func onLogin(_ sender: Any) {
         TealiumHelper.trackEvent(name: "user_login", dataLayer: [LoginViewController.customerId: username.text ?? "ABC123", LoginViewController.signUpMethod: "apple", LoginViewController.username: username.text!])
     }
-    
+
 }
 
 extension LoginViewController: UITextFieldDelegate {

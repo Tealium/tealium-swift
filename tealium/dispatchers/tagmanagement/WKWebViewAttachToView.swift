@@ -29,7 +29,7 @@ extension TagManagementWKWebView {
         if specificView != nil {
             view = specificView
         } else if let application = self.sharedApplication, // auto-detect root view if no view passed in
-            let window = application.keyWindow {
+                  let window = application.keyWindow {
             // view has not already been set or has no window
             if view?.window == nil {
                 // set the current view to the current keyWindow

@@ -37,7 +37,7 @@ struct ContentView: View {
                 }) {
                     Text("Leave Trace")
                 }
-            Spacer()
+                Spacer()
             }.navigationBarTitle("TealiumSwiftExample").padding(50)
         }
     }

@@ -53,7 +53,7 @@ class SessionManagerTests: XCTestCase {
     func testSessionIdSavesToPersistentStorage() {
         eventDataManager.sessionId = "test123abc"
         let eventDataItem = DataLayerItem(key: "tealium_session_id", value: "test123abc", expires: .distantFuture)
-        let retrieved = mockDiskStorage.retrieve(as: DataLayerCollection.self)
+        let retrieved = mockDiskStorage.retrieve(as: Set<DataLayerItem>.self)
         XCTAssertTrue(((retrieved?.contains(eventDataItem)) != nil))
     }
 

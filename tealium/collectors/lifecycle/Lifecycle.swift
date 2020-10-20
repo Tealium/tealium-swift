@@ -29,8 +29,8 @@ public struct Lifecycle: Codable {
         didSet {
             // Limit size of sessions records
             while sessions.count > sessionsSize &&
-                sessionsSize > 1 {
-                    sessions.remove(at: 1)
+                    sessionsSize > 1 {
+                sessions.remove(at: 1)
             }
         }
     }

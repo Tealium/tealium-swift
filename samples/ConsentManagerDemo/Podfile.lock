@@ -1,11 +1,11 @@
 PODS:
-  - Eureka (5.2.1)
-  - tealium-swift (2.0.0):
-    - tealium-swift/TealiumFull (= 2.0.0)
-  - tealium-swift/TealiumFull (2.0.0)
+  - Eureka (5.3.1)
+  - tealium-swift (2.1.0):
+    - tealium-swift/TealiumFull (= 2.1.0)
+  - tealium-swift/TealiumFull (2.1.0)
 
 DEPENDENCIES:
-  - Eureka
+  - Eureka (~> 5.3)
   - tealium-swift (from `../..`)
 
 SPEC REPOS:
@@ -17,9 +17,9 @@ EXTERNAL SOURCES:
     :path: "../.."
 
 SPEC CHECKSUMS:
-  Eureka: c883105488e05bc65539f583246ecf9657cabbfe
-  tealium-swift: c0b58cc749d23805790de1472407723fa41da2dc
+  Eureka: 859877ab1e85661b6b7e810015d430e937d9cc7d
+  tealium-swift: a670c2c6f3e7e5d775d9507387e8858a8541e526
 
-PODFILE CHECKSUM: 14ac837420ebd1cbcd4f50e4acb57730d08ddfef
+PODFILE CHECKSUM: a08a1d1cef2344f90eb2215ef34bbdf985d4db40
 
 COCOAPODS: 1.9.3

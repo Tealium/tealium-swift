@@ -9,6 +9,7 @@
 import Foundation
 
 public typealias DataTaskCompletion = (Data?, URLResponse?, Error?) -> Void
+public typealias DataTaskResult = Result<(HTTPURLResponse?, Data?), Error>
 
 public protocol URLSessionProtocol {
     func tealiumDataTask(with url: URL, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol

@@ -9,12 +9,10 @@
 
 import Foundation
 
-public typealias TealiumEnableCompletion = ((_ result: Result<Bool, Error>) -> Void)
-
 ///  Public interface for the Tealium library.
 public class Tealium {
 
-    var enableCompletion: TealiumEnableCompletion?
+    var enableCompletion: ((_ result: Result<Bool, Error>) -> Void)?
     public static var lifecycleListeners = TealiumLifecycleListeners()
     public var dataLayer: DataLayerManagerProtocol
     // swiftlint:disable identifier_name
@@ -24,11 +22,11 @@ public class Tealium {
     /// Initializer.
     ///
     /// - Parameter config: `TealiumConfig` Object created with Tealium account, profile, environment, optional loglevel)
-    /// - Parameter enableCompletion: `TealiumEnableCompletion` block to be called when library has finished initializing
+    /// - Parameter enableCompletion: `((_ result: Result<Bool, Error>) -> Void)` block to be called when library has finished initializing
     public init(config: TealiumConfig,
                 dataLayer: DataLayerManagerProtocol? = nil,
                 modulesManager: ModulesManager? = nil,
-                enableCompletion: TealiumEnableCompletion?) {
+                enableCompletion: ((_ result: Result<Bool, Error>) -> Void)?) {
         defer {
             TealiumQueues.backgroundSerialQueue.async {
                 enableCompletion?(.success(true))

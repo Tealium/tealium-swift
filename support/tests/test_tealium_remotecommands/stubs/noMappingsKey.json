@@ -1,0 +1,24 @@
+{
+    "config": {
+        "enabled": true,
+        "timeout_seconds": 30,
+        "log_level": "max",
+        "score": 100
+    },
+    "commands": {
+        "launch": "initialize",
+        "screen_view": "setscreename",
+        "click_thru": "logevent",
+        "social_media_activity": "setuserid",
+        "user_login": "logevent",
+        "lead_generation": "logevent",
+        "custom_event": "logevent",
+        "event_with_properties": "logevent",
+        "update_profile": "setuserproperty",
+        "join_group": "logevent",
+        "complete_tutorial": "logevent",
+        "purchase": "logevent"
+    }
+}
+
+

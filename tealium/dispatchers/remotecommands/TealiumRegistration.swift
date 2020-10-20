@@ -9,14 +9,13 @@
 import UIKit
 import UserNotifications
 
-public protocol TealiumApplication { }
-extension UIApplication: TealiumApplication { }
-
 public protocol TealiumRegistration {
 
     func registerPushToken(_ token: String)
 
-    func application(_ application: TealiumApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void)
+    func application(_ application: UIApplication,
+                     didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void)
 
     // Optional
     @available(iOS 10.0, *)
@@ -29,7 +28,7 @@ public protocol TealiumRegistration {
 }
 
 public protocol TealiumDeepLinkable {
-    func application(_ application: TealiumApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool
 }
 
 public extension TealiumRegistration {

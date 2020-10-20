@@ -39,4 +39,12 @@ target 'TealiumSwiftTVExample' do
   pod "tealium-swift/Collect", :path=> "../.."
   pod "tealium-swift/Lifecycle", :path=> "../.."
   pod "tealium-swift/VisitorService", :path=> "../.."
-end  
+end
+
+target 'WidgetExampleExtension' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for WidgetExampleExtension Extension
+  pod "tealium-swift", :path=> "../.."
+end

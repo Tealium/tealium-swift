@@ -1,0 +1,11 @@
+{
+    "mappings": {
+        "hello": "world"
+        "foo": bar
+    },
+    "commands": {
+        "baz": "boz"
+        "fizz": "buz"
+    }
+}
+

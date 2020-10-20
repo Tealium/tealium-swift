@@ -32,7 +32,7 @@ class TealiumHelper {
                                dataSource: TealiumConfiguration.dataSourceKey)
 
     var tealium: Tealium?
-    
+
     // set this to change the example that loads - JSInterfaceExample
     public var exampleType: WebViewExampleType = .withUtag
 
@@ -47,28 +47,27 @@ class TealiumHelper {
         config.visitorServiceDelegate = self
         config.consentLoggingEnabled = true
         config.consentPolicy = .ccpa
-        
+
         #if os(iOS)
         // Add dispatchers
         config.dispatchers = [Dispatchers.TagManagement, Dispatchers.RemoteCommands]
         #else
         config.dispatchers = [Dispatchers.Collect]
         #endif
-        
+
         // Add collectors
         #if os(iOS)
         config.collectors = [Collectors.Attribution, Collectors.VisitorService, Collectors.Location]
-        
-        // To enable batching:
-        // config.batchSize = 5
-        // config.batchingEnabled = true
-        
-        // Location - Geofence Monitoring
+
+         // Batching:
+         config.batchingEnabled = false // true to enable
+
+        // Location - Geofence Monitoring:
         config.geofenceUrl = "https://tags.tiqcdn.com/dle/tealiummobile/location/geofences.json"
         config.useHighAccuracy = true
         config.updateDistance = 200.0
-        
-        // Remote Commands
+
+        // Remote Commands:
         let remoteCommand = RemoteCommand(commandId: "hello", description: "world") { response in
             guard let payload = response.payload else {
                 return
@@ -80,14 +79,21 @@ class TealiumHelper {
         }
         config.addRemoteCommand(remoteCommand)
         #endif
-        
-        tealium = Tealium(config: config) { response in
+
+        tealium = Tealium(config: config) { _ in
             // Optional post init processing
             self.tealium?.dataLayer.add(data: ["somekey": "someval"], expiry: .afterCustom((.months, 1)))
             self.tealium?.dataLayer.add(key: "someotherkey", value: "someotherval", expiry: .forever)
             #if os(iOS)
-            // Location
+            // Location - Request Auth:
             self.tealium?.location?.requestAuthorization()
+            // Once appropriate and if needed, you can use a Tealium helper method to request temporary full accuracy (in iOS 14)
+            // Simulating time passing after initial auth is given, not needed otherwise
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                if #available(iOS 14, *) {
+                    self.tealium?.location?.requestTemporaryFullAccuracyAuthorization(purposeKey: "NearStore") // key must match what is in Info.plist
+                }
+            }
             #endif
         }
 
@@ -106,7 +112,7 @@ class TealiumHelper {
         let dispatch = TealiumEvent(title, dataLayer: dataLayer)
         TealiumHelper.shared.tealium?.track(dispatch)
     }
-    
+
     class func joinTrace(_ traceID: String) {
         TealiumHelper.shared.tealium?.joinTrace(id: traceID)
         TealiumHelper.trackEvent(title: "trace_started", dataLayer: nil)
@@ -121,7 +127,7 @@ class TealiumHelper {
 extension TealiumHelper: VisitorServiceDelegate {
     func didUpdate(visitorProfile: TealiumVisitorProfile) {
         if let json = try? JSONEncoder().encode(visitorProfile),
-            let string = String(data: json, encoding: .utf8) {
+           let string = String(data: json, encoding: .utf8) {
             if enableLogs {
                 print(string)
             }

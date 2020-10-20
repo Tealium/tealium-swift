@@ -46,8 +46,8 @@ public extension DeviceData {
         #else
         if let deviceInfo = retrieveModelNamesFromJSONFile() {
             if let currentModel = deviceInfo[model] as? [String: String],
-                let simpleModel = currentModel[TealiumKey.simpleModel],
-                let fullModel = currentModel[TealiumKey.fullModel] {
+               let simpleModel = currentModel[TealiumKey.simpleModel],
+               let fullModel = currentModel[TealiumKey.fullModel] {
                 return [TealiumKey.deviceType: model,
                         TealiumKey.simpleModel: simpleModel,
                         TealiumKey.device: simpleModel,

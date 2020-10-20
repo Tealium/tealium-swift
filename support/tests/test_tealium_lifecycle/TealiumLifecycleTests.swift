@@ -87,25 +87,6 @@ class TealiumLifecycleTests: XCTestCase {
         XCTAssertTrue(missingKeys.isEmpty, "Unexpected keys missing:\(missingKeys)")
     }
 
-    func testDayOfWeekLocal() {
-        let tz = TimeZone.current
-        var expectedDay = "0"
-        if tz.identifier.contains("London") {
-            // in 1970, the UK observed Daylight Savings (British Summer Time) for the whole year, hence local time at UTC 00:00:00 was 01:00:00
-            expectedDay = "5"
-        } else if tz.identifier.contains("Los_Angeles") || tz.identifier.contains("Phoenix") {
-            expectedDay = "4"
-        } else if tz.identifier.contains("Berlin") {
-            expectedDay = "5"
-        }
-
-        let date = Date(timeIntervalSince1970: 1)
-
-        let day = lifecycle!.dayOfWeekLocal(for: date)
-        // Thursday 1st January 1970, 1-indexed, starting from Sunday as day 1
-        XCTAssertTrue(day == expectedDay, "Mismatch in dayOfWeekLocal, returned: \(String(describing: day)), expected: \(expectedDay)")
-    }
-
     // TODO: Refactor take test inputs and provided expected outputs
     func testDaysBetweenDates0() {
         let date1 = Date(timeIntervalSince1970: 0)
@@ -135,26 +116,6 @@ class TealiumLifecycleTests: XCTestCase {
         let expectedDays = "2"
 
         XCTAssertTrue(days == expectedDays, "Mismatch between returned days:\(String(describing: days)) and expected:\(expectedDays)")
-    }
-
-    func testHourOfDayLocal() {
-        let tz = TimeZone.current
-        var expectedHour = "0"
-        if tz.identifier.contains("London") {
-            // in 1970, the UK observed Daylight Savings (British Summer Time) for the whole year, hence local time at UTC 00:00:00 was 01:00:00
-            expectedHour = "1"
-        } else if tz.identifier.contains("Los_Angeles") {
-            expectedHour = "16"
-        } else if tz.identifier.contains("Phoenix") {
-            expectedHour = "17"
-        } else if tz.identifier.contains("Berlin") {
-            expectedHour = "1"
-        }
-        let date = Date(timeIntervalSince1970: 1)
-        // get local time from lifecycle module
-        let hour = lifecycle.hourOfDayLocal(for: date)
-
-        XCTAssertTrue(hour == expectedHour, "Mismatch in hourOfDayLocal, returned:\(String(describing: hour)), expected:\(expectedHour)")
     }
 
     func testIsFirstWakeTodayOneWake() {
@@ -289,6 +250,58 @@ class TealiumLifecycleTests: XCTestCase {
 
         XCTAssert(lifecycle.sessions.count == sizeLimit)
         XCTAssert(lifecycle.sessions.first == initialSession)   // The first session should never be removed
+    }
+
+    func testNewCrashDetected() {
+        let date = Date(timeIntervalSince1970: 1_598_022_773)
+        let session = LifecycleSession(wakeDate: date)
+        var lifecycle = Lifecycle()
+        lifecycle.sessions.append(session)
+
+        // should return nil because only one session in lifecycle session array (means we are currently still in first session)
+        XCTAssertNil(lifecycle.crashDetected)
+
+        let date2 = Date(timeIntervalSince1970: 1_598_022_773)
+        let session2 = LifecycleSession(wakeDate: date2)
+        lifecycle.sessions.append(session2)
+
+        // should return nil because sessions in lifecycle session array have the same timestamp
+        XCTAssertNil(lifecycle.crashDetected)
+
+        let date3 = Date(timeIntervalSince1970: 1_598_023_099)
+        let session3 = LifecycleSession(wakeDate: date3)
+        lifecycle.sessions.append(session3)
+
+        // should return true because no sleep recorded in session before current current
+        XCTAssertEqual(lifecycle.crashDetected, "true")
+    }
+
+    func testDayOfWeekLocal() {
+        NSTimeZone.default = TimeZone(abbreviation: "PST")!
+        var expectedDay = "4"
+        var date = Date(timeIntervalSince1970: 1)
+        var day = lifecycle!.dayOfWeekLocal(for: date)
+        XCTAssertTrue(day == expectedDay)
+
+        NSTimeZone.default = TimeZone(abbreviation: "BST")!
+        expectedDay = "5"
+        date = Date(timeIntervalSince1970: 1)
+        day = lifecycle!.dayOfWeekLocal(for: date)
+        XCTAssertTrue(day == expectedDay)
+    }
+
+    func testHourOfDayLocal() {
+        NSTimeZone.default = TimeZone(abbreviation: "PST")!
+        var expectedHour = "16"
+        var date = Date(timeIntervalSince1970: 1)
+        var hour = lifecycle.hourOfDayLocal(for: date)
+        XCTAssertTrue(hour == expectedHour)
+
+        NSTimeZone.default = TimeZone(abbreviation: "BST")!
+        expectedHour = "1"
+        date = Date(timeIntervalSince1970: 1)
+        hour = lifecycle.hourOfDayLocal(for: date)
+        XCTAssertTrue(hour == expectedHour)
     }
 
 }

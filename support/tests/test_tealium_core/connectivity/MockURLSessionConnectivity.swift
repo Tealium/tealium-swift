@@ -33,7 +33,7 @@ class MockURLSessionConnectivityNoConnection: URLSessionProtocol {
             }
         }, url: url)
     }
-    
+
     func tealiumDataTask(with url: URL, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol {
         return ConnectivityDataTaskNoConnection(completionHandler: completionHandler, url: url)
     }
@@ -73,7 +73,7 @@ class MockURLSessionConnectivityWithConnection: URLSessionProtocol {
             }
         }, url: url)
     }
-    
+
     func tealiumDataTask(with url: URL, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol {
         return ConnectivityDataTaskWithConnection(completionHandler: completionHandler, url: url)
     }
@@ -88,4 +88,3 @@ class MockURLSessionConnectivityWithConnection: URLSessionProtocol {
     }
 
 }
-

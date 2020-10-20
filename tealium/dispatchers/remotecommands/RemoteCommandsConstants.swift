@@ -1,5 +1,5 @@
 //
-//  RemoteCommandsConstants.swift
+//  RemoteCommandsKey.swift
 //  tealium-swift
 //
 //  Created by Craig Rouse on 3/6/2019.
@@ -7,6 +7,17 @@
 //
 #if os(iOS)
 import Foundation
+
+public enum RemoteCommandType {
+    case webview
+    case remote(url: String)
+    case local(file: String, bundle: Bundle? = nil)
+}
+
+public enum SimpleCommandType {
+    case webview
+    case JSON
+}
 
 enum RemoteCommandsKey {
     static let moduleName = "remotecommands"
@@ -27,6 +38,10 @@ enum RemoteCommandsKey {
     static let responseId = "response_id"
     static let commandId = "_http"
     static let jsCommand = "js"
+    static let commandName = "command_name"
+    static let refreshInterval = "remote_config_refresh"
+    static let defaultRefreshInterval = Int(3600)
+    static let dlePrefix = "https://tags.tiqcdn.com/dle/"
 }
 
 enum RemoteCommandStatusCode: Int {
@@ -37,12 +52,22 @@ enum RemoteCommandStatusCode: Int {
     case failure = 404
 }
 
-public enum TealiumRemoteCommandsError: Error {
+public enum TealiumRemoteCommandsError: Error, Equatable {
     case invalidScheme
-    case noCommandIdFound
-    case noCommandForCommandIdFound
+    case commandIdNotFound
+    case commandNotFound
     case remoteCommandsDisabled
     case requestNotProperlyFormatted
+    case invalidFileName
+    case couldNotConvertData
+    case couldNotDecodeJSON
+    case errorLoadingRemoteJSON
+    case mappingsNotFound
+    case commandsNotFound
+    case commandNameNotFound
+    case noResponse
+    case invalidResponse
+    case notModified
 }
 
 enum TealiumRemoteCommandResponseError: Error {
@@ -51,4 +76,5 @@ enum TealiumRemoteCommandResponseError: Error {
     case missingURLMethod
     case couldNotConvertDataToURL
 }
+
 #endif

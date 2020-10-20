@@ -16,7 +16,7 @@ class MockRemoteCommandDelegate: RemoteCommandDelegate {
     var asyncExpectation: XCTestExpectation?
 
     func remoteCommandRequestsExecution(_ command: RemoteCommandProtocol,
-                                               response: RemoteCommandResponseProtocol) {
+                                        response: RemoteCommandResponseProtocol) {
         guard let expectation = asyncExpectation else {
             XCTFail("MockRemoteCommandDelegate was not setup correctly. Missing XCTExpectation reference")
             return

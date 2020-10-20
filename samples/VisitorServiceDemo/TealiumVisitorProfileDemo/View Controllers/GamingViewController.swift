@@ -6,9 +6,9 @@
 //  Copyright © 2019 Tealium. All rights reserved.
 //
 
-import UIKit
 import SwiftConfettiView
 import TealiumSwift
+import UIKit
 
 class GamingViewController: UIViewController {
 
@@ -23,9 +23,9 @@ class GamingViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         TealiumHelper.trackScreen(self, name: "gaming")
-        
+
         let confettiView = SwiftConfettiView(frame: self.view.bounds)
         self.view.addSubview(confettiView)
         confettiView.type = .star
@@ -41,7 +41,7 @@ class GamingViewController: UIViewController {
 
         tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(share))
     }
-    
+
     func confettiHandling(_ confetti: SwiftConfettiView) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.view.sendSubviewToBack(self.view)
@@ -54,7 +54,6 @@ class GamingViewController: UIViewController {
         }
     }
 
-
     @objc func share() {
         TealiumHelper.trackEvent(name: "share", dataLayer: [GamingViewController.contentType: "gaming screen", GamingViewController.shareId: "gamqwe123"])
         let vc = UIActivityViewController(activityItems: ["Gaming"], applicationActivities: [])
@@ -63,7 +62,7 @@ class GamingViewController: UIViewController {
     }
 
     @IBAction func spendCurrency(_ sender: UIButton) {
-         TealiumHelper.trackEvent(name: "spend_currency", dataLayer: [GamingViewController.productName: ["jewels"], "currency_type": GamingViewController.tokens, "number_of_tokens": 50])
+        TealiumHelper.trackEvent(name: "spend_currency", dataLayer: [GamingViewController.productName: ["jewels"], "currency_type": GamingViewController.tokens, "number_of_tokens": 50])
     }
 
     @IBAction func earnCurrency(_ sender: UIButton) {
@@ -86,7 +85,6 @@ class GamingViewController: UIViewController {
         data[GamingViewController.character] = "mario"
         TealiumHelper.trackEvent(name: "level_up", dataLayer: data)
     }
-
 
     @IBAction func startTutorial(_ sender: UIButton) {
         TealiumHelper.trackEvent(name: "start_tutorial", dataLayer: nil)

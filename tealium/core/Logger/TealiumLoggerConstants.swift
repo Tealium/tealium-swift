@@ -8,7 +8,7 @@
 
 import Foundation
 
-public extension TealiumConstants {
+public extension TealiumValue {
     static let defaultLogLevel = TealiumLogLevel.error
 }
 

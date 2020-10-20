@@ -13,13 +13,15 @@ import Foundation
 class MockTealiumLocaitonManager: TealiumLocationManagerProtocol {
 
     var createdGeofencesCallCount = 0
+    var isAuthorizedCallCount = 0
+    var isFullAccuracyCallCount = 0
     var lastLocationCallCount = 0
     var locationAccuracyCallCount = 0
-    var locationServiceEnabledCallCount = 0
     var monitoredGeofencesCallCount = 0
     var clearMonitoredGeofencesCallCount = 0
     var disableCallCount = 0
     var requestAuthorizationCallCount = 0
+    var requestTemporaryFullAccuracyAuthorizationCallCount = 0
     var sendGeofenceTrackingEventCallCount = 0
     var startLocationUpdatesCallCount = 0
     var startMonitoringCallCount = 0
@@ -31,24 +33,34 @@ class MockTealiumLocaitonManager: TealiumLocationManagerProtocol {
         return ["geofence"]
     }
 
-    var lastLocation: CLLocation? {
-        lastLocationCallCount += 1
-        return CLLocation()
+    var isAuthorized: Bool {
+        isAuthorizedCallCount += 1
+        return true
     }
 
-    var locationAccuracy: String {
+    var isFullAccuracy: Bool {
+        isFullAccuracyCallCount += 1
+        return true
+    }
+
+    var lastLocation: CLLocation? {
         get {
-            locationAccuracyCallCount += 1
-            return "locationAccuracy"
+            lastLocationCallCount += 1
+            return CLLocation()
         }
         set {
 
         }
     }
 
-    var locationServiceEnabled: Bool {
-        locationServiceEnabledCallCount += 1
-        return true
+    var locationAccuracy: String {
+        get {
+            locationAccuracyCallCount += 1
+            return ""
+        }
+        set {
+
+        }
     }
 
     var monitoredGeofences: [String]? {
@@ -66,6 +78,10 @@ class MockTealiumLocaitonManager: TealiumLocationManagerProtocol {
 
     func requestAuthorization() {
         requestAuthorizationCallCount += 1
+    }
+
+    func requestTemporaryFullAccuracyAuthorization(purposeKey: String) {
+        requestTemporaryFullAccuracyAuthorizationCallCount += 1
     }
 
     func sendGeofenceTrackingEvent(region: CLRegion, triggeredTransition: String) {

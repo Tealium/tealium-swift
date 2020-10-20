@@ -10,7 +10,7 @@
 @testable import TealiumVisitorService
 import XCTest
 
-class TealiumVisitorServiceManagerTests: XCTestCase {
+class VisitorServiceManagerTests: XCTestCase {
 
     var visitorServiceManager: VisitorServiceManager?
     var mockDiskStorage: MockTealiumDiskStorage!
@@ -102,15 +102,11 @@ class TealiumVisitorServiceManagerTests: XCTestCase {
 
 }
 
-extension TealiumVisitorServiceManagerTests: VisitorServiceDelegate {
+extension VisitorServiceManagerTests: VisitorServiceDelegate {
 
     func didUpdate(visitorProfile: TealiumVisitorProfile) {
-        //        DispatchQueue.main.asyncAfter(deadline: .now() + 5.2) {
         self.getExpectation(forDescription: "testDelegateDidUpdateViaRequestVisitorProfile")?.fulfill()
-        //        }
-        //        DispatchQueue.main.asyncAfter(deadline: .now() + 5.2) {
         self.getExpectation(forDescription: "testPollForVisitorProfile")?.fulfill()
-        //        }
         visitorServiceManager?.timer?.suspend()
     }
 

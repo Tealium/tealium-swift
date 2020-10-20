@@ -10,18 +10,18 @@ import UIKit
 
 // Image Credit: https://www.flaticon.com/authors/xnimrodx 🙏
 class CategoryViewController: UIViewController {
-    
+
     var products = [String]()
     var prices = Array(30...1000)
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        products = ["1-blender","2-fan","3-iron","4-kettle","5-lamp",
-                    "6-oven","7-fridge","8-scale","9-stove", "10-toaster",
-                    "11-television","12-vacuum"]
+        products = ["1-blender", "2-fan", "3-iron", "4-kettle", "5-lamp",
+                    "6-oven", "7-fridge", "8-scale", "9-stove", "10-toaster",
+                    "11-television", "12-vacuum"]
         prices.shuffle()
     }
-    
+
 }
 
 extension CategoryViewController: UICollectionViewDelegate {
@@ -38,7 +38,7 @@ extension CategoryViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return products.count
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductImage", for: indexPath) as? ProductCell else {
             fatalError("Unable to dequeue ProductCell")
@@ -48,7 +48,7 @@ extension CategoryViewController: UICollectionViewDataSource {
         cell.imageView.image = UIImage(named: product)
         cell.name.text = productName
         cell.price.text = "$\(prices[indexPath.item])"
-       
+
         return cell
     }
 }

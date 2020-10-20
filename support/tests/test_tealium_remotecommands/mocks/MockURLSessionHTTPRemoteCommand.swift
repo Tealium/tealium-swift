@@ -10,7 +10,7 @@ import Foundation
 @testable import TealiumCore
 
 class MockURLSessionHTTPRemoteCommand: URLSessionProtocol {
-    
+
     func tealiumDataTask(with url: URL, completionHandler: @escaping (DataTaskResult) -> Void) -> URLSessionDataTaskProtocol {
         return HTTPRemoteCommandDataTask(completionHandler: { data, response, error in
             if let error = error {
@@ -20,7 +20,7 @@ class MockURLSessionHTTPRemoteCommand: URLSessionProtocol {
             }
         }, url: url)
     }
-    
+
     func tealiumDataTask(with url: URL, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol {
         return HTTPRemoteCommandDataTask(completionHandler: completionHandler, url: url)
     }
@@ -42,14 +42,13 @@ class HTTPRemoteCommandDataTask: URLSessionDataTaskProtocol {
         self.completionHandler = completionHandler
         self.url = url
     }
-    
+
     func resume() {
         let urlResponse = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "1.1", headerFields: nil)
         let encoded = try! JSONEncoder().encode(mockData)
         completionHandler(encoded, urlResponse, nil)
     }
 }
-
 
 struct MockData: Codable {
     var hello: String

@@ -63,7 +63,7 @@ public class DeviceDataModule: Collector {
         result += deviceDataCollection.model
         result[DeviceDataKey.osVersion] = DeviceData.oSVersion
         result[TealiumKey.osName] = DeviceData.oSName
-        result[TealiumKey.platform] = result[TealiumKey.osName] ?? ""
+        result[TealiumKey.platform] = (result[TealiumKey.osName] as? String ?? "").lowercased()
         result[TealiumKey.resolution] = DeviceData.resolution
         return result
     }

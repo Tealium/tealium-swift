@@ -97,7 +97,7 @@ public class CollectModule: Dispatcher {
     func prepareForDispatch(_ request: TealiumTrackRequest) -> TealiumTrackRequest {
         var newTrack = request.trackDictionary
         if newTrack[TealiumKey.account] == nil,
-            newTrack[TealiumKey.profile] == nil {
+           newTrack[TealiumKey.profile] == nil {
             newTrack[TealiumKey.account] = config.account
             newTrack[TealiumKey.profile] = config.profile
         }

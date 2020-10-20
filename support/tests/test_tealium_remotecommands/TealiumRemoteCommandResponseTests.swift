@@ -1,5 +1,5 @@
 //
-//  TealiumRemoteCommandResponseTests.swift
+//  RemoteCommandResponseTests.swift
 //  TealiumRemoteCommandsTests-iOS
 //
 //  Created by Christina S on 6/17/20.
@@ -9,7 +9,7 @@
 @testable import TealiumRemoteCommands
 import XCTest
 
-class TealiumRemoteCommandResponseTests: XCTestCase {
+class RemoteCommandResponseTests: XCTestCase {
 
     override func setUpWithError() throws {
     }
@@ -176,7 +176,7 @@ class TealiumRemoteCommandResponseTests: XCTestCase {
 
     func testDescription() {
 
-        let expected = "<RemoteCommandResponse: config:[\"response_id\": 123],\nstatus:204,\npayload:Optional([\"hello\": world]),\nresponse: nil,\ndata:nil\nerror:nil>".replacingOccurrences(of: " ", with: "")
+        let expected = "<RemoteCommandResponse: config:[\"response_id\": 123],\nstatus:Optional(204),\npayload:Optional([\"hello\": world]),\nresponse: nil,\ndata:nil\nerror:nil>".replacingOccurrences(of: " ", with: "")
 
         let urlString = "tealium://test?request={\"config\":{\"response_id\":\"123\"}, \"payload\":{\"hello\": \"world\"}}"
         guard let escapedString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {

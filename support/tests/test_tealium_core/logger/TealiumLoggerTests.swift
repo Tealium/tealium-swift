@@ -36,7 +36,7 @@ class TealiumLoggerTests: XCTestCase {
         let logger = TealiumLogger(config: testTealiumConfig)
         let message = "test"
         let logRequest = TealiumLogRequest(title: message, message: message, info: nil, logLevel: logLevel, category: .general)
-        
+
         XCTAssertTrue(message == logRequest.messages.first)
     }
 
@@ -45,7 +45,7 @@ class TealiumLoggerTests: XCTestCase {
         let logger = TealiumLogger(config: testTealiumConfig)
         let message = "test"
         let logRequest = TealiumLogRequest(title: message, message: message, info: nil, logLevel: logLevel, category: .general)
-        
+
         XCTAssertTrue(message == logRequest.messages.first)
     }
 
@@ -54,16 +54,16 @@ class TealiumLoggerTests: XCTestCase {
         let logger = TealiumLogger(config: testTealiumConfig)
         let message = "test"
         let logRequest = TealiumLogRequest(title: message, message: message, info: nil, logLevel: logLevel, category: .general)
-        
+
         XCTAssertTrue(message == logRequest.messages.first)
     }
-    
+
     func testTealiumLogLevelInfo () {
         let logLevel = TealiumLogLevel.info
         let logger = TealiumLogger(config: testTealiumConfig)
         let message = "test"
         let logRequest = TealiumLogRequest(title: message, message: message, info: nil, logLevel: logLevel, category: .general)
-        
+
         XCTAssertTrue(message == logRequest.messages.first)
     }
 

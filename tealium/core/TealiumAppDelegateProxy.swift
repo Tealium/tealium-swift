@@ -224,8 +224,8 @@ class TealiumAppDelegateProxy: NSProxy {
         TealiumAppDelegateProxy.handleDeepLink(url)
         let methodSelector = #selector(application(_:openURL:options:))
         guard let pointer = TealiumAppDelegateProxy.originalMethodImplementation(for: methodSelector, object: self),
-            let pointerValue = pointer.pointerValue else {
-                return true
+              let pointerValue = pointer.pointerValue else {
+            return true
         }
 
         let originalImplementation = unsafeBitCast(pointerValue, to: ApplicationOpenURL.self)
@@ -242,8 +242,8 @@ class TealiumAppDelegateProxy: NSProxy {
 
         let methodSelector = #selector(application(_:didUpdateUserActivity:))
         guard let pointer = TealiumAppDelegateProxy.originalMethodImplementation(for: methodSelector, object: self),
-            let pointerValue = pointer.pointerValue else {
-                return
+              let pointerValue = pointer.pointerValue else {
+            return
         }
 
         let originalImplementation = unsafeBitCast(pointerValue, to: ApplicationContinueUserActivity.self)

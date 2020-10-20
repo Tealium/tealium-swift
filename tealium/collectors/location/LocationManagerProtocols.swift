@@ -11,13 +11,17 @@ import Foundation
 
 public protocol TealiumLocationManagerProtocol {
     var createdGeofences: [String]? { get }
-    var lastLocation: CLLocation? { get }
+    var isAuthorized: Bool { get }
+    @available(iOS 14.0, *)
+    var isFullAccuracy: Bool { get }
+    var lastLocation: CLLocation? { get set }
     var locationAccuracy: String { get set }
-    var locationServiceEnabled: Bool { get }
     var monitoredGeofences: [String]? { get }
     func clearMonitoredGeofences()
     func disable()
     func requestAuthorization()
+    @available(iOS 14, *)
+    func requestTemporaryFullAccuracyAuthorization(purposeKey: String)
     func sendGeofenceTrackingEvent(region: CLRegion, triggeredTransition: String)
     func startLocationUpdates()
     func startMonitoring(_ geofences: [CLCircularRegion])
@@ -25,15 +29,21 @@ public protocol TealiumLocationManagerProtocol {
     func stopMonitoring(_ geofences: [CLCircularRegion])
 }
 
-public protocol LocationManager {
-    static func locationServicesEnabled() -> Bool
+public protocol LocationManagerProtocol {
+    @available(iOS 14, *)
+    var accuracyAuthorization: CLAccuracyAuthorization { get }
+    var activityType: CLActivityType { get set }
     static func authorizationStatus() -> CLAuthorizationStatus
     var distanceFilter: Double { get set }
     var desiredAccuracy: CLLocationAccuracy { get set }
     var delegate: CLLocationManagerDelegate? { get set }
     var monitoredRegions: Set<CLRegion> { get }
+    var pausesLocationUpdatesAutomatically: Bool { get set }
     func requestAlwaysAuthorization()
     func requestWhenInUseAuthorization()
+    @available(iOS 14, *)
+    func requestTemporaryFullAccuracyAuthorization(withPurposeKey purposeKey: String,
+                                                   completion: ((Error?) -> Void)?)
     func startUpdatingLocation()
     func stopUpdatingLocation()
     func startMonitoringSignificantLocationChanges()
@@ -41,5 +51,5 @@ public protocol LocationManager {
     func startMonitoring(for region: CLRegion)
 }
 
-extension CLLocationManager: LocationManager { }
+extension CLLocationManager: LocationManagerProtocol { }
 #endif

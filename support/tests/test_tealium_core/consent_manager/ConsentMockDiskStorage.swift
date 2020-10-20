@@ -29,8 +29,8 @@ class ConsentMockDiskStorage: TealiumDiskStorageProtocol {
 
     func save<T>(_ data: T, completion: TealiumCompletion?) where T: Encodable {
         guard T.self == UserConsentPreferences.self,
-            let data = data as? UserConsentPreferences else {
-                return
+              let data = data as? UserConsentPreferences else {
+            return
         }
         self.consentPreferences = data
         completion?(true, nil, nil)
@@ -47,8 +47,8 @@ class ConsentMockDiskStorage: TealiumDiskStorageProtocol {
 
     func retrieve<T>(as type: T.Type) -> T? where T: Decodable {
         guard T.self == UserConsentPreferences.self
-            else {
-                return nil
+        else {
+            return nil
         }
         if let consentPreferences = self.consentPreferences {
             return consentPreferences as? T

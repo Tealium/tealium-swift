@@ -75,7 +75,35 @@ public extension Date {
         return String(describing: time)
     }
 
+    var httpIfModifiedHeader: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "E, dd MMM YYYY HH:mm:ss"
+        return "\(dateFormatter.string(from: self)) GMT"
+    }
+
     func millisecondsFrom(earlierDate: Date) -> Int64 {
         return Int64(self.timeIntervalSince(earlierDate) * 1000)
     }
+
+    func addSeconds(_ seconds: Double?) -> Date? {
+        guard let seconds = seconds else {
+            return nil
+        }
+        guard let timeInterval = TimeInterval(exactly: seconds) else {
+            return nil
+        }
+        return addingTimeInterval(timeInterval)
+    }
+
+    func addMinutes(_ mins: Double?) -> Date? {
+        guard let mins = mins else {
+            return nil
+        }
+        let seconds = mins * 60
+        guard let timeInterval = TimeInterval(exactly: seconds) else {
+            return nil
+        }
+        return addingTimeInterval(timeInterval)
+    }
+
 }

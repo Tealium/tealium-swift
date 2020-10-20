@@ -20,8 +20,8 @@ public struct PersistentAppData: Codable {
 
     public static func new(from existingData: [String: Any]) -> PersistentAppData? {
         guard let uuid = existingData[TealiumKey.uuid] as? String,
-            let visitorId = existingData[TealiumKey.visitorId] as? String else {
-                return nil
+              let visitorId = existingData[TealiumKey.visitorId] as? String else {
+            return nil
         }
         return PersistentAppData(visitorId: visitorId, uuid: uuid)
     }

@@ -20,13 +20,13 @@ class ConsentManagerModuleUnitTests: XCTestCase {
         config = TealiumConfig(account: "testAccount", profile: "testProfile", environment: "testEnvironment")
         config.consentPolicy = .gdpr
     }
-    
+
     func testConsentManagerIsDisabledAutomatically() {
         let config2 = TealiumConfig(account: "testAccount", profile: "testProfile", environment: "testEnvironment")
         let teal = Tealium(config: config2)
         XCTAssertNil(teal.consentManager)
     }
-    
+
     func testUpdateConfig() {
         module = ConsentManagerModule(config: config, delegate: self, diskStorage: ConsentMockDiskStorage(), completion: { _ in })
         var newConfig = TealiumConfig(account: "testAccount", profile: "testProfile", environment: "testEnvironment")
@@ -147,20 +147,20 @@ class ConsentManagerModuleUnitTests: XCTestCase {
         let expected: [String: Any] = [
             ConsentKey.trackingConsentedKey: "consented",
             ConsentKey.consentCategoriesKey: ["analytics",
-                                                           "affiliates",
-                                                           "display_ads",
-                                                           "email",
-                                                           "personalization",
-                                                           "search",
-                                                           "social",
-                                                           "big_data",
-                                                           "mobile",
-                                                           "engagement",
-                                                           "monitoring",
-                                                           "crm",
-                                                           "cdp",
-                                                           "cookiematch",
-                                                           "misc"],
+                                              "affiliates",
+                                              "display_ads",
+                                              "email",
+                                              "personalization",
+                                              "search",
+                                              "social",
+                                              "big_data",
+                                              "mobile",
+                                              "engagement",
+                                              "monitoring",
+                                              "crm",
+                                              "cdp",
+                                              "cookiematch",
+                                              "misc"],
             "test": "track",
             "policy": "gdpr"
         ]

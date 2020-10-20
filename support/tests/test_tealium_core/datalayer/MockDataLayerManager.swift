@@ -16,7 +16,7 @@ class MockDataLayerManager: DataLayerManagerProtocol {
     var deleteSingleCount = 0
     var deleteMultiCount = 0
     var deleteAllCount = 0
-    
+
     var all: [String: Any] {
         get {
             ["all": "eventdata"]
@@ -67,7 +67,7 @@ class MockDataLayerManager: DataLayerManagerProtocol {
     }
 
     func joinTrace(id: String) {
-        
+
     }
 
     func delete(for keys: [String]) {

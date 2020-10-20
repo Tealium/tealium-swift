@@ -10,7 +10,7 @@ import Foundation
 @testable import TealiumVisitorService
 
 public class MockTealiumVisitorServiceManager: VisitorServiceManagerProtocol {
-    
+
     var startProfileUpdatesCount = 0
     var requestVisitorProfileCount = 0
 

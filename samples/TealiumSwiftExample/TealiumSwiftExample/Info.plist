@@ -60,5 +60,12 @@
     <string>This is an example of using the LocationModule to request always authorization.</string>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>This is an example of using the LocationModule to request when in use authorization.</string>
+    <key>NSLocationDefaultAccuracyReduced</key>
+    <false/>
+    <key>NSLocationTemporaryUsageDescriptionDictionary</key>
+    <dict>
+        <key>NearStore</key>
+        <string>Example of using Location module to request temporary full accuracy. e.g. "In order to send you discounts when you are near a store"</string>
+    </dict>
 </dict>
 </plist>
