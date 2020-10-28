@@ -106,7 +106,7 @@ class TealiumDeviceDataTests: XCTestCase {
         #if os(iOS)
         #if targetEnvironment(simulator)
         XCTAssertEqual([DeviceDataKey.orientation: "Portrait",
-                DeviceDataKey.fullOrientation: "Portrait"
+                        DeviceDataKey.fullOrientation: "unknown"
         ], orientation)
         #else
         XCTAssertEqual([TealiumDeviceDataKey.orientation: "Portrait",

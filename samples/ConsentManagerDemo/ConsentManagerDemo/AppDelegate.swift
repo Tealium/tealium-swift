@@ -2,7 +2,6 @@
 //  AppDelegate.swift
 //  ConsentManagerDemo
 //
-//  Created by Craig Rouse on 15/05/2018.
 //  Copyright © 2018 Tealium. All rights reserved.
 //
 

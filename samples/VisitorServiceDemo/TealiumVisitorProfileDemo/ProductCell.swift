@@ -2,7 +2,6 @@
 //  ProductCell.swift
 //  TealiumVisitorProfileDemo
 //
-//  Created by Christina S on 7/21/19.
 //  Copyright © 2019 Tealium. All rights reserved.
 //
 

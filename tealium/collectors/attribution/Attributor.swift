@@ -5,6 +5,7 @@
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 
+#if os(iOS) && !targetEnvironment(macCatalyst)
 import Foundation
 import StoreKit
 
@@ -25,18 +26,15 @@ public class Attributor: Attributable {
     public init() { }
 
     public static func registerAppForAdNetworkAttribution() {
-        #if os(iOS)
         if #available(iOS 11.3, *) {
             SKAdNetwork.registerAppForAdNetworkAttribution()
         }
-        #endif
     }
 
     public static func updateConversionValue(_ conversionValue: Int) {
-        #if os(iOS)
         if #available(iOS 14.0, *) {
             SKAdNetwork.updateConversionValue(conversionValue)
         }
-        #endif
     }
 }
+#endif

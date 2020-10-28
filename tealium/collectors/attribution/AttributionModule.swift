@@ -4,7 +4,8 @@
 //
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
-#if os(iOS)
+
+#if os(iOS) && !targetEnvironment(macCatalyst)
 import Foundation
 #if attribution
 import TealiumCore

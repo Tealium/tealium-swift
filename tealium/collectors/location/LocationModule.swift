@@ -4,7 +4,8 @@
 //
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
-#if os(iOS)
+
+#if os(iOS) && !targetEnvironment(macCatalyst)
 import CoreLocation
 import Foundation
 #if location

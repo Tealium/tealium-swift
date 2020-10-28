@@ -1,7 +1,6 @@
 //
 //  TealiumHelper.swift
 //
-//  Created by Craig Rouse on 7/6/20.
 //  Copyright © 2019 Tealium. All rights reserved.
 //
 

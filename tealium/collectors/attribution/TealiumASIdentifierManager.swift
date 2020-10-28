@@ -5,10 +5,12 @@
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 
-#if os(iOS)
+#if os(iOS) && !targetEnvironment(macCatalyst)
 import AdSupport
 import Foundation
+#if attribution
 import TealiumCore
+#endif
 import UIKit
 #if canImport(AppTrackingTransparency)
 import AppTrackingTransparency

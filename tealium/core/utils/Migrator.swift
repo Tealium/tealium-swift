@@ -8,6 +8,8 @@
 import Foundation
 
 public enum MigrationKey {
+    static let lifecycle = "lifecycle"
+    static let migratedLifecycle = "migrated_lifecycle"
     static let consentConfiguration = "teal_consent_configuration_archivable"
     static let consentStatus = "userConsentStatus"
     static let consentLogging = "enableConsentLogging"
@@ -45,7 +47,7 @@ public struct Migrator: Migratable {
     func extractLifecycleData(from dictionary: [String: Any]) -> [String: Any] {
         var migrated = [String: Any]()
         let migratedLifecycle = dictionary
-            .filter { $0.key.contains(LifecycleKey.moduleName) }
+            .filter { $0.key.contains(MigrationKey.lifecycle) }
         migratedLifecycle.forEach {
             if let stringVal = $0.value as? String,
                let intVal = Int(stringVal) {
@@ -54,11 +56,11 @@ public struct Migrator: Migratable {
                 migrated[$0.key] = $0.value
             }
         }
-        var result = dictionary.filter { !$0.key.contains(LifecycleKey.moduleName) }
+        var result = dictionary.filter { !$0.key.contains(MigrationKey.lifecycle) }
         guard !result.isEmpty else {
             return [String: Any]()
         }
-        result += [LifecycleKey.migratedLifecycle: migrated]
+        result += [MigrationKey.migratedLifecycle: migrated]
         return result
     }
 

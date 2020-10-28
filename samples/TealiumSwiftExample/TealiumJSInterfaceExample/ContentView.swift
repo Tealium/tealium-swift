@@ -2,7 +2,6 @@
 //  ContentView.swift
 //  SwiftUIWebView
 //
-//  Created by Christina S on 7/6/20.
 //  Copyright © 2020 Tealium. All rights reserved.
 //
 

@@ -5,6 +5,7 @@
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 
+#if os(iOS) && !targetEnvironment(macCatalyst)
 import Foundation
 #if attribution
 import TealiumCore
@@ -71,3 +72,4 @@ public struct TealiumSKAdAttribution: TealiumSKAdAttributionProtocol {
     }
 
 }
+#endif
