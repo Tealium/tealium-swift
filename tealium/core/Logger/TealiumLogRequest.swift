@@ -1,8 +1,7 @@
 //
 //  TealiumLogRequest.swift
-//  TealiumCore
+//  tealium-swift
 //
-//  Created by Craig Rouse on 28/04/2020.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 

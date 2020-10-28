@@ -2,9 +2,9 @@
 //  WKWebViewAttachToView.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 13/03/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
+
 #if os(iOS)
 import Foundation
 import UIKit

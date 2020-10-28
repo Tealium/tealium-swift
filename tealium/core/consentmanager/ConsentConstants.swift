@@ -2,7 +2,6 @@
 //  ConsentConstants.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 4/20/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
@@ -16,7 +15,7 @@ public enum ConsentKey {
     static let consentDeclinedEventName = "decline_consent"
     static let consentPartialEventName = "grant_partial_consent"
     static let moduleName = "consentmanager"
-    static let consentLoggingEnabled = "consent_manager_enabled"
+    static let consentLoggingEnabled = "consent_logging_enabled"
     static let consentStatus = "consent_status"
     static let policyKey = "policy"
     static let defaultPolicy = "gdpr"
@@ -94,4 +93,19 @@ public enum TealiumConsentTrackAction: Equatable {
     case trackingAllowed
     case trackingForbidden
     case trackingQueued
+}
+
+public extension TealiumConsentStatus {
+    init(integer: Int) {
+        switch integer {
+        case 0:
+            self = .unknown
+        case 1:
+            self = .consented
+        case 2:
+            self = .notConsented
+        default:
+            self = .unknown
+        }
+    }
 }

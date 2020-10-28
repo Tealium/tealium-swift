@@ -2,7 +2,6 @@
 //  DispatchQueueTests.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 30/04/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
@@ -10,7 +9,7 @@ import Foundation
 @testable import TealiumCore
 import XCTest
 
-class TealiumPersistentQueueTests: XCTestCase {
+class DispatchQueueTests: XCTestCase {
 
     var persistentQueue: TealiumPersistentDispatchQueue?
     var tealiumHelper: TestTealiumHelper?

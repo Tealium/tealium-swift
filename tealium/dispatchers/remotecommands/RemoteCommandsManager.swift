@@ -2,7 +2,6 @@
 //  RemoteCommandsManager.swift
 //  tealium-swift
 //
-//  Created by Christina S on 06/15/20.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 
 #if os(iOS)

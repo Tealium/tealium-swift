@@ -1,8 +1,7 @@
 //
 //  WKWebViewIntegrationTests.swift
-//  tealium-swift-tests-ios
+//  tealium-swift
 //
-//  Created by Craig Rouse on 04/02/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 

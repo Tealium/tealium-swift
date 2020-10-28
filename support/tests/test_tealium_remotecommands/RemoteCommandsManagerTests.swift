@@ -1,8 +1,7 @@
 //
-//  TealiumRemoteCommandsManagerTests.swift
+//  RemoteCommandsManagerTests.swift
 //  tealium-swift
 //
-//  Created by Christina S on 6/16/20.
 //  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 
@@ -10,7 +9,7 @@
 @testable import TealiumRemoteCommands
 import XCTest
 
-class TealiumRemoteCommandsManagerTests: XCTestCase {
+class RemoteCommandsManagerTests: XCTestCase {
 
     var tealiumLocalJSONCommand: RemoteCommandProtocol!
     var tealiumRemoteJSONCommand: RemoteCommandProtocol!
@@ -98,7 +97,7 @@ class TealiumRemoteCommandsManagerTests: XCTestCase {
     }
 
     func testGetConfigMethodDecodesJSON() {
-        let goodStub = loadStub(from: "example", type(of: self))
+        let goodStub = TestTealiumHelper.loadStub(from: "example", type(of: self))
         let config = tealiumRemoteCommandsManager.config(from: goodStub)!
         let expectedMappings = ["campaign_keywords": "cp1",
                                 "campaign": "campaign",
@@ -128,7 +127,7 @@ class TealiumRemoteCommandsManagerTests: XCTestCase {
                                 "customer_id": "user_id"]
         XCTAssertTrue(NSDictionary(dictionary: config.mappings ?? [:]).isEqual(to: expectedMappings))
 
-        let badStub = loadStub(from: "badData", type(of: self))
+        let badStub = TestTealiumHelper.loadStub(from: "badData", type(of: self))
         guard let _ = tealiumRemoteCommandsManager.config(from: badStub) else {
             XCTAssert(true)
             return
@@ -137,7 +136,7 @@ class TealiumRemoteCommandsManagerTests: XCTestCase {
     }
 
     func testSaveMethodGetsCalled() {
-        let stub = loadStub(from: "example", type(of: self))
+        let stub = TestTealiumHelper.loadStub(from: "example", type(of: self))
         let config = tealiumRemoteCommandsManager.config(from: stub)!
         tealiumRemoteCommandsManager.save(config, for: "example")
         XCTAssertEqual(2, mockDiskStorage.saveCount)
@@ -380,7 +379,7 @@ class TealiumRemoteCommandsManagerTests: XCTestCase {
 
 }
 
-extension TealiumRemoteCommandsManagerTests: ModuleDelegate {
+extension RemoteCommandsManagerTests: ModuleDelegate {
     func requestDequeue(reason: String) {
 
     }

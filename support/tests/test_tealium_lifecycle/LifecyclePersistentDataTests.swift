@@ -1,8 +1,7 @@
 //
-//  TealiumLifecyclePersistentDataTests.swift
+//  LifecyclePersistentDataTests.swift
 //  tealium-swift
 //
-//  Created by Jason Koo on 1/11/17.
 //  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 
@@ -10,7 +9,7 @@
 @testable import TealiumLifecycle
 import XCTest
 
-class TealiumLifecyclePersistentDataTests: XCTestCase {
+class LifecyclePersistentDataTests: XCTestCase {
 
     override func setUp() {
         super.setUp()

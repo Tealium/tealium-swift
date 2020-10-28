@@ -1,8 +1,7 @@
 //
 //  TealiumRemoteCommandTests.swift
-//  TealiumRemoteCommandsTests-iOS
+//  tealium-swift
 //
-//  Created by Christina S on 6/4/20.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 
@@ -71,7 +70,7 @@ class TealiumRemoteCommandTests: XCTestCase {
         let expect = expectation(description: "delegate method is executed via the complete with trackdata method")
         let mockDelegate = MockRemoteCommandDelegate()
 
-        let exampleData = loadStub(from: "example", type(of: self))
+        let exampleData = TestTealiumHelper.loadStub(from: "example", type(of: self))
         let rcConfig = try! JSONDecoder().decode(RemoteCommandConfig.self, from: exampleData)
 
         jsonRemoteCommand.delegate = mockDelegate
@@ -217,7 +216,7 @@ class TealiumRemoteCommandTests: XCTestCase {
     }
 
     func testProcessWithNoMappings() {
-        let noMappings = loadStub(from: "noMappingsKey", type(of: self))
+        let noMappings = TestTealiumHelper.loadStub(from: "noMappingsKey", type(of: self))
         let rcConfig = try! JSONDecoder().decode(RemoteCommandConfig.self, from: noMappings)
         _ = remoteCommand.process(trackData: ["test": "this"], commandConfig: rcConfig) { result in
             switch result.0 {
@@ -230,7 +229,7 @@ class TealiumRemoteCommandTests: XCTestCase {
     }
 
     func testProcessWithNoCommands() {
-        let noCommands = loadStub(from: "noCommandsKey", type(of: self))
+        let noCommands = TestTealiumHelper.loadStub(from: "noCommandsKey", type(of: self))
         let rcConfig = try! JSONDecoder().decode(RemoteCommandConfig.self, from: noCommands)
         _ = remoteCommand.process(trackData: ["test": "this"], commandConfig: rcConfig) { result in
             switch result.0 {
@@ -243,7 +242,7 @@ class TealiumRemoteCommandTests: XCTestCase {
     }
 
     func testProcessNoCommandNameMatch() {
-        let noCommandMatch = loadStub(from: "example", type(of: self))
+        let noCommandMatch = TestTealiumHelper.loadStub(from: "example", type(of: self))
         let rcConfig = try! JSONDecoder().decode(RemoteCommandConfig.self, from: noCommandMatch)
         _ = remoteCommand.process(trackData: ["test": "this"], commandConfig: rcConfig) { result in
             switch result.0 {
@@ -256,7 +255,7 @@ class TealiumRemoteCommandTests: XCTestCase {
     }
 
     func testProcessWithNoConfig() {
-        let noConfig = loadStub(from: "exampleNoConfig", type(of: self))
+        let noConfig = TestTealiumHelper.loadStub(from: "exampleNoConfig", type(of: self))
         let rcConfig = try! JSONDecoder().decode(RemoteCommandConfig.self, from: noConfig)
         let mapped = remoteCommand.process(trackData: ["tealium_event": "launch"], commandConfig: rcConfig, completion: nil)
         XCTAssertNil(mapped?["config"])

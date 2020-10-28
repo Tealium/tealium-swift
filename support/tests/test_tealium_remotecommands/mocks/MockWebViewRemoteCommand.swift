@@ -1,8 +1,7 @@
 //
 //  MockWebViewRemoteCommand.swift
-//  TestHost
+//  tealium-swift
 //
-//  Created by Christina S on 6/4/20.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 

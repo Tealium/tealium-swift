@@ -1,8 +1,7 @@
 //
-//  TealiumTagManagementTests.swift
+//  TagManagementUtilsTests.swift
 //  tealium-swift
 //
-//  Created by Jason Koo on 12/16/16.
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
@@ -11,7 +10,7 @@
 import XCTest
 
 /// Can only test class level functions due to limitation of XCTest with WebViews
-class TealiumTagManagementUtilsTests: XCTestCase {
+class TagManagementUtilsTests: XCTestCase {
 
     override func setUp() {
         super.setUp()

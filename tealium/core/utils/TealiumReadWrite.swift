@@ -2,7 +2,6 @@
 //  TealiumReadWrite.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 7/10/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 

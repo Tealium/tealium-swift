@@ -2,7 +2,6 @@
 //  DeviceDataModule.swift
 //  tealium-swift
 //
-//  Created by Jason Koo on 8/3/17.
 //  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 
@@ -37,15 +36,15 @@ public class DeviceDataModule: Collector {
 
     /// Initializes the module
     ///
-    /// - Parameter config: `TealiumConfig` instance
+    /// - Parameter context: `TealiumContext` instance
     /// - Parameter delegate: `ModuleDelegate` instance
     /// - Parameter diskStorage: `TealiumDiskStorageProtocol` instance
     /// - Parameter completion: `ModuleCompletion` block to be called when init is finished
-    required public init(config: TealiumConfig,
+    required public init(context: TealiumContext,
                          delegate: ModuleDelegate?,
                          diskStorage: TealiumDiskStorageProtocol?,
                          completion: ModuleCompletion) {
-        self.config = config
+        self.config = context.config
         deviceDataCollection = DeviceData()
         cachedData = enableTimeData
         completion((.success(true), nil))

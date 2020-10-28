@@ -1,9 +1,8 @@
 //
 //  TealiumLocationTests.swift
-//  TealiumLocationTests
+//  tealium-swift
 //
-//  Created by Harry Cassell on 06/09/2019.
-//  Copyright © 2019 Harry Cassell. All rights reserved.
+//  Copyright © 2019 Tealium. All rights reserved.
 //
 
 import CoreLocation
@@ -18,6 +17,11 @@ class TealiumLocationTests: XCTestCase {
     var config: TealiumConfig!
     var locationModule: LocationModule?
     var mockTealiumLocationManager = MockTealiumLocaitonManager()
+    
+    func createModule(with config: TealiumConfig? = nil, delegate: ModuleDelegate? = nil) -> LocationModule {
+        let context = TestTealiumHelper.context(with: config ?? TestTealiumHelper().getConfig())
+        return LocationModule(context: context, delegate: delegate ?? self, diskStorage: MockLocationDiskStorage(config: config ?? TestTealiumHelper().getConfig()), completion: { _ in })
+    }
 
     override func setUp() {
         config = TealiumConfig(account: "tealiummobile", profile: "location", environment: "dev")
@@ -29,11 +33,7 @@ class TealiumLocationTests: XCTestCase {
         self.locationManager = locationManager
         TealiumLocationTests.expectations = [XCTestExpectation]()
         config = TealiumConfig(account: "tealiummobile", profile: "location", environment: "dev")
-        let mockDisk = MockLocationDiskStorage(config: config)
-        locationModule = LocationModule(config: config,
-                                        delegate: self,
-                                        diskStorage: mockDisk,
-                                        completion: { _ in })
+        locationModule = createModule(with: config)
     }
 
     override func tearDown() {
@@ -441,11 +441,8 @@ class TealiumLocationTests: XCTestCase {
         mockModuleDelegate.asyncExpectation = expect
 
         config = TealiumConfig(account: "tealiummobile", profile: "location", environment: "dev")
-        let mockDisk = MockLocationDiskStorage(config: config)
-        let locationModule = LocationModule(config: config,
-                                            delegate: mockModuleDelegate,
-                                            diskStorage: mockDisk,
-                                            completion: { _ in })
+        let locationModule = createModule(with: config,
+                                            delegate: mockModuleDelegate)
 
         guard let locationManager = MockLocationManager(config: config, enableServices: true, delegateClass: nil) else {
             XCTFail("MockLocationManager did not init properly - shouldn't happen")
@@ -487,10 +484,8 @@ class TealiumLocationTests: XCTestCase {
 
         config = TealiumConfig(account: "tealiummobile", profile: "location", environment: "dev")
         let mockDisk = MockLocationDiskStorage(config: config)
-        let locationModule = LocationModule(config: config,
-                                            delegate: mockModuleDelegate,
-                                            diskStorage: mockDisk,
-                                            completion: { _ in })
+        let locationModule = createModule(with: config,
+                                          delegate: mockModuleDelegate)
 
         guard let locationManager = MockLocationManager(config: config, enableServices: true, delegateClass: nil) else {
             XCTFail("MockLocationManager did not init properly - shouldn't happen")
@@ -652,9 +647,8 @@ class TealiumLocationTests: XCTestCase {
 
     func testLocationManagerInitializedWhileOnABackgroundThread() {
         let expect = expectation(description: "Module latest location called")
-        let mockDisk = MockLocationDiskStorage(config: config)
         DispatchQueue.global(qos: .background).async {
-            self.locationModule = LocationModule(config: self.config, delegate: self, diskStorage: mockDisk) { _ in }
+            self.locationModule = self.createModule()
             TealiumQueues.mainQueue.async {
                 XCTAssertNotNil(self.locationModule?.tealiumLocationManager)
                 expect.fulfill()

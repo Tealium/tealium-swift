@@ -1,8 +1,7 @@
 //
-//  ConsentManagerModuleUnitTests.swift
+//  ConsentManagerModuleTests.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 03/05/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
@@ -10,11 +9,20 @@ import Foundation
 @testable import TealiumCore
 import XCTest
 
-class ConsentManagerModuleUnitTests: XCTestCase {
+class ConsentManagerModuleTests: XCTestCase {
 
     var config: TealiumConfig!
     var track: TealiumTrackRequest!
-    var module: ConsentManagerModule!
+    
+    var module: ConsentManagerModule {
+        let context = TestTealiumHelper.context(with: TestTealiumHelper().getConfig(), dataLayer: MockDataLayerManager())
+        return ConsentManagerModule(context: context, delegate: self, diskStorage: ConsentMockDiskStorage(), completion: { _ in })
+    }
+    
+    func createModule(with config: TealiumConfig? = nil, dataLayer: DataLayerManagerProtocol? = nil) -> ConsentManagerModule {
+        let context = TestTealiumHelper.context(with: config ?? TestTealiumHelper().getConfig(), dataLayer: dataLayer ?? MockDataLayerManager())
+        return ConsentManagerModule(context: context, delegate: self, diskStorage: ConsentMockDiskStorage(), completion: { _ in })
+    }
 
     override func setUp() {
         config = TealiumConfig(account: "testAccount", profile: "testProfile", environment: "testEnvironment")
@@ -28,10 +36,10 @@ class ConsentManagerModuleUnitTests: XCTestCase {
     }
 
     func testUpdateConfig() {
-        module = ConsentManagerModule(config: config, delegate: self, diskStorage: ConsentMockDiskStorage(), completion: { _ in })
         var newConfig = TealiumConfig(account: "testAccount", profile: "testProfile", environment: "testEnvironment")
         newConfig.consentPolicy = nil
         var updateRequest = TealiumUpdateConfigRequest(config: newConfig)
+        let module = createModule(with: config)
         module.updateConfig(updateRequest)
         XCTAssertNil(module.consentManager)
         let expect = expectation(description: "consent mgr init")
@@ -47,14 +55,12 @@ class ConsentManagerModuleUnitTests: XCTestCase {
     func testShouldQueueIsBatchTrackRequest() {
         track = TealiumTrackRequest(data: ["test": "track"])
         let batchTrack = TealiumBatchTrackRequest(trackRequests: [track, track, track])
-        module = ConsentManagerModule(config: config, delegate: self, diskStorage: ConsentMockDiskStorage(), completion: { _ in })
         let queue = module.shouldQueue(request: batchTrack)
         XCTAssertTrue(queue.0)
         XCTAssertTrue(queue.1?["queue_reason"] as? String == "batching_enabled", "Consent Manager Module: \(#function) - Track call contained unexpected value")
     }
 
     func testShouldQueueAllowAuditingEvents() {
-        module = ConsentManagerModule(config: config, delegate: self, diskStorage: ConsentMockDiskStorage(), completion: { _ in })
         let auditingEvents = [
             ConsentKey.consentPartialEventName,
             ConsentKey.consentGrantedEventName,
@@ -70,17 +76,16 @@ class ConsentManagerModuleUnitTests: XCTestCase {
     }
 
     func testShouldQueueTrackingStatusTrackingQueued() {
-        module = ConsentManagerModule(config: config, delegate: self, diskStorage: ConsentMockDiskStorage(), completion: { _ in })
         module.consentManager?.resetUserConsentPreferences()
         track = TealiumTrackRequest(data: ["test": "track"])
         let queue = module.shouldQueue(request: track)
         XCTAssertTrue(queue.0)
         XCTAssertTrue(queue.1?["queue_reason"] as? String == "consentmanager", "Consent Manager Module: \(#function) - Track call contained unexpected value")
-        XCTAssertTrue(queue.1?["tracking_consented"] as? String == "unknown", "Consent Manager Module: \(#function) - Track call contained unexpected value")
+        XCTAssertTrue(queue.1?["tracking_consented"] as? String == TealiumValue.unknown, "Consent Manager Module: \(#function) - Track call contained unexpected value")
     }
 
     func testShouldQueueTrackingStatusTrackingAllowed() {
-        module = ConsentManagerModule(config: config, delegate: self, diskStorage: ConsentMockDiskStorage(), completion: { _ in })
+        let module = createModule(with: config)
         module.consentManager?.userConsentStatus = .consented
         module.consentManager?.userConsentCategories = [.affiliates, .analytics, .bigData]
         track = TealiumTrackRequest(data: ["test": "track"])
@@ -95,7 +100,7 @@ class ConsentManagerModuleUnitTests: XCTestCase {
     }
 
     func testShouldQueueTrackingStatusTrackingForbidden() {
-        module = ConsentManagerModule(config: config, delegate: self, diskStorage: ConsentMockDiskStorage(), completion: { _ in })
+        let module = createModule(with: config)
         module.consentManager?.userConsentStatus = .notConsented
         track = TealiumTrackRequest(data: ["test": "track"])
         let queue = module.shouldQueue(request: track)
@@ -109,7 +114,7 @@ class ConsentManagerModuleUnitTests: XCTestCase {
     }
 
     func testShouldDropWhenTrackingForbidden() {
-        module = ConsentManagerModule(config: config, delegate: self, diskStorage: ConsentMockDiskStorage(), completion: { _ in })
+        let module = createModule(with: config)
         module.consentManager?.userConsentStatus = .notConsented
         track = TealiumTrackRequest(data: ["test": "track"])
         let drop = module.shouldDrop(request: track)
@@ -117,7 +122,6 @@ class ConsentManagerModuleUnitTests: XCTestCase {
     }
 
     func testShouldNotDropWhenTrackingAllowed() {
-        module = ConsentManagerModule(config: config, delegate: self, diskStorage: ConsentMockDiskStorage(), completion: { _ in })
         module.consentManager?.userConsentStatus = .consented
         track = TealiumTrackRequest(data: ["test": "track"])
         let drop = module.shouldDrop(request: track)
@@ -125,7 +129,7 @@ class ConsentManagerModuleUnitTests: XCTestCase {
     }
 
     func testShouldPurgeWhenTrackingForbidden() {
-        module = ConsentManagerModule(config: config, delegate: self, diskStorage: ConsentMockDiskStorage(), completion: { _ in })
+        let module = createModule(with: config)
         module.consentManager?.userConsentStatus = .notConsented
         track = TealiumTrackRequest(data: ["test": "track"])
         let purge = module.shouldPurge(request: track)
@@ -133,7 +137,6 @@ class ConsentManagerModuleUnitTests: XCTestCase {
     }
 
     func testShouldNotPurgeWhenTrackingAllowed() {
-        module = ConsentManagerModule(config: config, delegate: self, diskStorage: ConsentMockDiskStorage(), completion: { _ in })
         module.consentManager?.userConsentStatus = .consented
         track = TealiumTrackRequest(data: ["test": "track"])
         let purge = module.shouldPurge(request: track)
@@ -142,7 +145,7 @@ class ConsentManagerModuleUnitTests: XCTestCase {
 
     func testAddConsentDataToTrackWhenConsented() {
         config.consentPolicy = .gdpr
-        module = ConsentManagerModule(config: config, delegate: self, diskStorage: ConsentMockDiskStorage(), completion: { _ in })
+        let module = createModule(with: config)
         module.consentManager?.userConsentStatus = .consented
         let expected: [String: Any] = [
             ConsentKey.trackingConsentedKey: "consented",
@@ -173,7 +176,7 @@ class ConsentManagerModuleUnitTests: XCTestCase {
 
     func testAddConsentDataToTrackWhenNotConsented() {
         config.consentPolicy = .gdpr
-        module = ConsentManagerModule(config: config, delegate: self, diskStorage: ConsentMockDiskStorage(), completion: { _ in })
+        let module = createModule(with: config)
         module.consentManager?.userConsentStatus = .notConsented
         let expected: [String: Any] = [
             ConsentKey.trackingConsentedKey: "notConsented",
@@ -190,11 +193,11 @@ class ConsentManagerModuleUnitTests: XCTestCase {
 
     func testAddConsentDataToTrackWhenResetConsentStatus() {
         config.consentPolicy = .gdpr
-        module = ConsentManagerModule(config: config, delegate: self, diskStorage: ConsentMockDiskStorage(), completion: { _ in })
+        let module = createModule(with: config)
         module.consentManager?.userConsentStatus = .consented
         module.consentManager?.resetUserConsentPreferences()
         let expected: [String: Any] = [
-            ConsentKey.trackingConsentedKey: "unknown",
+            ConsentKey.trackingConsentedKey: TealiumValue.unknown,
             ConsentKey.consentCategoriesKey: [],
             "test": "track",
             "policy": "gdpr"
@@ -205,10 +208,43 @@ class ConsentManagerModuleUnitTests: XCTestCase {
         trackWithConsentData[TealiumKey.requestUUID] = nil
         XCTAssertTrue(NSDictionary(dictionary: expected).isEqual(to: trackWithConsentData))
     }
+    
+    func testAddConsentDataToTrackWhenMigratedFromLegacyStorage() {
+        let module = createModule(dataLayer: MockMigratedDataLayer())
+        let expected: [String: Any] = [
+            ConsentKey.trackingConsentedKey: "consented",
+            ConsentKey.consentCategoriesKey: [TealiumConsentCategories.affiliates.rawValue,
+                                              TealiumConsentCategories.bigData.rawValue,
+                                              TealiumConsentCategories.crm.rawValue,
+                                              TealiumConsentCategories.engagement.rawValue],
+            "test": "track",
+            "policy": "gdpr"
+        ]
+        track = TealiumTrackRequest(data: ["test": "track"])
+        var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
+        XCTAssertNotNil(trackWithConsentData[TealiumKey.requestUUID])
+        trackWithConsentData[TealiumKey.requestUUID] = nil
+        XCTAssertTrue(NSDictionary(dictionary: expected).isEqual(to: trackWithConsentData))
+    }
+    
+    func testAddConsentDataToTrackNoLegacyStorage() {
+        config.consentPolicy = .ccpa
+        let module = createModule(with: config, dataLayer: MockMigratedDataLayerNoData())
+        let expected: [String: Any] = [
+            "test": "track",
+            "policy": "ccpa",
+            "do_not_sell": false
+        ]
+        track = TealiumTrackRequest(data: ["test": "track"])
+        var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
+        XCTAssertNotNil(trackWithConsentData[TealiumKey.requestUUID])
+        trackWithConsentData[TealiumKey.requestUUID] = nil
+        XCTAssertTrue(NSDictionary(dictionary: expected).isEqual(to: trackWithConsentData))
+    }
 
 }
 
-extension ConsentManagerModuleUnitTests: ModuleDelegate {
+extension ConsentManagerModuleTests: ModuleDelegate {
     func processRemoteCommandRequest(_ request: TealiumRequest) { }
     func requestDequeue(reason: String) { }
     func requestTrack(_ track: TealiumTrackRequest) { }

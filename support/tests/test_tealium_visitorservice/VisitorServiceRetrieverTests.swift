@@ -1,8 +1,7 @@
 //
 //  VisitorServiceRetrieverTests.swift
-//  TealiumSwiftTests
+//  tealium-swift
 //
-//  Created by Christina Sund on 5/16/19.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 
@@ -141,18 +140,18 @@ class VisitorServiceRetrieverTests: XCTestCase {
         wait(for: [expect], timeout: 3.0)
     }
 
-    // Need MockURLSessionToWork
     func testDoNotFetchVisitorProfile() {
         let timeTraveler = TimeTraveler()
         let config = TealiumConfig(account: "test", profile: "test", environment: "prod", dataSource: nil, options: [:])
-        let retriever = VisitorServiceRetriever(config: config, visitorId: "test")
+        let retriever = VisitorServiceRetriever(config: config, visitorId: "test", urlSession: MockURLSession())
         let expect = expectation(description: "should not fetch")
-        retriever.lastFetch = timeTraveler.travel(by: (60 * 5 + 1) * -1)
-        retriever.fetchVisitorProfile { _ in
-            XCTFail("Should not have fetched")
+        retriever.lastFetch = timeTraveler.travel(by: (60 * 4 + 1) * -1)
+        retriever.fetchVisitorProfile { result in
+            if case .success(let profile) = result {
+                XCTAssertNil(profile)
+                expect.fulfill()
+            }
         }
-        expect.fulfill()
-        XCTAssertTrue(true)
         wait(for: [expect], timeout: 1.0)
     }
 

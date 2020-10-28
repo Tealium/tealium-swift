@@ -2,7 +2,6 @@
 //  TealiumLogger.swift
 //  tealium-swift
 //
-//  Created by Jonathan Wong on 1/10/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 

@@ -1,8 +1,7 @@
 //
-//  TealiumLifecyclePersistentData.swift
+//  LifecyclePersistentData.swift
 //  tealium-swift
 //
-//  Created by Jason Koo on 11/17/16.
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 

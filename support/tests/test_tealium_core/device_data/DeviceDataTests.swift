@@ -1,6 +1,6 @@
 //
 //  DeviceDataTests.swift
-//  TealiumCoreTests
+//  tealium-swift
 //
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
@@ -22,13 +22,15 @@ class TealiumDeviceDataTests: XCTestCase {
     var deviceDataCollector: DeviceDataModule {
         let config = testTealiumConfig.copy
         config.memoryReportingEnabled = true
-        return DeviceDataModule(config: config, delegate: nil, diskStorage: nil, completion: { result in })
+        let context = TestTealiumHelper.context(with: config)
+        return DeviceDataModule(context: context, delegate: nil, diskStorage: nil, completion: { result in })
     }
     
     var deviceDataCollectorMemoryDisabled: DeviceDataModule {
         let config = testTealiumConfig.copy
         config.memoryReportingEnabled = false
-        return DeviceDataModule(config: config, delegate: nil, diskStorage: nil, completion: { result in })
+        let context = TestTealiumHelper.context(with: config)
+        return DeviceDataModule(context: context, delegate: nil, diskStorage: nil, completion: { result in })
     }
     
     override func setUp() {
@@ -51,7 +53,7 @@ class TealiumDeviceDataTests: XCTestCase {
         XCTAssertNotEqual(percent, "")
         #endif
         #else
-        XCTAssertEqual(percent, DeviceDataValue.unknown)
+        XCTAssertEqual(percent, TealiumValue.unknown)
         #endif
     }
     
@@ -59,12 +61,12 @@ class TealiumDeviceDataTests: XCTestCase {
         let isCharging = DeviceData.isCharging
         #if os (iOS)
         #if targetEnvironment(simulator)
-        XCTAssertEqual(isCharging, "unknown")
+        XCTAssertEqual(isCharging, TealiumValue.unknown)
         #else
-        XCTAssertNotEqual(isCharging, "unknown")
+        XCTAssertNotEqual(isCharging, TealiumValue.unknown)
         #endif
         #else
-        XCTAssertEqual(isCharging, DeviceDataValue.unknown)
+        XCTAssertEqual(isCharging, TealiumValue.unknown)
         #endif
     }
     
@@ -77,7 +79,7 @@ class TealiumDeviceDataTests: XCTestCase {
         #else
         XCTAssertNotEqual(cpu, "x86")
         #endif
-        XCTAssertNotEqual(cpu, DeviceDataValue.unknown)
+        XCTAssertNotEqual(cpu, TealiumValue.unknown)
     }
     
     func testIsoLanguage() {
@@ -88,7 +90,7 @@ class TealiumDeviceDataTests: XCTestCase {
     func testResolution() {
         let resolution = DeviceData.resolution
         #if os(OSX)
-        XCTAssertEqual(resolution, DeviceDataValue.unknown)
+        XCTAssertEqual(resolution, TealiumValue.unknown)
         #else
         let res = UIScreen.main.bounds
         let scale = UIScreen.main.scale
@@ -104,7 +106,7 @@ class TealiumDeviceDataTests: XCTestCase {
         #if os(iOS)
         #if targetEnvironment(simulator)
         XCTAssertEqual([DeviceDataKey.orientation: "Portrait",
-                DeviceDataKey.fullOrientation: "unknown"
+                DeviceDataKey.fullOrientation: "Portrait"
         ], orientation)
         #else
         XCTAssertEqual([TealiumDeviceDataKey.orientation: "Portrait",
@@ -112,8 +114,8 @@ class TealiumDeviceDataTests: XCTestCase {
         ], orientation)
         #endif
         #else
-        XCTAssertEqual([DeviceDataKey.orientation: DeviceDataValue.unknown,
-                DeviceDataKey.fullOrientation: DeviceDataValue.unknown
+        XCTAssertEqual([DeviceDataKey.orientation: TealiumValue.unknown,
+                DeviceDataKey.fullOrientation: TealiumValue.unknown
         ], orientation)
         #endif
     }
@@ -131,7 +133,7 @@ class TealiumDeviceDataTests: XCTestCase {
         #elseif os(tvOS)
         XCTAssertEqual(osVersion, UIDevice.current.systemVersion)
         #endif
-        XCTAssertNotEqual(osVersion, DeviceDataValue.unknown)
+        XCTAssertNotEqual(osVersion, TealiumValue.unknown)
     }
     
     func testOSName() {
@@ -143,7 +145,7 @@ class TealiumDeviceDataTests: XCTestCase {
         #elseif os(tvOS)
         XCTAssertEqual(osName, "tvOS")
         #endif
-        XCTAssertNotEqual(osName, DeviceDataValue.unknown)
+        XCTAssertNotEqual(osName, TealiumValue.unknown)
     }
     
     func testPlatform() {
@@ -158,7 +160,7 @@ class TealiumDeviceDataTests: XCTestCase {
         #elseif os(tvOS)
         XCTAssertEqual(platform, "tvos")
         #endif
-        XCTAssertNotEqual(platform, DeviceDataValue.unknown)
+        XCTAssertNotEqual(platform, TealiumValue.unknown)
     }
     
     func testCarrierInfo() {

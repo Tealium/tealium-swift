@@ -2,7 +2,6 @@
 //  DeviceDataConstants.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 20/08/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 
@@ -39,6 +38,5 @@ enum DeviceDataModuleKey {
 }
 
 public enum DeviceDataValue {
-    public static let unknown = "unknown"
     static let appleWatch = "Apple Watch"
 }

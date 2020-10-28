@@ -1,8 +1,7 @@
 //
 //  MockRemoteCommandsManager.swift
-//  TealiumRemoteCommandsTests-iOS
+//  tealium-swift
 //
-//  Created by Christina S on 6/3/20.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 

@@ -1,8 +1,7 @@
 //
 //  CollectModule.swift
-//  TealiumCore
+//  tealium-swift
 //
-//  Created by Craig Rouse on 24/04/2020.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 
@@ -10,6 +9,7 @@ import Foundation
 #if collect
 import TealiumCore
 #endif
+
 /// Dispatch Service Module for sending track data to the Tealium Collect or custom endpoint.
 public class CollectModule: Dispatcher {
 

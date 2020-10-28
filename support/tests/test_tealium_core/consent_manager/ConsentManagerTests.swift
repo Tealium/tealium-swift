@@ -1,8 +1,7 @@
 //
-//  ConsentManagerIntegrationTests.swift
+//  ConsentManagerTests.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 01/05/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
@@ -11,24 +10,35 @@ import Foundation
 import XCTest
 
 class ConsentManagerTests: XCTestCase {
+    
     var consentManager: ConsentManager {
         let config = self.config!
-        return ConsentManager(config: config, delegate: self, diskStorage: ConsentMockDiskStorage())
+        return ConsentManager(config: config, delegate: self, diskStorage: ConsentMockDiskStorage(), dataLayer: nil)
     }
 
     var consentManagerEmptyDelegate: ConsentManager {
         let config = self.config!
-        return ConsentManager(config: config, delegate: ConsentManagerDelegate(), diskStorage: ConsentMockDiskStorage())
+        return ConsentManager(config: config, delegate: ConsentManagerDelegate(), diskStorage: ConsentMockDiskStorage(), dataLayer: nil)
     }
 
     var consentManagerCCPA: ConsentManager {
         let config = self.config!
         config.consentPolicy = .ccpa
-        return ConsentManager(config: config, delegate: ConsentManagerDelegate(), diskStorage: ConsentMockDiskStorage())
+        return ConsentManager(config: config, delegate: ConsentManagerDelegate(), diskStorage: ConsentMockDiskStorage(), dataLayer: nil)
     }
 
     func consentManagerForConfig(_ config: TealiumConfig) -> ConsentManager {
-        return ConsentManager(config: config, delegate: ConsentManagerDelegate(), diskStorage: ConsentMockDiskStorage())
+        return ConsentManager(config: config, delegate: ConsentManagerDelegate(), diskStorage: ConsentMockDiskStorage(), dataLayer: nil)
+    }
+    
+    var module: ConsentManagerModule {
+        let context = TestTealiumHelper.context(with: TestTealiumHelper().getConfig(), dataLayer: MockDataLayerManager())
+        return ConsentManagerModule(context: context, delegate: self, diskStorage: ConsentMockDiskStorage(), completion: { _ in })
+    }
+    
+    func createModule(with config: TealiumConfig) -> ConsentManagerModule {
+        let context = TestTealiumHelper.context(with: config)
+        return ConsentManagerModule(context: context, delegate: self, diskStorage: ConsentMockDiskStorage(), completion: { _ in })
     }
 
     let tealHelper = TestTealiumHelper()
@@ -81,7 +91,7 @@ class ConsentManagerTests: XCTestCase {
         let config = testTealiumConfig
         config.consentLoggingEnabled = true
         let mockConsentDelegate = MockConsentDelegate()
-        let consentManager = ConsentManager(config: config, delegate: mockConsentDelegate, diskStorage: ConsentMockDiskStorage())
+        let consentManager = ConsentManager(config: config, delegate: mockConsentDelegate, diskStorage: ConsentMockDiskStorage(), dataLayer: DummyDataManager())
         let expect = expectation(description: "testTrackUserConsentPreferences")
         mockConsentDelegate.asyncExpectation = expect
 
@@ -210,41 +220,41 @@ class ConsentManagerTests: XCTestCase {
     func testShouldDropTrackingCall() {
         let track = TealiumTrackRequest(data: ["dummy": "true"])
         config.consentPolicy = .gdpr
-        let consentManagerModule = ConsentManagerModule(config: config, delegate: self, diskStorage: ConsentMockDiskStorage(), completion: { _ in })
-        consentManagerModule.consentManager = consentManagerEmptyDelegate
-        consentManagerModule.consentManager?.userConsentStatus = .notConsented
-        let shouldDrop = consentManagerModule.shouldDrop(request: track)
+        let module = createModule(with: config)
+        module.consentManager = consentManagerEmptyDelegate
+        module.consentManager?.userConsentStatus = .notConsented
+        let shouldDrop = module.shouldDrop(request: track)
         XCTAssertTrue(shouldDrop)
     }
 
     func testShouldDropTrackingCallCCPA() {
         let track = TealiumTrackRequest(data: ["dummy": "true"])
         config.consentPolicy = .ccpa
-        let consentManagerModule = ConsentManagerModule(config: config, delegate: self, diskStorage: ConsentMockDiskStorage(), completion: { _ in })
-        consentManagerModule.consentManager = consentManagerCCPA
-        consentManagerModule.consentManager?.userConsentStatus = .notConsented
-        let shouldDrop = consentManagerModule.shouldDrop(request: track)
+        let module = createModule(with: config)
+        module.consentManager = consentManagerCCPA
+        module.consentManager?.userConsentStatus = .notConsented
+        let shouldDrop = module.shouldDrop(request: track)
         XCTAssertFalse(shouldDrop)
     }
 
     func testShouldQueueTrackingCall() {
         let track = TealiumTrackRequest(data: ["dummy": "true"])
         config.consentPolicy = .gdpr
-        let consentManagerModule = ConsentManagerModule(config: config, delegate: self, diskStorage: ConsentMockDiskStorage(), completion: { _ in })
-        consentManagerModule.consentManager = consentManagerCCPA
-        let localConsentManager = consentManagerModule.consentManager
+        let module = createModule(with: config)
+        module.consentManager = consentManagerCCPA
+        let localConsentManager = module.consentManager
         localConsentManager?.userConsentStatus = .unknown
-        let queue = consentManagerModule.shouldQueue(request: track)
+        let queue = module.shouldQueue(request: track)
         XCTAssertFalse(queue.0)
     }
 
     func testShouldNotQueueTrackingCall() {
         let track = TealiumTrackRequest(data: ["dummy": "true"])
-        let consentManagerModule = ConsentManagerModule(config: TestTealiumHelper().getConfig(), delegate: self, diskStorage: ConsentMockDiskStorage(), completion: { _ in })
-        consentManagerModule.consentManager = consentManagerEmptyDelegate
-        let localConsentManager = consentManagerModule.consentManager
+        let module = createModule(with: config)
+        module.consentManager = consentManagerEmptyDelegate
+        let localConsentManager = module.consentManager
         localConsentManager?.userConsentStatus = .consented
-        let queue = consentManagerModule.shouldQueue(request: track)
+        let queue = module.shouldQueue(request: track)
         XCTAssertFalse(queue.0)
     }
 

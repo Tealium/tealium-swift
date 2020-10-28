@@ -2,7 +2,6 @@
 //  DeviceDataMemoryInfo.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 20/08/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 
@@ -47,7 +46,7 @@ public extension DeviceData {
         if kerr == KERN_SUCCESS {
             appMemoryUsed = String(format: "%0.2fMB", Double(info.resident_size) / Unit.megabyte.rawValue)
         } else {
-            appMemoryUsed = DeviceDataValue.unknown
+            appMemoryUsed = TealiumValue.unknown
         }
 
         // summary of used system memory

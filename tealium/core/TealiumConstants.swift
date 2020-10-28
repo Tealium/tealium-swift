@@ -2,7 +2,6 @@
 //  TealiumConstants.swift
 //  tealium-swift
 //
-//  Created by Jason Koo on 9/1/16.
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 #if os(iOS)
@@ -16,7 +15,7 @@ public enum Dispatchers {}
 
 public enum TealiumValue {
     public static let libraryName = "swift"
-    public static let libraryVersion = "2.1.0"
+    public static let libraryVersion = "2.1.1"
     // This is the current limit for performance reasons. May be increased in future
     public static let maxEventBatchSize = 10
     public static let defaultMinimumDiskSpace: Int32 = 20_000_000
@@ -30,6 +29,7 @@ public enum TealiumValue {
     static let hdlCacheSizeMax = 50
     static let defaultHDLExpiry: (Int, unit: TimeUnit) = (7, unit: .days)
     static let mobile = "mobile"
+    public static let unknown = "unknown"
 }
 
 public enum ModuleNames {
@@ -131,9 +131,11 @@ public enum TealiumKey {
     static let traceIdQueryParam = "tealium_trace_id"
     public static let traceId = "cp.trace_id"
     static let appDelegateProxy = "app_delegate_proxy"
+    static let skAdConversionKeys = "attribution_conversion_keys"
     static let hostedDataLayerKeys = "hosted_data_layer_keys"
     static let hostedDataLayerExpiry = "hosted_data_layer_expiry"
     static let origin = "origin"
+    static let shouldMigrate = "should_migrate_data"
 }
 
 public enum TealiumTrackType {

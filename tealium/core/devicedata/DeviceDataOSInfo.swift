@@ -2,7 +2,6 @@
 //  DeviceDataOSInfo.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 20/08/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 
@@ -20,7 +19,7 @@ import WatchKit
 public extension DeviceData {
     class var oSBuild: String {
         guard let build = Bundle.main.infoDictionary?["DTSDKBuild"] as? String else {
-            return DeviceDataValue.unknown
+            return TealiumValue.unknown
         }
         return build
 
@@ -37,7 +36,7 @@ public extension DeviceData {
         #elseif os(OSX)
         return ProcessInfo.processInfo.operatingSystemVersionString
         #else
-        return DeviceDataValue.unknown
+        return TealiumValue.unknown
         #endif
     }
 
@@ -50,7 +49,7 @@ public extension DeviceData {
         #elseif os(OSX)
         return "macOS"
         #else
-        return DeviceDataValue.unknown
+        return TealiumValue.unknown
         #endif
     }
 }

@@ -1,8 +1,7 @@
 //
 //  RemoteCommandConfigTests.swift
-//  TealiumRemoteCommandTests-iOS
+//  tealium-swift
 //
-//  Created by Christina S on 12/20/19.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 
@@ -15,7 +14,7 @@ class RemoteCommandConfigTests: XCTestCase {
     var tealiumRemoteCommandConfig: RemoteCommandConfig!
 
     override func setUp() {
-        exampleStub = loadStub(from: "example", type(of: self))
+        exampleStub = TestTealiumHelper.loadStub(from: "example", type(of: self))
     }
 
     override func tearDown() {

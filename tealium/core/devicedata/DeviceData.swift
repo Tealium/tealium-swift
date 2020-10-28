@@ -2,7 +2,6 @@
 //  DeviceData.swift
 //  tealium-swift
 //
-//  Created by Jonathan Wong on 1/10/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 import Foundation
@@ -26,7 +25,7 @@ public class DeviceData: DeviceDataCollection {
         UIDevice.current.isBatteryMonitoringEnabled = true
         return String(describing: (UIDevice.current.batteryLevel * 100))
         #else
-        return DeviceDataValue.unknown
+        return TealiumValue.unknown
         #endif
     }
 
@@ -44,10 +43,10 @@ public class DeviceData: DeviceDataCollection {
         case .unplugged:
             return "false"
         default:
-            return DeviceDataValue.unknown
+            return TealiumValue.unknown
         }
         #else
-        return DeviceDataValue.unknown
+        return TealiumValue.unknown
         #endif
     }
 
@@ -92,7 +91,7 @@ public class DeviceData: DeviceDataCollection {
         case CPU_TYPE_ARM:
             return "ARM"
         default:
-            return DeviceDataValue.unknown
+            return TealiumValue.unknown
         }
     }
 

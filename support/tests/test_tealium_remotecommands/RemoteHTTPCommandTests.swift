@@ -1,8 +1,7 @@
 //
-//  TealiumRemoteHTTPCommandTests.swift
+//  RemoteHTTPCommandTests.swift
 //  tealium-swift
 //
-//  Created by Jason Koo on 3/30/17.
 //  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 
@@ -10,7 +9,7 @@
 import TealiumRemoteCommands
 import XCTest
 
-class TealiumRemoteHTTPCommandTests: XCTestCase {
+class RemoteHTTPCommandTests: XCTestCase {
 
     override func setUp() {
         super.setUp()

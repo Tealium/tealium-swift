@@ -1,8 +1,7 @@
 //
-//  EventDataManager.swift
-//  TealiumSwift
+//  DataLayer.swift
+//  tealium-swift
 //
-//  Created by Craig Rouse on 4/21/20.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 

@@ -2,7 +2,6 @@
 //  CollectError.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 19/03/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 

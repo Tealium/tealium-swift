@@ -1,8 +1,7 @@
 //
-//  TealiumLifecycleUnitTests.swift
+//  LifecycleTests.swift
 //  tealium-swift
 //
-//  Created by Jason Koo on 1/12/17.
 //  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 
@@ -10,7 +9,7 @@
 @testable import TealiumLifecycle
 import XCTest
 
-class TealiumLifecycleTests: XCTestCase {
+class LifecycleTests: XCTestCase {
 
     var lifecycle: Lifecycle!
 

@@ -1,8 +1,7 @@
 //
 //  HostedDataLayerCache.swift
-//  TealiumCore
+//  tealium-swift
 //
-//  Created by Craig Rouse on 21/07/2020.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 

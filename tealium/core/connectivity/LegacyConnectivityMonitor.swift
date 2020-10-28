@@ -1,8 +1,7 @@
 //
 //  LegacyConnectivityMonitor.swift
-//  TealiumCore
+//  tealium-swift
 //
-//  Created by Craig Rouse on 20/05/2020.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 
@@ -15,7 +14,7 @@ import SystemConfiguration
 class LegacyConnectivityMonitor: ConnectivityMonitorProtocol {
     var currentConnnectionType: String? {
         #if os(watchOS)
-        return ConnectivityKey.connectionTypeUnknown
+        return TealiumValue.unknown
         #else
         if isConnected == true {
             return connectionType

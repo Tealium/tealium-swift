@@ -1,17 +1,18 @@
 //
 //  MockAttributionData.swift
-//  TealiumAttributionTests-iOS
+//  tealium-swift
 //
-//  Created by Christina S on 5/21/20.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 
 import Foundation
 @testable import TealiumAttribution
+@testable import TealiumCore
 
 class MockAttributionData: AttributionDataProtocol {
     var appleAttributionDetails: PersistentAttributionData?
     var appleSearchAdsDataCalled = 0
+    var updateConversionValueCalled = 0
     init() {
         self.appleAttributionDetails = PersistentAttributionData(withDictionary: [
             AttributionKey.clickedWithin30D: "true",
@@ -59,11 +60,8 @@ class MockAttributionData: AttributionDataProtocol {
         completion(appleAttributionDetails!)
     }
 
-}
-public extension Dictionary where Key == String, Value == Any {
-    static func += <K, V>(left: inout [K: V], right: [K: V]) {
-        for (key, value) in right {
-            left.updateValue(value, forKey: key)
-        }
+    func updateConversionValue(from dispatch: TealiumRequest) {
+        updateConversionValueCalled += 1
     }
+
 }

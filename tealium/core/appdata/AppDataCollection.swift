@@ -1,8 +1,7 @@
 //
 //  AppDataCollection.swift
-//  TealiumSwift
+//  tealium-swift
 //
-//  Created by Craig Rouse on 29/11/2019.
 //  Copyright © 2019 Tealium. All rights reserved.
 //
 

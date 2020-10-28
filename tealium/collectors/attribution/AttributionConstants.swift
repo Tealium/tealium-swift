@@ -2,9 +2,9 @@
 //  AttributionConstants.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 14/03/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
+
 #if os(iOS)
 import Foundation
 
@@ -13,6 +13,7 @@ public struct AttributionKey {
         AttributionKey.idfa,
         AttributionKey.idfv,
         AttributionKey.isTrackingAllowed,
+        AttributionKey.trackingAuthorization,
         AttributionKey.clickedWithin30D,
         AttributionKey.clickedDate,
         AttributionKey.conversionDate,
@@ -34,10 +35,13 @@ public struct AttributionKey {
     // Internal module keys
     static let moduleName = "attribution"
     static let isSearchAdsEnabled = "com.tealium.attribution.searchads.enable"
+    static let isSKAdAttributionEnabled = "com.tealium.attribution.skadattribution.enable"
     // Advertising IDs
     static let idfa = "device_advertising_id"
     static let idfv = "device_advertising_vendor_id"
     static let isTrackingAllowed = "device_advertising_enabled"
+    // ATTrackingManager
+    static let trackingAuthorization = "device_tracking_authorization"
     // iAd Attribution keys
     static let clickedWithin30D = "ad_user_clicked_last_30_days"
     static let clickedDate = "ad_user_date_clicked"
@@ -94,5 +98,12 @@ public struct AppleInternalKeys {
     static let creativeSetName = "iad-creativeset-name" //
     static let region = "iad-country-or-region" //
     static let objectVersion = "Version3.1" // This is the root key for the returned data
+}
+
+public enum TrackingAuthorizationDescription {
+    static let authorized = "authorized"
+    static let denied = "denied"
+    static let restricted = "restricted"
+    static let notDetermined = "notDetermined"
 }
 #endif

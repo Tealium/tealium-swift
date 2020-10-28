@@ -2,7 +2,6 @@
 //  DeviceDataScreenInfo.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 20/08/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 
@@ -21,7 +20,7 @@ public extension DeviceData {
     /// - Returns: `String` containing the device's resolution
     class var resolution: String {
         #if os(OSX)
-        return DeviceDataValue.unknown
+        return TealiumValue.unknown
         #elseif os(watchOS)
         let res = WKInterfaceDevice.current().screenBounds
         let scale = WKInterfaceDevice.current().screenScale
@@ -51,8 +50,8 @@ public extension DeviceData {
         fullOrientation[DeviceDataKey.fullOrientation] = getDeviceOrientation(orientation)
         return fullOrientation
         #else
-        return [DeviceDataKey.orientation: DeviceDataValue.unknown,
-                DeviceDataKey.fullOrientation: DeviceDataValue.unknown
+        return [DeviceDataKey.orientation: TealiumValue.unknown,
+                DeviceDataKey.fullOrientation: TealiumValue.unknown
         ]
         #endif
     }
@@ -71,9 +70,9 @@ public extension DeviceData {
         case .portraitUpsideDown:
             appOrientationString = "Portrait Upside Down"
         case .unknown:
-            appOrientationString = DeviceDataValue.unknown
+            appOrientationString = TealiumValue.unknown
         @unknown default:
-            appOrientationString = DeviceDataValue.unknown
+            appOrientationString = TealiumValue.unknown
         }
         return appOrientationString
     }
@@ -95,9 +94,9 @@ public extension DeviceData {
         case .portraitUpsideDown:
             deviceOrientationString = "Portrait Upside Down"
         case .unknown:
-            deviceOrientationString = DeviceDataValue.unknown
+            deviceOrientationString = TealiumValue.unknown
         @unknown default:
-            deviceOrientationString = DeviceDataValue.unknown
+            deviceOrientationString = TealiumValue.unknown
         }
         return deviceOrientationString
     }

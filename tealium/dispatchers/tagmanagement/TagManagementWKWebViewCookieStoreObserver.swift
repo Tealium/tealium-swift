@@ -2,9 +2,9 @@
 //  TagManagementWKWebViewCookieStoreObserver.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 12/8/2018
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
+
 #if os(iOS)
 import Foundation
 import WebKit

@@ -104,7 +104,6 @@ class LifecycleMockDiskStorage: TealiumDiskStorageProtocol {
     }
 
     func saveToDefaults(key: String, value: Any) {
-
     }
 
     func getFromDefaults(key: String) -> Any? {
@@ -112,7 +111,6 @@ class LifecycleMockDiskStorage: TealiumDiskStorageProtocol {
     }
 
     func removeFromDefaults(key: String) {
-
     }
 
     func canWrite() -> Bool {

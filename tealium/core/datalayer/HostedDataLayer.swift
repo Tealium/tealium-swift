@@ -1,8 +1,7 @@
 //
 //  HostedDataLayer.swift
-//  TealiumCore
+//  tealium-swift
 //
-//  Created by Craig Rouse on 13/07/2020.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 
@@ -148,15 +147,7 @@ public class HostedDataLayer: HostedDataLayerProtocol {
     }
 
     func extractKey(from dispatch: TealiumTrackRequest) -> String? {
-        guard let keys = config.hostedDataLayerKeys else {
-            return nil
-        }
-
-        guard let event = dispatch.event else {
-            return nil
-        }
-
-        guard let dispatchKey = keys[event] else {
+        guard let dispatchKey = dispatch.extractKey(lookup: config.hostedDataLayerKeys) else {
             return nil
         }
         return dispatchKey
@@ -164,22 +155,7 @@ public class HostedDataLayer: HostedDataLayerProtocol {
 
     func extractLookupValue(for key: String,
                             dispatch: TealiumTrackRequest) -> String? {
-        var itemId = ""
-
-        guard let lookupValue = dispatch.trackDictionary[key] else {
-            return nil
-        }
-
-        if let arrayItem = lookupValue as? [String] {
-            guard arrayItem.count > 0 else {
-                return nil
-            }
-            itemId = arrayItem[0]
-        } else if let stringItem = lookupValue as? String {
-            itemId = stringItem
-        }
-
-        guard itemId.isEmpty == false else {
+        guard let itemId = dispatch.extractLookupValue(for: key) as? String else {
             return nil
         }
         return itemId

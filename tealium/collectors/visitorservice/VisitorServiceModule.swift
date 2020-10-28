@@ -2,7 +2,6 @@
 //  TealiumVisitorServiceModule.swift
 //  tealium-swift
 //
-//  Created by Christina Sund on 6/11/19.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 
@@ -24,25 +23,25 @@ public class VisitorServiceModule: Collector, DispatchListener {
     /// Provided for unit testing￼.
     ///
     /// - Parameter visitorServiceManager: Class instance conforming to `VisitorServiceManagerProtocol`
-    convenience init (config: TealiumConfig,
+    convenience init (context: TealiumContext,
                       delegate: ModuleDelegate?,
                       diskStorage: TealiumDiskStorageProtocol?,
                       visitorServiceManager: VisitorServiceManagerProtocol) {
-        self.init(config: config, delegate: delegate, diskStorage: diskStorage) { _ in }
+        self.init(context: context, delegate: delegate, diskStorage: diskStorage) { _ in }
         self.visitorServiceManager = visitorServiceManager
     }
 
     /// Initializes the module
     ///
-    /// - Parameter config: `TealiumConfig` instance
+    /// - Parameter context: `TealiumContext` instance
     /// - Parameter delegate: `ModuleDelegate?` instance
     /// - Parameter diskStorage: `TealiumDiskStorageProtocol?` instance
     /// - Parameter completion: `ModuleCompletion` block to be called when init is finished
-    required public init(config: TealiumConfig,
+    required public init(context: TealiumContext,
                          delegate: ModuleDelegate?,
                          diskStorage: TealiumDiskStorageProtocol?,
                          completion: ModuleCompletion) {
-        self.config = config
+        self.config = context.config
         self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config, forModule: ModuleNames.visitorservice.lowercased(), isCritical: false)
         self.visitorServiceManager = VisitorServiceManager(config: config,
                                                            delegate: config.visitorServiceDelegate,

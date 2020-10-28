@@ -2,7 +2,6 @@
 //  Lifecycle.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 05/07/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 
@@ -46,6 +45,21 @@ public struct Lifecycle: Codable {
         countSleepTotal = 0
         sessionsSize = LifecycleKey.defaultSessionsSize
         totalSecondsAwake = 0
+    }
+
+    /// Used when migrating data from Objective-C library
+    public init(from dictionary: [String: Any]) {
+        countLaunch = dictionary[LifecycleKey.launchCount] as? Int ?? 0
+        countWake = dictionary[LifecycleKey.wakeCount] as? Int ?? 0
+        countSleep = dictionary[LifecycleKey.sleepCount] as? Int ?? 0
+        countCrashTotal = dictionary[LifecycleKey.totalCrashCount] as? Int ?? 0
+        countLaunchTotal = dictionary[LifecycleKey.totalLaunchCount] as? Int ?? 0
+        countWakeTotal = dictionary[LifecycleKey.totalWakeCount] as? Int ?? 0
+        countSleepTotal = dictionary[LifecycleKey.totalSleepCount] as? Int ?? 0
+        dateLastUpdate = Date()
+        totalSecondsAwake = dictionary[LifecycleKey.totalSecondsAwake] as? Int ?? 0
+        sessionsSize = LifecycleKey.defaultSessionsSize
+        sessions = [LifecycleSession(from: dictionary)]
     }
 
     public init(from decoder: Decoder) throws {
@@ -169,7 +183,7 @@ public struct Lifecycle: Codable {
         dict[LifecycleKey.daysSinceFirstLaunch] = daysFrom(earlierDate: firstSession?.wakeDate, laterDate: date)
         dict[LifecycleKey.daysSinceLastUpdate] = daysFrom(earlierDate: dateLastUpdate, laterDate: date)
         dict[LifecycleKey.daysSinceLastWake] = daysSinceLastWake(type: type, toDate: date)
-        dict[LifecycleKey.firstLaunchDate] = firstSession?.wakeDate?.iso8601String
+        dict[LifecycleKey.firstLaunchDate] = firstSession?.firstLaunchDate?.iso8601String ?? firstSession?.wakeDate?.iso8601String
         dict[LifecycleKey.firstLaunchDateMMDDYYYY] = firstSession?.wakeDate?.mmDDYYYYString
         dict[LifecycleKey.hourOfDayLocal] = hourOfDayLocal(for: date)
 

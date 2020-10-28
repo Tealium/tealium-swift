@@ -1,8 +1,7 @@
 //
 //  Date+Tealium.swift
-//  TealiumCore
+//  tealium-swift
 //
-//  Created by Jonathan Wong on 8/25/20.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 

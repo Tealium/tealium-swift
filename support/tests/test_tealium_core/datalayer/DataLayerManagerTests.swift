@@ -1,15 +1,14 @@
 //
-//  EventDataManagerTests.swift
-//  TealiumCoreTests
+//  DataLayerManagerTests.swift
+//  tealium-swift
 //
-//  Created by Christina S on 5/4/20.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 
 @testable import TealiumCore
 import XCTest
 
-class EventDataManagerTests: XCTestCase {
+class DataLayerManagerTests: XCTestCase {
 
     var config: TealiumConfig!
     var eventDataManager: DataLayer!
@@ -198,7 +197,7 @@ class EventDataManagerTests: XCTestCase {
 
 }
 
-//extension EventDataManagerTests {
+//extension DataLayerManagerTests {
 //
 //    var largeDataSet: [String: Any] {
 //        var dictionary = [String: Any]()

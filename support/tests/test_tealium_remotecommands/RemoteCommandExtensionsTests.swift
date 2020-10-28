@@ -1,8 +1,7 @@
 //
-//  TealiumRemoteCommandExtensionsTests.swift
-//  TealiumRemoteCommandsTests-iOS
+//  RemoteCommandExtensionsTests.swift
+//  tealium-swift
 //
-//  Created by Christina S on 6/16/20.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 
@@ -12,7 +11,7 @@ import Foundation
 @testable import TealiumRemoteCommands
 import XCTest
 
-class TealiumRemoteCommandExtensionsTests: XCTestCase {
+class RemoteCommandExtensionsTests: XCTestCase {
 
     var testBundle: Bundle!
 

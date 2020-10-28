@@ -2,7 +2,6 @@
 //  RemoteCommandsModuleTests.swift
 //  tealium-swift
 //
-//  Created by Christina S on 6/16/20.
 //  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 

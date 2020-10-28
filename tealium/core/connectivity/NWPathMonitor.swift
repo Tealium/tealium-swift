@@ -1,8 +1,7 @@
 //
 //  NWPathMonitor.swift
-//  TealiumCore
+//  tealium-swift
 //
-//  Created by Craig Rouse on 20/05/2020.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 
@@ -32,7 +31,7 @@ class TealiumNWPathMonitor: ConnectivityMonitorProtocol {
         if isWired == true {
             return ConnectivityKey.connectionTypeWired
         }
-        return ConnectivityKey.connectionTypeUnknown
+        return TealiumValue.unknown
     }
 
     var monitor = NWPathMonitor()

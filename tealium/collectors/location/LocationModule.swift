@@ -1,8 +1,7 @@
 //
-//  TealiumLocationModule.swift
-//  TealiumLocation
+//  LocationModule.swift
+//  tealium-swift
 //
-//  Created by Harry Cassell on 09/09/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 #if os(iOS)
@@ -37,22 +36,25 @@ public class LocationModule: Collector {
 
     /// Initializes the module
     ///
-    /// - Parameter config: `TealiumConfig` instance
+    /// - Parameter context: `TealiumContext` instance
     /// - Parameter delegate: `ModuleDelegate` instance
     /// - Parameter diskStorage: `TealiumDiskStorageProtocol` instance
     /// - Parameter completion: `ModuleCompletion` block to be called when init is finished
-    required public init(config: TealiumConfig, delegate: ModuleDelegate?, diskStorage: TealiumDiskStorageProtocol?, completion: ((Result<Bool, Error>, [String: Any]?)) -> Void) {
-        self.config = config
+    required public init(context: TealiumContext,
+                         delegate: ModuleDelegate?,
+                         diskStorage: TealiumDiskStorageProtocol?,
+                         completion: ((Result<Bool, Error>, [String: Any]?)) -> Void) {
+        self.config = context.config
         self.delegate = delegate
 
         if Thread.isMainThread {
-            tealiumLocationManager = TealiumLocationManager(config: config, locationDelegate: self)
+            tealiumLocationManager = TealiumLocationManager(config: self.config, locationDelegate: self)
         } else {
             TealiumQueues.mainQueue.async { [weak self] in
                 guard let self = self else {
                     return
                 }
-                self.tealiumLocationManager = TealiumLocationManager(config: config, locationDelegate: self)
+                self.tealiumLocationManager = TealiumLocationManager(config: self.config, locationDelegate: self)
             }
         }
 

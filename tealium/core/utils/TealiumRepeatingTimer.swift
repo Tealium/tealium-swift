@@ -2,7 +2,6 @@
 //  TealiumRepeatingTimer.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 11/6/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 

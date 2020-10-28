@@ -55,7 +55,7 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
     ///
     /// - Parameter name: `String` containing
     func filePath (_ name: String) -> String {
-        return "\(self.filePath)\(name)"
+        return "\(filePath)\(name)"
     }
 
     /// Attempts to calculate the size in bytes of an encodable object.
@@ -116,7 +116,7 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
     ///     - completion: Optional completion to be called upon completion of the save operation
     public func save(_ data: AnyCodable,
                      completion: TealiumCompletion?) {
-        self.save(data, fileName: self.module, completion: completion)
+        save(data, fileName: module, completion: completion)
     }
 
     /// Saves new data to disk, overwriting existing data.
@@ -131,7 +131,7 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
                      completion: TealiumCompletion?) {
         guard isDiskStorageEnabled else {
             if let data = try? Tealium.jsonEncoder.encode(data) {
-                self.saveToDefaults(key: self.filePath(fileName), value: data)
+                saveToDefaults(key: filePath(fileName), value: data)
                 completion?(true, nil, nil)
             } else {
                 log(error: DiskStorageErrors.couldNotEncode.rawValue)
@@ -160,7 +160,7 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
     ///     - completion: Optional completion to be called upon completion of the save operation
     public func save<T: Encodable>(_ data: T,
                                    completion: TealiumCompletion?) {
-        self.save(data, fileName: module, completion: completion)
+        save(data, fileName: module, completion: completion)
     }
 
     /// Saves new data to disk, overwriting existing data.
@@ -175,7 +175,7 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
                                    completion: TealiumCompletion?) {
         guard isDiskStorageEnabled else {
             if let data = try? Tealium.jsonEncoder.encode(data) {
-                self.saveToDefaults(key: self.filePath(fileName), value: data)
+                saveToDefaults(key: filePath(fileName), value: data)
                 completion?(true, nil, nil)
             } else {
                 log(error: DiskStorageErrors.couldNotEncode.rawValue)
@@ -208,7 +208,7 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
     ///     - completion: Optional completion to be called upon completion of the append operation
     public func append<T: Codable>(_ data: T,
                                    completion: TealiumCompletion?) {
-        self.append(data, fileName: module, completion: completion)
+        append(data, fileName: module, completion: completion)
     }
 
     /// Appends data to existing data of the same type.
@@ -383,7 +383,7 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
         let decoder = Tealium.jsonDecoder
         if let jsonData = try? JSONSerialization.data(withJSONObject: dict, options: []),
            let newData = try? decoder.decode(T.self, from: jsonData) {
-            self.save(newData, fileName: self.module, completion: completion)
+            save(newData, fileName: module, completion: completion)
         }
     }
 
@@ -394,9 +394,7 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
     ///     - value: `String`
     public func saveStringToDefaults(key: String,
                                      value: String) {
-        TealiumDiskStorage.readWriteQueue.write {
-            self.defaultsStorage?.set(value, forKey: key)
-        }
+        defaultsStorage?.set(value, forKey: key)
     }
 
     /// Retrieves a `String` value from UserDefaults.
@@ -404,10 +402,7 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
     /// - Parameter key: `String`
     /// - Returns: `String?`
     public func getStringFromDefaults(key: String) -> String? {
-        TealiumDiskStorage.readWriteQueue.read {
-            return self.defaultsStorage?.value(forKey: key) as? String
-        }
-        return nil
+        defaultsStorage?.value(forKey: key) as? String
     }
 
     /// Saves `Any` value to UserDefaults.
@@ -417,9 +412,7 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
     ///     - value: `Any`
     public func saveToDefaults(key: String,
                                value: Any) {
-        TealiumDiskStorage.readWriteQueue.write {
-            self.defaultsStorage?.set(value, forKey: key)
-        }
+        defaultsStorage?.set(value, forKey: key)
     }
 
     /// Retrieves `Any` value from UserDefaults
@@ -427,19 +420,14 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
     /// - Parameter key: `String`
     /// - Returns: `Any?`
     public func getFromDefaults(key: String) -> Any? {
-        TealiumDiskStorage.readWriteQueue.read {
-            return self.defaultsStorage?.value(forKey: key)
-        }
-        return nil
+        defaultsStorage?.value(forKey: key)
     }
 
     /// Deletes a value from UserDefaults
     ///
     /// - Parameter key: `String`
     public func removeFromDefaults(key: String) {
-        TealiumDiskStorage.readWriteQueue.write {
-            self.defaultsStorage?.removeObject(forKey: key)
-        }
+        defaultsStorage?.removeObject(forKey: key)
     }
 
     /// - Parameter error: `String`

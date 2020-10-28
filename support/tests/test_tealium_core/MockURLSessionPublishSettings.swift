@@ -2,7 +2,6 @@
 //  MockURLSessionPublishSettings.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 21/01/2020.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 

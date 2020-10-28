@@ -2,9 +2,9 @@
 //  AttributionExtensions.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 14/03/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
+
 #if os(iOS)
 import Foundation
 #if attribution
@@ -23,6 +23,18 @@ public extension TealiumConfig {
             options[AttributionKey.isSearchAdsEnabled] = newValue
         }
     }
+
+    /// Enables (`true`) or disables (`false`) SKAdNetwork in the Attribution module￼.
+    var skAdAttributionEnabled: Bool {
+        get {
+            options[AttributionKey.isSKAdAttributionEnabled] as? Bool ?? false
+        }
+
+        set {
+            options[AttributionKey.isSKAdAttributionEnabled] = newValue
+        }
+    }
+
 }
 
 public extension Collectors {

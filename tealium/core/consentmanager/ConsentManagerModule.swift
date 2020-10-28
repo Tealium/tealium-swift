@@ -2,7 +2,6 @@
 //  ConsentManagerModule.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 3/29/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
@@ -14,22 +13,24 @@ class ConsentManagerModule: Collector, DispatchValidator {
     var config: TealiumConfig
     var consentManager: ConsentManager?
     weak var delegate: ModuleDelegate?
+    var dataLayer: DataLayerManagerProtocol?
     var diskStorage: TealiumDiskStorageProtocol!
 
     var data: [String: Any]? {
         consentManager?.currentPolicy.consentPolicyStatusInfo
     }
 
-    required init(config: TealiumConfig,
+    required init(context: TealiumContext,
                   delegate: ModuleDelegate?,
                   diskStorage: TealiumDiskStorageProtocol?,
                   completion: ModuleCompletion) {
-        self.config = config
+        self.config = context.config
         self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config,
                                                              forModule: ConsentKey.moduleName,
                                                              isCritical: true)
+        self.dataLayer = context.dataLayer
         self.delegate = delegate
-        consentManager = ConsentManager(config: config, delegate: delegate, diskStorage: self.diskStorage)
+        consentManager = ConsentManager(config: config, delegate: delegate, diskStorage: self.diskStorage, dataLayer: self.dataLayer)
         completion((.success(true), nil))
     }
 
@@ -43,7 +44,7 @@ class ConsentManagerModule: Collector, DispatchValidator {
            newConfig.account != config.account,
            newConfig.profile != config.profile {
             self.diskStorage = TealiumDiskStorage(config: request.config, forModule: ConsentKey.moduleName, isCritical: true)
-            consentManager = ConsentManager(config: config, delegate: delegate, diskStorage: self.diskStorage)
+            consentManager = ConsentManager(config: config, delegate: delegate, diskStorage: self.diskStorage, dataLayer: self.dataLayer)
         }
         config = newConfig
     }

@@ -2,7 +2,6 @@
 //  AutotrackingModuleTests.swift
 //  tealium-swift
 //
-//  Created by Jason Koo on 12/22/16.
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
@@ -14,7 +13,8 @@ class AutotrackingModuleTests: XCTestCase {
 
     var module: AutotrackingModule {
         let config = testTealiumConfig.copy
-        return AutotrackingModule(config: config, delegate: self, diskStorage: nil) { _ in
+        let context = TestTealiumHelper.context(with: config)
+        return AutotrackingModule(context: context, delegate: self, diskStorage: nil) { _ in
 
         }
     }

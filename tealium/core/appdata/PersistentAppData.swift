@@ -1,8 +1,7 @@
 //
 //  PersistentAppData.swift
-//  TealiumSwift
+//  tealium-swift
 //
-//  Created by Craig Rouse on 28/11/2019.
 //  Copyright © 2019 Tealium. All rights reserved.
 //
 
@@ -10,8 +9,8 @@ import Foundation
 
 public struct PersistentAppData: Codable {
 
-    public let visitorId: String
-    public let uuid: String
+    public var visitorId: String
+    public var uuid: String
 
     public var dictionary: [String: Any] {
         [TealiumKey.uuid: uuid,

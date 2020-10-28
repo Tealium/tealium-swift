@@ -2,10 +2,10 @@
 //  TagManagementModule.swift
 //  tealium-swift
 //
-//  Created by Christina S on 4/28/20.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 
+#if os(iOS)
 import Foundation
 #if tagmanagement
 import TealiumCore
@@ -216,3 +216,4 @@ public class TagManagementModule: Dispatcher {
     }
 
 }
+#endif

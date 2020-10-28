@@ -1,10 +1,10 @@
 //
 //  DispatchManager.swift
-//  TealiumCore
+//  tealium-swift
 //
-//  Created by Craig Rouse on 30/04/2020.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
+
 // swiftlint:disable file_length
 import Foundation
 #if os(iOS)

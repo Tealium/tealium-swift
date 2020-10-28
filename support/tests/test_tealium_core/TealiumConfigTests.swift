@@ -2,7 +2,6 @@
 //  TealiumConfigTests.swift
 //  tealium-swift
 //
-//  Created by Jason Koo on 9/1/16.
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 

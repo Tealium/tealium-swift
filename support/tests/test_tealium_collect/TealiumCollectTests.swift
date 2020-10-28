@@ -2,7 +2,6 @@
 //  TealiumCollectTests.swift
 //  tealium-swift
 //
-//  Created by Jason Koo on 9/6/16.
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
@@ -117,7 +116,7 @@ class TealiumCollectTests: XCTestCase {
 
     func testSendURLRequest() {
         mockURLSession = MockURLSession()
-        guard let request = urlPOSTRequestWithJSONString(testJSONString, dispatchURL: CollectEventDispatcher.defaultDispatchBaseURL) else {
+        guard let request = NetworkUtils.urlPOSTRequestWithJSONString(testJSONString, dispatchURL: CollectEventDispatcher.defaultDispatchBaseURL) else {
             XCTFail("Could not create post request")
             return
         }
@@ -135,7 +134,7 @@ class TealiumCollectTests: XCTestCase {
 
     func testSendURLRequestFailingURL() {
         mockURLSession = MockURLSessionError()
-        guard let request = urlPOSTRequestWithJSONString(testJSONString, dispatchURL: CollectEventDispatcher.defaultDispatchBaseURL) else {
+        guard let request = NetworkUtils.urlPOSTRequestWithJSONString(testJSONString, dispatchURL: CollectEventDispatcher.defaultDispatchBaseURL) else {
             XCTFail("Could not create post request")
             return
         }
@@ -153,7 +152,7 @@ class TealiumCollectTests: XCTestCase {
 
     func testSendURLRequestNon200() {
         mockURLSession = MockURLSessionNon200()
-        guard let request = urlPOSTRequestWithJSONString(testJSONString, dispatchURL: CollectEventDispatcher.defaultDispatchBaseURL) else {
+        guard let request = NetworkUtils.urlPOSTRequestWithJSONString(testJSONString, dispatchURL: CollectEventDispatcher.defaultDispatchBaseURL) else {
             XCTFail("Could not create post request")
             return
         }
@@ -170,7 +169,7 @@ class TealiumCollectTests: XCTestCase {
 
     func testSendURLRequestURLError() {
         mockURLSession = MockURLSessionURLError()
-        guard let request = urlPOSTRequestWithJSONString(testJSONString, dispatchURL: CollectEventDispatcher.defaultDispatchBaseURL) else {
+        guard let request = NetworkUtils.urlPOSTRequestWithJSONString(testJSONString, dispatchURL: CollectEventDispatcher.defaultDispatchBaseURL) else {
             XCTFail("Could not create post request")
             return
         }

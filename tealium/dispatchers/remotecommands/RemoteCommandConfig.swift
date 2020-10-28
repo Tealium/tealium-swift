@@ -1,11 +1,11 @@
 //
 //  RemoteCommandConfig.swift
-//  TealiumRemoteCommands
+//  tealium-swift
 //
-//  Created by Craig Rouse on 11/26/19.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 
+#if os(iOS)
 import Foundation
 #if remotecommands
 import TealiumCore
@@ -88,3 +88,4 @@ public struct RemoteCommandConfig: Codable {
     }
 
 }
+#endif

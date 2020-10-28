@@ -1,10 +1,10 @@
 //
 //  LocationDelegate.swift
-//  TealiumLocation
+//  tealium-swift
 //
-//  Created by Harry Cassell on 11/09/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
+
 #if os(iOS)
 import Foundation
 

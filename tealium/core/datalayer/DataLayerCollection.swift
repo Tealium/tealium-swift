@@ -1,8 +1,7 @@
 //
-//  EventData.swift
-//  TealiumSwift
+//  DataLayerCollection.swift
+//  tealium-swift
 //
-//  Created by Craig Rouse on 4/21/20.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 
@@ -45,7 +44,7 @@ public extension Set where Element == DataLayerItem {
         self.filter {
             $0.key == key
         }.forEach {
-            remove($0)
+            self.remove($0)
         }
     }
 

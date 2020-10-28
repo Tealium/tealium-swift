@@ -1,8 +1,7 @@
 //
 //  TealiumVisitorServiceManagerTests.swift
-//  TealiumSwiftTests
+//  tealium-swift
 //
-//  Created by Christina Sund on 5/16/19.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 
@@ -82,19 +81,19 @@ class VisitorServiceManagerTests: XCTestCase {
     }
 
     func testCheckIfVisitorProfileIsEmpty() {
-        let visitorAllNil = loadStub(from: "visitor-all-nil", with: "json")
+        let visitorAllNil = TestTealiumHelper.loadStub(from: "visitor-all-nil", type(of: self))
         let nilAttributes = try! JSONDecoder().decode(TealiumVisitorProfile.self, from: visitorAllNil)
         let result = nilAttributes.isEmpty
         XCTAssertTrue(result)
     }
 
     func testCheckIfVisitorProfileIsNotEmpty() {
-        let visitor = loadStub(from: "visitor", with: "json")
+        let visitor = TestTealiumHelper.loadStub(from: "visitor", type(of: self))
         var nilAttributes = try! JSONDecoder().decode(TealiumVisitorProfile.self, from: visitor)
         var result = nilAttributes.isEmpty
         XCTAssertFalse(result)
 
-        let visitorWithNils = loadStub(from: "visitor-nils", with: "json")
+        let visitorWithNils = TestTealiumHelper.loadStub(from: "visitor-nils", type(of: self))
         nilAttributes = try! JSONDecoder().decode(TealiumVisitorProfile.self, from: visitorWithNils)
         result = nilAttributes.isEmpty
         XCTAssertFalse(result)

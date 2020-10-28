@@ -1,5 +1,5 @@
 //
-//  TealiumLifecycleSessionTests.swift
+//  LifecycleSessionTests.swift
 //  tealium-swift
 //
 //  Created by Jason Koo on 2/15/17.
@@ -10,7 +10,7 @@
 @testable import TealiumLifecycle
 import XCTest
 
-class TealiumLifecycleSessionTests: XCTestCase {
+class LifecycleSessionTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
