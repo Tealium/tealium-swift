@@ -8,7 +8,9 @@
 #if os(iOS) && !targetEnvironment(macCatalyst)
 import AdSupport
 import Foundation
+#if !COCOAPODS
 import TealiumCore
+#endif
 import UIKit
 #if canImport(AppTrackingTransparency)
 import AppTrackingTransparency
