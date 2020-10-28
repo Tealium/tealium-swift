@@ -2,7 +2,7 @@
 //  ContentView.swift
 //  macOSTealiumTest
 //
-//  Created by Christina S on 10/28/20.
+//  Copyright © 2020 Tealium. All rights reserved.
 //
 
 import SwiftUI
