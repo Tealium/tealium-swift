@@ -2,7 +2,6 @@
 //  TealiumHelper.swift
 //  TealiumVisitorProfileDemo
 //
-//  Created by Christina S on 11/7/19.
 //  Copyright © 2019 Tealium. All rights reserved.
 //
 

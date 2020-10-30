@@ -2,7 +2,6 @@
 //  TealiumModulesManagerTests.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 04/30/20.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 
@@ -31,13 +30,15 @@ class TealiumModulesManagerTests: XCTestCase {
         #endif
         config.logLevel = TealiumLogLevel.error
         config.loggerType = .print
-        let modulesManager = ModulesManager(config, dataLayer: nil)
+        let context = TestTealiumHelper.context(with: config)
+        let modulesManager = ModulesManager(context)
         modulesManager.connectionRestored()
         return modulesManager
     }
 
     func modulesManagerForConfig(config: TealiumConfig) -> ModulesManager {
-        return ModulesManager(config, dataLayer: nil)
+        let context = TestTealiumHelper.context(with: config)
+        return ModulesManager(context)
     }
 
     override func setUp() {
@@ -80,10 +81,11 @@ class TealiumModulesManagerTests: XCTestCase {
     }
 
     func testAddCollector() {
-        let collector = DummyCollector(config: testTealiumConfig, delegate: self, diskStorage: nil) { _, _ in
+        let context = TestTealiumHelper.context(with: testTealiumConfig, dataLayer: DummyDataManagerNoData())
+        let collector = DummyCollector(context: context, delegate: self, diskStorage: nil) { _, _ in
 
         }
-        let modulesManager = ModulesManager(testTealiumConfig, dataLayer: DummyDataManagerNoData(), optionalCollectors: nil, knownDispatchers: nil)
+        let modulesManager = ModulesManager(context)
 
         modulesManager.collectors = []
         modulesManager.dispatchListeners = []
@@ -107,13 +109,14 @@ class TealiumModulesManagerTests: XCTestCase {
     }
 
     func testDisableModule() {
-        let collector = DummyCollector(config: testTealiumConfig, delegate: self, diskStorage: nil) { _, _  in
+        let context = TestTealiumHelper.context(with: testTealiumConfig, dataLayer: DummyDataManagerNoData())
+        let collector = DummyCollector(context: context, delegate: self, diskStorage: nil) { _, _ in
 
         }
         let dispatcher = DummyDispatcher(config: testTealiumConfig, delegate: self) { _ in
 
         }
-        let modulesManager = ModulesManager(testTealiumConfig, dataLayer: DummyDataManagerNoData(), optionalCollectors: nil, knownDispatchers: nil)
+        let modulesManager = ModulesManager(context)
 
         modulesManager.collectors = [collector]
         modulesManager.dispatchers = [dispatcher]
@@ -149,7 +152,7 @@ class TealiumModulesManagerTests: XCTestCase {
         modulesManager.collectors = []
         modulesManager.dispatchers = []
         modulesManager.dataLayerManager = DummyDataManagerNoData()
-        let connectivity = ConnectivityModule(config: testTealiumConfig, delegate: nil, diskStorage: nil) { _ in }
+        let connectivity = ConnectivityModule(context: modulesManager.context, delegate: nil, diskStorage: nil) { _ in }
         modulesManager.dispatchManager = DummyDispatchManagerSendTrack(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: connectivity, config: testTealiumConfig)
 
         let track = TealiumTrackRequest(data: [:])
@@ -163,7 +166,7 @@ class TealiumModulesManagerTests: XCTestCase {
         modulesManager.collectors = []
         modulesManager.dispatchers = []
         modulesManager.dataLayerManager = DummyDataManagerNoData()
-        let connectivity = ConnectivityModule(config: testTealiumConfig, delegate: nil, diskStorage: nil) { _ in }
+        let connectivity = ConnectivityModule(context: modulesManager.context, delegate: nil, diskStorage: nil) { _ in }
         modulesManager.dispatchManager = DummyDispatchManagerRequestTrack(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: connectivity, config: testTealiumConfig)
 
         let track = TealiumTrackRequest(data: [:])
@@ -177,7 +180,7 @@ class TealiumModulesManagerTests: XCTestCase {
         modulesManager.collectors = []
         modulesManager.dispatchers = []
         modulesManager.dataLayerManager = DummyDataManagerNoData()
-        let connectivity = ConnectivityModule(config: testTealiumConfig, delegate: nil, diskStorage: nil) { _ in }
+        let connectivity = ConnectivityModule(context: modulesManager.context, delegate: nil, diskStorage: nil) { _ in }
         let dummyDequeue = DummyDispatchManagerdequeue(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: connectivity, config: testTealiumConfig)
         dummyDequeue.asyncExpectation = expect
         modulesManager.dispatchManager = dummyDequeue
@@ -186,11 +189,10 @@ class TealiumModulesManagerTests: XCTestCase {
     }
 
     func testSetupDispatchListeners() {
-        let collector = DummyCollector(config: testTealiumConfig, delegate: self, diskStorage: nil) { _, _  in
+        let modulesManager = self.modulesManager
+        let collector = DummyCollector(context: modulesManager.context, delegate: self, diskStorage: nil) { _, _ in
 
         }
-        let modulesManager = self.modulesManager
-
         modulesManager.collectors = []
         modulesManager.dispatchListeners = []
         modulesManager.dispatchValidators = []
@@ -202,10 +204,10 @@ class TealiumModulesManagerTests: XCTestCase {
     }
 
     func testSetupDispatchValidators() {
-        let collector = DummyCollector(config: testTealiumConfig, delegate: self, diskStorage: nil) { _, _  in
+        let modulesManager = self.modulesManager
+        let collector = DummyCollector(context: modulesManager.context, delegate: self, diskStorage: nil) { _, _ in
 
         }
-        let modulesManager = self.modulesManager
 
         modulesManager.collectors = []
         modulesManager.dispatchListeners = []
@@ -218,7 +220,7 @@ class TealiumModulesManagerTests: XCTestCase {
     }
 
     func testConfigPropertyUpdate() {
-        let collector = DummyCollector(config: testTealiumConfig, delegate: self, diskStorage: nil) { _, _  in
+        let collector = DummyCollector(context: self.modulesManager.context, delegate: self, diskStorage: nil) { _, _  in
 
         }
         TealiumExpectations.expectations["configPropertyUpdate"] = expectation(description: "configPropertyUpdate")
@@ -228,7 +230,7 @@ class TealiumModulesManagerTests: XCTestCase {
         modulesManager.collectors = [collector]
         modulesManager.dispatchListeners = []
         modulesManager.dispatchValidators = []
-        let connectivity = ConnectivityModule(config: testTealiumConfig, delegate: nil, diskStorage: nil) { _ in }
+        let connectivity = ConnectivityModule(context: self.modulesManager.context, delegate: nil, diskStorage: nil) { _ in }
         modulesManager.dispatchManager = DummyDispatchManagerConfigUpdate(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: connectivity, config: testTealiumConfig)
         let config = testTealiumConfig
         config.logLevel = .info
@@ -247,10 +249,11 @@ class TealiumModulesManagerTests: XCTestCase {
     }
 
     func testSetModules() {
-        let collector = DummyCollector(config: testTealiumConfig, delegate: self, diskStorage: nil) { _, _  in
+        let context = TestTealiumHelper.context(with: testTealiumConfig, dataLayer: DummyDataManagerNoData())
+        let collector = DummyCollector(context: context, delegate: self, diskStorage: nil) { _, _  in
 
         }
-        let modulesManager = ModulesManager(testTealiumConfig, dataLayer: DummyDataManagerNoData(), optionalCollectors: nil, knownDispatchers: nil)
+        let modulesManager = ModulesManager(context)
         modulesManager.dispatchListeners = []
         modulesManager.dispatchValidators = []
         modulesManager.dispatchers = []
@@ -264,7 +267,7 @@ class TealiumModulesManagerTests: XCTestCase {
     }
 
     func testDispatchValidatorAddedFromConfig() {
-        let validator = DummyCollector(config: testTealiumConfig, delegate: self, diskStorage: nil) { _, _  in
+        let validator = DummyCollector(context: self.modulesManager.context, delegate: self, diskStorage: nil) { _, _  in
 
         }
         let config = testTealiumConfig
@@ -274,7 +277,7 @@ class TealiumModulesManagerTests: XCTestCase {
     }
 
     func testDispatchListenerAddedFromConfig() {
-        let listener = DummyCollector(config: testTealiumConfig, delegate: self, diskStorage: nil) { _, _  in
+        let listener = DummyCollector(context: self.modulesManager.context, delegate: self, diskStorage: nil) { _, _  in
 
         }
         let config = testTealiumConfig
@@ -284,9 +287,10 @@ class TealiumModulesManagerTests: XCTestCase {
     }
 
     func testGatherTrackData() {
-        let modulesManager = ModulesManager(testTealiumConfig, dataLayer: DummyDataManagerNoData(), optionalCollectors: nil, knownDispatchers: nil)
+        let context = TestTealiumHelper.context(with: testTealiumConfig, dataLayer: DummyDataManagerNoData())
+        let modulesManager = ModulesManager(context)
         modulesManager.collectors = []
-        let collector = DummyCollector(config: testTealiumConfig, delegate: self, diskStorage: nil) { _, _  in
+        let collector = DummyCollector(context: context, delegate: self, diskStorage: nil) { _, _  in
 
         }
         modulesManager.addCollector(collector)
@@ -303,7 +307,7 @@ class TealiumModulesManagerTests: XCTestCase {
         let modulesManager = self.modulesManager
         modulesManager.collectors = []
         modulesManager.dataLayerManager = DummyDataManagerNoData()
-        let collector = DummyCollector(config: testTealiumConfig, delegate: self, diskStorage: nil) { _, _  in
+        let collector = DummyCollector(context: modulesManager.context, delegate: self, diskStorage: nil) { _, _  in
 
         }
         modulesManager.addCollector(collector)
@@ -317,6 +321,16 @@ class TealiumModulesManagerTests: XCTestCase {
         modulesManager.dataLayerManager = DummyDataManager()
         let dataWithEventData = modulesManager.gatherTrackData(for: ["testGatherTrackData": true])
         XCTAssertNotNil(dataWithEventData["enabled_modules"]!)
+    }
+
+    func testGatherTrackDataAfterMigratingLegacyData() {
+        let migratedData = MockMigratedDataLayer()
+        let modulesManager = self.modulesManager
+        modulesManager.dataLayerManager = migratedData
+        let data = modulesManager.gatherTrackData(for: ["testGatherTrackData": true])
+        XCTAssertEqual(data["custom_persistent_key"] as! String, "customValue")
+        XCTAssertNotNil(data["migrated_lifecycle"] as! [String: Any])
+        XCTAssertEqual(data["consent_status"] as! Int, 1)
     }
 
 }

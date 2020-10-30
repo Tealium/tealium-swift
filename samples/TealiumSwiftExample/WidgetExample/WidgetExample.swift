@@ -2,10 +2,9 @@
 //  WidgetExample.swift
 //  WidgetExample
 //
-//  Created by Christina S on 9/29/20.
 //  Copyright © 2020 Tealium. All rights reserved.
 //
-
+#if !targetEnvironment(macCatalyst)
 import WidgetKit
 import SwiftUI
 import Intents
@@ -71,3 +70,4 @@ struct WidgetExample_Previews: PreviewProvider {
             .previewContext(WidgetPreviewContext(family: .systemSmall))
     }
 }
+#endif

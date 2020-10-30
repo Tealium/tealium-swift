@@ -2,7 +2,6 @@
 //  TestTealiumHelper.swift
 //  tealium-swift
 //
-//  Created by Jason Koo on 10/25/16.
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
@@ -67,6 +66,18 @@ class TimeTraveler {
 }
 
 class TestTealiumHelper {
+    
+    class func loadStub(from file: String,
+                        _ cls: AnyClass) -> Data {
+      let bundle = Bundle(for: cls)
+      let url = bundle.url(forResource: file, withExtension: "json")
+      return try! Data(contentsOf: url!)
+    }
+    
+    class func context(with config: TealiumConfig, dataLayer: DataLayerManagerProtocol? = nil) -> TealiumContext {
+        let tealium = Tealium(config: config)
+        return TealiumContext(config: config, dataLayer: dataLayer ?? DummyDataManager(), tealium: tealium)
+    }
 
     class func allTealiumModuleNames() -> [String] {
         // priority order

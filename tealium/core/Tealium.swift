@@ -2,9 +2,7 @@
 //  Tealium.swift
 //  tealium-swift
 //
-//  Created by Jason Koo, Merritt Tidwell, Chad Hartman, Karen Tamayo, Chris Anderberg  on 8/31/16.
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
-//
 //
 
 import Foundation
@@ -18,6 +16,7 @@ public class Tealium {
     // swiftlint:disable identifier_name
     public var zz_internal_modulesManager: ModulesManager?
     // swiftlint:enable identifier_name
+    public var migrator: Migratable
 
     /// Initializer.
     ///
@@ -26,18 +25,22 @@ public class Tealium {
     public init(config: TealiumConfig,
                 dataLayer: DataLayerManagerProtocol? = nil,
                 modulesManager: ModulesManager? = nil,
+                migrator: Migratable? = nil,
                 enableCompletion: ((_ result: Result<Bool, Error>) -> Void)?) {
         defer {
             TealiumQueues.backgroundSerialQueue.async {
                 enableCompletion?(.success(true))
             }
         }
-
         self.enableCompletion = enableCompletion
         self.dataLayer = dataLayer ?? DataLayer(config: config)
+        self.migrator = migrator ?? Migrator(config: config)
+        if config.shouldMigratePersistentData {
+            self.migrator.migratePersistent(dataLayer: self.dataLayer)
+        }
+        let context = TealiumContext(config: config, dataLayer: self.dataLayer, tealium: self)
         #if os(iOS)
         if config.appDelegateProxyEnabled {
-            let context = TealiumContext(config: config, dataLayer: self.dataLayer, tealium: self)
             TealiumAppDelegateProxy.setup(context: context)
         }
         #endif
@@ -45,7 +48,7 @@ public class Tealium {
             guard let self = self else {
                 return
             }
-            self.zz_internal_modulesManager = modulesManager ?? ModulesManager(config, dataLayer: self.dataLayer)
+            self.zz_internal_modulesManager = modulesManager ?? ModulesManager(context)
         }
 
         TealiumInstanceManager.shared.addInstance(self, config: config)

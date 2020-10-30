@@ -2,7 +2,6 @@
 //  AutotrackingModule.swift
 //  tealium-swift
 //
-//  Created by Jason Koo on 12/21/16.
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
@@ -110,16 +109,16 @@ public class AutotrackingModule: Collector {
 
     /// Initializes the module
     ///
-    /// - Parameter config: `TealiumConfig` instance
+    /// - Parameter context: `TealiumContext` instance
     /// - Parameter delegate: `ModuleDelegate` instance
     /// - Parameter diskStorage: `TealiumDiskStorageProtocol` instance
     /// - Parameter completion: `ModuleCompletion` block to be called when init is finished
-    required public init(config: TealiumConfig,
+    required public init(context: TealiumContext,
                          delegate: ModuleDelegate?,
                          diskStorage: TealiumDiskStorageProtocol?,
                          completion: ModuleCompletion) {
         self.delegate = delegate
-        self.config = config
+        self.config = context.config
         let eventName = NSNotification.Name(TealiumAutotrackingKey.eventNotificationName)
         NotificationCenter.default.addObserver(self, selector: #selector(requestEventTrack(sender:)), name: eventName, object: nil)
 

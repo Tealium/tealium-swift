@@ -2,7 +2,6 @@
 //  TealiumConfig.swift
 //  tealium-swift
 //
-//  Created by Jason Koo, Merritt Tidwell, Chad Hartman, Karen Tamayo, Chris Anderberg  on 8/31/16.
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
@@ -37,6 +36,32 @@ open class TealiumConfig {
 
         set {
             options[TealiumKey.appDelegateProxy] = newValue
+        }
+    }
+
+    /// Define the conversion event and value if using `SKAdNetwork.updateConversionValue(_ value:)`
+    /// The key in the dictionary is the `tealium_event` for which to count as a conversion and the value in the dictionary is the variable that holds the conversion value.
+    /// Conversion value must be an `Int` and between `0-63`
+    /// - Usage: `config.skAdConversionKeys = ["purchase": "order_subtotal"]`
+    public var skAdConversionKeys: [String: String]? {
+        get {
+            options[TealiumKey.skAdConversionKeys] as? [String: String]
+        }
+
+        set {
+            options[TealiumKey.skAdConversionKeys] = newValue
+        }
+    }
+
+    /// Set to `false` to disable the Tealium AppDelegate proxy for deep link handling.
+    /// Default `true`.
+    public var shouldMigratePersistentData: Bool {
+        get {
+            options[TealiumKey.shouldMigrate] as? Bool ?? false
+        }
+
+        set {
+            options[TealiumKey.shouldMigrate] = newValue
         }
     }
 

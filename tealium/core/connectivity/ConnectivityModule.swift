@@ -1,8 +1,7 @@
 //
-//  TealiumConnectivity.swift
+//  ConnectivityModule.swift
 //  tealium-swift
 //
-//  Created by Jason Koo on 6/26/17.
 //  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 
@@ -29,7 +28,7 @@ public class ConnectivityModule: Collector, ConnectivityDelegate {
             return [ConnectivityKey.connectionType: connectionType,
             ]
         } else {
-            return [ConnectivityKey.connectionType: ConnectivityKey.connectionTypeUnknown,
+            return [ConnectivityKey.connectionType: TealiumValue.unknown,
             ]
         }
     }
@@ -46,11 +45,11 @@ public class ConnectivityModule: Collector, ConnectivityDelegate {
     var connectivityMonitor: ConnectivityMonitorProtocol?
     var connectivityDelegates = TealiumMulticastDelegate<ConnectivityDelegate>()
 
-    required public init(config: TealiumConfig,
+    required public init(context: TealiumContext,
                          delegate: ModuleDelegate?,
                          diskStorage: TealiumDiskStorageProtocol?,
                          completion: ((Result<Bool, Error>, [String: Any]?)) -> Void) {
-        self.config = config
+        self.config = context.config
 
         if #available(iOS 12.0, tvOS 12.0, watchOS 5.0, OSX 10.14, *) {
             self.connectivityMonitor = TealiumNWPathMonitor(config: self.config) { [weak self] result in

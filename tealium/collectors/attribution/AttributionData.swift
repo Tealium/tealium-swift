@@ -2,10 +2,10 @@
 //  AttributionData.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 14/03/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
-#if os(iOS)
+
+#if os(iOS) && !targetEnvironment(macCatalyst)
 import Foundation
 #if attribution
 import TealiumCore
@@ -16,9 +16,11 @@ import TealiumCore
 public class AttributionData: AttributionDataProtocol {
     var identifierManager: TealiumASIdentifierManagerProtocol
     var adClient: TealiumAdClientProtocol
+    var config: TealiumConfig
     let diskStorage: TealiumDiskStorageProtocol
     var persistentAttributionData: PersistentAttributionData?
     public var appleAttributionDetails: PersistentAttributionData?
+    public var adAttribution: TealiumSKAdAttributionProtocol?
 
     /// Init with optional injectable dependencies (for unit testing)￼.
     ///
@@ -27,14 +29,20 @@ public class AttributionData: AttributionDataProtocol {
     ///     - isSearchAdsEnabled: `Bool` to determine if Apple Search Ads API should be invoked to retrieve attribution data from Apple￼
     ///     - identifierManager: `TealiumASIdentifierManagerProtocol`, a test-friendly implementation of Apple's ASIdentifierManager￼
     ///     - adClient: `TealiumAdClientProtocol`, a test-friendly implementation of Apple's AdClient
-    public init(diskStorage: TealiumDiskStorageProtocol,
-                isSearchAdsEnabled: Bool,
+    public init(config: TealiumConfig,
+                diskStorage: TealiumDiskStorageProtocol,
                 identifierManager: TealiumASIdentifierManagerProtocol = TealiumASIdentifierManager.shared,
-                adClient: TealiumAdClientProtocol = TealiumAdClient.shared) {
+                adClient: TealiumAdClientProtocol = TealiumAdClient.shared,
+                adAttribution: TealiumSKAdAttributionProtocol? = nil) {
+        self.config = config
         self.identifierManager = identifierManager
         self.adClient = adClient
         self.diskStorage = diskStorage
-        if isSearchAdsEnabled {
+        if self.config.skAdAttributionEnabled {
+            self.adAttribution = adAttribution ?? TealiumSKAdAttribution(config: self.config)
+            self.adAttribution?.registerAdNetwork()
+        }
+        if self.config.searchAdsEnabled {
             setPersistentAttributionData()
         }
     }
@@ -66,12 +74,18 @@ public class AttributionData: AttributionDataProtocol {
         return self.identifierManager.isAdvertisingTrackingEnabled
     }()
 
+    /// - Returns: `String` representation of ATTrackingManager.trackingAuthorizationStatus
+    public lazy var trackingAuthorizationStatus: String = {
+        return self.identifierManager.trackingAuthorizationStatus
+    }()
+
     /// - Returns: `[String: Any]` of all volatile data (collected at init time): IDFV, IDFA, isTrackingAllowed
     public lazy var volatileData: [String: Any] = {
         return [
             AttributionKey.idfa: idfa,
             AttributionKey.idfv: idfv,
-            AttributionKey.isTrackingAllowed: isAdvertisingTrackingEnabled
+            AttributionKey.isTrackingAllowed: isAdvertisingTrackingEnabled,
+            AttributionKey.trackingAuthorization: trackingAuthorizationStatus
         ]
     }()
 
@@ -148,6 +162,17 @@ public class AttributionData: AttributionDataProtocol {
         }
         adClient.requestAttributionDetails(completionHander)
     }
+
+    public func updateConversionValue(from dispatch: TealiumRequest) {
+        if let dispatch = dispatch as? TealiumTrackRequest {
+            adAttribution?.extractConversionInfo(from: dispatch)
+        } else if let dispatch = dispatch as? TealiumBatchTrackRequest {
+            dispatch.trackRequests.forEach {
+                adAttribution?.extractConversionInfo(from: $0)
+            }
+        }
+    }
+
     // swiftlint:enable cyclomatic_complexity
 }
 #endif

@@ -2,16 +2,17 @@
 //  AttributionModule.swift
 //  tealium-swift
 //
-//  Created by Jason Koo on 11/16/16.
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
-#if os(iOS)
+
+#if os(iOS) && !targetEnvironment(macCatalyst)
 import Foundation
 #if attribution
 import TealiumCore
 #endif
 
-public class AttributionModule: Collector {
+public class AttributionModule: Collector, DispatchListener {
+
     public let id: String = ModuleNames.attribution
 
     public var data: [String: Any]? {
@@ -25,29 +26,36 @@ public class AttributionModule: Collector {
     /// Provided for unit testing￼.
     ///
     /// - Parameter attributionData: Class instance conforming to `TealiumAttributionDataProtocol`
-    convenience init(config: TealiumConfig,
+    convenience init(context: TealiumContext,
                      delegate: ModuleDelegate?,
                      diskStorage: TealiumDiskStorageProtocol?,
                      attributionData: AttributionDataProtocol) {
-        self.init(config: config, delegate: delegate, diskStorage: diskStorage) { _ in }
+        self.init(context: context, delegate: delegate, diskStorage: diskStorage) { _ in }
         self.attributionData = attributionData
     }
 
     /// Initializes the module
     ///
-    /// - Parameter config: `TealiumConfig` instance
+    /// - Parameter context: `TealiumContext` instance
     /// - Parameter delegate: `ModuleDelegate` instance
     /// - Parameter diskStorage: `TealiumDiskStorageProtocol` instance
     /// - Parameter completion: `ModuleCompletion` block to be called when init is finished
-    required public init(config: TealiumConfig,
+    required public init(context: TealiumContext,
                          delegate: ModuleDelegate?,
                          diskStorage: TealiumDiskStorageProtocol?,
                          completion: ModuleCompletion) {
-        self.config = config
+        self.config = context.config
         self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config, forModule: "attribution", isCritical: false)
-        self.attributionData = AttributionData(diskStorage: self.diskStorage,
-                                               isSearchAdsEnabled: config.searchAdsEnabled)
+        self.attributionData = AttributionData(config: config,
+                                               diskStorage: self.diskStorage)
         completion((.success(true), nil))
+    }
+
+    public func willTrack(request: TealiumRequest) {
+        guard config.skAdAttributionEnabled else {
+            return
+        }
+        attributionData.updateConversionValue(from: request)
     }
 
 }

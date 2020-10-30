@@ -1,18 +1,16 @@
 //
 //  TealiumLocationExtensions.swift
-//  TealiumLocation
+//  tealium-swift
 //
-//  Created by Harry Cassell on 12/09/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
-#if os(iOS)
+
+#if os(iOS) && !targetEnvironment(macCatalyst)
 import Foundation
 #if location
 import TealiumCore
 #endif
 
-// swiftlint:disable line_length
-// MARK: EXTENSIONS
 public extension Tealium {
 
     /// Returns a LocationModule instance
@@ -126,5 +124,4 @@ public extension TealiumConfig {
     }
 
 }
-// swiftlint:enable line_length
 #endif

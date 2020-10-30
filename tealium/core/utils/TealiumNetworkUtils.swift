@@ -2,7 +2,6 @@
 //  TealiumNetworkUtils.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 11/02/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
@@ -33,27 +32,29 @@ public extension Dictionary where Key == String, Value == Any {
     }
 }
 
-/// Prepares a URLRequest for a given JSON string and endpoint.
-///
-/// - Parameters:
-///     - jsonString: `String`
-///     - dispatchURL: `String` containing a URL for the URLRequest
-public func urlPOSTRequestWithJSONString(_ jsonString: String,
-                                         dispatchURL: String) -> URLRequest? {
-    return TealiumQueues.backgroundConcurrentQueue.read { () -> URLRequest? in
-        if let dispatchURL = URL(string: dispatchURL) {
-            var request = URLRequest(url: dispatchURL)
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.httpMethod = "POST"
-            if let data = ((try? jsonString.data(using: .utf8)?.gzipped(level: .bestCompression)) as Data??) {
-                request.setValue("gzip", forHTTPHeaderField: "Content-Encoding")
-                request.httpBody = data
-            } else {
-                request.httpBody = jsonString.data(using: .utf8)
+public class NetworkUtils {
+    /// Prepares a URLRequest for a given JSON string and endpoint.
+    ///
+    /// - Parameters:
+    ///     - jsonString: `String`
+    ///     - dispatchURL: `String` containing a URL for the URLRequest
+    public static func urlPOSTRequestWithJSONString(_ jsonString: String,
+                                                    dispatchURL: String) -> URLRequest? {
+        return TealiumQueues.backgroundConcurrentQueue.read { () -> URLRequest? in
+            if let dispatchURL = URL(string: dispatchURL) {
+                var request = URLRequest(url: dispatchURL)
+                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                request.httpMethod = "POST"
+                if let data = ((try? jsonString.data(using: .utf8)?.gzipped(level: .bestCompression)) as Data??) {
+                    request.setValue("gzip", forHTTPHeaderField: "Content-Encoding")
+                    request.httpBody = data
+                } else {
+                    request.httpBody = jsonString.data(using: .utf8)
+                }
+                return request
             }
-            return request
+            return nil
         }
-        return nil
     }
 }
 

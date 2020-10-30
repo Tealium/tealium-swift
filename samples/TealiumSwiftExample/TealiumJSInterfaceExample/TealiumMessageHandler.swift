@@ -2,7 +2,6 @@
 //  TealiumMessageHandler.swift
 //  SwiftUIWebView
 //
-//  Created by Christina S on 6/9/20.
 //  Copyright © 2020 Tealium. All rights reserved.
 //
 

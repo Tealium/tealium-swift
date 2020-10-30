@@ -2,7 +2,6 @@
 //  TealiumUtils.swift
 //  tealium-swift
 //
-//  Created by Jason Koo on 6/26/17.
 //  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 

@@ -2,7 +2,6 @@
 //  AtomicInteger.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 11/07/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //  Credit: https://gist.github.com/nestserau/ce8f5e5d3f68781732374f7b1c352a5a
 //

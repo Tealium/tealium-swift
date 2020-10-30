@@ -1,8 +1,7 @@
 //
 //  TealiumPublishSettings.swift
-//  TealiumCore
+//  tealium-swift
 //
-//  Created by Craig Rouse on 02/12/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 

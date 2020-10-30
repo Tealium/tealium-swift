@@ -1,8 +1,7 @@
 //
 //  TealiumExtensionTests.swift
-//  TealiumAppDelegateProxyTests-iOS
+//  tealium-swift
 //
-//  Created by Christina S on 10/2/20.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 
@@ -87,7 +86,7 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNil(self.tealium.visitorService)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        wait(for: [expect], timeout: 2.0)
     }
 
     func testLifecycleNotNil() {
@@ -170,6 +169,7 @@ class TealiumExtensionTests: XCTestCase {
     func testTagManagementNotNil() {
         let expect = expectation(description: "Tag Management not nil")
         defaultTealiumConfig.dispatchers = [Dispatchers.TagManagement]
+        defaultTealiumConfig.shouldUseRemotePublishSettings = false
         tealium = Tealium(config: defaultTealiumConfig) { _ in
             XCTAssertNotNil(self.tealium.tagManagement)
             expect.fulfill()
@@ -179,6 +179,7 @@ class TealiumExtensionTests: XCTestCase {
 
     func testTagManagementNilWhenNotSetAsDispatcher() {
         let expect = expectation(description: "Tag Management nil")
+        defaultTealiumConfig.shouldUseRemotePublishSettings = false
         tealium = Tealium(config: defaultTealiumConfig) { _ in
             XCTAssertNil(self.tealium.tagManagement)
             expect.fulfill()

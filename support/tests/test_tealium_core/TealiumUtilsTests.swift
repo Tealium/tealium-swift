@@ -1,8 +1,7 @@
 //
-//  TealiumCollectTests.swift
+//  TealiumUtilsTests.swift
 //  tealium-swift
 //
-//  Created by Jason Koo on 9/6/16.
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
@@ -35,7 +34,7 @@ class TealiumUtilsTests: XCTestCase {
     }
 
     func testURLRequest() {
-        let urlRequest = urlPOSTRequestWithJSONString(self.testJSONString, dispatchURL: "https://collect.tealiumiq.com/event")
+        let urlRequest = NetworkUtils.urlPOSTRequestWithJSONString(self.testJSONString, dispatchURL: "https://collect.tealiumiq.com/event")
         XCTAssertNotNil(urlRequest, "URLRequest was nil")
         XCTAssertTrue(urlRequest?.httpMethod == "POST", "Unexpected request type")
         XCTAssertTrue(try! urlRequest?.httpBody?.gunzipped() == self.testJSONString.data(using: .utf8), "Unexpected request body")
@@ -46,10 +45,10 @@ class TealiumUtilsTests: XCTestCase {
 
         measure {
             let jsonString = testDictionaries[(Int.random(in: 0..<4))].toJSONString
-            _ = urlPOSTRequestWithJSONString(jsonString!, dispatchURL: "https://collect.tealiumiq.com/event")
-            _ = urlPOSTRequestWithJSONString(jsonString!, dispatchURL: "https://collect.tealiumiq.com/event")
-            _ = urlPOSTRequestWithJSONString(jsonString!, dispatchURL: "https://collect.tealiumiq.com/event")
-            _ = urlPOSTRequestWithJSONString(jsonString!, dispatchURL: "https://collect.tealiumiq.com/event")
+            _ = NetworkUtils.urlPOSTRequestWithJSONString(jsonString!, dispatchURL: "https://collect.tealiumiq.com/event")
+            _ = NetworkUtils.urlPOSTRequestWithJSONString(jsonString!, dispatchURL: "https://collect.tealiumiq.com/event")
+            _ = NetworkUtils.urlPOSTRequestWithJSONString(jsonString!, dispatchURL: "https://collect.tealiumiq.com/event")
+            _ = NetworkUtils.urlPOSTRequestWithJSONString(jsonString!, dispatchURL: "https://collect.tealiumiq.com/event")
         }
 
     }

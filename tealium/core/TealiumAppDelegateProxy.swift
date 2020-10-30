@@ -2,7 +2,6 @@
 //  TealiumAppDelegateProxy.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 24/08/2020.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 // Based on  https://notificare.com/blog/2020/07/24/Swizzling-with-Swift/ 🙏
@@ -193,7 +192,7 @@ class TealiumAppDelegateProxy: NSProxy {
     private static func log(_ message: String) {
         let logRequest = TealiumLogRequest(title: "AppDelegateProxy", message: message, info: nil, logLevel: .info, category: .general)
         contexts?.forEach {
-            $0.config?.logger?.log(logRequest)
+            $0.config.logger?.log(logRequest)
 
         }
     }

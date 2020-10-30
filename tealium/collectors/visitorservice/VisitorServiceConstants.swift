@@ -2,7 +2,6 @@
 //  VisitorServiceConstants.swift
 //  tealium-swift
 //
-//  Created by Christina Sund on 5/13/19.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 

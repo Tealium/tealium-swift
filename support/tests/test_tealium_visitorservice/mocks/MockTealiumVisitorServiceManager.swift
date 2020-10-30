@@ -1,8 +1,7 @@
 //
 //  MockTealiumVisitorServiceManager.swift
-//  TestHost
+//  tealium-swift
 //
-//  Created by Christina Sund on 10/1/19.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 

@@ -2,9 +2,9 @@
 //  TealiumRegistration.swift
 //  tealium-swift
 //
-//  Created by Jonathan Wong on 1/17/19.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
+
 #if os(iOS)
 import UIKit
 import UserNotifications

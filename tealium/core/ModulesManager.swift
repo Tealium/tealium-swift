@@ -1,12 +1,13 @@
 //
 //  ModulesManager.swift
-//  TealiumCore
+//  tealium-swift
 //
-//  Created by Craig Rouse on 21/04/2020.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 
 import Foundation
+
+public typealias ModuleCompletion = (((Result<Bool, Error>, [String: Any]?)) -> Void)
 
 enum ModulesManagerLogMessages {
     static let system = "Modules Manager"
@@ -100,17 +101,19 @@ public class ModulesManager {
         }
     }
 
-    init (_ config: TealiumConfig,
-          dataLayer: DataLayerManagerProtocol?,
+    var context: TealiumContext
+
+    init (_ context: TealiumContext,
           optionalCollectors: [String]? = nil,
           knownDispatchers: [String]? = nil) {
-        self.originalConfig = config.copy
-        self.config = config
-        self.connectivityManager = ConnectivityModule(config: self.config, delegate: nil, diskStorage: nil) { _, _  in
+        self.context = context
+        self.originalConfig = context.config.copy
+        self.config = context.config
+        self.dataLayerManager = context.dataLayer
+        self.connectivityManager = ConnectivityModule(context: self.context, delegate: nil, diskStorage: nil) { _, _  in
         }
-        self.dataLayerManager = dataLayer
         connectivityManager.addConnectivityDelegate(delegate: self)
-        if config.shouldUseRemotePublishSettings {
+        if self.config.shouldUseRemotePublishSettings {
             self.remotePublishSettingsRetriever = TealiumPublishSettingsRetriever(config: self.config, delegate: self)
             if let remoteConfig = self.remotePublishSettingsRetriever?.cachedSettings?.newConfig(with: self.config) {
                 self.config = remoteConfig
@@ -205,7 +208,7 @@ public class ModulesManager {
                 return
             }
 
-            let collector = collector.init(config: config, delegate: self, diskStorage: nil) { _, _  in
+            let collector = collector.init(context: context, delegate: self, diskStorage: nil) { _, _  in
 
             }
 

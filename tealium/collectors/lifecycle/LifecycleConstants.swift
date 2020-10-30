@@ -2,7 +2,6 @@
 //  LifecycleConstants.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 28/08/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 
@@ -14,6 +13,7 @@ import TealiumCore
 public enum LifecycleKey {
 
     static let moduleName = "lifecycle"
+    static let migratedLifecycle = "migrated_lifecycle"
     static let defaultSessionsSize = 20
     static let autotracked = "autotracked"
     static let dayOfWeek = "lifecycle_dayofweek_local"

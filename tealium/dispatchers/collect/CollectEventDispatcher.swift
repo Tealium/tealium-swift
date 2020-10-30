@@ -2,7 +2,6 @@
 //  CollectEventDispatcher.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 11/31/18.
 //  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 
@@ -105,7 +104,7 @@ class CollectEventDispatcher: CollectProtocol {
                   completion: ModuleCompletion?) {
         if let jsonString = data.toJSONString,
            let url = url ?? singleEventDispatchURL,
-           let urlRequest = urlPOSTRequestWithJSONString(jsonString, dispatchURL: url) {
+           let urlRequest = NetworkUtils.urlPOSTRequestWithJSONString(jsonString, dispatchURL: url) {
             sendURLRequest(urlRequest, completion)
         } else {
             completion?((.failure(CollectError.noDataToTrack), nil))

@@ -2,7 +2,6 @@
 //  TealiumRequests.swift
 //  tealium-swift
 //
-//  Created by Jonathan Wong on 1/10/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
@@ -321,5 +320,37 @@ public struct TealiumView: TealiumDispatch {
         data[TealiumKey.callType] = TealiumTrackType.view.description
         data[TealiumKey.screenTitle] = viewName
         return TealiumTrackRequest(data: data)
+    }
+}
+
+public extension TealiumTrackRequest {
+
+    func extractKey(lookup: [String: String]?) -> String? {
+        guard let keys = lookup else {
+            return nil
+        }
+        guard let event = self.event else {
+            return nil
+        }
+        guard let dispatchKey = keys[event] else {
+            return nil
+        }
+        return dispatchKey
+    }
+
+    func extractLookupValue(for key: String) -> Any? {
+        var item: Any?
+        guard let lookupValue = self.trackDictionary[key] else {
+            return nil
+        }
+        if let arrayItem = lookupValue as? [Any] {
+            guard arrayItem.count > 0 else {
+                return nil
+            }
+            item = arrayItem[0]
+        } else {
+            item = lookupValue
+        }
+        return item
     }
 }

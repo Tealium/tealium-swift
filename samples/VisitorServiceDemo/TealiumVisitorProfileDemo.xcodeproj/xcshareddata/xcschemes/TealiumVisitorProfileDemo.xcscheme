@@ -28,6 +28,16 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "CF9A372A25478192000B420D"
+               BuildableName = "TealiumVisitorProfileDemoUITests.xctest"
+               BlueprintName = "TealiumVisitorProfileDemoUITests"
+               ReferencedContainer = "container:TealiumVisitorProfileDemo.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

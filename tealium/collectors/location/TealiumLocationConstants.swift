@@ -1,8 +1,7 @@
 //
 //  TealiumLocationConstants.swift
-//  TealiumLocation
+//  tealium-swift
 //
-//  Created by Harry Cassell on 12/09/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 

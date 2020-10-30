@@ -2,7 +2,6 @@
 //  ConsentPreferencesStorage.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 4/26/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 

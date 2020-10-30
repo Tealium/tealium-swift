@@ -1,11 +1,11 @@
 //
 //  AutoTrackingExtensions.swift
-//  TealiumAutotracking
+//  tealium-swift
 //
-//  Created by Craig Rouse on 01/07/2020.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 
+#if os(iOS)
 import Foundation
 #if autotracking
 import TealiumCore
@@ -14,3 +14,4 @@ import TealiumCore
 public extension Collectors {
     static let AutoTracking = AutotrackingModule.self
 }
+#endif

@@ -1,7 +1,6 @@
 //
 //  TealiumHelper.swift
 //
-//  Created by Christina S on 7/6/20.
 //  Copyright © 2019 Tealium. All rights reserved.
 //
 
@@ -56,7 +55,9 @@ class TealiumHelper {
         #endif
 
         // Add collectors
-        #if os(iOS)
+        #if os(iOS) && targetEnvironment(macCatalyst)
+        config.collectors = [Collectors.VisitorService]
+        #elseif os(iOS) && !targetEnvironment(macCatalyst)
         config.collectors = [Collectors.Attribution, Collectors.VisitorService, Collectors.Location]
 
          // Batching:
@@ -84,7 +85,7 @@ class TealiumHelper {
             // Optional post init processing
             self.tealium?.dataLayer.add(data: ["somekey": "someval"], expiry: .afterCustom((.months, 1)))
             self.tealium?.dataLayer.add(key: "someotherkey", value: "someotherval", expiry: .forever)
-            #if os(iOS)
+            #if os(iOS) && !targetEnvironment(macCatalyst)
             // Location - Request Auth:
             self.tealium?.location?.requestAuthorization()
             // Once appropriate and if needed, you can use a Tealium helper method to request temporary full accuracy (in iOS 14)

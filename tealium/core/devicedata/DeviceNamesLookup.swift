@@ -1,8 +1,7 @@
 //
 //  DeviceNamesLookup.swift
-//  DeviceData
+//  tealium-swift
 //
-//  Created by Craig Rouse on 14/01/2020.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 // Note: Swift Package Manager currently has no support for resource files, so this was converted from JSON to avoid having to bundle a JSON file in the swift package.

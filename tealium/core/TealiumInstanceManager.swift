@@ -2,7 +2,6 @@
 //  TealiumInstanceManager.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 6/4/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 

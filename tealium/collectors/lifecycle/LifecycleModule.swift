@@ -1,8 +1,7 @@
 //
 //  LifecycleModule.swift
-//  TealiumSwift
+//  tealium-swift
 //
-//  Created by Christina S on 4/30/20.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 
@@ -28,7 +27,9 @@ public class LifecycleModule: Collector {
     var lifecycleData = [String: Any]()
     var lastLifecycleEvent: LifecycleType?
     var diskStorage: TealiumDiskStorageProtocol!
+    var userDefaults: Storable?
     public var config: TealiumConfig
+    var migrated = false
 
     public var data: [String: Any]? {
         lifecycle?.asDictionary(type: nil, for: Date())
@@ -37,21 +38,29 @@ public class LifecycleModule: Collector {
     /// Initializes the module
     ///
     /// - Parameters:
-    ///     -  config: `TealiumConfig` instance
+    ///     -  context: `TealiumContext` instance
     ///     - delegate: `TealiumModuleDelegate` instance
     ///     - diskStorage: `TealiumDiskStorageProtocol` instance
     ///     - completion: `ModuleCompletion` block to be called when init is finished
-    required public init(config: TealiumConfig,
+    required public init(context: TealiumContext,
                          delegate: ModuleDelegate?,
                          diskStorage: TealiumDiskStorageProtocol?,
                          completion: ModuleCompletion) {
+        self.config = context.config
         self.delegate = delegate
         self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config,
                                                              forModule: ModuleNames.lifecycle.lowercased(),
                                                              isCritical: true)
-        self.config = config
+        if let dataLayer = context.dataLayer,
+           let migratedLifecycle = dataLayer.all[LifecycleKey.migratedLifecycle] as? [String: Any] {
+            lifecycle = Lifecycle(from: migratedLifecycle)
+            dataLayer.delete(for: LifecycleKey.migratedLifecycle)
+        }
+        migrated = true
+        enabledPrior = false
         if config.lifecycleAutoTrackingEnabled {
             Tealium.lifecycleListeners.addDelegate(delegate: self)
+            process(type: .launch, at: Date(), autotracked: true)
         }
         completion((.success(true), nil))
     }
@@ -97,7 +106,9 @@ public class LifecycleModule: Collector {
         self.lifecycle = lifecycle
 
         lifecycleData[LifecycleKey.autotracked] = autotracked
-        requestTrack(data: lifecycleData)
+        if migrated {
+            requestTrack(data: lifecycleData)
+        }
     }
 
     /// Prevent manual spanning of repeated lifecycle calls to system.

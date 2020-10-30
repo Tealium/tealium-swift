@@ -1,8 +1,7 @@
 //
 //  VisitorProfileTests.swift
-//  TealiumSwiftTests
+//  tealium-swift
 //
-//  Created by Christina Sund on 5/16/19.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 
@@ -20,10 +19,10 @@ class VisitorProfileTests: XCTestCase {
     let decoder = JSONDecoder()
 
     override func setUp() {
-        visitorJSON = loadStub(from: "visitor", with: "json")
-        visitorNils = loadStub(from: "visitor-nils", with: "json")
-        visitorEmpties = loadStub(from: "visitor-empties", with: "json")
-        visitorAllNil = loadStub(from: "visitor-all-nil", with: "json")
+        visitorJSON = TestTealiumHelper.loadStub(from: "visitor", type(of: self))
+        visitorNils = TestTealiumHelper.loadStub(from: "visitor-nils", type(of: self))
+        visitorEmpties = TestTealiumHelper.loadStub(from: "visitor-empties", type(of: self))
+        visitorAllNil = TestTealiumHelper.loadStub(from: "visitor-all-nil", type(of: self))
     }
 
     func testCodableObjectReturnsExpectedData() {

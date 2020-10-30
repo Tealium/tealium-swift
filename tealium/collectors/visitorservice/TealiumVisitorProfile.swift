@@ -1,8 +1,7 @@
 //
 //  TealiumVisitorProfile.swift
-//  TealiumSwift
+//  tealium-swift
 //
-//  Created by Christina S on 4/14/20.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 

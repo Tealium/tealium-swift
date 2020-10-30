@@ -1,8 +1,7 @@
 //
-//  TealiumConnectivityModuleTests.swift
+//  TealiumConnectivityTests.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 11/6/17.
 //  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 
@@ -20,7 +19,8 @@ class TealiumConnectivityTests: XCTestCase {
     var legacyConnectivityRefreshEnabled: ConnectivityModule {
         let config = defaultTealiumConfig.copy
         config.connectivityRefreshEnabled = true
-        let connectivity = ConnectivityModule(config: config, delegate: nil, diskStorage: nil) { _ in }
+        let context = TestTealiumHelper.context(with: config)
+        let connectivity = ConnectivityModule(context: context, delegate: nil, diskStorage: nil) { _ in }
         connectivity.connectivityMonitor = LegacyConnectivityMonitor(config: config) { _ in
 
         }
@@ -30,7 +30,8 @@ class TealiumConnectivityTests: XCTestCase {
     var legacyConnectivityRefreshDisabled: ConnectivityModule {
         let config = defaultTealiumConfig.copy
         config.connectivityRefreshEnabled = false
-        let connectivity = ConnectivityModule(config: config, delegate: nil, diskStorage: nil) { _ in }
+        let context = TestTealiumHelper.context(with: config)
+        let connectivity = ConnectivityModule(context: context, delegate: nil, diskStorage: nil) { _ in }
         connectivity.connectivityMonitor = LegacyConnectivityMonitor(config: config) { _ in
 
         }
@@ -39,7 +40,8 @@ class TealiumConnectivityTests: XCTestCase {
 
     var nwPathConnectivity: ConnectivityModule {
         let config = defaultTealiumConfig.copy
-        let connectivity = ConnectivityModule(config: config, delegate: nil, diskStorage: nil) { _ in }
+        let context = TestTealiumHelper.context(with: config)
+        let connectivity = ConnectivityModule(context: context, delegate: nil, diskStorage: nil) { _ in }
         return connectivity
     }
 

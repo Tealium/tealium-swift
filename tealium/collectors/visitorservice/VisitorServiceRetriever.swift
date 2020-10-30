@@ -2,7 +2,6 @@
 //  VisitorServiceRetriever.swift
 //  tealium-swift
 //
-//  Created by Christina Sund on 5/15/19.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 

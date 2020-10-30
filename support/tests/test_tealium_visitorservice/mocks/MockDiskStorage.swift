@@ -1,8 +1,7 @@
 //
 //  MockDiskStorage.swift
-//  TealiumVisitorProfileTests
+//  tealium-swift
 //
-//  Created by Christina Sund on 8/22/19.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 

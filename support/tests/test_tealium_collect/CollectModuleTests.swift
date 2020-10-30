@@ -2,7 +2,6 @@
 //  CollectModuleTests.swift
 //  tealium-swift
 //
-//  Created by Jason Koo on 11/1/16.
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
@@ -11,7 +10,7 @@
 import XCTest
 
 class CollectModuleTests: XCTestCase {
-
+        
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.

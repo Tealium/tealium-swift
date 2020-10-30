@@ -2,7 +2,6 @@
 //  LifecycleModuleTests.swift
 //  tealium-swift
 //
-//  Created by Jason Koo on 2/14/17.
 //  Copyright © 2017 Tealium, Inc. All rights reserved.
 //
 
@@ -21,12 +20,18 @@ class LifecycleModuleTests: XCTestCase {
     var lifecycleModule: LifecycleModule!
     var config: TealiumConfig!
     var returnData: [String: Any]!
+    var tealium: Tealium!
+    
+    func createModule(with config: TealiumConfig? = nil, dataLayer: DataLayerManagerProtocol? = nil) -> LifecycleModule {
+        let context = TestTealiumHelper.context(with: config ?? TestTealiumHelper().getConfig(), dataLayer: dataLayer ?? DummyDataManager())
+        return LifecycleModule(context: context, delegate: self, diskStorage: LifecycleMockDiskStorage(), completion: { _ in })
+    }
 
     override func setUp() {
         super.setUp()
         config = TealiumConfig(account: "testAccount", profile: "testProfile", environment: "testEnv")
-        //lifecycleModule = LifecycleModule(config: config, delegate: self, diskStorage: LifecycleMockDiskStorage(), completion: {})
         returnData = [String: Any]()
+        tealium = Tealium(config: config)
     }
 
     override func tearDown() {
@@ -117,13 +122,13 @@ class LifecycleModuleTests: XCTestCase {
     }
 
     func testLifecycleLoadedFromStorage() {
-        lifecycleModule = LifecycleModule(config: config, delegate: self, diskStorage: LifecycleMockDiskStorage(), completion: { _ in })
+        lifecycleModule = createModule()
         let stored = lifecycleModule.lifecycle
         XCTAssertNotNil(stored)
     }
 
     func testLifecycleSavedToStorage() {
-        lifecycleModule = LifecycleModule(config: config, delegate: self, diskStorage: LifecycleMockDiskStorage(), completion: { _ in })
+        lifecycleModule = createModule()
         let lifecycle = Lifecycle()
         lifecycleModule.lifecycle = lifecycle
         let stored = lifecycleModule.lifecycle
@@ -131,7 +136,7 @@ class LifecycleModuleTests: XCTestCase {
     }
 
     func testLifecycleAcceptable() {
-        let lifecycleModule2 = LifecycleModule(config: config, delegate: self, diskStorage: LifecycleMockDiskStorage(), completion: { _ in })
+        let lifecycleModule2 = createModule()
         XCTAssertFalse(lifecycleModule2.lifecycleAcceptable(type: .wake))
 
         lifecycleModule2.lastLifecycleEvent = .launch
@@ -151,8 +156,7 @@ class LifecycleModuleTests: XCTestCase {
     }
 
     func testAllAdditionalKeysPresent() {
-        lifecycleModule = LifecycleModule(config: config, delegate: self, diskStorage: LifecycleMockDiskStorage(), completion: { _ in })
-        let actual = lifecycleModule.data
+        lifecycleModule = createModule(dataLayer: MockMigratedDataLayerNoData())
 
         guard let request = requestProcess as? TealiumTrackRequest else {
             XCTFail("\n\nFailure: Process not a track request.\n")
@@ -190,9 +194,93 @@ class LifecycleModuleTests: XCTestCase {
         XCTAssertTrue(missingDictKeys.isEmpty, "Unexpected keys missing:\(missingDictKeys)")
     }
 
+    func testLifecycleDataMigrated() {
+        lifecycleModule = createModule(dataLayer: MockMigratedDataLayer())
+
+        let retrieved = lifecycleModule.lifecycle?.dictionary
+
+        let expected: [String: Any] = [
+            "countLaunch": "12",
+            "countCrashTotal": "2",
+            "countLaunchTotal": "12",
+            "countSleep": "5",
+            "totalSecondsAwake": "3000",
+            "countSleepTotal": "8",
+            "countWakeTotal": "7",
+        ]
+
+        expected.forEach {
+            if let string = retrieved?[$0.key] as? String {
+                XCTAssertEqual(string, $0.value as! String)
+            }
+        }
+    }
+
+    func testNormalLifecycleDataWhenNoLegacy() {
+        lifecycleModule = createModule(dataLayer: MockMigratedDataLayerNoData())
+
+        guard let request = requestProcess as? TealiumTrackRequest else {
+            XCTFail("\n\nFailure: Process not a track request.\n")
+            return
+        }
+
+        returnData = request.trackDictionary
+
+        let expectedKeys = ["tealium_event"]
+        let expectedDictKeys = ["lifecycle_lastwakedate",
+                                "lifecycle_firstlaunchdate_MMDDYYYY",
+                                "lifecycle_launchcount",
+                                "lifecycle_hourofday_local",
+                                "autotracked",
+                                "lifecycle_secondsawake",
+                                "lifecycle_dayofweek_local",
+                                "lifecycle_type",
+                                "lifecycle_totalcrashcount",
+                                "lifecycle_totallaunchcount",
+                                "lifecycle_firstlaunchdate",
+                                "lifecycle_sleepcount",
+                                "lifecycle_totalsecondsawake",
+                                "lifecycle_priorsecondsawake",
+                                "lifecycle_lastlaunchdate",
+                                "lifecycle_dayssincelastwake",
+                                "lifecycle_dayssincelaunch",
+                                "lifecycle_wakecount",
+                                "lifecycle_totalsleepcount",
+                                "lifecycle_totalwakecount"]
+
+        let missingKeys = TestTealiumHelper.missingKeys(fromDictionary: returnData, keys: expectedKeys)
+
+        let missingDictKeys = TestTealiumHelper.missingKeys(fromDictionary: returnData, keys: expectedDictKeys)
+
+        XCTAssertTrue(missingKeys.isEmpty, "Unexpected keys missing:\(missingKeys)")
+
+        XCTAssertTrue(missingDictKeys.isEmpty, "Unexpected keys missing:\(missingDictKeys)")
+    }
+
+    func testHasMigratedTrueAfterInit() {
+        lifecycleModule = createModule(dataLayer: MockMigratedDataLayerNoData())
+        XCTAssertTrue(lifecycleModule.migrated)
+    }
+
+    func testMigratedLifecycleKeyDeletedFromDataLayer() {
+        let migratedData = MockMigratedDataLayer()
+        lifecycleModule = createModule(dataLayer: migratedData)
+
+        if let request = requestProcess as? TealiumTrackRequest {
+            returnData = request.trackDictionary
+        }
+
+        let expectedMissingKeys = ["migrated_lifecycle"]
+
+        let missingKeys = TestTealiumHelper.missingKeys(fromDictionary: returnData, keys: expectedMissingKeys)
+
+        XCTAssertTrue(missingKeys.count == 1, "Unexpected keys missing:\(missingKeys)")
+        XCTAssertEqual(migratedData.deleteCount, 1)
+    }
+
     func testManualLifecycleTrackingConfigSetting() {
         config.lifecycleAutoTrackingEnabled = false
-        lifecycleModule = LifecycleModule(config: config, delegate: self, diskStorage: LifecycleMockDiskStorage(), completion: { _ in })
+        lifecycleModule = createModule(with: config, dataLayer: MockMigratedDataLayer())
 
         if let request = requestProcess as? TealiumTrackRequest {
             returnData = request.trackDictionary
@@ -210,8 +298,7 @@ class LifecycleModuleTests: XCTestCase {
         expectationRequest = expectation(description: "manualLaunchProducesExpectedData")
 
         config.lifecycleAutoTrackingEnabled = false
-        lifecycleModule = LifecycleModule(config: config, delegate: self, diskStorage: LifecycleMockDiskStorage(), completion: { _ in })
-        _ = Tealium(config: config)
+        lifecycleModule = createModule(with: config, dataLayer: MockMigratedDataLayerNoData())
 
         lifecycleModule.launch(at: Date())
 
@@ -238,10 +325,8 @@ class LifecycleModuleTests: XCTestCase {
 
     func testManualSleepMethodCall() {
         sleepExpectation = expectation(description: "manualSleepProducesExpectedData")
-
         config.lifecycleAutoTrackingEnabled = false
-        lifecycleModule = LifecycleModule(config: config, delegate: self, diskStorage: LifecycleMockDiskStorage(), completion: { _ in })
-        _ = Tealium(config: config)
+        lifecycleModule = createModule(with: config, dataLayer: MockMigratedDataLayerNoData())
 
         lifecycleModule.launch(at: Date())
         lifecycleModule.sleep()
@@ -269,10 +354,8 @@ class LifecycleModuleTests: XCTestCase {
 
     func testManualWakeMethodCall() {
         wakeExpectation = expectation(description: "manualWakeProducesExpectedData")
-
         config.lifecycleAutoTrackingEnabled = false
-        lifecycleModule = LifecycleModule(config: config, delegate: self, diskStorage: LifecycleMockDiskStorage(), completion: { _ in })
-        _ = Tealium(config: config)
+        lifecycleModule = createModule(with: config, dataLayer: MockMigratedDataLayerNoData())
 
         lifecycleModule.launch(at: Date())
         lifecycleModule.sleep()
@@ -300,9 +383,10 @@ class LifecycleModuleTests: XCTestCase {
     }
 
     func testAutotrackedTrue() {
+
         autotrackedRequest = expectation(description: "testAutotrackedTrue")
-        lifecycleModule = LifecycleModule(config: config, delegate: self, diskStorage: LifecycleMockDiskStorage(), completion: { _ in })
-        _ = Tealium(config: config)
+        lifecycleModule = createModule(with: config, dataLayer: MockMigratedDataLayerNoData())
+
         Tealium.lifecycleListeners.addDelegate(delegate: self)
 
         lifecycleModule.lifecycleDetected(type: .launch)
@@ -323,10 +407,9 @@ class LifecycleModuleTests: XCTestCase {
 
     func testAutotrackedFalse() {
         autotrackedRequest = expectation(description: "testAutotrackedFalse")
-
         config.lifecycleAutoTrackingEnabled = false
-        lifecycleModule = LifecycleModule(config: config, delegate: self, diskStorage: LifecycleMockDiskStorage(), completion: { _ in })
-        _ = Tealium(config: config)
+        lifecycleModule = createModule(with: config, dataLayer: MockMigratedDataLayerNoData())
+        lifecycleModule.migrated = true
 
         self.launch(at: Date())
 

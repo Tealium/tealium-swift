@@ -1,11 +1,11 @@
 //
 //  JSONRemoteCommandResponse.swift
-//  TealiumRemoteCommands
+//  tealium-swift
 //
-//  Created by Christina S on 6/15/20.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 
+#if os(iOS)
 import Foundation
 
 public class JSONRemoteCommandResponse: RemoteCommandResponseProtocol {
@@ -21,3 +21,4 @@ public class JSONRemoteCommandResponse: RemoteCommandResponseProtocol {
     }
 
 }
+#endif

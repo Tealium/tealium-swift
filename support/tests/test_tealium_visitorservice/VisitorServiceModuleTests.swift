@@ -2,7 +2,6 @@
 //  VisitorServiceModuleTests.swift
 //  tealium-swift
 //
-//  Created by Christina Sund on 6/17/19.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 
@@ -28,7 +27,8 @@ class VisitorServiceModuleTests: XCTestCase {
 
     func testRequestVisitorProfileRunWhenFirstEventSentTrue() {
         let expect = expectation(description: "testRequestVisitorProfileRunWhenFirstEventSentTrue")
-        let module = VisitorServiceModule(config: config, delegate: self, diskStorage: mockDiskStorage, visitorServiceManager: mockVisitorServiceManager)
+        let context = TestTealiumHelper.context(with: config)
+        let module = VisitorServiceModule(context: context, delegate: self, diskStorage: mockDiskStorage, visitorServiceManager: mockVisitorServiceManager)
         module.firstEventSent = true
         module.retrieveProfile(visitorId: "test") {
             XCTAssertEqual(1, self.mockVisitorServiceManager.requestVisitorProfileCount)
@@ -39,7 +39,8 @@ class VisitorServiceModuleTests: XCTestCase {
 
     func testStartProfileUpdatesRunWhenFirstEventSentFalse() {
         let expect = expectation(description: "testStartProfileUpdatesRunWhenFirstEventSentFalse")
-        let module = VisitorServiceModule(config: config, delegate: self, diskStorage: mockDiskStorage, visitorServiceManager: mockVisitorServiceManager)
+        let context = TestTealiumHelper.context(with: config)
+        let module = VisitorServiceModule(context: context, delegate: self, diskStorage: mockDiskStorage, visitorServiceManager: mockVisitorServiceManager)
         module.firstEventSent = false
         module.retrieveProfile(visitorId: "test") {
             XCTAssertEqual(1, self.mockVisitorServiceManager.startProfileUpdatesCount)
@@ -50,7 +51,8 @@ class VisitorServiceModuleTests: XCTestCase {
 
     func testBatchTrackRetreiveProfileExecuted() {
         let expect = expectation(description: "testBatchTrackRetreiveProfileExecuted")
-        let module = VisitorServiceModule(config: config, delegate: self, diskStorage: mockDiskStorage, visitorServiceManager: mockVisitorServiceManager)
+        let context = TestTealiumHelper.context(with: config)
+        let module = VisitorServiceModule(context: context, delegate: self, diskStorage: mockDiskStorage, visitorServiceManager: mockVisitorServiceManager)
         module.firstEventSent = true
         let trackRequest = TealiumTrackRequest(data: ["hello": "world", "tealium_visitor_id": "test"])
         let batchTrackRequest = TealiumBatchTrackRequest(trackRequests: [trackRequest])
@@ -64,7 +66,8 @@ class VisitorServiceModuleTests: XCTestCase {
 
     func testTrackRetreiveProfileExecuted() {
         let expect = expectation(description: "testTrackRetreiveProfileExecuted")
-        let module = VisitorServiceModule(config: config, delegate: self, diskStorage: mockDiskStorage, visitorServiceManager: mockVisitorServiceManager)
+        let context = TestTealiumHelper.context(with: config)
+        let module = VisitorServiceModule(context: context, delegate: self, diskStorage: mockDiskStorage, visitorServiceManager: mockVisitorServiceManager)
         module.firstEventSent = true
         let trackRequest = TealiumTrackRequest(data: ["hello": "world", "tealium_visitor_id": "test"])
         module.willTrack(request: trackRequest)

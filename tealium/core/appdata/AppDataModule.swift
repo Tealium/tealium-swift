@@ -1,8 +1,7 @@
 //
 //  AppData.swift
-//  TealiumSwift
+//  tealium-swift
 //
-//  Created by Craig Rouse on 27/11/2019.
 //  Copyright © 2019 Tealium. All rights reserved.
 //
 
@@ -48,37 +47,46 @@ public class AppDataModule: Collector {
 
     public var config: TealiumConfig
 
-    /// Provided for testing - allows `Bundle` to be overridden
+    /// Provided for testing - allows `Bundle` and `AppDataCollection` to be overridden
     ///
-    /// - Parameter config: `TealiumConfig` instance
+    /// - Parameter context: `TealiumContext` instance
     /// - Parameter delegate: `ModuleDelegate` instance
     /// - Parameter diskStorage: `TealiumDiskStorageProtocol` instance
     /// - Parameter bundle: `Bundle` for testing
-    convenience init(config: TealiumConfig,
+    /// - Parameter appDataCollector: `AppDataCollection` for testing
+    convenience init(context: TealiumContext,
                      delegate: ModuleDelegate,
                      diskStorage: TealiumDiskStorageProtocol?,
                      bundle: Bundle,
                      appDataCollector: AppDataCollection) {
-        self.init(config: config, delegate: delegate, diskStorage: diskStorage) { _, _ in }
+        self.init(context: context, delegate: delegate, diskStorage: diskStorage) { _, _ in }
         self.appDataCollector = appDataCollector
         self.bundle = bundle
     }
 
     /// Initializes the module
     ///
-    /// - Parameter config: `TealiumConfig` instance
+    /// - Parameter context: `TealiumContext` instance
     /// - Parameter delegate: `ModuleDelegate` instance
     /// - Parameter diskStorage: `TealiumDiskStorageProtocol` instance
     /// - Parameter completion: `ModuleCompletion` block to be called when init is finished
-    required public init(config: TealiumConfig,
+    required public init(context: TealiumContext,
                          delegate: ModuleDelegate?,
                          diskStorage: TealiumDiskStorageProtocol?,
                          completion: ModuleCompletion) {
-        self.config = config
+        self.config = context.config
         self.bundle = Bundle.main
         self.appDataCollector = AppDataCollector()
         self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config, forModule: "appdata", isCritical: true)
         fillCache()
+        if let dataLayer = context.dataLayer,
+           let migratedUUID = dataLayer.all[TealiumKey.uuid] as? String,
+           let migratedVisitorId = dataLayer.all[TealiumKey.visitorId] as? String {
+            appData.persistentData?.uuid = migratedUUID
+            appData.persistentData?.visitorId = migratedVisitorId
+            diskStorage?.save(appData.persistentData, completion: nil)
+            dataLayer.delete(for: [TealiumKey.uuid, TealiumKey.visitorId])
+        }
         completion((.success(true), nil))
     }
 

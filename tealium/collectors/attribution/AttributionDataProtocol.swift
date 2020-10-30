@@ -1,12 +1,15 @@
 //
-//  TealiumAttributionDataProtocol.swift
+//  AttributionDataProtocol.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 14/03/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
+
 #if os(iOS)
 import Foundation
+#if attribution
+import TealiumCore
+#endif
 
 public protocol AttributionDataProtocol {
 
@@ -32,5 +35,9 @@ public protocol AttributionDataProtocol {
     ///
     /// - Parameter completion: Completion block to be executed asynchronously when Search Ads data is returned
     func appleSearchAdsData(_ completion: @escaping (PersistentAttributionData) -> Void)
+
+    /// Calls the `SKAdNetwork.updateConversionValue()` method
+    /// - Parameter dispatch: `TealiumRequest`
+    func updateConversionValue(from dispatch: TealiumRequest)
 }
 #endif

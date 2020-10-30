@@ -2,7 +2,6 @@
 //  TealiumPersistentDispatchQueue.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 4/11/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 

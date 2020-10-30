@@ -2,7 +2,6 @@
 //  DispatchQueueModuleTests.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 01/05/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
@@ -10,13 +9,14 @@ import Foundation
 @testable import TealiumCore
 import XCTest
 
-class TealiumDispatchQueueModuleTests: XCTestCase {
+class DispatchQueueModuleTests: XCTestCase {
 
     static var releaseExpectation: XCTestExpectation?
     static var remoteAPIExpectation: XCTestExpectation?
     static var expiredDispatchesExpectation: XCTestExpectation?
     static var connectivity: ConnectivityModule {
-        let connectivity = ConnectivityModule(config: testTealiumConfig, delegate: nil, diskStorage: nil) { _ in }
+        let context = TestTealiumHelper.context(with: testTealiumConfig)
+        let connectivity = ConnectivityModule(context: context, delegate: nil, diskStorage: nil) { _ in }
         connectivity.forceConnectionOverride = true
         return connectivity
     }
@@ -38,7 +38,7 @@ class TealiumDispatchQueueModuleTests: XCTestCase {
     }
 
     func testNegativeDispatchLimit() {
-        dispatchManager = DispatchManager(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: TealiumDispatchQueueModuleTests.connectivity, config: testTealiumConfig.copy, diskStorage: DispatchQueueMockDiskStorage())
+        dispatchManager = DispatchManager(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: DispatchQueueModuleTests.connectivity, config: testTealiumConfig.copy, diskStorage: DispatchQueueMockDiskStorage())
         dispatchManager.config.dispatchQueueLimit = -1
         XCTAssertEqual(dispatchManager.maxQueueSize, TealiumValue.defaultMaxQueueSize)
         dispatchManager.config.dispatchQueueLimit = -100
@@ -51,7 +51,7 @@ class TealiumDispatchQueueModuleTests: XCTestCase {
 
         let config = TestTealiumHelper().getConfig()
         config.batchingEnabled = true
-        dispatchManager = DispatchManager(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: TealiumDispatchQueueModuleTests.connectivity, config: config, diskStorage: DispatchQueueMockDiskStorage())
+        dispatchManager = DispatchManager(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: DispatchQueueModuleTests.connectivity, config: config, diskStorage: DispatchQueueMockDiskStorage())
         dispatchManager.clearQueue()
         let trackRequest = TealiumTrackRequest(data: ["tealium_event": "hello"])
         dispatchManager.processTrack(trackRequest)
@@ -67,7 +67,7 @@ class TealiumDispatchQueueModuleTests: XCTestCase {
     func testQueue() {
         let config = TestTealiumHelper().getConfig()
         config.batchingEnabled = true
-        dispatchManager = DispatchManager(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: TealiumDispatchQueueModuleTests.connectivity, config: config, diskStorage: DispatchQueueMockDiskStorage())
+        dispatchManager = DispatchManager(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: DispatchQueueModuleTests.connectivity, config: config, diskStorage: DispatchQueueMockDiskStorage())
         dispatchManager.clearQueue()
         let trackRequest = TealiumTrackRequest(data: ["tealium_event": "wake"])
         dispatchManager.enqueue(trackRequest, reason: nil)
@@ -76,29 +76,29 @@ class TealiumDispatchQueueModuleTests: XCTestCase {
     }
 
     func testRemoveOldDispatches() {
-        TealiumDispatchQueueModuleTests.expiredDispatchesExpectation = self.expectation(description: "remove old dispatches")
+        DispatchQueueModuleTests.expiredDispatchesExpectation = self.expectation(description: "remove old dispatches")
         let config = testTealiumConfig
         config.dispatchExpiration = 1
-        dispatchManager = DispatchManager(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: TealiumDispatchQueueModuleTests.connectivity, config: testTealiumConfig.copy, diskStorage: DispatchQueueMockDiskStorage())
+        dispatchManager = DispatchManager(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: DispatchQueueModuleTests.connectivity, config: testTealiumConfig.copy, diskStorage: DispatchQueueMockDiskStorage())
         dispatchManager.persistentQueue = MockPersistentQueue(diskStorage: diskStorage)
         dispatchManager.config = config
         dispatchManager.removeOldDispatches()
-        wait(for: [TealiumDispatchQueueModuleTests.expiredDispatchesExpectation!], timeout: 5.0)
+        wait(for: [DispatchQueueModuleTests.expiredDispatchesExpectation!], timeout: 5.0)
     }
 
     #if os(iOS)
     func testRemoteAPIEnabled() {
-        var config = defaultTealiumConfig
+        let config = defaultTealiumConfig
         config.remoteAPIEnabled = true
-        dispatchManager = DispatchManager(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: TealiumDispatchQueueModuleTests.connectivity, config: config, diskStorage: DispatchQueueMockDiskStorage())
-        TealiumDispatchQueueModuleTests.remoteAPIExpectation = self.expectation(description: "remote api")
+        dispatchManager = DispatchManager(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: DispatchQueueModuleTests.connectivity, config: config, diskStorage: DispatchQueueMockDiskStorage())
+        DispatchQueueModuleTests.remoteAPIExpectation = self.expectation(description: "remote api")
 
         let dispatcher = DispatchQueueDummyDispatcher(config: config, delegate: self, completion: nil)
         dispatchManager.dispatchers = [dispatcher]
 
         let trackRequest = TealiumTrackRequest(data: ["tealium_event": "myevent"])
         dispatchManager.processTrack(trackRequest)
-        wait(for: [TealiumDispatchQueueModuleTests.remoteAPIExpectation!], timeout: 5.0)
+        wait(for: [DispatchQueueModuleTests.remoteAPIExpectation!], timeout: 5.0)
     }
     #endif
 
@@ -108,7 +108,7 @@ class TealiumDispatchQueueModuleTests: XCTestCase {
         config.remoteAPIEnabled = true
         #endif
         config.logLevel = .silent
-        dispatchManager = DispatchManager(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: TealiumDispatchQueueModuleTests.connectivity, config: config, diskStorage: DispatchQueueMockDiskStorage())
+        dispatchManager = DispatchManager(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: DispatchQueueModuleTests.connectivity, config: config, diskStorage: DispatchQueueMockDiskStorage())
         dispatchManager.clearQueue()
         let trackRequest = TealiumTrackRequest(data: ["tealium_event": "wake"])
         dispatchManager.enqueue(trackRequest, reason: nil)
@@ -124,7 +124,7 @@ class TealiumDispatchQueueModuleTests: XCTestCase {
         config.remoteAPIEnabled = true
         #endif
         config.logLevel = .silent
-        dispatchManager = DispatchManager(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: TealiumDispatchQueueModuleTests.connectivity, config: config, diskStorage: DispatchQueueMockDiskStorage())
+        dispatchManager = DispatchManager(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: DispatchQueueModuleTests.connectivity, config: config, diskStorage: DispatchQueueMockDiskStorage())
         dispatchManager.clearQueue()
         let trackRequest = TealiumTrackRequest(data: ["tealium_event": "wake"])
         dispatchManager.enqueue(trackRequest, reason: nil)
@@ -140,7 +140,7 @@ class TealiumDispatchQueueModuleTests: XCTestCase {
         config.remoteAPIEnabled = true
         #endif
         config.logLevel = .silent
-        dispatchManager = DispatchManager(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: TealiumDispatchQueueModuleTests.connectivity, config: config, diskStorage: DispatchQueueMockDiskStorage())
+        dispatchManager = DispatchManager(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: DispatchQueueModuleTests.connectivity, config: config, diskStorage: DispatchQueueMockDiskStorage())
         XCTAssertFalse(dispatchManager.canQueueRequest(TealiumTrackRequest(data: ["tealium_event": "grant_full_consent"])))
         XCTAssertTrue(dispatchManager.canQueueRequest(TealiumTrackRequest(data: ["tealium_event": "view"])))
         config.batchingBypassKeys = ["view"]
@@ -153,11 +153,11 @@ class TealiumDispatchQueueModuleTests: XCTestCase {
 class MockPersistentQueue: TealiumPersistentDispatchQueue {
     override func removeOldDispatches(_ maxQueueSize: Int, since: Date? = nil) {
         XCTAssertNotNil(since)
-        TealiumDispatchQueueModuleTests.expiredDispatchesExpectation!.fulfill()
+        DispatchQueueModuleTests.expiredDispatchesExpectation!.fulfill()
     }
 }
 
-extension TealiumDispatchQueueModuleTests: ModuleDelegate {
+extension DispatchQueueModuleTests: ModuleDelegate {
     func processRemoteCommandRequest(_ request: TealiumRequest) {
 
     }
@@ -183,7 +183,7 @@ class DispatchQueueDummyDispatcher: Dispatcher {
         guard request is TealiumRemoteAPIRequest else {
             return
         }
-        TealiumDispatchQueueModuleTests.remoteAPIExpectation!.fulfill()
+        DispatchQueueModuleTests.remoteAPIExpectation!.fulfill()
     }
 
     var id: String = "DispatchQueueDummyDispatcher"

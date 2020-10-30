@@ -2,7 +2,6 @@
 //  AccountViewController.swift
 //  TealiumVisitorProfileDemo
 //
-//  Created by Christina S on 7/18/19.
 //  Copyright © 2019 Tealium. All rights reserved.
 //
 

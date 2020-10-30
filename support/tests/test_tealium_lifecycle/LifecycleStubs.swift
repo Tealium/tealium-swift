@@ -1,4 +1,5 @@
 import Foundation
+
 struct LifecycleStubs: Codable {
     let events: [LifecycleStubsEvents]?
 

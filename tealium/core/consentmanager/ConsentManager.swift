@@ -2,7 +2,6 @@
 //  ConsentManager.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 3/29/18.
 //  Copyright © 2018 Tealium, Inc. All rights reserved.
 //
 
@@ -60,12 +59,23 @@ public class ConsentManager {
     ///     - completion: Optional completion block, called when fully initialized
     public init(config: TealiumConfig,
                 delegate: ModuleDelegate?,
-                diskStorage: TealiumDiskStorageProtocol) {
+                diskStorage: TealiumDiskStorageProtocol,
+                dataLayer: DataLayerManagerProtocol?) {
         self.diskStorage = diskStorage
         consentPreferencesStorage = ConsentPreferencesStorage(diskStorage: diskStorage)
         self.config = config
         self.delegate = delegate
         // try to load config from persistent storage first
+        if let dataLayer = dataLayer,
+           let migratedConsentStatus = dataLayer.all[ConsentKey.consentStatus] as? Int,
+           let migratedConsentCategories = dataLayer.all[ConsentKey.consentCategoriesKey] as? [String] {
+            config.consentPolicy = .gdpr
+            consentPreferencesStorage?.preferences = UserConsentPreferences(consentStatus: TealiumConsentStatus(integer: migratedConsentStatus),
+                                                                            consentCategories: TealiumConsentCategories.consentCategoriesStringArrayToEnum(migratedConsentCategories))
+            config.consentLoggingEnabled = dataLayer.all[ConsentKey.consentLoggingEnabled] as? Bool ?? false
+            dataLayer.delete(for: [ConsentKey.consentStatus, ConsentKey.consentCategoriesKey, ConsentKey.consentLoggingEnabled])
+        }
+
         let preferences = consentPreferencesStorage?.preferences ?? UserConsentPreferences(consentStatus: .unknown, consentCategories: nil)
 
         switch config.consentPolicy ?? .gdpr {

@@ -1,8 +1,7 @@
 //
-//  TealiumLifecycleSession.swift
+//  LifecycleSession.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 05/07/2019.
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 
@@ -12,6 +11,7 @@ import Foundation
 public struct LifecycleSession: Codable, Equatable {
 
     var appVersion: String = LifecycleSession.currentAppVersion
+    var firstLaunchDate: Date?
     var wakeDate: Date?
     var sleepDate: Date? {
         didSet {
@@ -35,6 +35,22 @@ public struct LifecycleSession: Codable, Equatable {
 
     init(wakeDate: Date) {
         self.wakeDate = wakeDate
+    }
+
+    init(from dictionary: [String: Any]) {
+        if let stringFirstLaunch = dictionary[LifecycleKey.firstLaunchDate] as? String,
+           let firstLaunchDate = stringFirstLaunch.dateFromISOStringShort {
+            self.firstLaunchDate = firstLaunchDate
+        }
+        if let stringWake = dictionary[LifecycleKey.lastWakeDate] as? String,
+           let wakeDate = stringWake.dateFromISOStringShort {
+            self.wakeDate = wakeDate
+        }
+        if let stringSleep = dictionary[LifecycleKey.lastSleepDate] as? String,
+           let sleepDate = stringSleep.dateFromISOStringShort {
+            self.sleepDate = sleepDate
+        }
+        self.wasLaunch = true
     }
 
     public init?(coder aDecoder: NSCoder) {
