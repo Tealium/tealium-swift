@@ -29,18 +29,8 @@ public class CollectModule: Dispatcher {
 
         self.config = config
         self.delegate = delegate
-        updateCollectDispatcher(config: config, completion: nil)
+        collect = CollectEventDispatcher(config: config, completion: nil)
         completion?((.success(true), nil))
-    }
-
-    /// Configures the collect dispatcher
-    ///
-    /// - Parameter config: `TealiumConfig` instance
-    /// - Parameter completion: `ModuleCompletion?` block to be called when init is finished
-    func updateCollectDispatcher(config: TealiumConfig,
-                                 completion: ModuleCompletion?) {
-        let urlString = config.options[CollectKey.overrideCollectUrl] as? String ?? CollectEventDispatcher.defaultDispatchBaseURL
-        collect = CollectEventDispatcher(dispatchURL: urlString, completion: completion)
     }
 
     /// Detects track type and dispatches appropriately, adding mandatory data (account and profile) to the track if missing.￼
@@ -102,7 +92,7 @@ public class CollectModule: Dispatcher {
             newTrack[TealiumKey.profile] = config.profile
         }
 
-        if let profileOverride = config.collectOverrideProfile {
+        if let profileOverride = config.overrideCollectProfile {
             newTrack[TealiumKey.profile] = profileOverride
         }
 
@@ -143,7 +133,7 @@ public class CollectModule: Dispatcher {
             return
         }
 
-        collect.dispatchBulk(data: compressed, completion: completion)
+        collect.dispatchBatch(data: compressed, completion: completion)
     }
 
 }

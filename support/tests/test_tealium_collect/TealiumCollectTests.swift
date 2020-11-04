@@ -47,26 +47,77 @@ class TealiumCollectTests: XCTestCase {
 
     func testInitWithBaseURLString() {
         // invalid url
-        let string = "tealium"
-
-        _ = CollectEventDispatcher(dispatchURL: string) { result in
+        let config = testTealiumConfig.copy
+        config.overrideCollectURL = "tealium"
+        
+        let dispatcher = CollectEventDispatcher(config: config) { result in
             switch result.0 {
             case .failure(let error):
-                XCTAssertEqual(error as! CollectError, CollectError.invalidDispatchURL)
+                XCTFail("Unexpected failure \(error.localizedDescription) - should revert to default URLs")
             case .success:
-                XCTFail("Unexpected Success")
+                break
             }
         }
+        XCTAssertEqual(dispatcher.singleEventDispatchURL, "\(CollectEventDispatcher.defaultDispatchBaseURL)\(CollectEventDispatcher.singleEventPath)")
+    }
+    
+    func testInitWithValidURLOverrides() {
+        // invalid url
+        let config = testTealiumConfig.copy
+        config.overrideCollectURL = "https://collect-eu-west-1.tealiumiq.com/event"
+        config.overrideCollectBatchURL = "https://collect-us-east-1.tealiumiq.com/bulk-event"
+        
+        let dispatcher = CollectEventDispatcher(config: config) { result in
+            switch result.0 {
+            case .failure(let error):
+                XCTFail("Unexpected failure \(error.localizedDescription) - should revert to default URLs")
+            case .success:
+                break
+            }
+        }
+        XCTAssertEqual(dispatcher.singleEventDispatchURL, "https://collect-eu-west-1.tealiumiq.com/event")
+        XCTAssertEqual(dispatcher.batchEventDispatchURL, "https://collect-us-east-1.tealiumiq.com/bulk-event")
+    }
+    
+    func testInitWithValidURLOverrideSingleEvent() {
+        // invalid url
+        let config = testTealiumConfig.copy
+        config.overrideCollectURL = "https://collect-eu-west-1.tealiumiq.com/event"
+        
+        let dispatcher = CollectEventDispatcher(config: config) { result in
+            switch result.0 {
+            case .failure(let error):
+                XCTFail("Unexpected failure \(error.localizedDescription) - should revert to default URLs")
+            case .success:
+                break
+            }
+        }
+        XCTAssertEqual(dispatcher.singleEventDispatchURL, "https://collect-eu-west-1.tealiumiq.com/event")
+        XCTAssertEqual(dispatcher.batchEventDispatchURL, "\(CollectEventDispatcher.defaultDispatchBaseURL)\(CollectEventDispatcher.batchEventPath)")
+    }
+    
+    func testInitWithValidURLOverrideBatchEvent() {
+        // invalid url
+        let config = testTealiumConfig.copy
+        config.overrideCollectBatchURL = "https://collect-us-east-1.tealiumiq.com/bulk-event"
+        
+        let dispatcher = CollectEventDispatcher(config: config) { result in
+            switch result.0 {
+            case .failure(let error):
+                XCTFail("Unexpected failure \(error.localizedDescription) - should revert to default URLs")
+            case .success:
+                break
+            }
+        }
+        XCTAssertEqual(dispatcher.singleEventDispatchURL, "\(CollectEventDispatcher.defaultDispatchBaseURL)\(CollectEventDispatcher.singleEventPath)")
+        XCTAssertEqual(dispatcher.batchEventDispatchURL, "https://collect-us-east-1.tealiumiq.com/bulk-event")
     }
 
     func testInitWithBaseURLStringDefaultURLs() {
-        // invalid url
-        let string = "tealium"
+        let dispatcher = CollectEventDispatcher(config: testTealiumConfig)
 
-        let dispatcher = CollectEventDispatcher(dispatchURL: string)
-
-        guard let bulkURL = dispatcher.bulkEventDispatchURL else {
-            XCTFail("Missing bulk url")
+        guard let batchURL = dispatcher.batchEventDispatchURL else {
+            XCTFail("Missing batch url")
             return
         }
 
@@ -75,29 +126,8 @@ class TealiumCollectTests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(bulkURL, "\(CollectEventDispatcher.defaultDispatchBaseURL)\(CollectEventDispatcher.bulkEventPath)")
+        XCTAssertEqual(batchURL, "\(CollectEventDispatcher.defaultDispatchBaseURL)\(CollectEventDispatcher.batchEventPath)")
         XCTAssertEqual(url, "\(CollectEventDispatcher.defaultDispatchBaseURL)\(CollectEventDispatcher.singleEventPath)")
-    }
-
-    func testGetDomainFromURLStringInvalidURL() {
-        XCTAssertNil(CollectEventDispatcher.getDomainFromURLString(url: "hello"))
-    }
-
-    func testGetDomainFromURLString() {
-        XCTAssertEqual("tealium.com", CollectEventDispatcher.getDomainFromURLString(url: "https://tealium.com")!)
-    }
-
-    func testInitWithInvalidBaseURLString() {
-        // invalid url
-        let string = "https://tealium/"
-        _ = CollectEventDispatcher(dispatchURL: string) { result in
-            switch result.0 {
-            case .failure(let error):
-                XCTAssertEqual(error as! CollectError, CollectError.invalidDispatchURL)
-            case .success:
-                XCTFail("Unexpected Success")
-            }
-        }
     }
 
     func testGetURLSessionReturnsEphemeralSession() {
@@ -109,9 +139,9 @@ class TealiumCollectTests: XCTestCase {
 
     func testValidURL() {
         let validURL = "https://collect.tealiumiq.com/event/"
-        XCTAssertTrue(CollectEventDispatcher.isValidUrl(url: validURL), "isValidURL returned unexpected failure")
+        XCTAssertTrue(CollectEventDispatcher.isValidUrl(validURL), "isValidURL returned unexpected failure")
         let invalidURL = "invalidURL"
-        XCTAssertFalse(CollectEventDispatcher.isValidUrl(url: invalidURL), "isValidURL returned unexpected success")
+        XCTAssertFalse(CollectEventDispatcher.isValidUrl(invalidURL), "isValidURL returned unexpected success")
     }
 
     func testSendURLRequest() {
@@ -120,7 +150,7 @@ class TealiumCollectTests: XCTestCase {
             XCTFail("Could not create post request")
             return
         }
-        let dispatcher = CollectEventDispatcher(dispatchURL: CollectEventDispatcher.defaultDispatchBaseURL, urlSession: mockURLSession)
+        let dispatcher = CollectEventDispatcher(config: testTealiumConfig, urlSession: mockURLSession)
         dispatcher.sendURLRequest(request) { result in
             switch result.0 {
             case .failure:
@@ -138,7 +168,7 @@ class TealiumCollectTests: XCTestCase {
             XCTFail("Could not create post request")
             return
         }
-        let dispatcher = CollectEventDispatcher(dispatchURL: CollectEventDispatcher.defaultDispatchBaseURL, urlSession: mockURLSession)
+        let dispatcher = CollectEventDispatcher(config: testTealiumConfig, urlSession: mockURLSession)
         dispatcher.sendURLRequest(request) { result in
             switch result.0 {
             case .failure(let error):
@@ -156,7 +186,7 @@ class TealiumCollectTests: XCTestCase {
             XCTFail("Could not create post request")
             return
         }
-        let dispatcher = CollectEventDispatcher(dispatchURL: CollectEventDispatcher.defaultDispatchBaseURL, urlSession: mockURLSession)
+        let dispatcher = CollectEventDispatcher(config: testTealiumConfig, urlSession: mockURLSession)
         dispatcher.sendURLRequest(request) { result in
             switch result.0 {
             case .failure(let error):
@@ -173,7 +203,7 @@ class TealiumCollectTests: XCTestCase {
             XCTFail("Could not create post request")
             return
         }
-        let dispatcher = CollectEventDispatcher(dispatchURL: CollectEventDispatcher.defaultDispatchBaseURL, urlSession: mockURLSession)
+        let dispatcher = CollectEventDispatcher(config: testTealiumConfig, urlSession: mockURLSession)
         dispatcher.sendURLRequest(request) { result in
             switch result.0 {
             case .failure(let error):
@@ -186,7 +216,7 @@ class TealiumCollectTests: XCTestCase {
 
     func testDispatch() {
         mockURLSession = MockURLSession()
-        let dispatcher = CollectEventDispatcher(dispatchURL: CollectEventDispatcher.defaultDispatchBaseURL, urlSession: mockURLSession)
+        let dispatcher = CollectEventDispatcher(config: testTealiumConfig, urlSession: mockURLSession)
         dispatcher.dispatch(data: self.testDictionary) { result in
             switch result.0 {
             case .failure:
@@ -200,7 +230,7 @@ class TealiumCollectTests: XCTestCase {
 
     func testDispatchWithError() {
         mockURLSession = MockURLSessionError()
-        let dispatcher = CollectEventDispatcher(dispatchURL: CollectEventDispatcher.defaultDispatchBaseURL, urlSession: mockURLSession)
+        let dispatcher = CollectEventDispatcher(config: testTealiumConfig, urlSession: mockURLSession)
         dispatcher.dispatch(data: self.testDictionary) { result in
             switch result.0 {
             case .failure(let error):
