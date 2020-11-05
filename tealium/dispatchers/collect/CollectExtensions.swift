@@ -13,6 +13,7 @@ import TealiumCore
 public extension TealiumConfig {
 
     /// Overrides the default Collect endpoint URL￼.
+    /// NOTE: the Batch URL must be overridden separately. See `overrideCollectBatchURL`.
     /// The full URL must be provided, including protocol and path.
     /// If using Tealium with a CNAMEd domain, the format would be: https://collect.mydomain.com/event  (the path MUST be `/event`).
     /// If using your own custom endpoint, the URL can be any valid URL.
