@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>classNames</key>
+	<dict>
+		<key>PerformanceTests</key>
+		<dict>
+			<key>testTimeToInitializeTealiumWithBaseModules()</key>
+			<dict>
+				<key>com.apple.dt.XCTMetric_CPU.cycles</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>6740</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>22 May 2020 at 17:28:09</string>
+				</dict>
+				<key>com.apple.dt.XCTMetric_CPU.instructions_retired</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>7434.9</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>22 May 2020 at 17:28:16</string>
+				</dict>
+				<key>com.apple.dt.XCTMetric_CPU.time</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>0.0032534</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>22 May 2020 at 17:28:19</string>
+				</dict>
+				<key>com.apple.dt.XCTMetric_Memory.physical</key>
+				<dict>
+					<key>baselineAverage</key>
+					<real>48.3</real>
+					<key>baselineIntegrationDisplayName</key>
+					<string>22 May 2020 at 17:23:55</string>
+				</dict>
+			</dict>
+		</dict>
+	</dict>
+</dict>
+</plist>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1020"
+   LastUpgradeVersion = "1100"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9904B9A4D293CBC649A9DF4D"
+               BlueprintIdentifier = "D755DD1121945F99003C6BA1"
                BuildableName = "TealiumTagManagement.framework"
                BlueprintName = "TealiumTagManagement"
                ReferencedContainer = "container:tealium-swift.xcodeproj">
@@ -26,26 +26,12 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      onlyGenerateCoverageForSpecifiedTargets = "NO"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9904B9A4D293CBC649A9DF4D"
-            BuildableName = "TealiumTagManagement.framework"
-            BlueprintName = "TealiumTagManagement"
-            ReferencedContainer = "container:tealium-swift.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
-      <CodeCoverageTargets>
-      </CodeCoverageTargets>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -57,16 +43,12 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9904B9A4D293CBC649A9DF4D"
+            BlueprintIdentifier = "D755DD1121945F99003C6BA1"
             BuildableName = "TealiumTagManagement.framework"
             BlueprintName = "TealiumTagManagement"
             ReferencedContainer = "container:tealium-swift.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
-      <CommandLineArguments>
-      </CommandLineArguments>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -74,16 +56,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9904B9A4D293CBC649A9DF4D"
+            BlueprintIdentifier = "D755DD1121945F99003C6BA1"
             BuildableName = "TealiumTagManagement.framework"
             BlueprintName = "TealiumTagManagement"
             ReferencedContainer = "container:tealium-swift.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
