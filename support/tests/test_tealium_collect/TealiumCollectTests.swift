@@ -79,6 +79,42 @@ class TealiumCollectTests: XCTestCase {
         XCTAssertEqual(dispatcher.batchEventDispatchURL, "https://collect-us-east-1.tealiumiq.com/bulk-event")
     }
     
+    func testInitWithDomainOverrides() {
+        // invalid url
+        let config = testTealiumConfig.copy
+        config.overrideCollectDomain = "my-endpoint.com"
+        
+        let dispatcher = CollectEventDispatcher(config: config) { result in
+            switch result.0 {
+            case .failure(let error):
+                XCTFail("Unexpected failure \(error.localizedDescription) - should revert to default URLs")
+            case .success:
+                break
+            }
+        }
+        XCTAssertEqual(dispatcher.singleEventDispatchURL, "https://my-endpoint.com/event/")
+        XCTAssertEqual(dispatcher.batchEventDispatchURL, "https://my-endpoint.com/bulk-event/")
+    }
+    
+    func testURLOverridesTakePrecedenceOverDomain() {
+        // invalid url
+        let config = testTealiumConfig.copy
+        config.overrideCollectDomain = "my-endpoint.com"
+        config.overrideCollectURL = "https://collect-eu-west-1.tealiumiq.com/event"
+        config.overrideCollectBatchURL = "https://collect-us-east-1.tealiumiq.com/bulk-event"
+        
+        let dispatcher = CollectEventDispatcher(config: config) { result in
+            switch result.0 {
+            case .failure(let error):
+                XCTFail("Unexpected failure \(error.localizedDescription) - should revert to default URLs")
+            case .success:
+                break
+            }
+        }
+        XCTAssertEqual(dispatcher.singleEventDispatchURL, "https://collect-eu-west-1.tealiumiq.com/event")
+        XCTAssertEqual(dispatcher.batchEventDispatchURL, "https://collect-us-east-1.tealiumiq.com/bulk-event")
+    }
+    
     func testInitWithValidURLOverrideSingleEvent() {
         // invalid url
         let config = testTealiumConfig.copy

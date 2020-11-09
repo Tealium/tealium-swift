@@ -41,14 +41,22 @@ class CollectEventDispatcher: CollectProtocol {
            CollectEventDispatcher.isValidUrl(overrideUrl) {
             self.singleEventDispatchURL = overrideUrl
         } else {
-            singleEventDispatchURL = "\(CollectEventDispatcher.defaultDispatchBaseURL)\(CollectEventDispatcher.singleEventPath)"
+            if let overrideDomain = config.overrideCollectDomain {
+                singleEventDispatchURL = "https://\(overrideDomain)\(CollectEventDispatcher.singleEventPath)"
+            } else {
+                singleEventDispatchURL = "\(CollectEventDispatcher.defaultDispatchBaseURL)\(CollectEventDispatcher.singleEventPath)"
+            }
         }
         
         if let overrideBatchUrl = config.overrideCollectBatchURL,
            CollectEventDispatcher.isValidUrl(overrideBatchUrl) {
             self.batchEventDispatchURL = overrideBatchUrl
         } else {
-            batchEventDispatchURL = "\(CollectEventDispatcher.defaultDispatchBaseURL)\(CollectEventDispatcher.batchEventPath)"
+            if let overrideDomain = config.overrideCollectDomain {
+                batchEventDispatchURL = "https://\(overrideDomain)\(CollectEventDispatcher.batchEventPath)"
+            } else {
+                batchEventDispatchURL = "\(CollectEventDispatcher.defaultDispatchBaseURL)\(CollectEventDispatcher.batchEventPath)"
+            }
         }
     }
 

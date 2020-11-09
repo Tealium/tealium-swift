@@ -57,6 +57,18 @@ public extension TealiumConfig {
             options[CollectKey.overrideCollectProfile] = newValue
         }
     }
+    
+    /// Overrides the default Collect domain only.
+    /// Only the hostname should be provided, excluding the protocol, e.g. `my-company.com`
+    var overrideCollectDomain: String? {
+        get {
+            options[CollectKey.overrideCollectDomain] as? String
+        }
+
+        set {
+            options[CollectKey.overrideCollectDomain] = newValue
+        }
+    }
 }
 
 public extension Dispatchers {
