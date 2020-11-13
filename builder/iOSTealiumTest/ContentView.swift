@@ -5,9 +5,33 @@
 //  Copyright © 2020 Tealium. All rights reserved.
 //
 import SwiftUI
+import TealiumCore
 
 struct ContentView: View {
     @State private var traceId: String = ""
+    
+    // Timed event start
+    var playButton: some View {
+        Button(action: {
+            TealiumHelper.shared.track(title: "product_view",
+                                       data: ["product_id": ["prod123"]])
+        }, label: {
+            Image(systemName: "play.fill")
+                .accentColor(.purple)
+        })
+    }
+    
+    // Timed event stop
+    var stopButton: some View {
+        Button(action: {
+            TealiumHelper.shared.track(title: "order_complete",
+                                       data: ["order_id": "ord123"])
+        }, label: {
+            Image(systemName: "stop.fill")
+                .accentColor(.purple)
+        })
+    }
+    
     var body: some View {
         NavigationView {
             ScrollView {
@@ -47,6 +71,7 @@ struct ContentView: View {
                 }
                 .navigationTitle("iOSTealiumTest")
                 .navigationBarTitleDisplayMode(.inline)
+                .navigationBarItems(leading: playButton, trailing: stopButton)
                 .padding(50)
             }
         }

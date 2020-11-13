@@ -17,6 +17,7 @@ protocol DispatchManagerProtocol {
     var dispatchListeners: [DispatchListener]? { get set }
     var dispatchValidators: [DispatchValidator]? { get set }
     var config: TealiumConfig { get set }
+    var timedEventScheduler: Schedulable? { get set }
 
     init(dispatchers: [Dispatcher]?,
          dispatchValidators: [DispatchValidator]?,
@@ -38,6 +39,7 @@ class DispatchManager: DispatchManagerProtocol {
     var persistentQueue: TealiumPersistentDispatchQueue!
     var diskStorage: TealiumDiskStorageProtocol!
     var config: TealiumConfig
+    var timedEventScheduler: Schedulable?
     var connectivityManager: ConnectivityModule
 
     var shouldDequeue: Bool {
@@ -99,9 +101,11 @@ class DispatchManager: DispatchManagerProtocol {
                       dispatchListeners: [DispatchListener]?,
                       connectivityManager: ConnectivityModule,
                       config: TealiumConfig,
-                      diskStorage: TealiumDiskStorageProtocol? = nil) {
+                      diskStorage: TealiumDiskStorageProtocol? = nil,
+                      timedEventScheduler: Schedulable? = nil) {
         self.init(dispatchers: dispatchers, dispatchValidators: dispatchValidators, dispatchListeners: dispatchListeners, connectivityManager: connectivityManager, config: config)
         self.diskStorage = diskStorage
+        self.timedEventScheduler = timedEventScheduler
     }
 
     required init(dispatchers: [Dispatcher]?,
@@ -113,7 +117,7 @@ class DispatchManager: DispatchManagerProtocol {
         self.connectivityManager = connectivityManager
         self.dispatchers = dispatchers
         self.dispatchValidators = dispatchValidators
-
+        self.timedEventScheduler = TimedEventScheduler(config: config)
         self.dispatchListeners = dispatchListeners
 
         if let logger = config.logger {
@@ -133,11 +137,16 @@ class DispatchManager: DispatchManagerProtocol {
     }
 
     func processTrack(_ request: TealiumTrackRequest) {
+        var newRequest = request
+        
+        if config.timedEventTriggers != nil {
+            timedEventScheduler?.handle(request: &newRequest)
+        }
+        
         // first release the queue if the dispatch limit has been reached
         if shouldDequeue {
             handleDequeueRequest(reason: "Processing track request")
         }
-        var newRequest = request
 
         if checkShouldQueue(request: &newRequest) {
             enqueue(newRequest, reason: nil)

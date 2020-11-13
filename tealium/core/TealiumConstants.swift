@@ -136,6 +136,11 @@ public enum TealiumKey {
     static let hostedDataLayerExpiry = "hosted_data_layer_expiry"
     static let origin = "origin"
     static let shouldMigrate = "should_migrate_data"
+    static let timedEventTriggers = "timed_event_triggers"
+    static let timedEventName = "timed_event_name"
+    static let eventStart = "timed_event_start"
+    static let eventStop = "timed_event_stop"
+    static let eventDuration = "timed_event_duration"
 }
 
 public enum TealiumTrackType {

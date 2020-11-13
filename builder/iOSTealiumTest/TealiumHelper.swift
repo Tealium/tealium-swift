@@ -50,6 +50,8 @@ class TealiumHelper  {
         config.memoryReportingEnabled = true
         config.batterySaverEnabled = true
         config.hostedDataLayerKeys = ["hdl-test": "product_id"]
+        config.timedEventTriggers = [TimedEventTrigger(start: "product_view", stop: "order_complete"),
+                                     TimedEventTrigger(start: "start_game", stop: "buy_coins")]
 
         #if os(iOS) && !targetEnvironment(macCatalyst)
             config.collectors = [

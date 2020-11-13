@@ -15,6 +15,18 @@ open class TealiumConfig {
     public let environment: String
     public let dataSource: String?
     public lazy var options = [String: Any]()
+    
+    /// The start and stop timed events to be tracked automatically
+    /// - Usage: `config.timedEventTriggers = [TimedEventTrigger(start: "product_view", stop: "order_complete")]`
+    public var timedEventTriggers: [TimedEventTrigger]? {
+        get {
+            options[TealiumKey.timedEventTriggers] as? [TimedEventTrigger]
+        }
+
+        set {
+            options[TealiumKey.timedEventTriggers] = newValue
+        }
+    }
 
     /// Intended for internal use only. Provides access to the internal Tealium logger instance.
     public var logger: TealiumLoggerProtocol? {
