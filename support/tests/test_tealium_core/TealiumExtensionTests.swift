@@ -24,8 +24,9 @@ class TealiumExtensionTests: XCTestCase {
                                              profile: "demo",
                                              environment: "dev",
                                              options: nil)
-
     var tealium: Tealium!
+    let mockEventScheduler = MockTimedEventScheduler()
+    
 
     override func setUpWithError() throws {
 
@@ -103,6 +104,51 @@ class TealiumExtensionTests: XCTestCase {
         let expect = expectation(description: "Lifecycle nil")
         tealium = Tealium(config: defaultTealiumConfig) { _ in
             XCTAssertNil(self.tealium.lifecycle)
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: 1.0)
+    }
+    
+    func testStartTimedEventCallsEventSchedulerStart() {
+        let expect = expectation(description: "Timed event scheduler start called")
+        tealium = Tealium(config: defaultTealiumConfig) { _ in
+            self.tealium.timedEventScheduler = self.mockEventScheduler
+            self.tealium.startTimedEvent(name: "testEvent", with: ["test_event": "start"])
+            XCTAssertEqual(1, self.mockEventScheduler.startCallCount)
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: 1.0)
+    }
+    
+    func testStopTimedEventCallsEventSchedulerStop() {
+        let expect = expectation(description: "Timed event scheduler stop called")
+        tealium = Tealium(config: defaultTealiumConfig) { _ in
+            self.mockEventScheduler.events = [TimedEvent(name: "testEvent", data: ["some": "data"])]
+            self.tealium.timedEventScheduler = self.mockEventScheduler
+            self.tealium.stopTimedEvent(name: "testEvent")
+            XCTAssertEqual(1, self.mockEventScheduler.stopCallCount)
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: 2.0)
+    }
+    
+    func testCancelTimedEventCallsEventSchedulerCancel() {
+        let expect = expectation(description: "Timed event scheduler cancel called")
+        tealium = Tealium(config: defaultTealiumConfig) { _ in
+            self.tealium.timedEventScheduler = self.mockEventScheduler
+            self.tealium.cancelTimedEvent(name: "testEvent")
+            XCTAssertEqual(1, self.mockEventScheduler.cancelCallCount)
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: 1.0)
+    }
+    
+    func testClearAllTimedEventsCallsEventSchedulerClearAll() {
+        let expect = expectation(description: "Timed event scheduler clear all called")
+        tealium = Tealium(config: defaultTealiumConfig) { _ in
+            self.tealium.timedEventScheduler = self.mockEventScheduler
+            self.tealium.clearAllTimedEvents()
+            XCTAssertEqual(1, self.mockEventScheduler.clearAllCallCount)
             expect.fulfill()
         }
         wait(for: [expect], timeout: 1.0)
@@ -187,5 +233,11 @@ class TealiumExtensionTests: XCTestCase {
         wait(for: [expect], timeout: 1.0)
     }
     #endif
+    
+    private func delay(_ completion: @escaping () -> Void) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            completion()
+        }
+    }
 
 }

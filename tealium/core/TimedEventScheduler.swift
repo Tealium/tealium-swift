@@ -2,16 +2,16 @@
 //  TimedEventScheduler.swift
 //  TealiumCore
 //
-//  Created by Christina S on 11/12/20.
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 
 import Foundation
 
 public protocol Schedulable {
-    func handle(request: inout TealiumTrackRequest)
-    func start(event name: String)
-    func stop(event name: String, with request: inout TealiumTrackRequest)
+    var events: Set<TimedEvent> { get }
+    func handle(request: TealiumTrackRequest?) -> TealiumTrackRequest?
+    func start(event name: String, with data: [String: Any]?)
+    func stop(event name: String, with request: TealiumTrackRequest?) -> TealiumTrackRequest?
     func cancel(event name: String)
     func clearAll()
 }
@@ -24,30 +24,32 @@ public enum TimedEventError: Error {
 public class TimedEventScheduler: Schedulable {
 
     var config: TealiumConfig
-    var events: Set<TimedEvent>
+    public var events: Set<TimedEvent>
     
     public init(config: TealiumConfig, events: Set<TimedEvent> = Set<TimedEvent>()) {
         self.config = config
         self.events = events
     }
     
-    public func handle(request: inout TealiumTrackRequest) {
-        guard let event = request.event else {
+    public func handle(request: TealiumTrackRequest?) -> TealiumTrackRequest? {
+        guard let event = request?.event else {
             log(message: "Tealium event not defined")
-            return
+            return nil
         }
+        var newRequest: TealiumTrackRequest?
         config.timedEventTriggers?.forEach { trigger in
             let name = "\(trigger.start)::\(trigger.stop)"
             if event == trigger.start  {
                 self.start(event: name)
             } else if event == trigger.stop {
-                self.stop(event: name, with: &request)
+                newRequest = self.stop(event: name, with: request)
             }
         }
+        return newRequest
     }
     
-    public func start(event name: String) {
-        let timedEvent = TimedEvent(name: name)
+    public func start(event name: String, with data: [String: Any]? = nil) {
+        let timedEvent = TimedEvent(name: name, data: data)
         guard events[name] == nil else {
             log(message: "Event already started")
             return
@@ -55,14 +57,14 @@ public class TimedEventScheduler: Schedulable {
         events.insert(timedEvent)
     }
     
-    public func stop(event name: String, with request: inout TealiumTrackRequest) {
-        //var event = TimedEvent(name: name, data: request.trackDictionary)
+    @discardableResult
+    public func stop(event name: String, with request: TealiumTrackRequest? = nil) -> TealiumTrackRequest? {
         guard var timedEvent = events[name],
               let newRequest = timedEvent.stopTimer(with: request) else {
             log(message: "Could not stop event", level: .error)
-            return
+            return nil
         }
-        request = newRequest
+        return newRequest
     }
     
     public func cancel(event name: String) {

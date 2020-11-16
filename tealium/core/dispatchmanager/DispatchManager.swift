@@ -140,7 +140,9 @@ class DispatchManager: DispatchManagerProtocol {
         var newRequest = request
         
         if config.timedEventTriggers != nil {
-            timedEventScheduler?.handle(request: &newRequest)
+            if let timedEventRequest = timedEventScheduler?.handle(request: newRequest) {
+                newRequest = timedEventRequest
+            }
         }
         
         // first release the queue if the dispatch limit has been reached

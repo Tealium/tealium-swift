@@ -25,13 +25,14 @@ public struct TimedEvent: Hashable {
     var duration: TimeInterval?
     var data: [String: Any]?
 
-    public init(name: String) {
+    public init(name: String, data: [String: Any]? = nil, start: TimeInterval? = nil) {
         self.name = name
-        self.start = Date().timeIntervalSince1970
+        self.data = data
+        self.start = start ?? Date().timeIntervalSince1970
     }
 
     public mutating func stopTimer(with request: TealiumTrackRequest?) -> TealiumTrackRequest? {
-        self.data = request?.trackDictionary
+        self.data = self.data ?? request?.trackDictionary
         stop = Date().timeIntervalSince1970
         guard let start = start,
               let stop = stop else {
@@ -42,12 +43,12 @@ public struct TimedEvent: Hashable {
     }
 
     public var trackRequest: TealiumTrackRequest? {
-        guard var data = data,
-              let start = start,
+        guard let start = start,
               let stop = stop,
               let duration = duration else {
                 return nil
         }
+        var data = self.data ?? [String: Any]()
         data[TealiumKey.timedEventName] = self.name
         data[TealiumKey.eventStart] = start
         data[TealiumKey.eventStop] = stop

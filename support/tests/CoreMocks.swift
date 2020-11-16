@@ -117,6 +117,8 @@ class DummyDispatchManagerConfigUpdate: DispatchManagerProtocol {
     var dispatchListeners: [DispatchListener]?
 
     var dispatchValidators: [DispatchValidator]?
+    
+    var timedEventScheduler: Schedulable?
 
     var config: TealiumConfig {
         willSet {
@@ -150,6 +152,8 @@ class DummyDispatchManagerdequeue: DispatchManagerProtocol {
     var dispatchValidators: [DispatchValidator]?
 
     var asyncExpectation: XCTestExpectation?
+    
+    var timedEventScheduler: Schedulable?
 
     var config: TealiumConfig {
         willSet {
@@ -532,3 +536,41 @@ class MockMigratedDataLayerNoData: DataLayerManagerProtocol {
 
 }
 
+class MockTimedEventScheduler: Schedulable, DispatchListener {
+
+    var handleCallCount = 0
+    var startCallCount = 0
+    var stopCallCount = 0
+    var cancelCallCount = 0
+    var clearAllCallCount = 0
+    var willTrackCallCount = 0
+    
+    var events = Set<TimedEvent>()
+    
+    func handle(request: TealiumTrackRequest?) -> TealiumTrackRequest? {
+        handleCallCount += 1
+        return nil
+    }
+    
+    func start(event name: String, with data: [String : Any]?) {
+        startCallCount += 1
+    }
+    
+    func stop(event name: String, with request: TealiumTrackRequest?) -> TealiumTrackRequest? {
+        stopCallCount += 1
+        return nil
+    }
+    
+    func cancel(event name: String) {
+        cancelCallCount += 1
+    }
+    
+    func clearAll() {
+        clearAllCallCount += 1
+    }
+    
+    func willTrack(request: TealiumRequest) {
+        willTrackCallCount += 1
+    }
+    
+}

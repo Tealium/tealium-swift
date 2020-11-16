@@ -10,21 +10,24 @@ import Foundation
 public extension Tealium {
     
     var timedEventScheduler: Schedulable? {
-        zz_internal_modulesManager?.dispatchManager?.timedEventScheduler
+        get {
+            zz_internal_modulesManager?.dispatchManager?.timedEventScheduler
+        }
+        set {
+            zz_internal_modulesManager?.dispatchManager?.timedEventScheduler = newValue
+        }
     }
     
-    func startTimedEvent(name: String, _ dispatch: TealiumDispatch) {
-        timedEventScheduler?.start(event: name)
-        track(dispatch)
+    func startTimedEvent(name: String, with data: [String: Any]?) {
+        timedEventScheduler?.start(event: name, with: data)
     }
     
-    func stopTimedEvent(name: String, _ dispatch: TealiumDispatch) {
-        guard let tealiumEvent = dispatch.trackRequest.event else {
+    func stopTimedEvent(name: String) {
+        guard let request = timedEventScheduler?.stop(event: name, with: nil) else {
             return
         }
-        var request = TealiumTrackRequest(data: dispatch.trackRequest.trackDictionary)
-        timedEventScheduler?.stop(event: name, with: &request)
-        track(TealiumEvent(tealiumEvent, dataLayer: request.trackDictionary))
+        let tealiumEvent = TealiumEvent(name, dataLayer: request.trackDictionary)
+        track(tealiumEvent)
     }
     
     func cancelTimedEvent(name: String) {
