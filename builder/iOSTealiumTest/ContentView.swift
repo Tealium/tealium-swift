@@ -5,7 +5,6 @@
 //  Copyright © 2020 Tealium. All rights reserved.
 //
 import SwiftUI
-import TealiumCore
 
 struct ContentView: View {
     @State private var traceId: String = ""
