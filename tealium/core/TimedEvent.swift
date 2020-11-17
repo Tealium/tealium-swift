@@ -17,7 +17,7 @@ public struct TimedEventTrigger {
     }
 }
 
-public struct TimedEvent: Hashable {
+public class TimedEvent: Hashable {
 
     var start: TimeInterval?
     var name: String
@@ -25,35 +25,35 @@ public struct TimedEvent: Hashable {
     var duration: TimeInterval?
     var data: [String: Any]?
 
-    public init(name: String, data: [String: Any]? = nil, start: TimeInterval? = nil) {
+    public init(name: String,
+                data: [String: Any]? = [String: Any](),
+                start: TimeInterval = Date().timeIntervalSince1970) {
         self.name = name
         self.data = data
-        self.start = start ?? Date().timeIntervalSince1970
+        self.start = start
     }
-
-    public mutating func stopTimer(with request: TealiumTrackRequest?) -> TealiumTrackRequest? {
-        self.data = self.data ?? request?.trackDictionary
+    
+    public func stopTimer() {
         stop = Date().timeIntervalSince1970
         guard let start = start,
               let stop = stop else {
-                return nil
+                return
         }
         self.duration = (stop - start) * 1000
-        return trackRequest
     }
 
-    public var trackRequest: TealiumTrackRequest? {
-        guard let start = start,
+    public var eventInfo: [String: Any] {
+        guard var data = data,
+              let start = start,
               let stop = stop,
               let duration = duration else {
-                return nil
+            return [String: Any]()
         }
-        var data = self.data ?? [String: Any]()
         data[TealiumKey.timedEventName] = self.name
         data[TealiumKey.eventStart] = start
         data[TealiumKey.eventStop] = stop
         data[TealiumKey.eventDuration] = duration
-        return TealiumTrackRequest(data: data)
+        return data
     }
     
     public static func ==(lhs: TimedEvent, rhs: TimedEvent) -> Bool {

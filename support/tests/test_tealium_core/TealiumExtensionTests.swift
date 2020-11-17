@@ -120,13 +120,14 @@ class TealiumExtensionTests: XCTestCase {
         wait(for: [expect], timeout: 1.0)
     }
     
-    func testStopTimedEventCallsEventSchedulerStop() {
+    func testStopTimedEventCallsEventSchedulerStopAndTimedEventInfo() {
         let expect = expectation(description: "Timed event scheduler stop called")
         tealium = Tealium(config: defaultTealiumConfig) { _ in
             self.mockEventScheduler.events = [TimedEvent(name: "testEvent", data: ["some": "data"])]
             self.tealium.timedEventScheduler = self.mockEventScheduler
             self.tealium.stopTimedEvent(name: "testEvent")
             XCTAssertEqual(1, self.mockEventScheduler.stopCallCount)
+            XCTAssertEqual(1, self.mockEventScheduler.timedEventInfoCallCount)
             expect.fulfill()
         }
         wait(for: [expect], timeout: 2.0)

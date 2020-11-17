@@ -536,30 +536,36 @@ class MockMigratedDataLayerNoData: DataLayerManagerProtocol {
 
 }
 
-class MockTimedEventScheduler: Schedulable, DispatchListener {
+class MockTimedEventScheduler: Schedulable {
 
     var handleCallCount = 0
     var startCallCount = 0
     var stopCallCount = 0
+    var timedEventInfoCallCount = 0
     var cancelCallCount = 0
     var clearAllCallCount = 0
     var willTrackCallCount = 0
     
     var events = Set<TimedEvent>()
     
-    func handle(request: TealiumTrackRequest?) -> TealiumTrackRequest? {
+    func handle(request: inout TealiumTrackRequest) {
         handleCallCount += 1
-        return nil
     }
     
     func start(event name: String, with data: [String : Any]?) {
         startCallCount += 1
     }
     
-    func stop(event name: String, with request: TealiumTrackRequest?) -> TealiumTrackRequest? {
+    func stop(event name: String) {
         stopCallCount += 1
-        return nil
     }
+    
+    func timedEventInfo(for event: String) -> [String: Any] {
+        timedEventInfoCallCount += 1
+        return [String: Any]()
+    }
+    
+    func update(request: inout TealiumTrackRequest, for event: String) { }
     
     func cancel(event name: String) {
         cancelCallCount += 1

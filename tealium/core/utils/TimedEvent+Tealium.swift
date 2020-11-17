@@ -23,11 +23,9 @@ public extension Tealium {
     }
     
     func stopTimedEvent(name: String) {
-        guard let request = timedEventScheduler?.stop(event: name, with: nil) else {
-            return
-        }
-        let tealiumEvent = TealiumEvent(name, dataLayer: request.trackDictionary)
-        track(tealiumEvent)
+        timedEventScheduler?.stop(event: name)
+        let timedEventInfo = timedEventScheduler?.timedEventInfo(for: name)
+        track(TealiumEvent(name, dataLayer: timedEventInfo))
     }
     
     func cancelTimedEvent(name: String) {

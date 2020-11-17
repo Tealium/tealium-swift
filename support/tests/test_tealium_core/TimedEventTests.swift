@@ -18,62 +18,55 @@ class TimedEventTests: XCTestCase {
         request = TealiumTrackRequest(data: ["test_event": "test_event_value"])
     }
     
-    func testTrackRequestReturnsExpectedData() {
+    func testEventInfoReturnsExpectedData() {
         let mockStartTime = timeTraveler.travel(by: -60).timeIntervalSince1970 // 1 minute in future
-        let expectedKeys = ["test_event", "timed_event_name", "timed_event_start", "timed_event_stop", "request_uuid"]
+        let expectedKeys = ["test_event", "timed_event_name", "timed_event_start", "timed_event_stop", "timed_event_duration"]
         event = TimedEvent(name: "mockTimedEvent", start: mockStartTime)
         event.data = ["test_event": "test_event_value"]
         event.stop = Date().timeIntervalSince1970
         event.duration = 60000.0
-        let actual = event.trackRequest
+        let actual = event.eventInfo
         expectedKeys.forEach {
-            XCTAssertNotNil(actual?.trackDictionary[$0])
+            XCTAssertNotNil(actual[$0])
         }
-        XCTAssertEqual(actual?.trackDictionary[TealiumKey.timedEventName] as! String, "mockTimedEvent")
-        XCTAssertEqual(actual?.trackDictionary[TealiumKey.eventStart] as! TimeInterval, mockStartTime)
-        let duration = actual?.trackDictionary[TealiumKey.eventDuration] as! Double
+        XCTAssertEqual(actual[TealiumKey.timedEventName] as! String, "mockTimedEvent")
+        XCTAssertEqual(actual[TealiumKey.eventStart] as! TimeInterval, mockStartTime)
+        let duration = actual[TealiumKey.eventDuration] as! Double
         XCTAssert(duration >= 60000.0)
     }
 
-    func testStopTimerReturnsExpectedData() {
+    func testStopTimerSetsData() {
         let mockStartTime = timeTraveler.travel(by: -60).timeIntervalSince1970 // 1 minute in future
-        let expectedKeys = ["test_event", "timed_event_name", "timed_event_start", "timed_event_stop", "request_uuid"]
-        event = TimedEvent(name: "mockTimedEvent", start: mockStartTime)
-        let actual = event.stopTimer(with: request)
-        expectedKeys.forEach {
-            XCTAssertNotNil(actual?.trackDictionary[$0])
-        }
-        XCTAssertEqual(actual?.trackDictionary[TealiumKey.timedEventName] as! String, "mockTimedEvent")
-        XCTAssertEqual(actual?.trackDictionary[TealiumKey.eventStart] as! TimeInterval, mockStartTime)
-        let duration = actual?.trackDictionary[TealiumKey.eventDuration] as! Double
-        XCTAssert(duration >= 60000.0)
+        event = TimedEvent(name: "mockTimedEvent", data: ["hello": "world"], start: mockStartTime)
+        event.stopTimer()
+        XCTAssertEqual(event.name, "mockTimedEvent")
+        XCTAssertEqual(event.start, mockStartTime)
+        XCTAssertNotNil(event.stop)
+        XCTAssertTrue(event.duration! >= 60000.0)
+        XCTAssertTrue(event.data!.equal(to: ["hello": "world"]))
     }
     
-    func testTrackRequestReturnsNilWhenNoData() {
-        event = TimedEvent(name: "mockTimedEvent")
-        let actual = event.trackRequest
-        XCTAssertNil(actual)
-    }
-    
-    func testTrackRequestReturnsNilWhenNoStartTime() {
+    func testStopTimerDoesntSetDurationWhenNoStartTime() {
         event = TimedEvent(name: "mockTimedEvent")
         event.start = nil
-        let actual = event.trackRequest
-        XCTAssertNil(actual)
+        XCTAssertNil(event.duration)
     }
     
-    func testTrackRequestReturnsNilWhenNoStopTime() {
+    func testEventInfoReturnsEmptyDictionaryWhenNoData() {
+        event = TimedEvent(name: "mockTimedEvent")
+        XCTAssertEqual(event.eventInfo.count, 0)
+    }
+    
+    func testEventInfoReturnsEmptyDictionaryWhenNoStartTime() {
+        event = TimedEvent(name: "mockTimedEvent")
+        event.start = nil
+        XCTAssertEqual(event.eventInfo.count, 0)
+    }
+    
+    func testEventInfoReturnsEmptyDictionaryWhenNoStopTime() {
         event = TimedEvent(name: "mockTimedEvent")
         event.stop = nil
-        let actual = event.trackRequest
-        XCTAssertNil(actual)
-    }
-    
-    func testStopTimerReturnsNilWhenNoStartTime() {
-        event = TimedEvent(name: "mockTimedEvent")
-        event.start = nil
-        let actual = event.stopTimer(with: request)
-        XCTAssertNil(actual)
+        XCTAssertEqual(event.eventInfo.count, 0)
     }
     
     func testTimedEventEquatable() {
@@ -90,4 +83,10 @@ class TimedEventTests: XCTestCase {
         XCTAssertNil(events["Nonexistent"])
     }
 
+}
+
+fileprivate extension Dictionary where Key == String, Value == Any {
+    func equal(to dictionary: [String: Any] ) -> Bool {
+        NSDictionary(dictionary: self).isEqual(to: dictionary)
+    }
 }
