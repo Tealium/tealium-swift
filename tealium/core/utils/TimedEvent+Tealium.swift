@@ -21,7 +21,7 @@ public extension Tealium {
     /// Start a timed event
     /// - Parameters:
     ///   - name: `String` name of the timed event
-    ///   - data: `[String: Any` optional data to passed along with the dispatch sent on `endTimedEvent`
+    ///   - data: `[String: Any]` optional data to passed along with the dispatch sent on `endTimedEvent`
     func startTimedEvent(name: String, with data: [String: Any]?) {
         timedEventScheduler?.start(event: name, with: data)
     }
