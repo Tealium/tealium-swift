@@ -140,7 +140,7 @@ public enum TealiumKey {
     static let timedEventTriggers = "timed_event_triggers"
     static let timedEventName = "timed_event_name"
     static let eventStart = "timed_event_start"
-    static let eventStop = "timed_event_stop"
+    static let eventStop = "timed_event_end"
     static let eventDuration = "timed_event_duration"
 }
 

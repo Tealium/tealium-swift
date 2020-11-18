@@ -21,7 +21,7 @@ class TimedEventSchedulerTests: XCTestCase {
 
     func testHandleStartsTimedEvent()  {
         config = TealiumConfig(account: "TestAccount", profile: "TestProfile", environment: "TestEnv")
-        config!.timedEventTriggers = [TimedEventTrigger(start: "start_event", stop: "stop_event")]
+        config!.timedEventTriggers = [TimedEventTrigger(start: "start_event", end: "stop_event")]
         timedEventScheduler = TimedEventScheduler(config: config!)
         var request = TealiumTrackRequest(data: ["tealium_event": "start_event"])
         timedEventScheduler?.handle(request: &request)
@@ -34,18 +34,18 @@ class TimedEventSchedulerTests: XCTestCase {
     
     func testHandleStopsTimedEvent()  {
         config = TealiumConfig(account: "TestAccount", profile: "TestProfile", environment: "TestEnv")
-        config!.timedEventTriggers = [TimedEventTrigger(start: "start_event", stop: "stop_event")]
+        config!.timedEventTriggers = [TimedEventTrigger(start: "start_event", end: "stop_event")]
         timedEventScheduler = TimedEventScheduler(config: config!)
         var request = TealiumTrackRequest(data: ["tealium_event": "start_event"])
         timedEventScheduler?.handle(request: &request)
         request = TealiumTrackRequest(data: ["tealium_event": "stop_event"])
         timedEventScheduler!.handle(request: &request)
-        XCTAssertNotNil(request.trackDictionary["timed_event_stop"])
+        XCTAssertNotNil(request.trackDictionary["timed_event_end"])
     }
     
     func testHandleReturnsWhenTealiumEventNil() {
         config = TealiumConfig(account: "TestAccount", profile: "TestProfile", environment: "TestEnv")
-        config!.timedEventTriggers = [TimedEventTrigger(start: "start_event", stop: "stop_event")]
+        config!.timedEventTriggers = [TimedEventTrigger(start: "start_event", end: "stop_event")]
         timedEventScheduler = TimedEventScheduler(config: config!)
         var request = TealiumTrackRequest(data: ["non_tealium_event": "stop_event"])
         _ = timedEventScheduler?.handle(request: &request)
@@ -105,7 +105,7 @@ class TimedEventSchedulerTests: XCTestCase {
     func testUpdateAddsExpectedDataToRequest() {
         let existingEvent = TimedEvent(name: "testEvent", data: ["some_custom_key": "some_custom_value"])
         var request = TealiumTrackRequest(data: ["regular_track_call_key": "regular_track_call_value"])
-        let expectedKeys = ["regular_track_call_key", "some_custom_key", "timed_event_name", "timed_event_start", "timed_event_stop", "request_uuid"]
+        let expectedKeys = ["regular_track_call_key", "some_custom_key", "timed_event_name", "timed_event_start", "timed_event_end", "request_uuid"]
         config = TealiumConfig(account: "TestAccount", profile: "TestProfile", environment: "TestEnv")
         timedEventScheduler = TimedEventScheduler(config: config!, events: [existingEvent])
         timedEventScheduler?.stop(event: "testEvent")
@@ -127,7 +127,7 @@ class TimedEventSchedulerTests: XCTestCase {
     
     func testTimedEventInfoReturnsExpectedData() {
         let existingEvent = TimedEvent(name: "testEvent", data: ["some_custom_key": "some_custom_value"])
-        let expectedKeys = ["some_custom_key", "timed_event_name", "timed_event_start", "timed_event_stop", "timed_event_duration"]
+        let expectedKeys = ["some_custom_key", "timed_event_name", "timed_event_start", "timed_event_end", "timed_event_duration"]
         config = TealiumConfig(account: "TestAccount", profile: "TestProfile", environment: "TestEnv")
         timedEventScheduler = TimedEventScheduler(config: config!, events: [existingEvent])
         timedEventScheduler?.stop(event: "testEvent")
@@ -165,7 +165,7 @@ class TimedEventSchedulerTests: XCTestCase {
     
     func testExpectedEventNameWhenTriggersAreSetNoEventName() {
         config = TealiumConfig(account: "TestAccount", profile: "TestProfile", environment: "TestEnv")
-        config!.timedEventTriggers = [TimedEventTrigger(start: "start_event", stop: "stop_event")]
+        config!.timedEventTriggers = [TimedEventTrigger(start: "start_event", end: "stop_event")]
         timedEventScheduler = TimedEventScheduler(config: self.config!)
         var request = TealiumTrackRequest(data: ["tealium_event": "start_event"])
         timedEventScheduler?.handle(request: &request)
@@ -178,7 +178,7 @@ class TimedEventSchedulerTests: XCTestCase {
     
     func testExpectedEventNamWhenTriggersAreSetWithEventName() {
         config = TealiumConfig(account: "TestAccount", profile: "TestProfile", environment: "TestEnv")
-        config!.timedEventTriggers = [TimedEventTrigger(start: "start_event", stop: "stop_event", name: "customEventName")]
+        config!.timedEventTriggers = [TimedEventTrigger(start: "start_event", end: "stop_event", name: "customEventName")]
         timedEventScheduler = TimedEventScheduler(config: self.config!)
         var request = TealiumTrackRequest(data: ["tealium_event": "start_event"])
         timedEventScheduler?.handle(request: &request)
@@ -192,7 +192,7 @@ class TimedEventSchedulerTests: XCTestCase {
     func testProcessTrackCallsHandleWhenTriggersAreSet() {
         let mockTimedEventScheduler = MockTimedEventScheduler()
         config = TealiumConfig(account: "TestAccount", profile: "TestProfile", environment: "TestEnv")
-        config!.timedEventTriggers = [TimedEventTrigger(start: "start_event", stop: "stop_event")]
+        config!.timedEventTriggers = [TimedEventTrigger(start: "start_event", end: "stop_event")]
         tealium = Tealium(config: config!) { _ in
             self.tealium?.timedEventScheduler = mockTimedEventScheduler
             self.tealium?.track(TealiumEvent("test"))

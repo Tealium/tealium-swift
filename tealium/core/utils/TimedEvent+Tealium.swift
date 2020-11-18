@@ -18,20 +18,29 @@ public extension Tealium {
         }
     }
     
+    /// Start a timed event
+    /// - Parameters:
+    ///   - name: `String` name of the timed event
+    ///   - data: `[String: Any` optional data to passed along with the dispatch sent on `endTimedEvent`
     func startTimedEvent(name: String, with data: [String: Any]?) {
         timedEventScheduler?.start(event: name, with: data)
     }
     
-    func stopTimedEvent(name: String) {
+    /// End a particular timed event by name
+    /// - Parameter name: `String` name provided in the `startTimedEvent` call
+    func endTimedEvent(name: String) {
         timedEventScheduler?.stop(event: name)
         let timedEventInfo = timedEventScheduler?.timedEventInfo(for: name)
         track(TealiumEvent(TealiumValue.timedEvent, dataLayer: timedEventInfo))
     }
     
+    /// Cancel a particular timed event by name
+    /// - Parameter name: `String` name provided in the `startTimedEvent` call
     func cancelTimedEvent(name: String) {
         timedEventScheduler?.cancel(event: name)
     }
     
+    /// Clear all the existing timed events
     func clearAllTimedEvents() {
         timedEventScheduler?.clearAll()
     }  

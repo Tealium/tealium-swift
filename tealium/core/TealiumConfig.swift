@@ -16,8 +16,10 @@ open class TealiumConfig {
     public let dataSource: String?
     public lazy var options = [String: Any]()
     
-    /// The start and stop timed events to be tracked automatically
+    /// The start and stop timed events to be tracked automatically.
+    /// Optionally provide a name for the timed event. Default  timed event name will be `start_event_name::end_event_name`
     /// - Usage: `config.timedEventTriggers = [TimedEventTrigger(start: "product_view", stop: "order_complete")]`
+    /// - Optional usage: `config.timedEventTriggers = [TimedEventTrigger(start: "product_view", stop: "order_complete", name: "time_to_purchase")]`
     public var timedEventTriggers: [TimedEventTrigger]? {
         get {
             options[TealiumKey.timedEventTriggers] as? [TimedEventTrigger]

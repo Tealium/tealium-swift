@@ -125,7 +125,7 @@ class TealiumExtensionTests: XCTestCase {
         tealium = Tealium(config: defaultTealiumConfig) { _ in
             self.mockEventScheduler.events = [TimedEvent(name: "testEvent", data: ["some": "data"])]
             self.tealium.timedEventScheduler = self.mockEventScheduler
-            self.tealium.stopTimedEvent(name: "testEvent")
+            self.tealium.endTimedEvent(name: "testEvent")
             XCTAssertEqual(1, self.mockEventScheduler.stopCallCount)
             XCTAssertEqual(1, self.mockEventScheduler.timedEventInfoCallCount)
             expect.fulfill()

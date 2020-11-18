@@ -9,12 +9,12 @@ import Foundation
 
 public struct TimedEventTrigger {
     var start: String
-    var stop: String
+    var end: String
     var name: String?
     
-    public init(start: String, stop: String, name: String? = nil) {
+    public init(start: String, end: String, name: String? = nil) {
         self.start = start
-        self.stop = stop
+        self.end = end
         self.name = name
     }
 }

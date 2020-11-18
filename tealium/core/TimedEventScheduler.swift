@@ -35,10 +35,10 @@ public class TimedEventScheduler: Schedulable {
             return
         }
         config.timedEventTriggers?.forEach { trigger in
-            let name = "\(trigger.start)::\(trigger.stop)"
+            let name = "\(trigger.start)::\(trigger.end)"
             if event == trigger.start  {
                 self.start(event: trigger.name ?? name)
-            } else if event == trigger.stop {
+            } else if event == trigger.end {
                 self.stop(event: name)
                 self.update(request: &request, for: name)
             }

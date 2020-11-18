@@ -20,7 +20,7 @@ class TimedEventTests: XCTestCase {
     
     func testEventInfoReturnsExpectedData() {
         let mockStartTime = timeTraveler.travel(by: -60).timeIntervalSince1970 // 1 minute in future
-        let expectedKeys = ["test_event", "timed_event_name", "timed_event_start", "timed_event_stop", "timed_event_duration"]
+        let expectedKeys = ["test_event", "timed_event_name", "timed_event_start", "timed_event_end", "timed_event_duration"]
         event = TimedEvent(name: "mockTimedEvent", start: mockStartTime)
         event.data = ["test_event": "test_event_value"]
         event.stop = Date().timeIntervalSince1970
