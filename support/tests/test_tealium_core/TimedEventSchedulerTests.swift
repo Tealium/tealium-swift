@@ -81,13 +81,14 @@ class TimedEventSchedulerTests: XCTestCase {
         config = TealiumConfig(account: "TestAccount", profile: "TestProfile", environment: "TestEnv")
         timedEventScheduler = TimedEventScheduler(config: config!, events: [existsingEvent])
         timedEventScheduler?.stop(event: "testEvent")
-        XCTAssertNotNil(existsingEvent.stop)
+        let updatedEvent = timedEventScheduler?.events["testEvent"]
+        XCTAssertNotNil(updatedEvent?.stop)
     }
     
     func testStopReturnsNilWhenTimedEventDoesntExist() {
         config = TealiumConfig(account: "TestAccount", profile: "TestProfile", environment: "TestEnv")
         timedEventScheduler = TimedEventScheduler(config: config!)
-        let request = timedEventScheduler?.stop(event: "testEvent")
+        timedEventScheduler?.stop(event: "testEvent")
         timedEventScheduler?.events.forEach {
             XCTAssertNil($0.stop)
         }
@@ -129,7 +130,7 @@ class TimedEventSchedulerTests: XCTestCase {
         let expectedKeys = ["some_custom_key", "timed_event_name", "timed_event_start", "timed_event_stop", "timed_event_duration"]
         config = TealiumConfig(account: "TestAccount", profile: "TestProfile", environment: "TestEnv")
         timedEventScheduler = TimedEventScheduler(config: config!, events: [existingEvent])
-        existingEvent.stopTimer()
+        timedEventScheduler?.stop(event: "testEvent")
         let actual = timedEventScheduler?.timedEventInfo(for: "testEvent")
         expectedKeys.forEach {
             XCTAssertNotNil(actual?[$0])
@@ -160,6 +161,32 @@ class TimedEventSchedulerTests: XCTestCase {
         XCTAssertEqual(2, timedEventScheduler?.events.count)
         timedEventScheduler?.clearAll()
         XCTAssertEqual(timedEventScheduler?.events.count, 0)
+    }
+    
+    func testExpectedEventNameWhenTriggersAreSetNoEventName() {
+        config = TealiumConfig(account: "TestAccount", profile: "TestProfile", environment: "TestEnv")
+        config!.timedEventTriggers = [TimedEventTrigger(start: "start_event", stop: "stop_event")]
+        timedEventScheduler = TimedEventScheduler(config: self.config!)
+        var request = TealiumTrackRequest(data: ["tealium_event": "start_event"])
+        timedEventScheduler?.handle(request: &request)
+        guard let event = timedEventScheduler?.events.first else {
+            XCTFail("Event should be present")
+            return
+        }
+        XCTAssertEqual(event.name, "start_event::stop_event")
+    }
+    
+    func testExpectedEventNamWhenTriggersAreSetWithEventName() {
+        config = TealiumConfig(account: "TestAccount", profile: "TestProfile", environment: "TestEnv")
+        config!.timedEventTriggers = [TimedEventTrigger(start: "start_event", stop: "stop_event", name: "customEventName")]
+        timedEventScheduler = TimedEventScheduler(config: self.config!)
+        var request = TealiumTrackRequest(data: ["tealium_event": "start_event"])
+        timedEventScheduler?.handle(request: &request)
+        guard let event = timedEventScheduler?.events.first else {
+            XCTFail("Event should be present")
+            return
+        }
+        XCTAssertEqual(event.name, "customEventName")
     }
     
     func testProcessTrackCallsHandleWhenTriggersAreSet() {

@@ -30,6 +30,7 @@ public enum TealiumValue {
     static let defaultHDLExpiry: (Int, unit: TimeUnit) = (7, unit: .days)
     static let mobile = "mobile"
     public static let unknown = "unknown"
+    public static let timedEvent = "timed_event"
 }
 
 public enum ModuleNames {

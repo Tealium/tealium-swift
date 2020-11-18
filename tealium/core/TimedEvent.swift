@@ -10,14 +10,16 @@ import Foundation
 public struct TimedEventTrigger {
     var start: String
     var stop: String
+    var name: String?
     
-    public init(start: String, stop: String) {
+    public init(start: String, stop: String, name: String? = nil) {
         self.start = start
         self.stop = stop
+        self.name = name
     }
 }
 
-public class TimedEvent: Hashable {
+public struct TimedEvent: Hashable {
 
     var start: TimeInterval?
     var name: String
@@ -33,7 +35,7 @@ public class TimedEvent: Hashable {
         self.start = start
     }
     
-    public func stopTimer() {
+    public mutating func stopTimer() {
         stop = Date().timeIntervalSince1970
         guard let start = start,
               let stop = stop else {

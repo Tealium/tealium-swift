@@ -37,7 +37,7 @@ public class TimedEventScheduler: Schedulable {
         config.timedEventTriggers?.forEach { trigger in
             let name = "\(trigger.start)::\(trigger.stop)"
             if event == trigger.start  {
-                self.start(event: name)
+                self.start(event: trigger.name ?? name)
             } else if event == trigger.stop {
                 self.stop(event: name)
                 self.update(request: &request, for: name)
@@ -55,11 +55,13 @@ public class TimedEventScheduler: Schedulable {
     }
     
     public func stop(event name: String) {
-        guard let timedEvent = events[name] else {
+        guard var timedEvent = events[name] else {
             log(message: "Event not found")
             return
         }
         timedEvent.stopTimer()
+        events.remove(timedEvent)
+        events.insert(timedEvent)
     }
     
     public func update(request: inout TealiumTrackRequest, for event: String) {
