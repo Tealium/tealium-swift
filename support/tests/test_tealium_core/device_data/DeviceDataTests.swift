@@ -246,6 +246,7 @@ class TealiumDeviceDataTests: XCTestCase {
         XCTAssertNotEqual(data["device_architecture"]!, "")
         XCTAssertNotEqual(data["device_os_build"]!, "")
         XCTAssertNotEqual(data["device_cputype"]!, "")
+        XCTAssertNotEqual(data["device_manufacturer"]!, "")
         XCTAssertNotEqual(data["device_type"]!, "")
         XCTAssertNotEqual(data["model_name"]!, "")
         XCTAssertNotEqual(data["device"]!, "")
