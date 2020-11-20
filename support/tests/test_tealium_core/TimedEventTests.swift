@@ -30,9 +30,9 @@ class TimedEventTests: XCTestCase {
             XCTAssertNotNil(actual[$0])
         }
         XCTAssertEqual(actual[TealiumKey.timedEventName] as! String, "mockTimedEvent")
-        XCTAssertEqual(actual[TealiumKey.eventStart] as! TimeInterval, mockStartTime)
-        let duration = actual[TealiumKey.eventDuration] as! Double
-        XCTAssert(duration >= 60000.0)
+        XCTAssertEqual(actual[TealiumKey.eventStart] as! Int64, mockStartTime.milliseconds)
+        let duration = actual[TealiumKey.eventDuration] as! Int64
+        XCTAssert(duration >= 60000)
     }
 
     func testStopTimerSetsData() {
@@ -42,7 +42,7 @@ class TimedEventTests: XCTestCase {
         XCTAssertEqual(event.name, "mockTimedEvent")
         XCTAssertEqual(event.start, mockStartTime)
         XCTAssertNotNil(event.stop)
-        XCTAssertTrue(event.duration! >= 60000.0)
+        XCTAssertTrue(event.duration! >= 60)
         XCTAssertTrue(event.data!.equal(to: ["hello": "world"]))
     }
     

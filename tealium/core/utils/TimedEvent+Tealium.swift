@@ -11,27 +11,26 @@ public extension Tealium {
     
     var timedEventScheduler: Schedulable? {
         get {
-            zz_internal_modulesManager?.dispatchManager?.timedEventScheduler
-        }
-        set {
-            zz_internal_modulesManager?.dispatchManager?.timedEventScheduler = newValue
+            zz_internal_modulesManager?.dispatchValidators
+                .filter { $0 is Schedulable }.first as? Schedulable
         }
     }
     
     /// Start a timed event
     /// - Parameters:
     ///   - name: `String` name of the timed event
-    ///   - data: `[String: Any]` optional data to passed along with the dispatch sent on `endTimedEvent`
-    func startTimedEvent(name: String, with data: [String: Any]?) {
+    ///   - data: `[String: Any]` optional data to passed along with the dispatch sent on `stopTimedEvent`
+    func startTimedEvent(name: String, with data: [String: Any]? = nil) {
         timedEventScheduler?.start(event: name, with: data)
     }
     
     /// End a particular timed event by name
     /// - Parameter name: `String` name provided in the `startTimedEvent` call
-    func endTimedEvent(name: String) {
-        timedEventScheduler?.stop(event: name)
-        let timedEventInfo = timedEventScheduler?.timedEventInfo(for: name)
-        track(TealiumEvent(TealiumValue.timedEvent, dataLayer: timedEventInfo))
+    func stopTimedEvent(name: String) {
+        guard let event = timedEventScheduler?.stop(event: name) else {
+            return
+        }
+        timedEventScheduler?.sendTimedEvent(event)
     }
     
     /// Cancel a particular timed event by name

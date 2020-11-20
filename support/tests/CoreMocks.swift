@@ -538,34 +538,41 @@ class MockMigratedDataLayerNoData: DataLayerManagerProtocol {
 
 class MockTimedEventScheduler: Schedulable {
 
-    var handleCallCount = 0
+    var id: String = "MockTimedEventScheduler"
     var startCallCount = 0
     var stopCallCount = 0
-    var timedEventInfoCallCount = 0
+    var shouldQueueCallCount = 0
+    var sendTimedEventCount = 0
     var cancelCallCount = 0
     var clearAllCallCount = 0
-    var willTrackCallCount = 0
     
-    var events = Set<TimedEvent>()
+    var events =  [String : TimedEvent]()
     
-    func handle(request: inout TealiumTrackRequest) {
-        handleCallCount += 1
+    func shouldQueue(request: TealiumRequest) -> (Bool, [String : Any]?) {
+        shouldQueueCallCount += 1
+        return (false, [String: Any]())
+    }
+    
+    func shouldDrop(request: TealiumRequest) -> Bool {
+        return false
+    }
+    
+    func shouldPurge(request: TealiumRequest) -> Bool {
+        return false
     }
     
     func start(event name: String, with data: [String : Any]?) {
         startCallCount += 1
     }
     
-    func stop(event name: String) {
+    func stop(event name: String) -> TimedEvent? {
         stopCallCount += 1
+        return TimedEvent(name: "test")
     }
     
-    func timedEventInfo(for event: String) -> [String: Any] {
-        timedEventInfoCallCount += 1
-        return [String: Any]()
+    func sendTimedEvent(_ event: TimedEvent) {
+        sendTimedEventCount += 1
     }
-    
-    func update(request: inout TealiumTrackRequest, for event: String) { }
     
     func cancel(event name: String) {
         cancelCallCount += 1
@@ -573,10 +580,6 @@ class MockTimedEventScheduler: Schedulable {
     
     func clearAll() {
         clearAllCallCount += 1
-    }
-    
-    func willTrack(request: TealiumRequest) {
-        willTrackCallCount += 1
     }
     
 }

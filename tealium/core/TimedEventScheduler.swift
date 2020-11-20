@@ -7,87 +7,94 @@
 
 import Foundation
 
-public protocol Schedulable {
-    var events: Set<TimedEvent> { get }
-    func handle(request: inout TealiumTrackRequest)
+public protocol Schedulable: DispatchValidator {
+    var events: [String: TimedEvent] { get }
+    func sendTimedEvent(_ event: TimedEvent)
     func start(event name: String, with data: [String: Any]?)
-    func stop(event name: String)
-    func timedEventInfo(for event: String) -> [String: Any]
-    func update(request: inout TealiumTrackRequest, for event: String)
+    func stop(event name: String) -> TimedEvent?
     func cancel(event name: String)
     func clearAll()
 }
 
 public class TimedEventScheduler: Schedulable {
 
-    var config: TealiumConfig
-    public var events: Set<TimedEvent>
+    public var id: String = "TimedEventScheduler"
+    var context: TealiumContextProtocol
+    public var events: [String: TimedEvent]
 
-    
-    public init(config: TealiumConfig, events: Set<TimedEvent> = Set<TimedEvent>()) {
-        self.config = config
+    public init(context: TealiumContextProtocol,
+                events: [String: TimedEvent] = [String: TimedEvent]()) {
+        self.context = context
         self.events = events
     }
     
-    public func handle(request: inout TealiumTrackRequest) {
-        guard let event = request.event else {
-            log(message: "Tealium event not defined")
-            return
+    public func shouldQueue(request: TealiumRequest) -> (Bool, [String : Any]?) {
+        
+        guard let dispatch = request as? TealiumTrackRequest else {
+            return(false, nil)
         }
-        config.timedEventTriggers?.forEach { trigger in
+        
+        guard let triggers = context.config.timedEventTriggers else {
+            return (false, nil)
+        }
+        
+        guard let event = dispatch.event else {
+            return (false, nil)
+        }
+        
+        //var trackDictionary = dispatch.trackDictionary
+        triggers.forEach { trigger in
             let name = "\(trigger.start)::\(trigger.end)"
             if event == trigger.start  {
                 self.start(event: trigger.name ?? name)
             } else if event == trigger.end {
-                self.stop(event: name)
-                self.update(request: &request, for: name)
+                guard let event = self.stop(event: name) else {
+                    return
+                }
+                self.sendTimedEvent(event)
             }
         }
+        
+        return (false, nil)
     }
     
-    public func start(event name: String, with data: [String: Any]? = [String: Any]()) {
+    public func shouldDrop(request: TealiumRequest) -> Bool {
+        return false
+    }
+    
+    public func shouldPurge(request: TealiumRequest) -> Bool {
+        return false
+    }
+    
+    public func start(event name: String,
+                      with data: [String: Any]? = [String: Any]()) {
         let timedEvent = TimedEvent(name: name, data: data)
         guard events[name] == nil else {
             log(message: "Event already started", level: .debug)
             return
         }
-        events.insert(timedEvent)
+        events[name] = timedEvent
     }
     
-    public func stop(event name: String) {
+    public func stop(event name: String) -> TimedEvent? {
         guard var timedEvent = events[name] else {
             log(message: "Event not found")
-            return
+            return nil
         }
         timedEvent.stopTimer()
-        events.remove(timedEvent)
-        events.insert(timedEvent)
+        events[name] = timedEvent
+        return timedEvent
     }
     
-    public func update(request: inout TealiumTrackRequest, for event: String) {
-        guard let timedEvent = events[event] else {
-            log(message: "Event not found")
-            return
-        }
-        var trackInfo = request.trackDictionary
-        trackInfo += timedEvent.eventInfo
-        request = TealiumTrackRequest(data: trackInfo)
-    }
-    
-    public func timedEventInfo(for event: String) -> [String: Any] {
-        guard let timedEvent = events[event] else {
-            log(message: "Event not found")
-            return [String: Any]()
-        }
-        return timedEvent.eventInfo
+    public func sendTimedEvent(_ event: TimedEvent) {
+        events[event.name] = nil
+        let dispatch = TealiumEvent(TealiumValue.timedEvent,
+                                    dataLayer: event.eventInfo)
+        context.track(dispatch)
     }
     
     public func cancel(event name: String) {
-        guard let event = events[name] else {
-            log(message: "Event not found", level: .debug)
-            return
-        }
-        events.remove(event)
+        events[name] = nil
     }
     
     public func clearAll() {
@@ -100,7 +107,7 @@ public class TimedEventScheduler: Schedulable {
                                         message: message,
                                         logLevel: level,
                                         category: .general)
-        config.logger?.log(request)
+        context.config.logger?.log(request)
     }
     
 }

@@ -28,10 +28,10 @@ public struct TimedEvent: Hashable {
     var data: [String: Any]?
 
     public init(name: String,
-                data: [String: Any]? = [String: Any](),
+                data: [String: Any]? = nil,
                 start: TimeInterval = Date().timeIntervalSince1970) {
         self.name = name
-        self.data = data
+        self.data = data ?? [String: Any]()
         self.start = start
     }
     
@@ -41,14 +41,14 @@ public struct TimedEvent: Hashable {
               let stop = stop else {
                 return
         }
-        self.duration = (stop - start) * 1000
+        self.duration = stop - start
     }
 
     public var eventInfo: [String: Any] {
         guard var data = data,
-              let start = start,
-              let stop = stop,
-              let duration = duration else {
+              let start = start?.milliseconds,
+              let stop = stop?.milliseconds,
+              let duration = duration?.milliseconds else {
             return [String: Any]()
         }
         data[TealiumKey.timedEventName] = self.name
