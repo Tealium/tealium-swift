@@ -7,7 +7,12 @@
 
 import Foundation
 
-public struct TealiumContext: Hashable {
+public protocol TealiumContextProtocol {
+    var config: TealiumConfig { get }
+    func track(_ dispatch: TealiumDispatch)
+}
+
+public struct TealiumContext: Hashable, TealiumContextProtocol {
     public static func == (lhs: TealiumContext, rhs: TealiumContext) -> Bool {
         lhs.config == rhs.config
     }

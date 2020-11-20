@@ -122,6 +122,7 @@ public class ModulesManager {
         self.logger = self.config.logger
         self.setupDispatchers(config: self.config)
         self.setupHostedDataLayer(config: self.config)
+        self.setupTimedEventScheduler()
         self.setupDispatchValidators(config: self.config)
         self.setupDispatchListeners(config: self.config)
 
@@ -265,6 +266,11 @@ public class ModulesManager {
             let hostedDataLayer = HostedDataLayer(config: config, delegate: self, diskStorage: nil) { _, _ in }
             addDispatchValidator(hostedDataLayer)
         }
+    }
+    
+    func setupTimedEventScheduler() {
+        let timedEventScheduler = TimedEventScheduler(context: self.context)
+        self.addDispatchValidator(timedEventScheduler)
     }
 
     func setupDispatchListeners(config: TealiumConfig) {

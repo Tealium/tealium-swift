@@ -113,7 +113,6 @@ class DispatchManager: DispatchManagerProtocol {
         self.connectivityManager = connectivityManager
         self.dispatchers = dispatchers
         self.dispatchValidators = dispatchValidators
-
         self.dispatchListeners = dispatchListeners
 
         if let logger = config.logger {
@@ -133,11 +132,12 @@ class DispatchManager: DispatchManagerProtocol {
     }
 
     func processTrack(_ request: TealiumTrackRequest) {
+        var newRequest = request
+        
         // first release the queue if the dispatch limit has been reached
         if shouldDequeue {
             handleDequeueRequest(reason: "Processing track request")
         }
-        var newRequest = request
 
         if checkShouldQueue(request: &newRequest) {
             enqueue(newRequest, reason: nil)

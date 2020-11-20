@@ -60,6 +60,7 @@ public class DeviceDataModule: Collector {
         result[DeviceDataKey.osBuild] = DeviceData.oSBuild
         result[TealiumKey.cpuType] = deviceDataCollection.cpuType
         result += deviceDataCollection.model
+        result[DeviceDataKey.manufacturer] = DeviceDataValue.manufacturer
         result[DeviceDataKey.osVersion] = DeviceData.oSVersion
         result[TealiumKey.osName] = DeviceData.oSName
         result[TealiumKey.platform] = (result[TealiumKey.osName] as? String ?? "").lowercased()

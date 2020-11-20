@@ -30,6 +30,7 @@ public enum TealiumValue {
     static let defaultHDLExpiry: (Int, unit: TimeUnit) = (7, unit: .days)
     static let mobile = "mobile"
     public static let unknown = "unknown"
+    public static let timedEvent = "timed_event"
 }
 
 public enum ModuleNames {
@@ -136,6 +137,11 @@ public enum TealiumKey {
     static let hostedDataLayerExpiry = "hosted_data_layer_expiry"
     static let origin = "origin"
     static let shouldMigrate = "should_migrate_data"
+    static let timedEventTriggers = "timed_event_triggers"
+    static let timedEventName = "timed_event_name"
+    static let eventStart = "timed_event_start"
+    static let eventStop = "timed_event_end"
+    static let eventDuration = "timed_event_duration"
 }
 
 public enum TealiumTrackType {

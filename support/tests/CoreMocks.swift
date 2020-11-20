@@ -117,6 +117,8 @@ class DummyDispatchManagerConfigUpdate: DispatchManagerProtocol {
     var dispatchListeners: [DispatchListener]?
 
     var dispatchValidators: [DispatchValidator]?
+    
+    var timedEventScheduler: Schedulable?
 
     var config: TealiumConfig {
         willSet {
@@ -150,6 +152,8 @@ class DummyDispatchManagerdequeue: DispatchManagerProtocol {
     var dispatchValidators: [DispatchValidator]?
 
     var asyncExpectation: XCTestExpectation?
+    
+    var timedEventScheduler: Schedulable?
 
     var config: TealiumConfig {
         willSet {
@@ -532,3 +536,50 @@ class MockMigratedDataLayerNoData: DataLayerManagerProtocol {
 
 }
 
+class MockTimedEventScheduler: Schedulable {
+
+    var id: String = "MockTimedEventScheduler"
+    var startCallCount = 0
+    var stopCallCount = 0
+    var shouldQueueCallCount = 0
+    var sendTimedEventCount = 0
+    var cancelCallCount = 0
+    var clearAllCallCount = 0
+    
+    var events =  [String : TimedEvent]()
+    
+    func shouldQueue(request: TealiumRequest) -> (Bool, [String : Any]?) {
+        shouldQueueCallCount += 1
+        return (false, [String: Any]())
+    }
+    
+    func shouldDrop(request: TealiumRequest) -> Bool {
+        return false
+    }
+    
+    func shouldPurge(request: TealiumRequest) -> Bool {
+        return false
+    }
+    
+    func start(event name: String, with data: [String : Any]?) {
+        startCallCount += 1
+    }
+    
+    func stop(event name: String) -> TimedEvent? {
+        stopCallCount += 1
+        return TimedEvent(name: "test")
+    }
+    
+    func sendTimedEvent(_ event: TimedEvent) {
+        sendTimedEventCount += 1
+    }
+    
+    func cancel(event name: String) {
+        cancelCallCount += 1
+    }
+    
+    func clearAll() {
+        clearAllCallCount += 1
+    }
+    
+}
