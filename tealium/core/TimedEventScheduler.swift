@@ -42,7 +42,6 @@ public class TimedEventScheduler: Schedulable {
             return (false, nil)
         }
         
-        //var trackDictionary = dispatch.trackDictionary
         triggers.forEach { trigger in
             let name = "\(trigger.start)::\(trigger.end)"
             if event == trigger.start  {
