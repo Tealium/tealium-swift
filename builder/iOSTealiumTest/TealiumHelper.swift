@@ -52,7 +52,11 @@ class TealiumHelper  {
         config.hostedDataLayerKeys = ["hdl-test": "product_id"]
         config.timedEventTriggers = [TimedEventTrigger(start: "product_view", end: "order_complete"),
                                      TimedEventTrigger(start: "start_game", end: "buy_coins")]
-
+        config.consentExpiry = (2, .minutes)
+        config.onConsentExpiration = {
+           // do something
+            print("Consent expired")
+        }
         #if os(iOS) && !targetEnvironment(macCatalyst)
             config.collectors = [
                 Collectors.Attribution,
@@ -141,7 +145,7 @@ class TealiumHelper  {
     func toggleConsentStatus() {
         if let consentStatus = tealium?.consentManager?.userConsentStatus {
             switch consentStatus {
-            case .consented:
+            case .notConsented:
                 TealiumHelper.shared.tealium?.consentManager?.userConsentStatus = .notConsented
             default:
                 TealiumHelper.shared.tealium?.consentManager?.userConsentStatus = .consented
