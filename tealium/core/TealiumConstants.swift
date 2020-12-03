@@ -28,6 +28,7 @@ public enum TealiumValue {
     static let hdlMaxRetries = 3
     static let hdlCacheSizeMax = 50
     static let defaultHDLExpiry: (Int, unit: TimeUnit) = (7, unit: .days)
+    static let defaultConsentExpiry: (Int, TimeUnit) = (365, .days)
     static let mobile = "mobile"
     public static let unknown = "unknown"
     public static let timedEvent = "timed_event"
@@ -135,6 +136,8 @@ public enum TealiumKey {
     static let skAdConversionKeys = "attribution_conversion_keys"
     static let hostedDataLayerKeys = "hosted_data_layer_keys"
     static let hostedDataLayerExpiry = "hosted_data_layer_expiry"
+    static let consentExpiry = "consent_expiry"
+    static let consentExpiryCallback = "consent_expiry_callback"
     static let origin = "origin"
     static let shouldMigrate = "should_migrate_data"
     static let timedEventTriggers = "timed_event_triggers"

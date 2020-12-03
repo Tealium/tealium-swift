@@ -302,6 +302,47 @@ class ConsentManagerTests: XCTestCase {
         let actualUserConsentPreferences = consentManager.currentPolicy.preferences
         XCTAssertEqual(actualUserConsentPreferences, expectedUserConsentPreferences)
     }
+    
+    func testOnConsentExpirationCallbackSetFromConfig() {
+        config.onConsentExpiration = {
+            print("hello")
+        }
+        let consentManager = consentManagerForConfig(config)
+        XCTAssertNotNil(consentManager.onConsentExpiraiton)
+    }
+    
+    func testOnConsentExpirationCallbackSetFromTealium() {
+        let expect = expectation(description: "testOnConsentExpirationCallbackSetFromTealium")
+        config.consentPolicy = .gdpr
+        let tealium = Tealium(config: config)
+        delay {
+            tealium.consentManager?.onConsentExpiraiton = {
+                print("hello")
+            }
+            XCTAssertNotNil(tealium.consentManager?.onConsentExpiraiton)
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: 1.0)
+    }
+    
+    func consentLastSetSaved() {
+        let mockDate = Date(timeIntervalSinceReferenceDate: 1607031457)
+        consentManager.consentLastSet = mockDate
+        let preferences = consentManager.diskStorage?.retrieve(as: UserConsentPreferences.self)
+        XCTAssertEqual(preferences?.lastSet, mockDate)
+    }
+    
+    func setUserConsentStatusWithCategoriesSetsLastSet() {
+        consentManager.consentLastSet = nil
+        consentManager.userConsentStatus = .consented
+        XCTAssertNotNil(consentManager.consentLastSet)
+    }
+    
+    private func delay(_ completion: @escaping () -> Void) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            completion()
+        }
+    }
 }
 
 extension ConsentManagerTests: ModuleDelegate {
@@ -330,3 +371,4 @@ class ConsentManagerDelegate: ModuleDelegate {
 
     }
 }
+
