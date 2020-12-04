@@ -78,6 +78,12 @@ class TestTealiumHelper {
         let tealium = Tealium(config: config)
         return TealiumContext(config: config, dataLayer: dataLayer ?? DummyDataManager(), tealium: tealium)
     }
+    
+    class func delay(_ completion: @escaping () -> Void) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            completion()
+        }
+    }
 
     class func allTealiumModuleNames() -> [String] {
         // priority order

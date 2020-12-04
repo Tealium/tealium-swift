@@ -40,6 +40,11 @@ public class TealiumLifecycleListeners {
     public func removeDelegate(delegate: TealiumLifecycleEvents) {
         listeningDelegates.remove(delegate)
     }
+    
+    /// Removes all listening delegates
+    public func removeAll() {
+        listeningDelegates.removeAll()
+    }
 
     /// Notifies listeners of a launch event.
     public func launch() {

@@ -200,7 +200,7 @@ class TealiumAttributionDataTests: XCTestCase {
     func testTrackingEnabled_returnsTrueWhenTrackingAuthorized() {
         var idManager = TealiumASIdentifierManager.shared
         idManager.attManager = MockATTrackingManagerTrackingAuthorized()
-        delay {
+        TestTealiumHelper.delay {
             XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "true")
         }
     }
@@ -209,7 +209,7 @@ class TealiumAttributionDataTests: XCTestCase {
     func testTrackingEnabled_returnsFalseWhenTrackingDenied() {
         var idManager = TealiumASIdentifierManager.shared
         idManager.attManager = MockATTrackingManagerTrackingDenied()
-        delay {
+        TestTealiumHelper.delay {
             XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "false")
         }
     }
@@ -218,7 +218,7 @@ class TealiumAttributionDataTests: XCTestCase {
     func testTrackingEnabled_returnsFalseWhenTrackingRestricted() {
         var idManager = TealiumASIdentifierManager.shared
         idManager.attManager = MockATTrackingManagerTrackingRestricted()
-        delay {
+        TestTealiumHelper.delay {
             XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "false")
         }
     }
@@ -227,14 +227,8 @@ class TealiumAttributionDataTests: XCTestCase {
     func testTrackingEnabled_returnsFalseWhenTrackingNotDetermined() {
         var idManager = TealiumASIdentifierManager.shared
         idManager.attManager = MockATTrackingManagerTrackingNotDetermined()
-        delay {
+        TestTealiumHelper.delay {
             XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "false")
-        }
-    }
-
-    private func delay(_ completion: @escaping () -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-            completion()
         }
     }
 
