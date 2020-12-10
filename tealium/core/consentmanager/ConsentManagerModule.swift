@@ -110,10 +110,10 @@ class ConsentManagerModule: Collector, DispatchValidator {
     /// Checks if the consent selections are expired
     /// If so, resets consent preferences and triggers optional callback
     public func expireConsent() {
-        let expiry = config.consentExpiry
+        let expiry = config.consentExpiry ?? config.consentPolicy.defaultConsentExpiry
         var components = DateComponents()
         components.calendar = Calendar.autoupdatingCurrent
-        components.setValue(-expiry.0, for: expiry.1.component)
+        components.setValue(-expiry.time, for: expiry.unit.component)
         guard let lastSet = consentManager?.consentLastSet,
               let expiryDate = Calendar(identifier: .gregorian).date(byAdding: components, to: Date()),
               expiryDate > lastSet else {

@@ -404,9 +404,9 @@ public extension TealiumConfig {
     }
     
     /// Sets the expiry for the Consent Manager preferences.
-    var consentExpiry: (Int, TimeUnit) {
+    var consentExpiry: (time: Int, unit: TimeUnit)? {
         get {
-            options[TealiumKey.consentExpiry] as? (Int, TimeUnit) ?? TealiumValue.defaultConsentExpiry
+            options[TealiumKey.consentExpiry] as? (Int, TimeUnit)
         }
 
         set {
