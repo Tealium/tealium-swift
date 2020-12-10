@@ -13,7 +13,11 @@ import TealiumCore
 public extension TealiumConfig {
 
     /// Overrides the default Collect endpoint URL￼.
-    var collectOverrideURL: String? {
+    /// NOTE: the Batch URL must be overridden separately. See `overrideCollectBatchURL`.
+    /// The full URL must be provided, including protocol and path.
+    /// If using Tealium with a CNAMEd domain, the format would be: https://collect.mydomain.com/event  (the path MUST be `/event`).
+    /// If using your own custom endpoint, the URL can be any valid URL.
+    var overrideCollectURL: String? {
         get {
             options[CollectKey.overrideCollectUrl] as? String
         }
@@ -22,29 +26,47 @@ public extension TealiumConfig {
             guard let newValue = newValue else {
                 return
             }
-            if newValue.contains("vdata") {
-                var urlString = newValue
-                var lastChar: Character?
-                lastChar = urlString.last
+            options[CollectKey.overrideCollectUrl] = newValue
+        }
+    }
+    
+    /// Overrides the default Collect endpoint URL￼.
+    /// The full URL must be provided, including protocol and path.
+    /// If using Tealium with a CNAMEd domain, the format would be: https://collect.mydomain.com/bulk-event (the path MUST be `/bulk-event`).
+    /// If using your own custom endpoint, the URL can be any valid URL. Your endpoint must be prepared to accept batched events in Tealium's proprietary gzipped format.
+    var overrideCollectBatchURL: String? {
+        get {
+            options[CollectKey.overrideCollectBatchUrl] as? String
+        }
 
-                if lastChar != "&" {
-                    urlString += "&"
-                }
-                options[CollectKey.overrideCollectUrl] = urlString
-            } else {
-                options[CollectKey.overrideCollectUrl] = newValue
+        set {
+            guard let newValue = newValue else {
+                return
             }
+            options[CollectKey.overrideCollectBatchUrl] = newValue
         }
     }
 
     /// Overrides the default Collect endpoint profile￼.
-    var collectOverrideProfile: String? {
+    var overrideCollectProfile: String? {
         get {
             options[CollectKey.overrideCollectProfile] as? String
         }
 
         set {
             options[CollectKey.overrideCollectProfile] = newValue
+        }
+    }
+    
+    /// Overrides the default Collect domain only.
+    /// Only the hostname should be provided, excluding the protocol, e.g. `my-company.com`
+    var overrideCollectDomain: String? {
+        get {
+            options[CollectKey.overrideCollectDomain] as? String
+        }
+
+        set {
+            options[CollectKey.overrideCollectDomain] = newValue
         }
     }
 }

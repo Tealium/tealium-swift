@@ -356,6 +356,8 @@ class DummyDispatchManagerRequestTrack: DispatchManagerProtocol {
     var dispatchListeners: [DispatchListener]?
 
     var dispatchValidators: [DispatchValidator]?
+    
+    var timedEventScheduler: Schedulable?
 
     var config: TealiumConfig {
         willSet {
@@ -387,6 +389,8 @@ class DummyDispatchManagerSendTrack: DispatchManagerProtocol {
     var dispatchListeners: [DispatchListener]?
 
     var dispatchValidators: [DispatchValidator]?
+    
+    var timedEventScheduler: Schedulable?
 
     var config: TealiumConfig {
         willSet {

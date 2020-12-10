@@ -155,7 +155,7 @@ class PerformanceTests: XCTestCase {
 
     func testAppDataCollection() {
         let tealium = Tealium(config: defaultTealiumConfig)
-        let context = TealiumContext(config: config, dataLayer: DataLayer(config: defaultTealiumConfig), tealium: tealium)
+        let context = TealiumContext(config: defaultTealiumConfig, dataLayer: DataLayer(config: defaultTealiumConfig), tealium: tealium)
         let module = AppDataModule(context: context, delegate: self, diskStorage: nil, completion: { _ in })
         self.measureMetrics(allMetrics, automaticallyStartMeasuring: true) {
             _ = module.data

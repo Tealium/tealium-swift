@@ -16,10 +16,10 @@ class CollectEventDispatcher: CollectProtocol {
     var urlSessionConfiguration: URLSessionConfiguration?
     static var defaultDispatchBaseURL = "https://collect.tealiumiq.com"
     static var singleEventPath = "/event/"
-    static var bulkEventPath = "/bulk-event/"
+    static var batchEventPath = "/bulk-event/"
     static var tealiumDomain = ".tealiumiq.com"
 
-    var bulkEventDispatchURL: String?
+    var batchEventDispatchURL: String?
     var singleEventDispatchURL: String?
 
     /// Initializes dispatcher￼.
@@ -28,27 +28,36 @@ class CollectEventDispatcher: CollectProtocol {
     ///     - dispatchURL:`String` representation of the dispatch URL￼
     ///     - urlSession: `URLSession` to use for the dispatch (overridable for unit tests)￼
     ///     - completion: `ModuleCompletion?` Completion handler to run when the dispatcher has finished initializing
-    init(dispatchURL: String,
+    init(config: TealiumConfig,
          urlSession: URLSessionProtocol = CollectEventDispatcher.urlSession,
          completion: ModuleCompletion? = nil) {
         self.urlSession = urlSession
-        if CollectEventDispatcher.isValidUrl(url: dispatchURL) {
-            // if using a custom endpoint, we recommend disabling batching, otherwise custom endpoint must handle batched events using Tealium's proprietary format
-            // if using a CNAMEd domain, batching will work as normal.
-            if let baseURL = CollectEventDispatcher.getDomainFromURLString(url: dispatchURL) {
-                self.bulkEventDispatchURL = "https://\(baseURL)\(CollectEventDispatcher.bulkEventPath)"
-                self.singleEventDispatchURL = "https://\(baseURL)\(CollectEventDispatcher.singleEventPath)"
-            } else {
-                // should never get here, as URL is already pre-validated
-                assignDefaultURLs()
-            }
-        } else {
-            assignDefaultURLs()
-            completion?((.failure(CollectError.invalidDispatchURL), ["error": ""]))
-            return
-        }
-
+        setUpUrls(config: config)
         completion?((.success(true), nil))
+    }
+    
+    func setUpUrls(config: TealiumConfig) {
+        if let overrideUrl = config.overrideCollectURL,
+           CollectEventDispatcher.isValidUrl(overrideUrl) {
+            self.singleEventDispatchURL = overrideUrl
+        } else {
+            if let overrideDomain = config.overrideCollectDomain {
+                singleEventDispatchURL = "https://\(overrideDomain)\(CollectEventDispatcher.singleEventPath)"
+            } else {
+                singleEventDispatchURL = "\(CollectEventDispatcher.defaultDispatchBaseURL)\(CollectEventDispatcher.singleEventPath)"
+            }
+        }
+        
+        if let overrideBatchUrl = config.overrideCollectBatchURL,
+           CollectEventDispatcher.isValidUrl(overrideBatchUrl) {
+            self.batchEventDispatchURL = overrideBatchUrl
+        } else {
+            if let overrideDomain = config.overrideCollectDomain {
+                batchEventDispatchURL = "https://\(overrideDomain)\(CollectEventDispatcher.batchEventPath)"
+            } else {
+                batchEventDispatchURL = "\(CollectEventDispatcher.defaultDispatchBaseURL)\(CollectEventDispatcher.batchEventPath)"
+            }
+        }
     }
 
     /// - Returns: `URLSession` -  An ephemeral URLSession instance
@@ -57,30 +66,11 @@ class CollectEventDispatcher: CollectProtocol {
         return URLSession(configuration: config)
     }
 
-    /// Sets dispatch URLs to default values
-    func assignDefaultURLs() {
-        // should never get here, as URL is already pre-validated
-        self.bulkEventDispatchURL = "\(CollectEventDispatcher.defaultDispatchBaseURL)\(CollectEventDispatcher.bulkEventPath)"
-        self.singleEventDispatchURL = "\(CollectEventDispatcher.defaultDispatchBaseURL)\(CollectEventDispatcher.singleEventPath)"
-    }
-
-    /// Gets the hostname from a url￼.
-    ///
-    /// - Parameter url: `String` representation of a URL
-    /// - Returns: `String?` containing the hostname
-    static func getDomainFromURLString(url: String) -> String? {
-        guard let url = URL(string: url) else {
-            return nil
-        }
-
-        return url.host
-    }
-
     /// URL initializer does not actually validate web addresses successfully (it's too permissive), so this additional check is required￼.
     ///
     /// - Parameter url: `String` containing a URL to be validated
     /// - Returns: `Bool` `true` if URL is a valid web address
-    static func isValidUrl(url: String) -> Bool {
+    static func isValidUrl(_ url: String) -> Bool {
         let urlRegexPattern = "^(https?://)?(www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z0-9]{0,61}[a-z0-9]\\.[a-z]{2,6}(/[-\\w@\\+\\.~#\\?&/=%]*)?$"
         guard let validURLRegex = try? NSRegularExpression(pattern: urlRegexPattern, options: []) else {
             return false
@@ -114,11 +104,11 @@ class CollectEventDispatcher: CollectProtocol {
     /// Dispatches data to an HTTP endpoint, then calls optional completion block when finished.
     ///
     /// - Parameters:
-    ///     - data: `[String:Any]` containing the nested data structure for a bulk dispatch
+    ///     - data: `[String:Any]` containing the nested data structure for a batch dispatch
     ///     - completion: `ModuleCompletion?` Optional completion block to be called when operation complete
-    func dispatchBulk(data: [String: Any],
+    func dispatchBatch(data: [String: Any],
                       completion: ModuleCompletion?) {
-        dispatch(data: data, url: bulkEventDispatchURL, completion: completion)
+        dispatch(data: data, url: batchEventDispatchURL, completion: completion)
     }
 
     /// Sends a URLRequest, then calls the completion handler, passing success/failures back to the completion handler￼.

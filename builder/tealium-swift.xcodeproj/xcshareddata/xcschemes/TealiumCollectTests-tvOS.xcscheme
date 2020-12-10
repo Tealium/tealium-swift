@@ -1,72 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1020"
+   LastUpgradeVersion = "1100"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
-      <BuildActionEntries>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9B75BF5D7C974DBB16CA73BF"
-               BuildableName = "TealiumCollectTests-tvOS.xctest"
-               BlueprintName = "TealiumCollectTests-tvOS"
-               ReferencedContainer = "container:tealium-swift.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-      </BuildActionEntries>
    </BuildAction>
    <TestAction
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      codeCoverageEnabled = "YES"
-      onlyGenerateCoverageForSpecifiedTargets = "NO"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9B75BF5D7C974DBB16CA73BF"
-               BuildableName = "TealiumCollectTests-tvOS.xctest"
-               BlueprintName = "TealiumCollectTests-tvOS"
-               ReferencedContainer = "container:tealium-swift.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9B75BF5D7C974DBB16CA73BF"
+               BlueprintIdentifier = "D798C30D23423DB600EE665E"
                BuildableName = "TealiumCollectTests-tvOS.xctest"
                BlueprintName = "TealiumCollectTests-tvOS"
                ReferencedContainer = "container:tealium-swift.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9B75BF5D7C974DBB16CA73BF"
-            BuildableName = "TealiumCollectTests-tvOS.xctest"
-            BlueprintName = "TealiumCollectTests-tvOS"
-            ReferencedContainer = "container:tealium-swift.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
-      <CommandLineArguments>
-      </CommandLineArguments>
-      <AdditionalOptions>
-      </AdditionalOptions>
-      <CodeCoverageTargets>
-      </CodeCoverageTargets>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -78,18 +34,6 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9B75BF5D7C974DBB16CA73BF"
-            BuildableName = "TealiumCollectTests-tvOS.xctest"
-            BlueprintName = "TealiumCollectTests-tvOS"
-            ReferencedContainer = "container:tealium-swift.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -97,16 +41,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9B75BF5D7C974DBB16CA73BF"
-            BuildableName = "TealiumCollectTests-tvOS.xctest"
-            BlueprintName = "TealiumCollectTests-tvOS"
-            ReferencedContainer = "container:tealium-swift.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

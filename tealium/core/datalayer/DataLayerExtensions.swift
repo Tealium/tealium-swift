@@ -20,6 +20,9 @@ public extension Tealium {
 
 public extension TealiumConfig {
 
+    /// Defines lookup keys for the Hosted Data Layer.
+    /// The dictionary `key` denotes the event name (`tealium_event`) for which the lookup should be performed, e.g. `"product_view"`
+    /// The dictionary `value` denotes the name of the data layer key that should looked up for this event, e.g. `"product_id".`
     var hostedDataLayerKeys: [String: String]? {
         get {
             options[TealiumKey.hostedDataLayerKeys] as? [String: String]
@@ -29,7 +32,8 @@ public extension TealiumConfig {
             options[TealiumKey.hostedDataLayerKeys] = newValue
         }
     }
-
+    
+    /// Sets the expiry for the Hosted Data Layer cache.
     var hostedDataLayerExpiry: (Int, unit: TimeUnit) {
         get {
             options[TealiumKey.hostedDataLayerExpiry] as? (Int, unit: TimeUnit) ?? TealiumValue.defaultHDLExpiry

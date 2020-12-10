@@ -25,6 +25,6 @@ public protocol CollectProtocol {
     /// - Parameters:
     ///     - data: `[String:Any]` of variables to be dispatched￼
     ///     - completion: `ModuleCompletion?` Optional completion block to be called when operation complete
-    func dispatchBulk(data: [String: Any],
+    func dispatchBatch(data: [String: Any],
                       completion: ModuleCompletion?)
 }

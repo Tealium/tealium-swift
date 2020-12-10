@@ -30,6 +30,7 @@ public enum DeviceDataKey {
     public static let appOrientation = "app_orientation"
     public static let deviceOrientation = "device_orientation"
     public static let appOrientationExtended = "app_orientation_extended"
+    public static let manufacturer = "device_manufacturer"
 }
 
 enum DeviceDataModuleKey {
@@ -39,4 +40,5 @@ enum DeviceDataModuleKey {
 
 public enum DeviceDataValue {
     static let appleWatch = "Apple Watch"
+    public static let manufacturer = "Apple"
 }
