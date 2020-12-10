@@ -52,6 +52,7 @@ class TealiumHelper  {
         config.hostedDataLayerKeys = ["hdl-test": "product_id"]
         config.timedEventTriggers = [TimedEventTrigger(start: "product_view", end: "order_complete"),
                                      TimedEventTrigger(start: "start_game", end: "buy_coins")]
+
         config.consentExpiry = (time: 2, unit: .minutes)
         config.onConsentExpiration = {
            // do something
