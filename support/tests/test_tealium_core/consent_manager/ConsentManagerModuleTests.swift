@@ -251,7 +251,7 @@ class ConsentManagerModuleTests: XCTestCase {
         let consentManager = ConsentManager(config: config, delegate: nil, diskStorage: ConsentMockDiskStorage(), dataLayer: nil)
         module.consentManager = consentManager
         module.consentManager?.userConsentStatus = .consented
-        module.consentManager?.consentLastSet = nil
+        module.consentManager?.lastConsentUpdate = nil
         module.expireConsent()
         XCTAssertEqual(module.consentManager?.userConsentStatus, .consented)
     }
@@ -263,7 +263,7 @@ class ConsentManagerModuleTests: XCTestCase {
                                           delegate: nil,
                                           diskStorage: ConsentMockDiskStorage()) { _ in }
         module.consentManager?.userConsentCategories = [.analytics, .affiliates]
-        module.consentManager?.consentLastSet = TimeTraveler().travel(by: 60 * 60 * 24 + 1)
+        module.consentManager?.lastConsentUpdate = TimeTraveler().travel(by: 60 * 60 * 24 + 1)
         module.expireConsent()
         XCTAssertEqual(module.consentManager?.userConsentCategories, [.analytics, .affiliates])
     }
@@ -277,7 +277,7 @@ class ConsentManagerModuleTests: XCTestCase {
         let consentManager = ConsentManager(config: config, delegate: nil, diskStorage: ConsentMockDiskStorage(), dataLayer: nil)
         module.consentManager = consentManager
         module.consentManager?.userConsentCategories = TealiumConsentCategories.all
-        module.consentManager?.consentLastSet = TimeTraveler().travel(by: -(60 * 60 * 24 + 1))
+        module.consentManager?.lastConsentUpdate = TimeTraveler().travel(by: -(60 * 60 * 24 + 1))
         module.expireConsent()
         XCTAssertEqual(module.consentManager?.userConsentCategories?.count, 0)
         XCTAssertEqual(module.consentManager?.consentPreferencesStorage?.preferences?.consentStatus, .unknown)

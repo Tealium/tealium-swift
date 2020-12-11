@@ -341,15 +341,15 @@ class ConsentManagerTests: XCTestCase {
     
     func consentLastSetSaved() {
         let mockDate = Date(timeIntervalSinceReferenceDate: 1607031457)
-        consentManager.consentLastSet = mockDate
+        consentManager.lastConsentUpdate = mockDate
         let preferences = consentManager.diskStorage?.retrieve(as: UserConsentPreferences.self)
-        XCTAssertEqual(preferences?.lastSet, mockDate)
+        XCTAssertEqual(preferences?.lastUpdate, mockDate)
     }
     
     func setUserConsentStatusWithCategoriesSetsLastSet() {
-        consentManager.consentLastSet = nil
+        consentManager.lastConsentUpdate = nil
         consentManager.userConsentStatus = .consented
-        XCTAssertNotNil(consentManager.consentLastSet)
+        XCTAssertNotNil(consentManager.lastConsentUpdate)
     }
 
 }

@@ -117,7 +117,7 @@ class ConsentManagerModule: Collector, DispatchValidator {
         var components = DateComponents()
         components.calendar = Calendar.autoupdatingCurrent
         components.setValue(-expiry.time, for: expiry.unit.component)
-        guard let lastSet = consentManager.consentLastSet,
+        guard let lastSet = consentManager.lastConsentUpdate,
               let expiryDate = Calendar(identifier: .gregorian).date(byAdding: components, to: Date()),
               expiryDate > lastSet else {
             return

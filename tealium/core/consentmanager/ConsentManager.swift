@@ -52,13 +52,13 @@ public class ConsentManager {
     }
     
     /// Used by the Consent Manager module to determine if the consent selections are expired
-    var consentLastSet: Date? {
+    var lastConsentUpdate: Date? {
         get {
-            currentPolicy.preferences.lastSet
+            currentPolicy.preferences.lastUpdate
         }
         set {
             if let newValue = newValue {
-                currentPolicy.preferences.lastSet = newValue
+                currentPolicy.preferences.lastUpdate = newValue
             }
         }
     }
@@ -158,7 +158,7 @@ public class ConsentManager {
         if let categories = categories {
             currentPolicy.preferences.setConsentCategories(categories)
         }
-        consentLastSet = Date()
+        lastConsentUpdate = Date()
         storeUserConsentPreferences(currentPolicy.preferences)
         trackUserConsentPreferences(currentPolicy.preferences)
     }
