@@ -42,6 +42,19 @@ class TealiumExtensionTests: XCTestCase {
         }
         wait(for: [expect], timeout: 1.0)
     }
+    
+    func testResetVisitorId() {
+        let expect = expectation(description: "Visitor id is reset")
+        tealium = Tealium(config: defaultTealiumConfig) { _ in
+            let currentVisitorId = self.tealium.visitorId
+            self.tealium.resetVisitorId()
+            let newVisitorId = self.tealium.visitorId
+            XCTAssertNotEqual(newVisitorId, currentVisitorId)
+            XCTAssertEqual(self.tealium.visitorId, newVisitorId)
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: 2.0)
+    }
 
     func testConsentManagerNotNil() {
         let expect = expectation(description: "Consent Manager Module not nil")

@@ -186,5 +186,10 @@ public class AppDataModule: Collector {
         }
         newVolatileData()
     }
+    
+    /// Resets Tealium Visitor Id
+    func resetVisitorId() {
+        storeNewAppData()
+    }
 
 }
