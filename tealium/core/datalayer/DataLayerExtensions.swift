@@ -16,6 +16,7 @@ public extension Tealium {
         }?.data?[TealiumKey.visitorId] as? String
     }
     
+    /// Resets the Tealium Visitor Id
     func resetVisitorId() {
         let appDataModule = zz_internal_modulesManager?.collectors.first {
             $0 is AppDataModule
