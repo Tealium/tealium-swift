@@ -26,6 +26,7 @@ class ConsentManagerModuleTests: XCTestCase {
 
     override func setUp() {
         config = TealiumConfig(account: "testAccount", profile: "testProfile", environment: "testEnvironment")
+        config.appDelegateProxyEnabled = false
         config.consentPolicy = .gdpr
     }
 
@@ -240,6 +241,46 @@ class ConsentManagerModuleTests: XCTestCase {
         XCTAssertNotNil(trackWithConsentData[TealiumKey.requestUUID])
         trackWithConsentData[TealiumKey.requestUUID] = nil
         XCTAssertTrue(NSDictionary(dictionary: expected).isEqual(to: trackWithConsentData))
+    }
+    
+    func testExpireConsentReturnsIfLastSetNil() {
+        let context = TestTealiumHelper.context(with: config)
+        let module = ConsentManagerModule(context: context,
+                                          delegate: nil,
+                                          diskStorage: ConsentMockDiskStorage()) { _ in }
+        let consentManager = ConsentManager(config: config, delegate: nil, diskStorage: ConsentMockDiskStorage(), dataLayer: nil)
+        module.consentManager = consentManager
+        module.consentManager?.userConsentStatus = .consented
+        module.consentManager?.lastConsentUpdate = nil
+        module.expireConsent()
+        XCTAssertEqual(module.consentManager?.userConsentStatus, .consented)
+    }
+    
+    func testExpireConsentReturnsIfDateIsLessThanLastSet() {
+        config.consentExpiry = (24, .hours)
+        let context = TestTealiumHelper.context(with: config)
+        let module = ConsentManagerModule(context: context,
+                                          delegate: nil,
+                                          diskStorage: ConsentMockDiskStorage()) { _ in }
+        module.consentManager?.userConsentCategories = [.analytics, .affiliates]
+        module.consentManager?.lastConsentUpdate = TimeTraveler().travel(by: 60 * 60 * 24 + 1)
+        module.expireConsent()
+        XCTAssertEqual(module.consentManager?.userConsentCategories, [.analytics, .affiliates])
+    }
+    
+    func testExpireConsentSetsCategoriesToNil() {
+        config.consentExpiry = (24, .hours)
+        let context = TestTealiumHelper.context(with: config)
+        let module = ConsentManagerModule(context: context,
+                                          delegate: nil,
+                                          diskStorage: ConsentMockDiskStorage()) { _ in }
+        let consentManager = ConsentManager(config: config, delegate: nil, diskStorage: ConsentMockDiskStorage(), dataLayer: nil)
+        module.consentManager = consentManager
+        module.consentManager?.userConsentCategories = TealiumConsentCategories.all
+        module.consentManager?.lastConsentUpdate = TimeTraveler().travel(by: -(60 * 60 * 24 + 1))
+        module.expireConsent()
+        XCTAssertEqual(module.consentManager?.userConsentCategories?.count, 0)
+        XCTAssertEqual(module.consentManager?.consentPreferencesStorage?.preferences?.consentStatus, .unknown)
     }
 
 }

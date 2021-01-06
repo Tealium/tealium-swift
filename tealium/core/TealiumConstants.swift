@@ -135,6 +135,8 @@ public enum TealiumKey {
     static let skAdConversionKeys = "attribution_conversion_keys"
     static let hostedDataLayerKeys = "hosted_data_layer_keys"
     static let hostedDataLayerExpiry = "hosted_data_layer_expiry"
+    static let consentExpiry = "consent_expiry"
+    static let consentExpiryCallback = "consent_expiry_callback"
     static let origin = "origin"
     static let shouldMigrate = "should_migrate_data"
     static let timedEventTriggers = "timed_event_triggers"

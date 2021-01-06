@@ -275,7 +275,7 @@ class TimedEventSchedulerTests: XCTestCase {
             self.tealium?.zz_internal_modulesManager?.addDispatchValidator(mockTimedEventScheduler)
             self.tealium?.track(TealiumEvent("start_event"))
         }
-        delay {
+        TestTealiumHelper.delay {
             XCTAssertEqual(mockTimedEventScheduler.shouldQueueCallCount, 1)
             XCTAssertEqual(mockTimedEventScheduler.startCallCount, 1)
         }
@@ -291,7 +291,7 @@ class TimedEventSchedulerTests: XCTestCase {
             self.tealium?.track(TealiumEvent("start_event"))
             self.tealium?.track(TealiumEvent("stop_event"))
         }
-        delay {
+        TestTealiumHelper.delay {
             XCTAssertEqual(mockTimedEventScheduler.shouldQueueCallCount, 2)
             XCTAssertEqual(mockTimedEventScheduler.stopCallCount, 1)
         }
@@ -305,15 +305,9 @@ class TimedEventSchedulerTests: XCTestCase {
             self.tealium?.zz_internal_modulesManager?.addDispatchValidator(mockTimedEventScheduler)
             self.tealium?.track(TealiumEvent("test"))
         }
-        delay {
+        TestTealiumHelper.delay {
             XCTAssertEqual(mockTimedEventScheduler.shouldQueueCallCount, 0)
             XCTAssertEqual(mockTimedEventScheduler.startCallCount, 0)
-        }
-    }
-    
-    private func delay(_ completion: @escaping () -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            completion()
         }
     }
 

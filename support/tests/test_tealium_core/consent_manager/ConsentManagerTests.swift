@@ -67,6 +67,20 @@ class ConsentManagerTests: XCTestCase {
         }
         return nil
     }
+    
+    func testDefaultConsentExpirationCCPA() {
+        config.consentPolicy = .ccpa
+        let module = createModule(with: config)
+        XCTAssertEqual(module.consentManager?.currentPolicy.defaultConsentExpiry.time, 395)
+        XCTAssertEqual(module.consentManager?.currentPolicy.defaultConsentExpiry.unit, .days)
+    }
+    
+    func testDefaultConsentExpirationGDPR() {
+        config.consentPolicy = .gdpr
+        let module = createModule(with: config)
+        XCTAssertEqual(module.consentManager?.currentPolicy.defaultConsentExpiry.time, 365)
+        XCTAssertEqual(module.consentManager?.currentPolicy.defaultConsentExpiry.unit, .days)
+    }
 
     // note: in some cases this test fails due to slow clearing of persistent data
     // to get around this, test has been renamed to make sure it runs first (always run in alphabetical order)
@@ -302,6 +316,42 @@ class ConsentManagerTests: XCTestCase {
         let actualUserConsentPreferences = consentManager.currentPolicy.preferences
         XCTAssertEqual(actualUserConsentPreferences, expectedUserConsentPreferences)
     }
+    
+    func testOnConsentExpirationCallbackSetFromConfig() {
+        config.onConsentExpiration = {
+            print("hello")
+        }
+        let consentManager = consentManagerForConfig(config)
+        XCTAssertNotNil(consentManager.onConsentExpiraiton)
+    }
+    
+    func testOnConsentExpirationCallbackSetFromTealium() {
+        let expect = expectation(description: "testOnConsentExpirationCallbackSetFromTealium")
+        config.consentPolicy = .gdpr
+        let tealium = Tealium(config: config)
+        TestTealiumHelper.delay {
+            tealium.consentManager?.onConsentExpiraiton = {
+                print("hello")
+            }
+            XCTAssertNotNil(tealium.consentManager?.onConsentExpiraiton)
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: 1.0)
+    }
+    
+    func consentLastSetSaved() {
+        let mockDate = Date(timeIntervalSinceReferenceDate: 1607031457)
+        consentManager.lastConsentUpdate = mockDate
+        let preferences = consentManager.diskStorage?.retrieve(as: UserConsentPreferences.self)
+        XCTAssertEqual(preferences?.lastUpdate, mockDate)
+    }
+    
+    func setUserConsentStatusWithCategoriesSetsLastSet() {
+        consentManager.lastConsentUpdate = nil
+        consentManager.userConsentStatus = .consented
+        XCTAssertNotNil(consentManager.lastConsentUpdate)
+    }
+
 }
 
 extension ConsentManagerTests: ModuleDelegate {
@@ -330,3 +380,4 @@ class ConsentManagerDelegate: ModuleDelegate {
 
     }
 }
+

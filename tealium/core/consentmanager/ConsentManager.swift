@@ -17,6 +17,7 @@ public class ConsentManager {
     }
     var diskStorage: TealiumDiskStorageProtocol?
     var currentPolicy: ConsentPolicy
+    public var onConsentExpiraiton: (() -> Void)?
 
     /// Returns current consent status
     public var userConsentStatus: TealiumConsentStatus {
@@ -49,6 +50,18 @@ public class ConsentManager {
     var trackingStatus: TealiumConsentTrackAction {
         currentPolicy.trackAction
     }
+    
+    /// Used by the Consent Manager module to determine if the consent selections are expired
+    var lastConsentUpdate: Date? {
+        get {
+            currentPolicy.preferences.lastUpdate
+        }
+        set {
+            if let newValue = newValue {
+                currentPolicy.preferences.lastUpdate = newValue
+            }
+        }
+    }
 
     /// Initialize consent manager￼.
     ///
@@ -62,9 +75,11 @@ public class ConsentManager {
                 diskStorage: TealiumDiskStorageProtocol,
                 dataLayer: DataLayerManagerProtocol?) {
         self.diskStorage = diskStorage
-        consentPreferencesStorage = ConsentPreferencesStorage(diskStorage: diskStorage)
         self.config = config
         self.delegate = delegate
+        self.onConsentExpiraiton = config.onConsentExpiration
+        consentPreferencesStorage = ConsentPreferencesStorage(diskStorage: diskStorage)
+        
         // try to load config from persistent storage first
         if let dataLayer = dataLayer,
            let migratedConsentStatus = dataLayer.all[ConsentKey.consentStatus] as? Int,
@@ -143,6 +158,7 @@ public class ConsentManager {
         if let categories = categories {
             currentPolicy.preferences.setConsentCategories(categories)
         }
+        lastConsentUpdate = Date()
         storeUserConsentPreferences(currentPolicy.preferences)
         trackUserConsentPreferences(currentPolicy.preferences)
     }

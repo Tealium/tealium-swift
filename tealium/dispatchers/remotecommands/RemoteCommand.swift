@@ -151,6 +151,7 @@ open class RemoteCommand: RemoteCommandProtocol {
     public func mapPayload(_ payload: [String: Any], lookup: [String: String]) -> [String: Any] {
         return lookup.reduce(into: [String: Any]()) { result, dictionary in
             let values = dictionary.value.split(separator: ",")
+                .map { $0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) }
             values.forEach {
                 if payload[dictionary.key] != nil {
                     result[String($0)] = payload[dictionary.key]

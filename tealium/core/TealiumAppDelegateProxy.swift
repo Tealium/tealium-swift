@@ -36,7 +36,9 @@ class TealiumAppDelegateProxy: NSProxy {
             TealiumAppDelegateProxy.contexts?.insert(context)
         }
         // Let the property be initialized and run its block.
-        _ = runOnce
+        TealiumQueues.mainQueue.async {
+            _ = runOnce
+        }
     }
 
     public static func tearDown() {
