@@ -47,13 +47,20 @@ class TealiumExtensionTests: XCTestCase {
         let expect = expectation(description: "Visitor id is reset")
         tealium = Tealium(config: defaultTealiumConfig) { _ in
             let currentVisitorId = self.tealium.visitorId
+            let currentUUID = (self.tealium.zz_internal_modulesManager?.collectors
+                                .filter { $0 is AppDataModule }
+                                .first as? AppDataModule)?.uuid
             self.tealium.resetVisitorId()
             let newVisitorId = self.tealium.visitorId
+            XCTAssertEqual(currentUUID, (self.tealium.zz_internal_modulesManager?.collectors
+                                            .filter { $0 is AppDataModule }
+                                            .first as? AppDataModule)?.uuid)
+            XCTAssertEqual(newVisitorId?.count, 32)
             XCTAssertNotEqual(newVisitorId, currentVisitorId)
             XCTAssertEqual(self.tealium.visitorId, newVisitorId)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 2.0)
+        wait(for: [expect], timeout: 1.0)
     }
 
     func testConsentManagerNotNil() {
