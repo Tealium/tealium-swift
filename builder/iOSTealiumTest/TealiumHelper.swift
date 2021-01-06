@@ -13,7 +13,6 @@ import TealiumLifecycle
 import TealiumVisitorService
 #if os(iOS)
 import TealiumAttribution
-import TealiumAutotracking
 import TealiumLocation
 import TealiumRemoteCommands
 import TealiumTagManagement
@@ -53,7 +52,7 @@ class TealiumHelper  {
         config.timedEventTriggers = [TimedEventTrigger(start: "product_view", end: "order_complete"),
                                      TimedEventTrigger(start: "start_game", end: "buy_coins")]
 
-        #if os(iOS) && !targetEnvironment(macCatalyst)
+        #if os(iOS)
             config.collectors = [
                 Collectors.Attribution,
                 Collectors.Lifecycle,
@@ -63,7 +62,7 @@ class TealiumHelper  {
                 Collectors.Location,
                 Collectors.VisitorService
             ]
-            
+        
             config.dispatchers = [
                 Dispatchers.Collect,
                 Dispatchers.TagManagement,
