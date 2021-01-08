@@ -94,7 +94,7 @@ public struct TealiumMedia {
     var channelName: String?
     var metadata: [String: String]?
     var milestone: String?
-    var summary: SummaryInfo?
+    var summary: Summary?
     
     public init(
         name: String,
@@ -120,47 +120,47 @@ public struct TealiumMedia {
     }
 }
 
-struct MediaServiceFactory {
+struct MediaSessionFactory {
     static func create(from media: TealiumMedia,
                        with delegate: ModuleDelegate?) -> MediaSession {
         switch media.trackingType {
         case .signifigant:
-            return Signifigant(media: media, delegate: delegate)
+            return SignifigantEventMediaSession(media: media, delegate: delegate)
         case .heartbeat:
-            return Heartbeat(media: media, delegate: delegate)
+            return HeartbeatMediaSession(media: media, delegate: delegate)
         case .milestone:
-            return Milestone(media: media, delegate: delegate)
+            return MilestoneMediaSession(media: media, delegate: delegate)
         case .summary:
-            return Summary(media: media, delegate: delegate)
+            return SummaryMediaSession(media: media, delegate: delegate)
         }
     }
 }
 
-protocol SignifigantEventMediaService: MediaSession {
+protocol SignifigantEventMediaProtocol: MediaSession {
     
 }
 
-protocol HeartbeatMediaService: MediaSession {
+protocol HeartbeatMediaProtocol: MediaSession {
     func ping()
 }
 
-protocol MilestoneMediaService: MediaSession {
+protocol MilestoneMediaProtocol: MediaSession {
     func milestone()
 }
 
-protocol SummaryMediaService: MediaSession {
+protocol SummaryMediaProtocol: MediaSession {
     //var summary: SummaryInfo { get set }
-    func update(summary: SummaryInfo)
+    func update(summary: Summary)
 }
 
 // might change to class
-struct Signifigant: SignifigantEventMediaService {
+struct SignifigantEventMediaSession: SignifigantEventMediaProtocol {
     var media: TealiumMedia
     var delegate: ModuleDelegate?
 }
 
 // might change to class
-struct Heartbeat: HeartbeatMediaService {
+struct HeartbeatMediaSession: HeartbeatMediaProtocol {
     var media: TealiumMedia
     var delegate: ModuleDelegate?
     
@@ -171,7 +171,7 @@ struct Heartbeat: HeartbeatMediaService {
 }
 
 // might change to class
-struct Milestone: MilestoneMediaService {
+struct MilestoneMediaSession: MilestoneMediaProtocol {
     var media: TealiumMedia
     var delegate: ModuleDelegate?
     
@@ -187,17 +187,16 @@ struct Milestone: MilestoneMediaService {
 //}
 
 // might change to class 
-struct Summary: SummaryMediaService {
+struct SummaryMediaSession: SummaryMediaProtocol {
     var media: TealiumMedia
     var delegate: ModuleDelegate?
     
-    func update(summary: SummaryInfo) {
+    func update(summary: Summary) {
         print("MEDIA: update")
     }
 }
 
-
-public struct SummaryInfo: Codable {
+public struct Summary: Codable {
     var plays: Int = 0
     var pauses: Int = 0
     var stops: Int = 0

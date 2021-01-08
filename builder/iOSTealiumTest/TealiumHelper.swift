@@ -11,6 +11,7 @@ import TealiumCollect
 import TealiumCore
 import TealiumLifecycle
 import TealiumVisitorService
+import TealiumMedia
 #if os(iOS)
 import TealiumAttribution
 import TealiumAutotracking
@@ -66,7 +67,8 @@ class TealiumHelper  {
                 Collectors.Connectivity,
                 Collectors.Device,
                 Collectors.Location,
-                Collectors.VisitorService
+                Collectors.VisitorService,
+                Collectors.Media
             ]
             
             config.dispatchers = [
@@ -90,7 +92,8 @@ class TealiumHelper  {
                 Collectors.AppData,
                 Collectors.Connectivity,
                 Collectors.Device,
-                Collectors.VisitorService
+                Collectors.VisitorService,
+                Collectors.Media
             ]
             config.dispatchers = [
                 Dispatchers.Collect,
@@ -117,6 +120,23 @@ class TealiumHelper  {
             dataLayer.delete(for: ["hello", "test"])
             dataLayer.add(key: "hello", value: "itsme", expiry: .afterCustom((.months, 1)))
 
+            let sigMedia = TealiumMedia(name: "Star Wars",
+                                        streamType: .vod,
+                                        mediaType: .video,
+                                        qoe: QOE(bitrate: 123))
+            let sigMediaSession = teal.media?.createSession(from: sigMedia)
+            
+            sigMediaSession?.play()
+            sigMediaSession?.pause()
+            sigMediaSession?.stop()
+            
+            let heartbeatMedia = TealiumMedia(name: "Live news",
+                                              streamType: .live,
+                                              mediaType: .all,
+                                              qoe: QOE(bitrate: 123),
+                                              trackingType: .heartbeat)
+            let heartbeatSession = teal.media?.createSession(from: heartbeatMedia)
+            
             #if os(iOS)
             teal.location?.requestAuthorization()
 
@@ -135,6 +155,7 @@ class TealiumHelper  {
             }
             remoteCommands.add(display)
             #endif
+            
         }
 
     }
