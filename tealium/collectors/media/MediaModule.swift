@@ -14,9 +14,8 @@ public class MediaModule: Collector {
     
     public var id: String = "Media"
     public var config: TealiumConfig
-    weak var delegate: ModuleDelegate?
-    
     public var data: [String : Any]?
+    weak var delegate: ModuleDelegate?
     
     public required init(context: TealiumContext,
                          delegate: ModuleDelegate?,
@@ -32,77 +31,74 @@ public class MediaModule: Collector {
     
 }
 
-struct TealiumMediaTrackRequest: TealiumRequest, MediaRequest {
+public protocol MediaRequest: TealiumRequest {
+    var event: MediaEvent { get }
+    var parameters: TealiumMedia { get }
+    var segment: Segmentable? { get }
+}
+
+struct TealiumMediaTrackRequest: MediaRequest {
     var typeId: String = TealiumMediaTrackRequest.instanceTypeId()
     public var event: MediaEvent
     public var parameters: TealiumMedia
+    public var segment: Segmentable?
+    
+    public var data: [String: Any] {
+        var dictionary = [String: Any]()
+        switch event {
+            case .event(let name): dictionary[TealiumKey.event] = name.rawValue
+            case .custom(let name): dictionary[TealiumKey.event] = name
+        }
+        if let parameters = parameters.dictionary {
+            dictionary += parameters
+        }
+        if let segmentParameters = segment?.dictionary {
+            dictionary += segmentParameters
+        }
+        return dictionary
+    }
     
     var trackRequest: TealiumTrackRequest {
-        TealiumTrackRequest(data: self.dictionary)
+        TealiumTrackRequest(data: self.data)
     }
     
     static func instanceTypeId() -> String {
         "media_track_request"
     }
     
-    
 }
 
-public protocol MediaRequest {
-    var event: MediaEvent { get }
-    var parameters: TealiumMedia { get }
-    var dictionary: [String: Any] { get }
-}
-
-extension MediaRequest {
-    public var dictionary: [String : Any] {
-        var result: [String: Any] = [
-         "tealium_event": event.rawValue,
-         "media_uuid": UUID().uuidString,
-            "media_type": parameters.mediaType.rawValue,
-            "stream_type": parameters.streamType.rawValue,
-         "player_name": parameters.name,
-            "tracking_interval": parameters.trackingType.rawValue,
-         "qoe": ["bitrate": parameters.qoe.bitrate] // shoud metadata be flattened?
-        ]
-        
-        if let customId = parameters.customId {
-            result["media_custom_id"] = customId
-        }
-        
-        if let duration = parameters.duration {
-            result["media_length"] = duration
-        }
-        
-        if let channelName = parameters.channelName {
-            result["channel_name"] = channelName
-        }
-        
-        // filter out audio/video/custom
-        if let metadata = parameters.metadata {
-            result["metadata"] = metadata
-        }
-        
-        if let milestone = parameters.milestone {
-            result["milestone"] = milestone
-        }
-        
-        // flatten and add to dictionary?
-        if let summary = parameters.summary {
-            result["summary"] = summary
-        }
-        
-        return result
-    }
-}
-
-public enum MediaEvent: String {
-    case play = "media_play"
-    case pause = "media_pause"
-    case stop = "media_stop"
+public enum StandardMediaEvent: String {
+    case adBreakEnd = "media_adbreak_complete"
+    case adBreakStart = "media_adbreak_start"
+    case adClick = "media_ad_click"
+    case adComplete = "media_ad_complete"
+    case adSkip = "media_ad_skip"
+    case adStart = "media_ad_start"
+    case bitrateChange = "media_bitrate_change" // *
+    case bufferEnd = "media_buffer_end"  // *
+    case bufferStart = "media_buffer_start"  // *
+    case chapterComplete = "media_chapter_complete"
+    case chapterSkip = "media_chapter_skip"
+    case chapterStart = "media_chapter_start"
+    case complete = "media_session_complete" // *
+    case custom = "custom_media_event" // *
     case heartbeat = "media_heartbeat"
     case milestone = "media_milestone"
+    case pause = "media_pause" // *
+    case play = "media_play" // *
+    case playerStateStart = "player_state_start" // *
+    case playerStateStop = "player_state_stop" // *
+    case seekStart = "media_seek_start"  // *
+    case seekComplete = "media_seek_complete"  // *
+    case start = "media_session_start" // *
+    case stop = "media_stop" // *
     case summary = "media_summary"
+}
+
+public enum MediaEvent {
+    case event(StandardMediaEvent)
+    case custom(String)
 }
 
 public extension Collectors {

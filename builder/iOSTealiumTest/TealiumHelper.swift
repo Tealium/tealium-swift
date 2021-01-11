@@ -126,16 +126,39 @@ class TealiumHelper  {
                                         qoe: QOE(bitrate: 123))
             let sigMediaSession = teal.media?.createSession(from: sigMedia)
             
+            // current spec
+            sigMediaSession?.start()
+            sigMediaSession?.adBreakStart(AdBreak(title: "AdBreak 1"))
+            sigMediaSession?.adStart(Ad(name: "Ad 1"))
+            sigMediaSession?.adComplete()
+            sigMediaSession?.adBreakEnd()
             sigMediaSession?.play()
+            sigMediaSession?.chapterStart(Chapter(name: "Chapter 1", duration: 60))
             sigMediaSession?.pause()
+            sigMediaSession?.play()
+            sigMediaSession?.chapterComplete()
             sigMediaSession?.stop()
             
-            let heartbeatMedia = TealiumMedia(name: "Live news",
-                                              streamType: .live,
-                                              mediaType: .all,
-                                              qoe: QOE(bitrate: 123),
-                                              trackingType: .heartbeat)
-            let heartbeatSession = teal.media?.createSession(from: heartbeatMedia)
+            // alternative
+            sigMediaSession?.track(.event(.start))
+            sigMediaSession?.track(.event(.adBreakStart),
+                                   segment: AdBreak(title: "AdBreak 1"))
+            sigMediaSession?.track(.event(.adStart),
+                                   segment: Ad(name: "Ad 1"))
+            sigMediaSession?.track(.event(.adComplete))
+            sigMediaSession?.track(.event(.adBreakEnd))
+            sigMediaSession?.track(.event(.play))
+            sigMediaSession?.track(.event(.chapterStart),
+                                   segment: Chapter(name: "Chapter 1", duration: 60))
+            sigMediaSession?.track(.event(.pause))
+            sigMediaSession?.track(.event(.play))
+            sigMediaSession?.track(.custom("custom event"))
+            sigMediaSession?.track(.event(.chapterComplete))
+            sigMediaSession?.track(.event(.stop))
+            // ....
+            
+            // alternative #2 (this type of syntax is used in SwiftUI and Publish
+            
             
             #if os(iOS)
             teal.location?.requestAuthorization()
