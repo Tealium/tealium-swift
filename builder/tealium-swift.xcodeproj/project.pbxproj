@@ -337,6 +337,10 @@
 		CFADA04D25A66F020079B19A /* MediaModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAD9D5C25A66C220079B19A /* MediaModule.swift */; };
 		CFADA22125A781CA0079B19A /* MediaSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFADA16E25A679AA0079B19A /* MediaSession.swift */; };
 		CFADA32C25A923240079B19A /* Encodable+Tealium.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFADA32B25A923240079B19A /* Encodable+Tealium.swift */; };
+		CFADA39B25AD00CF0079B19A /* MediaExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFADA35125AD00A30079B19A /* MediaExtensions.swift */; };
+		CFADA40A25AD010A0079B19A /* MediaSessionTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFADA3C025AD01050079B19A /* MediaSessionTypes.swift */; };
+		CFADA45525AD01680079B19A /* MediaSessionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFADA42F25AD01480079B19A /* MediaSessionModels.swift */; };
+		CFADA4A025AD02750079B19A /* MediaTrackRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFADA47A25AD025E0079B19A /* MediaTrackRequest.swift */; };
 		CFB1ED88244F9088005CC6F1 /* DataLayerCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB1ED86244F905C005CC6F1 /* DataLayerCollection.swift */; };
 		CFB1ED89244F908D005CC6F1 /* DataLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB1ED84244F79B8005CC6F1 /* DataLayer.swift */; };
 		CFB1ED8F2450A6E0005CC6F1 /* DataLayerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB1ED8D2450A6D1005CC6F1 /* DataLayerExtensions.swift */; };
@@ -1534,6 +1538,10 @@
 		CFAD9F6E25A66D700079B19A /* TealiumMediaTests-macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TealiumMediaTests-macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFADA16E25A679AA0079B19A /* MediaSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSession.swift; sourceTree = "<group>"; };
 		CFADA32B25A923240079B19A /* Encodable+Tealium.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+Tealium.swift"; sourceTree = "<group>"; };
+		CFADA35125AD00A30079B19A /* MediaExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaExtensions.swift; sourceTree = "<group>"; };
+		CFADA3C025AD01050079B19A /* MediaSessionTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSessionTypes.swift; sourceTree = "<group>"; };
+		CFADA42F25AD01480079B19A /* MediaSessionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSessionModels.swift; sourceTree = "<group>"; };
+		CFADA47A25AD025E0079B19A /* MediaTrackRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaTrackRequest.swift; sourceTree = "<group>"; };
 		CFB1ED84244F79B8005CC6F1 /* DataLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataLayer.swift; sourceTree = "<group>"; };
 		CFB1ED86244F905C005CC6F1 /* DataLayerCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataLayerCollection.swift; sourceTree = "<group>"; };
 		CFB1ED8D2450A6D1005CC6F1 /* DataLayerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataLayerExtensions.swift; sourceTree = "<group>"; };
@@ -2540,6 +2548,10 @@
 			children = (
 				CFAD9D5C25A66C220079B19A /* MediaModule.swift */,
 				CFADA16E25A679AA0079B19A /* MediaSession.swift */,
+				CFADA47A25AD025E0079B19A /* MediaTrackRequest.swift */,
+				CFADA35125AD00A30079B19A /* MediaExtensions.swift */,
+				CFADA3C025AD01050079B19A /* MediaSessionTypes.swift */,
+				CFADA42F25AD01480079B19A /* MediaSessionModels.swift */,
 			);
 			path = media;
 			sourceTree = "<group>";
@@ -4311,7 +4323,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFADA22125A781CA0079B19A /* MediaSession.swift in Sources */,
+				CFADA39B25AD00CF0079B19A /* MediaExtensions.swift in Sources */,
 				CFADA04D25A66F020079B19A /* MediaModule.swift in Sources */,
+				CFADA40A25AD010A0079B19A /* MediaSessionTypes.swift in Sources */,
+				CFADA4A025AD02750079B19A /* MediaTrackRequest.swift in Sources */,
+				CFADA45525AD01680079B19A /* MediaSessionModels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
