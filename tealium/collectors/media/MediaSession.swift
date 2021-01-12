@@ -11,10 +11,23 @@ import Foundation
 import TealiumCore
 //#endif
 
+// Do we send all the adBreak data on adBreakEnd? If not, how do we calculate duration?
+// Same w adEnd
+// What other metrics to calculate?
+// should all the "completes" be Complete or End?
+// Should we use session.close() or session.complete?
+
 public protocol MediaSession {
+//    var bitrate: Int { get set}
+//    var droppedFrames: Int { get set }
+//    var playbackSpeed: Double { get set }
+//    var playerState: PlayerState? { get set }
     var delegate: ModuleDelegate? { get set }
     // var delegate: SummaryDelegate? { get set }
     var media: TealiumMedia { get set }
+    
+    func track(_ event: MediaEvent,
+               _ segment: Segment?) // make private?
 }
 
 public extension MediaSession {
@@ -55,18 +68,25 @@ public extension MediaSession {
         }
     }
     
-    func adBreakEnd() {
-        track(.event(.adBreakEnd))
+    mutating func adBreakEnd() {
+        guard var adBreak = media.adBreaks?.first else {
+            return
+        }
+        adBreak.duration = calculate(duration: adBreak.startTime)
+        track(
+            .event(.adBreakEnd),
+            .adBreak(adBreak)
+        )
+        media.adBreaks?.removeFirst(1)
     }
     
-    func adBreakStart(_ adBreak: AdBreak) {
+    mutating func adBreakStart(_ adBreak: AdBreak) {
+         media.adBreaks?.append(adBreak)
         // track(.event(.adBreakStart), adBreak)
         /* OR */
         track(
             .event(.adBreakStart),
-            .segment(
-                .adBreak(adBreak)
-            )
+            .adBreak(adBreak)
         )
         
     }
@@ -75,22 +95,26 @@ public extension MediaSession {
         track(.event(.adClick))
     }
     
-    func adComplete() {
+    mutating func adComplete() {
+        guard var ad = media.ads?.first else {
+            return
+        }
+        ad.duration = calculate(duration: ad.startTime)
         track(.event(.adComplete))
+        media.ads?.removeFirst(1)
     }
     
     func adSkip() {
         track(.event(.adSkip))
     }
     
-    func adStart(_ ad: Ad) {
+    mutating func adStart(_ ad: Ad) {
+        media.ads?.append(ad)
         // track(.event(.adStart), ad)
         /* OR */
         track(
             .event(.adStart),
-            .segment(
-                .ad(ad)
-            )
+            .ad(ad)
         )
     }
     
@@ -115,14 +139,16 @@ public extension MediaSession {
         /* OR */
         track(
             .event(.chapterStart),
-            .segment(
-                .chapter(chapter)
-            )
+            .chapter(chapter)
         )
     }
     
     func close() {
         track(.event(.complete))
+    }
+    
+    func custom(_ event: String) {
+        track(.custom(event))
     }
     
     func seek() {
@@ -154,6 +180,14 @@ public extension MediaSession {
                                            segment: segment)
         delegate?.requestTrack(mediaEvent.trackRequest)
     }
+    
+    private func calculate(duration: Date) -> Int? {
+        let duration = Calendar.current.dateComponents([.second],
+                                                       from: duration,
+                                                       to: Date())
+        return duration.second
+    }
+    
 }
 
 public struct MediaSessionFactory {
@@ -170,4 +204,33 @@ public struct MediaSessionFactory {
             return SummaryMediaSession(media: media, delegate: delegate)
         }
     }
+}
+
+// Might need this for tests
+public protocol MediaSessionEvents {
+    func adBreakEnd()
+    func adBreakStart(_ adBreak: AdBreak)
+    func adClick()
+    func adComplete()
+    func adSkip()
+    func adStart(_ ad: Ad)
+    func bitrateChange()
+    func bufferEnd()
+    func bufferStart()
+    func chapterComplete()
+    func chapterSkip()
+    func chapterStart(_ chapter: Chapter)
+    func close()
+    func custom(_ event: String)
+    func heartbeat()
+    func milestone()
+    func pause()
+    func play()
+    func playerStateStart()
+    func playerStateStop()
+    func seekStart()
+    func seekComplete()
+    func start()
+    func stop()
+    func summary()
 }

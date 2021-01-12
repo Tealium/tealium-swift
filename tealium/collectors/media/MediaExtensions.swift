@@ -7,9 +7,9 @@
 //
 
 import Foundation
-// #if media
-import TealiumCore
-// #endif
+//#if media
+    import TealiumCore
+//#endif
 
 public extension Collectors {
     static let Media = MediaModule.self

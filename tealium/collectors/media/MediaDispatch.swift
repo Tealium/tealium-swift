@@ -1,5 +1,5 @@
 //
-//  MediaTrackRequest.swift
+//  MediaDispatch.swift
 //  tealium-swift
 //
 //  Created by Christina S on 1/11/21.
@@ -31,7 +31,7 @@ public struct TealiumMediaEvent: MediaDispatch {
         if let parameters = parameters.dictionary {
             dictionary += parameters
         }
-        if let segmentParameters = segment?.dictionary {
+        if let segment = segment, let segmentParameters = segment.dictionary {
             dictionary += segmentParameters
         }
         return dictionary

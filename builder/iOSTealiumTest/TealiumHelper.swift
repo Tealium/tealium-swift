@@ -124,7 +124,7 @@ class TealiumHelper  {
                                         streamType: .vod,
                                         mediaType: .video,
                                         qoe: QOE(bitrate: 123))
-            let sigMediaSession = teal.media?.createSession(from: sigMedia)
+            var sigMediaSession = teal.media?.createSession(from: sigMedia)
             
             // current spec
             sigMediaSession?.start()

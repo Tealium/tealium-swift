@@ -7,9 +7,9 @@
 //
 
 import Foundation
-// #if media
-import TealiumCore
-// #endif
+//#if media
+    import TealiumCore
+//#endif
 
 public enum StreamType: String, Codable {
     case aod
@@ -55,21 +55,22 @@ public struct Summary: Codable {
     var chapters: Int = 0
 }
 
+/// will use this if `Segment` isn't used
 public protocol Segmentable: Codable { }
 
-public enum Segment {
-    case segment(SegmentNode)
-    
-    var dictionary: [String: Any] {
-        switch self {
-        case .segment(let type):
-            return type.dictionary ?? [String: Any]()
-        }
-    }
-    
-}
+//public enum Segment {
+//    case segment(SegmentNode)
+//
+//    var dictionary: [String: Any] {
+//        switch self {
+//        case .segment(let type):
+//            return type.dictionary ?? [String: Any]()
+//        }
+//    }
+//
+//}
 
-public enum SegmentNode {
+public enum Segment {
     case chapter(Chapter)
     case adBreak(AdBreak)
     case ad(Ad)
@@ -100,7 +101,6 @@ public enum StandardMediaEvent: String {
     case chapterSkip = "media_chapter_skip"
     case chapterStart = "media_chapter_start"
     case complete = "media_session_complete" // *
-    case custom = "custom_media_event" // *
     case heartbeat = "media_heartbeat"
     case milestone = "media_milestone"
     case pause = "media_pause" // *
@@ -135,7 +135,9 @@ public struct TealiumMedia: Codable {
     var duration: Int?
     var playerName: String?
     var channelName: String?
-    var metadata: [String: AnyCodable]?
+    var metadata: AnyCodable? // should this be AnyCodable?
+    var adBreaks: [AdBreak]?
+    var ads: [Ad]?
     var milestone: String?
     var summary: Summary?
     
@@ -167,7 +169,7 @@ public struct TealiumMedia: Codable {
         duration: Int? = nil,
         playerName: String? = nil,
         channelName: String? = nil,
-        metadata: [String: AnyCodable]? = nil
+        metadata: AnyCodable? = nil
     ) {
             self.name = name
             self.streamType = streamType
@@ -243,9 +245,9 @@ public struct Chapter: Segmentable {
 // TODO: Increment position and calculate values
 public struct Ad: Segmentable {
     var uuid = UUID().uuidString
-    var name: String? // need to calculate "Ad Break 1"
+    var name: String?
     var id: String?
-    var duration: Int? // need to calculate
+    var duration: Int?
     var position: Int?
     var advertiser: String?
     var creativeId: String?
@@ -256,6 +258,8 @@ public struct Ad: Segmentable {
     var numberOfLoads: Int?
     var pod: String?
     var playerName: String?
+    var startTime: Date = Date()
+    private var numberOfAds = 0
     
     enum CodingKeys: String, CodingKey {
         case uuid = "ad_uuid"
@@ -274,7 +278,7 @@ public struct Ad: Segmentable {
         case playerName = "ad_player_name"
     }
     
-    public init(name: String,
+    public init(name: String? = nil,
                 id: String? = nil,
                 duration: Int? = nil,
                 position: Int? = nil,
@@ -287,9 +291,10 @@ public struct Ad: Segmentable {
                 numberOfLoads: Int? = nil,
                 pod: String? = nil,
                 playerName: String? = nil) {
-        self.name = name
+        increment()
+        self.name = name ?? "Ad \(numberOfAds)"
         self.duration = duration
-        self.position = position
+        self.position = position ?? numberOfAds
         self.advertiser = advertiser
         self.creativeId = creativeId
         self.campaignId = campaignId
@@ -301,6 +306,10 @@ public struct Ad: Segmentable {
         self.playerName = playerName
     }
     
+    private mutating func increment() {
+        numberOfAds += 1
+    }
+    
 }
 
 // TODO: Increment position and calculate values
@@ -308,11 +317,11 @@ public struct AdBreak: Segmentable {
     var uuid = UUID().uuidString
     var title: String?
     var id: Int?
-    // need to calculate
     var duration: Int?
     var index: Int?
     var position: Int?
-    var numberOfAdBreaks = 0
+    var startTime: Date = Date()
+    private var numberOfAdBreaks = 0
     
     enum CodingKeys: String, CodingKey {
         case uuid = "ad_break_uuid"
@@ -325,7 +334,7 @@ public struct AdBreak: Segmentable {
     
     public init(title: String? = nil,
                 id: Int? = nil,
-                duration: Int? = nil, // need to calculate
+                duration: Int? = nil,
                 index: Int? = nil,
                 position: Int? = nil) {
         increment()
@@ -333,10 +342,11 @@ public struct AdBreak: Segmentable {
         self.id = id
         self.duration = duration
         self.index = index
-        self.position = position // use counter
+        self.position = position ?? numberOfAdBreaks
     }
     
     private mutating func increment() {
         numberOfAdBreaks += 1
     }
+    
 }

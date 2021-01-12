@@ -9,9 +9,11 @@ import XCTest
 @testable import TealiumMedia
 
 class TealiumMediaTests: XCTestCase {
+    
+    var session: MediaSession?
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        session = MockMediaSession()
     }
 
     override func tearDownWithError() throws {
