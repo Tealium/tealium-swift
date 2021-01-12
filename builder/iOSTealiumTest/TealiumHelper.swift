@@ -123,7 +123,8 @@ class TealiumHelper  {
             let sigMedia = TealiumMedia(name: "Star Wars",
                                         streamType: .vod,
                                         mediaType: .video,
-                                        qoe: QOE(bitrate: 123))
+                                        qoe: QOE(bitrate: 123),
+                                        metadata: ["meta_key": "meta_value"])
             var sigMediaSession = teal.media?.createSession(from: sigMedia)
             
             // current spec

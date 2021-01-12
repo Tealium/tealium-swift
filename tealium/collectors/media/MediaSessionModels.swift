@@ -135,7 +135,7 @@ public struct TealiumMedia: Codable {
     var duration: Int?
     var playerName: String?
     var channelName: String?
-    var metadata: AnyCodable? // should this be AnyCodable?
+    var metadata: AnyCodable?
     var adBreaks: [AdBreak]?
     var ads: [Ad]?
     var milestone: String?
@@ -191,7 +191,7 @@ public struct QOE: Codable {
     var fps: Int?
     var droppedFrames: Int?
     var playbackSpeed: Double?
-    var metadata: [String: AnyCodable]?
+    var metadata: AnyCodable?
     
     enum CodingKeys: String, CodingKey {
         case bitrate
@@ -205,21 +205,22 @@ public struct QOE: Codable {
     public init(bitrate: Int,
                 startTime: Int? = nil,
                 fps: Int? = nil,
-                droppedFrames: Int? = nil) {
+                droppedFrames: Int? = nil,
+                metadata: AnyCodable? = nil) {
         self.bitrate = bitrate
         self.startTime = startTime
         self.fps = fps
         self.droppedFrames = droppedFrames
+        self.metadata = metadata
     }
 }
 
-// TODO: Increment position
 public struct Chapter: Segmentable {
     var name: String
     var duration: Int
     var position: Int?
     var startTime: Int?
-    var metadata: [String: AnyCodable]?
+    var metadata: AnyCodable?
     
     enum CodingKeys: String, CodingKey {
         case name = "chapter_name"
@@ -233,7 +234,7 @@ public struct Chapter: Segmentable {
                 duration: Int,
                 position: Int? = nil,
                 startTime: Int? = nil,
-                metadata: [String: AnyCodable]? = nil) {
+                metadata: AnyCodable? = nil) {
         self.name = name
         self.duration = duration
         self.position = position
@@ -242,7 +243,6 @@ public struct Chapter: Segmentable {
     }
 }
 
-// TODO: Increment position and calculate values
 public struct Ad: Segmentable {
     var uuid = UUID().uuidString
     var name: String?
@@ -312,7 +312,6 @@ public struct Ad: Segmentable {
     
 }
 
-// TODO: Increment position and calculate values
 public struct AdBreak: Segmentable {
     var uuid = UUID().uuidString
     var title: String?
