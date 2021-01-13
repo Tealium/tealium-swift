@@ -13,6 +13,7 @@ import TealiumCore
 class MockMediaService: MediaEventDispatcher {
     var delegate: ModuleDelegate?
     private var _mockMedia: TealiumMedia?
+    var updatedSegment: Segment?
     
     var media: TealiumMedia {
         get {
@@ -20,7 +21,7 @@ class MockMediaService: MediaEventDispatcher {
             TealiumMedia(name: "MockTealiumMedia",
                          streamType: .vod,
                          mediaType: .video,
-                         qoe: QOE(bitrate: 1500, startTime: nil, fps: 20, droppedFrames: 10),
+                         qoe: QOE(bitrate: 1000, startTime: nil, fps: 20),
                          trackingType: .signifigant,
                          state: .fullscreen,
                          customId: "test custom id",
@@ -62,10 +63,17 @@ class MockMediaService: MediaEventDispatcher {
     ]
     
     var customEvent: (count: Int, name: String) = (0, "")
+    
+    func track(_ event: MediaEvent) {
+        track(event, nil)
+    }
         
-    func track(_ event: MediaEvent, _ segment: Segment? = nil) {
+    func track(_ event: MediaEvent,
+               _ segment: Segment?) {
         switch event {
-        case .event(let name): standardEventCounts[name]! += 1
+        case .event(let name):
+            standardEventCounts[name]! += 1
+            updatedSegment = segment
         case .custom(let name):
             customEvent.count += 1
             customEvent.name = name

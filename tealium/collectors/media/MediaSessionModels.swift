@@ -7,9 +7,6 @@
 //
 
 import Foundation
-//#if media
-    import TealiumCore
-//#endif
 
 public enum StreamType: String, Codable {
     case aod
@@ -46,15 +43,6 @@ public enum PlayerState: String, Codable {
     case pictureInPicture
 }
 
-// TODO: need more details
-public struct Summary: Codable {
-    var plays: Int = 0
-    var pauses: Int = 0
-    var stops: Int = 0
-    var ads: Int = 0
-    var chapters: Int = 0
-}
-
 public enum Segment {
     case chapter(Chapter)
     case adBreak(AdBreak)
@@ -79,23 +67,23 @@ public enum StandardMediaEvent: String {
     case adComplete = "media_ad_complete"
     case adSkip = "media_ad_skip"
     case adStart = "media_ad_start"
-    case bitrateChange = "media_bitrate_change" // *
-    case bufferComplete = "media_buffer_complete"  // *
-    case bufferStart = "media_buffer_start"  // *
+    case bitrateChange = "media_bitrate_change"
+    case bufferComplete = "media_buffer_complete"
+    case bufferStart = "media_buffer_start"
     case chapterComplete = "media_chapter_complete"
     case chapterSkip = "media_chapter_skip"
     case chapterStart = "media_chapter_start"
-    case sessionEnd = "media_session_end" // *
+    case sessionEnd = "media_session_end"
     case heartbeat = "media_heartbeat"
     case milestone = "media_milestone"
-    case pause = "media_pause" // *
-    case play = "media_play" // *
-    case playerStateStart = "player_state_start" // *
-    case playerStateStop = "player_state_stop" // *
-    case seekStart = "media_seek_start"  // *
-    case seekComplete = "media_seek_complete"  // *
-    case sessionStart = "media_session_start" // *
-    case stop = "media_stop" // *
+    case pause = "media_pause"
+    case play = "media_play"
+    case playerStateStart = "player_state_start"
+    case playerStateStop = "player_state_stop"
+    case seekStart = "media_seek_start"
+    case seekComplete = "media_seek_complete"
+    case sessionStart = "media_session_start"
+    case stop = "media_stop"
     case summary = "media_summary"
 }
 
@@ -202,8 +190,9 @@ public struct Chapter: Codable {
     var name: String
     var duration: Int
     var position: Int?
-    var startTime: Int?
+    var startTime: Date?
     var metadata: AnyCodable?
+    private var numberOfChapters = 0
     
     enum CodingKeys: String, CodingKey {
         case name = "chapter_name"
@@ -216,11 +205,12 @@ public struct Chapter: Codable {
     public init(name: String,
                 duration: Int,
                 position: Int? = nil,
-                startTime: Int? = nil,
+                startTime: Date? = Date(),
                 metadata: AnyCodable? = nil) {
+        numberOfChapters.increment()
         self.name = name
         self.duration = duration
-        self.position = position
+        self.position = position ?? numberOfChapters
         self.startTime = startTime
         self.metadata = metadata
     }
@@ -274,8 +264,9 @@ public struct Ad: Codable {
                 numberOfLoads: Int? = nil,
                 pod: String? = nil,
                 playerName: String? = nil) {
-        increment()
+        numberOfAds.increment()
         self.name = name ?? "Ad \(numberOfAds)"
+        self.id = id
         self.duration = duration
         self.position = position ?? numberOfAds
         self.advertiser = advertiser
@@ -289,16 +280,12 @@ public struct Ad: Codable {
         self.playerName = playerName
     }
     
-    private mutating func increment() {
-        numberOfAds += 1
-    }
-    
 }
 
 public struct AdBreak: Codable {
     var uuid = UUID().uuidString
     var title: String?
-    var id: Int?
+    var id: String?
     var duration: Int?
     var index: Int?
     var position: Int?
@@ -315,11 +302,11 @@ public struct AdBreak: Codable {
     }
     
     public init(title: String? = nil,
-                id: Int? = nil,
+                id: String? = nil,
                 duration: Int? = nil,
                 index: Int? = nil,
                 position: Int? = nil) {
-        increment()
+        numberOfAdBreaks.increment()
         self.title = title ?? "Ad Break \(numberOfAdBreaks)"
         self.id = id
         self.duration = duration
@@ -327,8 +314,19 @@ public struct AdBreak: Codable {
         self.position = position ?? numberOfAdBreaks
     }
     
-    private mutating func increment() {
-        numberOfAdBreaks += 1
+}
+
+// TODO: need more details
+public struct Summary: Codable {
+    var plays: Int = 0
+    var pauses: Int = 0
+    var stops: Int = 0
+    var ads: Int = 0
+    var chapters: Int = 0
+}
+
+fileprivate extension Int {
+    mutating func increment() {
+        self += 1
     }
-    
 }

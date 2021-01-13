@@ -1,5 +1,5 @@
 //
-//  MediaService.swift
+//  MediaSession.swift
 //  TealiumCore
 //
 //  Created by Christina S on 1/6/21.
@@ -7,26 +7,6 @@
 //
 
 import Foundation
-//#if media
-import TealiumCore
-//#endif
-
-public protocol MediaEventDispatcher {
-    var delegate: ModuleDelegate? { get set }
-    var media: TealiumMedia { get set }
-    func track(_ event: MediaEvent,
-               _ segment: Segment?)
-}
-
-public extension MediaEventDispatcher {
-    func track(_ event: MediaEvent,
-                      _ segment: Segment? = nil) {
-        let mediaEvent = TealiumMediaEvent(event: event,
-                                           parameters: media,
-                                           segment: segment)
-        delegate?.requestTrack(mediaEvent.trackRequest)
-    }
-}
 
 public protocol MediaSession: MediaSessionEvents {
     var bitrate: Int? { get set }
@@ -34,7 +14,6 @@ public protocol MediaSession: MediaSessionEvents {
     var droppedFrames: Int { get set }
     var playbackSpeed: Double { get set }
     var playerState: PlayerState? { get set }
-    // var summaryDelegate: SummaryDelegate? { get set } // not sure about this yet
 }
 
 public extension MediaSession {
@@ -117,7 +96,10 @@ public extension MediaSession {
         if ad.duration == nil {
             ad.duration = calculate(duration: ad.startTime)
         }
-        mediaService?.track(.event(.adComplete))
+        mediaService?.track(
+            .event(.adComplete),
+            .ad(ad)
+        )
         mediaService?.media.ads.removeFirst(1)
     }
     
@@ -219,25 +201,3 @@ public extension MediaSession {
     
 }
 
-public struct MediaEventService: MediaEventDispatcher {
-    public var media: TealiumMedia
-    public var delegate: ModuleDelegate?
-}
-
-
-public struct MediaSessionFactory {
-    static func create(from media: TealiumMedia,
-                       with delegate: ModuleDelegate?) -> MediaSession {
-        let mediaService = MediaEventService(media: media, delegate: delegate)
-        switch media.trackingType {
-        case .signifigant:
-            return SignifigantEventMediaSession(mediaService: mediaService)
-        case .heartbeat:
-            return HeartbeatMediaSession(mediaService: mediaService)
-        case .milestone:
-            return MilestoneMediaSession(mediaService: mediaService)
-        case .summary:
-            return SummaryMediaSession(mediaService: mediaService)
-        }
-    }
-}

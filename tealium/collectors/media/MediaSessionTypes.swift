@@ -7,9 +7,6 @@
 //
 
 import Foundation
-//#if media
-    import TealiumCore
-//#endif
 
 protocol SignifigantEventMediaProtocol: MediaSession { }
 
@@ -22,17 +19,14 @@ protocol MilestoneMediaProtocol: MediaSession {
 }
 
 protocol SummaryMediaProtocol: MediaSession {
-    //var summary: Summary { get set }
     func update(summary: Summary)
     func summary()
 }
 
-// might change to class
 struct SignifigantEventMediaSession: SignifigantEventMediaProtocol {
     var mediaService: MediaEventDispatcher?
 }
 
-// might change to class
 struct HeartbeatMediaSession: HeartbeatMediaProtocol {
     var mediaService: MediaEventDispatcher?
     
@@ -45,7 +39,6 @@ struct HeartbeatMediaSession: HeartbeatMediaProtocol {
     }
 }
 
-// might change to class
 struct MilestoneMediaSession: MilestoneMediaProtocol {
     var mediaService: MediaEventDispatcher?
     
@@ -54,10 +47,6 @@ struct MilestoneMediaSession: MilestoneMediaProtocol {
     }
     
 }
-
-//public protocol SummaryDelegate {
-//    func update(summary: SummaryInfo)
-//}
 
 // TODO: need more details
 struct SummaryMediaSession: SummaryMediaProtocol {
