@@ -344,6 +344,7 @@
 		CFADA55725AD26DD0079B19A /* MockMediaSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFADA50D25AD26480079B19A /* MockMediaSession.swift */; };
 		CFADA55825AD26DE0079B19A /* MockMediaSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFADA50D25AD26480079B19A /* MockMediaSession.swift */; };
 		CFADA55925AD26DF0079B19A /* MockMediaSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFADA50D25AD26480079B19A /* MockMediaSession.swift */; };
+		CFADA5E725AE1DB60079B19A /* MediaSessionEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFADA5E625AE1DB60079B19A /* MediaSessionEvents.swift */; };
 		CFB1ED88244F9088005CC6F1 /* DataLayerCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB1ED86244F905C005CC6F1 /* DataLayerCollection.swift */; };
 		CFB1ED89244F908D005CC6F1 /* DataLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB1ED84244F79B8005CC6F1 /* DataLayer.swift */; };
 		CFB1ED8F2450A6E0005CC6F1 /* DataLayerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB1ED8D2450A6D1005CC6F1 /* DataLayerExtensions.swift */; };
@@ -1546,6 +1547,7 @@
 		CFADA42F25AD01480079B19A /* MediaSessionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSessionModels.swift; sourceTree = "<group>"; };
 		CFADA47A25AD025E0079B19A /* MediaDispatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaDispatch.swift; sourceTree = "<group>"; };
 		CFADA50D25AD26480079B19A /* MockMediaSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMediaSession.swift; sourceTree = "<group>"; };
+		CFADA5E625AE1DB60079B19A /* MediaSessionEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSessionEvents.swift; sourceTree = "<group>"; };
 		CFB1ED84244F79B8005CC6F1 /* DataLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataLayer.swift; sourceTree = "<group>"; };
 		CFB1ED86244F905C005CC6F1 /* DataLayerCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataLayerCollection.swift; sourceTree = "<group>"; };
 		CFB1ED8D2450A6D1005CC6F1 /* DataLayerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataLayerExtensions.swift; sourceTree = "<group>"; };
@@ -2552,6 +2554,7 @@
 			children = (
 				CFAD9D5C25A66C220079B19A /* MediaModule.swift */,
 				CFADA16E25A679AA0079B19A /* MediaSession.swift */,
+				CFADA5E625AE1DB60079B19A /* MediaSessionEvents.swift */,
 				CFADA47A25AD025E0079B19A /* MediaDispatch.swift */,
 				CFADA35125AD00A30079B19A /* MediaExtensions.swift */,
 				CFADA3C025AD01050079B19A /* MediaSessionTypes.swift */,
@@ -4328,6 +4331,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFADA22125A781CA0079B19A /* MediaSession.swift in Sources */,
+				CFADA5E725AE1DB60079B19A /* MediaSessionEvents.swift in Sources */,
 				CFADA39B25AD00CF0079B19A /* MediaExtensions.swift in Sources */,
 				CFADA04D25A66F020079B19A /* MediaModule.swift in Sources */,
 				CFADA40A25AD010A0079B19A /* MediaSessionTypes.swift in Sources */,

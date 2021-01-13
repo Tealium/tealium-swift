@@ -120,54 +120,24 @@ class TealiumHelper  {
             dataLayer.delete(for: ["hello", "test"])
             dataLayer.add(key: "hello", value: "itsme", expiry: .afterCustom((.months, 1)))
 
-            let sigMedia = TealiumMedia(name: "Star Wars",
+            let media = TealiumMedia(name: "Star Wars",
                                         streamType: .vod,
                                         mediaType: .video,
                                         qoe: QOE(bitrate: 123),
                                         metadata: ["meta_key": "meta_value"])
-            var sigMediaSession = teal.media?.createSession(from: sigMedia)
+            var mediaSession = teal.media?.createSession(from: media)
             
-            // current spec
-            sigMediaSession?.start()
-            sigMediaSession?.adBreakStart(AdBreak(title: "AdBreak 1"))
-            sigMediaSession?.adStart(Ad(name: "Ad 1"))
-            sigMediaSession?.adComplete()
-            sigMediaSession?.adBreakEnd()
-            sigMediaSession?.play()
-            sigMediaSession?.chapterStart(Chapter(name: "Chapter 1", duration: 60))
-            sigMediaSession?.pause()
-            sigMediaSession?.play()
-            sigMediaSession?.chapterComplete()
-            sigMediaSession?.stop()
-            
-            // alternative
-//            sigMediaSession?.track(.event(.start))
-//            sigMediaSession?.track(.event(.adBreakStart), AdBreak(title: "AdBreak 1"))
-//            sigMediaSession?.track(.event(.adStart), Ad(name: "Ad 1"))
-//            sigMediaSession?.track(.event(.adComplete))
-//            sigMediaSession?.track(.event(.adBreakEnd))
-//            sigMediaSession?.track(.event(.play))
-//            sigMediaSession?.track(.event(.chapterStart), Chapter(name: "Chapter 1", duration: 60))
-//            sigMediaSession?.track(.event(.pause))
-//            sigMediaSession?.track(.event(.play))
-//            sigMediaSession?.track(.custom("custom event"))
-//            sigMediaSession?.track(.event(.chapterComplete))
-//            sigMediaSession?.track(.event(.stop))
-
-//            // alternative #2
-//            sigMediaSession?.track(.event(.start))
-//            sigMediaSession?.track(.event(.adBreakStart), .segment(.adBreak(AdBreak(title: "AdBreak 1"))))
-//            sigMediaSession?.track(.event(.adStart), .segment(.adStart(Ad(name: "Ad 1"))))
-//            sigMediaSession?.track(.event(.adComplete))
-//            sigMediaSession?.track(.event(.adBreakEnd))
-//            sigMediaSession?.track(.event(.play))
-//            sigMediaSession?.track(.event(.chapterStart), .segment(.chapter(Chapter(name: "Chapter 1", duration: 60))))
-//            sigMediaSession?.track(.event(.pause))
-//            sigMediaSession?.track(.event(.play))
-//            sigMediaSession?.track(.custom("custom event"))
-//            sigMediaSession?.track(.event(.chapterComplete))
-//            sigMediaSession?.track(.event(.stop))
-            
+            mediaSession?.start()
+            mediaSession?.adBreakStart(AdBreak(title: "AdBreak 1"))
+            mediaSession?.adStart(Ad(name: "Ad 1"))
+            mediaSession?.adComplete()
+            mediaSession?.adBreakComplete()
+            mediaSession?.play()
+            mediaSession?.chapterStart(Chapter(name: "Chapter 1", duration: 60))
+            mediaSession?.pause()
+            mediaSession?.play()
+            mediaSession?.chapterComplete()
+            mediaSession?.stop()
             
             #if os(iOS)
             teal.location?.requestAuthorization()

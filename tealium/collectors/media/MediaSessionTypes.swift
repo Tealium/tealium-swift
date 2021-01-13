@@ -29,27 +29,28 @@ protocol SummaryMediaProtocol: MediaSession {
 
 // might change to class
 struct SignifigantEventMediaSession: SignifigantEventMediaProtocol {
-    var media: TealiumMedia
-    var delegate: ModuleDelegate?
+    var mediaService: MediaEventDispatcher?
 }
 
 // might change to class
 struct HeartbeatMediaSession: HeartbeatMediaProtocol {
-    var media: TealiumMedia
-    var delegate: ModuleDelegate?
+    var mediaService: MediaEventDispatcher?
     
     func ping() {
-        track(.event(.heartbeat))
+        mediaService?.track(.event(.heartbeat))
+    }
+    
+    func abandon() {
+        
     }
 }
 
 // might change to class
 struct MilestoneMediaSession: MilestoneMediaProtocol {
-    var media: TealiumMedia
-    var delegate: ModuleDelegate?
+    var mediaService: MediaEventDispatcher?
     
     func milestone() {
-        track(.event(.milestone))
+        mediaService?.track(.event(.milestone))
     }
     
 }
@@ -60,8 +61,7 @@ struct MilestoneMediaSession: MilestoneMediaProtocol {
 
 // TODO: need more details
 struct SummaryMediaSession: SummaryMediaProtocol {
-    var media: TealiumMedia
-    var delegate: ModuleDelegate?
+    var mediaService: MediaEventDispatcher?
     
     func update(summary: Summary) {
         print("MEDIA: update summary")
@@ -69,5 +69,6 @@ struct SummaryMediaSession: SummaryMediaProtocol {
     
     func summary() {
         print("MEDIA: send summary")
+        // name, duration,
     }
 }

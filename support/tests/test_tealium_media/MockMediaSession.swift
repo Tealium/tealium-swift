@@ -8,40 +8,15 @@
 
 import Foundation
 import TealiumCore
-import TealiumMedia
+@testable import TealiumMedia
 
-class MockMediaSession: MediaSession {
-
-    
-    var adBreakEndCallCount = 0
-    var adBreakStartCallCount = 0
-    var adClickCallCount = 0
-    var adCompleteCallCount = 0
-    var adSkipCallCount = 0
-    var adStartCallCount = 0
-    var bitrateChangeCallCount = 0
-    var bufferEndCallCount = 0
-    var bufferStartCallCount = 0
-    var chapterCompleteCallCount = 0
-    var chapterSkipCallCount = 0
-    var chapterStartCallCount = 0
-    var closeCallCount = 0
-    var customEventCallCount = 0
-    var heartbeatCallCount = 0
-    var milestoneCallCount = 0
-    var pauseCallCount = 0
-    var playCallCount = 0
-    var playerStateStartCallCount = 0
-    var playerStateStopCallCount = 0
-    var seekStartCallCount = 0
-    var seekCompleteCallCount = 0
-    var startCallCount = 0
-    var stopCallCount = 0
-    var summarCallCount = 0
-    
+class MockMediaService: MediaEventDispatcher {
     var delegate: ModuleDelegate?
+    private var _mockMedia: TealiumMedia?
+    
     var media: TealiumMedia {
         get {
+            _mockMedia ??
             TealiumMedia(name: "MockTealiumMedia",
                          streamType: .vod,
                          mediaType: .video,
@@ -54,9 +29,47 @@ class MockMediaSession: MediaSession {
                          channelName: "test channel name",
                          metadata: ["meta_key": "meta_value"])
         }
-        set { }
+        set {
+            _mockMedia = newValue
+        }
     }
     
+    var standardEventCounts: [StandardMediaEvent: Int] = [
+        .adBreakComplete: 0,
+        .adBreakStart: 0,
+        .adClick: 0,
+        .adComplete: 0,
+        .adSkip: 0,
+        .adStart: 0,
+        .bitrateChange: 0,
+        .bufferComplete: 0,
+        .bufferStart: 0,
+        .chapterComplete: 0,
+        .chapterSkip: 0,
+        .chapterStart: 0,
+        .sessionEnd: 0,
+        .heartbeat: 0,
+        .milestone: 0,
+        .pause: 0,
+        .play: 0,
+        .playerStateStart: 0,
+        .playerStateStop: 0,
+        .seekStart: 0,
+        .seekComplete: 0,
+        .sessionStart: 0,
+        .stop: 0,
+        .summary: 0
+    ]
     
+    var customEvent: (count: Int, name: String) = (0, "")
+        
+    func track(_ event: MediaEvent, _ segment: Segment? = nil) {
+        switch event {
+        case .event(let name): standardEventCounts[name]! += 1
+        case .custom(let name):
+            customEvent.count += 1
+            customEvent.name = name
+        }
+    }
     
 }

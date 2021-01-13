@@ -28,12 +28,12 @@ public struct TealiumMediaEvent: MediaDispatch {
             case .event(let name): dictionary[TealiumKey.event] = name.rawValue
             case .custom(let name): dictionary[TealiumKey.event] = name
         }
-        if let parameters = parameters.dictionary {
+        if let parameters = parameters.dictionary?.flattened {
             dictionary += parameters
         }
         if let segment = segment,
-           let segmentParameters = segment.dictionary {
-            dictionary += segmentParameters
+           let flattened = segment.dictionary?.flattened {
+            dictionary.merge(flattened) { current, _ in current }
         }
         return dictionary
     }
@@ -41,4 +41,6 @@ public struct TealiumMediaEvent: MediaDispatch {
     public var trackRequest: TealiumTrackRequest {
         TealiumTrackRequest(data: self.data)
     }
+    
 }
+

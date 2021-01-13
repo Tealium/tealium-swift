@@ -29,29 +29,8 @@ public class Weak<T: AnyObject>: Equatable {
     }
 }
 
-public func == <T> (lhs: Weak<T>, rhs: Weak<T>) -> Bool {
+public func ==<T>(lhs: Weak<T>, rhs: Weak<T>) -> Bool {
     return lhs.value === rhs.value
 }
 
-/// Extend the use of += operators to dictionaries.
-public func += <K, V> (left: inout [K: V], right: [K: V]) {
-    for (key, value) in right {
-        left.updateValue(value, forKey: key)
-    }
-}
 
-/// Extend use of == to dictionaries.
-public func == (lhs: [String: Any], rhs: [String: Any] ) -> Bool {
-    return NSDictionary(dictionary: lhs).isEqual(to: rhs)
-}
-
-public extension Dictionary where Key == String, Value == Any {
-
-    var codable: AnyCodable {
-        return AnyCodable(self)
-    }
-
-    var encodable: AnyEncodable {
-        return AnyEncodable(self)
-    }
-}

@@ -55,21 +55,6 @@ public struct Summary: Codable {
     var chapters: Int = 0
 }
 
-/// will use this if `Segment` isn't used
-public protocol Segmentable: Codable { }
-
-//public enum Segment {
-//    case segment(SegmentNode)
-//
-//    var dictionary: [String: Any] {
-//        switch self {
-//        case .segment(let type):
-//            return type.dictionary ?? [String: Any]()
-//        }
-//    }
-//
-//}
-
 public enum Segment {
     case chapter(Chapter)
     case adBreak(AdBreak)
@@ -88,19 +73,19 @@ public enum Segment {
 }
 
 public enum StandardMediaEvent: String {
-    case adBreakEnd = "media_adbreak_complete"
+    case adBreakComplete = "media_adbreak_complete"
     case adBreakStart = "media_adbreak_start"
     case adClick = "media_ad_click"
     case adComplete = "media_ad_complete"
     case adSkip = "media_ad_skip"
     case adStart = "media_ad_start"
     case bitrateChange = "media_bitrate_change" // *
-    case bufferEnd = "media_buffer_end"  // *
+    case bufferComplete = "media_buffer_complete"  // *
     case bufferStart = "media_buffer_start"  // *
     case chapterComplete = "media_chapter_complete"
     case chapterSkip = "media_chapter_skip"
     case chapterStart = "media_chapter_start"
-    case complete = "media_session_complete" // *
+    case sessionEnd = "media_session_end" // *
     case heartbeat = "media_heartbeat"
     case milestone = "media_milestone"
     case pause = "media_pause" // *
@@ -109,7 +94,7 @@ public enum StandardMediaEvent: String {
     case playerStateStop = "player_state_stop" // *
     case seekStart = "media_seek_start"  // *
     case seekComplete = "media_seek_complete"  // *
-    case start = "media_session_start" // *
+    case sessionStart = "media_session_start" // *
     case stop = "media_stop" // *
     case summary = "media_summary"
 }
@@ -119,9 +104,6 @@ public enum MediaEvent {
     case custom(String)
 }
 
-public struct Audio: Codable {}
-public struct Video: Codable {}
-
 public struct TealiumMedia: Codable {
     var uuid = UUID().uuidString
     var name: String
@@ -129,15 +111,16 @@ public struct TealiumMedia: Codable {
     var mediaType: MediaType
     var qoe: QOE
     var trackingType: TrackingType
-    //var contentMetaData: AnyCodable?
     var state: PlayerState?
     var customId: String?
     var duration: Int?
     var playerName: String?
     var channelName: String?
     var metadata: AnyCodable?
-    var adBreaks: [AdBreak]?
-    var ads: [Ad]?
+    
+    var adBreaks = [AdBreak]()
+    var ads = [Ad]()
+    var chapters = [Chapter]()
     var milestone: String?
     var summary: Summary?
     
@@ -194,12 +177,12 @@ public struct QOE: Codable {
     var metadata: AnyCodable?
     
     enum CodingKeys: String, CodingKey {
-        case bitrate
-        case startTime = "media_qoe_startup_time"
-        case fps = "media_qoe_frames_per_second"
-        case droppedFrames = "media_qoe_dropped_frames"
-        case playbackSpeed = "media_qoe_playback_speed"
-        case metadata = "media_qoe_metadata"
+        case bitrate = "qoe_bitrate"
+        case startTime = "qoe_startup_time"
+        case fps = "qoe_frames_per_second"
+        case droppedFrames = "qoe_dropped_frames"
+        case playbackSpeed = "qoe_playback_speed"
+        case metadata = "qoe_metadata"
     }
     
     public init(bitrate: Int,
@@ -215,7 +198,7 @@ public struct QOE: Codable {
     }
 }
 
-public struct Chapter: Segmentable {
+public struct Chapter: Codable {
     var name: String
     var duration: Int
     var position: Int?
@@ -243,7 +226,7 @@ public struct Chapter: Segmentable {
     }
 }
 
-public struct Ad: Segmentable {
+public struct Ad: Codable {
     var uuid = UUID().uuidString
     var name: String?
     var id: String?
@@ -312,7 +295,7 @@ public struct Ad: Segmentable {
     
 }
 
-public struct AdBreak: Segmentable {
+public struct AdBreak: Codable {
     var uuid = UUID().uuidString
     var title: String?
     var id: Int?

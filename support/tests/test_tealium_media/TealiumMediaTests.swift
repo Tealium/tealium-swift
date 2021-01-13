@@ -10,15 +10,14 @@ import XCTest
 
 class TealiumMediaTests: XCTestCase {
     
-    var session: MediaSession?
+    var session: MediaSession!
+    var mockMediaService = MockMediaService()
 
     override func setUpWithError() throws {
-        session = MockMediaSession()
+        session = SignifigantEventMediaSession(mediaService: mockMediaService)
     }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
+    
+    override func tearDownWithError() throws { }
 
     // MARK: Init & Setup
     func testMediaSessionInitialized() {
@@ -42,99 +41,137 @@ class TealiumMediaTests: XCTestCase {
     }
     
     // MARK: Events
-    func testAdBreakStartCalled() {
+    func testAdBreakStart_Called() {
+        session.adBreakStart(AdBreak())
+        XCTAssertEqual(mockMediaService.standardEventCounts[.adBreakStart], 1)
+    }
+    
+    func testAdBreakStart_adBreakAddedToArray() {
+        XCTAssertEqual(session.mediaService!.media.adBreaks.count, 0)
+        session.adBreakStart(AdBreak())
+        XCTAssertEqual(session.mediaService!.media.adBreaks.count, 1)
+    }
+    
+    func testAdBreakStart_TitleSet_WhenDefined() {
+        session.adBreakStart(AdBreak(title: "Special Ad Break"))
+        XCTAssertEqual(session.mediaService!.media.adBreaks.first!.title, "Special Ad Break")
+    }
+    
+    func testAdBreakStart_TitleDefault_WhenNotDefined() {
+        session.adBreakStart(AdBreak())
+        XCTAssertEqual(session.mediaService!.media.adBreaks.first!.title, "Ad Break 1")
+    }
+    
+    func testAdBreakComplete_Called() {
+        session.mediaService?.media.adBreaks = [AdBreak()]
+        session.adBreakComplete()
+        XCTAssertEqual(mockMediaService.standardEventCounts[.adBreakComplete], 1)
+    }
+    
+    func testAdStart_Called() {
+        session.adStart(Ad())
+        XCTAssertEqual(mockMediaService.standardEventCounts[.adStart], 1)
+    }
+    
+    func testAdStart_adAddedToArray() {
+        XCTAssertEqual(session.mediaService!.media.ads.count, 0)
+        session.adStart(Ad())
+        XCTAssertEqual(session.mediaService!.media.ads.count, 1)
+    }
+    
+    func testAdStart_AdNameSet_WhenDefined() {
+        session.adStart(Ad(name: "Special Ad"))
+        XCTAssertEqual(session.mediaService!.media.ads.first!.name, "Special Ad")
+    }
+    
+    func testAdStart_AdNameDefault_WhenNotDefined() {
+        session.adStart(Ad())
+        XCTAssertEqual(session.mediaService!.media.ads.first!.name, "Ad 1")
+    }
+    
+    func testAdComplete_Called() {
+        session.mediaService?.media.ads = [Ad()]
+        session.adComplete()
+        XCTAssertEqual(mockMediaService.standardEventCounts[.adComplete], 1)
+    }
+    
+    func testAdSkip_Called() {
+
+    }
+    
+    func testAdSkip_NotCalled_WhenNoAdStart() {
         
     }
     
-    func testAdBreakEndCalled() {
+    func testAdClick_Called() {
+
+    }
+    
+    func testChapterStart_Called() {
+
+    }
+    
+    func testChapterComplete_Called() {
+
+    }
+    
+    func testChapterSkip_Called() {
+
+    }
+    
+    func testChapterSkip_NotCalled_WhenNoChapterStart() {
         
     }
     
-    func testAdStartCalled() {
-        
-    }
-    
-    func testAdCompleteCalled() {
-        
-    }
-    
-    func testAdSkipCalled() {
+    func testSeekStart_Called() {
 
     }
     
-    func testAdSkipNotCalledWhenNoAdStart() {
-        
-    }
-    
-    func testAdClickCalled() {
+    func testSeekComplete_Called() {
 
     }
     
-    func testChapterStartCalled() {
+    func testBufferStart_Called() {
 
     }
     
-    func testChapterCompleteCalled() {
+    func testBufferComplete_Called() {
 
     }
     
-    func testChapterSkipCalled() {
+    func testBitrateChange_Called() {
 
     }
     
-    func testChapterSkipNotCalledWhenNoChapterStart() {
-        
-    }
-    
-    func testSeekStartCalled() {
+    func testSessionStart_Called() {
 
     }
     
-    func testSeekCompleteCalled() {
+    func testMediaPlay_Called() {
 
     }
     
-    func testBufferStartCalled() {
+    func testMediaPause_Called() {
 
     }
     
-    func testBufferCompleteCalled() {
+    func testMediaEnd_Called() {
 
     }
     
-    func testBitrateChangeCalled() {
+    func testSessionComplete_Called() {
 
     }
     
-    func testSessionStartCalled() {
+    func testPlayerStateStart_Called() {
 
     }
     
-    func testMediaPlayCalled() {
+    func testPlayerStateEnd_Called() {
 
     }
     
-    func testMediaPauseCalled() {
-
-    }
-    
-    func testMediaEndCalled() {
-
-    }
-    
-    func testSessionCompleteCalled() {
-
-    }
-    
-    func testPlayerStateStartCalled() {
-
-    }
-    
-    func testPlayerStateEndCalled() {
-
-    }
-    
-    func testPingCalled() {
+    func testPing_Called() {
         
     }
     

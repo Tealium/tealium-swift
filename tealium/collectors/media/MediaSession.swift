@@ -11,174 +11,203 @@ import Foundation
 import TealiumCore
 //#endif
 
-// Do we send all the adBreak data on adBreakEnd? If not, how do we calculate duration?
-// Same w adEnd
-// What other metrics to calculate?
-// should all the "completes" be Complete or End?
-// Should we use session.close() or session.complete?
-
-public protocol MediaSession {
-//    var bitrate: Int { get set}
-//    var droppedFrames: Int { get set }
-//    var playbackSpeed: Double { get set }
-//    var playerState: PlayerState? { get set }
+public protocol MediaEventDispatcher {
     var delegate: ModuleDelegate? { get set }
-    // var delegate: SummaryDelegate? { get set }
     var media: TealiumMedia { get set }
-    
     func track(_ event: MediaEvent,
-               _ segment: Segment?) // make private?
+               _ segment: Segment?)
+}
+
+public extension MediaEventDispatcher {
+    func track(_ event: MediaEvent,
+                      _ segment: Segment? = nil) {
+        let mediaEvent = TealiumMediaEvent(event: event,
+                                           parameters: media,
+                                           segment: segment)
+        delegate?.requestTrack(mediaEvent.trackRequest)
+    }
+}
+
+public protocol MediaSession: MediaSessionEvents {
+    var bitrate: Int? { get set }
+    var mediaService: MediaEventDispatcher? { get set }
+    var droppedFrames: Int { get set }
+    var playbackSpeed: Double { get set }
+    var playerState: PlayerState? { get set }
+    // var summaryDelegate: SummaryDelegate? { get set } // not sure about this yet
 }
 
 public extension MediaSession {
     
-    var bitrate: Int {
-        get { media.qoe.bitrate }
+    var bitrate: Int? {
+        get { mediaService?.media.qoe.bitrate }
         set {
-            track(.event(.bitrateChange))
-            media.qoe.bitrate = newValue
-        }
-    }
-    
-    var droppedFrames: Int {
-        get { media.qoe.droppedFrames ?? 0 }
-        set {
-            media.qoe.droppedFrames = newValue
-        }
-    }
-    
-    var playbackSpeed: Double {
-        get { media.qoe.playbackSpeed ?? 1.0 }
-        set {
-            media.qoe.playbackSpeed = newValue
-        }
-    }
-    
-    var playerState: PlayerState? {
-        get { media.state }
-        set {
-            if media.state == nil {
-                media.state = newValue
-                track(.event(.playerStateStart))
-            } else if media.state != newValue {
-                track(.event(.playerStateStop))
-                media.state = newValue
-                track(.event(.playerStateStart))
+            if let newValue = newValue {
+                mediaService?.media.qoe.bitrate = newValue
+                mediaService?.track(.event(.bitrateChange))
             }
         }
     }
     
-    mutating func adBreakEnd() {
-        guard var adBreak = media.adBreaks?.first else {
+    var droppedFrames: Int {
+        get { mediaService?.media.qoe.droppedFrames ?? 0 }
+        set {
+            mediaService?.media.qoe.droppedFrames = newValue
+        }
+    }
+    
+    var playbackSpeed: Double {
+        get { mediaService?.media.qoe.playbackSpeed ?? 1.0 }
+        set {
+            mediaService?.media.qoe.playbackSpeed = newValue
+        }
+    }
+    
+    var playerState: PlayerState? {
+        get { mediaService?.media.state }
+        set {
+            if mediaService?.media.state == nil {
+                mediaService?.media.state = newValue
+                mediaService?.track(.event(.playerStateStart))
+            } else if mediaService?.media.state != newValue {
+                mediaService?.track(.event(.playerStateStop))
+                mediaService?.media.state = newValue
+                mediaService?.track(.event(.playerStateStart))
+            }
+        }
+    }
+    
+    mutating func adBreakComplete() {
+        guard var adBreak = mediaService?.media.adBreaks.first else {
             return
         }
-        adBreak.duration = calculate(duration: adBreak.startTime)
-        track(
-            .event(.adBreakEnd),
+        if adBreak.duration == nil {
+            adBreak.duration = calculate(duration: adBreak.startTime)
+        }
+        mediaService?.track(
+            .event(.adBreakComplete),
             .adBreak(adBreak)
         )
-        media.adBreaks?.removeFirst(1)
+        mediaService?.media.adBreaks.removeFirst(1)
     }
     
     mutating func adBreakStart(_ adBreak: AdBreak) {
-         media.adBreaks?.append(adBreak)
-        // track(.event(.adBreakStart), adBreak)
-        /* OR */
-        track(
+        mediaService?.media.adBreaks.append(adBreak)
+        mediaService?.track(
             .event(.adBreakStart),
             .adBreak(adBreak)
         )
-        
     }
     
-    func adClick() {
-        track(.event(.adClick))
+    mutating func adClick() {
+        guard let ad = mediaService?.media.ads.last else {
+            return
+        }
+        mediaService?.track(
+            .event(.adClick),
+            .ad(ad)
+        )
+        mediaService?.media.ads.removeLast()
     }
     
     mutating func adComplete() {
-        guard var ad = media.ads?.first else {
+        guard var ad = mediaService?.media.ads.first else {
             return
         }
-        ad.duration = calculate(duration: ad.startTime)
-        track(.event(.adComplete))
-        media.ads?.removeFirst(1)
+        if ad.duration == nil {
+            ad.duration = calculate(duration: ad.startTime)
+        }
+        mediaService?.track(.event(.adComplete))
+        mediaService?.media.ads.removeFirst(1)
     }
     
-    func adSkip() {
-        track(.event(.adSkip))
+    mutating func adSkip() {
+        guard let ad = mediaService?.media.ads.last else {
+            return
+        }
+        mediaService?.track(
+            .event(.adSkip),
+            .ad(ad)
+        )
+        mediaService?.media.ads.removeLast()
     }
     
     mutating func adStart(_ ad: Ad) {
-        media.ads?.append(ad)
-        // track(.event(.adStart), ad)
-        /* OR */
-        track(
+        mediaService?.media.ads.append(ad)
+        mediaService?.track(
             .event(.adStart),
             .ad(ad)
         )
     }
     
-    func bufferEnd() {
-        track(.event(.bufferEnd))
+    func bufferComplete() {
+        mediaService?.track(.event(.bufferComplete))
     }
     
     func bufferStart() {
-        track(.event(.seekStart))
+        mediaService?.track(.event(.bufferStart))
     }
     
-    func chapterComplete() {
-        track(.event(.chapterComplete))
+    mutating func chapterComplete() {
+        guard let chapter = mediaService?.media.chapters.last else {
+            return
+        }
+        mediaService?.track(
+            .event(.chapterComplete),
+            .chapter(chapter)
+        )
+        mediaService?.media.chapters.removeLast()
     }
     
-    func chapterSkip() {
-        track(.event(.chapterSkip))
+    mutating func chapterSkip() {
+        guard let chapter = mediaService?.media.chapters.last else {
+            return
+        }
+        mediaService?.track(
+            .event(.chapterSkip),
+            .chapter(chapter)
+        )
+        mediaService?.media.chapters.removeLast()
     }
     
-    func chapterStart(_ chapter: Chapter) {
-        // track(.event(.chapterStart), chapter)
-        /* OR */
-        track(
+    mutating func chapterStart(_ chapter: Chapter) {
+        mediaService?.media.chapters.append(chapter)
+        mediaService?.track(
             .event(.chapterStart),
             .chapter(chapter)
         )
     }
     
     func close() {
-        track(.event(.complete))
+        mediaService?.track(.event(.sessionEnd))
     }
     
     func custom(_ event: String) {
-        track(.custom(event))
+        mediaService?.track(.custom(event))
     }
     
     func seek() {
-        track(.event(.seekStart))
+        mediaService?.track(.event(.seekStart))
     }
     
     func seekComplete() {
-        track(.event(.seekComplete))
+        mediaService?.track(.event(.seekComplete))
     }
     
     func start() {
-        track(.event(.start))
+        mediaService?.track(.event(.sessionStart))
     }
     
     func play() {
-        track(.event(.play))
-    }
-    func pause() {
-        track(.event(.pause))
-    }
-    func stop() {
-        track(.event(.stop))
+        mediaService?.track(.event(.play))
     }
     
-    func track(_ event: MediaEvent,
-               _ segment: Segment? = nil) {
-        let mediaEvent = TealiumMediaEvent(event: event,
-                                           parameters: media,
-                                           segment: segment)
-        delegate?.requestTrack(mediaEvent.trackRequest)
+    func pause() {
+        mediaService?.track(.event(.pause))
+    }
+    
+    func stop() {
+        mediaService?.track(.event(.stop))
     }
     
     private func calculate(duration: Date) -> Int? {
@@ -190,47 +219,25 @@ public extension MediaSession {
     
 }
 
+public struct MediaEventService: MediaEventDispatcher {
+    public var media: TealiumMedia
+    public var delegate: ModuleDelegate?
+}
+
+
 public struct MediaSessionFactory {
     static func create(from media: TealiumMedia,
                        with delegate: ModuleDelegate?) -> MediaSession {
+        let mediaService = MediaEventService(media: media, delegate: delegate)
         switch media.trackingType {
         case .signifigant:
-            return SignifigantEventMediaSession(media: media, delegate: delegate)
+            return SignifigantEventMediaSession(mediaService: mediaService)
         case .heartbeat:
-            return HeartbeatMediaSession(media: media, delegate: delegate)
+            return HeartbeatMediaSession(mediaService: mediaService)
         case .milestone:
-            return MilestoneMediaSession(media: media, delegate: delegate)
+            return MilestoneMediaSession(mediaService: mediaService)
         case .summary:
-            return SummaryMediaSession(media: media, delegate: delegate)
+            return SummaryMediaSession(mediaService: mediaService)
         }
     }
-}
-
-// Might need this for tests
-public protocol MediaSessionEvents {
-    func adBreakEnd()
-    func adBreakStart(_ adBreak: AdBreak)
-    func adClick()
-    func adComplete()
-    func adSkip()
-    func adStart(_ ad: Ad)
-    func bitrateChange()
-    func bufferEnd()
-    func bufferStart()
-    func chapterComplete()
-    func chapterSkip()
-    func chapterStart(_ chapter: Chapter)
-    func close()
-    func custom(_ event: String)
-    func heartbeat()
-    func milestone()
-    func pause()
-    func play()
-    func playerStateStart()
-    func playerStateStop()
-    func seekStart()
-    func seekComplete()
-    func start()
-    func stop()
-    func summary()
 }
