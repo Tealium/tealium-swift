@@ -161,6 +161,7 @@ class TealiumMediaTests: XCTestCase {
             XCTAssertEqual(adBreak.index, 1)
             XCTAssertEqual(adBreak.position, 2)
         default:
+            XCTFail("Incorrect segment type")
             break
         }
     }
@@ -268,6 +269,7 @@ class TealiumMediaTests: XCTestCase {
             XCTAssertEqual(ad.pod, "ad pod")
             XCTAssertEqual(ad.playerName, "some ad player")
         default:
+            XCTFail("Incorrect segment type")
             break
         }
     }
@@ -299,6 +301,7 @@ class TealiumMediaTests: XCTestCase {
             XCTAssertEqual(ad.pod, "ad pod")
             XCTAssertEqual(ad.playerName, "some ad player")
         default:
+            XCTFail("Incorrect segment type")
             break
         }
     }
@@ -345,6 +348,7 @@ class TealiumMediaTests: XCTestCase {
             XCTAssertEqual(ad.pod, "ad pod")
             XCTAssertEqual(ad.playerName, "some ad player")
         default:
+            XCTFail("Incorrect segment type")
             break
         }
     }
@@ -377,6 +381,7 @@ class TealiumMediaTests: XCTestCase {
         switch mockMediaService.updatedSegment {
         case .chapter(let chapter): XCTAssertEqual(chapter.position, 3)
         default:
+            XCTFail("Incorrect segment type")
             break
         }
     }
@@ -387,6 +392,7 @@ class TealiumMediaTests: XCTestCase {
         switch mockMediaService.updatedSegment {
         case .chapter(let chapter): XCTAssertEqual(chapter.position, 1)
         default:
+            XCTFail("Incorrect segment type")
             break
         }
     }
@@ -403,6 +409,7 @@ class TealiumMediaTests: XCTestCase {
             XCTAssertNotNil(chapter.startTime)
             XCTAssertNotNil(chapter.metadata?.value)
         default:
+            XCTFail("Incorrect segment type")
             break
         }
     }
@@ -436,6 +443,7 @@ class TealiumMediaTests: XCTestCase {
             XCTAssertNotNil(chapter.startTime)
             XCTAssertNotNil(chapter.metadata?.value)
         default:
+            XCTFail("Incorrect segment type")
             break
         }
     }
