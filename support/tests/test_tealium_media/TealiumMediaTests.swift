@@ -6,6 +6,7 @@
 //
 
 import XCTest
+@testable import TealiumCore
 @testable import TealiumMedia
 
 // TODO: Test correct sequence of events
@@ -22,7 +23,53 @@ class TealiumMediaTests: XCTestCase {
     override func tearDownWithError() throws { }
 
     // MARK: Init & Setup
-    // TODO:
+    func testModule_CreateSession() {
+        let config = TealiumConfig(account: "test",
+                                   profile: "test",
+                                   environment: "test")
+        let tealium = Tealium(config: config)
+        let context = TealiumContext(config: config,
+                                      dataLayer: DummyDataManager(),
+                                      tealium: tealium)
+        let module = MediaModule(context: context, delegate: MockModuleDelegate(), diskStorage: nil) { _ in }
+        
+        let session = module.createSession(from: TealiumMedia(name: "test", streamType: .aod, mediaType: .video, qoe: QOE(bitrate: 1000)))
+        
+        guard let _ = session as? SignifigantEventMediaSession else {
+            XCTFail("createSession failed")
+            return
+        }
+    }
+    
+    func testMediaSessionFactory_CreatesCorrectTypes() {
+        session.mediaService?.media.trackingType = .signifigant
+        let signifigant = MediaSessionFactory.create(from: session.mediaService!.media, with: MockModuleDelegate())
+        guard let _ = signifigant as? SignifigantEventMediaSession else {
+            XCTFail("Incorrect Type Created in Factory")
+            return
+        }
+        
+        session.mediaService?.media.trackingType = .heartbeat
+        let heartbeat = MediaSessionFactory.create(from: session.mediaService!.media, with: MockModuleDelegate())
+        guard let _ = heartbeat as? HeartbeatMediaSession else {
+            XCTFail("Incorrect Type Created in Factory")
+            return
+        }
+        
+        session.mediaService?.media.trackingType = .milestone
+        let milestone = MediaSessionFactory.create(from: session.mediaService!.media, with: MockModuleDelegate())
+        guard let _ = milestone as? MilestoneMediaSession else {
+            XCTFail("Incorrect Type Created in Factory")
+            return
+        }
+        
+        session.mediaService?.media.trackingType = .summary
+        let summary = MediaSessionFactory.create(from: session.mediaService!.media, with: MockModuleDelegate())
+        guard let _ = summary as? SummaryMediaSession else {
+            XCTFail("Incorrect Type Created in Factory")
+            return
+        }
+    }
     
     // MARK: Events
     func testAdBreakStart_Called() {
@@ -516,30 +563,223 @@ class TealiumMediaTests: XCTestCase {
         XCTAssertEqual(mockMediaService.customEvent.name, "My Custom Event 2")
     }
     
+    // TODO:
     func testPing_Called() { }
     func testMilestone_Called() { }
     func testSummary_Called() { }
     func testSummary_Updated_OnMediaEvent() { }
     
     // MARK: Tracking Types
-    func testSignifigantEvents_TrackingType_DoesNotSendHeartbeat() { }
-    func testSignifigantEvents_TrackingType_DoesNotSendMilestone() { }
-    func testSignifigantEvents_TrackingType_DoesNotSendSummary() { }
+    func testSignifigantEvents_TrackingType_DoesNotSendHeartbeat() {
+        session.start()
+        session.play()
+        session.stop()
+        XCTAssertEqual(mockMediaService.standardEventCounts[.heartbeat], 0)
+    }
+    
+    func testSignifigantEvents_TrackingType_DoesNotSendMilestone() {
+        session.start()
+        session.play()
+        session.stop()
+        XCTAssertEqual(mockMediaService.standardEventCounts[.milestone], 0)
+    }
+    
+    func testSignifigantEvents_TrackingType_DoesNotSendSummary() {
+        session.start()
+        session.play()
+        session.stop()
+        XCTAssertEqual(mockMediaService.standardEventCounts[.summary], 0)
+    }
+    
+    // TODO:
     func testHeartbeat_SentEveryTenSeconds() { }
     func testMilestones_Sent() { }
     func testSummary_Sent() { }
     
     // MARK: Track
-    func testMediaVariables_AddedToTrack() { }
-    func testMediaMetaVarables_Flattened() { }
-    func testAdBreakMetaVariables_AddedToTrack() { }
-    func testAdMetaVariables_AddedToTrack() { }
-    func testChapterMetaVariables_AddedToTrack() { }
-    func testSegmentVariables_ToDictionary() { }
-    func testSegmentMetaVariables_OverwriteMediaSessionVariables() { }
+    func testAdBreakVariables_ToDictionary() {
+        let adBreak = AdBreak(title: "Ad Break Vars",
+                              id: "xyz123",
+                              duration: 90,
+                              index: 0,
+                              position: 1)
+        
+        XCTAssertNotNil(adBreak.dictionary?["ad_break_uuid"] as! String)
+        XCTAssertEqual(adBreak.dictionary?["ad_break_title"] as! String, "Ad Break Vars")
+        XCTAssertEqual(adBreak.dictionary?["ad_break_id"] as! String, "xyz123")
+        XCTAssertEqual(adBreak.dictionary?["ad_break_length"] as! Int, 90)
+        XCTAssertEqual(adBreak.dictionary?["ad_break_index"] as! Int, 0)
+        XCTAssertEqual(adBreak.dictionary?["ad_break_position"] as! Int, 1)
+    }
+    
+    func testAdVariables_ToDictionary() {
+        let ad = Ad(name: "Ad Vars",
+                    id: "Abc123",
+                    duration: 30,
+                    position: 1,
+                    advertiser: "google",
+                    creativeId: "test123",
+                    campaignId: "camp123",
+                    placementId: "place123",
+                    siteId: "site123",
+                    creativeUrl: "https://creative.com",
+                    numberOfLoads: 1,
+                    pod: "ad pod",
+                    playerName: "some ad player")
+        
+        XCTAssertNotNil(ad.dictionary?["ad_uuid"] as! String)
+        XCTAssertEqual(ad.dictionary?["ad_name"] as! String, "Ad Vars")
+        XCTAssertEqual(ad.dictionary?["ad_length"] as! Int, 30)
+        XCTAssertEqual(ad.dictionary?["advertiser"] as! String, "google")
+        XCTAssertEqual(ad.dictionary?["ad_creative_id"] as! String, "test123")
+        XCTAssertEqual(ad.dictionary?["ad_campaign_id"] as! String, "camp123")
+        XCTAssertEqual(ad.dictionary?["ad_placement_id"] as! String, "place123")
+        XCTAssertEqual(ad.dictionary?["ad_site_id"] as! String, "site123")
+        XCTAssertEqual(ad.dictionary?["ad_creative_url"] as! String, "https://creative.com")
+        XCTAssertEqual(ad.dictionary?["ad_load"] as! Int, 1)
+        XCTAssertEqual(ad.dictionary?["ad_pod"] as! String, "ad pod")
+        XCTAssertEqual(ad.dictionary?["ad_player_name"] as! String, "some ad player")
+    }
+    
+    func testChapterVariables_ToDictionary() {
+        let chapter = Chapter(name: "Chapter Vars",
+                              duration: 2000,
+                              position: 1,
+                              startTime: Date(),
+                              metadata: ["chapter_meta_key": "chapter_meta_value"])
+        
+        XCTAssertEqual(chapter.dictionary?["chapter_name"] as! String, "Chapter Vars")
+        XCTAssertEqual(chapter.dictionary?["chapter_length"] as! Int, 2000)
+        XCTAssertEqual(chapter.dictionary?["chapter_position"] as! Int, 1)
+        XCTAssertNotNil(chapter.dictionary?["chapter_start_time"])
+        XCTAssertNotNil(chapter.dictionary?["chapter_metadata"])
+    }
+    
+    func testMediaSessionData_AddedToMediaRequestData() {
+        session.mediaService?.media = TealiumMedia(name: "Media Vars",
+                                                   streamType: .podcast,
+                                                   mediaType: .audio,
+                                                   qoe: QOE(bitrate: 5000,
+                                                            startTime: 123,
+                                                            fps: 456,
+                                                            droppedFrames: 7,
+                                                            playbackSpeed: 1.25,
+                                                            metadata: ["custom_qoe_meta_key": "custom_qoe_meta_val"]),
+                                                   trackingType: .signifigant,
+                                                   state: .mute,
+                                                   customId: "some id",
+                                                   duration: 3000,
+                                                   playerName: "some player",
+                                                   channelName: "some channel",
+                                                   metadata: ["custom_meta_key": "custom_meta_val",
+                                                              "author": "bob"])
+        
+        let trackRequest = TealiumMediaEvent(event: .event(.sessionStart),
+                                             parameters: session.mediaService!.media)
+        
+            XCTAssertNotNil(trackRequest.data["media_uuid"])
+            XCTAssertEqual(trackRequest.data["media_name"] as! String, "Media Vars")
+            XCTAssertEqual(trackRequest.data["media_stream_type"] as! String, "podcast")
+            XCTAssertEqual(trackRequest.data["media_type"] as! String, "audio")
+            XCTAssertEqual(trackRequest.data["media_tracking_interval"] as! String, "signifigant")
+            XCTAssertEqual(trackRequest.data["media_player_state"] as! String, "mute")
+            XCTAssertEqual(trackRequest.data["media_custom_id"] as! String, "some id")
+            XCTAssertEqual(trackRequest.data["media_length"] as! Int, 3000)
+            XCTAssertEqual(trackRequest.data["media_player_name"] as! String, "some player")
+            XCTAssertEqual(trackRequest.data["media_channel_name"] as! String, "some channel")
+            XCTAssertEqual(trackRequest.data["qoe_bitrate"] as! Int, 5000)
+            XCTAssertEqual(trackRequest.data["qoe_startup_time"] as! Int, 123)
+            XCTAssertEqual(trackRequest.data["qoe_frames_per_second"] as! Int, 456)
+            XCTAssertEqual(trackRequest.data["qoe_dropped_frames"] as! Int, 7)
+        XCTAssertEqual(trackRequest.data["qoe_playback_speed"] as! Double, 1.25)
+            XCTAssertEqual(trackRequest.data["custom_qoe_meta_key"] as! String, "custom_qoe_meta_val")
+            XCTAssertEqual(trackRequest.data["custom_meta_key"] as! String, "custom_meta_val")
+            XCTAssertEqual(trackRequest.data["author"] as! String, "bob")
+    }
+    
+    func testSegmentVariables_AddedToMediaRequestData() {
+        let chapter = Chapter(name: "Chapter Vars",
+                              duration: 2000,
+                              position: 1,
+                              startTime: Date(),
+                              metadata: ["chapter_meta_key": "chapter_meta_value"])
+        let trackRequest = TealiumMediaEvent(event: .event(.chapterComplete),
+                                             parameters: session.mediaService!.media,
+                                             segment: .chapter(chapter))
+        XCTAssertEqual(trackRequest.data["chapter_name"] as! String, "Chapter Vars")
+        XCTAssertEqual(trackRequest.data["chapter_length"] as! Int, 2000)
+        XCTAssertEqual(trackRequest.data["chapter_position"] as! Int, 1)
+        XCTAssertNotNil(trackRequest.data["chapter_start_time"])
+        XCTAssertEqual(trackRequest.data["chapter_meta_key"] as! String, "chapter_meta_value")
+    }
+    
+    func testCustomEventName_AddedToTrackRequest() {
+        let mediaRequest = TealiumMediaEvent(event: .custom("some_custom_media_event"),
+                                             parameters: session.mediaService!.media,
+                                             segment: nil)
+        XCTAssertEqual(mediaRequest.data["tealium_event"] as! String, "some_custom_media_event")
+        XCTAssertEqual(mediaRequest.trackRequest.trackDictionary["tealium_event"] as! String, "some_custom_media_event")
+    }
+    
+    func testSegmentMetaVariables_OverwriteMediaSessionVariables() {
+        session.mediaService?.media.metadata = ["song": "song value 1",
+                                                "artist": "artist value 1",
+                                                "album": "album 1"]
+        let chapter = Chapter(name: "Chapter Vars",
+                              duration: 2000,
+                              position: 1,
+                              startTime: Date(),
+                              metadata: ["song": "song value 2", "artist": "artist value 2"])
+        let trackRequest = TealiumMediaEvent(event: .event(.chapterStart),
+                                             parameters: session.mediaService!.media,
+                                             segment: .chapter(chapter))
+        XCTAssertEqual(trackRequest.data["song"] as! String, "song value 2")
+        XCTAssertEqual(trackRequest.data["artist"] as! String, "artist value 2")
+        XCTAssertEqual(trackRequest.data["album"] as! String, "album 1")
+    }
+    
+    func testTrackMethod_CallsDelegateRequestTrack() {
+        let expect = expectation(description: "testTrackMethod_CallsDelegateRequestTrack")
+        
+        let mockModuleDelegate = MockModuleDelegate()
+        mockModuleDelegate.asyncExpectation = expect
+        
+        session.mediaService = MediaEventService(media: session.mediaService!.media, delegate: mockModuleDelegate)
+        session.mediaService?.track(.event(.sessionStart))
+        
+        wait(for: [expect], timeout: 1.0)
+    }
+    
+    func testTrackMethod_CallsDelegateRequestTrackAndSetsData() {
+        let expect = expectation(description: "testTrackMethod_CallsDelegateRequestTrackAndSetsData")
+        
+        let mockModuleDelegate = MockModuleDelegate()
+        mockModuleDelegate.asyncExpectation = expect
+        
+        session.mediaService?.media.metadata = ["song": "song value 1",
+                                                "artist": "artist value 1",
+                                                "album": "album 1"]
+        session.mediaService = MediaEventService(media: session.mediaService!.media, delegate: mockModuleDelegate)
+        
+        let chapter = Chapter(name: "Chapter Vars",
+                              duration: 2000,
+                              position: 1,
+                              startTime: Date(),
+                              metadata: ["song": "song value 2", "artist": "artist value 2"])
+        
+        session.mediaService?.track(
+            .event(.chapterStart),
+            .chapter(chapter)
+        )
+            
+        XCTAssertEqual(mockModuleDelegate.mediaData?["song"] as! String, "song value 2")
+        XCTAssertEqual(mockModuleDelegate.mediaData?["artist"] as! String, "artist value 2")
+        XCTAssertEqual(mockModuleDelegate.mediaData?["album"] as! String, "album 1")
+        
+        wait(for: [expect], timeout: 1.0)
+    }
     
     // TODO: Event sequence
-    
     func testMediaSessionPerformance() throws {
         // performance testing
         self.measure { }
@@ -547,3 +787,20 @@ class TealiumMediaTests: XCTestCase {
 
 }
 
+class MockModuleDelegate: ModuleDelegate {
+    
+    var mediaData: [String: Any]?
+    var asyncExpectation: XCTestExpectation?
+    
+    func requestTrack(_ track: TealiumTrackRequest) {
+        guard let expectation = asyncExpectation else {
+            XCTFail("MockModuleDelegate was not setup correctly. Missing XCTExpectation reference")
+            return
+        }
+        mediaData = track.trackDictionary
+        expectation.fulfill()
+    }
+    
+    func requestDequeue(reason: String) {}
+    func processRemoteCommandRequest(_ request: TealiumRequest) {}
+}

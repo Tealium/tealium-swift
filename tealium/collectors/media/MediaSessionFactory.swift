@@ -7,7 +7,9 @@
 //
 
 import Foundation
+//#if media
 import TealiumCore
+//#endif
 
 public struct MediaSessionFactory {
     static func create(from media: TealiumMedia,

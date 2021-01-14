@@ -247,6 +247,8 @@
 		CFA55A4324E59D1F00BFBED8 /* MockURLSessionConnectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7187F3D2476BED900CF0AB0 /* MockURLSessionConnectivity.swift */; };
 		CFA55A4424E59D2000BFBED8 /* MockURLSessionConnectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7187F3D2476BED900CF0AB0 /* MockURLSessionConnectivity.swift */; };
 		CFAC000125AF81A000CD51C6 /* MediaSessionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAC000025AF81A000CD51C6 /* MediaSessionFactory.swift */; };
+		CFAC004A25AFBF5400CD51C6 /* CoreMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA558BF24E4E6B200BFBED8 /* CoreMocks.swift */; };
+		CFAC006F25AFBF5B00CD51C6 /* TestTealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716C7D1B1DDBC3A500512C99 /* TestTealiumHelper.swift */; };
 		CFACFFDB25AF816400CD51C6 /* MediaEventService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFACFFDA25AF816400CD51C6 /* MediaEventService.swift */; };
 		CFAD58A5253910D7007D4EDB /* DeviceDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAD58A3253910D7007D4EDB /* DeviceDataTests.swift */; };
 		CFAD58A6253910D7007D4EDB /* DeviceDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAD58A3253910D7007D4EDB /* DeviceDataTests.swift */; };
@@ -4336,6 +4338,8 @@
 			files = (
 				CFAD9E8B25A66D470079B19A /* TealiumMediaTests.swift in Sources */,
 				CFADA55725AD26DD0079B19A /* MockMediaSession.swift in Sources */,
+				CFAC004A25AFBF5400CD51C6 /* CoreMocks.swift in Sources */,
+				CFAC006F25AFBF5B00CD51C6 /* TestTealiumHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

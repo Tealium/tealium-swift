@@ -8,7 +8,7 @@
 
 import Foundation
 //#if media
-    import TealiumCore
+import TealiumCore
 //#endif
 
 public extension Collectors {

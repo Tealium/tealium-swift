@@ -8,6 +8,7 @@
 @testable import TealiumCollect
 @testable import TealiumCore
 @testable import TealiumLifecycle
+@testable import TealiumMedia
 @testable import TealiumVisitorService
 #if os(iOS)
 @testable import TealiumAutotracking
@@ -34,18 +35,35 @@ class TealiumExtensionTests: XCTestCase {
 
     override func tearDownWithError() throws { }
 
+    func testMediaServiceNotNilWhenAddedToCollectors() {
+        let config = TealiumConfig(account: "test", profile: "test", environment: "test")
+        config.collectors?.append(Collectors.Media)
+        tealium = Tealium(config: config) { _ in
+            XCTAssertNotNil(self.tealium.media)
+        }
+    }
+    
+    func testMediaServiceNilWhenAddedToCollectors() {
+        let config = TealiumConfig(account: "test", profile: "test", environment: "test")
+        tealium = Tealium(config: config) { _ in
+            XCTAssertNil(self.tealium.media)
+        }
+    }
+    
     func testVisitorIdNotNil() {
+        let config = TealiumConfig(account: "test", profile: "test", environment: "test")
         let expect = expectation(description: "Visitor id not nil")
-        tealium = Tealium(config: defaultTealiumConfig) { _ in
+        tealium = Tealium(config: config) { _ in
             XCTAssertNotNil(self.tealium.visitorId)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        wait(for: [expect], timeout: 2.0)
     }
     
     func testResetVisitorId() {
+        let config = TealiumConfig(account: "test", profile: "test", environment: "test")
         let expect = expectation(description: "Visitor id is reset")
-        tealium = Tealium(config: defaultTealiumConfig) { _ in
+        tealium = Tealium(config: config) { _ in
             let currentVisitorId = self.tealium.visitorId
             let currentUUID = (self.tealium.zz_internal_modulesManager?.collectors
                                 .filter { $0 is AppDataModule }
@@ -178,6 +196,8 @@ class TealiumExtensionTests: XCTestCase {
         }
         wait(for: [expect], timeout: 1.0)
     }
+    
+    
 
     #if os(iOS)
     func testLocationNotNil() {
@@ -258,11 +278,5 @@ class TealiumExtensionTests: XCTestCase {
         wait(for: [expect], timeout: 1.0)
     }
     #endif
-    
-    private func delay(_ completion: @escaping () -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            completion()
-        }
-    }
 
 }

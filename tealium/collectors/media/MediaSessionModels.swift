@@ -7,6 +7,9 @@
 //
 
 import Foundation
+//#if media
+import TealiumCore
+//#endif
 
 public enum StreamType: String, Codable {
     case aod
@@ -147,6 +150,7 @@ public struct TealiumMedia: Codable {
             self.mediaType = mediaType
             self.qoe = qoe
             self.trackingType = trackingType
+            self.state = state
             self.customId = customId
             self.duration = duration
             self.playerName = playerName
@@ -177,11 +181,13 @@ public struct QOE: Codable {
                 startTime: Int? = nil,
                 fps: Int? = nil,
                 droppedFrames: Int? = nil,
+                playbackSpeed: Double? = nil,
                 metadata: AnyCodable? = nil) {
         self.bitrate = bitrate
         self.startTime = startTime
         self.fps = fps
         self.droppedFrames = droppedFrames
+        self.playbackSpeed = playbackSpeed
         self.metadata = metadata
     }
 }
@@ -294,7 +300,7 @@ public struct AdBreak: Codable {
     
     enum CodingKeys: String, CodingKey {
         case uuid = "ad_break_uuid"
-        case title = "ad_break_name"
+        case title = "ad_break_title"
         case id = "ad_break_id"
         case duration = "ad_break_length"
         case index = "ad_break_index"

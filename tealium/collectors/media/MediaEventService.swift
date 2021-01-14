@@ -7,7 +7,9 @@
 //
 
 import Foundation
+//#if media
 import TealiumCore
+//#endif
 
 public protocol MediaEventDispatcher {
     var delegate: ModuleDelegate? { get set }

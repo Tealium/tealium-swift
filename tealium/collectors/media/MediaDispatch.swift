@@ -7,9 +7,9 @@
 //
 
 import Foundation
-// #if media
+//#if media
 import TealiumCore
-// #endif
+//#endif
 
 public protocol MediaDispatch: TealiumDispatch {
     var event: MediaEvent { get }
@@ -29,11 +29,11 @@ public struct TealiumMediaEvent: MediaDispatch {
             case .custom(let name): dictionary[TealiumKey.event] = name
         }
         if let parameters = parameters.dictionary?.flattened {
-            dictionary += parameters
+            dictionary += parameters.flattened
         }
         if let segment = segment,
            let flattened = segment.dictionary?.flattened {
-            dictionary.merge(flattened) { current, _ in current }
+            dictionary.merge(flattened) { _, new in new }
         }
         return dictionary
     }
