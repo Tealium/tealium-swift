@@ -16,8 +16,8 @@ public struct MediaSessionFactory {
                        with delegate: ModuleDelegate?) -> MediaSession {
         let mediaService = MediaEventService(media: media, delegate: delegate)
         switch media.trackingType {
-        case .signifigant:
-            return SignifigantEventMediaSession(mediaService: mediaService)
+        case .significant:
+            return SignificantEventMediaSession(mediaService: mediaService)
         case .heartbeat:
             return HeartbeatMediaSession(mediaService: mediaService)
         case .milestone:

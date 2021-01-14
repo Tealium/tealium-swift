@@ -22,7 +22,7 @@ class MockMediaService: MediaEventDispatcher {
                          streamType: .vod,
                          mediaType: .video,
                          qoe: QOE(bitrate: 1000, startTime: nil, fps: 20),
-                         trackingType: .signifigant,
+                         trackingType: .significant,
                          state: .fullscreen,
                          customId: "test custom id",
                          duration: 3000,

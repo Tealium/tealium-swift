@@ -34,7 +34,7 @@ public enum MediaType: String, Codable {
 public enum TrackingType: String, Codable {
     case heartbeat
     case milestone
-    case signifigant
+    case significant
     case summary
 }
 
@@ -137,7 +137,7 @@ public struct TealiumMedia: Codable {
         streamType: StreamType,
         mediaType: MediaType,
         qoe: QOE,
-        trackingType: TrackingType = .signifigant,
+        trackingType: TrackingType = .significant,
         state: PlayerState? = nil,
         customId: String? = nil,
         duration: Int? = nil,

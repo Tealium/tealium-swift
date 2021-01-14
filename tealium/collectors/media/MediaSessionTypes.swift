@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol SignifigantEventMediaProtocol: MediaSession { }
+protocol SignificantEventMediaProtocol: MediaSession { }
 
 protocol HeartbeatMediaProtocol: MediaSession {
     func ping()
@@ -23,7 +23,7 @@ protocol SummaryMediaProtocol: MediaSession {
     func summary()
 }
 
-struct SignifigantEventMediaSession: SignifigantEventMediaProtocol {
+struct SignificantEventMediaSession: SignificantEventMediaProtocol {
     var mediaService: MediaEventDispatcher?
 }
 

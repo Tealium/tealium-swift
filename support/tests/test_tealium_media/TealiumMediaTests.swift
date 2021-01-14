@@ -17,7 +17,7 @@ class TealiumMediaTests: XCTestCase {
     var mockMediaService = MockMediaService()
 
     override func setUpWithError() throws {
-        session = SignifigantEventMediaSession(mediaService: mockMediaService)
+        session = SignificantEventMediaSession(mediaService: mockMediaService)
     }
     
     override func tearDownWithError() throws { }
@@ -35,16 +35,16 @@ class TealiumMediaTests: XCTestCase {
         
         let session = module.createSession(from: TealiumMedia(name: "test", streamType: .aod, mediaType: .video, qoe: QOE(bitrate: 1000)))
         
-        guard let _ = session as? SignifigantEventMediaSession else {
+        guard let _ = session as? SignificantEventMediaSession else {
             XCTFail("createSession failed")
             return
         }
     }
     
     func testMediaSessionFactory_CreatesCorrectTypes() {
-        session.mediaService?.media.trackingType = .signifigant
-        let signifigant = MediaSessionFactory.create(from: session.mediaService!.media, with: MockModuleDelegate())
-        guard let _ = signifigant as? SignifigantEventMediaSession else {
+        session.mediaService?.media.trackingType = .significant
+        let significant = MediaSessionFactory.create(from: session.mediaService!.media, with: MockModuleDelegate())
+        guard let _ = significant as? SignificantEventMediaSession else {
             XCTFail("Incorrect Type Created in Factory")
             return
         }
@@ -576,21 +576,21 @@ class TealiumMediaTests: XCTestCase {
     func testSummary_Updated_OnMediaEvent() { }
     
     // MARK: Tracking Types
-    func testSignifigantEvents_TrackingType_DoesNotSendHeartbeat() {
+    func testSignificantEvents_TrackingType_DoesNotSendHeartbeat() {
         session.start()
         session.play()
         session.stop()
         XCTAssertEqual(mockMediaService.standardEventCounts[.heartbeat], 0)
     }
     
-    func testSignifigantEvents_TrackingType_DoesNotSendMilestone() {
+    func testSignificantEvents_TrackingType_DoesNotSendMilestone() {
         session.start()
         session.play()
         session.stop()
         XCTAssertEqual(mockMediaService.standardEventCounts[.milestone], 0)
     }
     
-    func testSignifigantEvents_TrackingType_DoesNotSendSummary() {
+    func testSignificantEvents_TrackingType_DoesNotSendSummary() {
         session.start()
         session.play()
         session.stop()
@@ -674,7 +674,7 @@ class TealiumMediaTests: XCTestCase {
                                                             droppedFrames: 7,
                                                             playbackSpeed: 1.25,
                                                             metadata: ["custom_qoe_meta_key": "custom_qoe_meta_val"]),
-                                                   trackingType: .signifigant,
+                                                   trackingType: .significant,
                                                    state: .mute,
                                                    customId: "some id",
                                                    duration: 3000,
@@ -690,7 +690,7 @@ class TealiumMediaTests: XCTestCase {
             XCTAssertEqual(trackRequest.data["media_name"] as! String, "Media Vars")
             XCTAssertEqual(trackRequest.data["media_stream_type"] as! String, "podcast")
             XCTAssertEqual(trackRequest.data["media_type"] as! String, "audio")
-            XCTAssertEqual(trackRequest.data["media_tracking_interval"] as! String, "signifigant")
+            XCTAssertEqual(trackRequest.data["media_tracking_interval"] as! String, "significant")
             XCTAssertEqual(trackRequest.data["media_player_state"] as! String, "mute")
             XCTAssertEqual(trackRequest.data["media_custom_id"] as! String, "some id")
             XCTAssertEqual(trackRequest.data["media_length"] as! Int, 3000)
