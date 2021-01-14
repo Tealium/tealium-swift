@@ -539,10 +539,15 @@ class TealiumMediaTests: XCTestCase {
         XCTAssertEqual(mockMediaService.media.qoe.droppedFrames, 4)
     }
     
+    func testPlayerStateReturnsExpectedValue() {
+        XCTAssertEqual(session.playerState, .fullscreen)
+    }
+    
     func testPlayerStateStart_Called() {
         session.mediaService?.media.state = nil
         session.playerState = .closedCaption
         XCTAssertEqual(mockMediaService.standardEventCounts[.playerStateStart], 1)
+        XCTAssertEqual(session.mediaService?.media.state, .closedCaption)
     }
     
     func testPlayerStateStop_Called() {
@@ -551,6 +556,7 @@ class TealiumMediaTests: XCTestCase {
         session.playerState = .fullscreen
         XCTAssertEqual(mockMediaService.standardEventCounts[.playerStateStop], 1)
         XCTAssertEqual(mockMediaService.standardEventCounts[.playerStateStart], 2)
+        XCTAssertEqual(session.mediaService?.media.state, .fullscreen)
     }
     
     func testCustomEvent_Called() {
@@ -597,22 +603,23 @@ class TealiumMediaTests: XCTestCase {
     func testSummary_Sent() { }
     
     // MARK: Track
-    func testAdBreakVariables_ToDictionary() {
+    func testSegment_AdBreakVariables_ToDictionary() {
         let adBreak = AdBreak(title: "Ad Break Vars",
                               id: "xyz123",
                               duration: 90,
                               index: 0,
                               position: 1)
+        let segment = Segment.adBreak(adBreak)
         
-        XCTAssertNotNil(adBreak.dictionary?["ad_break_uuid"] as! String)
-        XCTAssertEqual(adBreak.dictionary?["ad_break_title"] as! String, "Ad Break Vars")
-        XCTAssertEqual(adBreak.dictionary?["ad_break_id"] as! String, "xyz123")
-        XCTAssertEqual(adBreak.dictionary?["ad_break_length"] as! Int, 90)
-        XCTAssertEqual(adBreak.dictionary?["ad_break_index"] as! Int, 0)
-        XCTAssertEqual(adBreak.dictionary?["ad_break_position"] as! Int, 1)
+        XCTAssertNotNil(segment.dictionary?["ad_break_uuid"] as! String)
+        XCTAssertEqual(segment.dictionary?["ad_break_title"] as! String, "Ad Break Vars")
+        XCTAssertEqual(segment.dictionary?["ad_break_id"] as! String, "xyz123")
+        XCTAssertEqual(segment.dictionary?["ad_break_length"] as! Int, 90)
+        XCTAssertEqual(segment.dictionary?["ad_break_index"] as! Int, 0)
+        XCTAssertEqual(segment.dictionary?["ad_break_position"] as! Int, 1)
     }
     
-    func testAdVariables_ToDictionary() {
+    func testSegment_AdVariables_ToDictionary() {
         let ad = Ad(name: "Ad Vars",
                     id: "Abc123",
                     duration: 30,
@@ -626,33 +633,35 @@ class TealiumMediaTests: XCTestCase {
                     numberOfLoads: 1,
                     pod: "ad pod",
                     playerName: "some ad player")
+        let segment = Segment.ad(ad)
         
-        XCTAssertNotNil(ad.dictionary?["ad_uuid"] as! String)
-        XCTAssertEqual(ad.dictionary?["ad_name"] as! String, "Ad Vars")
-        XCTAssertEqual(ad.dictionary?["ad_length"] as! Int, 30)
-        XCTAssertEqual(ad.dictionary?["advertiser"] as! String, "google")
-        XCTAssertEqual(ad.dictionary?["ad_creative_id"] as! String, "test123")
-        XCTAssertEqual(ad.dictionary?["ad_campaign_id"] as! String, "camp123")
-        XCTAssertEqual(ad.dictionary?["ad_placement_id"] as! String, "place123")
-        XCTAssertEqual(ad.dictionary?["ad_site_id"] as! String, "site123")
-        XCTAssertEqual(ad.dictionary?["ad_creative_url"] as! String, "https://creative.com")
-        XCTAssertEqual(ad.dictionary?["ad_load"] as! Int, 1)
-        XCTAssertEqual(ad.dictionary?["ad_pod"] as! String, "ad pod")
-        XCTAssertEqual(ad.dictionary?["ad_player_name"] as! String, "some ad player")
+        XCTAssertNotNil(segment.dictionary?["ad_uuid"] as! String)
+        XCTAssertEqual(segment.dictionary?["ad_name"] as! String, "Ad Vars")
+        XCTAssertEqual(segment.dictionary?["ad_length"] as! Int, 30)
+        XCTAssertEqual(segment.dictionary?["advertiser"] as! String, "google")
+        XCTAssertEqual(segment.dictionary?["ad_creative_id"] as! String, "test123")
+        XCTAssertEqual(segment.dictionary?["ad_campaign_id"] as! String, "camp123")
+        XCTAssertEqual(segment.dictionary?["ad_placement_id"] as! String, "place123")
+        XCTAssertEqual(segment.dictionary?["ad_site_id"] as! String, "site123")
+        XCTAssertEqual(segment.dictionary?["ad_creative_url"] as! String, "https://creative.com")
+        XCTAssertEqual(segment.dictionary?["ad_load"] as! Int, 1)
+        XCTAssertEqual(segment.dictionary?["ad_pod"] as! String, "ad pod")
+        XCTAssertEqual(segment.dictionary?["ad_player_name"] as! String, "some ad player")
     }
     
-    func testChapterVariables_ToDictionary() {
+    func testSegment_ChapterVariables_ToDictionary() {
         let chapter = Chapter(name: "Chapter Vars",
                               duration: 2000,
                               position: 1,
                               startTime: Date(),
                               metadata: ["chapter_meta_key": "chapter_meta_value"])
-        
-        XCTAssertEqual(chapter.dictionary?["chapter_name"] as! String, "Chapter Vars")
-        XCTAssertEqual(chapter.dictionary?["chapter_length"] as! Int, 2000)
-        XCTAssertEqual(chapter.dictionary?["chapter_position"] as! Int, 1)
-        XCTAssertNotNil(chapter.dictionary?["chapter_start_time"])
-        XCTAssertNotNil(chapter.dictionary?["chapter_metadata"])
+        let segment = Segment.chapter(chapter)
+
+        XCTAssertEqual(segment.dictionary?["chapter_name"] as! String, "Chapter Vars")
+        XCTAssertEqual(segment.dictionary?["chapter_length"] as! Int, 2000)
+        XCTAssertEqual(segment.dictionary?["chapter_position"] as! Int, 1)
+        XCTAssertNotNil(segment.dictionary?["chapter_start_time"])
+        XCTAssertNotNil(segment.dictionary?["chapter_metadata"])
     }
     
     func testMediaSessionData_AddedToMediaRequestData() {

@@ -364,6 +364,7 @@
 		CFD64B9C255F56E500A7137C /* TimedEventSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD64B9B255F56E500A7137C /* TimedEventSchedulerTests.swift */; };
 		CFD64B9D255F56E500A7137C /* TimedEventSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD64B9B255F56E500A7137C /* TimedEventSchedulerTests.swift */; };
 		CFD64B9E255F56E500A7137C /* TimedEventSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD64B9B255F56E500A7137C /* TimedEventSchedulerTests.swift */; };
+		CFD89B2E25AFD43300D574BB /* MockSessionStarter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7187F1A24768F5000CF0AB0 /* MockSessionStarter.swift */; };
 		CFE55FB324FED06400956B9D /* HostedDataLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE55FB124FED06400956B9D /* HostedDataLayer.swift */; };
 		CFE55FB424FED06400956B9D /* HostedDataLayerCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE55FB224FED06400956B9D /* HostedDataLayerCache.swift */; };
 		CFE55FB824FED12200956B9D /* HostedDataLayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE55FB524FED12200956B9D /* HostedDataLayerTests.swift */; };
@@ -4339,6 +4340,7 @@
 				CFAD9E8B25A66D470079B19A /* TealiumMediaTests.swift in Sources */,
 				CFADA55725AD26DD0079B19A /* MockMediaSession.swift in Sources */,
 				CFAC004A25AFBF5400CD51C6 /* CoreMocks.swift in Sources */,
+				CFD89B2E25AFD43300D574BB /* MockSessionStarter.swift in Sources */,
 				CFAC006F25AFBF5B00CD51C6 /* TestTealiumHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

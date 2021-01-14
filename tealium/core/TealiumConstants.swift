@@ -71,6 +71,8 @@ public enum TealiumKey {
     public static let dataSource = "tealium_datasource"
     public static let sessionId = "tealium_session_id"
     public static let visitorId = "tealium_visitor_id"
+    public static let persistentData = "persistentData"
+    public static let persistentVisitorId = "visitorId"
     public static let random = "tealium_random"
     public static let uuid = "app_uuid"
     public static let requestUUID = "request_uuid"
