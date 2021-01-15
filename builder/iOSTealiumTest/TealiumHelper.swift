@@ -54,7 +54,6 @@ class TealiumHelper  {
 
         config.consentExpiry = (time: 2, unit: .minutes)
         config.onConsentExpiration = {
-           // do something
             print("Consent expired")
         }
         #if os(iOS)
@@ -161,7 +160,6 @@ class TealiumHelper  {
     func trackView(title: String, data: [String: Any]?) {
         let dispatch = TealiumView(title, dataLayer: data)
         tealium?.track(dispatch)
-
     }
 
     func joinTrace(_ traceID: String) {
