@@ -92,8 +92,8 @@
 		CF83EE48251C17A200188533 /* MockRemoteCommandResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF83EE47251C17A200188533 /* MockRemoteCommandResponse.swift */; };
 		CF8807A12554BB3B0020E1B2 /* TealiumAttribution.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D76FE19D2193093A00D73EC5 /* TealiumAttribution.framework */; };
 		CF8807A22554BB3B0020E1B2 /* TealiumAttribution.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D76FE19D2193093A00D73EC5 /* TealiumAttribution.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		CF8807A52554BB3B0020E1B2 /* TealiumAutotracking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7CED26521932DD500ACD291 /* TealiumAutotracking.framework */; };
-		CF8807A62554BB3B0020E1B2 /* TealiumAutotracking.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7CED26521932DD500ACD291 /* TealiumAutotracking.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CF8807A52554BB3B0020E1B2 /* TealiumAutotracking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7CED26521932DD500ACD291 /* TealiumAutotracking.framework */; platformFilter = ios; };
+		CF8807A62554BB3B0020E1B2 /* TealiumAutotracking.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7CED26521932DD500ACD291 /* TealiumAutotracking.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CF8807A92554BB3B0020E1B2 /* TealiumCollect.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D736D6B32195CCB600B3BDEE /* TealiumCollect.framework */; };
 		CF8807AA2554BB3B0020E1B2 /* TealiumCollect.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D736D6B32195CCB600B3BDEE /* TealiumCollect.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CF8807AD2554BB3B0020E1B2 /* TealiumCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D755DD0D21945E41003C6BA1 /* TealiumCore.framework */; };
@@ -4697,6 +4697,7 @@
 		};
 		CF8807A82554BB3B0020E1B2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = D7CED25721932DD500ACD291 /* TealiumAutotracking */;
 			targetProxy = CF8807A72554BB3B0020E1B2 /* PBXContainerItemProxy */;
 		};
@@ -5366,6 +5367,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = iOSTealiumTest/iOSTealiumTest.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"iOSTealiumTest/Preview Content\"";
 				DEVELOPMENT_TEAM = XC939GDC9P;
@@ -5379,6 +5381,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.iOSTealiumTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -5396,6 +5399,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = iOSTealiumTest/iOSTealiumTest.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"iOSTealiumTest/Preview Content\"";
 				DEVELOPMENT_TEAM = XC939GDC9P;
@@ -5408,6 +5412,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.iOSTealiumTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -7382,7 +7387,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "remotecommands DEBUG";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -7429,7 +7434,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = remotecommands;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -7468,7 +7473,12 @@
 				INFOPLIST_FILE = "TealiumAutotracking-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = tealium.ios.autotracking;
 				PRODUCT_MODULE_NAME = TealiumAutotracking;
@@ -7477,7 +7487,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "autotracking DEBUG";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -7523,7 +7533,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = autotracking;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -14,7 +14,7 @@ class TealiumDiskTests: XCTestCase {
     var config: TealiumConfig!
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        config = TealiumConfig(account: "test", profile: "test", environment: "test")
+        config = TealiumConfig(account: "account", profile: "profile", environment: "env")
     }
 
     override func tearDown() {
@@ -29,7 +29,7 @@ class TealiumDiskTests: XCTestCase {
     func testInit() {
         let diskstorage = TealiumDiskStorage(config: config, forModule: "Tests")
         XCTAssertNotNil(diskstorage)
-        XCTAssertEqual(diskstorage.filePrefix, "test.test/")
+        XCTAssertEqual(diskstorage.filePrefix, "account.profile/")
         XCTAssertFalse(diskstorage.isCritical, "Default should be false")
         XCTAssertTrue(diskstorage.isDiskStorageEnabled)
     }

@@ -13,7 +13,6 @@ import TealiumLifecycle
 import TealiumVisitorService
 #if os(iOS)
 import TealiumAttribution
-import TealiumAutotracking
 import TealiumLocation
 import TealiumRemoteCommands
 import TealiumTagManagement
@@ -58,7 +57,7 @@ class TealiumHelper  {
            // do something
             print("Consent expired")
         }
-        #if os(iOS) && !targetEnvironment(macCatalyst)
+        #if os(iOS)
             config.collectors = [
                 Collectors.Attribution,
                 Collectors.Lifecycle,
@@ -68,7 +67,7 @@ class TealiumHelper  {
                 Collectors.Location,
                 Collectors.VisitorService
             ]
-            
+        
             config.dispatchers = [
                 Dispatchers.Collect,
                 Dispatchers.TagManagement,

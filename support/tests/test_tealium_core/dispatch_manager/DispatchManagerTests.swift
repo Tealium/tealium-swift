@@ -103,7 +103,7 @@ class DispatchQueueModuleTests: XCTestCase {
     #endif
 
     func testDequeue() {
-        let config = TealiumConfig(account: "test", profile: "test", environment: "test")
+        let config = TealiumConfig(account: "account", profile: "profile", environment: "env")
         #if os(iOS)
         config.remoteAPIEnabled = true
         #endif
