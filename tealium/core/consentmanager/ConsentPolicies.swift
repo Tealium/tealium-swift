@@ -9,6 +9,7 @@ import Foundation
 
 protocol ConsentPolicy {
     init (_ preferences: UserConsentPreferences)
+    var defaultConsentExpiry: (time: Int, unit: TimeUnit) { get }
     var shouldUpdateConsentCookie: Bool { get }
     var updateConsentCookieEventName: String { get }
     var consentPolicyStatusInfo: [String: Any]? { get }
@@ -23,6 +24,8 @@ struct CCPAConsentPolicy: ConsentPolicy {
     init(_ preferences: UserConsentPreferences) {
         self.preferences = preferences
     }
+    
+    var defaultConsentExpiry: (time: Int, unit: TimeUnit) = (395, .days)
 
     // Currently only supported by TiQ and no way to figure out which tags are in scope for consent logging
     var shouldLogConsentStatus = false
@@ -57,6 +60,8 @@ struct GDPRConsentPolicy: ConsentPolicy {
     init(_ preferences: UserConsentPreferences) {
         self.preferences = preferences
     }
+    
+    var defaultConsentExpiry: (time: Int, unit: TimeUnit) = (365, .days)
 
     var shouldLogConsentStatus = true
 

@@ -61,10 +61,10 @@ struct ContentView: View {
                                                    data: ["conversion_value": 10])
                     }
                     ButtonView(title: "Toggle Consent Status") {
-                        TealiumHelper.shared.resetConsentPreferences()
+                        TealiumHelper.shared.toggleConsentStatus()
                     }
                     ButtonView(title: "Reset Consent") {
-                        TealiumHelper.shared.toggleConsentStatus()
+                        TealiumHelper.shared.resetConsentPreferences()
                     }
                     Spacer()
                 }

@@ -402,6 +402,28 @@ public extension TealiumConfig {
             options[TealiumKey.minutesBetweenRefresh] = newValue
         }
     }
+    
+    /// Sets the expiry for the Consent Manager preferences.
+    var consentExpiry: (time: Int, unit: TimeUnit)? {
+        get {
+            options[TealiumKey.consentExpiry] as? (Int, TimeUnit)
+        }
+
+        set {
+            options[TealiumKey.consentExpiry] = newValue
+        }
+    }
+    
+    /// Defines the consent expiration callback
+    var onConsentExpiration: (() -> Void)? {
+        get {
+            options[TealiumKey.consentExpiryCallback] as? (() -> Void)
+        }
+
+        set {
+            options[TealiumKey.consentExpiryCallback] = newValue
+        }
+    }
 
 }
 

@@ -8,7 +8,7 @@
 import Foundation
 @testable import TealiumCore
 
-class ConsentMockDiskStorage: TealiumDiskStorageProtocol {
+class ConsentMockDiskStorage: TealiumDiskStorageProtocol {    
     func append(_ data: [String: Any], fileName: String, completion: TealiumCompletion?) {
 
     }

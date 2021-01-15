@@ -52,6 +52,10 @@ class TealiumHelper  {
         config.timedEventTriggers = [TimedEventTrigger(start: "product_view", end: "order_complete"),
                                      TimedEventTrigger(start: "start_game", end: "buy_coins")]
 
+        config.consentExpiry = (time: 2, unit: .minutes)
+        config.onConsentExpiration = {
+            print("Consent expired")
+        }
         #if os(iOS)
             config.collectors = [
                 Collectors.Attribution,
@@ -140,7 +144,7 @@ class TealiumHelper  {
     func toggleConsentStatus() {
         if let consentStatus = tealium?.consentManager?.userConsentStatus {
             switch consentStatus {
-            case .consented:
+            case .notConsented:
                 TealiumHelper.shared.tealium?.consentManager?.userConsentStatus = .notConsented
             default:
                 TealiumHelper.shared.tealium?.consentManager?.userConsentStatus = .consented
@@ -156,7 +160,6 @@ class TealiumHelper  {
     func trackView(title: String, data: [String: Any]?) {
         let dispatch = TealiumView(title, dataLayer: data)
         tealium?.track(dispatch)
-
     }
 
     func joinTrace(_ traceID: String) {

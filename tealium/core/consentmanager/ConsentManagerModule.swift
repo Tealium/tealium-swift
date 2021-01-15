@@ -30,6 +30,7 @@ class ConsentManagerModule: Collector, DispatchValidator {
                                                              isCritical: true)
         self.dataLayer = context.dataLayer
         self.delegate = delegate
+        expireConsent()
         consentManager = ConsentManager(config: config, delegate: delegate, diskStorage: self.diskStorage, dataLayer: self.dataLayer)
         completion((.success(true), nil))
     }
@@ -56,7 +57,7 @@ class ConsentManagerModule: Collector, DispatchValidator {
         guard let request = request as? TealiumTrackRequest else {
             return (true, [TealiumKey.queueReason: TealiumKey.batchingEnabled])
         }
-
+        expireConsent()
         // allow tracking calls to continue if they are for auditing purposes
         if let event = request.trackDictionary[TealiumKey.event] as? String,
            (event == ConsentKey.consentPartialEventName ||
@@ -104,6 +105,28 @@ class ConsentManagerModule: Collector, DispatchValidator {
             newTrack += consentDictionary
         }
         return TealiumTrackRequest(data: newTrack)
+    }
+    
+    /// Checks if the consent selections are expired
+    /// If so, resets consent preferences and triggers optional callback
+    public func expireConsent() {
+        guard let consentManager = consentManager else {
+            return
+        }
+        let expiry = config.consentExpiry ?? consentManager.currentPolicy.defaultConsentExpiry
+        var components = DateComponents()
+        components.calendar = Calendar.autoupdatingCurrent
+        components.setValue(-expiry.time, for: expiry.unit.component)
+        guard let lastSet = consentManager.lastConsentUpdate,
+              let expiryDate = Calendar(identifier: .gregorian).date(byAdding: components, to: Date()),
+              expiryDate > lastSet else {
+            return
+        }
+        consentManager.userConsentStatus = .unknown
+        guard let callback = consentManager.onConsentExpiraiton else {
+            return
+        }
+        callback()
     }
 
 }

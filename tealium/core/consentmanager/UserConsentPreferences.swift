@@ -11,6 +11,7 @@ public struct UserConsentPreferences: Equatable, Codable {
 
     var consentCategories: [TealiumConsentCategories]?
     var consentStatus: TealiumConsentStatus
+    var lastUpdate: Date?
 
     /// Initializes preferences￼.
     ///

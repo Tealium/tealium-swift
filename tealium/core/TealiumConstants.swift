@@ -15,7 +15,7 @@ public enum Dispatchers {}
 
 public enum TealiumValue {
     public static let libraryName = "swift"
-    public static let libraryVersion = "2.2.1"
+    public static let libraryVersion = "2.2.2"
     // This is the current limit for performance reasons. May be increased in future
     public static let maxEventBatchSize = 10
     public static let defaultMinimumDiskSpace: Int32 = 20_000_000
@@ -135,6 +135,8 @@ public enum TealiumKey {
     static let skAdConversionKeys = "attribution_conversion_keys"
     static let hostedDataLayerKeys = "hosted_data_layer_keys"
     static let hostedDataLayerExpiry = "hosted_data_layer_expiry"
+    static let consentExpiry = "consent_expiry"
+    static let consentExpiryCallback = "consent_expiry_callback"
     static let origin = "origin"
     static let shouldMigrate = "should_migrate_data"
     static let timedEventTriggers = "timed_event_triggers"

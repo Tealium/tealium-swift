@@ -186,5 +186,14 @@ public class AppDataModule: Collector {
         }
         newVolatileData()
     }
+    
+    /// Resets Tealium Visitor Id
+    func resetVisitorId() {
+        guard var persistentData = diskStorage.retrieve(as: PersistentAppData.self) else {
+            return
+        }
+        persistentData.visitorId = self.visitorId(from: UUID().uuidString)
+        appData.persistentData = persistentData
+    }
 
 }

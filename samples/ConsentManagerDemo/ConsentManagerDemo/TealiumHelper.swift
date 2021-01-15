@@ -35,6 +35,10 @@ class TealiumHelper {
         // Set up consent manager
         config.consentLoggingEnabled = true
         config.consentPolicy = .gdpr
+        config.consentExpiry = (90, .days)
+        config.onConsentExpiration = {
+            print("Consent Expired")
+        }
 
         // Add collectors
         config.collectors = [Collectors.Lifecycle]
