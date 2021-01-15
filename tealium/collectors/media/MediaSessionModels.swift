@@ -54,11 +54,11 @@ public enum Segment {
     var dictionary: [String: Any]? {
         switch self {
         case .chapter(let chapter):
-            return chapter.dictionary
+            return chapter.encoded
         case .ad(let ad):
-            return ad.dictionary
+            return ad.encoded
         case .adBreak(let adBreak):
-            return adBreak.dictionary
+            return adBreak.encoded
         }
     }
 }

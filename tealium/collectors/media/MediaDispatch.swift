@@ -28,7 +28,7 @@ public struct TealiumMediaEvent: MediaDispatch {
             case .event(let name): dictionary[TealiumKey.event] = name.rawValue
             case .custom(let name): dictionary[TealiumKey.event] = name
         }
-        if let parameters = parameters.dictionary?.flattened {
+        if let parameters = parameters.encoded?.flattened {
             dictionary += parameters.flattened
         }
         if let segment = segment,
