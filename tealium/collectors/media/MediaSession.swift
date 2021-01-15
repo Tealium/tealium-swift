@@ -11,7 +11,7 @@ import Foundation
 import TealiumCore
 //#endif
 
-public protocol MediaSession: MediaSessionEvents {
+public protocol MediaSessionProtocol: MediaSessionEvents {
     var bitrate: Int? { get set }
     var droppedFrames: Int { get set }
     var mediaService: MediaEventDispatcher? { get set }
@@ -19,9 +19,15 @@ public protocol MediaSession: MediaSessionEvents {
     var playerState: PlayerState? { get set }
 }
 
-public extension MediaSession {
+public class MediaSession: MediaSessionProtocol {
     
-    var bitrate: Int? {
+    public var mediaService: MediaEventDispatcher?
+    
+    public init(with mediaService: MediaEventDispatcher?) {
+        self.mediaService = mediaService
+    }
+    
+    public var bitrate: Int? {
         get { mediaService?.media.qoe.bitrate }
         set {
             if let newValue = newValue {
@@ -31,21 +37,21 @@ public extension MediaSession {
         }
     }
     
-    var droppedFrames: Int {
+    public var droppedFrames: Int {
         get { mediaService?.media.qoe.droppedFrames ?? 0 }
         set {
             mediaService?.media.qoe.droppedFrames = newValue
         }
     }
     
-    var playbackSpeed: Double {
+    public var playbackSpeed: Double {
         get { mediaService?.media.qoe.playbackSpeed ?? 1.0 }
         set {
             mediaService?.media.qoe.playbackSpeed = newValue
         }
     }
     
-    var playerState: PlayerState? {
+    public var playerState: PlayerState? {
         get { mediaService?.media.state }
         set {
             if mediaService?.media.state == nil {
@@ -59,7 +65,7 @@ public extension MediaSession {
         }
     }
     
-    mutating func adBreakComplete() {
+    public func adBreakComplete() {
         guard var adBreak = mediaService?.media.adBreaks.first else {
             return
         }
@@ -73,7 +79,7 @@ public extension MediaSession {
         mediaService?.media.adBreaks.removeFirst(1)
     }
     
-    mutating func adBreakStart(_ adBreak: AdBreak) {
+    public func adBreakStart(_ adBreak: AdBreak) {
         mediaService?.media.adBreaks.append(adBreak)
         mediaService?.track(
             .event(.adBreakStart),
@@ -81,7 +87,7 @@ public extension MediaSession {
         )
     }
     
-    mutating func adClick() {
+    public func adClick() {
         guard let ad = mediaService?.media.ads.last else {
             return
         }
@@ -92,7 +98,7 @@ public extension MediaSession {
         mediaService?.media.ads.removeLast()
     }
     
-    mutating func adComplete() {
+    public func adComplete() {
         guard var ad = mediaService?.media.ads.first else {
             return
         }
@@ -106,7 +112,7 @@ public extension MediaSession {
         mediaService?.media.ads.removeFirst(1)
     }
     
-    mutating func adSkip() {
+    public func adSkip() {
         guard let ad = mediaService?.media.ads.last else {
             return
         }
@@ -117,7 +123,7 @@ public extension MediaSession {
         mediaService?.media.ads.removeLast()
     }
     
-    mutating func adStart(_ ad: Ad) {
+    public func adStart(_ ad: Ad) {
         mediaService?.media.ads.append(ad)
         mediaService?.track(
             .event(.adStart),
@@ -125,15 +131,15 @@ public extension MediaSession {
         )
     }
     
-    func bufferComplete() {
+    public func bufferComplete() {
         mediaService?.track(.event(.bufferComplete))
     }
     
-    func bufferStart() {
+    public func bufferStart() {
         mediaService?.track(.event(.bufferStart))
     }
     
-    mutating func chapterComplete() {
+    public func chapterComplete() {
         guard let chapter = mediaService?.media.chapters.last else {
             return
         }
@@ -144,7 +150,7 @@ public extension MediaSession {
         mediaService?.media.chapters.removeLast()
     }
     
-    mutating func chapterSkip() {
+    public func chapterSkip() {
         guard let chapter = mediaService?.media.chapters.last else {
             return
         }
@@ -155,7 +161,7 @@ public extension MediaSession {
         mediaService?.media.chapters.removeLast()
     }
     
-    mutating func chapterStart(_ chapter: Chapter) {
+    public func chapterStart(_ chapter: Chapter) {
         mediaService?.media.chapters.append(chapter)
         mediaService?.track(
             .event(.chapterStart),
@@ -163,35 +169,35 @@ public extension MediaSession {
         )
     }
     
-    func close() {
+    public func close() {
         mediaService?.track(.event(.sessionEnd))
     }
     
-    func custom(_ event: String) {
+    public func custom(_ event: String) {
         mediaService?.track(.custom(event))
     }
     
-    func seek() {
+    public func seek() {
         mediaService?.track(.event(.seekStart))
     }
     
-    func seekComplete() {
+    public func seekComplete() {
         mediaService?.track(.event(.seekComplete))
     }
     
-    func start() {
+    public func start() {
         mediaService?.track(.event(.sessionStart))
     }
     
-    func play() {
+    public func play() {
         mediaService?.track(.event(.play))
     }
     
-    func pause() {
+    public func pause() {
         mediaService?.track(.event(.pause))
     }
     
-    func stop() {
+    public func stop() {
         mediaService?.track(.event(.stop))
     }
     

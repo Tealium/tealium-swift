@@ -8,36 +8,23 @@
 
 import Foundation
 
-protocol SignificantEventMediaProtocol: MediaSession { }
-
-protocol HeartbeatMediaProtocol: MediaSession {
+protocol HeartbeatMediaProtocol: MediaSessionProtocol {
     func ping()
 }
 
-protocol MilestoneMediaProtocol: MediaSession {
+protocol MilestoneMediaProtocol: MediaSessionProtocol {
     func milestone()
 }
 
-protocol SummaryMediaProtocol: MediaSession {
+protocol SummaryMediaProtocol: MediaSessionProtocol {
     func update(summary: Summary)
     func summary()
 }
 
-class SignificantEventMediaSession: SignificantEventMediaProtocol {
-    var mediaService: MediaEventDispatcher?
-    
-    init(with mediaService: MediaEventDispatcher) {
-        self.mediaService = mediaService
-    }
-}
+class SignificantEventMediaSession: MediaSession { }
 
-class HeartbeatMediaSession: HeartbeatMediaProtocol {
-    var mediaService: MediaEventDispatcher?
-    
-    init(with mediaService: MediaEventDispatcher) {
-        self.mediaService = mediaService
-    }
-    
+class HeartbeatMediaSession: MediaSession, HeartbeatMediaProtocol {
+
     func ping() {
         mediaService?.track(.event(.heartbeat))
     }
@@ -47,13 +34,8 @@ class HeartbeatMediaSession: HeartbeatMediaProtocol {
     }
 }
 
-class MilestoneMediaSession: MilestoneMediaProtocol {
-    var mediaService: MediaEventDispatcher?
-    
-    init(with mediaService: MediaEventDispatcher) {
-        self.mediaService = mediaService
-    }
-    
+class MilestoneMediaSession: MediaSession, MilestoneMediaProtocol {
+
     func milestone() {
         mediaService?.track(.event(.milestone))
     }
@@ -61,12 +43,7 @@ class MilestoneMediaSession: MilestoneMediaProtocol {
 }
 
 // TODO: need more details
-class SummaryMediaSession: SummaryMediaProtocol {
-    var mediaService: MediaEventDispatcher?
-    
-    init(with mediaService: MediaEventDispatcher) {
-        self.mediaService = mediaService
-    }
+class SummaryMediaSession: MediaSession, SummaryMediaProtocol {
     
     func update(summary: Summary) {
         print("MEDIA: update summary")

@@ -17,7 +17,7 @@ class TealiumMediaTests: XCTestCase {
     var mockMediaService = MockMediaService()
 
     override func setUpWithError() throws {
-        session = SignificantEventMediaSession(mediaService: mockMediaService)
+        session = SignificantEventMediaSession(with: mockMediaService)
     }
     
     override func tearDownWithError() throws { }
