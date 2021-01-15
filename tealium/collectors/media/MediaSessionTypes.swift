@@ -23,12 +23,20 @@ protocol SummaryMediaProtocol: MediaSession {
     func summary()
 }
 
-struct SignificantEventMediaSession: SignificantEventMediaProtocol {
+class SignificantEventMediaSession: SignificantEventMediaProtocol {
     var mediaService: MediaEventDispatcher?
+    
+    init(with mediaService: MediaEventDispatcher) {
+        self.mediaService = mediaService
+    }
 }
 
-struct HeartbeatMediaSession: HeartbeatMediaProtocol {
+class HeartbeatMediaSession: HeartbeatMediaProtocol {
     var mediaService: MediaEventDispatcher?
+    
+    init(with mediaService: MediaEventDispatcher) {
+        self.mediaService = mediaService
+    }
     
     func ping() {
         mediaService?.track(.event(.heartbeat))
@@ -39,8 +47,12 @@ struct HeartbeatMediaSession: HeartbeatMediaProtocol {
     }
 }
 
-struct MilestoneMediaSession: MilestoneMediaProtocol {
+class MilestoneMediaSession: MilestoneMediaProtocol {
     var mediaService: MediaEventDispatcher?
+    
+    init(with mediaService: MediaEventDispatcher) {
+        self.mediaService = mediaService
+    }
     
     func milestone() {
         mediaService?.track(.event(.milestone))
@@ -49,8 +61,12 @@ struct MilestoneMediaSession: MilestoneMediaProtocol {
 }
 
 // TODO: need more details
-struct SummaryMediaSession: SummaryMediaProtocol {
+class SummaryMediaSession: SummaryMediaProtocol {
     var mediaService: MediaEventDispatcher?
+    
+    init(with mediaService: MediaEventDispatcher) {
+        self.mediaService = mediaService
+    }
     
     func update(summary: Summary) {
         print("MEDIA: update summary")

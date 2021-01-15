@@ -7,11 +7,14 @@
 //
 
 import Foundation
+//#if media
+import TealiumCore
+//#endif
 
 public protocol MediaSession: MediaSessionEvents {
     var bitrate: Int? { get set }
-    var mediaService: MediaEventDispatcher? { get set }
     var droppedFrames: Int { get set }
+    var mediaService: MediaEventDispatcher? { get set }
     var playbackSpeed: Double { get set }
     var playerState: PlayerState? { get set }
 }

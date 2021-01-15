@@ -17,13 +17,13 @@ public struct MediaSessionFactory {
         let mediaService = MediaEventService(media: media, delegate: delegate)
         switch media.trackingType {
         case .significant:
-            return SignificantEventMediaSession(mediaService: mediaService)
+            return SignificantEventMediaSession(with: mediaService)
         case .heartbeat:
-            return HeartbeatMediaSession(mediaService: mediaService)
+            return HeartbeatMediaSession(with: mediaService)
         case .milestone:
-            return MilestoneMediaSession(mediaService: mediaService)
+            return MilestoneMediaSession(with: mediaService)
         case .summary:
-            return SummaryMediaSession(mediaService: mediaService)
+            return SummaryMediaSession(with: mediaService)
         }
     }
 }
