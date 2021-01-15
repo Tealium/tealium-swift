@@ -326,7 +326,6 @@
 		CFADA00025A66E0A0079B19A /* TealiumCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D755DD0D21945E41003C6BA1 /* TealiumCore.framework */; };
 		CFADA04D25A66F020079B19A /* MediaModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAD9D5C25A66C220079B19A /* MediaModule.swift */; };
 		CFADA22125A781CA0079B19A /* MediaSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFADA16E25A679AA0079B19A /* MediaSession.swift */; };
-		CFADA32C25A923240079B19A /* Encodable+Tealium.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFADA32B25A923240079B19A /* Encodable+Tealium.swift */; };
 		CFADA39B25AD00CF0079B19A /* MediaExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFADA35125AD00A30079B19A /* MediaExtensions.swift */; };
 		CFADA40A25AD010A0079B19A /* MediaSessionTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFADA3C025AD01050079B19A /* MediaSessionTypes.swift */; };
 		CFADA45525AD01680079B19A /* MediaSessionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFADA42F25AD01480079B19A /* MediaSessionModels.swift */; };
@@ -1534,7 +1533,6 @@
 		CFAD9EC725A66D540079B19A /* TealiumMediaTests-tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TealiumMediaTests-tvOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFAD9F6E25A66D700079B19A /* TealiumMediaTests-macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TealiumMediaTests-macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFADA16E25A679AA0079B19A /* MediaSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSession.swift; sourceTree = "<group>"; };
-		CFADA32B25A923240079B19A /* Encodable+Tealium.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+Tealium.swift"; sourceTree = "<group>"; };
 		CFADA35125AD00A30079B19A /* MediaExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaExtensions.swift; sourceTree = "<group>"; };
 		CFADA3C025AD01050079B19A /* MediaSessionTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSessionTypes.swift; sourceTree = "<group>"; };
 		CFADA42F25AD01480079B19A /* MediaSessionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSessionModels.swift; sourceTree = "<group>"; };
@@ -2827,7 +2825,6 @@
 				4BD9037124F5CED40041EFA0 /* Double+Tealium.swift */,
 				CFB6E75C255DF033007F2773 /* TimedEvent+Tealium.swift */,
 				CFA0C0AF252FE26F009CDF33 /* Migrator.swift */,
-				CFADA32B25A923240079B19A /* Encodable+Tealium.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -4437,7 +4434,6 @@
 				D7AA280822D780CB00254ADB /* AtomicInteger.swift in Sources */,
 				D719955322B7F190005BE543 /* Disk+Codable.swift in Sources */,
 				D77E0B1C24521F0200A3E0C1 /* TealiumRequests.swift in Sources */,
-				CFADA32C25A923240079B19A /* Encodable+Tealium.swift in Sources */,
 				D79A1CAC244A0FF500BBA8B3 /* DeviceDataModelInfo.swift in Sources */,
 				CF8B6895255DC5E10055D72E /* TimedEventScheduler.swift in Sources */,
 				D70FC7A0244F04EA004AD838 /* ModulesManager.swift in Sources */,
