@@ -13,13 +13,13 @@ import TealiumCore
 
 public protocol MediaDispatch: TealiumDispatch {
     var event: MediaEvent { get }
-    var parameters: TealiumMedia { get }
+    var parameters: MediaCollection { get }
     var segment: Segment? { get }
 }
 
 public struct TealiumMediaEvent: MediaDispatch {
     public var event: MediaEvent
-    public var parameters: TealiumMedia
+    public var parameters: MediaCollection
     public var segment: Segment?
     
     var data: [String: Any] {

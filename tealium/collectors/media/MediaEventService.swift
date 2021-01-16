@@ -13,7 +13,7 @@ import TealiumCore
 
 public protocol MediaEventDispatcher {
     var delegate: ModuleDelegate? { get set }
-    var media: TealiumMedia { get set }
+    var media: MediaCollection { get set }
     func track(_ event: MediaEvent)
     func track(_ event: MediaEvent,
                _ segment: Segment?)
@@ -35,6 +35,6 @@ public extension MediaEventDispatcher {
 }
 
 public struct MediaEventService: MediaEventDispatcher {
-    public var media: TealiumMedia
+    public var media: MediaCollection
     public var delegate: ModuleDelegate?
 }

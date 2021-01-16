@@ -25,7 +25,7 @@ public class MediaModule: Collector {
         self.delegate = delegate
     }
     
-    public func createSession(from media: TealiumMedia) -> MediaSession {
+    public func createSession(from media: MediaCollection) -> MediaSession {
         MediaSessionFactory.create(from: media, with: delegate)
     }
     

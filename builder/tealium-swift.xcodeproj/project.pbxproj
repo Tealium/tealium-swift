@@ -55,6 +55,7 @@
 		CF33DA5424B919C400ECEE64 /* VisitorServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF33DA5024B919C400ECEE64 /* VisitorServiceManager.swift */; };
 		CF33DA5524B919C400ECEE64 /* VisitorServiceExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF33DA5124B919C400ECEE64 /* VisitorServiceExtensions.swift */; };
 		CF33DA5624B919C400ECEE64 /* VisitorServiceRetriever.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF33DA5224B919C400ECEE64 /* VisitorServiceRetriever.swift */; };
+		CF38C1A025B2736E000913E1 /* MediaCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF38C19F25B2736E000913E1 /* MediaCollection.swift */; };
 		CF3A590524DB462500A4851D /* noCommandsKey.json in Resources */ = {isa = PBXBuildFile; fileRef = CF3A58FF24DB462400A4851D /* noCommandsKey.json */; };
 		CF3A590624DB462500A4851D /* exampleNoConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = CF3A590024DB462400A4851D /* exampleNoConfig.json */; };
 		CF3A590724DB462500A4851D /* example.json in Resources */ = {isa = PBXBuildFile; fileRef = CF3A590124DB462400A4851D /* example.json */; };
@@ -1453,6 +1454,7 @@
 		CF33DA5024B919C400ECEE64 /* VisitorServiceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisitorServiceManager.swift; sourceTree = "<group>"; };
 		CF33DA5124B919C400ECEE64 /* VisitorServiceExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisitorServiceExtensions.swift; sourceTree = "<group>"; };
 		CF33DA5224B919C400ECEE64 /* VisitorServiceRetriever.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisitorServiceRetriever.swift; sourceTree = "<group>"; };
+		CF38C19F25B2736E000913E1 /* MediaCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCollection.swift; sourceTree = "<group>"; };
 		CF3A58FF24DB462400A4851D /* noCommandsKey.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = noCommandsKey.json; sourceTree = "<group>"; };
 		CF3A590024DB462400A4851D /* exampleNoConfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exampleNoConfig.json; sourceTree = "<group>"; };
 		CF3A590124DB462400A4851D /* example.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = example.json; sourceTree = "<group>"; };
@@ -2549,6 +2551,7 @@
 				CFADA5E625AE1DB60079B19A /* MediaSessionEvents.swift */,
 				CFACFFDA25AF816400CD51C6 /* MediaEventService.swift */,
 				CFADA47A25AD025E0079B19A /* MediaDispatch.swift */,
+				CF38C19F25B2736E000913E1 /* MediaCollection.swift */,
 				CFADA35125AD00A30079B19A /* MediaExtensions.swift */,
 				CFADA3C025AD01050079B19A /* MediaSessionTypes.swift */,
 				CFADA42F25AD01480079B19A /* MediaSessionModels.swift */,
@@ -4323,6 +4326,7 @@
 				CFADA5E725AE1DB60079B19A /* MediaSessionEvents.swift in Sources */,
 				CFADA39B25AD00CF0079B19A /* MediaExtensions.swift in Sources */,
 				CFADA04D25A66F020079B19A /* MediaModule.swift in Sources */,
+				CF38C1A025B2736E000913E1 /* MediaCollection.swift in Sources */,
 				CFADA40A25AD010A0079B19A /* MediaSessionTypes.swift in Sources */,
 				CFACFFDB25AF816400CD51C6 /* MediaEventService.swift in Sources */,
 				CFADA4A025AD02750079B19A /* MediaDispatch.swift in Sources */,

@@ -76,11 +76,11 @@ public class MediaSession: MediaSessionProtocol {
             .event(.adBreakComplete),
             .adBreak(adBreak)
         )
-        mediaService?.media.adBreaks.removeFirst(1)
+        mediaService?.media.remove(by: adBreak.uuid)
     }
     
     public func adBreakStart(_ adBreak: AdBreak) {
-        mediaService?.media.adBreaks.append(adBreak)
+        mediaService?.media.add(.adBreak(adBreak))
         mediaService?.track(
             .event(.adBreakStart),
             .adBreak(adBreak)
@@ -95,7 +95,7 @@ public class MediaSession: MediaSessionProtocol {
             .event(.adClick),
             .ad(ad)
         )
-        mediaService?.media.ads.removeLast()
+        mediaService?.media.remove(by: ad.uuid)
     }
     
     public func adComplete() {
@@ -109,7 +109,7 @@ public class MediaSession: MediaSessionProtocol {
             .event(.adComplete),
             .ad(ad)
         )
-        mediaService?.media.ads.removeFirst(1)
+        mediaService?.media.remove(by: ad.uuid)
     }
     
     public func adSkip() {
@@ -120,11 +120,11 @@ public class MediaSession: MediaSessionProtocol {
             .event(.adSkip),
             .ad(ad)
         )
-        mediaService?.media.ads.removeLast()
+        mediaService?.media.remove(by: ad.uuid)
     }
     
     public func adStart(_ ad: Ad) {
-        mediaService?.media.ads.append(ad)
+        mediaService?.media.add(.ad(ad))
         mediaService?.track(
             .event(.adStart),
             .ad(ad)
@@ -147,7 +147,7 @@ public class MediaSession: MediaSessionProtocol {
             .event(.chapterComplete),
             .chapter(chapter)
         )
-        mediaService?.media.chapters.removeLast()
+        mediaService?.media.remove(by: chapter.uuid)
     }
     
     public func chapterSkip() {
@@ -158,11 +158,11 @@ public class MediaSession: MediaSessionProtocol {
             .event(.chapterSkip),
             .chapter(chapter)
         )
-        mediaService?.media.chapters.removeLast()
+        mediaService?.media.remove(by: chapter.uuid)
     }
     
     public func chapterStart(_ chapter: Chapter) {
-        mediaService?.media.chapters.append(chapter)
+        mediaService?.media.add(.chapter(chapter))
         mediaService?.track(
             .event(.chapterStart),
             .chapter(chapter)
