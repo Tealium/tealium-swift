@@ -14,7 +14,6 @@ import TealiumVisitorService
 import TealiumMedia
 #if os(iOS)
 import TealiumAttribution
-import TealiumAutotracking
 import TealiumLocation
 import TealiumRemoteCommands
 import TealiumTagManagement
@@ -56,10 +55,9 @@ class TealiumHelper  {
 
         config.consentExpiry = (time: 2, unit: .minutes)
         config.onConsentExpiration = {
-           // do something
             print("Consent expired")
         }
-        #if os(iOS) && !targetEnvironment(macCatalyst)
+        #if os(iOS)
             config.collectors = [
                 Collectors.Attribution,
                 Collectors.Lifecycle,
@@ -70,7 +68,7 @@ class TealiumHelper  {
                 Collectors.VisitorService,
                 Collectors.Media
             ]
-            
+        
             config.dispatchers = [
                 Dispatchers.Collect,
                 Dispatchers.TagManagement,
@@ -185,7 +183,6 @@ class TealiumHelper  {
     func trackView(title: String, data: [String: Any]?) {
         let dispatch = TealiumView(title, dataLayer: data)
         tealium?.track(dispatch)
-
     }
 
     func joinTrace(_ traceID: String) {

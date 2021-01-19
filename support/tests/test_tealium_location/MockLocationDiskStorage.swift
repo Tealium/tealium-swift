@@ -8,6 +8,7 @@
 import Foundation
 @testable import TealiumCore
 @testable import TealiumLocation
+
 class MockLocationDiskStorage: TealiumDiskStorageProtocol {
 
     var locationData: TealiumLocationManager!
