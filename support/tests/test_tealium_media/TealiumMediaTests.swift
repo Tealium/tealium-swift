@@ -33,7 +33,7 @@ class TealiumMediaTests: XCTestCase {
                                       tealium: tealium)
         let module = MediaModule(context: context, delegate: MockModuleDelegate(), diskStorage: nil) { _ in }
         
-        let session = module.createSession(from: TealiumMedia(name: "test", streamType: .aod, mediaType: .video, qoe: QOE(bitrate: 1000)))
+        let session = module.createSession(from: MediaCollection(name: "test", streamType: .aod, mediaType: .video, qoe: QOE(bitrate: 1000)))
         
         guard let _ = session as? SignificantEventMediaSession else {
             XCTFail("createSession failed")
@@ -673,7 +673,7 @@ class TealiumMediaTests: XCTestCase {
     }
     
     func testMediaSessionData_AddedToMediaRequestData() {
-        session.mediaService?.media = TealiumMedia(name: "Media Vars",
+        session.mediaService?.media = MediaCollection(name: "Media Vars",
                                                    streamType: .podcast,
                                                    mediaType: .audio,
                                                    qoe: QOE(bitrate: 5000,
