@@ -11,8 +11,7 @@ public extension Tealium {
 
     /// - Returns: `String` The Tealium Visitor Id
     var visitorId: String? {
-        appDataModule?.data?[TealiumKey.visitorId] as? String ??
-            (appDataModule?.data?[TealiumKey.persistentData] as? [String: Any])?[TealiumKey.persistentVisitorId] as? String
+        appDataModule?.data?[TealiumKey.visitorId] as? String
     }
     
     /// Resets the Tealium Visitor Id
@@ -24,14 +23,6 @@ public extension Tealium {
         zz_internal_modulesManager?.collectors.first {
             $0 is AppDataModule
         } as? AppDataModule
-    }
-    
-    /// Resets the Tealium Visitor Id
-    func resetVisitorId() {
-        let appDataModule = zz_internal_modulesManager?.collectors.first {
-            $0 is AppDataModule
-        } as? AppDataModule
-        appDataModule?.resetVisitorId()
     }
 
 }
