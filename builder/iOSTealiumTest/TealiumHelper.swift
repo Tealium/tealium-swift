@@ -120,23 +120,23 @@ class TealiumHelper  {
             dataLayer.delete(for: ["hello", "test"])
             dataLayer.add(key: "hello", value: "itsme", expiry: .afterCustom((.months, 1)))
 
-            let media = TealiumMedia(name: "Star Wars",
+            let media = MediaCollection(name: "Star Wars",
                                         streamType: .vod,
                                         mediaType: .video,
                                         qoe: QOE(bitrate: 123),
                                         metadata: ["meta_key": "meta_value"])
             var mediaSession = teal.media?.createSession(from: media)
             
-            mediaSession?.start()
-            mediaSession?.adBreakStart(AdBreak(title: "AdBreak 1"))
-            mediaSession?.adStart(Ad(name: "Ad 1"))
-            mediaSession?.adComplete()
-            mediaSession?.adBreakComplete()
+            mediaSession?.startSession()
+            mediaSession?.startAdBreak(AdBreak(title: "AdBreak 1"))
+            mediaSession?.startAd(Ad(name: "Ad 1"))
+            mediaSession?.completeAd()
+            mediaSession?.completeAdBreak()
             mediaSession?.play()
-            mediaSession?.chapterStart(Chapter(name: "Chapter 1", duration: 60))
+            mediaSession?.startChapter(Chapter(name: "Chapter 1", duration: 60))
             mediaSession?.pause()
             mediaSession?.play()
-            mediaSession?.chapterComplete()
+            mediaSession?.completeChapter()
             mediaSession?.stop()
             
             #if os(iOS)

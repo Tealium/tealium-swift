@@ -2,7 +2,6 @@
 //  MediaDispatch.swift
 //  tealium-swift
 //
-//  Created by Christina S on 1/11/21.
 //  Copyright © 2021 Tealium, Inc. All rights reserved.
 //
 

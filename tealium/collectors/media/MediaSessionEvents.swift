@@ -1,31 +1,30 @@
 //
 //  MediaSessionEvents.swift
-//  TealiumMedia
+//  tealium-swift
 //
-//  Created by Christina S on 1/12/21.
 //  Copyright © 2021 Tealium, Inc. All rights reserved.
 //
 
 import Foundation
 
 public protocol MediaSessionEvents {
-    mutating func adBreakComplete()
-    mutating func adBreakStart(_ adBreak: AdBreak)
-    mutating func adClick()
-    mutating func adComplete()
-    mutating func adSkip()
-    mutating func adStart(_ ad: Ad)
-    func bufferComplete()
-    func bufferStart()
-    mutating func chapterComplete()
-    mutating func chapterSkip()
-    mutating func chapterStart(_ chapter: Chapter)
-    func close()
+    func completeAdBreak()
+    func startAdBreak(_ adBreak: AdBreak)
+    func clickAd()
+    func completeAd()
+    func skipAd()
+    func startAd(_ ad: Ad)
+    func completeBuffer()
+    func startBuffer()
+    func completeChapter()
+    func skipChapter()
+    func startChapter(_ chapter: Chapter)
+    func endSession()
     func custom(_ event: String)
     func pause()
     func play()
-    func seek()
-    func seekComplete()
-    func start()
+    func startSeek()
+    func completeSeek()
+    func startSession()
     func stop()
 }

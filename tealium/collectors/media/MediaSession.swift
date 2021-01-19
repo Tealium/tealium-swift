@@ -1,8 +1,7 @@
 //
 //  MediaSession.swift
-//  TealiumCore
+//  tealium-swift
 //
-//  Created by Christina S on 1/6/21.
 //  Copyright © 2021 Tealium, Inc. All rights reserved.
 //
 
@@ -65,7 +64,7 @@ public class MediaSession: MediaSessionProtocol {
         }
     }
     
-    public func adBreakComplete() {
+    public func completeAdBreak() {
         guard var adBreak = mediaService?.media.adBreaks.first else {
             return
         }
@@ -79,7 +78,7 @@ public class MediaSession: MediaSessionProtocol {
         mediaService?.media.remove(by: adBreak.uuid)
     }
     
-    public func adBreakStart(_ adBreak: AdBreak) {
+    public func startAdBreak(_ adBreak: AdBreak) {
         mediaService?.media.add(.adBreak(adBreak))
         mediaService?.track(
             .event(.adBreakStart),
@@ -87,7 +86,7 @@ public class MediaSession: MediaSessionProtocol {
         )
     }
     
-    public func adClick() {
+    public func clickAd() {
         guard let ad = mediaService?.media.ads.last else {
             return
         }
@@ -98,7 +97,7 @@ public class MediaSession: MediaSessionProtocol {
         mediaService?.media.remove(by: ad.uuid)
     }
     
-    public func adComplete() {
+    public func completeAd() {
         guard var ad = mediaService?.media.ads.first else {
             return
         }
@@ -112,7 +111,7 @@ public class MediaSession: MediaSessionProtocol {
         mediaService?.media.remove(by: ad.uuid)
     }
     
-    public func adSkip() {
+    public func skipAd() {
         guard let ad = mediaService?.media.ads.last else {
             return
         }
@@ -123,7 +122,7 @@ public class MediaSession: MediaSessionProtocol {
         mediaService?.media.remove(by: ad.uuid)
     }
     
-    public func adStart(_ ad: Ad) {
+    public func startAd(_ ad: Ad) {
         mediaService?.media.add(.ad(ad))
         mediaService?.track(
             .event(.adStart),
@@ -131,15 +130,15 @@ public class MediaSession: MediaSessionProtocol {
         )
     }
     
-    public func bufferComplete() {
+    public func completeBuffer() {
         mediaService?.track(.event(.bufferComplete))
     }
     
-    public func bufferStart() {
+    public func startBuffer() {
         mediaService?.track(.event(.bufferStart))
     }
     
-    public func chapterComplete() {
+    public func completeChapter() {
         guard let chapter = mediaService?.media.chapters.last else {
             return
         }
@@ -150,7 +149,7 @@ public class MediaSession: MediaSessionProtocol {
         mediaService?.media.remove(by: chapter.uuid)
     }
     
-    public func chapterSkip() {
+    public func skipChapter() {
         guard let chapter = mediaService?.media.chapters.last else {
             return
         }
@@ -161,7 +160,7 @@ public class MediaSession: MediaSessionProtocol {
         mediaService?.media.remove(by: chapter.uuid)
     }
     
-    public func chapterStart(_ chapter: Chapter) {
+    public func startChapter(_ chapter: Chapter) {
         mediaService?.media.add(.chapter(chapter))
         mediaService?.track(
             .event(.chapterStart),
@@ -169,7 +168,8 @@ public class MediaSession: MediaSessionProtocol {
         )
     }
     
-    public func close() {
+    // sessionEnd
+    public func endSession() {
         mediaService?.track(.event(.sessionEnd))
     }
     
@@ -177,15 +177,17 @@ public class MediaSession: MediaSessionProtocol {
         mediaService?.track(.custom(event))
     }
     
-    public func seek() {
+    // seekStart
+    public func startSeek() {
         mediaService?.track(.event(.seekStart))
     }
     
-    public func seekComplete() {
+    public func completeSeek() {
         mediaService?.track(.event(.seekComplete))
     }
     
-    public func start() {
+    // sessionStart
+    public func startSession() {
         mediaService?.track(.event(.sessionStart))
     }
     

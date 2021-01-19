@@ -1,8 +1,7 @@
 //
 //  MediaSessionFactory.swift
-//  TealiumMedia
+//  tealium-swift
 //
-//  Created by Christina S on 1/13/21.
 //  Copyright © 2021 Tealium, Inc. All rights reserved.
 //
 
