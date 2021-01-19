@@ -1,0 +1,81 @@
+//
+//  TealiumHelper.swift
+//  iOSTealiumMediaTest
+//
+//  Created by Christina S on 1/14/21.
+//
+
+import Foundation
+
+import Foundation
+import TealiumCore
+import TealiumCollect
+import TealiumLifecycle
+import TealiumMedia
+
+enum TealiumConfiguration {
+    static let account = "tealiummobile"
+    static let profile = "demo"
+    static let environment = "dev"
+    static let dataSourceKey = "abc123"
+}
+
+let enableLogs = true // change to false to disable logging
+
+class TealiumHelper {
+
+    static let shared = TealiumHelper()
+
+    let config = TealiumConfig(account: TealiumConfiguration.account,
+        profile: TealiumConfiguration.profile,
+        environment: TealiumConfiguration.environment,
+        dataSource: TealiumConfiguration.dataSourceKey)
+
+    var tealium: Tealium?
+    
+    // MARK: Tealium Initilization
+    private init() {
+        // Optional Config Settings
+        if enableLogs { config.logLevel = .info }
+        config.shouldUseRemotePublishSettings = false
+        config.memoryReportingEnabled = true
+        config.collectors = [Collectors.AppData,
+                             Collectors.Device,
+                             Collectors.Connectivity,
+                             Collectors.Lifecycle,
+                             Collectors.Media]
+        config.dispatchers = [Dispatchers.Collect]
+
+        tealium = Tealium(config: config)
+    }
+
+    public func start() {
+        _ = TealiumHelper.shared
+    }
+    
+    class func mediaSession(from media: MediaCollection) -> MediaSession? {
+        guard let mediaModule = TealiumHelper.shared.tealium?.media else {
+            return nil
+        }
+        return mediaModule.createSession(from: media)
+    }
+
+    class func trackView(title: String, data: [String: Any]?) {
+        let viewDispatch = TealiumView(title, dataLayer: data)
+        TealiumHelper.shared.tealium?.track(viewDispatch)
+    }
+
+    class func trackEvent(title: String, data: [String: Any]?) {
+        let eventDispatch = TealiumEvent(title, dataLayer: data)
+        TealiumHelper.shared.tealium?.track(eventDispatch)
+    }
+
+    class func joinTrace(_ traceID: String) {
+        TealiumHelper.shared.tealium?.joinTrace(id: traceID)
+        TealiumHelper.trackEvent(title: "trace_started", data: nil)
+    }
+
+    class func leaveTrace() {
+        TealiumHelper.shared.tealium?.leaveTrace()
+    }
+}
