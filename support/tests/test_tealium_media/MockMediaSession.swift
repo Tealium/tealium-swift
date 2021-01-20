@@ -15,7 +15,7 @@ class MockMediaService: MediaEventDispatcher {
     private var _mockMedia = MediaCollection(name: "MockTealiumMedia",
                                              streamType: .vod,
                                              mediaType: .video,
-                                             qoe: QOE(bitrate: 1000, startTime: nil, fps: 20),
+                                             qoe: QoE(bitrate: 1000, startTime: nil, fps: 20),
                                              trackingType: .significant,
                                              state: .fullscreen,
                                              customId: "test custom id",

@@ -16,7 +16,7 @@ public class MediaCollection: Codable {
     var name: String
     var streamType: StreamType
     var mediaType: MediaType
-    var qoe: QOE
+    var qoe: QoE
     var trackingType: TrackingType
     var state: PlayerState?
     var customId: String?
@@ -52,7 +52,7 @@ public class MediaCollection: Codable {
         name: String,
         streamType: StreamType,
         mediaType: MediaType,
-        qoe: QOE,
+        qoe: QoE,
         trackingType: TrackingType = .significant,
         state: PlayerState? = nil,
         customId: String? = nil,

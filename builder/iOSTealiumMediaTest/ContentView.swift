@@ -16,7 +16,7 @@ struct ContentView: View {
     private let media = MediaCollection(name: "Tealium Customer Data Hub",
                                      streamType: .linear,
                                      mediaType: .video,
-                                     qoe: QOE(bitrate: 5000))
+                                     qoe: QoE(bitrate: 5000))
     
     
     var mediaSession: MediaSession? {

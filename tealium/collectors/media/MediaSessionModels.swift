@@ -94,7 +94,7 @@ public enum MediaEvent {
     case custom(String)
 }
 
-public struct QOE: Codable {
+public struct QoE: Codable {
     var bitrate: Int
     var startTime: Int?
     var fps: Int?
