@@ -197,18 +197,6 @@ public class MediaSession: MediaSessionProtocol {
         mediaService?.track(.event(.stop))
     }
     
-    public func milestone(_ milestone: Milestone) {
-        fatalError("\(#function) must be overriden in order to use")
-    }
-    
-    public func ping() {
-        fatalError("\(#function) must be overriden in order to use")
-    }
-    
-    public func summary() {
-        fatalError("\(#function) must be overriden in order to use")
-    }
-    
     public func endSession() {
         mediaService?.track(.event(.sessionEnd))
     }
@@ -218,6 +206,26 @@ public class MediaSession: MediaSessionProtocol {
                                                        from: duration,
                                                        to: Date())
         return duration.second
+    }
+    
+    public func milestone(_ milestone: Milestone) {
+        fatal(from: "\(#function)")
+    }
+    
+    public func ping() {
+        fatal(from: "\(#function)")
+    }
+    
+    public func stopPing() {
+        fatal(from: "\(#function)")
+    }
+    
+    public func summary() {
+        fatal(from: "\(#function)")
+    }
+    
+    private func fatal(from function: String) {
+        fatalError("\(function) must be overriden in order to use")
     }
     
 }

@@ -10,21 +10,9 @@ import Foundation
 import TealiumCore
 //#endif
 
-protocol HeartbeatMediaProtocol  {
-    func ping()
-}
-
-protocol MilestoneMediaProtocol {
-    func milestone(_ milestone: Milestone)
-}
-
-protocol SummaryMediaProtocol {
-    func summary()
-}
-
 class SignificantEventMediaSession: MediaSession { }
 
-class HeartbeatMediaSession: MediaSession, HeartbeatMediaProtocol {
+class HeartbeatMediaSession: MediaSession {
     
     var heartbeatTimer: Repeater?
     
@@ -41,6 +29,10 @@ class HeartbeatMediaSession: MediaSession, HeartbeatMediaProtocol {
     
     override func ping() {
         mediaService?.track(.event(.heartbeat))
+    }
+    
+    override func stopPing() {
+        heartbeatTimer?.suspend()
     }
     
     override func startSession() {
@@ -62,7 +54,7 @@ class HeartbeatMediaSession: MediaSession, HeartbeatMediaProtocol {
 
 }
 
-class MilestoneMediaSession: MediaSession, MilestoneMediaProtocol {
+class MilestoneMediaSession: MediaSession {
 
     override func milestone(_ milestone: Milestone) {
         mediaService?.media.milestone = milestone.rawValue
@@ -72,7 +64,7 @@ class MilestoneMediaSession: MediaSession, MilestoneMediaProtocol {
 }
 
 // TODO: need more details
-class SummaryMediaSession: MediaSession, SummaryMediaProtocol {
+class SummaryMediaSession: MediaSession {
     
     override func startSession() {
         mediaService?.media.summary = Summary()

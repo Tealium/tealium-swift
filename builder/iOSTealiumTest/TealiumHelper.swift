@@ -122,7 +122,7 @@ class TealiumHelper: NSObject {
                                         streamType: .vod,
                                         mediaType: .video,
                                         qoe: QoE(bitrate: 123),
-                                        trackingType: .summary,
+                                        trackingType: .heartbeat,
                                         metadata: ["meta_key": "meta_value"])
             let mediaSession = teal.media?.createSession(from: media)
             
@@ -137,6 +137,7 @@ class TealiumHelper: NSObject {
             mediaSession?.play()
             mediaSession?.endChapter()
             mediaSession?.stop()
+            mediaSession?.stopPing()
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 30.0) {
                 mediaSession?.endSession()

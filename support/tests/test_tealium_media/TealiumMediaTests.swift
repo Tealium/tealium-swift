@@ -578,13 +578,7 @@ class TealiumMediaTests: XCTestCase {
         XCTAssertEqual(mockMediaService.customEvent.name, "My Custom Event 2")
     }
     
-    // TODO:
-    func testPing_Called() { }
-    func testMilestone_Called() { }
-    func testSummary_Called() { }
-    func testSummary_Updated_OnMediaEvent() { }
-    
-    // MARK: Tracking Types
+    // MARK: Tracking Types - Significant
     func testSignificantEvents_TrackingType_DoesNotSendHeartbeat() {
         session.startSession()
         session.play()
@@ -606,6 +600,7 @@ class TealiumMediaTests: XCTestCase {
         XCTAssertEqual(mockMediaService.standardEventCounts[.summary], 0)
     }
     
+    // MARK: Tracking Types - Heartbeat
     func testHeartbeatManualPing_CallsTrack() {
         session = HeartbeatMediaSession(with: mockMediaService)
         session.startSession()
@@ -639,6 +634,13 @@ class TealiumMediaTests: XCTestCase {
         XCTAssertEqual(mockMediaService.standardEventCounts[.sessionEnd], 1)
     }
     
+    func testStopPing_CallsTimerSuspend() {
+        let timer = MockRepeatingTimer()
+        session = HeartbeatMediaSession(with: mockMediaService, timer)
+        session.stopPing()
+        XCTAssertEqual(timer.suspendCount, 1)
+    }
+    
     func testHeartbeatEndSession_CallsTimerSuspend() {
         let timer = MockRepeatingTimer()
         session = HeartbeatMediaSession(with: mockMediaService, timer)
@@ -654,6 +656,7 @@ class TealiumMediaTests: XCTestCase {
         XCTAssertEqual(timer.suspendCount, 1)
     }
     
+    // MARK: Tracking Types - Milestone
     func testMilestones_SentInTrack() {
         var count = 0
         session = MilestoneMediaSession(with: mockMediaService)
@@ -665,6 +668,8 @@ class TealiumMediaTests: XCTestCase {
         }
     }
     
+    // TODO:
+    // MARK: Tracking Types - Summary
     func testSummary_Sent() { }
     
     // MARK: Track
@@ -908,61 +913,6 @@ class TealiumMediaTests: XCTestCase {
             expect.fulfill()
         }
         wait(for: [expect], timeout: 1.0)
-    }
-
-    // MARK: Performance Tests
-    func testCreateSession_Performance() throws {
-        let mediaModule = createMedia()
-        self.measure {
-            _ = mediaModule.module.createSession(from: mediaModule.media)
-        }
-    }
-    
-    func testMediaSignificantEventSequence_Performance() {
-        let mediaModule = createMedia()
-        let session = mediaModule.module.createSession(from: mediaModule.media)
-        self.measure {
-            session.startSession()
-            session.startAdBreak(AdBreak(title: "AdBreak 1"))
-            session.startAd(Ad(name: "Ad 1"))
-            session.endAd()
-            session.endAdBreak()
-            session.play()
-            session.startChapter(Chapter(name: "Chapter 1", duration: 60))
-            session.pause()
-            session.play()
-            session.endChapter()
-            session.stop()
-            session.endSession()
-        }
-    }
-    
-    func testMediaHeartbeatEventSequence_Performance() {
-        let mediaModule = createMedia(.heartbeat)
-        let session = mediaModule.module.createSession(from: mediaModule.media)
-        self.measure {
-            session.startSession()
-            session.startAdBreak(AdBreak(title: "AdBreak 1"))
-            session.startAd(Ad(name: "Ad 1"))
-            session.endAd()
-            session.endAdBreak()
-            session.play()
-            session.startChapter(Chapter(name: "Chapter 1", duration: 60))
-            session.pause()
-            session.play()
-            session.endChapter()
-            session.stop()
-            session.endSession()
-        }
-    }
-    
-    private func createMedia(_ type: TrackingType = .significant) -> (module: MediaModule, media: MediaCollection) {
-        let config = TealiumConfig(account: "account", profile: "profile", environment: "env")
-        config.collectors = [Collectors.Media]
-        let context = TestTealiumHelper.context(with: config)
-        let module = MediaModule(context: context, delegate: MockModuleDelegate(), diskStorage: nil) { _ in }
-        let media = MediaCollection(name: "performance", streamType: .aod, mediaType: .all, qoe: QoE(bitrate: 1000), trackingType: type)
-        return (module, media)
     }
 
 }
