@@ -35,16 +35,16 @@ class MockMediaService: MediaEventDispatcher {
     }
     
     var standardEventCounts: [StandardMediaEvent: Int] = [
-        .adBreakComplete: 0,
+        .adBreakEnd: 0,
         .adBreakStart: 0,
         .adClick: 0,
-        .adComplete: 0,
+        .adEnd: 0,
         .adSkip: 0,
         .adStart: 0,
         .bitrateChange: 0,
-        .bufferComplete: 0,
+        .bufferEnd: 0,
         .bufferStart: 0,
-        .chapterComplete: 0,
+        .chapterEnd: 0,
         .chapterSkip: 0,
         .chapterStart: 0,
         .sessionEnd: 0,
@@ -55,13 +55,17 @@ class MockMediaService: MediaEventDispatcher {
         .playerStateStart: 0,
         .playerStateStop: 0,
         .seekStart: 0,
-        .seekComplete: 0,
+        .seekEnd: 0,
         .sessionStart: 0,
         .stop: 0,
         .summary: 0
     ]
     
     var customEvent: (count: Int, name: String) = (0, "")
+    
+    var milestone: Milestone?
+    
+    var eventSequence = [StandardMediaEvent]()
     
     func track(_ event: MediaEvent) {
         track(event, nil)
@@ -71,6 +75,7 @@ class MockMediaService: MediaEventDispatcher {
                _ segment: Segment?) {
         switch event {
         case .event(let name):
+            eventSequence.append(name)
             standardEventCounts[name]! += 1
             updatedSegment = segment
         case .custom(let name):
@@ -78,5 +83,23 @@ class MockMediaService: MediaEventDispatcher {
             customEvent.name = name
         }
     }
+    
+}
+
+class MockRepeatingTimer: Repeater {
+    
+    var resumCount = 0
+    var suspendCount = 0
+    
+    var eventHandler: (() -> Void)?
+    
+    func resume() {
+        resumCount += 1
+    }
+    
+    func suspend() {
+        suspendCount += 1
+    }
+    
     
 }

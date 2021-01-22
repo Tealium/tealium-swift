@@ -45,6 +45,15 @@ public enum PlayerState: String, Codable {
     case pictureInPicture
 }
 
+public enum Milestone: String, CaseIterable {
+    case ten = "10%"
+    case twentyFive = "25%"
+    case fifty = "50%"
+    case seventyFive = "75%"
+    case ninty = "90%"
+    case oneHundred = "100%"
+}
+
 public enum Segment {
     case chapter(Chapter)
     case adBreak(AdBreak)
@@ -63,16 +72,16 @@ public enum Segment {
 }
 
 public enum StandardMediaEvent: String {
-    case adBreakComplete = "media_adbreak_complete"
+    case adBreakEnd = "media_adbreak_end"
     case adBreakStart = "media_adbreak_start"
     case adClick = "media_ad_click"
-    case adComplete = "media_ad_complete"
+    case adEnd = "media_ad_end"
     case adSkip = "media_ad_skip"
     case adStart = "media_ad_start"
     case bitrateChange = "media_bitrate_change"
-    case bufferComplete = "media_buffer_complete"
+    case bufferEnd = "media_buffer_end"
     case bufferStart = "media_buffer_start"
-    case chapterComplete = "media_chapter_complete"
+    case chapterEnd = "media_chapter_end"
     case chapterSkip = "media_chapter_skip"
     case chapterStart = "media_chapter_start"
     case sessionEnd = "media_session_end"
@@ -83,7 +92,7 @@ public enum StandardMediaEvent: String {
     case playerStateStart = "player_state_start"
     case playerStateStop = "player_state_stop"
     case seekStart = "media_seek_start"
-    case seekComplete = "media_seek_complete"
+    case seekEnd = "media_seek_end"
     case sessionStart = "media_session_start"
     case stop = "media_stop"
     case summary = "media_summary"
@@ -103,12 +112,12 @@ public struct QoE: Codable {
     var metadata: AnyCodable?
     
     enum CodingKeys: String, CodingKey {
-        case bitrate = "qoe_bitrate"
-        case startTime = "qoe_startup_time"
-        case fps = "qoe_frames_per_second"
-        case droppedFrames = "qoe_dropped_frames"
-        case playbackSpeed = "qoe_playback_speed"
-        case metadata = "qoe_metadata"
+        case bitrate = "media_qoe_bitrate"
+        case startTime = "media_qoe_startup_time"
+        case fps = "media_qoe_frames_per_second"
+        case droppedFrames = "media_qoe_dropped_frames"
+        case playbackSpeed = "media_qoe_playback_speed"
+        case metadata = "media_qoe_metadata"
     }
     
     public init(bitrate: Int,
@@ -136,12 +145,12 @@ public struct Chapter: Codable {
     private var numberOfChapters = 0
     
     enum CodingKeys: String, CodingKey {
-        case uuid = "chapter_uuid"
-        case name = "chapter_name"
-        case duration = "chapter_length"
-        case position = "chapter_position"
-        case startTime = "chapter_start_time"
-        case metadata = "chapter_metadata"
+        case uuid = "media_chapter_uuid"
+        case name = "media_chapter_name"
+        case duration = "media_chapter_length"
+        case position = "media_chapter_position"
+        case startTime = "media_chapter_start_time"
+        case metadata = "media_chapter_metadata"
     }
     
     public init(name: String,
@@ -177,20 +186,20 @@ public struct Ad: Codable {
     private var numberOfAds = 0
     
     enum CodingKeys: String, CodingKey {
-        case uuid = "ad_uuid"
-        case name = "ad_name"
-        case id = "ad_id"
-        case duration = "ad_length"
-        case position = "ad_position"
-        case advertiser = "advertiser"
-        case creativeId = "ad_creative_id"
-        case campaignId = "ad_campaign_id"
-        case placementId = "ad_placement_id"
-        case siteId = "ad_site_id"
-        case creativeUrl = "ad_creative_url"
-        case numberOfLoads = "ad_load"
-        case pod = "ad_pod"
-        case playerName = "ad_player_name"
+        case uuid = "media_ad_uuid"
+        case name = "media_ad_name"
+        case id = "vad_id"
+        case duration = "media_ad_length"
+        case position = "media_ad_position"
+        case advertiser = "media_advertiser"
+        case creativeId = "media_ad_creative_id"
+        case campaignId = "media_ad_campaign_id"
+        case placementId = "media_ad_placement_id"
+        case siteId = "media_ad_site_id"
+        case creativeUrl = "media_ad_creative_url"
+        case numberOfLoads = "media_ad_load"
+        case pod = "media_ad_pod"
+        case playerName = "media_ad_player_name"
     }
     
     public init(name: String? = nil,
@@ -235,12 +244,12 @@ public struct AdBreak: Codable {
     private var numberOfAdBreaks = 0
     
     enum CodingKeys: String, CodingKey {
-        case uuid = "ad_break_uuid"
-        case title = "ad_break_title"
-        case id = "ad_break_id"
-        case duration = "ad_break_length"
-        case index = "ad_break_index"
-        case position = "ad_break_position"
+        case uuid = "media_ad_break_uuid"
+        case title = "media_ad_break_title"
+        case id = "media_ad_break_id"
+        case duration = "media_ad_break_length"
+        case index = "media_ad_break_index"
+        case position = "media_ad_break_position"
     }
     
     public init(title: String? = nil,
@@ -260,15 +269,62 @@ public struct AdBreak: Codable {
 
 // TODO: need more details
 public struct Summary: Codable {
-    var plays: Int = 0
-    var pauses: Int = 0
-    var stops: Int = 0
-    var ads: Int = 0
-    var chapters: Int = 0
+    var sessionStartTime: String?
+    var plays = 0
+    var pauses = 0
+    var adSkips = 0
+    var chapterSkips = 0
+    var stops = 0
+    var ads = 0
+    var adUUIDs = [String]()
+    var playToEnd = false
+    var duration: Int?
+    var totalPlayTime: Int?
+    var totalAdTime: Int?
+    var percentageAdTime: Double?
+    var percentageAdComplete: Double?
+    var percentageChapterComplete: Double?
+    var totalBufferTime: Int?
+    var totalSeekTime: Int?
+    var sessionEndTime: String?
+    
+    // Timers and tallies for calculations
+    var sessionStart = Date()
+    var sessionEnd: Date?
+    var playStartTime: Date?
+    var bufferStartTime: Date?
+    var seekStartTime: Date?
+    var adStartTime: Date?
+    var chapterStarts = 0
+    var chapterEnds = 0
+    var adEnds = 0
+    
+    
+    enum CodingKeys: String, CodingKey {
+        case sessionStartTime = "media_session_start_time"
+        case plays = "media_total_plays"
+        case pauses = "media_total_pauses"
+        case adSkips = "media_total_ad_skips"
+        case chapterSkips = "media_total_chapter_skips"
+        case stops = "media_total_stops"
+        case ads = "media_total_ads"
+        case adUUIDs = "media_ad_uuids"
+        case playToEnd = "media_played_to_end"
+        case duration = "media_session_duration"
+        case totalPlayTime = "media_total_play_time"
+        case totalAdTime = "media_total_ad_time"
+        case percentageAdTime = "media_percentage_ad_time"
+        case percentageAdComplete = "media_percentage_ad_complete"
+        case percentageChapterComplete = "media_percentage_chapter_complete"
+        case totalBufferTime = "media_total_buffer_time"
+        case totalSeekTime = "media_total_seek_time"
+        case sessionEndTime = "media_session_end_time"
+    }
+    
 }
 
-fileprivate extension Int {
-    mutating func increment() {
-        self += 1
+extension Int {
+    mutating func increment(by number: Int = 1) {
+        self += number
     }
 }

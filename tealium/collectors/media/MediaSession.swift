@@ -16,6 +16,7 @@ public protocol MediaSessionProtocol: MediaSessionEvents {
     var mediaService: MediaEventDispatcher? { get set }
     var playbackSpeed: Double { get set }
     var playerState: PlayerState? { get set }
+    func calculate(duration: Date) -> Int?
 }
 
 public class MediaSession: MediaSessionProtocol {
@@ -64,18 +65,58 @@ public class MediaSession: MediaSessionProtocol {
         }
     }
     
-    public func completeAdBreak() {
-        guard var adBreak = mediaService?.media.adBreaks.first else {
+    public func startSession() {
+        mediaService?.track(.event(.sessionStart))
+    }
+    
+    public func play() {
+        mediaService?.track(.event(.play))
+    }
+    
+    public func startChapter(_ chapter: Chapter) {
+        mediaService?.media.add(.chapter(chapter))
+        mediaService?.track(
+            .event(.chapterStart),
+            .chapter(chapter)
+        )
+    }
+    
+    public func skipChapter() {
+        guard let chapter = mediaService?.media.chapters.last else {
             return
         }
-        if adBreak.duration == nil {
-            adBreak.duration = calculate(duration: adBreak.startTime)
+        mediaService?.track(
+            .event(.chapterSkip),
+            .chapter(chapter)
+        )
+        mediaService?.media.remove(by: chapter.uuid)
+    }
+    
+    public func endChapter() {
+        guard let chapter = mediaService?.media.chapters.last else {
+            return
         }
         mediaService?.track(
-            .event(.adBreakComplete),
-            .adBreak(adBreak)
+            .event(.chapterEnd),
+            .chapter(chapter)
         )
-        mediaService?.media.remove(by: adBreak.uuid)
+        mediaService?.media.remove(by: chapter.uuid)
+    }
+    
+    public func startBuffer() {
+        mediaService?.track(.event(.bufferStart))
+    }
+    
+    public func endBuffer() {
+        mediaService?.track(.event(.bufferEnd))
+    }
+    
+    public func startSeek() {
+        mediaService?.track(.event(.seekStart))
+    }
+    
+    public func endSeek() {
+        mediaService?.track(.event(.seekEnd))
     }
     
     public func startAdBreak(_ adBreak: AdBreak) {
@@ -86,26 +127,34 @@ public class MediaSession: MediaSessionProtocol {
         )
     }
     
+    public func endAdBreak() {
+        guard var adBreak = mediaService?.media.adBreaks.first else {
+            return
+        }
+        if adBreak.duration == nil {
+            adBreak.duration = calculate(duration: adBreak.startTime)
+        }
+        mediaService?.track(
+            .event(.adBreakEnd),
+            .adBreak(adBreak)
+        )
+        mediaService?.media.remove(by: adBreak.uuid)
+    }
+    
+    public func startAd(_ ad: Ad) {
+        mediaService?.media.add(.ad(ad))
+        mediaService?.track(
+            .event(.adStart),
+            .ad(ad)
+        )
+    }
+    
     public func clickAd() {
         guard let ad = mediaService?.media.ads.last else {
             return
         }
         mediaService?.track(
             .event(.adClick),
-            .ad(ad)
-        )
-        mediaService?.media.remove(by: ad.uuid)
-    }
-    
-    public func completeAd() {
-        guard var ad = mediaService?.media.ads.first else {
-            return
-        }
-        if ad.duration == nil {
-            ad.duration = calculate(duration: ad.startTime)
-        }
-        mediaService?.track(
-            .event(.adComplete),
             .ad(ad)
         )
         mediaService?.media.remove(by: ad.uuid)
@@ -122,77 +171,22 @@ public class MediaSession: MediaSessionProtocol {
         mediaService?.media.remove(by: ad.uuid)
     }
     
-    public func startAd(_ ad: Ad) {
-        mediaService?.media.add(.ad(ad))
+    public func endAd() {
+        guard var ad = mediaService?.media.ads.first else {
+            return
+        }
+        if ad.duration == nil {
+            ad.duration = calculate(duration: ad.startTime)
+        }
         mediaService?.track(
-            .event(.adStart),
+            .event(.adEnd),
             .ad(ad)
         )
-    }
-    
-    public func completeBuffer() {
-        mediaService?.track(.event(.bufferComplete))
-    }
-    
-    public func startBuffer() {
-        mediaService?.track(.event(.bufferStart))
-    }
-    
-    public func completeChapter() {
-        guard let chapter = mediaService?.media.chapters.last else {
-            return
-        }
-        mediaService?.track(
-            .event(.chapterComplete),
-            .chapter(chapter)
-        )
-        mediaService?.media.remove(by: chapter.uuid)
-    }
-    
-    public func skipChapter() {
-        guard let chapter = mediaService?.media.chapters.last else {
-            return
-        }
-        mediaService?.track(
-            .event(.chapterSkip),
-            .chapter(chapter)
-        )
-        mediaService?.media.remove(by: chapter.uuid)
-    }
-    
-    public func startChapter(_ chapter: Chapter) {
-        mediaService?.media.add(.chapter(chapter))
-        mediaService?.track(
-            .event(.chapterStart),
-            .chapter(chapter)
-        )
-    }
-    
-    // sessionEnd
-    public func endSession() {
-        mediaService?.track(.event(.sessionEnd))
+        mediaService?.media.remove(by: ad.uuid)
     }
     
     public func custom(_ event: String) {
         mediaService?.track(.custom(event))
-    }
-    
-    // seekStart
-    public func startSeek() {
-        mediaService?.track(.event(.seekStart))
-    }
-    
-    public func completeSeek() {
-        mediaService?.track(.event(.seekComplete))
-    }
-    
-    // sessionStart
-    public func startSession() {
-        mediaService?.track(.event(.sessionStart))
-    }
-    
-    public func play() {
-        mediaService?.track(.event(.play))
     }
     
     public func pause() {
@@ -203,7 +197,23 @@ public class MediaSession: MediaSessionProtocol {
         mediaService?.track(.event(.stop))
     }
     
-    private func calculate(duration: Date) -> Int? {
+    public func milestone(_ milestone: Milestone) {
+        fatalError("\(#function) must be overriden in order to use")
+    }
+    
+    public func ping() {
+        fatalError("\(#function) must be overriden in order to use")
+    }
+    
+    public func summary() {
+        fatalError("\(#function) must be overriden in order to use")
+    }
+    
+    public func endSession() {
+        mediaService?.track(.event(.sessionEnd))
+    }
+    
+    public func calculate(duration: Date) -> Int? {
         let duration = Calendar.current.dateComponents([.second],
                                                        from: duration,
                                                        to: Date())

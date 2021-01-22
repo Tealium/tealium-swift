@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+import WebKit
 import TealiumCollect
 import TealiumCore
 import TealiumLifecycle
@@ -20,13 +20,13 @@ import TealiumTagManagement
 #endif
 
 
-class TealiumHelper  {
+class TealiumHelper: NSObject {
 
     static let shared = TealiumHelper()
     var tealium: Tealium?
     var enableHelperLogs = true
 
-    private init() { }
+    override init() { }
 
     func start() {
         let config = TealiumConfig(account: "tealiummobile",
@@ -104,7 +104,7 @@ class TealiumHelper  {
                 return
 
             }
-
+            
             let dataLayer = teal.dataLayer
             teal.consentManager?.userConsentStatus = .consented
             dataLayer.add(key: "myvarforever", value: 123_456, expiry: .forever)
@@ -122,20 +122,25 @@ class TealiumHelper  {
                                         streamType: .vod,
                                         mediaType: .video,
                                         qoe: QoE(bitrate: 123),
+                                        trackingType: .summary,
                                         metadata: ["meta_key": "meta_value"])
-            var mediaSession = teal.media?.createSession(from: media)
+            let mediaSession = teal.media?.createSession(from: media)
             
             mediaSession?.startSession()
             mediaSession?.startAdBreak(AdBreak(title: "AdBreak 1"))
             mediaSession?.startAd(Ad(name: "Ad 1"))
-            mediaSession?.completeAd()
-            mediaSession?.completeAdBreak()
+            mediaSession?.endAd()
+            mediaSession?.endAdBreak()
             mediaSession?.play()
             mediaSession?.startChapter(Chapter(name: "Chapter 1", duration: 60))
             mediaSession?.pause()
             mediaSession?.play()
-            mediaSession?.completeChapter()
+            mediaSession?.endChapter()
             mediaSession?.stop()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 30.0) {
+                mediaSession?.endSession()
+            }
             
             #if os(iOS)
             teal.location?.requestAuthorization()

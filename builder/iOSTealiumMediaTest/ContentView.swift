@@ -36,10 +36,10 @@ struct ContentView: View {
                     .mute(video.mute)
                     .onBufferChanged { progress in
                         mediaSession?.startBuffer()
-                        mediaSession?.completeBuffer()
+                        mediaSession?.endBuffer()
                     }
                     .onPlayToEndTime {
-                        mediaSession?.completeChapter()
+                        mediaSession?.endChapter()
                         mediaSession?.stop()
                         mediaSession?.endSession()
                         video.time = .zero
@@ -89,7 +89,7 @@ struct ContentView: View {
 
                     Divider().frame(height: 20)
                     
-                    IconButtonView(iconName: "repeat", color: self.video.autoReplay ? .purple : .gray) {
+                    IconButtonView(iconName: "repeat", color: self.video.autoReplay ? .tealBlue : .gray) {
                         self.video.autoReplay.toggle()
                     }
 
@@ -100,7 +100,7 @@ struct ContentView: View {
                         self.video.time = CMTimeMakeWithSeconds(max(0, self.video.time.seconds - 15),
                                                                 preferredTimescale: self.video.time.timescale)
                         mediaSession?.startSeek()
-                        mediaSession?.completeSeek()
+                        mediaSession?.endSeek()
                     }
 
                     Divider().frame(height: 20)
@@ -114,7 +114,7 @@ struct ContentView: View {
                                                                     self.video.time.seconds + 15),
                                                                 preferredTimescale: self.video.time.timescale)
                         mediaSession?.startSeek()
-                        mediaSession?.completeSeek()
+                        mediaSession?.endSeek()
                     }
                 }.padding()
                 
@@ -123,8 +123,8 @@ struct ContentView: View {
                     mediaSession?.startAd(Ad(name: "Ad 1"))
                     mediaSession?.skipAd()
                     mediaSession?.startAd(Ad(name: "Ad 2"))
-                    mediaSession?.completeAd()
-                    mediaSession?.completeAdBreak()
+                    mediaSession?.endAd()
+                    mediaSession?.endAdBreak()
                 }
                 
                 Spacer()

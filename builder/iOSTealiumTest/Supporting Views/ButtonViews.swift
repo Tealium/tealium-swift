@@ -35,14 +35,10 @@ struct TextButtonView: View {
         Text(title)
            .frame(width: 200.0)
            .padding()
-           .background(Color.gray)
+           .background(Color.tealBlue)
            .foregroundColor(.white)
            .cornerRadius(10)
            .shadow(radius: 8)
-           .overlay(
-               RoundedRectangle(cornerRadius: 10)
-                   .stroke(Color.purple, lineWidth: 2)
-           )
     }
     
     var body: some View {
@@ -54,7 +50,7 @@ struct TextButtonView: View {
 
 struct IconButtonView: View {
     var iconName: String
-    var color: Color = .purple
+    var color: Color = .tealBlue
     var action: () -> Void
     
     var buttonView: some View {

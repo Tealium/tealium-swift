@@ -34,21 +34,6 @@ class TealiumExtensionTests: XCTestCase {
     }
 
     override func tearDownWithError() throws { }
-
-    func testMediaServiceNotNilWhenAddedToCollectors() {
-        let config = TealiumConfig(account: "test", profile: "test", environment: "test")
-        config.collectors?.append(Collectors.Media)
-        tealium = Tealium(config: config) { _ in
-            XCTAssertNotNil(self.tealium.media)
-        }
-    }
-    
-    func testMediaServiceNilWhenAddedToCollectors() {
-        let config = TealiumConfig(account: "test", profile: "test", environment: "test")
-        tealium = Tealium(config: config) { _ in
-            XCTAssertNil(self.tealium.media)
-        }
-    }
     
     func testVisitorIdNotNil() {
         let config = TealiumConfig(account: "test", profile: "test", environment: "test")

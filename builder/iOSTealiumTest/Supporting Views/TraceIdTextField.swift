@@ -12,14 +12,14 @@ struct TraceIdTextField: View {
     var body: some View {
         HStack {
               Image(systemName: "person")
-                .foregroundColor(.gray)
+                .foregroundColor(.tealBlue)
               TextField("Enter your Trace ID", text: $traceId)
-                .foregroundColor(.blue)
-                .accentColor(.blue)
+                .foregroundColor(.tealBlue)
+                .accentColor(.tealBlue)
           }
         .frame(width: 200.0)
         .padding()
         .overlay(RoundedRectangle(cornerRadius: 10)
-                    .stroke(Color.gray, lineWidth: 1))
+                    .stroke(Color.tealBlue, lineWidth: 1))
     }
 }
