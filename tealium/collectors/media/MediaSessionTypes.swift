@@ -14,7 +14,7 @@ class SignificantEventMediaSession: MediaSession { }
 
 class HeartbeatMediaSession: MediaSession {
     
-    var timer: Repeater
+    private var timer: Repeater
     
     init(with mediaService: MediaEventDispatcher,
          _ timer: Repeater? = nil) {
@@ -63,7 +63,7 @@ class HeartbeatMilestoneMediaSession: MilestoneMediaSession {
 class MilestoneMediaSession: MediaSession {
     
     private var timer: Repeater
-    private var duration: Double?
+    private var duration: Int?
     private var startTime: Date?
     private var triggered = [Milestone]()
     
@@ -148,7 +148,6 @@ class MilestoneMediaSession: MediaSession {
     
 }
 
-// TODO: need more details
 class SummaryMediaSession: MediaSession {
     
     override var bitrate: Int? {

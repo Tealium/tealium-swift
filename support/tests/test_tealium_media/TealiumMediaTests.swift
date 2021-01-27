@@ -725,31 +725,31 @@ class TealiumMediaTests: XCTestCase {
         session.ping()
         XCTAssertEqual(mockMediaService.media.milestone, "10%")
         
-        mockMediaService.media.duration = 130.0
+        mockMediaService.media.duration = 130
         mockMediaService.media.startTime = TimeTraveler().travel(by: -33)
         session = MilestoneMediaSession(with: mockMediaService, interval: 1.0)
         session.ping()
         XCTAssertEqual(mockMediaService.media.milestone, "25%")
         
-        mockMediaService.media.duration = 130.0
+        mockMediaService.media.duration = 130
         mockMediaService.media.startTime = TimeTraveler().travel(by: -65)
         session = MilestoneMediaSession(with: mockMediaService, interval: 1.0)
         session.ping()
         XCTAssertEqual(mockMediaService.media.milestone, "50%")
         
-        mockMediaService.media.duration = 130.0
+        mockMediaService.media.duration = 130
         mockMediaService.media.startTime = TimeTraveler().travel(by: -98)
         session = MilestoneMediaSession(with: mockMediaService, interval: 1.0)
         session.ping()
         XCTAssertEqual(mockMediaService.media.milestone, "75%")
         
-        mockMediaService.media.duration = 130.0
+        mockMediaService.media.duration = 130
         mockMediaService.media.startTime = TimeTraveler().travel(by: -117)
         session = MilestoneMediaSession(with: mockMediaService, interval: 1.0)
         session.ping()
         XCTAssertEqual(mockMediaService.media.milestone, "90%")
         
-        mockMediaService.media.duration = 130.0
+        mockMediaService.media.duration = 130
         mockMediaService.media.startTime = TimeTraveler().travel(by: -128)
         session = MilestoneMediaSession(with: mockMediaService, interval: 1.0)
         session.ping()
@@ -757,7 +757,7 @@ class TealiumMediaTests: XCTestCase {
     }
     
     func testPing_DoesNotCallTrack_WhenRangeIsNotWithinMilestone() {
-        mockMediaService.media.duration = 130.0
+        mockMediaService.media.duration = 130
         mockMediaService.media.startTime = TimeTraveler().travel(by: -9)
         session = MilestoneMediaSession(with: mockMediaService, interval: 1.0)
         session.ping()
@@ -777,7 +777,7 @@ class TealiumMediaTests: XCTestCase {
     
     // MARK: Tracking Types - Heartbeat + Milestone
     func testPing_CallsTrackWithHeartbeat_EveryTenthSecond() {
-        mockMediaService.media.duration = 130.0
+        mockMediaService.media.duration = 130
         mockMediaService.media.startTime = TimeTraveler().travel(by: -20)
         session = HeartbeatMilestoneMediaSession(with: mockMediaService, interval: 1.0)
         session.ping()
@@ -786,7 +786,7 @@ class TealiumMediaTests: XCTestCase {
     }
     
     func testPing_CallsTrack_WithHeartbeatAndMilestone() {
-        mockMediaService.media.duration = 100.0
+        mockMediaService.media.duration = 100
         mockMediaService.media.startTime = TimeTraveler().travel(by: -10)
         session = HeartbeatMilestoneMediaSession(with: mockMediaService, interval: 1.0)
         session.ping()
@@ -1037,13 +1037,14 @@ class TealiumMediaTests: XCTestCase {
         session.pause()
         session.play()
         session.stop()
+        session.endChapter()
         session.endSession()
         let actual = session.mediaService?.media.summary
         XCTAssertNotNil(actual?.sessionStartTime)
         XCTAssertNotNil(actual?.duration)
         XCTAssertNotNil(actual?.sessionEndTime)
-        XCTAssertEqual(actual?.percentageChapterComplete, 50)
-        XCTAssertEqual(actual?.percentageAdComplete, 50)
+        XCTAssertEqual(actual?.percentageChapterComplete, 50.0)
+        XCTAssertEqual(actual?.percentageAdComplete, 50.0)
     }
     
     func testSummary_CalculatesPercentageAdTime_WhenMediaSummaryNotNil() {
