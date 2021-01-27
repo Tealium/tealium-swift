@@ -14,57 +14,156 @@ class SignificantEventMediaSession: MediaSession { }
 
 class HeartbeatMediaSession: MediaSession {
     
-    var heartbeatTimer: Repeater?
+    var timer: Repeater
     
     init(with mediaService: MediaEventDispatcher,
          _ timer: Repeater? = nil) {
-        self.heartbeatTimer = timer ?? TealiumRepeatingTimer(timeInterval: 10.0)
+        self.timer = timer ?? TealiumRepeatingTimer(timeInterval: 10.0)
         super.init(with: mediaService)
     }
-    
-    
-//    func abandon() {
-//        /* Potentially use “Abandonment Indicators” patent to figure out when the best time is to send an event; how likely is the user to abandon? */
-//    }
     
     override func ping() {
         mediaService?.track(.event(.heartbeat))
     }
     
     override func stopPing() {
-        heartbeatTimer?.suspend()
+        timer.suspend()
     }
     
     override func startSession() {
         super.startSession()
-        heartbeatTimer?.eventHandler = { [weak self] in
+        timer.eventHandler = { [weak self] in
             self?.ping()
         }
-        heartbeatTimer?.resume()
+        timer.resume()
     }
     
     override func endSession() {
         super.endSession()
-        heartbeatTimer?.suspend()
+        timer.suspend()
     }
     
     deinit {
-        heartbeatTimer?.suspend()
+        timer.suspend()
     }
 
 }
 
+class HeartbeatMilestoneMediaSession: MilestoneMediaSession {
+    
+    override func ping() {
+        if difference % 10 == 0 {
+            mediaService?.track(.event(.heartbeat))
+        }
+        super.ping()
+    }
+    
+}
+
 class MilestoneMediaSession: MediaSession {
+    
+    private var timer: Repeater
+    private var duration: Double?
+    private var startTime: Date?
+    private var triggered = [Milestone]()
+    
+    init(with mediaService: MediaEventDispatcher,
+         interval: Double,
+         _ timer: Repeater? = nil) {
+        self.duration = mediaService.media.duration
+        self.startTime = mediaService.media.startTime
+        self.timer = timer ?? TealiumRepeatingTimer(timeInterval: interval)
+        super.init(with: mediaService)
+    }
+    
+    var difference: Int {
+        calculate(duration: startTime) ?? 0
+    }
+    
+    override func ping() {
+        var currentMilestone: Milestone?
+        switch percentage {
+        case 8.0...12.0:
+            currentMilestone = unique(.ten)
+        case 23.0...27.0:
+            currentMilestone = unique(.twentyFive)
+        case 48.0...52.0:
+            currentMilestone = unique(.fifty)
+        case 73.0...77.0:
+            currentMilestone = unique(.seventyFive)
+        case 88.0...92.0:
+            currentMilestone = unique(.ninty)
+        case 97.0...100:
+            currentMilestone = unique(.oneHundred)
+        default:
+            return
+        }
+        guard let current = currentMilestone else {
+            return
+        }
+        milestone(current)
+    }
+    
+    override func startSession() {
+        super.startSession()
+        startTime = Date()
+        timer.eventHandler = { [weak self] in
+            self?.ping()
+        }
+        timer.resume()
+    }
+    
+    override func stopPing() {
+        timer.suspend()
+    }
+    
+    override func endSession() {
+        super.endSession()
+        timer.suspend()
+    }
 
     override func milestone(_ milestone: Milestone) {
         mediaService?.media.milestone = milestone.rawValue
         mediaService?.track(.event(.milestone))
     }
     
+    private func unique(_ milestone: Milestone) -> Milestone? {
+        guard !triggered.contains(milestone) else {
+            return nil
+        }
+        triggered.append(milestone)
+        return milestone
+    }
+    
+    private var percentage: Double {
+        guard let duration = duration else {
+            return 0.0
+        }
+        return Double(difference) / Double(duration) * 100
+    }
+    
+    deinit {
+        timer.suspend()
+    }
+    
 }
 
 // TODO: need more details
 class SummaryMediaSession: MediaSession {
+    
+    override var bitrate: Int? {
+        get { mediaService?.media.qoe.bitrate }
+        set {
+            if let newValue = newValue {
+                mediaService?.media.qoe.bitrate = newValue
+            }
+        }
+    }
+    
+    override var playerState: PlayerState? {
+        get { mediaService?.media.state }
+        set { mediaService?.media.state = newValue }
+    }
     
     override func startSession() {
         mediaService?.media.summary = Summary()
@@ -81,7 +180,6 @@ class SummaryMediaSession: MediaSession {
     
     override func skipChapter() {
         mediaService?.media.summary?.chapterSkips.increment()
-        mediaService?.media.summary?.chapterEnds.increment()
     }
     
     override func endChapter() {
@@ -97,7 +195,7 @@ class SummaryMediaSession: MediaSession {
               let bufferDuration = calculate(duration: startTime) else {
             return
         }
-        mediaService?.media.summary?.totalBufferTime?.increment(by: bufferDuration)
+        mediaService?.media.summary?.totalBufferTime.increment(by: bufferDuration)
     }
     
     override func startSeek() {
@@ -109,7 +207,7 @@ class SummaryMediaSession: MediaSession {
               let seekDuration = calculate(duration: startTime) else {
             return
         }
-        mediaService?.media.summary?.totalSeekTime?.increment(by: seekDuration)
+        mediaService?.media.summary?.totalSeekTime.increment(by: seekDuration)
     }
     
     override func startAd(_ ad: Ad) {
@@ -119,40 +217,39 @@ class SummaryMediaSession: MediaSession {
     }
     
     override func skipAd() {
-        mediaService?.media.summary?.adSkips.increment()
-        mediaService?.media.summary?.adEnds.increment()
         guard let startTime = mediaService?.media.summary?.adStartTime,
               let adPlayDuration = calculate(duration: startTime) else {
             return
         }
-        mediaService?.media.summary?.totalAdTime?.increment(by: adPlayDuration)
+        mediaService?.media.summary?.adSkips.increment()
+        mediaService?.media.summary?.totalAdTime.increment(by: adPlayDuration)
     }
     
     override func endAd() {
-        mediaService?.media.summary?.adEnds.increment()
         guard let startTime = mediaService?.media.summary?.adStartTime,
               let adPlayDuration = calculate(duration: startTime) else {
             return
         }
-        mediaService?.media.summary?.totalAdTime?.increment(by: adPlayDuration)
+        mediaService?.media.summary?.adEnds.increment()
+        mediaService?.media.summary?.totalAdTime.increment(by: adPlayDuration)
     }
     
     override func pause() {
-        mediaService?.media.summary?.pauses.increment()
         guard let startTime = mediaService?.media.summary?.playStartTime,
               let playDuration = calculate(duration: startTime) else {
             return
         }
-        mediaService?.media.summary?.totalPlayTime?.increment(by: playDuration)
+        mediaService?.media.summary?.pauses.increment()
+        mediaService?.media.summary?.totalPlayTime.increment(by: playDuration)
     }
     
     override func stop() {
-        mediaService?.media.summary?.stops.increment()
         guard let startTime = mediaService?.media.summary?.playStartTime,
               let playDuration = calculate(duration: startTime) else {
             return
         }
-        mediaService?.media.summary?.totalPlayTime?.increment(by: playDuration)
+        mediaService?.media.summary?.stops.increment()
+        mediaService?.media.summary?.totalPlayTime.increment(by: playDuration)
     }
     
     override func summary() {
@@ -162,13 +259,18 @@ class SummaryMediaSession: MediaSession {
         mediaService?.media.summary?.sessionStartTime = summary.sessionStart.iso8601String
         mediaService?.media.summary?.duration = calculate(duration: summary.sessionStart)
         mediaService?.media.summary?.sessionEndTime = summary.sessionEnd?.iso8601String
-        mediaService?.media.summary?.percentageChapterComplete = Double(summary.chapterEnds / summary.chapterStarts)
-        mediaService?.media.summary?.percentageAdTime = Double(summary.adEnds / summary.ads)
-        guard let totalPlayTime = summary.totalPlayTime,
-           let totalAdTime = summary.totalAdTime else {
-            return
+        if summary.chapterStarts > 0 {
+            mediaService?.media.summary?.percentageChapterComplete = divide(summary.chapterEnds,
+                                                                            by: summary.chapterStarts) * 100
         }
-        mediaService?.media.summary?.percentageAdTime = Double(totalPlayTime / totalAdTime)
+        if summary.ads > 0 {
+            mediaService?.media.summary?.percentageAdComplete = divide(summary.adEnds,
+                                                                       by: summary.ads) * 100
+        }
+        if summary.totalAdTime > 0 {
+            mediaService?.media.summary?.percentageAdTime = divide(summary.totalAdTime,
+                                                                   by: summary.totalPlayTime) * 100
+        }
     }
     
     override func endSession() {
@@ -178,10 +280,21 @@ class SummaryMediaSession: MediaSession {
         super.endSession()
     }
     
-    override func startAdBreak(_ adBreak: AdBreak) { }
-    override func endAdBreak() { }
-    override func clickAd() { }
-    override func custom(_ event: String) { }
+    override func startAdBreak(_ adBreak: AdBreak) {
+        return
+    }
+    
+    override func endAdBreak() {
+        return
+    }
+    
+    override func clickAd() {
+        return
+    }
+    
+    private func divide(_ a: Int, by b: Int) -> Double {
+        return Double(a) / Double(b)
+    }
 
 }
 

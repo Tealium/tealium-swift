@@ -33,6 +33,7 @@ public enum MediaType: String, Codable {
 public enum TrackingType: String, Codable {
     case heartbeat
     case milestone
+    case heartbeatMilestone = "heartbeat_and_milestone"
     case significant
     case summary
 }
@@ -276,16 +277,16 @@ public struct Summary: Codable {
     var chapterSkips = 0
     var stops = 0
     var ads = 0
+    var totalPlayTime = 0
+    var totalAdTime = 0
+    var totalBufferTime = 0
+    var totalSeekTime = 0
     var adUUIDs = [String]()
     var playToEnd = false
     var duration: Int?
-    var totalPlayTime: Int?
-    var totalAdTime: Int?
     var percentageAdTime: Double?
     var percentageAdComplete: Double?
     var percentageChapterComplete: Double?
-    var totalBufferTime: Int?
-    var totalSeekTime: Int?
     var sessionEndTime: String?
     
     // Timers and tallies for calculations
@@ -320,11 +321,13 @@ public struct Summary: Codable {
         case totalSeekTime = "media_total_seek_time"
         case sessionEndTime = "media_session_end_time"
     }
+
     
 }
 
-extension Int {
+public extension Int {
     mutating func increment(by number: Int = 1) {
         self += number
     }
 }
+

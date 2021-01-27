@@ -63,8 +63,6 @@ class MockMediaService: MediaEventDispatcher {
     
     var customEvent: (count: Int, name: String) = (0, "")
     
-    var milestone: Milestone?
-    
     var eventSequence = [StandardMediaEvent]()
     
     func track(_ event: MediaEvent) {

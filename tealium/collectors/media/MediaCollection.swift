@@ -18,6 +18,8 @@ public class MediaCollection: Codable {
     var mediaType: MediaType
     var qoe: QoE
     var trackingType: TrackingType
+    var milestoneInterval: Double?
+    var startTime: Date?
     var state: PlayerState?
     var customId: String?
     var duration: Int?
@@ -38,6 +40,7 @@ public class MediaCollection: Codable {
         case mediaType = "media_type"
         case qoe = "media_qoe"
         case trackingType = "media_tracking_interval"
+        case startTime = "media_session_start_time"
         case state = "media_player_state"
         case customId = "media_custom_id"
         case duration = "media_length"
@@ -54,6 +57,7 @@ public class MediaCollection: Codable {
         mediaType: MediaType,
         qoe: QoE,
         trackingType: TrackingType = .significant,
+        milestoneInterval: Double = 5.0,
         state: PlayerState? = nil,
         customId: String? = nil,
         duration: Int? = nil,
@@ -66,6 +70,7 @@ public class MediaCollection: Codable {
             self.mediaType = mediaType
             self.qoe = qoe
             self.trackingType = trackingType
+            self.milestoneInterval = milestoneInterval
             self.state = state
             self.customId = customId
             self.duration = duration

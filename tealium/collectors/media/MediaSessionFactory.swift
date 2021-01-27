@@ -20,7 +20,9 @@ public struct MediaSessionFactory {
         case .heartbeat:
             return HeartbeatMediaSession(with: mediaService)
         case .milestone:
-            return MilestoneMediaSession(with: mediaService)
+            return MilestoneMediaSession(with: mediaService, interval: mediaService.media.milestoneInterval ?? 5.0)
+        case .heartbeatMilestone:
+            return HeartbeatMilestoneMediaSession(with: mediaService, interval: 1.0)
         case .summary:
             return SummaryMediaSession(with: mediaService)
         }
