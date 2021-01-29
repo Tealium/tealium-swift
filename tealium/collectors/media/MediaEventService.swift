@@ -24,6 +24,10 @@ public extension MediaEventDispatcher {
         track(event, nil)
     }
     
+    /// Calls the `ModuleDelegate.requestTrack(_:)` with the provided media information
+    /// - Parameters:
+    ///   - event: current `MediaEvent`
+    ///   - segment: provided if event is one that requires a `Segment` type
     func track(_ event: MediaEvent,
                       _ segment: Segment?) {
         let mediaEvent = TealiumMediaEvent(event: event,

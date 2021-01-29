@@ -21,6 +21,8 @@ public struct TealiumMediaEvent: MediaDispatch {
     public var parameters: MediaCollection
     public var segment: Segment?
     
+    /// Consolidates all the data from the media session for a given track call
+    /// - Returns; `[String: Any]`, flattened
     var data: [String: Any] {
         var dictionary = [String: Any]()
         switch event {

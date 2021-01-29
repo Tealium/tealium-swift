@@ -11,7 +11,6 @@ import TealiumCollect
 import TealiumCore
 import TealiumLifecycle
 import TealiumVisitorService
-import TealiumMedia
 #if os(iOS)
 import TealiumAttribution
 import TealiumLocation
@@ -65,8 +64,7 @@ class TealiumHelper: NSObject {
                 Collectors.Connectivity,
                 Collectors.Device,
                 Collectors.Location,
-                Collectors.VisitorService,
-                Collectors.Media
+                Collectors.VisitorService
             ]
         
             config.dispatchers = [
@@ -90,8 +88,7 @@ class TealiumHelper: NSObject {
                 Collectors.AppData,
                 Collectors.Connectivity,
                 Collectors.Device,
-                Collectors.VisitorService,
-                Collectors.Media
+                Collectors.VisitorService
             ]
             config.dispatchers = [
                 Dispatchers.Collect,
@@ -117,31 +114,6 @@ class TealiumHelper: NSObject {
             dataLayer.add(key: "test", value: 123, expiry: .session)
             dataLayer.delete(for: ["hello", "test"])
             dataLayer.add(key: "hello", value: "itsme", expiry: .afterCustom((.months, 1)))
-
-            let media = MediaCollection(name: "Star Wars",
-                                        streamType: .vod,
-                                        mediaType: .video,
-                                        qoe: QoE(bitrate: 123),
-                                        trackingType: .heartbeat,
-                                        metadata: ["meta_key": "meta_value"])
-            let mediaSession = teal.media?.createSession(from: media)
-            
-            mediaSession?.startSession()
-            mediaSession?.startAdBreak(AdBreak(title: "AdBreak 1"))
-            mediaSession?.startAd(Ad(name: "Ad 1"))
-            mediaSession?.endAd()
-            mediaSession?.endAdBreak()
-            mediaSession?.play()
-            mediaSession?.startChapter(Chapter(name: "Chapter 1", duration: 60))
-            mediaSession?.pause()
-            mediaSession?.play()
-            mediaSession?.endChapter()
-            mediaSession?.stop()
-            mediaSession?.stopPing()
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 30.0) {
-                mediaSession?.endSession()
-            }
             
             #if os(iOS)
             teal.location?.requestAuthorization()

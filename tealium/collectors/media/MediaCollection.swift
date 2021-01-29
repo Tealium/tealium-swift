@@ -10,7 +10,6 @@ import Foundation
 import TealiumCore
 //#endif
 
-// Need better name
 public class MediaCollection: Codable {
     var uuid = UUID().uuidString
     var name: String
@@ -83,6 +82,8 @@ public class MediaCollection: Codable {
 
 extension MediaCollection {
     
+    /// Adds to an array for a given segment
+    /// - Parameter segment: `Segment`
     func add(_ segment: Segment) {
         switch segment {
         case .ad(let ad):
@@ -94,6 +95,8 @@ extension MediaCollection {
         }
     }
     
+    /// Removes from segment array for a given `uuidString`
+    /// - Parameter uuid: `String`
     func remove(by uuid: String) {
         ads.removeAll(where: { $0.uuid == uuid })
         adBreaks.removeAll(where: { $0.uuid == uuid })

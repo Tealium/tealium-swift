@@ -27,6 +27,8 @@ public class MediaSession: MediaSessionProtocol {
         self.mediaService = mediaService
     }
     
+    /// QoE bitrate
+    /// Sends a `bitrateChange` event when updated
     public var bitrate: Int? {
         get { mediaService?.media.qoe.bitrate }
         set {
@@ -37,16 +39,20 @@ public class MediaSession: MediaSessionProtocol {
         }
     }
     
+    /// QoE droppedFrames
     public var droppedFrames: Int {
         get { mediaService?.media.qoe.droppedFrames ?? 0 }
         set { mediaService?.media.qoe.droppedFrames = newValue }
     }
     
+    /// QoE playbackSpeed
     public var playbackSpeed: Double {
         get { mediaService?.media.qoe.playbackSpeed ?? 1.0 }
         set { mediaService?.media.qoe.playbackSpeed = newValue }
     }
     
+    /// QoE playerState
+    /// Sends a `playerStateStart` and `playerStateEnd` event when updated
     public var playerState: PlayerState? {
         get { mediaService?.media.state }
         set {
@@ -123,6 +129,7 @@ public class MediaSession: MediaSessionProtocol {
         )
     }
     
+    /// Sends `adBreakEnd` event and calculates duration of the adBreak
     public func endAdBreak() {
         guard var adBreak = mediaService?.media.adBreaks.first else {
             return
@@ -167,6 +174,7 @@ public class MediaSession: MediaSessionProtocol {
         mediaService?.media.remove(by: ad.uuid)
     }
     
+    /// Sends `adEnd` event and calculates duration of the ad
     public func endAd() {
         guard var ad = mediaService?.media.ads.first else {
             return
@@ -181,6 +189,7 @@ public class MediaSession: MediaSessionProtocol {
         mediaService?.media.remove(by: ad.uuid)
     }
     
+    /// Sends a custom media event
     public func custom(_ event: String) {
         mediaService?.track(.custom(event))
     }
@@ -197,6 +206,7 @@ public class MediaSession: MediaSessionProtocol {
         mediaService?.track(.event(.sessionEnd))
     }
     
+    /// Calculates the duration of the content, in seconds
     public func calculate(duration: Date?) -> Int? {
         guard let duration = duration else {
             return nil
@@ -207,11 +217,11 @@ public class MediaSession: MediaSessionProtocol {
         return calculated.second
     }
     
-    public func milestone(_ milestone: Milestone) {
+    public func sendMilestone(_ milestone: Milestone) {
         fatal(from: "\(#function)")
     }
     
-    public func ping() {
+    public func sendPing() {
         fatal(from: "\(#function)")
     }
     
@@ -219,7 +229,7 @@ public class MediaSession: MediaSessionProtocol {
         fatal(from: "\(#function)")
     }
     
-    public func summary() {
+    public func setSummaryInfo() {
         fatal(from: "\(#function)")
     }
     

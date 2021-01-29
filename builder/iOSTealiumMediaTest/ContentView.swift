@@ -17,7 +17,7 @@ struct ContentView: View {
                                         streamType: .dvod,
                                         mediaType: .video,
                                         qoe: QoE(bitrate: 5000),
-                                        trackingType: .summary, // change to test different types
+                                        trackingType: .significant, // change to test different types
                                         state: .closedCaption,
                                         duration: 130)
     

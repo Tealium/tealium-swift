@@ -82,7 +82,7 @@ class ConsentManagerModuleTests: XCTestCase {
         let queue = module.shouldQueue(request: track)
         XCTAssertTrue(queue.0)
         XCTAssertTrue(queue.1?["queue_reason"] as? String == "consentmanager", "Consent Manager Module: \(#function) - Track call contained unexpected value")
-        XCTAssertTrue(queue.1?["tracking_consented"] as? String == TealiumValue.unknown, "Consent Manager Module: \(#function) - Track call contained unexpected value")
+        XCTAssertTrue(queue.1?["consent_status"] as? String == TealiumValue.unknown, "Consent Manager Module: \(#function) - Track call contained unexpected value")
     }
 
     func testShouldQueueTrackingStatusTrackingAllowed() {
@@ -92,7 +92,7 @@ class ConsentManagerModuleTests: XCTestCase {
         track = TealiumTrackRequest(data: ["test": "track"])
         let queue = module.shouldQueue(request: track)
         XCTAssertFalse(queue.0)
-        XCTAssertTrue(queue.1?["tracking_consented"] as? String == "consented", "Consent Manager Module: \(#function) - Track call contained unexpected value")
+        XCTAssertTrue(queue.1?["consent_status"] as? String == "consented", "Consent Manager Module: \(#function) - Track call contained unexpected value")
         guard let categories = queue.1?["consent_categories"] as? [String] else {
             XCTFail("Consent categories should be present in dictionary")
             return
@@ -106,7 +106,7 @@ class ConsentManagerModuleTests: XCTestCase {
         track = TealiumTrackRequest(data: ["test": "track"])
         let queue = module.shouldQueue(request: track)
         XCTAssertFalse(queue.0)
-        XCTAssertTrue(queue.1?["tracking_consented"] as? String == "notConsented", "Consent Manager Module: \(#function) - Track call contained unexpected value")
+        XCTAssertTrue(queue.1?["consent_status"] as? String == "notConsented", "Consent Manager Module: \(#function) - Track call contained unexpected value")
         guard let categories = queue.1?["consent_categories"] as? [String] else {
             XCTFail("Consent categories should be present in dictionary")
             return
@@ -149,7 +149,7 @@ class ConsentManagerModuleTests: XCTestCase {
         let module = createModule(with: config)
         module.consentManager?.userConsentStatus = .consented
         let expected: [String: Any] = [
-            ConsentKey.trackingConsentedKey: "consented",
+            ConsentKey.consentStatus: "consented",
             ConsentKey.consentCategoriesKey: ["analytics",
                                               "affiliates",
                                               "display_ads",
@@ -180,7 +180,7 @@ class ConsentManagerModuleTests: XCTestCase {
         let module = createModule(with: config)
         module.consentManager?.userConsentStatus = .notConsented
         let expected: [String: Any] = [
-            ConsentKey.trackingConsentedKey: "notConsented",
+            ConsentKey.consentStatus: "notConsented",
             ConsentKey.consentCategoriesKey: [],
             "test": "track",
             "policy": "gdpr"
@@ -198,7 +198,7 @@ class ConsentManagerModuleTests: XCTestCase {
         module.consentManager?.userConsentStatus = .consented
         module.consentManager?.resetUserConsentPreferences()
         let expected: [String: Any] = [
-            ConsentKey.trackingConsentedKey: TealiumValue.unknown,
+            ConsentKey.consentStatus: TealiumValue.unknown,
             ConsentKey.consentCategoriesKey: [],
             "test": "track",
             "policy": "gdpr"
@@ -213,7 +213,7 @@ class ConsentManagerModuleTests: XCTestCase {
     func testAddConsentDataToTrackWhenMigratedFromLegacyStorage() {
         let module = createModule(dataLayer: MockMigratedDataLayer())
         let expected: [String: Any] = [
-            ConsentKey.trackingConsentedKey: "consented",
+            ConsentKey.consentStatus: "consented",
             ConsentKey.consentCategoriesKey: [TealiumConsentCategories.affiliates.rawValue,
                                               TealiumConsentCategories.bigData.rawValue,
                                               TealiumConsentCategories.crm.rawValue,
