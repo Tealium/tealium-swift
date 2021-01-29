@@ -27,7 +27,7 @@ public protocol MediaSessionEvents {
     func stop()
     func custom(_ event: String)
     func sendMilestone(_ milestone: Milestone)
-    func sendPing()
+    func ping()
     func stopPing()
     func setSummaryInfo()
     func endSession()

@@ -623,7 +623,7 @@ class TealiumMediaTests: XCTestCase {
     func testHeartbeatManualPing_CallsTrack() {
         session = HeartbeatMediaSession(with: mockMediaService)
         session.startSession()
-        session.sendPing()
+        session.ping()
         XCTAssertEqual(mockMediaService.standardEventCounts[.heartbeat], 1)
     }
     
@@ -722,37 +722,37 @@ class TealiumMediaTests: XCTestCase {
         mockMediaService.media.duration = 130
         mockMediaService.media.startTime = TimeTraveler().travel(by: -13)
         session = MilestoneMediaSession(with: mockMediaService, interval: 1.0)
-        session.sendPing()
+        session.ping()
         XCTAssertEqual(mockMediaService.media.milestone, "10%")
         
         mockMediaService.media.duration = 130
         mockMediaService.media.startTime = TimeTraveler().travel(by: -33)
         session = MilestoneMediaSession(with: mockMediaService, interval: 1.0)
-        session.sendPing()
+        session.ping()
         XCTAssertEqual(mockMediaService.media.milestone, "25%")
         
         mockMediaService.media.duration = 130
         mockMediaService.media.startTime = TimeTraveler().travel(by: -65)
         session = MilestoneMediaSession(with: mockMediaService, interval: 1.0)
-        session.sendPing()
+        session.ping()
         XCTAssertEqual(mockMediaService.media.milestone, "50%")
         
         mockMediaService.media.duration = 130
         mockMediaService.media.startTime = TimeTraveler().travel(by: -98)
         session = MilestoneMediaSession(with: mockMediaService, interval: 1.0)
-        session.sendPing()
+        session.ping()
         XCTAssertEqual(mockMediaService.media.milestone, "75%")
         
         mockMediaService.media.duration = 130
         mockMediaService.media.startTime = TimeTraveler().travel(by: -117)
         session = MilestoneMediaSession(with: mockMediaService, interval: 1.0)
-        session.sendPing()
+        session.ping()
         XCTAssertEqual(mockMediaService.media.milestone, "90%")
         
         mockMediaService.media.duration = 130
         mockMediaService.media.startTime = TimeTraveler().travel(by: -128)
         session = MilestoneMediaSession(with: mockMediaService, interval: 1.0)
-        session.sendPing()
+        session.ping()
         XCTAssertEqual(mockMediaService.media.milestone, "100%")
     }
     
@@ -760,7 +760,7 @@ class TealiumMediaTests: XCTestCase {
         mockMediaService.media.duration = 130
         mockMediaService.media.startTime = TimeTraveler().travel(by: -9)
         session = MilestoneMediaSession(with: mockMediaService, interval: 1.0)
-        session.sendPing()
+        session.ping()
         XCTAssertEqual(mockMediaService.standardEventCounts[.milestone], 0)
     }
     
@@ -780,7 +780,7 @@ class TealiumMediaTests: XCTestCase {
         mockMediaService.media.duration = 130
         mockMediaService.media.startTime = TimeTraveler().travel(by: -20)
         session = HeartbeatMilestoneMediaSession(with: mockMediaService, interval: 1.0)
-        session.sendPing()
+        session.ping()
         XCTAssertEqual(mockMediaService.standardEventCounts[.heartbeat], 1)
         XCTAssertEqual(mockMediaService.standardEventCounts[.milestone], 0)
     }
@@ -789,7 +789,7 @@ class TealiumMediaTests: XCTestCase {
         mockMediaService.media.duration = 100
         mockMediaService.media.startTime = TimeTraveler().travel(by: -10)
         session = HeartbeatMilestoneMediaSession(with: mockMediaService, interval: 1.0)
-        session.sendPing()
+        session.ping()
         XCTAssertEqual(mockMediaService.standardEventCounts[.heartbeat], 1)
         XCTAssertEqual(mockMediaService.standardEventCounts[.milestone], 1)
         XCTAssertEqual(mockMediaService.media.milestone, "10%")
@@ -799,7 +799,7 @@ class TealiumMediaTests: XCTestCase {
         mockMediaService.media.duration = 130
         mockMediaService.media.startTime = TimeTraveler().travel(by: -19.5)
         session = HeartbeatMilestoneMediaSession(with: mockMediaService, interval: 1.0)
-        session.sendPing()
+        session.ping()
         XCTAssertEqual(mockMediaService.standardEventCounts[.heartbeat], 0)
         XCTAssertEqual(mockMediaService.standardEventCounts[.heartbeat], 0)
         XCTAssertNil(mockMediaService.media.milestone)

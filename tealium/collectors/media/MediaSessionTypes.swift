@@ -23,7 +23,7 @@ class HeartbeatMediaSession: MediaSession {
     }
     
     /// Sends a heartbeat event
-    override func sendPing() {
+    override func ping() {
         mediaService?.track(.event(.heartbeat))
     }
     
@@ -37,7 +37,7 @@ class HeartbeatMediaSession: MediaSession {
     override func startSession() {
         super.startSession()
         timer.eventHandler = { [weak self] in
-            self?.sendPing()
+            self?.ping()
         }
         timer.resume()
     }
@@ -57,11 +57,11 @@ class HeartbeatMediaSession: MediaSession {
 class HeartbeatMilestoneMediaSession: MilestoneMediaSession {
     
     /// Adds a heartbeat ping every 10 seconds to the milestone tracking type
-    override func sendPing() {
+    override func ping() {
         if difference % 10 == 0 {
             mediaService?.track(.event(.heartbeat))
         }
-        super.sendPing()
+        super.ping()
     }
     
 }
@@ -89,7 +89,7 @@ class MilestoneMediaSession: MediaSession {
     
     /// Checks the current playback against the provided duration for the percentage played
     /// If within range of a milestone, set the `media_milestone` and send an event
-    override func sendPing() {
+    override func ping() {
         var currentMilestone: Milestone?
         switch percentage {
         case 8.0...12.0:
@@ -118,7 +118,7 @@ class MilestoneMediaSession: MediaSession {
         super.startSession()
         startTime = Date()
         timer.eventHandler = { [weak self] in
-            self?.sendPing()
+            self?.ping()
         }
         timer.resume()
     }

@@ -221,7 +221,7 @@ public class MediaSession: MediaSessionProtocol {
         fatal(from: "\(#function)")
     }
     
-    public func sendPing() {
+    public func ping() {
         fatal(from: "\(#function)")
     }
     
