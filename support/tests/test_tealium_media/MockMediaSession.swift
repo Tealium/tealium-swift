@@ -12,7 +12,7 @@ import TealiumCore
 
 class MockMediaService: MediaEventDispatcher {
     var delegate: ModuleDelegate?
-    private var _mockMedia = MediaCollection(name: "MockTealiumMedia",
+    private var _mockMedia = MediaContent(name: "MockTealiumMedia",
                                              streamType: .vod,
                                              mediaType: .video,
                                              qoe: QoE(bitrate: 1000, startTime: nil, fps: 20),
@@ -25,7 +25,7 @@ class MockMediaService: MediaEventDispatcher {
                                              metadata: ["meta_key": "meta_value"])
     var updatedSegment: Segment?
     
-    var media: MediaCollection {
+    var media: MediaContent {
         get {
             _mockMedia    
         }

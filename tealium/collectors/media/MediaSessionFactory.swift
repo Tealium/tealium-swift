@@ -11,7 +11,7 @@ import TealiumCore
 //#endif
 
 public struct MediaSessionFactory {
-    static func create(from media: MediaCollection,
+    static func create(from media: MediaContent,
                        with delegate: ModuleDelegate?) -> MediaSession {
         let mediaService = MediaEventService(media: media, delegate: delegate)
         switch media.trackingType {

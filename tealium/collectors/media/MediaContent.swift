@@ -1,5 +1,5 @@
 //
-//  MediaCollection.swift
+//  MediaContent.swift
 //  tealium-swift
 //
 //  Copyright © 2021 Tealium, Inc. All rights reserved.
@@ -10,7 +10,7 @@ import Foundation
 import TealiumCore
 //#endif
 
-public class MediaCollection: Codable {
+public class MediaContent: Codable {
     var uuid = UUID().uuidString
     var name: String
     var streamType: StreamType
@@ -29,6 +29,9 @@ public class MediaCollection: Codable {
     var adBreaks = [AdBreak]()
     var ads = [Ad]()
     var chapters = [Chapter]()
+    static var numberOfAds = 0
+    static var numberOfAdBreaks = 0
+    static var numberOfChapters = 0
     var milestone: String?
     var summary: Summary?
     
@@ -38,7 +41,7 @@ public class MediaCollection: Codable {
         case streamType = "media_stream_type"
         case mediaType = "media_type"
         case qoe = "media_qoe"
-        case trackingType = "media_tracking_interval"
+        case trackingType = "media_tracking_type"
         case startTime = "media_session_start_time"
         case state = "media_player_state"
         case customId = "media_custom_id"
@@ -80,7 +83,7 @@ public class MediaCollection: Codable {
 
 }
 
-extension MediaCollection {
+extension MediaContent {
     
     /// Adds to an array for a given segment
     /// - Parameter segment: `Segment`

@@ -19,6 +19,9 @@ class TealiumMediaTests: XCTestCase {
     
     override func setUpWithError() throws {
         session = SignificantEventMediaSession(with: mockMediaService)
+        MediaContent.numberOfAds = 0
+        MediaContent.numberOfAdBreaks = 0
+        MediaContent.numberOfChapters = 0
     }
     
     override func tearDownWithError() throws { }
@@ -34,7 +37,7 @@ class TealiumMediaTests: XCTestCase {
                                       tealium: tealium)
         let module = MediaModule(context: context, delegate: MockModuleDelegate(), diskStorage: nil) { _ in }
         
-        let session = module.createSession(from: MediaCollection(name: "test", streamType: .aod, mediaType: .video, qoe: QoE(bitrate: 1000)))
+        let session = module.createSession(from: MediaContent(name: "test", streamType: .aod, mediaType: .video, qoe: QoE(bitrate: 1000)))
         
         guard let _ = session as? SignificantEventMediaSession else {
             XCTFail("createSession failed")
@@ -398,7 +401,7 @@ class TealiumMediaTests: XCTestCase {
         session.mediaService?.media.chapters = [Chapter(name: "Chapter 1", duration: 900), Chapter(name: "Chapter 2", duration: 960)]
         session.endChapter()
         switch mockMediaService.updatedSegment {
-        case .chapter(let chapter): XCTAssertEqual(chapter.position, 1)
+        case .chapter(let chapter): XCTAssertEqual(chapter.position, 2)
         default:
             XCTFail("Incorrect segment type")
             break
@@ -1186,7 +1189,7 @@ class TealiumMediaTests: XCTestCase {
     }
     
     func testMediaSessionData_AddedToMediaRequestData() {
-        session.mediaService?.media = MediaCollection(name: "Media Vars",
+        session.mediaService?.media = MediaContent(name: "Media Vars",
                                                    streamType: .podcast,
                                                    mediaType: .audio,
                                                    qoe: QoE(bitrate: 5000,
@@ -1211,7 +1214,7 @@ class TealiumMediaTests: XCTestCase {
             XCTAssertEqual(trackRequest.data["media_name"] as! String, "Media Vars")
             XCTAssertEqual(trackRequest.data["media_stream_type"] as! String, "podcast")
             XCTAssertEqual(trackRequest.data["media_type"] as! String, "audio")
-            XCTAssertEqual(trackRequest.data["media_tracking_interval"] as! String, "significant")
+            XCTAssertEqual(trackRequest.data["media_tracking_type"] as! String, "significant")
             XCTAssertEqual(trackRequest.data["media_player_state"] as! String, "mute")
             XCTAssertEqual(trackRequest.data["media_custom_id"] as! String, "some id")
             XCTAssertEqual(trackRequest.data["media_length"] as! Int, 3000)
@@ -1364,23 +1367,6 @@ class TealiumMediaTests: XCTestCase {
             expect.fulfill()
         }
         wait(for: [expect], timeout: 1.0)
-    }
-    
-    func testMilestoneTimerInterval_Set_FromConfig() {
-        let expect = expectation(description: "testMediaServiceNotNilWhenAddedToCollectors")
-        let config = TealiumConfig(account: "account", profile: "profile", environment: "env")
-        
-        tealium = Tealium(config: config) { _ in
-            self.mockMediaService.media.trackingType = .milestone
-            self.session = MediaSessionFactory.create(from: self.mockMediaService.media, with: MockModuleDelegate())
-            //session.
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 1.0)
-    }
-    
-    func testMilestoneTimerInterval_Default_WhenNotSetFromConfig() {
-        
     }
 
 }

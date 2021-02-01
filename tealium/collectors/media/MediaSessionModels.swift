@@ -143,7 +143,6 @@ public struct Chapter: Codable {
     var position: Int?
     var startTime: Date?
     var metadata: AnyCodable?
-    private var numberOfChapters = 0
     
     enum CodingKeys: String, CodingKey {
         case uuid = "media_chapter_uuid"
@@ -159,10 +158,10 @@ public struct Chapter: Codable {
                 position: Int? = nil,
                 startTime: Date? = Date(),
                 metadata: AnyCodable? = nil) {
-        numberOfChapters.increment()
+        MediaContent.numberOfChapters.increment()
         self.name = name
         self.duration = duration
-        self.position = position ?? numberOfChapters
+        self.position = position ?? MediaContent.numberOfChapters
         self.startTime = startTime
         self.metadata = metadata
     }
@@ -184,12 +183,11 @@ public struct Ad: Codable {
     var pod: String?
     var playerName: String?
     var startTime: Date = Date()
-    private var numberOfAds = 0
     
     enum CodingKeys: String, CodingKey {
         case uuid = "media_ad_uuid"
         case name = "media_ad_name"
-        case id = "vad_id"
+        case id = "ad_id"
         case duration = "media_ad_length"
         case position = "media_ad_position"
         case advertiser = "media_advertiser"
@@ -216,11 +214,11 @@ public struct Ad: Codable {
                 numberOfLoads: Int? = nil,
                 pod: String? = nil,
                 playerName: String? = nil) {
-        numberOfAds.increment()
-        self.name = name ?? "Ad \(numberOfAds)"
+        MediaContent.numberOfAds.increment()
+        self.name = name ?? "Ad \(MediaContent.numberOfAds)"
         self.id = id
         self.duration = duration
-        self.position = position ?? numberOfAds
+        self.position = position ?? MediaContent.numberOfAds
         self.advertiser = advertiser
         self.creativeId = creativeId
         self.campaignId = campaignId
@@ -242,7 +240,6 @@ public struct AdBreak: Codable {
     var index: Int?
     var position: Int?
     var startTime: Date = Date()
-    private var numberOfAdBreaks = 0
     
     enum CodingKeys: String, CodingKey {
         case uuid = "media_ad_break_uuid"
@@ -258,12 +255,12 @@ public struct AdBreak: Codable {
                 duration: Int? = nil,
                 index: Int? = nil,
                 position: Int? = nil) {
-        numberOfAdBreaks.increment()
-        self.title = title ?? "Ad Break \(numberOfAdBreaks)"
+        MediaContent.numberOfAdBreaks.increment()
+        self.title = title ?? "Ad Break \(MediaContent.numberOfAdBreaks)"
         self.id = id
         self.duration = duration
         self.index = index
-        self.position = position ?? numberOfAdBreaks
+        self.position = position ?? MediaContent.numberOfAdBreaks
     }
     
 }
@@ -321,13 +318,7 @@ public struct Summary: Codable {
         case totalSeekTime = "media_total_seek_time"
         case sessionEndTime = "media_session_end_time"
     }
-
     
 }
 
-public extension Int {
-    mutating func increment(by number: Int = 1) {
-        self += number
-    }
-}
 

@@ -13,11 +13,11 @@ struct ContentView: View {
     @State private var video = Video()
     @State private var _session: MediaSession?
     private let demoURL = Bundle.main.url(forResource: "tealium", withExtension: "mp4")!
-    private let media = MediaCollection(name: "Tealium Customer Data Hub",
+    private let media = MediaContent(name: "Tealium Customer Data Hub",
                                         streamType: .dvod,
                                         mediaType: .video,
                                         qoe: QoE(bitrate: 5000),
-                                        trackingType: .significant, // change to test different types
+                                        trackingType: .milestone, // change to test different types
                                         state: .closedCaption,
                                         duration: 130)
     
@@ -135,13 +135,16 @@ struct ContentView: View {
                 }
                 
                 TextButtonView(title: "Ad 1 Start") {
-                    mediaSession?.startAdBreak(AdBreak(title: "Ad Break 1"))
-                    mediaSession?.startAd(Ad(name: "Ad 1"))
+                    //mediaSession?.startAdBreak(AdBreak(title: "Ad Break 1"))
+                    mediaSession?.startAdBreak(AdBreak())
+                    //mediaSession?.startAd(Ad(name: "Ad 1"))
+                    mediaSession?.startAd(Ad())
                 }
                 
                 TextButtonView(title: "Ad 1 Skip, Ad 2 Start") {
                     mediaSession?.skipAd()
-                    mediaSession?.startAd(Ad(name: "Ad 2"))
+                    mediaSession?.startAd(Ad())
+                    //mediaSession?.startAd(Ad(name: "Ad 2"))
                 }
                 
                 TextButtonView(title: "Ad 2 Complete") {

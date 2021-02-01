@@ -30,3 +30,15 @@ public extension Encodable {
         return (try? JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)).flatMap { $0 as? [String: Any] }
     }
 }
+
+public extension Int {
+    
+    mutating func increment(by number: Int = 1) {
+        self += number
+    }
+    
+    mutating func decrement(by number: Int = 1) {
+        self -= number
+    }
+}
+
