@@ -51,7 +51,7 @@ public enum Milestone: String, CaseIterable {
     case twentyFive = "25%"
     case fifty = "50%"
     case seventyFive = "75%"
-    case ninty = "90%"
+    case ninety = "90%"
     case oneHundred = "100%"
 }
 
