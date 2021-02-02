@@ -32,14 +32,24 @@ class HeartbeatMediaSession: MediaSession {
         timer.suspend()
     }
     
-    /// Sends a `startSession` event and define timer event handler to be triggered every
+    /// Sends a `play` event and defines the timer event handler to be triggered every
     /// 10 seconds
-    override func startSession() {
-        super.startSession()
+    override func play() {
+        super.play()
         timer.eventHandler = { [weak self] in
             self?.ping()
         }
         timer.resume()
+    }
+    
+    override func pause() {
+        super.pause()
+        timer.suspend()
+    }
+    
+    override func stop() {
+        super.stop()
+        timer.suspend()
     }
     
     /// Sends an `endSession` event and cancel the timer
@@ -71,6 +81,8 @@ class MilestoneMediaSession: MediaSession {
     private var timer: Repeater
     private var duration: Int?
     private var startTime: Date?
+    private var previousDifference = 0
+    private var timeElapsed = 0
     private var triggered = [Milestone]()
     
     init(with mediaService: MediaEventDispatcher,
@@ -82,7 +94,7 @@ class MilestoneMediaSession: MediaSession {
         super.init(with: mediaService)
     }
     
-    /// Difference, in seconds between the start of the session and current playback position
+    /// Difference, in seconds between the start of the playback and current playback position
     var difference: Int {
         calculate(duration: startTime) ?? 0
     }
@@ -90,6 +102,7 @@ class MilestoneMediaSession: MediaSession {
     /// Checks the current playback against the provided duration for the percentage played
     /// If within range of a milestone, set the `media_milestone` and send an event
     override func ping() {
+        timeElapsed = difference + previousDifference
         var currentMilestone: Milestone?
         switch percentage {
         case 8.0...12.0:
@@ -113,14 +126,31 @@ class MilestoneMediaSession: MediaSession {
         sendMilestone(current)
     }
     
-    /// Sends a `startSession` event and define timer event handler to be triggered for given interval
     override func startSession() {
+        triggered = [Milestone]()
         super.startSession()
+    }
+    
+    /// Sends a `play` event and define timer event handler to be triggered for given interval
+    override func play() {
         startTime = Date()
         timer.eventHandler = { [weak self] in
             self?.ping()
         }
         timer.resume()
+        super.play()
+    }
+    
+    /// Sends a `pause` event and records the time elapsed thus far
+    override func pause() {
+        timer.suspend()
+        previousDifference += difference
+        super.pause()
+    }
+
+    override func stop() {
+        timer.suspend()
+        super.stop()
     }
     
     /// Cancels the milestone timer
@@ -130,8 +160,8 @@ class MilestoneMediaSession: MediaSession {
     
     /// Sends an `endSession` event and cancel the timer
     override func endSession() {
-        super.endSession()
         timer.suspend()
+        super.endSession()
     }
 
     /// Sets `media_milestone` and sends event
@@ -152,7 +182,7 @@ class MilestoneMediaSession: MediaSession {
         guard let duration = duration else {
             return 0.0
         }
-        return Double(difference) / Double(duration) * 100
+        return Double(timeElapsed) / Double(duration) * 100
     }
     
     deinit {

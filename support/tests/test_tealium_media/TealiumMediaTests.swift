@@ -557,7 +557,7 @@ class TealiumMediaTests: XCTestCase {
         XCTAssertEqual(mockMediaService.media.qoe.droppedFrames, 4)
     }
     
-    func testPlayerStateReturnsExpectedValue() {
+    func testPlayerState_ReturnsExpectedValue() {
         XCTAssertEqual(session.playerState, .fullscreen)
     }
     
@@ -630,10 +630,10 @@ class TealiumMediaTests: XCTestCase {
         XCTAssertEqual(mockMediaService.standardEventCounts[.heartbeat], 1)
     }
     
-    func testHeartbeatStartSession_SetsTimerEventHandler() {
+    func testHeartbeatPlau_SetsTimerEventHandler() {
         let timer = MockRepeatingTimer()
         session = HeartbeatMediaSession(with: mockMediaService, timer)
-        session.startSession()
+        session.play()
         XCTAssertNotNil(timer.eventHandler)
     }
     
@@ -643,10 +643,10 @@ class TealiumMediaTests: XCTestCase {
         XCTAssertEqual(mockMediaService.standardEventCounts[.sessionStart], 1)
     }
     
-    func testHeartbeatStartSession_CallsTimerResume() {
+    func testHeartbeatPlay_CallsTimerResume() {
         let timer = MockRepeatingTimer()
         session = HeartbeatMediaSession(with: mockMediaService, timer)
-        session.startSession()
+        session.play()
         XCTAssertEqual(timer.resumCount, 1)
     }
     
@@ -656,10 +656,24 @@ class TealiumMediaTests: XCTestCase {
         XCTAssertEqual(mockMediaService.standardEventCounts[.sessionEnd], 1)
     }
     
-    func testStopPing_CallsTimerSuspend() {
+    func testHeartbeatStopPing_CallsTimerSuspend() {
         let timer = MockRepeatingTimer()
         session = HeartbeatMediaSession(with: mockMediaService, timer)
         session.stopPing()
+        XCTAssertEqual(timer.suspendCount, 1)
+    }
+    
+    func testHeartbeatPause_CallsTimerSuspend() {
+        let timer = MockRepeatingTimer()
+        session = HeartbeatMediaSession(with: mockMediaService, timer)
+        session.pause()
+        XCTAssertEqual(timer.suspendCount, 1)
+    }
+    
+    func testHeartbeatStop_CallsTimerSuspend() {
+        let timer = MockRepeatingTimer()
+        session = HeartbeatMediaSession(with: mockMediaService, timer)
+        session.stop()
         XCTAssertEqual(timer.suspendCount, 1)
     }
     
@@ -679,17 +693,17 @@ class TealiumMediaTests: XCTestCase {
     }
     
     // MARK: Tracking Types - Milestone
-    func testMilestoneSartSession_SetsEventHandler() {
+    func testMilestonePlay_SetsEventHandler() {
         let mockTimer = MockRepeatingTimer()
         session = MilestoneMediaSession(with: mockMediaService, interval: 1.0, mockTimer)
-        session.startSession()
+        session.play()
         XCTAssertNotNil(mockTimer.eventHandler)
     }
     
-    func testMilestoneSartSession_CallsTimerResume() {
+    func testMilestonePlay_CallsTimerResume() {
         let timer = MockRepeatingTimer()
         session = MilestoneMediaSession(with: mockMediaService, interval: 1.0, timer)
-        session.startSession()
+        session.play()
         XCTAssertEqual(timer.resumCount, 1)
     }
     
@@ -703,6 +717,20 @@ class TealiumMediaTests: XCTestCase {
         let timer = MockRepeatingTimer()
         session = MilestoneMediaSession(with: mockMediaService, interval: 1.0, timer)
         session.stopPing()
+        XCTAssertEqual(timer.suspendCount, 1)
+    }
+    
+    func testMilestonePause_CallsTimerSuspend() {
+        let timer = MockRepeatingTimer()
+        session = MilestoneMediaSession(with: mockMediaService, interval: 1.0, timer)
+        session.pause()
+        XCTAssertEqual(timer.suspendCount, 1)
+    }
+    
+    func testMilestoneStop_CallsTimerSuspend() {
+        let timer = MockRepeatingTimer()
+        session = MilestoneMediaSession(with: mockMediaService, interval: 1.0, timer)
+        session.stop()
         XCTAssertEqual(timer.suspendCount, 1)
     }
     
@@ -813,6 +841,20 @@ class TealiumMediaTests: XCTestCase {
         session = SummaryMediaSession(with: mockMediaService)
         session.startSession()
         XCTAssertNotNil(session.mediaService?.media.summary)
+    }
+    
+    func testSummaryBitrate_ReturnsQOEBitrate() {
+        session = SummaryMediaSession(with: mockMediaService)
+        XCTAssertEqual(session.bitrate, 1000)
+        session.bitrate = 4000
+        XCTAssertEqual(mockMediaService.media.qoe.bitrate, 4000)
+    }
+    
+    func testSummaryPlayerState_ReturnsExpectedValue() {
+        session = SummaryMediaSession(with: mockMediaService)
+        XCTAssertEqual(session.playerState, .fullscreen)
+        session.playerState = .inFocus
+        XCTAssertEqual(mockMediaService.media.state, .inFocus)
     }
     
     func testSummaryPlay_IncrementsPlayCounter() {

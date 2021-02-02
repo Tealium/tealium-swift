@@ -57,6 +57,7 @@ struct ContentView: View {
                         case .loading:
                             video.stateText = "Loading..."
                         case .playing(let totalDuration):
+                            video.paused = false
                             video.stateText = "Playing!"
                             video.totalDuration = totalDuration
                             if !video.started {
@@ -67,7 +68,10 @@ struct ContentView: View {
                             mediaSession?.startChapter(Chapter(name: "Chapter 1", duration: 30))
                         case .paused(let playProgress, let bufferProgress):
                             video.stateText = "Paused: play \(Int(playProgress * 100))% buffer \(Int(bufferProgress * 100))%"
-                            mediaSession?.pause()
+                            if !video.paused {
+                                mediaSession?.pause()
+                                video.paused = true
+                            }
                         case .error(let error):
                             video.stateText = "Error: \(error)"
                         }
@@ -135,16 +139,13 @@ struct ContentView: View {
                 }
                 
                 TextButtonView(title: "Ad 1 Start") {
-                    //mediaSession?.startAdBreak(AdBreak(title: "Ad Break 1"))
-                    mediaSession?.startAdBreak(AdBreak())
-                    //mediaSession?.startAd(Ad(name: "Ad 1"))
-                    mediaSession?.startAd(Ad())
+                    mediaSession?.startAdBreak(AdBreak(title: "Ad Break 1"))
+                    mediaSession?.startAd(Ad(name: "Ad 1"))
                 }
                 
                 TextButtonView(title: "Ad 1 Skip, Ad 2 Start") {
                     mediaSession?.skipAd()
-                    mediaSession?.startAd(Ad())
-                    //mediaSession?.startAd(Ad(name: "Ad 2"))
+                    mediaSession?.startAd(Ad(name: "Ad 2"))
                 }
                 
                 TextButtonView(title: "Ad 2 Complete") {

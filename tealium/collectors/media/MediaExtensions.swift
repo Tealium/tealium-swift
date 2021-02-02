@@ -32,13 +32,8 @@ public extension Encodable {
 }
 
 public extension Int {
-    
     mutating func increment(by number: Int = 1) {
         self += number
-    }
-    
-    mutating func decrement(by number: Int = 1) {
-        self -= number
     }
 }
 

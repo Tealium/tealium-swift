@@ -17,4 +17,5 @@ struct Video {
     var stateText: String = ""
     var totalDuration: Double = 0
     var started: Bool = false
+    var paused: Bool = false
 }
