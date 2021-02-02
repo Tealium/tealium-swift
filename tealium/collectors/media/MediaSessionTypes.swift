@@ -114,7 +114,7 @@ class MilestoneMediaSession: MediaSession {
         case 73.0...77.0:
             currentMilestone = setMilestoneOnce(.seventyFive)
         case 88.0...92.0:
-            currentMilestone = setMilestoneOnce(.ninty)
+            currentMilestone = setMilestoneOnce(.ninety)
         case 97.0...100:
             currentMilestone = setMilestoneOnce(.oneHundred)
         default:
