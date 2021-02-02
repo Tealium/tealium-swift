@@ -113,11 +113,11 @@ public class MediaSession: MediaSessionProtocol {
         mediaService?.track(.event(.bufferEnd))
     }
     
-    public func startSeek() {
+    public func startSeek(at playhead: Int? = nil) {
         mediaService?.track(.event(.seekStart))
     }
     
-    public func endSeek() {
+    public func endSeek(at playhead: Int? = nil) {
         mediaService?.track(.event(.seekEnd))
     }
     

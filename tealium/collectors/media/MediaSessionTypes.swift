@@ -114,7 +114,7 @@ class MilestoneMediaSession: MediaSession {
         case 73.0...77.0:
             currentMilestone = setMilestoneOnce(.seventyFive)
         case 88.0...92.0:
-            currentMilestone = setMilestoneOnce(.ninty)
+            currentMilestone = setMilestoneOnce(.ninety)
         case 97.0...100:
             currentMilestone = setMilestoneOnce(.oneHundred)
         default:
@@ -248,12 +248,12 @@ class SummaryMediaSession: MediaSession {
     }
     
     /// Sets latest seek start time
-    override func startSeek() {
+    override func startSeek(at playhead: Int?) {
         mediaService?.media.summary?.seekStartTime = Date()
     }
     
     /// Increments total seek time
-    override func endSeek() {
+    override func endSeek(at playhead: Int?) {
         guard let startTime = mediaService?.media.summary?.seekStartTime,
               let seekDuration = calculate(duration: startTime) else {
             return
