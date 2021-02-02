@@ -93,7 +93,7 @@ class ConsentManagerTests: XCTestCase {
     func testConsentStoreConfigFromDictionary() {
         let categories = ["cdp", "analytics"]
         let status = "consented"
-        let consentDictionary: [String: Any] = [ConsentKey.consentCategoriesKey: categories, ConsentKey.trackingConsentedKey: status]
+        let consentDictionary: [String: Any] = [ConsentKey.consentCategoriesKey: categories, ConsentKey.consentStatus: status]
         var userConsentPreferences = UserConsentPreferences(consentStatus: .unknown, consentCategories: nil)
         userConsentPreferences.initWithDictionary(preferencesDictionary: consentDictionary)
         XCTAssertNotNil(userConsentPreferences, "Consent Manager Test: \(#function) - Consent Preferences could not be initialized from dictionary")

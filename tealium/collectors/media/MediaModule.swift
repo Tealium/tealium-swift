@@ -25,7 +25,10 @@ public class MediaModule: Collector {
         self.delegate = delegate
     }
     
-    public func createSession(from media: MediaCollection) -> MediaSession {
+    /// Creates a `MediaSession` for a given tracking type
+    /// - Parameter media: `MediaCollection` containing meta information
+    /// - Returns: `MediaSession` type
+    public func createSession(from media: MediaContent) -> MediaSession {
         MediaSessionFactory.create(from: media, with: delegate)
     }
     

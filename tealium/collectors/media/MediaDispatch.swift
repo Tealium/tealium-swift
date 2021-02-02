@@ -12,19 +12,25 @@ import TealiumCore
 
 public protocol MediaDispatch: TealiumDispatch {
     var event: MediaEvent { get }
-    var parameters: MediaCollection { get }
+    var parameters: MediaContent { get }
     var segment: Segment? { get }
 }
 
 public struct TealiumMediaEvent: MediaDispatch {
     public var event: MediaEvent
-    public var parameters: MediaCollection
+    public var parameters: MediaContent
     public var segment: Segment?
     
+    /// Consolidates all the data from the media session for a given track call
+    /// - Returns; `[String: Any]`, flattened
     var data: [String: Any] {
         var dictionary = [String: Any]()
         switch event {
-            case .event(let name): dictionary[TealiumKey.event] = name.rawValue
+            case .event(let name):
+                if name.rawValue != StandardMediaEvent.milestone.rawValue {
+                    parameters.milestone = nil
+                }
+                dictionary[TealiumKey.event] = name.rawValue
             case .custom(let name): dictionary[TealiumKey.event] = name
         }
         if let parameters = parameters.encoded?.flattened {

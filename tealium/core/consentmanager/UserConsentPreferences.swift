@@ -31,7 +31,7 @@ public struct UserConsentPreferences: Equatable, Codable {
             self.consentCategories = consentCategoriesStringToEnum(categories)
         }
 
-        if let consentedStatus = preferencesDictionary[ConsentKey.trackingConsentedKey] as? String {
+        if let consentedStatus = preferencesDictionary[ConsentKey.consentStatus] as? String {
             switch consentedStatus {
             case TealiumConsentStatus.consented.rawValue:
                 self.consentStatus = TealiumConsentStatus.consented
@@ -73,7 +73,7 @@ public struct UserConsentPreferences: Equatable, Codable {
     public var dictionary: [String: Any]? {
         var preferencesDictionary = [String: Any]()
 
-        preferencesDictionary[ConsentKey.trackingConsentedKey] = self.consentStatus.rawValue
+        preferencesDictionary[ConsentKey.consentStatus] = self.consentStatus.rawValue
 
         if let categories = self.consentCategories, categories.count > 0 {
             preferencesDictionary[ConsentKey.consentCategoriesKey] = consentCategoriesEnumToStringArray(categories)

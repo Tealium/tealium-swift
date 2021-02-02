@@ -53,7 +53,7 @@ class TealiumHelper {
         _ = TealiumHelper.shared
     }
     
-    class func mediaSession(from media: MediaCollection) -> MediaSession? {
+    class func mediaSession(from media: MediaContent) -> MediaSession? {
         guard let mediaModule = TealiumHelper.shared.tealium?.media else {
             return nil
         }
