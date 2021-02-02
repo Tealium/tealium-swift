@@ -6,9 +6,9 @@
 //
 
 import Foundation
-//#if media
+#if media
 import TealiumCore
-//#endif
+#endif
 
 class SignificantEventMediaSession: MediaSession { }
 
@@ -81,6 +81,7 @@ class MilestoneMediaSession: MediaSession {
     private var timer: Repeater
     private var duration: Int?
     private var startTime: Date?
+    private var startSeek: Int?
     private var previousDifference = 0
     private var timeElapsed = 0
     private var triggered = [Milestone]()
@@ -146,6 +147,30 @@ class MilestoneMediaSession: MediaSession {
         timer.suspend()
         previousDifference += difference
         super.pause()
+    }
+    
+    /// Calls the `startSeek` event and records the seek start time for milestone tracking
+    /// Playhead is required for this implementation
+    /// - Parameter position: `Int` the playback position, in seconds, since the start of the content
+    override func startSeek(at position: Int? = nil) {
+        guard let position = position else {
+            return
+        }
+        startSeek = position
+        super.startSeek()
+    }
+    
+    /// Calls the `endSeek` event and records the seek start time for milestone tracking
+    /// Playhead is required for this implementation
+    /// - Parameter position: `Int` the playback position, in seconds, since the start of the content
+    override func endSeek(at position: Int? = nil) {
+        guard let startSeek = startSeek,
+              let endPosition = position else {
+            return
+        }
+        triggered = [Milestone]()
+        previousDifference += (endPosition - startSeek)
+        super.endSeek()
     }
 
     override func stop() {
@@ -247,18 +272,22 @@ class SummaryMediaSession: MediaSession {
         mediaService?.media.summary?.totalBufferTime.increment(by: bufferDuration)
     }
     
-    /// Sets latest seek start time
-    override func startSeek(at playhead: Int?) {
-        mediaService?.media.summary?.seekStartTime = Date()
+    /// Calls the `startSeek` event and records the seek start time for milestone tracking
+    /// Playhead is required for this implementation
+    /// - Parameter position: `Int` the playback position, in seconds, since the start of the content
+    override func startSeek(at position: Int?) {
+        mediaService?.media.summary?.seekStartPosition = position
     }
     
-    /// Increments total seek time
-    override func endSeek(at playhead: Int?) {
-        guard let startTime = mediaService?.media.summary?.seekStartTime,
-              let seekDuration = calculate(duration: startTime) else {
+    /// Calls the `endSeek` event and records the seek start time for milestone tracking
+    /// Playhead is required for this implementation
+    /// - Parameter position: `Int` the playback position, in seconds, since the start of the content
+    override func endSeek(at position: Int?) {
+        guard let startPosition = mediaService?.media.summary?.seekStartPosition,
+              let endPosition = position else {
             return
         }
-        mediaService?.media.summary?.totalSeekTime.increment(by: seekDuration)
+        mediaService?.media.summary?.totalSeekTime.increment(by: (endPosition - startPosition))
     }
     
     /// Increments ad count, adds uuid to adUUIDs, sets the latest ad start time

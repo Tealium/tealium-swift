@@ -6,9 +6,9 @@
 //
 
 import Foundation
-//#if media
+#if media
 import TealiumCore
-//#endif
+#endif
 
 public class MediaContent: Codable {
     var uuid = UUID().uuidString
@@ -25,16 +25,12 @@ public class MediaContent: Codable {
     var playerName: String?
     var channelName: String?
     var metadata: AnyCodable?
-    
+    var milestone: String?
+    var summary: Summary?
     var adBreaks = [AdBreak]()
     var ads = [Ad]()
     var chapters = [Chapter]()
-    static var numberOfAds = 0
-    static var numberOfAdBreaks = 0
-    static var numberOfChapters = 0
-    var milestone: String?
-    var summary: Summary?
-    
+
     enum CodingKeys: String, CodingKey {
         case uuid = "media_uuid"
         case name = "media_name"
@@ -98,11 +94,4 @@ extension MediaContent {
         }
     }
     
-    /// Removes from segment array for a given `uuidString`
-    /// - Parameter uuid: `String`
-    func remove(by uuid: String) {
-        ads.removeAll(where: { $0.uuid == uuid })
-        adBreaks.removeAll(where: { $0.uuid == uuid })
-        chapters.removeAll(where: { $0.uuid == uuid })
-    }
 }

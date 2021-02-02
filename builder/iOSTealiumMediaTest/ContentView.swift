@@ -17,7 +17,7 @@ struct ContentView: View {
                                         streamType: .dvod,
                                         mediaType: .video,
                                         qoe: QoE(bitrate: 5000),
-                                        trackingType: .milestone, // change to test different types
+                                        trackingType: .significant, // change to test different types
                                         state: .closedCaption,
                                         duration: 130)
     
@@ -112,9 +112,10 @@ struct ContentView: View {
                 
                 HStack {
                     IconButtonView(iconName: "gobackward.15") {
+                        mediaSession?.startSeek(at: Int(self.video.time.seconds))
                         self.video.time = CMTimeMakeWithSeconds(max(0, self.video.time.seconds - 15),
                                                                 preferredTimescale: self.video.time.timescale)
-                        mediaSession?.startSeek()
+                        mediaSession?.endSeek(at: Int(self.video.time.seconds))
                         mediaSession?.droppedFrames = 15
                     }
 
@@ -125,11 +126,12 @@ struct ContentView: View {
                     Divider().frame(height: 20)
                     
                     IconButtonView(iconName: "goforward.15") {
+                        mediaSession?.startSeek(at: Int(self.video.time.seconds))
                         self.video.time = CMTimeMakeWithSeconds(min(self.video.totalDuration,
                                                                     self.video.time.seconds + 15),
                                                                 preferredTimescale: self.video.time.timescale)
+                        mediaSession?.endSeek(at: Int(self.video.time.seconds))
                         mediaSession?.droppedFrames = 20
-                        mediaSession?.endSeek() 
                     }
                 }.padding()
                 

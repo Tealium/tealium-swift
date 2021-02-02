@@ -1,5 +1,5 @@
 //
-//  MockMediaSession.swift
+//  MockMediaService.swift
 //  TealiumCore
 //
 //  Created by Christina S on 1/11/21.
