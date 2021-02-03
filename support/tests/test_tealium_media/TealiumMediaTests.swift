@@ -19,9 +19,6 @@ class TealiumMediaTests: XCTestCase {
     
     override func setUpWithError() throws {
         session = SignificantEventMediaSession(with: mockMediaService)
-        MediaSegmentCounter.ads = 0
-        MediaSegmentCounter.adBreaks = 0
-        MediaSegmentCounter.chapters = 0
     }
     
     override func tearDownWithError() throws { }
@@ -101,7 +98,7 @@ class TealiumMediaTests: XCTestCase {
     
     func testAdBreakStart_TitleDefault_WhenNotDefined() {
         session.startAdBreak(AdBreak())
-        XCTAssertEqual(session.mediaService!.media.adBreaks.first!.title, "Ad Break 1")
+        XCTAssertTrue(session.mediaService!.media.adBreaks.first!.title!.contains("Ad Break "))
     }
     
     func testAdBreakStart_UUIDGenerated() {
@@ -150,16 +147,6 @@ class TealiumMediaTests: XCTestCase {
         }
     }
     
-    func testAdBreakComplete_PositionCalculated_WhenNotDefined() {
-        session.mediaService?.media.adBreaks = [AdBreak(), AdBreak()]
-        session.endAdBreak()
-        switch mockMediaService.updatedSegment {
-        case .adBreak(let adBreak): XCTAssertEqual(adBreak.position, 2)
-        default:
-            break
-        }
-    }
-    
     func testAdBreakComplete_AdBreakDataIsCorrect() {
         let adBreak = AdBreak(title: "Test Ad Break Complete", id: "abc123", duration: 120, index: 1, position: 2)
         session.mediaService?.media.adBreaks = [adBreak]
@@ -195,7 +182,7 @@ class TealiumMediaTests: XCTestCase {
     
     func testAdStart_AdNameDefault_WhenNotDefined() {
         session.startAd(Ad())
-        XCTAssertEqual(session.mediaService!.media.ads.first!.name, "Ad 1")
+        XCTAssertTrue(session.mediaService!.media.ads.first!.name!.contains("Ad "))
     }
     
     func testAdStart_UUIDGenerated() {
@@ -239,16 +226,6 @@ class TealiumMediaTests: XCTestCase {
         session.endAd()
         switch mockMediaService.updatedSegment {
         case .ad(let ad): XCTAssertEqual(ad.position, 3)
-        default:
-            break
-        }
-    }
-    
-    func testAdComplete_PositionCalculated_WhenNotDefined() {
-        session.mediaService?.media.ads = [Ad(), Ad()]
-        session.endAd()
-        switch mockMediaService.updatedSegment {
-        case .ad(let ad): XCTAssertEqual(ad.position, 2)
         default:
             break
         }
@@ -373,17 +350,6 @@ class TealiumMediaTests: XCTestCase {
         session.endChapter()
         switch mockMediaService.updatedSegment {
         case .chapter(let chapter): XCTAssertEqual(chapter.position, 3)
-        default:
-            XCTFail("Incorrect segment type")
-            break
-        }
-    }
-    
-    func testChapterComplete_PositionCalculated_WhenNotDefined() {
-        session.mediaService?.media.chapters = [Chapter(name: "Chapter 1", duration: 900), Chapter(name: "Chapter 2", duration: 960)]
-        session.endChapter()
-        switch mockMediaService.updatedSegment {
-        case .chapter(let chapter): XCTAssertEqual(chapter.position, 2)
         default:
             XCTFail("Incorrect segment type")
             break

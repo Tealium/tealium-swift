@@ -17,7 +17,7 @@ struct ContentView: View {
                                         streamType: .dvod,
                                         mediaType: .video,
                                         qoe: QoE(bitrate: 5000),
-                                        trackingType: .significant, // change to test different types
+                                        trackingType: .summary, // change to test different types
                                         state: .closedCaption,
                                         duration: 130)
     
@@ -156,6 +156,9 @@ struct ContentView: View {
                 }
                 
                 Spacer()
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
+                    TealiumHelper.killTrace(tealTraceId)
             }
             .onDisappear { self.video.play = false }
             .navigationTitle("iOSTealiumMediaTest")

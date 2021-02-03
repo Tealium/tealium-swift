@@ -104,12 +104,6 @@ public enum MediaEvent {
     case custom(String)
 }
 
-struct MediaSegmentCounter {
-    static var ads = 0
-    static var adBreaks = 0
-    static var chapters = 0
-}
-
 public struct QoE: Codable {
     var bitrate: Int
     var startTime: Int?
@@ -153,7 +147,7 @@ public struct Chapter: Codable {
     enum CodingKeys: String, CodingKey {
         case uuid = "media_chapter_uuid"
         case name = "media_chapter_name"
-        case duration = "media_chapter_length"
+        case duration = "media_chapter_duration"
         case position = "media_chapter_position"
         case startTime = "media_chapter_start_time"
         case metadata = "media_chapter_metadata"
@@ -164,10 +158,9 @@ public struct Chapter: Codable {
                 position: Int? = nil,
                 startTime: Date? = Date(),
                 metadata: AnyCodable? = nil) {
-        MediaSegmentCounter.chapters.increment()
         self.name = name
         self.duration = duration
-        self.position = position ?? MediaSegmentCounter.chapters
+        self.position = position
         self.startTime = startTime
         self.metadata = metadata
     }
@@ -220,11 +213,10 @@ public struct Ad: Codable {
                 numberOfLoads: Int? = nil,
                 pod: String? = nil,
                 playerName: String? = nil) {
-        MediaSegmentCounter.ads.increment()
-        self.name = name ?? "Ad \(MediaSegmentCounter.ads)"
+        self.name = name ?? "Ad \(uuid)"
         self.id = id
         self.duration = duration
-        self.position = position ?? MediaSegmentCounter.ads
+        self.position = position
         self.advertiser = advertiser
         self.creativeId = creativeId
         self.campaignId = campaignId
@@ -261,12 +253,11 @@ public struct AdBreak: Codable {
                 duration: Int? = nil,
                 index: Int? = nil,
                 position: Int? = nil) {
-        MediaSegmentCounter.adBreaks.increment()
-        self.title = title ?? "Ad Break \(MediaSegmentCounter.adBreaks)"
+        self.title = title ?? "Ad Break \(uuid)"
         self.id = id
         self.duration = duration
         self.index = index
-        self.position = position ?? MediaSegmentCounter.adBreaks
+        self.position = position
     }
     
 }
