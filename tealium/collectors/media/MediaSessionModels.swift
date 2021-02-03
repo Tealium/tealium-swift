@@ -6,9 +6,9 @@
 //
 
 import Foundation
-//#if media
+#if media
 import TealiumCore
-//#endif
+#endif
 
 public enum StreamType: String, Codable {
     case aod
@@ -104,6 +104,12 @@ public enum MediaEvent {
     case custom(String)
 }
 
+struct MediaSegmentCounter {
+    static var ads = 0
+    static var adBreaks = 0
+    static var chapters = 0
+}
+
 public struct QoE: Codable {
     var bitrate: Int
     var startTime: Int?
@@ -158,10 +164,10 @@ public struct Chapter: Codable {
                 position: Int? = nil,
                 startTime: Date? = Date(),
                 metadata: AnyCodable? = nil) {
-        MediaContent.numberOfChapters.increment()
+        MediaSegmentCounter.chapters.increment()
         self.name = name
         self.duration = duration
-        self.position = position ?? MediaContent.numberOfChapters
+        self.position = position ?? MediaSegmentCounter.chapters
         self.startTime = startTime
         self.metadata = metadata
     }
@@ -214,11 +220,11 @@ public struct Ad: Codable {
                 numberOfLoads: Int? = nil,
                 pod: String? = nil,
                 playerName: String? = nil) {
-        MediaContent.numberOfAds.increment()
-        self.name = name ?? "Ad \(MediaContent.numberOfAds)"
+        MediaSegmentCounter.ads.increment()
+        self.name = name ?? "Ad \(MediaSegmentCounter.ads)"
         self.id = id
         self.duration = duration
-        self.position = position ?? MediaContent.numberOfAds
+        self.position = position ?? MediaSegmentCounter.ads
         self.advertiser = advertiser
         self.creativeId = creativeId
         self.campaignId = campaignId
@@ -255,12 +261,12 @@ public struct AdBreak: Codable {
                 duration: Int? = nil,
                 index: Int? = nil,
                 position: Int? = nil) {
-        MediaContent.numberOfAdBreaks.increment()
-        self.title = title ?? "Ad Break \(MediaContent.numberOfAdBreaks)"
+        MediaSegmentCounter.adBreaks.increment()
+        self.title = title ?? "Ad Break \(MediaSegmentCounter.adBreaks)"
         self.id = id
         self.duration = duration
         self.index = index
-        self.position = position ?? MediaContent.numberOfAdBreaks
+        self.position = position ?? MediaSegmentCounter.adBreaks
     }
     
 }
@@ -291,7 +297,7 @@ public struct Summary: Codable {
     var sessionEnd: Date?
     var playStartTime: Date?
     var bufferStartTime: Date?
-    var seekStartTime: Date?
+    var seekStartPosition: Int?
     var adStartTime: Date?
     var chapterStarts = 0
     var chapterEnds = 0

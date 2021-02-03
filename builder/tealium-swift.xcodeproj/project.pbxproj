@@ -351,9 +351,9 @@
 		CFADA40A25AD010A0079B19A /* MediaSessionTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFADA3C025AD01050079B19A /* MediaSessionTypes.swift */; };
 		CFADA45525AD01680079B19A /* MediaSessionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFADA42F25AD01480079B19A /* MediaSessionModels.swift */; };
 		CFADA4A025AD02750079B19A /* MediaDispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFADA47A25AD025E0079B19A /* MediaDispatch.swift */; };
-		CFADA55725AD26DD0079B19A /* MockMediaSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFADA50D25AD26480079B19A /* MockMediaSession.swift */; };
-		CFADA55825AD26DE0079B19A /* MockMediaSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFADA50D25AD26480079B19A /* MockMediaSession.swift */; };
-		CFADA55925AD26DF0079B19A /* MockMediaSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFADA50D25AD26480079B19A /* MockMediaSession.swift */; };
+		CFADA55725AD26DD0079B19A /* MockMediaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFADA50D25AD26480079B19A /* MockMediaService.swift */; };
+		CFADA55825AD26DE0079B19A /* MockMediaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFADA50D25AD26480079B19A /* MockMediaService.swift */; };
+		CFADA55925AD26DF0079B19A /* MockMediaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFADA50D25AD26480079B19A /* MockMediaService.swift */; };
 		CFADA5E725AE1DB60079B19A /* MediaSessionEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFADA5E625AE1DB60079B19A /* MediaSessionEvents.swift */; };
 		CFB1ED88244F9088005CC6F1 /* DataLayerCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB1ED86244F905C005CC6F1 /* DataLayerCollection.swift */; };
 		CFB1ED89244F908D005CC6F1 /* DataLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB1ED84244F79B8005CC6F1 /* DataLayer.swift */; };
@@ -1612,7 +1612,7 @@
 		CFADA3C025AD01050079B19A /* MediaSessionTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSessionTypes.swift; sourceTree = "<group>"; };
 		CFADA42F25AD01480079B19A /* MediaSessionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSessionModels.swift; sourceTree = "<group>"; };
 		CFADA47A25AD025E0079B19A /* MediaDispatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaDispatch.swift; sourceTree = "<group>"; };
-		CFADA50D25AD26480079B19A /* MockMediaSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMediaSession.swift; sourceTree = "<group>"; };
+		CFADA50D25AD26480079B19A /* MockMediaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMediaService.swift; sourceTree = "<group>"; };
 		CFADA5E625AE1DB60079B19A /* MediaSessionEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSessionEvents.swift; sourceTree = "<group>"; };
 		CFB1ED84244F79B8005CC6F1 /* DataLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataLayer.swift; sourceTree = "<group>"; };
 		CFB1ED86244F905C005CC6F1 /* DataLayerCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataLayerCollection.swift; sourceTree = "<group>"; };
@@ -2691,7 +2691,7 @@
 			isa = PBXGroup;
 			children = (
 				CFAD9D2B25A66BE90079B19A /* TealiumMediaTests.swift */,
-				CFADA50D25AD26480079B19A /* MockMediaSession.swift */,
+				CFADA50D25AD26480079B19A /* MockMediaService.swift */,
 			);
 			path = test_tealium_media;
 			sourceTree = "<group>";
@@ -4520,7 +4520,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFAD9E8B25A66D470079B19A /* TealiumMediaTests.swift in Sources */,
-				CFADA55725AD26DD0079B19A /* MockMediaSession.swift in Sources */,
+				CFADA55725AD26DD0079B19A /* MockMediaService.swift in Sources */,
 				CFAC004A25AFBF5400CD51C6 /* CoreMocks.swift in Sources */,
 				CFD89B2E25AFD43300D574BB /* MockSessionStarter.swift in Sources */,
 				CFAC006F25AFBF5B00CD51C6 /* TestTealiumHelper.swift in Sources */,
@@ -4533,7 +4533,7 @@
 			files = (
 				CFAD9EB425A66D540079B19A /* VisitorProfileTests.swift in Sources */,
 				CFAD9EB525A66D540079B19A /* MockDiskStorage.swift in Sources */,
-				CFADA55825AD26DE0079B19A /* MockMediaSession.swift in Sources */,
+				CFADA55825AD26DE0079B19A /* MockMediaService.swift in Sources */,
 				CFAD9EB625A66D540079B19A /* VisitorServiceManagerTests.swift in Sources */,
 				CFAD9EB725A66D540079B19A /* TestTealiumHelper.swift in Sources */,
 				CFAD9EB825A66D540079B19A /* VisitorServiceRetrieverTests.swift in Sources */,
@@ -4551,7 +4551,7 @@
 			files = (
 				CFAD9F5B25A66D700079B19A /* VisitorProfileTests.swift in Sources */,
 				CFAD9F5C25A66D700079B19A /* MockDiskStorage.swift in Sources */,
-				CFADA55925AD26DF0079B19A /* MockMediaSession.swift in Sources */,
+				CFADA55925AD26DF0079B19A /* MockMediaService.swift in Sources */,
 				CFAD9F5D25A66D700079B19A /* VisitorServiceManagerTests.swift in Sources */,
 				CFAD9F5E25A66D700079B19A /* TestTealiumHelper.swift in Sources */,
 				CFAD9F5F25A66D700079B19A /* VisitorServiceRetrieverTests.swift in Sources */,

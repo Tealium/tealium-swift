@@ -6,9 +6,9 @@
 //
 
 import Foundation
-//#if media
+#if media
 import TealiumCore
-//#endif
+#endif
 
 public protocol MediaSessionProtocol: MediaSessionEvents {
     var bitrate: Int? { get set }
@@ -91,7 +91,6 @@ public class MediaSession: MediaSessionProtocol {
             .event(.chapterSkip),
             .chapter(chapter)
         )
-        mediaService?.media.remove(by: chapter.uuid)
     }
     
     public func endChapter() {
@@ -102,7 +101,6 @@ public class MediaSession: MediaSessionProtocol {
             .event(.chapterEnd),
             .chapter(chapter)
         )
-        mediaService?.media.remove(by: chapter.uuid)
     }
     
     public func startBuffer() {
@@ -113,11 +111,11 @@ public class MediaSession: MediaSessionProtocol {
         mediaService?.track(.event(.bufferEnd))
     }
     
-    public func startSeek() {
+    public func startSeek(at position: Int? = nil) {
         mediaService?.track(.event(.seekStart))
     }
     
-    public func endSeek() {
+    public func endSeek(at position: Int? = nil) {
         mediaService?.track(.event(.seekEnd))
     }
     
@@ -131,7 +129,7 @@ public class MediaSession: MediaSessionProtocol {
     
     /// Sends `adBreakEnd` event and calculates duration of the adBreak
     public func endAdBreak() {
-        guard var adBreak = mediaService?.media.adBreaks.first else {
+        guard var adBreak = mediaService?.media.adBreaks.last else {
             return
         }
         if adBreak.duration == nil {
@@ -141,7 +139,6 @@ public class MediaSession: MediaSessionProtocol {
             .event(.adBreakEnd),
             .adBreak(adBreak)
         )
-        mediaService?.media.remove(by: adBreak.uuid)
     }
     
     public func startAd(_ ad: Ad) {
@@ -160,7 +157,6 @@ public class MediaSession: MediaSessionProtocol {
             .event(.adClick),
             .ad(ad)
         )
-        mediaService?.media.remove(by: ad.uuid)
     }
     
     public func skipAd() {
@@ -171,12 +167,11 @@ public class MediaSession: MediaSessionProtocol {
             .event(.adSkip),
             .ad(ad)
         )
-        mediaService?.media.remove(by: ad.uuid)
     }
     
     /// Sends `adEnd` event and calculates duration of the ad
     public func endAd() {
-        guard var ad = mediaService?.media.ads.first else {
+        guard var ad = mediaService?.media.ads.last else {
             return
         }
         if ad.duration == nil {
@@ -186,7 +181,6 @@ public class MediaSession: MediaSessionProtocol {
             .event(.adEnd),
             .ad(ad)
         )
-        mediaService?.media.remove(by: ad.uuid)
     }
     
     /// Sends a custom media event
