@@ -41,7 +41,7 @@ public class MediaContent: Codable {
         case startTime = "media_session_start_time"
         case state = "media_player_state"
         case customId = "media_custom_id"
-        case duration = "media_length"
+        case duration = "media_duration"
         case playerName = "media_player_name"
         case channelName = "media_channel_name"
         case metadata = "media_metadata"

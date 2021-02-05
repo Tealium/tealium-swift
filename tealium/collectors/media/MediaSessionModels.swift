@@ -187,7 +187,7 @@ public struct Ad: Codable {
         case uuid = "media_ad_uuid"
         case name = "media_ad_name"
         case id = "ad_id"
-        case duration = "media_ad_length"
+        case duration = "media_ad_duration"
         case position = "media_ad_position"
         case advertiser = "media_advertiser"
         case creativeId = "media_ad_creative_id"
@@ -232,7 +232,7 @@ public struct Ad: Codable {
 
 public struct AdBreak: Codable {
     var uuid = UUID().uuidString
-    var title: String?
+    var name: String?
     var id: String?
     var duration: Int?
     var index: Int?
@@ -241,19 +241,19 @@ public struct AdBreak: Codable {
     
     enum CodingKeys: String, CodingKey {
         case uuid = "media_ad_break_uuid"
-        case title = "media_ad_break_title"
+        case name = "media_ad_break_name"
         case id = "media_ad_break_id"
-        case duration = "media_ad_break_length"
+        case duration = "media_ad_break_duration"
         case index = "media_ad_break_index"
         case position = "media_ad_break_position"
     }
     
-    public init(title: String? = nil,
+    public init(name: String? = nil,
                 id: String? = nil,
                 duration: Int? = nil,
                 index: Int? = nil,
                 position: Int? = nil) {
-        self.title = title ?? "Ad Break \(uuid)"
+        self.name = name ?? "Ad Break \(uuid)"
         self.id = id
         self.duration = duration
         self.index = index
@@ -262,7 +262,6 @@ public struct AdBreak: Codable {
     
 }
 
-// TODO: need more details
 public struct Summary: Codable {
     var sessionStartTime: String?
     var plays = 0

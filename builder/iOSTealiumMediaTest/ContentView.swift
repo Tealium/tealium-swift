@@ -141,7 +141,7 @@ struct ContentView: View {
                 }
                 
                 TextButtonView(title: "Ad 1 Start") {
-                    mediaSession?.startAdBreak(AdBreak(title: "Ad Break 1"))
+                    mediaSession?.startAdBreak(AdBreak(name: "Ad Break 1"))
                     mediaSession?.startAd(Ad(name: "Ad 1"))
                 }
                 

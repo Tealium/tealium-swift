@@ -92,13 +92,13 @@ class TealiumMediaTests: XCTestCase {
     }
     
     func testAdBreakStart_TitleSet_WhenDefined() {
-        session.startAdBreak(AdBreak(title: "Special Ad Break"))
-        XCTAssertEqual(session.mediaService!.media.adBreaks.first!.title, "Special Ad Break")
+        session.startAdBreak(AdBreak(name: "Special Ad Break"))
+        XCTAssertEqual(session.mediaService!.media.adBreaks.first!.name, "Special Ad Break")
     }
     
     func testAdBreakStart_TitleDefault_WhenNotDefined() {
         session.startAdBreak(AdBreak())
-        XCTAssertTrue(session.mediaService!.media.adBreaks.first!.title!.contains("Ad Break "))
+        XCTAssertTrue(session.mediaService!.media.adBreaks.first!.name!.contains("Ad Break "))
     }
     
     func testAdBreakStart_UUIDGenerated() {
@@ -148,12 +148,12 @@ class TealiumMediaTests: XCTestCase {
     }
     
     func testAdBreakComplete_AdBreakDataIsCorrect() {
-        let adBreak = AdBreak(title: "Test Ad Break Complete", id: "abc123", duration: 120, index: 1, position: 2)
+        let adBreak = AdBreak(name: "Test Ad Break Complete", id: "abc123", duration: 120, index: 1, position: 2)
         session.mediaService?.media.adBreaks = [adBreak]
         session.endAdBreak()
         switch mockMediaService.updatedSegment {
         case .adBreak(let adBreak):
-            XCTAssertEqual(adBreak.title, "Test Ad Break Complete")
+            XCTAssertEqual(adBreak.name, "Test Ad Break Complete")
             XCTAssertEqual(adBreak.id, "abc123")
             XCTAssertEqual(adBreak.duration, 120)
             XCTAssertEqual(adBreak.index, 1)
@@ -1142,7 +1142,7 @@ class TealiumMediaTests: XCTestCase {
     
     // MARK: Track
     func testSegment_AdBreakVariables_ToDictionary() {
-        let adBreak = AdBreak(title: "Ad Break Vars",
+        let adBreak = AdBreak(name: "Ad Break Vars",
                               id: "xyz123",
                               duration: 90,
                               index: 0,
@@ -1150,9 +1150,9 @@ class TealiumMediaTests: XCTestCase {
         let segment = Segment.adBreak(adBreak)
         
         XCTAssertNotNil(segment.dictionary?["media_ad_break_uuid"] as! String)
-        XCTAssertEqual(segment.dictionary?["media_ad_break_title"] as! String, "Ad Break Vars")
+        XCTAssertEqual(segment.dictionary?["media_ad_break_name"] as! String, "Ad Break Vars")
         XCTAssertEqual(segment.dictionary?["media_ad_break_id"] as! String, "xyz123")
-        XCTAssertEqual(segment.dictionary?["media_ad_break_length"] as! Int, 90)
+        XCTAssertEqual(segment.dictionary?["media_ad_break_duration"] as! Int, 90)
         XCTAssertEqual(segment.dictionary?["media_ad_break_index"] as! Int, 0)
         XCTAssertEqual(segment.dictionary?["media_ad_break_position"] as! Int, 1)
     }
@@ -1175,7 +1175,7 @@ class TealiumMediaTests: XCTestCase {
         
         XCTAssertNotNil(segment.dictionary?["media_ad_uuid"] as! String)
         XCTAssertEqual(segment.dictionary?["media_ad_name"] as! String, "Ad Vars")
-        XCTAssertEqual(segment.dictionary?["media_ad_length"] as! Int, 30)
+        XCTAssertEqual(segment.dictionary?["media_ad_duration"] as! Int, 30)
         XCTAssertEqual(segment.dictionary?["media_advertiser"] as! String, "google")
         XCTAssertEqual(segment.dictionary?["media_ad_creative_id"] as! String, "test123")
         XCTAssertEqual(segment.dictionary?["media_ad_campaign_id"] as! String, "camp123")
@@ -1196,7 +1196,7 @@ class TealiumMediaTests: XCTestCase {
         let segment = Segment.chapter(chapter)
 
         XCTAssertEqual(segment.dictionary?["media_chapter_name"] as! String, "Chapter Vars")
-        XCTAssertEqual(segment.dictionary?["media_chapter_length"] as! Int, 2000)
+        XCTAssertEqual(segment.dictionary?["media_chapter_duration"] as! Int, 2000)
         XCTAssertEqual(segment.dictionary?["media_chapter_position"] as! Int, 1)
         XCTAssertNotNil(segment.dictionary?["media_chapter_start_time"])
         XCTAssertNotNil(segment.dictionary?["media_chapter_metadata"])
@@ -1231,7 +1231,7 @@ class TealiumMediaTests: XCTestCase {
             XCTAssertEqual(trackRequest.data["media_tracking_type"] as! String, "significant")
             XCTAssertEqual(trackRequest.data["media_player_state"] as! String, "mute")
             XCTAssertEqual(trackRequest.data["media_custom_id"] as! String, "some id")
-            XCTAssertEqual(trackRequest.data["media_length"] as! Int, 3000)
+            XCTAssertEqual(trackRequest.data["media_duration"] as! Int, 3000)
             XCTAssertEqual(trackRequest.data["media_player_name"] as! String, "some player")
             XCTAssertEqual(trackRequest.data["media_channel_name"] as! String, "some channel")
             XCTAssertEqual(trackRequest.data["media_qoe_bitrate"] as! Int, 5000)
@@ -1254,7 +1254,7 @@ class TealiumMediaTests: XCTestCase {
                                              parameters: session.mediaService!.media,
                                              segment: .chapter(chapter))
         XCTAssertEqual(trackRequest.data["media_chapter_name"] as! String, "Chapter Vars")
-        XCTAssertEqual(trackRequest.data["media_chapter_length"] as! Int, 2000)
+        XCTAssertEqual(trackRequest.data["media_chapter_duration"] as! Int, 2000)
         XCTAssertEqual(trackRequest.data["media_chapter_position"] as! Int, 1)
         XCTAssertNotNil(trackRequest.data["media_chapter_start_time"])
         XCTAssertEqual(trackRequest.data["chapter_meta_key"] as! String, "chapter_meta_value")
@@ -1328,7 +1328,7 @@ class TealiumMediaTests: XCTestCase {
     
     func testEventSequence_CallsTrack_InCorrectOrder() {
         session.startSession()
-        session.startAdBreak(AdBreak(title: "AdBreak 1"))
+        session.startAdBreak(AdBreak(name: "AdBreak 1"))
         session.startAd(Ad(name: "Ad 1"))
         session.endAd()
         session.endAdBreak()
