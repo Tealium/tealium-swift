@@ -18,6 +18,7 @@ public class MediaContent: Codable {
     var qoe: QoE
     var trackingType: TrackingType
     var milestoneInterval: Double?
+    var contentCompletePercentage: Double?
     var startTime: Date?
     var state: PlayerState?
     var customId: String?
@@ -56,6 +57,7 @@ public class MediaContent: Codable {
         qoe: QoE,
         trackingType: TrackingType = .significant,
         milestoneInterval: Double = 5.0,
+        contentCompletePercentage: Double? = nil,
         state: PlayerState? = nil,
         customId: String? = nil,
         duration: Int? = nil,

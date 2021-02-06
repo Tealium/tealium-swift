@@ -37,3 +37,8 @@ public extension Int {
     }
 }
 
+public extension Double {
+    mutating func increment(by number: Double) {
+        self += number
+    }
+}

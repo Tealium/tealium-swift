@@ -95,13 +95,18 @@ public enum StandardMediaEvent: String {
     case seekStart = "media_seek_start"
     case seekEnd = "media_seek_end"
     case sessionStart = "media_session_start"
-    case stop = "media_stop"
+    case contentEnd = "media_content_end"
     case summary = "media_summary"
 }
 
 public enum MediaEvent {
     case event(StandardMediaEvent)
     case custom(String)
+}
+
+public enum MediaContentState {
+    case playing
+    case notPlaying
 }
 
 public struct QoE: Codable {
@@ -170,7 +175,7 @@ public struct Ad: Codable {
     var uuid = UUID().uuidString
     var name: String?
     var id: String?
-    var duration: Int?
+    var duration: Double?
     var position: Int?
     var advertiser: String?
     var creativeId: String?
@@ -202,7 +207,7 @@ public struct Ad: Codable {
     
     public init(name: String? = nil,
                 id: String? = nil,
-                duration: Int? = nil,
+                duration: Double? = nil,
                 position: Int? = nil,
                 advertiser: String? = nil,
                 creativeId: String? = nil,
@@ -234,7 +239,7 @@ public struct AdBreak: Codable {
     var uuid = UUID().uuidString
     var name: String?
     var id: String?
-    var duration: Int?
+    var duration: Double?
     var index: Int?
     var position: Int?
     var startTime: Date = Date()
@@ -250,7 +255,7 @@ public struct AdBreak: Codable {
     
     public init(name: String? = nil,
                 id: String? = nil,
-                duration: Int? = nil,
+                duration: Double? = nil,
                 index: Int? = nil,
                 position: Int? = nil) {
         self.name = name ?? "Ad Break \(uuid)"
@@ -268,15 +273,14 @@ public struct Summary: Codable {
     var pauses = 0
     var adSkips = 0
     var chapterSkips = 0
-    var stops = 0
     var ads = 0
-    var totalPlayTime = 0
-    var totalAdTime = 0
-    var totalBufferTime = 0
-    var totalSeekTime = 0
+    var totalPlayTime: Double = 0
+    var totalAdTime: Double = 0
+    var totalBufferTime: Double = 0
+    var totalSeekTime: Double = 0
     var adUUIDs = [String]()
     var playToEnd = false
-    var duration: Int?
+    var duration: Double?
     var percentageAdTime: Double?
     var percentageAdComplete: Double?
     var percentageChapterComplete: Double?
@@ -287,7 +291,7 @@ public struct Summary: Codable {
     var sessionEnd: Date?
     var playStartTime: Date?
     var bufferStartTime: Date?
-    var seekStartPosition: Int?
+    var seekStartPosition: Double?
     var adStartTime: Date?
     var chapterStarts = 0
     var chapterEnds = 0
@@ -300,7 +304,6 @@ public struct Summary: Codable {
         case pauses = "media_total_pauses"
         case adSkips = "media_total_ad_skips"
         case chapterSkips = "media_total_chapter_skips"
-        case stops = "media_total_stops"
         case ads = "media_total_ads"
         case adUUIDs = "media_ad_uuids"
         case playToEnd = "media_played_to_end"

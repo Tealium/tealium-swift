@@ -455,9 +455,9 @@ class TealiumMediaTests: XCTestCase {
         XCTAssertEqual(mockMediaService.standardEventCounts[.pause], 1)
     }
     
-    func testMediaStop_Called() {
-        session.stop()
-        XCTAssertEqual(mockMediaService.standardEventCounts[.stop], 1)
+    func testMediaEndContent_Called() {
+        session.endContent()
+        XCTAssertEqual(mockMediaService.standardEventCounts[.contentEnd], 1)
     }
     
     func testSessionComplete_Called() {
@@ -540,21 +540,21 @@ class TealiumMediaTests: XCTestCase {
     func testSignificantEvents_TrackingType_DoesNotSendHeartbeat() {
         session.startSession()
         session.play()
-        session.stop()
+        session.endContent()
         XCTAssertEqual(mockMediaService.standardEventCounts[.heartbeat], 0)
     }
     
     func testSignificantEvents_TrackingType_DoesNotSendMilestone() {
         session.startSession()
         session.play()
-        session.stop()
+        session.endContent()
         XCTAssertEqual(mockMediaService.standardEventCounts[.milestone], 0)
     }
     
     func testSignificantEvents_TrackingType_DoesNotSendSummary() {
         session.startSession()
         session.play()
-        session.stop()
+        session.endContent()
         XCTAssertEqual(mockMediaService.standardEventCounts[.summary], 0)
     }
     
@@ -606,10 +606,10 @@ class TealiumMediaTests: XCTestCase {
         XCTAssertEqual(timer.suspendCount, 1)
     }
     
-    func testHeartbeatStop_CallsTimerSuspend() {
+    func testHeartbeatEndContent_CallsTimerSuspend() {
         let timer = MockRepeatingTimer()
         session = HeartbeatMediaSession(with: mockMediaService, timer)
-        session.stop()
+        session.endContent()
         XCTAssertEqual(timer.suspendCount, 1)
     }
     
@@ -663,10 +663,24 @@ class TealiumMediaTests: XCTestCase {
         XCTAssertEqual(timer.suspendCount, 1)
     }
     
-    func testMilestoneStop_CallsTimerSuspend() {
+    func testMilestoneStartAdBreak_CallsTimerSuspend() {
         let timer = MockRepeatingTimer()
         session = MilestoneMediaSession(with: mockMediaService, interval: 1.0, timer)
-        session.stop()
+        session.startAdBreak(AdBreak())
+        XCTAssertEqual(timer.suspendCount, 1)
+    }
+    
+    func testMilestoneEndAdBreak_CallsTimerResume() {
+        let timer = MockRepeatingTimer()
+        session = MilestoneMediaSession(with: mockMediaService, interval: 1.0, timer)
+        session.endAdBreak()
+        XCTAssertEqual(timer.resumCount, 1)
+    }
+    
+    func testMilestoneEndContent_CallsTimerSuspend() {
+        let timer = MockRepeatingTimer()
+        session = MilestoneMediaSession(with: mockMediaService, interval: 1.0, timer)
+        session.endContent()
         XCTAssertEqual(timer.suspendCount, 1)
     }
     
@@ -751,6 +765,15 @@ class TealiumMediaTests: XCTestCase {
         session = MilestoneMediaSession(with: mockMediaService, interval: 1.0)
         session.ping()
         XCTAssertEqual(mockMediaService.media.milestone, "100%")
+    }
+    
+    func testPing_CallsEndConetent_WhenContentCompletePercentageSet() {
+        mockMediaService.media.duration = 130
+        mockMediaService.media.contentCompletePercentage = 10.0
+        mockMediaService.media.startTime = TimeTraveler().travel(by: -13)
+        session = MilestoneMediaSession(with: mockMediaService, interval: 1.0)
+        session.ping()
+        XCTAssertEqual(mockMediaService.standardEventCounts[.contentEnd], 1)
     }
     
     func testPing_DoesNotCallTrack_WhenRangeIsNotWithinMilestone() {
@@ -929,6 +952,30 @@ class TealiumMediaTests: XCTestCase {
         XCTAssertEqual(session.mediaService?.media.summary?.totalSeekTime, 0)
     }
     
+    func testSummaryStartAdBreak_Returns() {
+        session = SummaryMediaSession(with: mockMediaService)
+        session.startSession()
+        session.startAdBreak(AdBreak())
+        XCTAssertEqual(mockMediaService.standardEventCounts[.adBreakStart], 0)
+    }
+    
+    func testSummaryEndAdBreak_Returns() {
+        session = SummaryMediaSession(with: mockMediaService)
+        session.startSession()
+        session.startAdBreak(AdBreak())
+        session.endAdBreak()
+        XCTAssertEqual(mockMediaService.standardEventCounts[.adBreakEnd], 0)
+    }
+    
+    func testSummaryAdClick_Returns() {
+        session = SummaryMediaSession(with: mockMediaService)
+        session.startSession()
+        session.startAdBreak(AdBreak())
+        session.startAd(Ad())
+        session.clickAd()
+        XCTAssertEqual(mockMediaService.standardEventCounts[.adClick], 0)
+    }
+    
     func testSummaryStartAd_IncrementsAdCounter() {
         session = SummaryMediaSession(with: mockMediaService)
         session.startSession()
@@ -1002,30 +1049,34 @@ class TealiumMediaTests: XCTestCase {
         XCTAssertEqual(session.mediaService?.media.summary?.totalPlayTime, 0)
     }
     
-    func testSummaryStop_IncrementsPlayCounters_WhenPlayIsCalled() {
+    func testSummaryEndContent_IncrementsPlayCounters_WhenPlayIsCalled() {
         session = SummaryMediaSession(with: mockMediaService)
         session.startSession()
         session.play()
-        session.stop()
-        XCTAssertEqual(session.mediaService?.media.summary?.stops, 1)
+        session.endContent()
         XCTAssertNotNil(session.mediaService?.media.summary?.totalPlayTime)
     }
     
     func testSummaryStop_DoesNotIncrementPlayCounters_WhenAdPlayIsNotCalled() {
         session = SummaryMediaSession(with: mockMediaService)
         session.startSession()
-        session.stop()
-        XCTAssertEqual(session.mediaService?.media.summary?.stops, 0)
+        session.endContent()
         XCTAssertEqual(session.mediaService?.media.summary?.totalPlayTime, 0)
+    }
+    
+    func testSummaryEndContent_SetsPlayToEnd() {
+        session = SummaryMediaSession(with: mockMediaService)
+        session.startSession()
+        session.play()
+        session.endContent()
+        XCTAssertTrue(session.mediaService!.media.summary!.playToEnd)
     }
     
     func testSummaryEndSession_SetsSessionEnd() {
         session = SummaryMediaSession(with: mockMediaService)
         session.startSession()
-        session.startSession()
         session.endSession()
         XCTAssertNotNil(session.mediaService?.media.summary?.sessionEnd)
-        XCTAssertTrue(session.mediaService!.media.summary!.playToEnd)
     }
     
     func testSummaryEndSession_CallsSummary() {
@@ -1053,7 +1104,7 @@ class TealiumMediaTests: XCTestCase {
         session.startChapter(Chapter(name: "Chapter 2", duration: 30))
         session.pause()
         session.play()
-        session.stop()
+        session.endContent()
         session.endChapter()
         session.endSession()
         let actual = session.mediaService?.media.summary
@@ -1089,7 +1140,7 @@ class TealiumMediaTests: XCTestCase {
         session.startChapter(Chapter(name: "Chapter 2", duration: 30))
         session.pause()
         session.play()
-        session.stop()
+        session.endContent()
         session.endSession()
         session.setSummaryInfo()
         let actual = session.mediaService?.media.summary
@@ -1113,7 +1164,7 @@ class TealiumMediaTests: XCTestCase {
         
         let mockModuleDelegate = MockModuleDelegate()
         mockModuleDelegate.asyncExpectation = expect
-        session.mediaService!.media.summary = Summary(sessionStartTime: "testStartTime", plays: 1, pauses: 2, adSkips: 2, chapterSkips: 3, stops: 1, ads: 3, totalPlayTime: 30000, totalAdTime: 1500, totalBufferTime: 100, totalSeekTime: 300, adUUIDs: ["uuid1", "uuid2", "uuid3"], playToEnd: true, duration: 40000, percentageAdTime: nil, percentageAdComplete: nil, percentageChapterComplete: 100.0, sessionEndTime: "testEndTime", sessionStart: TimeTraveler().travel(by: -40000), sessionEnd: TimeTraveler().travel(by: -1), playStartTime: TimeTraveler().travel(by: -30500), bufferStartTime: nil, seekStartPosition: nil, adStartTime: TimeTraveler().travel(by: -3000), chapterStarts: 5, chapterEnds: 5, adEnds: 2)
+        session.mediaService!.media.summary = Summary(sessionStartTime: "testStartTime", plays: 1, pauses: 2, adSkips: 2, chapterSkips: 3, ads: 3, totalPlayTime: 30000, totalAdTime: 1500, totalBufferTime: 100, totalSeekTime: 300, adUUIDs: ["uuid1", "uuid2", "uuid3"], playToEnd: true, duration: 40000, percentageAdTime: nil, percentageAdComplete: nil, percentageChapterComplete: 100.0, sessionEndTime: "testEndTime", sessionStart: TimeTraveler().travel(by: -40000), sessionEnd: TimeTraveler().travel(by: -1), playStartTime: TimeTraveler().travel(by: -30500), bufferStartTime: nil, seekStartPosition: nil, adStartTime: TimeTraveler().travel(by: -3000), chapterStarts: 5, chapterEnds: 5, adEnds: 2)
         session = SummaryMediaSession(with: MediaEventService(media: session.mediaService!.media,
                                                               delegate: mockModuleDelegate))
         
@@ -1124,7 +1175,6 @@ class TealiumMediaTests: XCTestCase {
         XCTAssertEqual(mockModuleDelegate.mediaData?["media_total_pauses"] as! Int, 2)
         XCTAssertEqual(mockModuleDelegate.mediaData?["media_total_ad_skips"] as! Int, 2)
         XCTAssertEqual(mockModuleDelegate.mediaData?["media_total_chapter_skips"] as! Int, 3)
-        XCTAssertEqual(mockModuleDelegate.mediaData?["media_total_stops"] as! Int, 1)
         XCTAssertEqual(mockModuleDelegate.mediaData?["media_total_ads"] as! Int, 3)
         XCTAssertEqual(mockModuleDelegate.mediaData?["media_ad_uuids"] as! [String], ["uuid1", "uuid2", "uuid3"])
         XCTAssertEqual(mockModuleDelegate.mediaData?["media_played_to_end"] as! Bool, true)
@@ -1337,7 +1387,7 @@ class TealiumMediaTests: XCTestCase {
         session.pause()
         session.play()
         session.endChapter()
-        session.stop()
+        session.endContent()
         session.endSession()
         
         let expectedSequence: [StandardMediaEvent] = [.sessionStart,
@@ -1350,7 +1400,7 @@ class TealiumMediaTests: XCTestCase {
                                                       .pause,
                                                       .play,
                                                       .chapterEnd,
-                                                      .stop,
+                                                      .contentEnd,
                                                       .sessionEnd]
         
         mockMediaService.eventSequence.enumerated().forEach {

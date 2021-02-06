@@ -16,7 +16,7 @@ public protocol MediaSessionProtocol: MediaSessionEvents {
     var mediaService: MediaEventDispatcher? { get set }
     var playbackSpeed: Double { get set }
     var playerState: PlayerState? { get set }
-    func calculate(duration: Date?) -> Int?
+    func calculate(duration: Date?) -> Double?
 }
 
 public class MediaSession: MediaSessionProtocol {
@@ -111,11 +111,11 @@ public class MediaSession: MediaSessionProtocol {
         mediaService?.track(.event(.bufferEnd))
     }
     
-    public func startSeek(at position: Int? = nil) {
+    public func startSeek(at position: Double? = nil) {
         mediaService?.track(.event(.seekStart))
     }
     
-    public func endSeek(at position: Int? = nil) {
+    public func endSeek(at position: Double? = nil) {
         mediaService?.track(.event(.seekEnd))
     }
     
@@ -192,23 +192,25 @@ public class MediaSession: MediaSessionProtocol {
         mediaService?.track(.event(.pause))
     }
     
-    public func stop() {
-        mediaService?.track(.event(.stop))
+    /// Sends an event signaling that the content has played until the end
+    public func endContent() {
+        mediaService?.track(.event(.contentEnd))
     }
     
     public func endSession() {
         mediaService?.track(.event(.sessionEnd))
     }
     
+    // TODO: might not need
     /// Calculates the duration of the content, in seconds
-    public func calculate(duration: Date?) -> Int? {
+    public func calculate(duration: Date?) -> Double? {
         guard let duration = duration else {
             return nil
         }
         let calculated = Calendar.current.dateComponents([.second],
                                                          from: duration,
                                                          to: Date())
-        return calculated.second
+        return Double(calculated.second ?? 0)
     }
     
     public func sendMilestone(_ milestone: Milestone) {

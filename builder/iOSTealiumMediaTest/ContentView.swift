@@ -17,7 +17,7 @@ struct ContentView: View {
                                         streamType: .dvod,
                                         mediaType: .video,
                                         qoe: QoE(bitrate: 5000),
-                                        trackingType: .summary, // change to test different types
+                                        trackingType: .milestone, // change to test different types
                                         state: .closedCaption,
                                         duration: 130)
     
@@ -44,7 +44,7 @@ struct ContentView: View {
                     }
                     .onPlayToEndTime {
                         mediaSession?.endChapter()
-                        mediaSession?.stop()
+                        mediaSession?.endContent()
                         mediaSession?.endSession()
                         video.time = .zero
                     }
@@ -112,10 +112,10 @@ struct ContentView: View {
                 
                 HStack {
                     IconButtonView(iconName: "gobackward.15") {
-                        mediaSession?.startSeek(at: Int(self.video.time.seconds))
+                        mediaSession?.startSeek(at: self.video.time.seconds)
                         self.video.time = CMTimeMakeWithSeconds(max(0, self.video.time.seconds - 15),
                                                                 preferredTimescale: self.video.time.timescale)
-                        mediaSession?.endSeek(at: Int(self.video.time.seconds))
+                        mediaSession?.endSeek(at: self.video.time.seconds)
                         mediaSession?.droppedFrames = 15
                     }
 
@@ -126,11 +126,11 @@ struct ContentView: View {
                     Divider().frame(height: 20)
                     
                     IconButtonView(iconName: "goforward.15") {
-                        mediaSession?.startSeek(at: Int(self.video.time.seconds))
+                        mediaSession?.startSeek(at: self.video.time.seconds)
                         self.video.time = CMTimeMakeWithSeconds(min(self.video.totalDuration,
                                                                     self.video.time.seconds + 15),
                                                                 preferredTimescale: self.video.time.timescale)
-                        mediaSession?.endSeek(at: Int(self.video.time.seconds))
+                        mediaSession?.endSeek(at: self.video.time.seconds)
                         mediaSession?.droppedFrames = 20
                     }
                 }.padding()
@@ -141,6 +141,7 @@ struct ContentView: View {
                 }
                 
                 TextButtonView(title: "Ad 1 Start") {
+                    self.video.play = false
                     mediaSession?.startAdBreak(AdBreak(name: "Ad Break 1"))
                     mediaSession?.startAd(Ad(name: "Ad 1"))
                 }
@@ -151,6 +152,7 @@ struct ContentView: View {
                 }
                 
                 TextButtonView(title: "Ad 2 Complete") {
+                    self.video.play = true
                     mediaSession?.endAd()
                     mediaSession?.endAdBreak()
                 }
