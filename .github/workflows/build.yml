@@ -20,7 +20,7 @@ jobs:
       working-directory: ./builder
     strategy:
       matrix:
-        destination: ["platform=iOS Simulator,OS=14.0,name=iPhone 11 Pro"]
+        destination: ["platform=iOS Simulator,OS=14.4,name=iPhone 12"]
         scheme: 
           - TealiumCore
           - TealiumCollect
@@ -30,7 +30,7 @@ jobs:
           - TealiumRemoteCommands
           - TealiumTagManagement
           - TealiumAttribution
-          #- TealiumAutotracking
+          - TealiumAutotracking
     steps:
       - uses: actions/checkout@v2
       - name: Build iOS - ${{ matrix.scheme }}
