@@ -24,10 +24,10 @@ class TealiumMediaTests: XCTestCase {
     override func tearDownWithError() throws { }
 
     // MARK: Init & Setup
-    func testModule_CreateSession() {
-        let config = TealiumConfig(account: "test",
-                                   profile: "test",
-                                   environment: "test")
+    func testModuleCreateSession_ReturnsMediaSession() {
+        let config = TealiumConfig(account: "account",
+                                   profile: "profile",
+                                   environment: "env")
         let tealium = Tealium(config: config)
         let context = TealiumContext(config: config,
                                       dataLayer: DummyDataManager(),
@@ -40,6 +40,26 @@ class TealiumMediaTests: XCTestCase {
             XCTFail("createSession failed")
             return
         }
+    }
+    
+    func testModuleCreateSession_AppendsToActiveSessionsArray() {
+        let config = TealiumConfig(account: "account",
+                                   profile: "profile",
+                                   environment: "env")
+        let tealium = Tealium(config: config)
+        let context = TealiumContext(config: config,
+                                      dataLayer: DummyDataManager(),
+                                      tealium: tealium)
+        let module = MediaModule(context: context, delegate: MockModuleDelegate(), diskStorage: nil) { _ in }
+        
+        let session = module.createSession(from: MediaContent(name: "test", streamType: .aod, mediaType: .video, qoe: QoE(bitrate: 1000)))
+        
+        guard let _ = session as? SignificantEventMediaSession else {
+            XCTFail("createSession failed")
+            return
+        }
+        
+        XCTAssertEqual(module.activeSessions.count, 1)
     }
     
     func testMediaSessionFactory_CreatesCorrectTypes() {
@@ -440,9 +460,26 @@ class TealiumMediaTests: XCTestCase {
         XCTAssertEqual(mockMediaService.media.qoe.bitrate, 1500)
     }
     
+    func testResumeSession_Called() {
+        session.resumeSession()
+        XCTAssertEqual(mockMediaService.standardEventCounts[.sessionResume], 1)
+    }
+    
     func testSessionStart_Called() {
         session.startSession()
         XCTAssertEqual(mockMediaService.standardEventCounts[.sessionStart], 1)
+    }
+    
+    func testStartSession_CallsResumeSession_WhenMediaResumedIsTrue() {
+        session.backgroundStatusResumed = true
+        session.startSession()
+        XCTAssertEqual(mockMediaService.standardEventCounts[.sessionResume], 1)
+    }
+    
+    func testStartSession_DoesNotCallResumeSession_WhenMediaResumedIsFalse() {
+        session.backgroundStatusResumed = false
+        session.startSession()
+        XCTAssertEqual(mockMediaService.standardEventCounts[.sessionResume], 0)
     }
     
     func testMediaPlay_Called() {
@@ -1411,10 +1448,108 @@ class TealiumMediaTests: XCTestCase {
         
     }
     
+    // MARK: Lifecycle Tests
+    func testSleep_Returns_WhenBackgroundMediaTrackingDisabled() {
+        let config = TealiumConfig(account: "account",
+                                   profile: "profile",
+                                   environment: "env")
+        let tealium = Tealium(config: config)
+        let context = TealiumContext(config: config,
+                                      dataLayer: DummyDataManager(),
+                                      tealium: tealium)
+        let module = MediaModule(context: context, delegate: MockModuleDelegate(), diskStorage: nil) { _ in }
+        let session = HeartbeatMediaSession(with: mockMediaService)
+        session.backgroundStatusResumed = true
+        module.activeSessions = [session]
+        
+        module.sleep()
+        XCTAssertEqual(mockMediaService.standardEventCounts[.sessionEnd], 0)
+        XCTAssertTrue(session.backgroundStatusResumed)
+    }
+    
+    func testWake_Returns_WhenBackgroundMediaTrackingDisabled() {
+        let config = TealiumConfig(account: "account",
+                                   profile: "profile",
+                                   environment: "env")
+        let tealium = Tealium(config: config)
+        let context = TealiumContext(config: config,
+                                      dataLayer: DummyDataManager(),
+                                      tealium: tealium)
+        let module = MediaModule(context: context, delegate: MockModuleDelegate(), diskStorage: nil) { _ in }
+        let session = HeartbeatMediaSession(with: mockMediaService)
+        module.activeSessions = [session]
+        
+        module.wake()
+        XCTAssertFalse(session.backgroundStatusResumed)
+    }
+    
+    func testSleep_SetsBackgroundResumedToFalse_WhenBackgroundMediaTrackingEnabled() {
+        let config = TealiumConfig(account: "account",
+                                   profile: "profile",
+                                   environment: "env")
+        config.enableBackgroundMediaTracking = true
+        let tealium = Tealium(config: config)
+        let context = TealiumContext(config: config,
+                                      dataLayer: DummyDataManager(),
+                                      tealium: tealium)
+        let module = MediaModule(context: context, delegate: MockModuleDelegate(), diskStorage: nil) { _ in }
+        let session = HeartbeatMediaSession(with: mockMediaService)
+        session.backgroundStatusResumed = true
+        module.activeSessions = [session]
+        
+        module.sleep()
+        XCTAssertFalse(session.backgroundStatusResumed)
+    }
+    
+    func testSleep_CallsEndSessionAfterConfiguredTime_WhenBackgroundMediaTrackingEnabled() {
+        let expect = expectation(description: "CallsEndSessionAfterConfiguredTime")
+        let config = TealiumConfig(account: "account",
+                                   profile: "profile",
+                                   environment: "env")
+        config.enableBackgroundMediaTracking = true
+        config.backgroundMediaAutoEndSessionTime = 3.0
+        let tealium = Tealium(config: config)
+        let context = TealiumContext(config: config,
+                                      dataLayer: DummyDataManager(),
+                                      tealium: tealium)
+        let module = MediaModule(context: context, delegate: MockModuleDelegate(), diskStorage: nil) { _ in }
+        let session = HeartbeatMediaSession(with: mockMediaService)
+        session.backgroundStatusResumed = true
+        module.activeSessions = [session]
+        
+        module.sleep()
+        TealiumQueues.mainQueue.asyncAfter(deadline:
+                                            .now() + 3.2) {
+            XCTAssertEqual(self.mockMediaService.standardEventCounts[.sessionEnd], 1)
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: 3.5)
+    }
+    
+    func testWake_SetsBackgroundResumedToTrue_WhenBackgroundMediaTrackingEnabled() {
+        let config = TealiumConfig(account: "account",
+                                   profile: "profile",
+                                   environment: "env")
+        config.enableBackgroundMediaTracking = true
+        let tealium = Tealium(config: config)
+        let context = TealiumContext(config: config,
+                                      dataLayer: DummyDataManager(),
+                                      tealium: tealium)
+        let module = MediaModule(context: context, delegate: MockModuleDelegate(), diskStorage: nil) { _ in }
+        let session = HeartbeatMediaSession(with: mockMediaService)
+        session.backgroundStatusResumed = false
+        module.activeSessions = [session]
+        
+        module.wake()
+        XCTAssertTrue(session.backgroundStatusResumed)
+    }
+    
     // MARK: Extensions Tests
     func testMediaServiceNotNilWhenAddedToCollectors() {
         let expect = expectation(description: "testMediaServiceNotNilWhenAddedToCollectors")
-        let config = TealiumConfig(account: "account", profile: "profile", environment: "env")
+        let config = TealiumConfig(account: "account",
+                                   profile: "profile",
+                                   environment: "env")
         config.collectors = [Collectors.Media]
         tealium = Tealium(config: config) { _ in
             XCTAssertNotNil(self.tealium?.media)
@@ -1425,12 +1560,44 @@ class TealiumMediaTests: XCTestCase {
     
     func testMediaServiceNilWhenAddedToCollectors() {
         let expect = expectation(description: "testMediaServiceNotNilWhenAddedToCollectors")
-        let config = TealiumConfig(account: "account", profile: "profile", environment: "env")
+        let config = TealiumConfig(account: "account",
+                                   profile: "profile",
+                                   environment: "env")
         tealium = Tealium(config: config) { _ in
             XCTAssertNil(self.tealium?.media)
             expect.fulfill()
         }
         wait(for: [expect], timeout: 1.0)
+    }
+    
+    func testEnableBackgroundMediaTracking_IsDefault_WhenNotSet() {
+        let config = TealiumConfig(account: "account",
+                                   profile: "profile",
+                                   environment: "env")
+        XCTAssertFalse(config.enableBackgroundMediaTracking)
+    }
+    
+    func testEnableBackgroundMediaTracking_SetsFlagInOptions() {
+        let config = TealiumConfig(account: "account",
+                                   profile: "profile",
+                                   environment: "env")
+        config.enableBackgroundMediaTracking = true
+        XCTAssertTrue(config.options[TealiumKey.enableBackgroundMedia] as! Bool)
+    }
+    
+    func testAutoEndSessionTime_IsDefault_WhenNotSet() {
+        let config = TealiumConfig(account: "account",
+                                   profile: "profile",
+                                   environment: "env")
+        XCTAssertEqual(config.backgroundMediaAutoEndSessionTime, 60.0)
+    }
+    
+    func testAutoEndSessionTime_SetsFlagInOptions() {
+        let config = TealiumConfig(account: "account",
+                                   profile: "profile",
+                                   environment: "env")
+        config.backgroundMediaAutoEndSessionTime = 30.0
+        XCTAssertEqual(config.backgroundMediaAutoEndSessionTime, 30.0)
     }
 
 }

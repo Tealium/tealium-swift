@@ -94,6 +94,7 @@ public enum StandardMediaEvent: String {
     case playerStateStop = "player_state_stop"
     case seekStart = "media_seek_start"
     case seekEnd = "media_seek_end"
+    case sessionResume = "media_session_resume"
     case sessionStart = "media_session_start"
     case contentEnd = "media_content_end"
     case summary = "media_summary"

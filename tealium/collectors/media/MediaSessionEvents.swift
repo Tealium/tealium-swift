@@ -9,6 +9,7 @@ import Foundation
 
 public protocol MediaSessionEvents {
     func startSession()
+    func resumeSession()
     func play()
     func startChapter(_ chapter: Chapter)
     func skipChapter()

@@ -18,4 +18,5 @@ struct Video {
     var totalDuration: Double = 0
     var started: Bool = false
     var paused: Bool = false
+    var isBackgrounded: Bool = false
 }

@@ -23,6 +23,29 @@ public extension Tealium {
     }
 }
 
+public extension TealiumConfig {
+    
+    /// Enables automatic tracking of endSession while the media player has been backgrounded longer than a minute
+    var enableBackgroundMediaTracking: Bool {
+        get {
+            options[TealiumKey.enableBackgroundMedia] as? Bool ?? false
+        }
+        set {
+            options[TealiumKey.enableBackgroundMedia] = newValue
+        }
+    }
+    
+    var backgroundMediaAutoEndSessionTime: Double {
+        get {
+            options[TealiumKey.autoEndSesssionTime] as? Double ?? 60.0
+        }
+        set {
+            options[TealiumKey.autoEndSesssionTime] = newValue
+        }
+    }
+
+}
+
 public extension Encodable {
     /// - Returns: `[String: Any]` of `Codable` type
     var encoded: [String: Any]? {

@@ -146,6 +146,8 @@ public enum TealiumKey {
     static let eventStart = "timed_event_start"
     static let eventStop = "timed_event_end"
     static let eventDuration = "timed_event_duration"
+    public static let enableBackgroundMedia = "enable_background_media_tracking"
+    public static let autoEndSesssionTime = "media_auto_end_session_time"
 }
 
 public enum TealiumTrackType {

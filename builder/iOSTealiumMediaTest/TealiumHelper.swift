@@ -39,6 +39,7 @@ class TealiumHelper {
         if enableLogs { config.logLevel = .info }
         config.shouldUseRemotePublishSettings = false
         config.memoryReportingEnabled = true
+        config.enableBackgroundMediaTracking = true
         config.collectors = [Collectors.AppData,
                              Collectors.Device,
                              Collectors.Connectivity,

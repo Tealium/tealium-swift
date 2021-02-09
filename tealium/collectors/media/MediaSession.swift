@@ -16,6 +16,7 @@ public protocol MediaSessionProtocol: MediaSessionEvents {
     var mediaService: MediaEventDispatcher? { get set }
     var playbackSpeed: Double { get set }
     var playerState: PlayerState? { get set }
+    var backgroundStatusResumed: Bool { get set }
     func calculate(duration: Date?) -> Double?
 }
 
@@ -25,6 +26,11 @@ public class MediaSession: MediaSessionProtocol {
     
     public init(with mediaService: MediaEventDispatcher?) {
         self.mediaService = mediaService
+    }
+    
+    public var backgroundStatusResumed: Bool {
+        get { mediaService?.media.mediaResumed ?? false }
+        set { mediaService?.media.mediaResumed = newValue }
     }
     
     /// QoE bitrate
@@ -67,7 +73,15 @@ public class MediaSession: MediaSessionProtocol {
         }
     }
     
+    public func resumeSession() {
+        mediaService?.track(.event(.sessionResume))
+    }
+    
     public func startSession() {
+        guard !backgroundStatusResumed else {
+            resumeSession()
+            return
+        }
         mediaService?.track(.event(.sessionStart))
     }
     

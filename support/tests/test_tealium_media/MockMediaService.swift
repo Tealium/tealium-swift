@@ -56,6 +56,7 @@ class MockMediaService: MediaEventDispatcher {
         .playerStateStop: 0,
         .seekStart: 0,
         .seekEnd: 0,
+        .sessionResume: 0,
         .sessionStart: 0,
         .contentEnd: 0,
         .summary: 0

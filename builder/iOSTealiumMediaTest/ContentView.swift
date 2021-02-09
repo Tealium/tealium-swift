@@ -17,7 +17,7 @@ struct ContentView: View {
                                         streamType: .dvod,
                                         mediaType: .video,
                                         qoe: QoE(bitrate: 5000),
-                                        trackingType: .milestone, // change to test different types
+                                        trackingType: .heartbeat, // change to test different types
                                         state: .closedCaption,
                                         duration: 130)
     
@@ -57,6 +57,7 @@ struct ContentView: View {
                         case .loading:
                             video.stateText = "Loading..."
                         case .playing(let totalDuration):
+                            guard !video.isBackgrounded else { return }
                             video.paused = false
                             video.stateText = "Playing!"
                             video.totalDuration = totalDuration
@@ -65,7 +66,7 @@ struct ContentView: View {
                                 video.started = true
                             }
                             mediaSession?.play()
-                            mediaSession?.startChapter(Chapter(name: "Chapter 1", duration: 30))
+                            if !video.started { mediaSession?.startChapter(Chapter(name: "Chapter 1", duration: 30)) }
                         case .paused(let playProgress, let bufferProgress):
                             video.stateText = "Paused: play \(Int(playProgress * 100))% buffer \(Int(bufferProgress * 100))%"
                             if !video.paused {
@@ -160,7 +161,14 @@ struct ContentView: View {
                 Spacer()
             }
             .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
+                    self.video.isBackgrounded = true
                     TealiumHelper.killTrace(tealTraceId)
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+                    self.video.isBackgrounded = false
+                    self.video.started = false
+                    self.mediaSession?.backgroundStatusResumed = true
+                    
             }
             .onDisappear { self.video.play = false }
             .navigationTitle("iOSTealiumMediaTest")
