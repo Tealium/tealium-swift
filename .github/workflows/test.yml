@@ -9,8 +9,8 @@ on:
 jobs:
   test_iOS:
     name: iOS Tests
-    # runs-on: macos-latest
-    runs-on: self-hosted
+    ns-on: macos-latest
+    # runs-on: self-hosted
     timeout-minutes: 60
     env: 
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -45,8 +45,8 @@ jobs:
           path: ${{env.working-directory}}/test_output/*.html
   test_macOS:
     name: macOS Tests
-    # runs-on: macos-latest
-    runs-on: self-hosted
+    runs-on: macos-latest
+    # runs-on: self-hosted
     timeout-minutes: 60
     env: 
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -80,8 +80,8 @@ jobs:
           path: ${{env.working-directory}}/test_output/*.html
   test_tvOS:
     name: tvOS Tests
-    # runs-on: macos-latest
-    runs-on: self-hosted
+    runs-on: macos-latest
+    # runs-on: self-hosted
     timeout-minutes: 60
     env: 
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
