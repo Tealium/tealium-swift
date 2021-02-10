@@ -25,7 +25,8 @@ public extension Tealium {
 
 public extension TealiumConfig {
     
-    /// Enables automatic tracking of endSession while the media player has been backgrounded longer than a minute
+    /// Enables automatic tracking of `endSession` while the media player has been backgrounded longer than
+    /// the  `backgroundMediaAutoEndSessionTime` (default `60.0` seconds)
     /// - Returns: `Bool` Default is `false`
     var enableBackgroundMediaTracking: Bool {
         get {

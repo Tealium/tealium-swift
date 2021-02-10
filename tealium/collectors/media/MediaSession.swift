@@ -215,7 +215,6 @@ public class MediaSession: MediaSessionProtocol {
         mediaService?.track(.event(.sessionEnd))
     }
     
-    // TODO: might not need
     /// Calculates the duration of the content, in seconds
     public func calculate(duration: Date?) -> Double? {
         guard let duration = duration else {
