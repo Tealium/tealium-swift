@@ -9,8 +9,6 @@ import XCTest
 @testable import TealiumCore
 @testable import TealiumMedia
 
-// TODO: Test correct sequence of events
-
 class TealiumMediaTests: XCTestCase {
     
     var session: MediaSession!
@@ -463,6 +461,11 @@ class TealiumMediaTests: XCTestCase {
     func testResumeSession_Called() {
         session.resumeSession()
         XCTAssertEqual(mockMediaService.standardEventCounts[.sessionResume], 1)
+    }
+    
+    func testResumeSession_SetsBackgroundStatusResumedToTrue() {
+        session.resumeSession()
+        XCTAssertTrue(session.backgroundStatusResumed)
     }
     
     func testSessionStart_Called() {

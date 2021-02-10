@@ -70,6 +70,7 @@ public class MediaSession: MediaSessionProtocol {
     }
     
     public func resumeSession() {
+        backgroundStatusResumed = true
         mediaService?.track(.event(.sessionResume))
     }
     
