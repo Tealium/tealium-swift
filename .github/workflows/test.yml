@@ -45,7 +45,7 @@ jobs:
           path: ${{env.working-directory}}/test_output/*.html
   test_macOS:
     name: macOS Tests
-    ruruns-on: macos-latest
+    runs-on: macos-latest
     # runs-on: self-hosted
     timeout-minutes: 60
     env: 
@@ -80,7 +80,7 @@ jobs:
           path: ${{env.working-directory}}/test_output/*.html
   test_tvOS:
     name: tvOS Tests
-    ruruns-on: macos-latest
+    runs-on: macos-latest
     # runs-on: self-hosted
     timeout-minutes: 60
     env: 
