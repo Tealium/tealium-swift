@@ -23,14 +23,10 @@ public protocol MediaSessionProtocol: MediaSessionEvents {
 public class MediaSession: MediaSessionProtocol {
     
     public var mediaService: MediaEventDispatcher?
+    public var backgroundStatusResumed = false
     
     public init(with mediaService: MediaEventDispatcher?) {
         self.mediaService = mediaService
-    }
-    
-    public var backgroundStatusResumed: Bool {
-        get { mediaService?.media.mediaResumed ?? false }
-        set { mediaService?.media.mediaResumed = newValue }
     }
     
     /// QoE bitrate

@@ -20,7 +20,6 @@ public class MediaContent: Codable {
     var milestoneInterval: Double?
     var contentCompletePercentage: Double?
     var startTime: Date?
-    var mediaResumed: Bool?
     var state: PlayerState?
     var customId: String?
     var duration: Int?
@@ -41,7 +40,6 @@ public class MediaContent: Codable {
         case qoe = "media_qoe"
         case trackingType = "media_tracking_type"
         case startTime = "media_session_start_time"
-        case mediaResumed = "media_session_resumed"
         case state = "media_player_state"
         case customId = "media_custom_id"
         case duration = "media_duration"
