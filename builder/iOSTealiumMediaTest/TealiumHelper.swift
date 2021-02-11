@@ -40,6 +40,7 @@ class TealiumHelper {
         config.shouldUseRemotePublishSettings = false
         config.memoryReportingEnabled = true
         config.enableBackgroundMediaTracking = true
+        config.backgroundMediaAutoEndSessionTime = 30.0
         config.collectors = [Collectors.AppData,
                              Collectors.Device,
                              Collectors.Connectivity,

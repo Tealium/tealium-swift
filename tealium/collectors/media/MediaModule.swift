@@ -5,7 +5,7 @@
 //  Copyright © 2021 Tealium, Inc. All rights reserved.
 //
 
-import Foundation
+import UIKit
 #if media
 import TealiumCore
 #endif
@@ -40,18 +40,52 @@ public class MediaModule: Collector {
 
 extension MediaModule: TealiumLifecycleEvents {
     
+    #if os(iOS)
+    class var sharedApplication: UIApplication? {
+        let selector = NSSelectorFromString("sharedApplication")
+        return UIApplication.perform(selector)?.takeUnretainedValue() as? UIApplication
+    }
+    #endif
+    
     public func sleep() {
         guard config.enableBackgroundMediaTracking else {
             return
         }
         activeSessions.forEach { session in
+            #if os(iOS)
+            var backgroundTaskId: UIBackgroundTaskIdentifier?
             session.backgroundStatusResumed = false
-            TealiumQueues.mainQueue.asyncAfter(deadline:
-                                                .now() + config.backgroundMediaAutoEndSessionTime) {
-                if !session.backgroundStatusResumed {
-                    session.endSession()
+            backgroundTaskId = MediaModule.sharedApplication?.beginBackgroundTask {
+                if let taskId = backgroundTaskId {
+                    MediaModule.sharedApplication?.endBackgroundTask(taskId)
+                    backgroundTaskId = .invalid
                 }
             }
+                        
+            TealiumQueues.backgroundSerialQueue.asyncAfter(deadline:
+                                                .now() + config.backgroundMediaAutoEndSessionTime) {
+                self.sendEndSessionInBackground(session)
+            }
+
+            if let taskId = backgroundTaskId {
+                TealiumQueues.backgroundSerialQueue.asyncAfter(deadline:
+                                                                .now() + (config.backgroundMediaAutoEndSessionTime + 1.0)) {
+                    MediaModule.sharedApplication?.endBackgroundTask(taskId)
+                    backgroundTaskId = .invalid
+                }
+            }
+            #elseif os(watchOS)
+            let pInfo = ProcessInfo()
+            pInfo.performExpiringActivity(withReason: "Tealium Swift: End Media Session") { willBeSuspended in
+                if !willBeSuspended {
+                    TealiumQueues.backgroundSerialQueue.asyncAfter(deadline: now() + config.backgroundMediaAutoEndSessionTime) {
+                        self.sendEndSessionInBackground(session)
+                    }
+                }
+            }
+            #else
+            sendEndSessionInBackground(session)
+            #endif
         }
     }
     
@@ -65,5 +99,11 @@ extension MediaModule: TealiumLifecycleEvents {
     }
     
     public func launch(at date: Date) { }
+    
+    func sendEndSessionInBackground(_ session: MediaSession) {
+        if !session.backgroundStatusResumed {
+            session.endSession()
+        }
+    }
 }
 
