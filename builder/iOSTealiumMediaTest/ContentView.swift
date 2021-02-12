@@ -78,7 +78,10 @@ struct ContentView: View {
                         }
                     }
                     .onAppear {
-                        _session = TealiumHelper.mediaSession(from: media)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                            _session = TealiumHelper.mediaSession(from: media)
+                            self.video.play = true
+                        })
                     }
                     .aspectRatio(1.78, contentMode: .fit)
                     .cornerRadius(16)
