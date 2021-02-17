@@ -1,81 +1,81 @@
-# name: Builds for various architectures
+name: Builds for various architectures
 
-# on:
-#   push:
-#     branches:
-#     - feature/*
-#     - cicd
-#   pull_request:
-#     branches:
-#       - ci-tests
+on:
+  push:
+    branches:
+    - feature/*
+    - cicd
+  pull_request:
+    branches:
+      - ci-tests
 
-# jobs:
-#   build_iOS:
-#     name: Build iOS (14.0)
-#     # runs-on: macos-latest
-#     runs-on: self-hosted
-#     timeout-minutes: 60
-#     env: 
-#       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-#       working-directory: ./builder
-#     strategy:
-#       matrix:
-#         destination: ["platform=iOS Simulator,OS=14.4,name=iPhone 12"]
-#         scheme: 
-#           - TealiumCore
-#           - TealiumCollect
-#           - TealiumLifecycle
-#           - TealiumVisitorService
-#           - TealiumLocation
-#           - TealiumRemoteCommands
-#           - TealiumTagManagement
-#           - TealiumAttribution
-#           - TealiumAutotracking
-#     steps:
-#       - uses: actions/checkout@v2
-#       - name: Build iOS - ${{ matrix.scheme }}
-#         run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project tealium-swift.xcodeproj -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" clean build | xcpretty
-#         working-directory: ${{ env.working-directory }}
-#   build_macOS:
-#     name: Build macOS
-#     # runs-on: macos-latest
-#     runs-on: self-hosted
-#     timeout-minutes: 60
-#     env: 
-#       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-#       working-directory: ./builder
-#     strategy:
-#       matrix:
-#         destination: ["platform=macOS,arch=x86_64"]
-#         scheme: 
-#           - TealiumCore
-#           - TealiumCollect
-#           - TealiumLifecycle
-#           - TealiumVisitorService
-#     steps:
-#       - uses: actions/checkout@v2
-#       - name: Build iOS - ${{ matrix.scheme }}
-#         run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project tealium-swift.xcodeproj -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" clean build | xcpretty
-#         working-directory: ${{ env.working-directory }}
-#   build_tvOS:
-#     name: Build tvOS
-#     # runs-on: macos-latest
-#     runs-on: self-hosted
-#     timeout-minutes: 60
-#     env: 
-#       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-#       working-directory: ./builder
-#     strategy:
-#       matrix:
-#         destination: ["platform=tvOS Simulator,name=Apple TV"]
-#         scheme: 
-#           - TealiumCore
-#           - TealiumCollect
-#           - TealiumLifecycle
-#           - TealiumVisitorService
-#     steps:
-#       - uses: actions/checkout@v2
-#       - name: Build iOS - ${{ matrix.scheme }}
-#         run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project tealium-swift.xcodeproj -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" clean build | xcpretty
-#         working-directory: ${{ env.working-directory }}
-#           
+jobs:
+  build_iOS:
+    name: Build iOS (14.0)
+    # runs-on: macos-latest
+    runs-on: self-hosted
+    timeout-minutes: 60
+    env: 
+      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+      working-directory: ./builder
+    strategy:
+      matrix:
+        destination: ["platform=iOS Simulator,OS=14.4,name=iPhone 12"]
+        scheme: 
+          - TealiumCore
+          - TealiumCollect
+          - TealiumLifecycle
+          - TealiumVisitorService
+          - TealiumLocation
+          - TealiumRemoteCommands
+          - TealiumTagManagement
+          - TealiumAttribution
+          - TealiumAutotracking
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build iOS - ${{ matrix.scheme }}
+        run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project tealium-swift.xcodeproj -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" clean build | xcpretty
+        working-directory: ${{ env.working-directory }}
+  build_macOS:
+    name: Build macOS
+    # runs-on: macos-latest
+    runs-on: self-hosted
+    timeout-minutes: 60
+    env: 
+      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+      working-directory: ./builder
+    strategy:
+      matrix:
+        destination: ["platform=macOS,arch=x86_64"]
+        scheme: 
+          - TealiumCore
+          - TealiumCollect
+          - TealiumLifecycle
+          - TealiumVisitorService
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build iOS - ${{ matrix.scheme }}
+        run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project tealium-swift.xcodeproj -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" clean build | xcpretty
+        working-directory: ${{ env.working-directory }}
+  build_tvOS:
+    name: Build tvOS
+    # runs-on: macos-latest
+    runs-on: self-hosted
+    timeout-minutes: 60
+    env: 
+      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+      working-directory: ./builder
+    strategy:
+      matrix:
+        destination: ["platform=tvOS Simulator,name=Apple TV"]
+        scheme: 
+          - TealiumCore
+          - TealiumCollect
+          - TealiumLifecycle
+          - TealiumVisitorService
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build iOS - ${{ matrix.scheme }}
+        run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project tealium-swift.xcodeproj -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" clean build | xcpretty
+        working-directory: ${{ env.working-directory }}
+          
