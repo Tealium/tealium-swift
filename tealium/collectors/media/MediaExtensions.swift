@@ -23,6 +23,33 @@ public extension Tealium {
     }
 }
 
+public extension TealiumConfig {
+    
+    /// Enables automatic tracking of `endSession` while the media player has been backgrounded longer than
+    /// the  `backgroundMediaAutoEndSessionTime` (default `60.0` seconds)
+    /// - Returns: `Bool` Default is `false`
+    var enableBackgroundMediaTracking: Bool {
+        get {
+            options[TealiumKey.enableBackgroundMedia] as? Bool ?? false
+        }
+        set {
+            options[TealiumKey.enableBackgroundMedia] = newValue
+        }
+    }
+    
+    /// Specifies the amount of time to wait before sending an `endSession` event once the app has been backgrounded
+    /// - Returns: `Double` Default is `60.0` seconds
+    var backgroundMediaAutoEndSessionTime: Double {
+        get {
+            options[TealiumKey.autoEndSesssionTime] as? Double ?? 60.0
+        }
+        set {
+            options[TealiumKey.autoEndSesssionTime] = newValue
+        }
+    }
+
+}
+
 public extension Encodable {
     /// - Returns: `[String: Any]` of `Codable` type
     var encoded: [String: Any]? {
@@ -37,3 +64,8 @@ public extension Int {
     }
 }
 
+public extension Double {
+    mutating func increment(by number: Double) {
+        self += number
+    }
+}

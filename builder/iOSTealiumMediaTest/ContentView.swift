@@ -17,7 +17,7 @@ struct ContentView: View {
                                         streamType: .dvod,
                                         mediaType: .video,
                                         qoe: QoE(bitrate: 5000),
-                                        trackingType: .significant, // change to test different types
+                                        trackingType: .heartbeat, // change to test different types
                                         state: .closedCaption,
                                         duration: 130)
     
@@ -44,7 +44,7 @@ struct ContentView: View {
                     }
                     .onPlayToEndTime {
                         mediaSession?.endChapter()
-                        mediaSession?.stop()
+                        mediaSession?.endContent()
                         mediaSession?.endSession()
                         video.time = .zero
                     }
@@ -57,6 +57,7 @@ struct ContentView: View {
                         case .loading:
                             video.stateText = "Loading..."
                         case .playing(let totalDuration):
+                            guard !video.isBackgrounded else { return }
                             video.paused = false
                             video.stateText = "Playing!"
                             video.totalDuration = totalDuration
@@ -65,7 +66,7 @@ struct ContentView: View {
                                 video.started = true
                             }
                             mediaSession?.play()
-                            mediaSession?.startChapter(Chapter(name: "Chapter 1", duration: 30))
+                            if !video.started { mediaSession?.startChapter(Chapter(name: "Chapter 1", duration: 30)) }
                         case .paused(let playProgress, let bufferProgress):
                             video.stateText = "Paused: play \(Int(playProgress * 100))% buffer \(Int(bufferProgress * 100))%"
                             if !video.paused {
@@ -77,7 +78,10 @@ struct ContentView: View {
                         }
                     }
                     .onAppear {
-                        _session = TealiumHelper.mediaSession(from: media)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                            _session = TealiumHelper.mediaSession(from: media)
+                            self.video.play = true
+                        })
                     }
                     .aspectRatio(1.78, contentMode: .fit)
                     .cornerRadius(16)
@@ -112,10 +116,10 @@ struct ContentView: View {
                 
                 HStack {
                     IconButtonView(iconName: "gobackward.15") {
-                        mediaSession?.startSeek(at: Int(self.video.time.seconds))
+                        mediaSession?.startSeek(at: self.video.time.seconds)
                         self.video.time = CMTimeMakeWithSeconds(max(0, self.video.time.seconds - 15),
                                                                 preferredTimescale: self.video.time.timescale)
-                        mediaSession?.endSeek(at: Int(self.video.time.seconds))
+                        mediaSession?.endSeek(at: self.video.time.seconds)
                         mediaSession?.droppedFrames = 15
                     }
 
@@ -126,11 +130,11 @@ struct ContentView: View {
                     Divider().frame(height: 20)
                     
                     IconButtonView(iconName: "goforward.15") {
-                        mediaSession?.startSeek(at: Int(self.video.time.seconds))
+                        mediaSession?.startSeek(at: self.video.time.seconds)
                         self.video.time = CMTimeMakeWithSeconds(min(self.video.totalDuration,
                                                                     self.video.time.seconds + 15),
                                                                 preferredTimescale: self.video.time.timescale)
-                        mediaSession?.endSeek(at: Int(self.video.time.seconds))
+                        mediaSession?.endSeek(at: self.video.time.seconds)
                         mediaSession?.droppedFrames = 20
                     }
                 }.padding()
@@ -141,7 +145,8 @@ struct ContentView: View {
                 }
                 
                 TextButtonView(title: "Ad 1 Start") {
-                    mediaSession?.startAdBreak(AdBreak(title: "Ad Break 1"))
+                    self.video.play = false
+                    mediaSession?.startAdBreak(AdBreak(name: "Ad Break 1"))
                     mediaSession?.startAd(Ad(name: "Ad 1"))
                 }
                 
@@ -151,11 +156,22 @@ struct ContentView: View {
                 }
                 
                 TextButtonView(title: "Ad 2 Complete") {
+                    self.video.play = true
                     mediaSession?.endAd()
                     mediaSession?.endAdBreak()
                 }
                 
                 Spacer()
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
+                    self.video.isBackgrounded = true
+                    TealiumHelper.killTrace(tealTraceId)
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+                    self.video.isBackgrounded = false
+                    self.video.started = false
+                    self.mediaSession?.backgroundStatusResumed = true
+                    
             }
             .onDisappear { self.video.play = false }
             .navigationTitle("iOSTealiumMediaTest")

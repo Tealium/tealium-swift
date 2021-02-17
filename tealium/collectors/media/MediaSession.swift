@@ -16,12 +16,14 @@ public protocol MediaSessionProtocol: MediaSessionEvents {
     var mediaService: MediaEventDispatcher? { get set }
     var playbackSpeed: Double { get set }
     var playerState: PlayerState? { get set }
-    func calculate(duration: Date?) -> Int?
+    var backgroundStatusResumed: Bool { get set }
+    func calculate(duration: Date?) -> Double?
 }
 
 public class MediaSession: MediaSessionProtocol {
     
     public var mediaService: MediaEventDispatcher?
+    public var backgroundStatusResumed = false
     
     public init(with mediaService: MediaEventDispatcher?) {
         self.mediaService = mediaService
@@ -67,7 +69,16 @@ public class MediaSession: MediaSessionProtocol {
         }
     }
     
+    public func resumeSession() {
+        backgroundStatusResumed = true
+        mediaService?.track(.event(.sessionResume))
+    }
+    
     public func startSession() {
+        guard !backgroundStatusResumed else {
+            resumeSession()
+            return
+        }
         mediaService?.track(.event(.sessionStart))
     }
     
@@ -111,11 +122,11 @@ public class MediaSession: MediaSessionProtocol {
         mediaService?.track(.event(.bufferEnd))
     }
     
-    public func startSeek(at position: Int? = nil) {
+    public func startSeek(at position: Double? = nil) {
         mediaService?.track(.event(.seekStart))
     }
     
-    public func endSeek(at position: Int? = nil) {
+    public func endSeek(at position: Double? = nil) {
         mediaService?.track(.event(.seekEnd))
     }
     
@@ -192,8 +203,9 @@ public class MediaSession: MediaSessionProtocol {
         mediaService?.track(.event(.pause))
     }
     
-    public func stop() {
-        mediaService?.track(.event(.stop))
+    /// Sends an event signaling that the content has played until the end
+    public func endContent() {
+        mediaService?.track(.event(.contentEnd))
     }
     
     public func endSession() {
@@ -201,14 +213,14 @@ public class MediaSession: MediaSessionProtocol {
     }
     
     /// Calculates the duration of the content, in seconds
-    public func calculate(duration: Date?) -> Int? {
+    public func calculate(duration: Date?) -> Double? {
         guard let duration = duration else {
             return nil
         }
         let calculated = Calendar.current.dateComponents([.second],
                                                          from: duration,
                                                          to: Date())
-        return calculated.second
+        return Double(calculated.second ?? 0)
     }
     
     public func sendMilestone(_ milestone: Milestone) {
