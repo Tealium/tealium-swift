@@ -7,7 +7,9 @@
 
 @testable import TealiumCore
 @testable import TealiumTagManagement
+#if os(iOS)
 import WebKit
+#endif
 import XCTest
 
 @available(iOS 11.0, *)

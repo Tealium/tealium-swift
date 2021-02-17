@@ -6,12 +6,12 @@
 //
 
 import Foundation
-import WebKit
 import TealiumCollect
 import TealiumCore
 import TealiumLifecycle
 import TealiumVisitorService
 #if os(iOS)
+import WebKit
 import TealiumAttribution
 import TealiumLocation
 import TealiumRemoteCommands

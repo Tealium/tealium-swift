@@ -62,7 +62,7 @@ class LifecycleModuleTests: XCTestCase {
             let appVersion = event.app_version!
             let ts = Double(event.timestamp_unix!)
             let time = Date(timeIntervalSince1970: ts!)
-            let expectedData = event.expected_data.dictionary
+            let expectedData = event.expected_data?.encoded
             let type = event.expected_data?.lifecycle_type!
             var returnedData = [String: Any]()
             switch type {
@@ -197,7 +197,7 @@ class LifecycleModuleTests: XCTestCase {
     func testLifecycleDataMigrated() {
         lifecycleModule = createModule(dataLayer: MockMigratedDataLayer())
 
-        let retrieved = lifecycleModule.lifecycle?.dictionary
+        let retrieved = lifecycleModule.lifecycle?.encoded
 
         let expected: [String: Any] = [
             "countLaunch": "12",
