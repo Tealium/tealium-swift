@@ -87,7 +87,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Build iOS Package
-        run: bash ./veracode.sh
+        run: bash veracode.sh
       - name: Send for Security Scan
         uses: veracode/veracode-uploadandscan-action@master # Run the uploadandscan action. Inputs are described above.
         with:

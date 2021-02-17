@@ -1,123 +1,123 @@
-name: Tests and code coverage
+# name: Tests and code coverage
 
-on:
-  push:
-    branches:
-    - feature/*
-    - cicd
+# on:
+#   push:
+#     branches:
+#     - feature/*
+#     - cicd
 
-jobs:
-  test_iOS:
-    name: iOS Tests
-    runs-on: macos-latest
-    # runs-on: self-hosted
-    timeout-minutes: 60
-    env: 
-      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-      working-directory: ./builder
-    strategy:
-      matrix:
-        destination: ["platform=iOS Simulator,OS=14.4,name=iPhone 12"]
-        scheme: 
-          - TealiumCoreTests-iOS
-          - TealiumCollectTests-iOS
-          - TealiumLifecycleTests-iOS
-          - TealiumVisitorServiceTests-iOS
-          - TealiumTagManagementTests-iOS
-          - TealiumRemoteCommandsTests-iOS
-          - TealiumAttributionTests-iOS
-          - TealiumAutotrackingTests-iOS
-        # todo: location tests
-    steps:
-      - uses: actions/checkout@v2
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '2.7'
-      - name: install fastlane
-        run: |
-          brew install fastlane
-      - name: Test - "${{ matrix.scheme }}"
-        run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
-        working-directory: ${{env.working-directory}}
-      - name: archive code coverage results
-        uses: actions/upload-artifact@v2
-        with:
-          name: code-coverage-report
-          path: ${{env.working-directory}}/test_output/*.html
-  test_macOS:
-    name: macOS Tests
-    runs-on: macos-latest
-    # runs-on: self-hosted
-    timeout-minutes: 60
-    env: 
-      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-      working-directory: ./builder
-    strategy:
-      matrix:
-        destination: ["platform=macOS,arch=x86_64"]
-        scheme: 
-          - TealiumCoreTests-macOS
-          - TealiumCollectTests-macOS
-          - TealiumLifecycleTests-macOS
-          - TealiumVisitorServiceTests-macOS
-          - TealiumTagManagementTests-iOS
-          - TealiumRemoteCommandsTests-iOS
-          - TealiumAttributionTests-iOS
-          - TealiumAutotrackingTests-iOS
-    steps:
-      - uses: actions/checkout@v2
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '2.7'
-      - name: install fastlane
-        run: |
-          brew install fastlane
-      - name: Test - "${{ matrix.scheme }}"
-        run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
-        working-directory: ${{env.working-directory}}
-      - name: archive code coverage results
-        uses: actions/upload-artifact@v2
-        with:
-          name: code-coverage-report
-          path: ${{env.working-directory}}/test_output/*.html
-  test_tvOS:
-    name: tvOS Tests
-    runs-on: macos-latest
-    # runs-on: self-hosted
-    timeout-minutes: 60
-    env: 
-      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-      working-directory: ./builder
-    strategy:
-      matrix:
-        destination: ["platform=tvOS Simulator,name=Apple TV"]
-        scheme: 
-          - TealiumCoreTests-tvOS
-          - TealiumCollectTests-tvOS
-          - TealiumLifecycleTests-tvOS
-          - TealiumVisitorServiceTests-tvOS
-    steps:
-      - uses: actions/checkout@v2
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '2.7'
-      - name: install fastlane
-        run: |
-          brew install fastlane
-      - name: Test "${{ matrix.scheme }}"
-        run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
-        working-directory: ${{env.working-directory}}
-      - name: Test TealiumCollectTests-tvOS
-        run: fastlane scan --scheme TealiumCollectTests-tvOS --output_files CollectTests-tvOS.html
-        working-directory: ${{env.working-directory}}
-      - name: Test TealiumLifecycleTests-tvOS
-        run: fastlane scan --scheme TealiumLifecycleTests-tvOS --output_files LifecycleTests-tvOS.html
-        working-directory: ${{env.working-directory}}
-      - name: Test TealiumVisitorServiceTests-tvOS
-        run: fastlane scan --scheme TealiumVisitorServiceTests-tvOS --output_files VisitorServiceTests-tvOS.html
-        working-directory: ${{env.working-directory}}
-      - name: archive code coverage results
-        uses: actions/upload-artifact@v2
-        with:
-          name: code-coverage-report
-          path: ${{env.working-directory}}/test_output/*.html
+# jobs:
+#   test_iOS:
+#     name: iOS Tests
+#     runs-on: macos-latest
+#     # runs-on: self-hosted
+#     timeout-minutes: 60
+#     env: 
+#       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+#       working-directory: ./builder
+#     strategy:
+#       matrix:
+#         destination: ["platform=iOS Simulator,OS=14.4,name=iPhone 12"]
+#         scheme: 
+#           - TealiumCoreTests-iOS
+#           - TealiumCollectTests-iOS
+#           - TealiumLifecycleTests-iOS
+#           - TealiumVisitorServiceTests-iOS
+#           - TealiumTagManagementTests-iOS
+#           - TealiumRemoteCommandsTests-iOS
+#           - TealiumAttributionTests-iOS
+#           - TealiumAutotrackingTests-iOS
+#         # todo: location tests
+#     steps:
+#       - uses: actions/checkout@v2
+#       - uses: ruby/setup-ruby@v1
+#         with:
+#           ruby-version: '2.7'
+#       - name: install fastlane
+#         run: |
+#           brew install fastlane
+#       - name: Test - "${{ matrix.scheme }}"
+#         run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
+#         working-directory: ${{env.working-directory}}
+#       - name: archive code coverage results
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: code-coverage-report
+#           path: ${{env.working-directory}}/test_output/*.html
+#   test_macOS:
+#     name: macOS Tests
+#     runs-on: macos-latest
+#     # runs-on: self-hosted
+#     timeout-minutes: 60
+#     env: 
+#       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+#       working-directory: ./builder
+#     strategy:
+#       matrix:
+#         destination: ["platform=macOS,arch=x86_64"]
+#         scheme: 
+#           - TealiumCoreTests-macOS
+#           - TealiumCollectTests-macOS
+#           - TealiumLifecycleTests-macOS
+#           - TealiumVisitorServiceTests-macOS
+#           - TealiumTagManagementTests-iOS
+#           - TealiumRemoteCommandsTests-iOS
+#           - TealiumAttributionTests-iOS
+#           - TealiumAutotrackingTests-iOS
+#     steps:
+#       - uses: actions/checkout@v2
+#       - uses: ruby/setup-ruby@v1
+#         with:
+#           ruby-version: '2.7'
+#       - name: install fastlane
+#         run: |
+#           brew install fastlane
+#       - name: Test - "${{ matrix.scheme }}"
+#         run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
+#         working-directory: ${{env.working-directory}}
+#       - name: archive code coverage results
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: code-coverage-report
+#           path: ${{env.working-directory}}/test_output/*.html
+#   test_tvOS:
+#     name: tvOS Tests
+#     runs-on: macos-latest
+#     # runs-on: self-hosted
+#     timeout-minutes: 60
+#     env: 
+#       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+#       working-directory: ./builder
+#     strategy:
+#       matrix:
+#         destination: ["platform=tvOS Simulator,name=Apple TV"]
+#         scheme: 
+#           - TealiumCoreTests-tvOS
+#           - TealiumCollectTests-tvOS
+#           - TealiumLifecycleTests-tvOS
+#           - TealiumVisitorServiceTests-tvOS
+#     steps:
+#       - uses: actions/checkout@v2
+#       - uses: ruby/setup-ruby@v1
+#         with:
+#           ruby-version: '2.7'
+#       - name: install fastlane
+#         run: |
+#           brew install fastlane
+#       - name: Test "${{ matrix.scheme }}"
+#         run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
+#         working-directory: ${{env.working-directory}}
+#       - name: Test TealiumCollectTests-tvOS
+#         run: fastlane scan --scheme TealiumCollectTests-tvOS --output_files CollectTests-tvOS.html
+#         working-directory: ${{env.working-directory}}
+#       - name: Test TealiumLifecycleTests-tvOS
+#         run: fastlane scan --scheme TealiumLifecycleTests-tvOS --output_files LifecycleTests-tvOS.html
+#         working-directory: ${{env.working-directory}}
+#       - name: Test TealiumVisitorServiceTests-tvOS
+#         run: fastlane scan --scheme TealiumVisitorServiceTests-tvOS --output_files VisitorServiceTests-tvOS.html
+#         working-directory: ${{env.working-directory}}
+#       - name: archive code coverage results
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: code-coverage-report
+#           path: ${{env.working-directory}}/test_output/*.html
