@@ -87,7 +87,7 @@ jobs:
       working-directory: ./builder
     steps:
       - name: Build iOS Package
-        run: ./veracode.sh
+        run: sh veracode.sh
         working-directory: ${{ env.working-directory }}
       - name: Send for Security Scan
         uses: veracode/veracode-uploadandscan-action@master # Run the uploadandscan action. Inputs are described above.
