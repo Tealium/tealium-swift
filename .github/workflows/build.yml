@@ -89,13 +89,13 @@ jobs:
       - name: Build iOS Package
         #run: set -o pipefail && env NSUnbufferedIO=YES ./veracode.sh
         working-directory: ${{ env.working-directory }}
-        run: set -o pipefail && env NSUnbufferedIO=YES sh ./veracode.sh
+        run: set -o pipefail && env NSUnbufferedIO=YES sh .builder/veracode.sh
         shell: bash
       - name: Send for Security Scan
         uses: veracode/veracode-uploadandscan-action@master # Run the uploadandscan action. Inputs are described above.
         with:
           appname: Mobile Libraries
-          filepath: veracode/tealium-swift.bca
+          filepath: builder/veracode/tealium-swift.bca
           vid: ${{ secrets.VERACODE_API_ID }}
           vkey: ${{ secrets.VERACODE_API_KEY }}
           createsandbox: false
