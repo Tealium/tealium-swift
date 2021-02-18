@@ -175,5 +175,7 @@ clean_build_folder
 create_archives "$1"
 zip_xcframeworks
 
+mv "${XCFRAMEWORK_PATH}.zip" "../"
+
 echo ""
 echo "Done! Upload ${XCFRAMEWORK_PATH}.zip to GitHub when you create the release."
