@@ -93,33 +93,33 @@ jobs:
         #run: vcxcodepkg -a=~/MyArchive.xcarchive --verbose
         shell: bash
         working-directory: ${{ env.working-directory }}
-    veracode_pkg:
-      name: Veracode Upload and Scan
-      runs-on: ubuntu-latest
-      env: 
-        DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-        working-directory: ./builder
-      steps:
-        - uses: actions/checkout@v2
-        - name: Set up Java
-          uses: actions/setup-java@v1
-          with: 
-            java-version: '8'
-        - name: Upload BCA    
-          uses: actions/upload-artifact@v2 # Copy files from repository to docker container so the next uploadandscan action can access them.
-          with:
-            name: veracode
-            path: ./builder/veracode/tealium-swift.bca       
-            #path: ~/Documents/MobileApplicationPackager/          
-        - name: Send for Security Scan
-          uses: veracode/veracode-uploadandscan-action@master
-          with:
-            appname: Mobile Libraries
-            filepath: ./builder/veracode/tealium-swift.bca
-            vid: ${{ secrets.VERACODE_API_ID }}
-            vkey: ${{ secrets.VERACODE_API_KEY }}
-            createsandbox: false
-            sandboxname: tealium-swift 2.X
-            #scanallnonfataltoplevelmodules: true
-            #toplevel: true
-            #selectedpreviously: true
+  veracode_scan:
+    name: Veracode Upload and Scan
+    runs-on: ubuntu-latest
+    env: 
+      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+      working-directory: ./builder
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Java
+        uses: actions/setup-java@v1
+        with: 
+          java-version: '8'
+      - name: Upload BCA    
+        uses: actions/upload-artifact@v2 # Copy files from repository to docker container so the next uploadandscan action can access them.
+        with:
+          name: veracode
+          path: ./builder/veracode/tealium-swift.bca       
+          #path: ~/Documents/MobileApplicationPackager/          
+      - name: Send for Security Scan
+        uses: veracode/veracode-uploadandscan-action@master
+        with:
+          appname: Mobile Libraries
+          filepath: ./builder/veracode/tealium-swift.bca
+          vid: ${{ secrets.VERACODE_API_ID }}
+          vkey: ${{ secrets.VERACODE_API_KEY }}
+          createsandbox: false
+          sandboxname: tealium-swift 2.X
+          #scanallnonfataltoplevelmodules: true
+          #toplevel: true
+          #selectedpreviously: true
