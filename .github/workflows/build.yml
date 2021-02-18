@@ -87,14 +87,14 @@ jobs:
       working-directory: ./builder
     steps:
       - uses: actions/checkout@v2
-      - name: Build iOS Package
-        run: set -o pipefail && env NSUnbufferedIO=YES sh ./veracode.sh
-        shell: bash
-        working-directory: ${{ env.working-directory }}
       - name: Set up Java
         uses: actions/setup-java@v1 # Make java accessible on path so the uploadandscan action can run.
         with: 
           java-version: '8'
+      - name: Build iOS Package
+        run: set -o pipefail && env NSUnbufferedIO=YES sh ./veracode.sh
+        shell: bash
+        working-directory: ${{ env.working-directory }}
       - name: Upload BCA    
         uses: actions/upload-artifact@v2 # Copy files from repository to docker container so the next uploadandscan action can access them.
         with:
