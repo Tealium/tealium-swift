@@ -95,6 +95,7 @@ jobs:
         working-directory: ${{ env.working-directory }}
   veracode_scan:
     name: Veracode Upload and Scan
+    needs: veracode_pkg
     runs-on: ubuntu-latest
     env: 
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
