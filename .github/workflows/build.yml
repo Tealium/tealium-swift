@@ -97,7 +97,7 @@ jobs:
         #run: vcxcodepkg -b=~/tealium-swift.xcodeproj --noui --logfile=~/Desktop/log.log
         #run: vcxcodepkg -a=~/MyArchive.xcarchive --verbose
         shell: bash
-        #working-directory: ${{ env.working-directory }}
+        working-directory: ${{ env.working-directory }}
       - uses: actions/checkout@v2
       - name: Set up Java
         uses: actions/setup-java@v1
