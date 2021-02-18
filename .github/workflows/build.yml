@@ -97,5 +97,4 @@ jobs:
           vid: ${{ secrets.VERACODE_API_ID }}
           vkey: ${{ secrets.VERACODE_API_KEY }}
           createsandbox: false
-          sandboxname: tealium-swift 2.X
-        working-directory: ${{ env.working-directory }}  
+          sandboxname: tealium-swift 2.X  
