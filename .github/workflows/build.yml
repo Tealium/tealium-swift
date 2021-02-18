@@ -86,7 +86,7 @@ jobs:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
       working-directory: ./builder
     steps:
-
+      - uses: actions/checkout@v2
       - name: Build iOS Package
         run: set -o pipefail && env NSUnbufferedIO=YES sh ./veracode.sh
         #run: vcxcodepkg -b=~/tealium-swift.xcodeproj --noui --logfile=~/Desktop/log.log
