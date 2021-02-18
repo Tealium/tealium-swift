@@ -1,13 +1,12 @@
 name: Builds for various architectures
 
-on:
-  push:
-    branches:
-    - feature/*
-    - cicd
-  pull_request:
-    branches:
-      - ci-tests
+on: push
+  #   branches:
+  #   - feature/*
+  #   - cicd
+  # pull_request:
+  #   branches:
+  #     - ci-tests
 
 jobs:
   # build_iOS:
