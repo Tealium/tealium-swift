@@ -88,9 +88,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Make Package Directory
-        run: mkdir -p veracode
+        run: mkdir -p ~/Desktop/veracode
         shell: bash
-        working-directory: ${{ env.working-directory }}
       - uses: actions/checkout@v2
       - name: Build iOS Package
         run: sh ./veracode.sh
@@ -98,17 +97,18 @@ jobs:
         #run: vcxcodepkg -b=~/tealium-swift.xcodeproj --noui --logfile=~/Desktop/log.log
         #run: vcxcodepkg -a=~/MyArchive.xcarchive --verbose
         shell: bash
-        working-directory: ${{ env.working-directory }}
+        #working-directory: ${{ env.working-directory }}
       - uses: actions/checkout@v2
       - name: Set up Java
         uses: actions/setup-java@v1
         with: 
           java-version: '8'
       - name: Upload BCA    
-        uses: actions/upload-artifact@v2 # Copy files from repository to docker container so the next uploadandscan action can access them.
+        uses: actions/upload-artifact@v2
         with:
-          name: veracode
-          path: veracode/tealium-swift.bca       
+          name: 'veracode'
+          path: '~/Desktop/veracode/tealium-swift.bca' 
+          retention-days: 5      
           #path: ~/Documents/MobileApplicationPackager/ 
   veracode_scan:
     name: Veracode Upload and Scan
@@ -123,13 +123,13 @@ jobs:
       uses: dawidd6/action-download-artifact@v2
       with:
         workflow: build.yml
-        name: veracode
-        path: ./builder/veracode   
+        name: 'veracode'
+        path: '~/Desktop/veracode/tealium-swift.bca'  
     - name: Send for Security Scan
       uses: veracode/veracode-uploadandscan-action@master
       with:
         appname: Mobile Libraries
-        filepath: ./builder/veracode/tealium-swift.bca
+        filepath: '~/Desktop/veracode/tealium-swift.bca'
         vid: ${{ secrets.VERACODE_API_ID }}
         vkey: ${{ secrets.VERACODE_API_KEY }}
         createsandbox: false
