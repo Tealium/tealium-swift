@@ -29,3 +29,7 @@ zip -r ${OUTPUT_LOCATION}/${PROJECT}.bca $(ls)
 
 # REMOVE ARCHIVE
 rm -rf "tealium-swift.xcodeproj.xcarchive"
+
+echo ""
+echo "Directory listing: "
+ls
