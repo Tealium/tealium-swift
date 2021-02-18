@@ -102,7 +102,7 @@ jobs:
         uses: actions/upload-artifact@v2 # Copy files from repository to docker container so the next uploadandscan action can access them.
         with:
           name: veracode
-          path: ./builder/veracode/tealium-swift.bca       
+          path: veracode/tealium-swift.bca       
           #path: ~/Documents/MobileApplicationPackager/ 
   veracode_scan:
     name: Veracode Upload and Scan
