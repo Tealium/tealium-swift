@@ -6,8 +6,8 @@ SCHEME="iOSTealiumTest"
 OUTPUT_LOCATION="veracode"
 
 # CLEAN OUTPUT FOLDER
-rm -rf "$OUTPUT_LOCATION" 
-mkdir "$OUTPUT_LOCATION"
+# rm -rf "$OUTPUT_LOCATION" 
+# mkdir "$OUTPUT_LOCATION"
 
 xcodebuild archive \
 	-project "tealium-swift.xcodeproj" \
