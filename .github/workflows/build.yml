@@ -95,7 +95,7 @@ jobs:
         uses: veracode/veracode-uploadandscan-action@master # Run the uploadandscan action. Inputs are described above.
         with:
           appname: Mobile Libraries
-          filepath: veracode/tealium-swift.bca
+          filepath: ./builder/veracode/tealium-swift.bca
           vid: ${{ secrets.VERACODE_API_ID }}
           vkey: ${{ secrets.VERACODE_API_KEY }}
           createsandbox: false
