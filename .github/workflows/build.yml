@@ -87,7 +87,7 @@ jobs:
       working-directory: ./builder
     steps:
       - name: Build iOS Package
-        run: veracode.sh
+        run: ./veracode.sh
         working-directory: ${{ env.working-directory }}
       - name: Send for Security Scan
         uses: veracode/veracode-uploadandscan-action@master # Run the uploadandscan action. Inputs are described above.
@@ -98,4 +98,4 @@ jobs:
           vkey: ${{ secrets.VERACODE_API_KEY }}
           createsandbox: false
           sandboxname: tealium-swift 2.X
-          
+        working-directory: ${{ env.working-directory }}  
