@@ -87,9 +87,14 @@ jobs:
       working-directory: ./builder
     steps:
       - uses: actions/checkout@v2
+      - name: Make Package Directory
+        run: mkdir -p veracode
+        shell: bash
+        working-directory: ${{ env.working-directory }}
+      - uses: actions/checkout@v2
       - name: Build iOS Package
-      - run: mkdir -p ./builder/veracode
-        run: set -o pipefail && env NSUnbufferedIO=YES sh ./veracode.sh
+        run: sh ./veracode.sh
+        #run: set -o pipefail && env NSUnbufferedIO=YES sh ./veracode.sh
         #run: vcxcodepkg -b=~/tealium-swift.xcodeproj --noui --logfile=~/Desktop/log.log
         #run: vcxcodepkg -a=~/MyArchive.xcarchive --verbose
         shell: bash
