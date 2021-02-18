@@ -18,3 +18,6 @@ builder/tealium-xcframeworks/
 builder/tealium-xcframeworks.zip
 build/
 builder/build/
+veracode/
+builder/veracode/
+

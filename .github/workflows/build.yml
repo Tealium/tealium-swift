@@ -99,4 +99,7 @@ jobs:
           vid: ${{ secrets.VERACODE_API_ID }}
           vkey: ${{ secrets.VERACODE_API_KEY }}
           createsandbox: false
-          sandboxname: tealium-swift 2.X  
+          sandboxname: tealium-swift 2.X
+          #scanallnonfataltoplevelmodules: true
+          #toplevel: true
+          selectedpreviously: true
