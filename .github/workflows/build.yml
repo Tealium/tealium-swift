@@ -87,7 +87,9 @@ jobs:
       working-directory: ./builder
     steps:
       - name: Build iOS Package
-        run: set -o pipefail && env NSUnbufferedIO=YES sh veracode.sh
+        #run: set -o pipefail && env NSUnbufferedIO=YES ./veracode.sh
+        run: ./veracode.sh
+        shell: bash
         working-directory: ${{ env.working-directory }}
       - name: Send for Security Scan
         uses: veracode/veracode-uploadandscan-action@master # Run the uploadandscan action. Inputs are described above.
