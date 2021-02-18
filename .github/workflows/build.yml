@@ -93,14 +93,6 @@ jobs:
         #run: vcxcodepkg -a=~/MyArchive.xcarchive --verbose
         shell: bash
         working-directory: ${{ env.working-directory }}
-  veracode_scan:
-    name: Veracode Upload and Scan
-    needs: veracode_pkg
-    runs-on: ubuntu-latest
-    env: 
-      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-      working-directory: ./builder
-    steps:
       - uses: actions/checkout@v2
       - name: Set up Java
         uses: actions/setup-java@v1
@@ -111,7 +103,22 @@ jobs:
         with:
           name: veracode
           path: ./builder/veracode/tealium-swift.bca       
-          #path: ~/Documents/MobileApplicationPackager/          
+          #path: ~/Documents/MobileApplicationPackager/ 
+  veracode_scan:
+    name: Veracode Upload and Scan
+    needs: veracode_pkg
+    runs-on: ubuntu-latest
+    env: 
+      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+      working-directory: ./builder
+    steps:
+      - name: Download artifact
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        github_token: ${{secrets.GITHUB_TOKEN}}
+        workflow: build.yml
+        name: veracode
+        path: ./builder/veracode   
       - name: Send for Security Scan
         uses: veracode/veracode-uploadandscan-action@master
         with:
