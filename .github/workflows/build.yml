@@ -80,14 +80,14 @@ jobs:
   #       run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project tealium-swift.xcodeproj -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" clean build | xcpretty
   #       working-directory: ${{ env.working-directory }}
   veracode:
-    env: 
-      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-      working-directory: ./builder
     name: Veracode Upload and Scan
     runs-on: macos-latest
     steps:
       - name: Build iOS Package
-        run: ./veracode.sh
+        env: 
+          DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+          working-directory: ./builder
+        run: veracode.sh
       - name: Send for Security Scan
         uses: veracode/veracode-uploadandscan-action@master # Run the uploadandscan action. Inputs are described above.
         with:
