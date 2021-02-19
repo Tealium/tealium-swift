@@ -87,12 +87,8 @@ jobs:
       working-directory: ./builder
     steps:
       - uses: actions/checkout@v2
-      - name: Make Package Directory
-        run: mkdir -p ~/Desktop/veracode
-        shell: bash
-      - uses: actions/checkout@v2
       - name: Build iOS Package
-        run: sh ./veracode.sh
+        run: set -o pipefail && env NSUnbufferedIO=YES sh ./veracode.sh
         #run: set -o pipefail && env NSUnbufferedIO=YES sh ./veracode.sh
         #run: vcxcodepkg -b=~/tealium-swift.xcodeproj --noui --logfile=~/Desktop/log.log
         #run: vcxcodepkg -a=~/MyArchive.xcarchive --verbose
@@ -107,9 +103,10 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: 'veracode'
-          path: '~/Desktop/veracode/tealium-swift.bca' 
+          path: './builder/veracode/tealium-swift.bca' 
           retention-days: 5      
           #path: ~/Documents/MobileApplicationPackager/ 
+        working-directory: ${{ env.working-directory }}  
   veracode_scan:
     name: Veracode Upload and Scan
     needs: veracode_pkg
