@@ -3965,37 +3965,30 @@
 					};
 					CFF242A023CE774C0091B7BF = {
 						CreatedOnToolsVersion = 11.3;
-						ProvisioningStyle = Manual;
 					};
 					D736D6A42195CCB600B3BDEE = {
 						LastSwiftMigration = 1130;
-						ProvisioningStyle = Manual;
 					};
 					D755DC9821945E41003C6BA1 = {
 						LastSwiftMigration = 1130;
-						ProvisioningStyle = Manual;
 					};
 					D755DD1121945F99003C6BA1 = {
 						LastSwiftMigration = 1130;
-						ProvisioningStyle = Manual;
 					};
 					D762FC30232F97EF00CBC4D0 = {
 						ProvisioningStyle = Manual;
 					};
 					D76FE1222193093A00D73EC5 = {
 						LastSwiftMigration = 1130;
-						ProvisioningStyle = Manual;
 					};
 					D7805825233A65FB00DAD90E = {
 						LastSwiftMigration = 1130;
-						ProvisioningStyle = Manual;
 					};
 					D7805838233A672800DAD90E = {
 						ProvisioningStyle = Manual;
 					};
 					D7881EF121998DAD002CDCC1 = {
 						LastSwiftMigration = 1130;
-						ProvisioningStyle = Manual;
 					};
 					D788A3D9231841F200BC6D60 = {
 						ProvisioningStyle = Manual;
@@ -4047,11 +4040,9 @@
 					};
 					D7B04D08219994D400C87E22 = {
 						LastSwiftMigration = 1200;
-						ProvisioningStyle = Manual;
 					};
 					D7CED25721932DD500ACD291 = {
 						LastSwiftMigration = 1130;
-						ProvisioningStyle = Manual;
 					};
 					D7F2DEB7233279A1000D0E0F = {
 						ProvisioningStyle = Manual;
@@ -6869,6 +6860,7 @@
 				PRODUCT_MODULE_NAME = TealiumCollect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator appletvsimulator watchos appletvos macosx";
@@ -6918,6 +6910,7 @@
 				PRODUCT_MODULE_NAME = TealiumCollect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator appletvsimulator watchos appletvos macosx";
@@ -6941,7 +6934,7 @@
 				BUILD_SCRIPT = NO;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
@@ -6966,6 +6959,7 @@
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator appletvsimulator watchos appletvos macosx";
@@ -6989,7 +6983,7 @@
 				BUILD_SCRIPT = NO;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
@@ -7014,6 +7008,7 @@
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator appletvsimulator watchos appletvos macosx";
@@ -7063,6 +7058,7 @@
 				PRODUCT_MODULE_NAME = "${PRODUCT_NAME}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTS_MACCATALYST = YES;
@@ -7110,6 +7106,7 @@
 				PRODUCT_MODULE_NAME = "${PRODUCT_NAME}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTS_MACCATALYST = YES;
@@ -7231,6 +7228,7 @@
 				PRODUCT_MODULE_NAME = TealiumAttribution;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTS_MACCATALYST = YES;
@@ -7277,6 +7275,7 @@
 				PRODUCT_MODULE_NAME = TealiumAttribution;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTS_MACCATALYST = YES;
@@ -7301,6 +7300,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -7326,6 +7326,7 @@
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator appletvsimulator watchos appletvos macosx";
@@ -7352,6 +7353,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -7374,6 +7376,7 @@
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator appletvsimulator watchos appletvos macosx";
@@ -7472,6 +7475,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -7500,6 +7504,7 @@
 				PRODUCT_MODULE_NAME = TealiumLifecycle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator appletvsimulator watchos appletvos macosx";
@@ -7553,6 +7558,7 @@
 				PRODUCT_MODULE_NAME = TealiumLifecycle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator appletvsimulator watchos appletvos macosx";
@@ -8657,6 +8663,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -8683,6 +8690,7 @@
 				PRODUCT_MODULE_NAME = TealiumRemoteCommands;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
@@ -8710,6 +8718,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -8736,6 +8745,7 @@
 				PRODUCT_MODULE_NAME = TealiumRemoteCommands;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
@@ -8790,6 +8800,7 @@
 				PRODUCT_MODULE_NAME = TealiumAutotracking;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
@@ -8842,6 +8853,7 @@
 				PRODUCT_MODULE_NAME = TealiumAutotracking;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
