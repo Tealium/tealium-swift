@@ -88,7 +88,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build iOS Package
-        run: set -o pipefail && env NSUnbufferedIO=YES sh ./veracode.sh && ls
+        run: set -o pipefail && env NSUnbufferedIO=YES sh ./veracode.sh && ls -l --block-size=MB
         #run: set -o pipefail && env NSUnbufferedIO=YES sh ./veracode.sh
         #run: vcxcodepkg -b=~/tealium-swift.xcodeproj --noui --logfile=~/Desktop/log.log
         #run: vcxcodepkg -a=~/MyArchive.xcarchive --verbose
@@ -106,30 +106,30 @@ jobs:
           path: 'builder/veracode/tealium-swift.bca' 
           retention-days: 5      
           #path: ~/Documents/MobileApplicationPackager/ 
-  veracode_scan:
-    name: Veracode Upload and Scan
-    needs: veracode_pkg
-    runs-on: ubuntu-latest
-    env: 
-      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-      working-directory: ./builder
-    steps:
-    - uses: actions/checkout@v2
-    # - name: Download artifact
-    #   uses: dawidd6/action-download-artifact@v2
-    #   with:
-    #     workflow: build.yml
-    #     name: 'veracode'
-    #     path: '~/Desktop/veracode/tealium-swift.bca'  
-    - name: Send for Security Scan
-      uses: veracode/veracode-uploadandscan-action@master
-      with:
-        appname: Mobile Libraries
-        filepath: $HOME/Desktop/veracode/tealium-swift.bca
-        vid: ${{ secrets.VERACODE_API_ID }}
-        vkey: ${{ secrets.VERACODE_API_KEY }}
-        createsandbox: false
-        sandboxname: tealium-swift 2.X
-        #scanallnonfataltoplevelmodules: true
-        #toplevel: true
-        #selectedpreviously: true
+  # veracode_scan:
+  #   name: Veracode Upload and Scan
+  #   needs: veracode_pkg
+  #   runs-on: ubuntu-latest
+  #   env: 
+  #     DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+  #     working-directory: ./builder
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   # - name: Download artifact
+  #   #   uses: dawidd6/action-download-artifact@v2
+  #   #   with:
+  #   #     workflow: build.yml
+  #   #     name: 'veracode'
+  #   #     path: '~/Desktop/veracode/tealium-swift.bca'  
+  #   - name: Send for Security Scan
+  #     uses: veracode/veracode-uploadandscan-action@master
+  #     with:
+  #       appname: Mobile Libraries
+  #       filepath: $HOME/Desktop/veracode/tealium-swift.bca
+  #       vid: ${{ secrets.VERACODE_API_ID }}
+  #       vkey: ${{ secrets.VERACODE_API_KEY }}
+  #       createsandbox: false
+  #       sandboxname: tealium-swift 2.X
+  #       #scanallnonfataltoplevelmodules: true
+  #       #toplevel: true
+  #       #selectedpreviously: true
