@@ -103,10 +103,9 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: 'veracode'
-          path: './builder/veracode/tealium-swift.bca' 
+          path: '${{ env.working-directory }}/veracode/tealium-swift.bca' 
           retention-days: 5      
           #path: ~/Documents/MobileApplicationPackager/ 
-        working-directory: ${{ env.working-directory }}  
   veracode_scan:
     name: Veracode Upload and Scan
     needs: veracode_pkg
