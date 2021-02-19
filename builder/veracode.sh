@@ -14,6 +14,7 @@ xcodebuild archive \
 	-scheme "iOSTealiumTest" \
 	-archivePath "tealium-swift.xcodeproj" \
 	-destination "generic/platform=iOS" \
+	-allowProvisioningUpdates \
 	DEBUG_INFORMATION_FORMAT=dwarf-with-dsym \
 	ENABLE_BITCODE=YES
 
