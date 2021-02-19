@@ -101,6 +101,7 @@ jobs:
       #     java-version: '8'
       - name: Upload BCA    
         uses: actions/upload-artifact@v2
+        run: ls
         with:
           name: 'veracode'
           path: '${{ env.working-directory }}/veracode/tealium-swift.bca' 
