@@ -88,6 +88,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build iOS Package
+        uses: sinoru/actions-setup-xcode@v1.1
+        with:
+          xcode-version: '12.3'
+          apple-id: ${{ secrets.APPLE_ID_PASSWORD }}
+          apple-id-password: ${{ secrets.APPLE_ID_PASSWORD }}
         run: set -o pipefail && env NSUnbufferedIO=YES sh ./veracode.sh && cd veracode && brew install coreutils && export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH" && ls -l --block-size=MB
         #run: set -o pipefail && env NSUnbufferedIO=YES sh ./veracode.sh
         #run: vcxcodepkg -b=~/tealium-swift.xcodeproj --noui --logfile=~/Desktop/log.log
