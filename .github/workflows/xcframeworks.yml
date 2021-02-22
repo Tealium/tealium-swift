@@ -35,7 +35,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build Asset
-        run: set -o pipefail && env NSUnbufferedIO=YES ./xcframeworks.sh
+        #run: set -o pipefail && env NSUnbufferedIO=YES ./xcframeworks.sh
+        run: touch ../hello.txt && zip tealium-xcframeworks hello.txt
         working-directory: ${{ env.working-directory }}
   upload:
     needs: build      
