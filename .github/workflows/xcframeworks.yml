@@ -31,7 +31,7 @@ jobs:
           fetch-depth: 0
       - name: Extract branch name
         shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
         id: extract_branch    
       - name: Build Asset
         #run: set -o pipefail && env NSUnbufferedIO=YES ./xcframeworks.sh
@@ -44,9 +44,10 @@ jobs:
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git commit -m "Add XCFrameworks"
-          echo ${{ steps.extract_branch.outputs.branch }}
+          echo "branch 1: ${{ steps.extract_branch.outputs.short_ref }}"
+          echo "branch 2:  ${{ github.head_ref }}"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ steps.extract_branch.outputs.branch }}
+          branch: ${{ steps.extract_branch.outputs.short_ref }}
