@@ -38,13 +38,6 @@ jobs:
         #run: set -o pipefail && env NSUnbufferedIO=YES ./xcframeworks.sh
         run: touch ../hello.txt && zip ../tealium-xcframeworks ../hello.txt && ls ../
         working-directory: ${{ env.working-directory }}
-  upload:
-    needs: build      
-    name: Upload Asset
-    runs-on: macos-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
       - name: Upload Release Asset
         id: upload-release-asset 
         uses: actions/upload-release-asset@v1
