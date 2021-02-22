@@ -1,14 +1,30 @@
-name: Builds XCFrameworks
+name: Builds and Uploads XCFrameworks
 
+# on:
+#   push:
+#     branches:
+#     - feature/*
+#     - cicd
+#   pull_request:
+#     branches:
+#       - ci-tests
+
+# jobs:
+#   build:
+#     name: Build XCFrameworks
+#     runs-on: macos-latest
+#     env: 
+#       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+#       working-directory: ./builder
+#     steps:
+#       - uses: actions/checkout@v2
+#       - name: Build iOS - ${{ matrix.scheme }}
+#         run: set -o pipefail && env NSUnbufferedIO=YES ./xcframeworks.sh
+#         working-directory: ${{ env.working-directory }}
 on:
-  push:
-    branches:
-    - feature/*
-    - cicd
-  pull_request:
-    branches:
-      - ci-tests
-
+  release:
+    types: # This configuration does not affect the page_build event above
+      - created
 jobs:
   build:
     name: Build XCFrameworks
@@ -18,6 +34,33 @@ jobs:
       working-directory: ./builder
     steps:
       - uses: actions/checkout@v2
-      - name: Build iOS - ${{ matrix.scheme }}
+      - name: Build Asset
         run: set -o pipefail && env NSUnbufferedIO=YES ./xcframeworks.sh
         working-directory: ${{ env.working-directory }}
+  upload:      
+    name: Upload Asset
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        needs: build
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./tealium-xcframeworks.zip
+          asset_name: tealium-xcframeworks.zip
+          asset_content_type: application/zip
