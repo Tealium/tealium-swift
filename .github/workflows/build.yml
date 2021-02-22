@@ -1,15 +1,15 @@
-# name: Builds for various architectures
+name: Builds for various architectures
 
-# on:
-#   push:
-#     branches:
-#     - feature/*
-#     - cicd
-#   pull_request:
-#     branches:
-#       - ci-tests
+on:
+  push:
+    branches:
+    - feature/*
+    - cicd
+  pull_request:
+    branches:
+      - ci-tests
 
-# jobs:
+jobs:
 #   build_iOS:
 #     name: Build iOS
 #     runs-on: macos-latest
@@ -78,3 +78,28 @@
 #       - uses: actions/checkout@v2
 #       - name: Build tvOS - ${{ matrix.scheme }}
 #         run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project tealium-swift.xcodeproj -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" clean build | xcpretty
+  # build_XCFrameworks:
+  #   name: Build XCFrameworks
+  #   runs-on: macos-latest
+  #   env: 
+  #     DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+  #     working-directory: ./builder
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #       with:
+  #         persist-credentials: false
+  #         fetch-depth: 0
+  #     - name: Checkout Code
+  #       #run: set -o pipefail && env NSUnbufferedIO=YES ./xcframeworks.sh
+  #       run: touch ../hello.txt && zip ../tealium-xcframeworks ../hello.txt && ls ../
+  #       working-directory: ${{ env.working-directory }}
+  #     - name: Commit files
+  #       run: |
+  #         git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+  #         git config --local user.name "github-actions[bot]"
+  #         git commit -m "Add XCFrameworks" -a
+  #     - name: Push changes
+  #       uses: ad-m/github-push-action@master
+  #       with:
+  #         github_token: ${{ secrets.GITHUB_TOKEN }}
+  #         branch: ${{ github.ref }}
