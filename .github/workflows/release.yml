@@ -34,7 +34,7 @@ jobs:
       working-directory: ./builder
     steps:
       - uses: actions/checkout@v2
-        name: Checkout Code
+      - name: Checkout Code
         with:
           persist-credentials: false
           fetch-depth: 0
