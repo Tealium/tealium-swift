@@ -1,0 +1,23 @@
+name: Builds XCFrameworks
+
+on:
+  push:
+    branches:
+    - feature/*
+    - cicd
+  pull_request:
+    branches:
+      - ci-tests
+
+jobs:
+  build:
+    name: Build XCFrameworks
+    runs-on: macos-latest
+    env: 
+      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+      working-directory: ./builder
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build iOS - ${{ matrix.scheme }}
+        run: set -o pipefail && env NSUnbufferedIO=YES ./xcframeworks.sh
+        working-directory: ${{ env.working-directory }}
