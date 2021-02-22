@@ -3,7 +3,7 @@ name: Uploads XCFrameworks to Release
 on:
   pull_request:
     branches:
-      - cicd
+      - main
 
 # jobs:
 #   build:
@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           persist-credentials: false
-          fetch-depth: 0
+          fetch-depth: 0   
       - name: Build Asset
         #run: set -o pipefail && env NSUnbufferedIO=YES ./xcframeworks.sh
         run: touch ../hello.txt && zip ../tealium-xcframeworks ../hello.txt && ls ../
@@ -44,4 +44,4 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+          branch: ${{ github.head_ref }}
