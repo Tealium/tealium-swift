@@ -90,6 +90,7 @@ jobs:
       - name: Run Fastlane Archive
         run: |
           fastlane run xcarchive archive_path:"tealium-swift.xcodeproj" project:"tealium-swift.xcodeproj" scheme:"iOSTealiumTest"
+        working-directory: ${{ env.working-directory }}  
       # - name: Sign In to Xcode
       #   uses: sinoru/actions-setup-xcode@v1.1
       #   with:
