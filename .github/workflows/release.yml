@@ -34,14 +34,15 @@ jobs:
       working-directory: ./builder
     steps:
       - uses: actions/checkout@v2
+        name: Checkout Code
         with:
           persist-credentials: false
           fetch-depth: 0
-      - name: Checkout Code
+      - name: Build Asset
         #run: set -o pipefail && env NSUnbufferedIO=YES ./xcframeworks.sh
         run: touch ../hello.txt && zip ../tealium-xcframeworks ../hello.txt && ls ../
         working-directory: ${{ env.working-directory }}
-      - name: Commit files
+      - name: Commit Files
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
