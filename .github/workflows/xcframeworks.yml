@@ -3,7 +3,7 @@ name: Uploads XCFrameworks to Release
 on:
   pull_request:
     branches:
-      - master
+      - cicd
 
 # jobs:
 #   build:
