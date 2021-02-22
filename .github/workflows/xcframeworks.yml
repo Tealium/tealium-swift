@@ -29,6 +29,10 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch    
       - name: Build Asset
         #run: set -o pipefail && env NSUnbufferedIO=YES ./xcframeworks.sh
         run: touch ../hello.txt && zip ../tealium-xcframeworks ../hello.txt && ls ../
@@ -44,4 +48,4 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
+          branch: ${{ steps.extract_branch.outputs.branch }}
