@@ -87,28 +87,31 @@ jobs:
       working-directory: ./builder
     steps:
       - uses: actions/checkout@v2
-      - name: Sign In to Xcode
-        uses: sinoru/actions-setup-xcode@v1.1
-        with:
-          xcode-version: '12.3'
-          apple-id: ${{ secrets.APPLE_ID_PASSWORD }}
-          apple-id-password: ${{ secrets.APPLE_ID_PASSWORD }}
-      - uses: actions/checkout@v2
-      - name: Install application certificate
-        uses: apple-actions/import-codesign-certs@v1
-        with: 
-          keychain: ${{ github.run_id }}
-          keychain-password: ${{ github.run_id }}
-          p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
-          p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
-      - name: Install installer certificate
-        uses: apple-actions/import-codesign-certs@v1
-        with: 
-          keychain: ${{ github.run_id }}
-          keychain-password: ${{ github.run_id }}
-          create-keychain: false
-          p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
-          p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}   
+      - name: Run Fastlane Archive
+      run: |
+        fastlane run xcarchive archive_path:"tealium-swift.xcodeproj" project:"tealium-swift.xcodeproj" scheme:"iOSTealiumTest"
+      # - name: Sign In to Xcode
+      #   uses: sinoru/actions-setup-xcode@v1.1
+      #   with:
+      #     xcode-version: '12.3'
+      #     apple-id: ${{ secrets.APPLE_ID_PASSWORD }}
+      #     apple-id-password: ${{ secrets.APPLE_ID_PASSWORD }}
+      # - uses: actions/checkout@v2
+      # - name: Install application certificate
+      #   uses: apple-actions/import-codesign-certs@v1
+      #   with: 
+      #     keychain: ${{ github.run_id }}
+      #     keychain-password: ${{ github.run_id }}
+      #     p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
+      #     p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
+      # - name: Install installer certificate
+      #   uses: apple-actions/import-codesign-certs@v1
+      #   with: 
+      #     keychain: ${{ github.run_id }}
+      #     keychain-password: ${{ github.run_id }}
+      #     create-keychain: false
+      #     p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
+      #     p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}   
       - uses: actions/checkout@v2
       - name: Build iOS Package
         run: set -o pipefail && env NSUnbufferedIO=YES sh ./veracode.sh && cd veracode && brew install coreutils && export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH" && ls -l --block-size=MB
