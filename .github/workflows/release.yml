@@ -26,35 +26,7 @@ on:
     types: # This configuration does not affect the page_build event above
       - created
 jobs:
-  build_XCFrameworks:
-    name: Build XCFrameworks
-    runs-on: macos-latest
-    env: 
-      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-      working-directory: ./builder
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          persist-credentials: false
-          fetch-depth: 0
-      - name: Build Asset
-        #run: set -o pipefail && env NSUnbufferedIO=YES ./xcframeworks.sh
-        run: touch ../hello.txt && zip ../tealium-xcframeworks ../hello.txt && ls ../
-        working-directory: ${{ env.working-directory }}
-      - name: Commit Files
-        run: |
-          git add ./tealium-xcframeworks.zip
-          rm hello.txt
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git commit -m "Add XCFrameworks"
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
   upload:
-    needs: build_XCFrameworks
     name: Upload XCFrameworks
     runs-on: macos-latest
     env: 
