@@ -20,13 +20,13 @@ jobs:
         destination: ["platform=iOS Simulator,OS=14.4,name=iPhone 12"]
         scheme: 
           - TealiumCoreTests-iOS
-          - TealiumCollectTests-iOS
-          - TealiumLifecycleTests-iOS
-          - TealiumVisitorServiceTests-iOS
-          - TealiumTagManagementTests-iOS
-          - TealiumRemoteCommandsTests-iOS
-          - TealiumAttributionTests-iOS
-          - TealiumAutotrackingTests-iOS
+          # - TealiumCollectTests-iOS
+          # - TealiumLifecycleTests-iOS
+          # - TealiumVisitorServiceTests-iOS
+          # - TealiumTagManagementTests-iOS
+          # - TealiumRemoteCommandsTests-iOS
+          # - TealiumAttributionTests-iOS
+          # - TealiumAutotrackingTests-iOS
         # todo: location tests
     steps:
       - uses: actions/checkout@v2
