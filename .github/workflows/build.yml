@@ -13,8 +13,6 @@ jobs:
   build_iOS:
     name: Build iOS
     runs-on: macos-latest
-    # runs-on: self-hosted
-    runs-on: self-hosted
     timeout-minutes: 60
     env: 
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -40,7 +38,6 @@ jobs:
   build_macOS:
     name: Build macOS
     runs-on: macos-latest
-    # runs-on: self-hosted
     timeout-minutes: 60
     env: 
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -61,7 +58,6 @@ jobs:
   build_tvOS:
     name: Build tvOS
     runs-on: macos-latest
-    # runs-on: self-hosted
     timeout-minutes: 60
     env: 
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
