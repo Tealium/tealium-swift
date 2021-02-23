@@ -29,9 +29,9 @@ jobs:
       #     github_token: ${{ secrets.GITHUB_TOKEN }}
       #     branch: ${{ github.head_ref }}        
       - name: Build Asset
-        run: set -o pipefail && env NSUnbufferedIO=YES cd builder && ./xcframeworks.sh
+        run: set -o pipefail && env NSUnbufferedIO=YES ./xcframeworks.sh
         #run: touch ../hello.txt && zip ../tealium-xcframeworks ../hello.txt && ls ../
-        #working-directory: ${{ env.working-directory }} 
+        working-directory: ${{ env.working-directory }} 
       - name: Commit New XCFrameworks
         run: |
           git add ./tealium-xcframeworks.zip
