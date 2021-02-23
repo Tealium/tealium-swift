@@ -1,15 +1,15 @@
-name: Builds for various architectures
+# name: Builds for various architectures
 
-on:
-  push:
-    branches:
-    - feature/*
-    - cicd
-  pull_request:
-    branches:
-      - ci-tests
+# on:
+#   push:
+#     branches:
+#     - feature/*
+#     - cicd
+#   pull_request:
+#     branches:
+#       - ci-tests
 
-jobs:
+# jobs:
 #   build_iOS:
 #     name: Build iOS
 #     runs-on: macos-latest
