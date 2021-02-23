@@ -28,12 +28,12 @@ on:
 jobs:
   upload:
     name: Upload XCFrameworks
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: AButler/upload-release-assets@v2.0
-      with:
-        files: 'tealium-xcframeworks.zip'
-        repo-token: ${{ secrets.GITHUB_TOKEN }}  
+        with:
+          files: 'tealium-xcframeworks.zip'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}  
     # steps:
     #   - uses: actions/checkout@v2
     #   - name: Upload Release Asset
