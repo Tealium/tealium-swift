@@ -1,4 +1,4 @@
-name: Uploads XCFrameworks to Release
+name: Creates and Commits XCFrameworks
 
 on:
   pull_request:
@@ -16,21 +16,9 @@ jobs:
       - uses: actions/checkout@v2
         with:
           persist-credentials: false
-          fetch-depth: 0
-      # - name: Remove Old XCFrameworks and Commit
-      #   run: |
-      #     if [ -f "$FILE" ]; then rm ./tealium-xcframeworks.zip fi
-      #     git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      #     git config --local user.name "github-actions[bot]"
-      #     git commit -m "Remove Old XCFrameworks"
-      # - name: Push changes
-      #   uses: ad-m/github-push-action@master
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     branch: ${{ github.head_ref }}        
+          fetch-depth: 0       
       - name: Build Asset
         run: set -o pipefail && env NSUnbufferedIO=YES ./xcframeworks.sh
-        #run: touch ../hello.txt && zip ../tealium-xcframeworks ../hello.txt && ls ../
         working-directory: ${{ env.working-directory }} 
       - name: Commit New XCFrameworks
         run: |
