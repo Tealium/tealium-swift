@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
       - name: Remove Old XCFrameworks and Commit
         run: |
-          rm ./tealium-xcframeworks.zip
+          if [ -f "$FILE" ]; then rm ./tealium-xcframeworks.zip fi
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git commit -m "Remove Old XCFrameworks"
