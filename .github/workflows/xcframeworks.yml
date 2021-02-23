@@ -16,17 +16,28 @@ jobs:
       - uses: actions/checkout@v2
         with:
           persist-credentials: false
-          fetch-depth: 0   
+          fetch-depth: 0
+      - name: Remove Old XCFrameworks and Commit
+        run: |
+          rm ./tealium-xcframeworks.zip
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "Remove Old XCFrameworks"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.head_ref }}        
       - name: Build Asset
         run: set -o pipefail && env NSUnbufferedIO=YES cd builder && ./xcframeworks.sh
         #run: touch ../hello.txt && zip ../tealium-xcframeworks ../hello.txt && ls ../
-        #working-directory: ${{ env.working-directory }}
-      - name: Commit Files
+        #working-directory: ${{ env.working-directory }} 
+      - name: Commit New XCFrameworks
         run: |
           git add ./tealium-xcframeworks.zip
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git commit -m "Add XCFrameworks"
+          git commit -m "Add New XCFrameworks"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
