@@ -67,6 +67,7 @@ class TealiumConnectivityTests: XCTestCase {
         XCTAssertNotNil((connectivity.connectivityMonitor as! LegacyConnectivityMonitor).timer, "Timer unexpectedly nil")
     }
 
+    #if !CICD
     func testCurrentConnectionType() {
         let expectation = self.expectation(description: "connection type")
         let connectivity = nwPathConnectivity
@@ -79,13 +80,15 @@ class TealiumConnectivityTests: XCTestCase {
         }
         self.wait(for: [expectation], timeout: 1.0)
     }
-
+    #endif
+    
     func testCurrentConnectionTypeLegacy() {
         let connectivity = legacyConnectivityRefreshEnabled
         let data = connectivity.data!
         XCTAssertEqual(data[ConnectivityKey.connectionType] as! String, ConnectivityKey.connectionTypeWifi)
     }
-
+    
+    #if !CICD
     func testCheckIsConnected() {
         let expectation = self.expectation(description: "isConnected")
         let connectivity = nwPathConnectivity
@@ -103,6 +106,7 @@ class TealiumConnectivityTests: XCTestCase {
         }
         self.wait(for: [expectation], timeout: 1.0)
     }
+    #endif
 
     func testCheckIsConnectedLegacy() {
         let connectivity = legacyConnectivityRefreshDisabled
@@ -115,7 +119,7 @@ class TealiumConnectivityTests: XCTestCase {
             }
         }
     }
-
+    
     func testCheckIsConnectedURLTask() {
         let config = defaultTealiumConfig.copy
         let connectivity = legacyConnectivityRefreshDisabled
@@ -171,24 +175,5 @@ class TealiumConnectivityTests: XCTestCase {
 
         XCTAssertEqual(connectivity.timer?.timeInterval, 5.0, "Unexpected default time interval")
     }
-
-    //    func testDefaultConnectivityInterval() {
-    //        let module = TealiumConnectivityModule(delegate: nil)
-    //        let request = TealiumEnableRequest(config: TestTealiumHelper().getConfig(), enableCompletion: nil)
-    //        module.enable(request)
-    //        module.isEnabled = true
-    //        XCTAssertTrue(module.connectivity.timer?.timeInterval == TimeInterval(exactly: TealiumConnectivityConstants.defaultInterval))
-    //    }
-    //
-    //    func testOverriddenConnectivityInterval() {
-    //        let module = TealiumConnectivityModule(delegate: nil)
-    //        let config = TestTealiumHelper().getConfig()
-    //        let testInterval = 5
-    //        config.setConnectivityRefreshInterval(testInterval)
-    //        let request = TealiumEnableRequest(config: TestTealiumHelper().getConfig(), enableCompletion: nil)
-    //        module.enable(request)
-    //        module.isEnabled = true
-    //        XCTAssertTrue(module.connectivity.timer?.timeInterval == TimeInterval(exactly: testInterval))
-    //    }
 
 }
