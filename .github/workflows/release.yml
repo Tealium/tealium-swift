@@ -30,9 +30,12 @@ jobs:
     name: Upload XCFrameworks
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Upload   
       - uses: AButler/upload-release-assets@v2.0
         with:
-          files: 'tealium-xcframeworks.zip'
+          files: './tealium-xcframeworks.zip'
           repo-token: ${{ secrets.GITHUB_TOKEN }}  
     # steps:
     #   - uses: actions/checkout@v2
