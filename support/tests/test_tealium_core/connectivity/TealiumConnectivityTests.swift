@@ -44,6 +44,13 @@ class TealiumConnectivityTests: XCTestCase {
         let connectivity = ConnectivityModule(context: context, delegate: nil, diskStorage: nil) { _ in }
         return connectivity
     }
+    
+    func nwPathConnectivity(with mock: ConnectivityMonitorProtocol) -> ConnectivityModule {
+        let config = defaultTealiumConfig.copy
+        let context = TestTealiumHelper.context(with: config)
+        let connectivity = ConnectivityModule(context: context, delegate: nil, diskStorage: nil, connectivityMonitor: mock)
+        return connectivity
+    }
 
     override func setUp() {
         super.setUp()
@@ -67,12 +74,9 @@ class TealiumConnectivityTests: XCTestCase {
         XCTAssertNotNil((connectivity.connectivityMonitor as! LegacyConnectivityMonitor).timer, "Timer unexpectedly nil")
     }
 
-    func testCurrentConnectionType() {
-        #if CICD
-            _ = XCTSkip("Skipping \(#function) in CICD environment")
-            return
-        #endif
+    func testCurrentConnectionTypeWifi() {
         let expectation = self.expectation(description: "connection type")
+        nwPathConnectivity.connectivityMonitor = MockConnectivityMonitorIsConnectedWifi(config: defaultTealiumConfig, completion: { _ in })
         let connectivity = nwPathConnectivity
         // need to wait for NWPathMonitor callback to finish first
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -84,15 +88,57 @@ class TealiumConnectivityTests: XCTestCase {
         self.wait(for: [expectation], timeout: 1.0)
     }
     
+    func testCurrentConnectionTypeCellular() {
+        let expectation = self.expectation(description: "connection type")
+        let mock = MockConnectivityMonitorIsConnectedCellular(config: defaultTealiumConfig, completion: { _ in })
+        let connectivity = nwPathConnectivity(with: mock)
+        // need to wait for NWPathMonitor callback to finish first
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            let data = connectivity.data!
+
+            XCTAssertEqual(data[ConnectivityKey.connectionType] as! String, ConnectivityKey.connectionTypeCell)
+            expectation.fulfill()
+        }
+        self.wait(for: [expectation], timeout: 1.0)
+    }
+    
+    func testCurrentConnectionTypeWired() {
+        let expectation = self.expectation(description: "connection type")
+        let mock = MockConnectivityMonitorIsConnectedWired(config: defaultTealiumConfig, completion: { _ in })
+        let connectivity = nwPathConnectivity(with: mock)
+        // need to wait for NWPathMonitor callback to finish first
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            let data = connectivity.data!
+
+            XCTAssertEqual(data[ConnectivityKey.connectionType] as! String, ConnectivityKey.connectionTypeWired)
+            expectation.fulfill()
+        }
+        self.wait(for: [expectation], timeout: 1.0)
+    }
+    
+    func testCurrentConnectionTypeNone() {
+        let expectation = self.expectation(description: "connection type")
+        let mock = MockConnectivityMonitorNotConnected(config: defaultTealiumConfig, completion: { _ in })
+        let connectivity = nwPathConnectivity(with: mock)
+        // need to wait for NWPathMonitor callback to finish first
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            let data = connectivity.data!
+
+            XCTAssertEqual(data[ConnectivityKey.connectionType] as! String, ConnectivityKey.connectionTypeNone)
+            expectation.fulfill()
+        }
+        self.wait(for: [expectation], timeout: 1.0)
+    }
+    
     func testCurrentConnectionTypeLegacy() {
         let connectivity = legacyConnectivityRefreshEnabled
         let data = connectivity.data!
         XCTAssertEqual(data[ConnectivityKey.connectionType] as! String, ConnectivityKey.connectionTypeWifi)
     }
     
-    #if !CICD
-    func testCheckIsConnected() {
-        let expectation = self.expectation(description: "isConnected")
+    func testCheckIsConnectedTrue() {
+        let expectation = self.expectation(description: "isConnectedTrue")
+        nwPathConnectivity.connectivityMonitor = MockConnectivityMonitorIsConnectedWifi(config: defaultTealiumConfig, completion: { _ in })
         let connectivity = nwPathConnectivity
         // need to wait for NWPathMonitor callback to finish first
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -108,7 +154,25 @@ class TealiumConnectivityTests: XCTestCase {
         }
         self.wait(for: [expectation], timeout: 1.0)
     }
-    #endif
+    
+    func testCheckIsConnectedFalse() {
+        let expectation = self.expectation(description: "isConnectedFalse")
+        let mock = MockConnectivityMonitorNotConnected(config: defaultTealiumConfig, completion: { _ in })
+        let connectivity = nwPathConnectivity(with: mock)
+        // need to wait for NWPathMonitor callback to finish first
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            connectivity.checkIsConnected { result in
+                switch result {
+                case .success(_):
+                    XCTFail("Should not be connected")
+                case .failure(let error):
+                    XCTAssertEqual(error as! TealiumConnectivityError, TealiumConnectivityError.noConnection)
+                    expectation.fulfill()
+                }
+            }
+        }
+        self.wait(for: [expectation], timeout: 1.0)
+    }
 
     func testCheckIsConnectedLegacy() {
         let connectivity = legacyConnectivityRefreshDisabled
@@ -178,4 +242,102 @@ class TealiumConnectivityTests: XCTestCase {
         XCTAssertEqual(connectivity.timer?.timeInterval, 5.0, "Unexpected default time interval")
     }
 
+}
+
+class MockConnectivityMonitorIsConnectedWifi: ConnectivityMonitorProtocol {
+    
+    var config: TealiumConfig
+    
+    required init(config: TealiumConfig, completion: @escaping ((Result<Bool, Error>) -> Void)) {
+        self.config = config
+    }
+
+    var currentConnnectionType: String? = "wifi"
+    
+    var isConnected: Bool? = true
+    
+    var isExpensive: Bool?
+    
+    var isCellular: Bool?
+    
+    var isWired: Bool?
+    
+    func checkIsConnected(completion: @escaping ((Result<Bool, Error>) -> Void)) {
+        completion(.success(true))
+    }
+    
+}
+
+class MockConnectivityMonitorIsConnectedWired: ConnectivityMonitorProtocol {
+    
+    var config: TealiumConfig
+    
+    required init(config: TealiumConfig, completion: @escaping ((Result<Bool, Error>) -> Void)) {
+        self.config = config
+    }
+
+    var currentConnnectionType: String? = "wired"
+    
+    var isConnected: Bool? = true
+    
+    var isExpensive: Bool?
+    
+    var isCellular: Bool?
+    
+    var isWired: Bool? = true
+    
+    func checkIsConnected(completion: @escaping ((Result<Bool, Error>) -> Void)) {
+        completion(.success(true))
+    }
+    
+}
+
+
+class MockConnectivityMonitorIsConnectedCellular: ConnectivityMonitorProtocol {
+    
+    var config: TealiumConfig
+    
+    required init(config: TealiumConfig, completion: @escaping ((Result<Bool, Error>) -> Void)) {
+        self.config = config
+    }
+
+    var currentConnnectionType: String? = "cellular"
+    
+    var isConnected: Bool? = true
+    
+    var isExpensive: Bool?
+    
+    var isCellular: Bool? = true
+    
+    var isWired: Bool?
+    
+    func checkIsConnected(completion: @escaping ((Result<Bool, Error>) -> Void)) {
+        completion(.success(true))
+    }
+    
+}
+
+
+class MockConnectivityMonitorNotConnected: ConnectivityMonitorProtocol {
+    
+    var config: TealiumConfig
+    
+    required init(config: TealiumConfig, completion: @escaping ((Result<Bool, Error>) -> Void)) {
+        self.config = config
+    }
+
+    var currentConnnectionType: String? = "none"
+    
+    var isConnected: Bool? = false
+    
+    var isExpensive: Bool?
+    
+    var isCellular: Bool?
+    
+    var isWired: Bool?
+    
+    func checkIsConnected(completion: @escaping ((Result<Bool, Error>) -> Void)) {
+        completion(.failure(TealiumConnectivityError.noConnection))
+    }
+    
 }
