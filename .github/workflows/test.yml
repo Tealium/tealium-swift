@@ -15,9 +15,9 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '2.7'
-      - name: install fastlane
+      - name: Install Fastlane
         run: |
-          brew install fastlane      
+          brew install fastlane             
   test_iOS:
     needs: install_fastlane
     name: iOS Tests
@@ -43,7 +43,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Test - "${{ matrix.scheme }}"
-        run: fastlane test --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
+        run: fastlane scan --scheme "${{ matrix.scheme }}" --outpub_style "raw" --output_files "${{ matrix.scheme }}".html
         working-directory: ${{env.working-directory}}
       - name: archive code coverage results
         uses: actions/upload-artifact@v2
