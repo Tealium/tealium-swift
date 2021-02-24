@@ -34,9 +34,9 @@ jobs:
           # - TealiumCoreTests-iOS
           # - TealiumCollectTests-iOS
           # - TealiumLifecycleTests-iOS
-          #  - TealiumVisitorServiceTests-iOS
-            - TealiumTagManagementTests-iOS
-          # - TealiumRemoteCommandsTests-iOS
+          # - TealiumVisitorServiceTests-iOS
+          # - TealiumTagManagementTests-iOS
+            - TealiumRemoteCommandsTests-iOS
           # - TealiumAttributionTests-iOS
           # - TealiumAutotrackingTests-iOS
         # todo: location tests
