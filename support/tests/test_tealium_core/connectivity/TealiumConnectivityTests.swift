@@ -79,7 +79,7 @@ class TealiumConnectivityTests: XCTestCase {
         nwPathConnectivity.connectivityMonitor = MockConnectivityMonitorIsConnectedWifi(config: defaultTealiumConfig, completion: { _ in })
         let connectivity = nwPathConnectivity
         // need to wait for NWPathMonitor callback to finish first
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             let data = connectivity.data!
 
             XCTAssertEqual(data[ConnectivityKey.connectionType] as! String, ConnectivityKey.connectionTypeWifi)
