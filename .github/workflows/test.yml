@@ -37,8 +37,8 @@ jobs:
           # - TealiumVisitorServiceTests-iOS
           # - TealiumTagManagementTests-iOS
           # - TealiumRemoteCommandsTests-iOS
-            - TealiumAttributionTests-iOS
-          # - TealiumAutotrackingTests-iOS
+          # - TealiumAttributionTests-iOS
+            - TealiumAutotrackingTests-iOS
         # todo: location tests
     steps:
       - uses: actions/checkout@v2
