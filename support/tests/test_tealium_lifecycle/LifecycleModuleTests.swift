@@ -430,15 +430,13 @@ class LifecycleModuleTests: XCTestCase {
     func testRemovalOfLifecycleListenersOnDeinit() {
         let expect = expectation(description: "testRemovalOfLifecycleListenersOnDeinit")
         config.collectors = [Collectors.Lifecycle]
-        var tealium: Tealium? = Tealium(config: config) { _ in
-            XCTAssertTrue(Tealium.lifecycleListeners.listeningDelegates.count > 0)
-            
-        }
-        TestTealiumHelper.delay {
+        tealium = Tealium(config: config)
+        let queue = DispatchQueue(label: "testRemovalOfLifecycleListenersOnDeinit")
+        TestTealiumHelper.delay(for: 1.5, on: queue) {
             TealiumInstanceManager.shared.removeInstance(config: self.config)
-            tealium = nil
+            self.tealium = nil
         }
-        TestTealiumHelper.delay(for: 2.0) {
+        TestTealiumHelper.delay(for: 2.0, on: queue) {
             XCTAssertEqual(Tealium.lifecycleListeners.listeningDelegates.count, 0)
             expect.fulfill()
         }

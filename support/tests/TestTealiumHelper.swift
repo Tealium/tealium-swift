@@ -94,8 +94,10 @@ class TestTealiumHelper {
         return TealiumContext(config: config, dataLayer: dataLayer ?? DummyDataManager(), tealium: tealium)
     }
     
-    class func delay(for delay: TimeInterval? = nil, _ completion: @escaping () -> Void) {
-        let retry = TestRetryManager(queue: DispatchQueue(label: "test"), delay: delay ?? 1.0)
+    class func delay(for delay: TimeInterval? = nil,
+                     on queue: DispatchQueue = DispatchQueue(label: "test"),
+                     _ completion: @escaping () -> Void) {
+        let retry = TestRetryManager(queue: queue, delay: delay ?? 1.0)
         retry.submit {
             completion()
         }
