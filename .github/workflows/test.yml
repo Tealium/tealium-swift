@@ -34,8 +34,8 @@ jobs:
           # - TealiumCoreTests-iOS
           # - TealiumCollectTests-iOS
           # - TealiumLifecycleTests-iOS
-            - TealiumVisitorServiceTests-iOS
-          # - TealiumTagManagementTests-iOS
+          #  - TealiumVisitorServiceTests-iOS
+            - TealiumTagManagementTests-iOS
           # - TealiumRemoteCommandsTests-iOS
           # - TealiumAttributionTests-iOS
           # - TealiumAutotrackingTests-iOS
@@ -43,7 +43,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Test - "${{ matrix.scheme }}"
-        run: fastlane scan --scheme "${{ matrix.scheme }}" --xcargs "CICD=YES" --output_files "${{ matrix.scheme }}".html
+        run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
         working-directory: ${{env.working-directory}}
       - name: archive code coverage results
         uses: actions/upload-artifact@v2
