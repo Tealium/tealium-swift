@@ -1,8 +1,9 @@
 name: Creates and Commits XCFrameworks
 
 on:
-  pull_request:
+  push: # will run when PR is merged into master or main
     branches:
+      - master
       - main
 
 jobs:
