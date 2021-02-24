@@ -5,10 +5,11 @@
 //  Copyright © 2020 Tealium. All rights reserved.
 //
 import SwiftUI
+import TealiumAutotracking
 
 struct ContentView: View {
     @State private var traceId: String = ""
-    
+    @AutoTracked var name = "Main Screen"
     // Timed event start
     var playButton: some View {
         Button(action: {
@@ -30,13 +31,14 @@ struct ContentView: View {
                 .accentColor(.purple)
         })
     }
-    
+
     var body: some View {
+        TealiumTrackable(viewName: name) {
         NavigationView {
             ScrollView {
                 VStack(spacing: 20) {
                     TraceIdTextField(traceId: $traceId)
-                        .padding(.bottom, 20)
+                            .padding(.bottom, 20)
                     ButtonView(title: "Start Trace") {
                         TealiumHelper.shared.joinTrace(self.traceId)
                     }
@@ -48,9 +50,9 @@ struct ContentView: View {
                     }
                     ButtonView(title: "Track Event") {
                         TealiumHelper.shared.track(title: "button_tapped",
-                                                data: ["event_category": "example",
-                                                       "event_action": "tap",
-                                                       "event_label": "Track Event"])
+                                                   data: ["event_category": "example",
+                                                          "event_action": "tap",
+                                                          "event_label": "Track Event"])
                     }
                     ButtonView(title: "Hosted Data Layer") {
                         TealiumHelper.shared.track(title: "hdl-test",
@@ -68,13 +70,17 @@ struct ContentView: View {
                     }
                     Spacer()
                 }
-                .navigationTitle("iOSTealiumTest")
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationBarItems(leading: playButton, trailing: stopButton)
-                .padding(50)
+                        .navigationTitle("iOSTealiumTest")
+                        .navigationBarTitleDisplayMode(.inline)
+                        .navigationBarItems(leading: playButton, trailing: stopButton)
+                        .padding(50)
             }
         }
+    }
         .navigationViewStyle(StackNavigationViewStyle())
+        .onAppear {
+            print("onappear from app")
+        }
     }
 }
 

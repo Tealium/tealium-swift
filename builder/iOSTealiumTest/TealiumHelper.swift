@@ -11,6 +11,7 @@ import TealiumCollect
 import TealiumCore
 import TealiumLifecycle
 import TealiumVisitorService
+import TealiumAutotracking
 #if os(iOS)
 import TealiumAttribution
 import TealiumLocation
@@ -33,11 +34,13 @@ class TealiumHelper  {
                                    environment: "dev",
                                    dataSource: "test12",
                                    options: nil)
+
         config.connectivityRefreshInterval = 5
         config.loggerType = .os
         config.logLevel = .info
         config.consentPolicy = .gdpr
         config.consentLoggingEnabled = true
+//        config.remoteHTTPCommandDisabled = false
         config.dispatchListeners = [self]
         config.dispatchValidators = [self]
         config.shouldUseRemotePublishSettings = false
@@ -47,6 +50,7 @@ class TealiumHelper  {
         config.diskStorageEnabled = true
         config.visitorServiceDelegate = self
         config.memoryReportingEnabled = true
+        config.autoTrackingDelegate = self
         config.batterySaverEnabled = true
         config.hostedDataLayerKeys = ["hdl-test": "product_id"]
         config.timedEventTriggers = [TimedEventTrigger(start: "product_view", end: "order_complete"),
@@ -63,19 +67,21 @@ class TealiumHelper  {
                 Collectors.AppData,
                 Collectors.Connectivity,
                 Collectors.Device,
-                Collectors.Location,
-                Collectors.VisitorService
+//                Collectors.Location,
+                Collectors.VisitorService,
+                Collectors.AutoTracking
+                
             ]
         
             config.dispatchers = [
                 Dispatchers.Collect,
-                Dispatchers.TagManagement,
+//                Dispatchers.TagManagement,
                 Dispatchers.RemoteCommands
             ]
             
             // config.appDelegateProxyEnabled = false
             config.remoteAPIEnabled = true
-            config.remoteCommandConfigRefresh = .every(24, .hours)
+//            config.remoteCommandConfigRefresh = .every(24, .hours)
             config.searchAdsEnabled = true
             config.skAdAttributionEnabled = true
             config.skAdConversionKeys = ["conversion_event": "conversion_value"]
@@ -88,7 +94,8 @@ class TealiumHelper  {
                 Collectors.AppData,
                 Collectors.Connectivity,
                 Collectors.Device,
-                Collectors.VisitorService
+                Collectors.VisitorService,
+                
             ]
             config.dispatchers = [
                 Dispatchers.Collect,
@@ -116,22 +123,22 @@ class TealiumHelper  {
             dataLayer.add(key: "hello", value: "itsme", expiry: .afterCustom((.months, 1)))
 
             #if os(iOS)
-            teal.location?.requestAuthorization()
-
-            guard let remoteCommands = self.tealium?.remoteCommands else {
-                return
-            }
-
-            let display = RemoteCommand(commandId: "display", description: "Test") { response in
-                guard let payload = response.payload,
-                      let hello = payload["hello"] as? String,
-                      let key = payload["key"] as? String,
-                      let tealium = payload["tealium"] as? String else {
-                    return
-                }
-                print("Remote Command data: hello = \(hello), key = \(key), tealium = \(tealium) 🎉🎊")
-            }
-            remoteCommands.add(display)
+//            teal.location?.requestAuthorization()
+//
+//            guard let remoteCommands = self.tealium?.remoteCommands else {
+//                return
+//            }
+//
+//            let display = RemoteCommand(commandId: "display", description: "Test") { response in
+//                guard let payload = response.payload,
+//                      let hello = payload["hello"] as? String,
+//                      let key = payload["key"] as? String,
+//                      let tealium = payload["tealium"] as? String else {
+//                    return
+//                }
+//                print("Remote Command data: hello = \(hello), key = \(key), tealium = \(tealium) 🎉🎊")
+//            }
+//            remoteCommands.add(display)
             #endif
         }
 
@@ -212,6 +219,12 @@ extension TealiumHelper: DispatchValidator {
 
     func shouldPurge(request: TealiumRequest) -> Bool {
         false
+    }
+}
+
+extension TealiumHelper: AutoTrackingDelegate {
+    func onCollectScreenView(screenName: String) -> [String : Any] {
+        return ["from_delegate": "true"]
     }
 }
 

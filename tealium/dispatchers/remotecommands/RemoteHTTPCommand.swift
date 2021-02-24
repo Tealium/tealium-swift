@@ -15,6 +15,7 @@ public class RemoteHTTPCommand: RemoteCommand {
 
     /// - Returns:`RemoteHTTPCommand`
     public class func create(with delegate: ModuleDelegate?) -> RemoteCommandProtocol {
+        weak var delegate = delegate
         return RemoteCommand(commandId: RemoteCommandsKey.commandId,
                              description: "For processing tag-triggered HTTP requests") { response in
             guard let response = response as? RemoteCommandResponse else {
