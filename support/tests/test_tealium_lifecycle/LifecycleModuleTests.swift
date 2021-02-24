@@ -432,6 +432,9 @@ class LifecycleModuleTests: XCTestCase {
         config.collectors = [Collectors.Lifecycle]
         var tealium: Tealium? = Tealium(config: config) { _ in
             XCTAssertTrue(Tealium.lifecycleListeners.listeningDelegates.count > 0)
+            
+        }
+        TestTealiumHelper.delay {
             TealiumInstanceManager.shared.removeInstance(config: self.config)
             tealium = nil
         }
