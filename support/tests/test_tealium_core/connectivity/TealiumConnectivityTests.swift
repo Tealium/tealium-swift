@@ -138,8 +138,8 @@ class TealiumConnectivityTests: XCTestCase {
     
     func testCheckIsConnectedTrue() {
         let expectation = self.expectation(description: "isConnectedTrue")
-        nwPathConnectivity.connectivityMonitor = MockConnectivityMonitorIsConnectedWifi(config: defaultTealiumConfig, completion: { _ in })
-        let connectivity = nwPathConnectivity
+        let mock = MockConnectivityMonitorIsConnectedWifi(config: defaultTealiumConfig, completion: { _ in })
+        let connectivity = nwPathConnectivity(with: mock)
         // need to wait for NWPathMonitor callback to finish first
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             connectivity.checkIsConnected { result in

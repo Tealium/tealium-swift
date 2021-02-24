@@ -80,7 +80,7 @@ class TestTealiumHelper {
     }
     
     class func delay(_ completion: @escaping () -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             completion()
         }
     }

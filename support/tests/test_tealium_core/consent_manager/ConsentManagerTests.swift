@@ -339,7 +339,7 @@ class ConsentManagerTests: XCTestCase {
             }
         }
 
-        wait(for: [expect], timeout: 1.0)
+        wait(for: [expect], timeout: 1.5)
     }
     
     func consentLastSetSaved() {
