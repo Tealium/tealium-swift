@@ -21,8 +21,8 @@ jobs:
         scheme: 
           # - TealiumCoreTests-iOS
           # - TealiumCollectTests-iOS
-            - TealiumLifecycleTests-iOS
-          # - TealiumVisitorServiceTests-iOS
+          # - TealiumLifecycleTests-iOS
+            - TealiumVisitorServiceTests-iOS
           # - TealiumTagManagementTests-iOS
           # - TealiumRemoteCommandsTests-iOS
           # - TealiumAttributionTests-iOS
