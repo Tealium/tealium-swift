@@ -67,8 +67,11 @@ class TealiumConnectivityTests: XCTestCase {
         XCTAssertNotNil((connectivity.connectivityMonitor as! LegacyConnectivityMonitor).timer, "Timer unexpectedly nil")
     }
 
-    #if !CICD
     func testCurrentConnectionType() {
+        #if CICD
+            _ = XCTSkip("Skipping \(#function) in CICD environment")
+            return
+        #endif
         let expectation = self.expectation(description: "connection type")
         let connectivity = nwPathConnectivity
         // need to wait for NWPathMonitor callback to finish first
@@ -80,7 +83,6 @@ class TealiumConnectivityTests: XCTestCase {
         }
         self.wait(for: [expectation], timeout: 1.0)
     }
-    #endif
     
     func testCurrentConnectionTypeLegacy() {
         let connectivity = legacyConnectivityRefreshEnabled
