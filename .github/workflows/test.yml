@@ -7,6 +7,17 @@ on:
     - cicd
 
 jobs:
+  install_fastlane:
+    name: Install Fastlane
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+      - name: install fastlane
+        run: |
+          brew install fastlane      
   test_iOS:
     name: iOS Tests
     runs-on: macos-latest
@@ -30,12 +41,6 @@ jobs:
         # todo: location tests
     steps:
       - uses: actions/checkout@v2
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '2.7'
-      - name: install fastlane
-        run: |
-          brew install fastlane
       - name: Test - "${{ matrix.scheme }}"
         run: fastlane scan --scheme "${{ matrix.scheme }}" --xcargs "CICD=YES" --output_files "${{ matrix.scheme }}".html
         working-directory: ${{env.working-directory}}
