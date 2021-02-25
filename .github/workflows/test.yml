@@ -16,10 +16,11 @@ jobs:
         with:
           ruby-version: '2.7'
       - name: Install Fastlane
-        # run: |
-        #   brew install fastlane # need older version of fastlane for xcov for now - https://github.com/fastlane/fastlane/issues/18047
         run: |
-          gem install fastlane -v 2.171
+          brew  fastlane
+      - name: Install Slather
+        run: |
+          gem install slather    
   test_iOS:
     needs: install_fastlane
     name: iOS Tests
@@ -47,12 +48,13 @@ jobs:
       - name: Test - "${{ matrix.scheme }}"
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output-style "raw" --xcargs "-quiet" --output_files "${{ matrix.scheme }}".html
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
-        run: fastlane scan --scheme "${{ matrix.scheme }}"
+        run: fastlane scan --scheme "${{ matrix.scheme }}" --code_coverage true --skip_build true
         working-directory: ${{env.working-directory}}
       - name: Code Coverage - "${{ matrix.scheme }}"
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output-style "raw" --xcargs "-quiet" --output_files "${{ matrix.scheme }}".html
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
-        run: fastlane run xcov workspace:"" project:"tealium-swift.xcodeproj" scheme:"${{ matrix.scheme }}" output_directory:"test_output"
+        # run: fastlane run xcov workspace:"" project:"tealium-swift.xcodeproj" scheme:"${{ matrix.scheme }}" output_directory:"test_output"
+        run: fastlane slather proj:"tealium-swift.xcodeproj" scheme:"${{ matrix.scheme }}" output_directory:"test_output"
         working-directory: ${{env.working-directory}}
       - name: Upload Code Coverage Results
         uses: actions/upload-artifact@v2
