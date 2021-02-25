@@ -69,8 +69,8 @@ jobs:
         destination: ["platform=macOS,arch=x86_64"]
         scheme: 
           # - TealiumCoreTests-macOS
-          - TealiumCollectTests-macOS
-          # - TealiumLifecycleTests-macOS
+          # - TealiumCollectTests-macOS
+          - TealiumLifecycleTests-macOS
           # - TealiumVisitorServiceTests-macOS
     steps:
       - uses: actions/checkout@v2
