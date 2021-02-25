@@ -18,12 +18,12 @@ jobs:
       - name: Install Fastlane
         run: |
           gem install fastlane
-          fastlane env
-      - name: Install Danger and XCov
-        run: |
-          gem install danger
-          gem install danger-xcov
-          gem install xcov
+      #     fastlane env
+      # - name: Install Danger and XCov
+      #   run: |
+      #     gem install danger
+      #     gem install danger-xcov
+      #     gem install xcov
   test_iOS:
     needs: install 
     name: iOS Tests
@@ -60,7 +60,7 @@ jobs:
         # run: fastlane run xcov project:"tealium-swift.xcodeproj" scheme:"${{ matrix.scheme }}" output_directory:"test_output"
         # working-directory: ${{env.working-directory}}
       - name: Upload Code Coverage Results
-      - uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
           directory: ./test_output
