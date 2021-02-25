@@ -68,8 +68,8 @@ jobs:
       matrix:
         destination: ["platform=macOS,arch=x86_64"]
         scheme: 
-          - TealiumCoreTests-macOS
-          # - TealiumCollectTests-macOS
+          # - TealiumCoreTests-macOS
+          - TealiumCollectTests-macOS
           # - TealiumLifecycleTests-macOS
           # - TealiumVisitorServiceTests-macOS
     steps:
