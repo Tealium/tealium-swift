@@ -70,8 +70,8 @@ jobs:
         scheme: 
           # - TealiumCoreTests-macOS
           # - TealiumCollectTests-macOS
-          - TealiumLifecycleTests-macOS
-          # - TealiumVisitorServiceTests-macOS
+          # - TealiumLifecycleTests-macOS
+          - TealiumVisitorServiceTests-macOS
     steps:
       - uses: actions/checkout@v2
       - uses: ruby/setup-ruby@v1
