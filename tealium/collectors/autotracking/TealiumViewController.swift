@@ -16,7 +16,7 @@ internal struct ViewNotification {
 }
 
 
-open class TealiumViewController: UIViewController {
+open class TealiumViewController: UIViewController { 
     @objc
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)

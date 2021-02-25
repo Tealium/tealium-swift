@@ -18,67 +18,6 @@ import UIKit
 import TealiumCore
 #endif
 
-enum TealiumAutotrackingKey {
-    static let moduleName = "autotracking"
-    static let viewNotificationName = "com.tealium.autotracking.view"
-    static let autotracked = "autotracked"
-    static let delegate = "delegate"
-    
-}
-
-public extension Tealium {
-
-//    var autotracking: TealiumAutotrackingManager? {
-//        (zz_internal_modulesManager?.modules.first {
-//            type(of: $0) == AutotrackingModule.self
-//        } as? AutotrackingModule)?.autotracking
-//    }
-
-}
-
-var tealiumAssociatedObjectHandle: UInt8 = 0
-
-public class TealiumAutotrackingManager {
-
-
-}
-
-public protocol AutoTrackingDelegate: class {
-    
-    func onCollectScreenView(screenName: String) -> [String: Any]
-    
-}
-
-public extension TealiumConfig {
-    
-    var autoTrackingDelegate: AutoTrackingDelegate? {
-        get {
-            options[TealiumAutotrackingKey.delegate] as? AutoTrackingDelegate
-        }
-
-        set {
-            guard let newValue = newValue else {
-                return
-            }
-            options[TealiumAutotrackingKey.delegate] = newValue
-        }
-    }
-}
-
-final class NotificationToken: NSObject {
-    let notificationCenter: NotificationCenter
-    let token: Any
-
-    init(notificationCenter: NotificationCenter = .default, token: Any) {
-        self.notificationCenter = notificationCenter
-        self.token = token
-    }
-
-    deinit {
-        notificationCenter.removeObserver(token)
-    }
-}
-
 public class AutotrackingModule: Collector {
 
     public let id: String = TealiumAutotrackingKey.moduleName
@@ -104,7 +43,7 @@ public class AutotrackingModule: Collector {
         self.context = context
         self.config = context.config
         enableNotifications()
-        self.autotrackingDelegate = config.autoTrackingDelegate
+        self.autotrackingDelegate = config.autoTrackingCollectorDelegate
         completion((.success(true), nil))
     }
 

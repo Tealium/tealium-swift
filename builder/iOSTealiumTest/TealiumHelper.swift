@@ -50,7 +50,7 @@ class TealiumHelper  {
         config.diskStorageEnabled = true
         config.visitorServiceDelegate = self
         config.memoryReportingEnabled = true
-        config.autoTrackingDelegate = self
+        config.autoTrackingCollectorDelegate = self
         config.batterySaverEnabled = true
         config.hostedDataLayerKeys = ["hdl-test": "product_id"]
         config.timedEventTriggers = [TimedEventTrigger(start: "product_view", end: "order_complete"),
