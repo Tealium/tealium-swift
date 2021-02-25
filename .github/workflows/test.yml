@@ -97,8 +97,8 @@ jobs:
       matrix:
         destination: ["platform=tvOS Simulator,name=Apple TV"]
         scheme: 
-          - TealiumCoreTests-tvOS
-          # - TealiumCollectTests-tvOS
+          # - TealiumCoreTests-tvOS
+          - TealiumCollectTests-tvOS
           # - TealiumLifecycleTests-tvOS
           # - TealiumVisitorServiceTests-tvOS
     steps:
