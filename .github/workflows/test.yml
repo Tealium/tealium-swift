@@ -56,7 +56,7 @@ jobs:
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output-style "raw" --xcargs "-quiet" --output_files "${{ matrix.scheme }}".html
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
         # run: fastlane run xcov workspace:"" project:"tealium-swift.xcodeproj" scheme:"${{ matrix.scheme }}" output_directory:"test_output"
-        run: fastlane run xcov workspace:"tealium-swift.xcworkspace" scheme:"${{ matrix.scheme }}" output_directory:"test_output"
+        run: fastlane run xcov project:"tealium-swift.xcodeproj" scheme:"${{ matrix.scheme }}" output_directory:"test_output"
         working-directory: ${{env.working-directory}}
       - name: Upload Code Coverage Results
         uses: actions/upload-artifact@v2
