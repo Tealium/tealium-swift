@@ -273,6 +273,9 @@
 		CFAC006F25AFBF5B00CD51C6 /* TestTealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716C7D1B1DDBC3A500512C99 /* TestTealiumHelper.swift */; };
 		CFACF3FB25E8554B0065E65E /* AppDelegateProxyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72DB0BF24F7BF4000183D48 /* AppDelegateProxyTests.swift */; };
 		CFACF42025E855530065E65E /* TealiumTraceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79EFE5924E4100100F43375 /* TealiumTraceTests.swift */; };
+		CFACF49125E85E550065E65E /* MockSessionStarter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7187F1A24768F5000CF0AB0 /* MockSessionStarter.swift */; };
+		CFACF4DA25E85E730065E65E /* TealiumMediaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAD9D2B25A66BE90079B19A /* TealiumMediaTests.swift */; };
+		CFACF52325E85E840065E65E /* TealiumMediaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAD9D2B25A66BE90079B19A /* TealiumMediaTests.swift */; };
 		CFACFFDB25AF816400CD51C6 /* MediaEventService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFACFFDA25AF816400CD51C6 /* MediaEventService.swift */; };
 		CFAD58A5253910D7007D4EDB /* DeviceDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAD58A3253910D7007D4EDB /* DeviceDataTests.swift */; };
 		CFAD58A6253910D7007D4EDB /* DeviceDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAD58A3253910D7007D4EDB /* DeviceDataTests.swift */; };
@@ -319,29 +322,14 @@
 		CFAD9D3125A66BE90079B19A /* TealiumMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFAD9D1C25A66BE80079B19A /* TealiumMedia.framework */; };
 		CFAD9D3225A66BE90079B19A /* TealiumMedia.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CFAD9D1C25A66BE80079B19A /* TealiumMedia.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CFAD9E8B25A66D470079B19A /* TealiumMediaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAD9D2B25A66BE90079B19A /* TealiumMediaTests.swift */; };
-		CFAD9EB425A66D540079B19A /* VisitorProfileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585F233A68DD00DAD90E /* VisitorProfileTests.swift */; };
-		CFAD9EB525A66D540079B19A /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
-		CFAD9EB625A66D540079B19A /* VisitorServiceManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7805850233A68DC00DAD90E /* VisitorServiceManagerTests.swift */; };
 		CFAD9EB725A66D540079B19A /* TestTealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716C7D1B1DDBC3A500512C99 /* TestTealiumHelper.swift */; };
-		CFAD9EB825A66D540079B19A /* VisitorServiceRetrieverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7805860233A68DD00DAD90E /* VisitorServiceRetrieverTests.swift */; };
 		CFAD9EB925A66D540079B19A /* CoreMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA558BF24E4E6B200BFBED8 /* CoreMocks.swift */; };
-		CFAD9EBA25A66D540079B19A /* VisitorServiceModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7805852233A68DC00DAD90E /* VisitorServiceModuleTests.swift */; };
-		CFAD9EBB25A66D540079B19A /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CAD88F234BBCD600668AFD /* MockURLSession.swift */; };
-		CFAD9EBC25A66D540079B19A /* MockTealiumVisitorServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC3FB9C24C6232400763C9E /* MockTealiumVisitorServiceManager.swift */; };
-		CFAD9EBD25A66D540079B19A /* MockSessionStarter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7187F1A24768F5000CF0AB0 /* MockSessionStarter.swift */; };
 		CFAD9EC025A66D540079B19A /* visitor-nils.json in Resources */ = {isa = PBXBuildFile; fileRef = D7805857233A68DC00DAD90E /* visitor-nils.json */; };
 		CFAD9EC125A66D540079B19A /* visitor-empties.json in Resources */ = {isa = PBXBuildFile; fileRef = D7805855233A68DC00DAD90E /* visitor-empties.json */; };
 		CFAD9EC225A66D540079B19A /* visitor.json in Resources */ = {isa = PBXBuildFile; fileRef = D7805856233A68DC00DAD90E /* visitor.json */; };
 		CFAD9EC325A66D540079B19A /* visitor-all-nil.json in Resources */ = {isa = PBXBuildFile; fileRef = D7805854233A68DC00DAD90E /* visitor-all-nil.json */; };
-		CFAD9F5B25A66D700079B19A /* VisitorProfileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585F233A68DD00DAD90E /* VisitorProfileTests.swift */; };
-		CFAD9F5C25A66D700079B19A /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
-		CFAD9F5D25A66D700079B19A /* VisitorServiceManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7805850233A68DC00DAD90E /* VisitorServiceManagerTests.swift */; };
 		CFAD9F5E25A66D700079B19A /* TestTealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716C7D1B1DDBC3A500512C99 /* TestTealiumHelper.swift */; };
-		CFAD9F5F25A66D700079B19A /* VisitorServiceRetrieverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7805860233A68DD00DAD90E /* VisitorServiceRetrieverTests.swift */; };
 		CFAD9F6025A66D700079B19A /* CoreMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA558BF24E4E6B200BFBED8 /* CoreMocks.swift */; };
-		CFAD9F6125A66D700079B19A /* VisitorServiceModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7805852233A68DC00DAD90E /* VisitorServiceModuleTests.swift */; };
-		CFAD9F6225A66D700079B19A /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CAD88F234BBCD600668AFD /* MockURLSession.swift */; };
-		CFAD9F6325A66D700079B19A /* MockTealiumVisitorServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC3FB9C24C6232400763C9E /* MockTealiumVisitorServiceManager.swift */; };
 		CFAD9F6425A66D700079B19A /* MockSessionStarter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7187F1A24768F5000CF0AB0 /* MockSessionStarter.swift */; };
 		CFAD9F6725A66D700079B19A /* visitor-nils.json in Resources */ = {isa = PBXBuildFile; fileRef = D7805857233A68DC00DAD90E /* visitor-nils.json */; };
 		CFAD9F6825A66D700079B19A /* visitor-empties.json in Resources */ = {isa = PBXBuildFile; fileRef = D7805855233A68DC00DAD90E /* visitor-empties.json */; };
@@ -4529,17 +4517,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CFAD9EB425A66D540079B19A /* VisitorProfileTests.swift in Sources */,
-				CFAD9EB525A66D540079B19A /* MockDiskStorage.swift in Sources */,
+				CFACF4DA25E85E730065E65E /* TealiumMediaTests.swift in Sources */,
+				CFACF49125E85E550065E65E /* MockSessionStarter.swift in Sources */,
 				CFADA55825AD26DE0079B19A /* MockMediaSession.swift in Sources */,
-				CFAD9EB625A66D540079B19A /* VisitorServiceManagerTests.swift in Sources */,
 				CFAD9EB725A66D540079B19A /* TestTealiumHelper.swift in Sources */,
-				CFAD9EB825A66D540079B19A /* VisitorServiceRetrieverTests.swift in Sources */,
 				CFAD9EB925A66D540079B19A /* CoreMocks.swift in Sources */,
-				CFAD9EBA25A66D540079B19A /* VisitorServiceModuleTests.swift in Sources */,
-				CFAD9EBB25A66D540079B19A /* MockURLSession.swift in Sources */,
-				CFAD9EBC25A66D540079B19A /* MockTealiumVisitorServiceManager.swift in Sources */,
-				CFAD9EBD25A66D540079B19A /* MockSessionStarter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4547,16 +4529,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CFAD9F5B25A66D700079B19A /* VisitorProfileTests.swift in Sources */,
-				CFAD9F5C25A66D700079B19A /* MockDiskStorage.swift in Sources */,
+				CFACF52325E85E840065E65E /* TealiumMediaTests.swift in Sources */,
 				CFADA55925AD26DF0079B19A /* MockMediaSession.swift in Sources */,
-				CFAD9F5D25A66D700079B19A /* VisitorServiceManagerTests.swift in Sources */,
 				CFAD9F5E25A66D700079B19A /* TestTealiumHelper.swift in Sources */,
-				CFAD9F5F25A66D700079B19A /* VisitorServiceRetrieverTests.swift in Sources */,
 				CFAD9F6025A66D700079B19A /* CoreMocks.swift in Sources */,
-				CFAD9F6125A66D700079B19A /* VisitorServiceModuleTests.swift in Sources */,
-				CFAD9F6225A66D700079B19A /* MockURLSession.swift in Sources */,
-				CFAD9F6325A66D700079B19A /* MockTealiumVisitorServiceManager.swift in Sources */,
 				CFAD9F6425A66D700079B19A /* MockSessionStarter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
