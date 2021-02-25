@@ -7,8 +7,8 @@ on:
     - cicd
 
 jobs:
-  install_fastlane:
-    name: Install Fastlane
+  install:
+    name: Install Tools
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
@@ -17,9 +17,14 @@ jobs:
           ruby-version: '2.7'
       - name: Install Fastlane
         run: |
-          brew install fastlane 
+          brew install fastlane
+      - name: Install Danger and XCov
+        run: |
+          gem install danger
+          gem install danger-xcov
+          gem install xcov
   test_iOS:
-    needs: install_fastlane
+    needs: install, 
     name: iOS Tests
     runs-on: macos-latest
     # runs-on: self-hosted
