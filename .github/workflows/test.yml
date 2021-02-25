@@ -53,17 +53,24 @@ jobs:
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
         run: fastlane scan --scheme "${{ matrix.scheme }}" --code_coverage true --skip_build true output_directory:"test_output"
         working-directory: ${{env.working-directory}}
-      - name: Code Coverage - "${{ matrix.scheme }}"
+      # - name: Code Coverage - "${{ matrix.scheme }}"
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output-style "raw" --xcargs "-quiet" --output_files "${{ matrix.scheme }}".html
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
         # run: fastlane run xcov workspace:"" project:"tealium-swift.xcodeproj" scheme:"${{ matrix.scheme }}" output_directory:"test_output"
-        run: fastlane run xcov project:"tealium-swift.xcodeproj" scheme:"${{ matrix.scheme }}" output_directory:"test_output"
-        working-directory: ${{env.working-directory}}
+        # run: fastlane run xcov project:"tealium-swift.xcodeproj" scheme:"${{ matrix.scheme }}" output_directory:"test_output"
+        # working-directory: ${{env.working-directory}}
       - name: Upload Code Coverage Results
-        uses: actions/upload-artifact@v2
+      - uses: codecov/codecov-action@v1
         with:
-          name: code-coverage-report
-          path: ${{env.working-directory}}/test_output/*.html
+          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          directory: ./test_output
+          flags: unittests # optional
+          path_to_write_report: ./test_output/codecov_report.txt
+          verbose: true # optional (default = false)
+        # uses: actions/upload-artifact@v2
+        # with:
+        #   name: code-coverage-report
+        #   path: ${{env.working-directory}}/test_output/*.html
   # test_macOS:
   #   name: macOS Tests
   #   runs-on: macos-latest
