@@ -102,8 +102,8 @@ jobs:
           # - TealiumCoreTests-tvOS
           # - TealiumCollectTests-tvOS
           # - TealiumLifecycleTests-tvOS
-          - TealiumMediaTests-tvOS
-          # - TealiumVisitorServiceTests-tvOS
+          # - TealiumMediaTests-tvOS
+          - TealiumVisitorServiceTests-tvOS
     steps:
       - uses: actions/checkout@v2
       - uses: ruby/setup-ruby@v1
