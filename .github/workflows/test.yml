@@ -38,14 +38,14 @@ jobs:
         destination: ["platform=iOS Simulator,OS=14.4,name=iPhone 12"]
         scheme: 
             - TealiumCoreTests-iOS
-            # - TealiumCollectTests-iOS
-            # - TealiumLifecycleTests-iOS
-            # - TealiumVisitorServiceTests-iOS
-            # - TealiumTagManagementTests-iOS
-            # - TealiumRemoteCommandsTests-iOS
-            # - TealiumAttributionTests-iOS
-            # - TealiumAutotrackingTests-iOS
-            # - TealiumLocationTests-iOS
+            - TealiumCollectTests-iOS
+            - TealiumLifecycleTests-iOS
+            - TealiumVisitorServiceTests-iOS
+            - TealiumTagManagementTests-iOS
+            - TealiumRemoteCommandsTests-iOS
+            - TealiumAttributionTests-iOS
+            - TealiumAutotrackingTests-iOS
+            - TealiumLocationTests-iOS
     steps:
       - uses: actions/checkout@v2
       - name: Test - "${{ matrix.scheme }}"
