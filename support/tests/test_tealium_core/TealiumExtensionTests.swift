@@ -8,7 +8,6 @@
 @testable import TealiumCollect
 @testable import TealiumCore
 @testable import TealiumLifecycle
-@testable import TealiumMedia
 @testable import TealiumVisitorService
 #if os(iOS)
 @testable import TealiumAutotracking
