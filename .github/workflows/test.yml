@@ -31,14 +31,14 @@ jobs:
       matrix:
         destination: ["platform=iOS Simulator,OS=14.4,name=iPhone 12"]
         scheme: 
-          # - TealiumCoreTests-iOS
-          # - TealiumCollectTests-iOS
-          # - TealiumLifecycleTests-iOS
-          # - TealiumVisitorServiceTests-iOS
-          # - TealiumTagManagementTests-iOS
-          # - TealiumRemoteCommandsTests-iOS
-          # - TealiumAttributionTests-iOS
-          # - TealiumAutotrackingTests-iOS
+            - TealiumCoreTests-iOS
+            - TealiumCollectTests-iOS
+            - TealiumLifecycleTests-iOS
+            - TealiumVisitorServiceTests-iOS
+            - TealiumTagManagementTests-iOS
+            - TealiumRemoteCommandsTests-iOS
+            - TealiumAttributionTests-iOS
+            - TealiumAutotrackingTests-iOS
             - TealiumLocationTests-iOS
     steps:
       - uses: actions/checkout@v2
@@ -51,7 +51,7 @@ jobs:
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output-style "raw" --xcargs "-quiet" --output_files "${{ matrix.scheme }}".html
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
         # run: fastlane run xcov workspace:"" project:"tealium-swift.xcodeproj" scheme:"${{ matrix.scheme }}" output_directory:"test_output"
-        run: fastlane run xcov workspace:"tealium-swift.xcworkspace" project:"tealium-swift.xcodeproj" scheme:"${{ matrix.scheme }}" output_directory:"test_output"
+        run: fastlane run xcov workspace:"tealium-swift.xcworkspace" scheme:"${{ matrix.scheme }}" output_directory:"test_output"
         working-directory: ${{env.working-directory}}
       - name: Upload Code Coverage Results
         uses: actions/upload-artifact@v2
