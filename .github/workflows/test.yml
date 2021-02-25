@@ -59,13 +59,16 @@ jobs:
         # run: fastlane run xcov workspace:"" project:"tealium-swift.xcodeproj" scheme:"${{ matrix.scheme }}" output_directory:"test_output"
         # run: fastlane run xcov project:"tealium-swift.xcodeproj" scheme:"${{ matrix.scheme }}" output_directory:"test_output"
         # working-directory: ${{env.working-directory}}
+      - name: Generate Code Coverage
+        run: bash <(curl -s https://codecov.io/bash)
+        working-directory: ${{env.working-directory}}
       - name: Upload Code Coverage Results
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-          directory: ./test_output
+          directory: .builder/test_output
           flags: unittests # optional
-          path_to_write_report: ./test_output/codecov_report.txt
+          path_to_write_report: .builder/test_output/codecov_report.txt
           verbose: true # optional (default = false)
         # uses: actions/upload-artifact@v2
         # with:
