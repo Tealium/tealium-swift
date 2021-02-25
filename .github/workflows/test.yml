@@ -113,7 +113,7 @@ jobs:
         run: |
           brew install fastlane
       - name: Test "${{ matrix.scheme }}"
-        run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
+        run: fastlane scan --scheme "${{ matrix.scheme }}" --code_coverage true --skip_build true output_directory:"test_output"
         working-directory: ${{env.working-directory}}
       - name: Generate and Upload Code Coverage
         run: bash <(curl -s https://codecov.io/bash) && ls
