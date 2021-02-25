@@ -1347,38 +1347,23 @@ class TealiumMediaTests: XCTestCase {
         let expect = expectation(description: "testMediaServiceNotNilWhenAddedToCollectors")
         let config = TealiumConfig(account: "account", profile: "profile", environment: "env")
         config.collectors = [Collectors.Media]
-        tealium = Tealium(config: config) { _ in
+        tealium = Tealium(config: config)
+        TestTealiumHelper.delay(for: 2.0, on: TealiumQueues.backgroundSerialQueue) {
             XCTAssertNotNil(self.tealium?.media)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        wait(for: [expect], timeout: 2.5)
     }
     
     func testMediaServiceNilWhenAddedToCollectors() {
         let expect = expectation(description: "testMediaServiceNotNilWhenAddedToCollectors")
         let config = TealiumConfig(account: "account", profile: "profile", environment: "env")
-        tealium = Tealium(config: config) { _ in
+        tealium = Tealium(config: config)
+        TestTealiumHelper.delay(for: 2.0, on: TealiumQueues.backgroundSerialQueue) {
             XCTAssertNil(self.tealium?.media)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
-    }
-    
-    func testMilestoneTimerInterval_Set_FromConfig() {
-        let expect = expectation(description: "testMediaServiceNotNilWhenAddedToCollectors")
-        let config = TealiumConfig(account: "account", profile: "profile", environment: "env")
-        
-        tealium = Tealium(config: config) { _ in
-            self.mockMediaService.media.trackingType = .milestone
-            self.session = MediaSessionFactory.create(from: self.mockMediaService.media, with: MockModuleDelegate())
-            //session.
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 1.0)
-    }
-    
-    func testMilestoneTimerInterval_Default_WhenNotSetFromConfig() {
-        
+        wait(for: [expect], timeout: 2.5)
     }
 
 }
