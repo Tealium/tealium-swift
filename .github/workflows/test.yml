@@ -24,7 +24,7 @@ jobs:
           gem install danger-xcov
           gem install xcov
   test_iOS:
-    needs: install, 
+    needs: install 
     name: iOS Tests
     runs-on: macos-latest
     # runs-on: self-hosted
