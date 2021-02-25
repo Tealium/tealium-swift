@@ -98,8 +98,8 @@ jobs:
         destination: ["platform=tvOS Simulator,name=Apple TV"]
         scheme: 
           # - TealiumCoreTests-tvOS
-          - TealiumCollectTests-tvOS
-          # - TealiumLifecycleTests-tvOS
+          # - TealiumCollectTests-tvOS
+          - TealiumLifecycleTests-tvOS
           # - TealiumVisitorServiceTests-tvOS
     steps:
       - uses: actions/checkout@v2
