@@ -1341,30 +1341,6 @@ class TealiumMediaTests: XCTestCase {
         }
         
     }
-    
-    // MARK: Extensions Tests
-    func testMediaServiceNotNilWhenAddedToCollectors() {
-        let expect = expectation(description: "testMediaServiceNotNilWhenAddedToCollectors")
-        let config = TealiumConfig(account: "account", profile: "profile", environment: "env")
-        config.collectors = [Collectors.Media]
-        tealium = Tealium(config: config)
-        TestTealiumHelper.delay(for: 2.0, on: TealiumQueues.backgroundSerialQueue) {
-            XCTAssertNotNil(self.tealium?.media)
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 2.5)
-    }
-    
-    func testMediaServiceNilWhenAddedToCollectors() {
-        let expect = expectation(description: "testMediaServiceNotNilWhenAddedToCollectors")
-        let config = TealiumConfig(account: "account", profile: "profile", environment: "env")
-        tealium = Tealium(config: config)
-        TestTealiumHelper.delay(for: 2.0, on: TealiumQueues.backgroundSerialQueue) {
-            XCTAssertNil(self.tealium?.media)
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 2.5)
-    }
 
 }
 
