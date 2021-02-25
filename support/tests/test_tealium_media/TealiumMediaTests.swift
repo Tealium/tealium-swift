@@ -6,10 +6,8 @@
 //
 
 import XCTest
-@testable import TealiumCore
-@testable import TealiumMedia
-
-// TODO: Test correct sequence of events
+import TealiumCore
+import TealiumMedia
 
 class TealiumMediaTests: XCTestCase {
     
