@@ -6,8 +6,8 @@
 //
 
 import XCTest
-import TealiumCore
-import TealiumMedia
+@testable import TealiumCore
+@testable import TealiumMedia
 
 class TealiumMediaTests: XCTestCase {
     
