@@ -325,23 +325,6 @@ class ConsentManagerTests: XCTestCase {
         XCTAssertNotNil(consentManager.onConsentExpiraiton)
     }
     
-    func testOnConsentExpirationCallbackSetFromTealium() {
-        let expect = expectation(description: "testOnConsentExpirationCallbackSetFromTealium")
-        config.consentPolicy = .gdpr
-        var tealium: Tealium?
-        tealium = Tealium(config: config) { _ in
-            tealium?.consentManager?.onConsentExpiraiton = {
-                print("hello")
-            }
-            TestTealiumHelper.delay {
-                XCTAssertNotNil(tealium?.consentManager?.onConsentExpiraiton)
-                expect.fulfill()
-            }
-        }
-
-        wait(for: [expect], timeout: 1.5)
-    }
-    
     func consentLastSetSaved() {
         let mockDate = Date(timeIntervalSinceReferenceDate: 1607031457)
         consentManager.lastConsentUpdate = mockDate
