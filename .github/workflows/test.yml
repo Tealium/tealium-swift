@@ -30,16 +30,17 @@ jobs:
   #   strategy:
   #     matrix:
   #       destination: ["platform=iOS Simulator,OS=14.4,name=iPhone 12"]
-  #       scheme: 
-  #           - TealiumCoreTests-iOS
-  #           - TealiumCollectTests-iOS
-  #           - TealiumLifecycleTests-iOS
-  #           - TealiumVisitorServiceTests-iOS
-  #           - TealiumTagManagementTests-iOS
-  #           - TealiumRemoteCommandsTests-iOS
+  #       scheme:
   #           - TealiumAttributionTests-iOS
-  #           - TealiumAutotrackingTests-iOS
+  #           - TealiumAutotrackingTests-iOS 
+  #           - TealiumCollectTests-iOS
+  #           - TealiumCoreTests-iOS
+  #           - TealiumLifecycleTests-iOS
   #           - TealiumLocationTests-iOS
+  #           - TealiumMediaTests-iOS
+  #           - TealiumRemoteCommandsTests-iOS
+  #           - TealiumTagManagementTests-iOS
+  #           - TealiumVisitorServiceTests-iOS
   #   steps:
   #     - uses: actions/checkout@v2
   #     - name: Test - "${{ matrix.scheme }}"
@@ -71,6 +72,7 @@ jobs:
   #         - TealiumCoreTests-macOS
   #         - TealiumCollectTests-macOS
   #         - TealiumLifecycleTests-macOS
+  #         - TealiumMediaTests-macOS
   #         - TealiumVisitorServiceTests-macOS
   #   steps:
   #     - uses: actions/checkout@v2
@@ -99,7 +101,8 @@ jobs:
         scheme: 
           # - TealiumCoreTests-tvOS
           # - TealiumCollectTests-tvOS
-          - TealiumLifecycleTests-tvOS
+          # - TealiumLifecycleTests-tvOS
+          - TealiumMediaTests-tvOS
           # - TealiumVisitorServiceTests-tvOS
     steps:
       - uses: actions/checkout@v2
