@@ -17,10 +17,7 @@ jobs:
           ruby-version: '2.7'
       - name: Install Fastlane
         run: |
-          brew install fastlane
-      - name: Install Slather
-        run: |
-          gem install slather    
+          brew install fastlane 
   test_iOS:
     needs: install_fastlane
     name: iOS Tests
@@ -54,7 +51,7 @@ jobs:
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output-style "raw" --xcargs "-quiet" --output_files "${{ matrix.scheme }}".html
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
         # run: fastlane run xcov workspace:"" project:"tealium-swift.xcodeproj" scheme:"${{ matrix.scheme }}" output_directory:"test_output"
-        run: fastlane slather proj:"tealium-swift.xcodeproj" scheme:"${{ matrix.scheme }}" output_directory:"test_output"
+        run: fastlane run xcov workspace:"tealium-swift.xcworkspace" project:"tealium-swift.xcodeproj" scheme:"${{ matrix.scheme }}" output_directory:"test_output"
         working-directory: ${{env.working-directory}}
       - name: Upload Code Coverage Results
         uses: actions/upload-artifact@v2

@@ -61,7 +61,7 @@ class VisitorServiceModuleTests: XCTestCase {
             XCTAssertEqual(1, self.mockVisitorServiceManager.requestVisitorProfileCount)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 3.2)   
+        wait(for: [expect], timeout: 3.2)
     }
 
     func testTrackRetreiveProfileExecuted() {
