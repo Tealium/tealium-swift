@@ -91,7 +91,7 @@ jobs:
   test_tvOS:
     name: tvOS Tests
     runs-on: macos-latest
-    timeout-minutes: 60
+    #timeout-minutes: 60
     env: 
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
       working-directory: ./builder
@@ -106,12 +106,6 @@ jobs:
           - TealiumVisitorServiceTests-tvOS
     steps:
       - uses: actions/checkout@v2
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '2.7'
-      - name: install fastlane
-        run: |
-          brew install fastlane
       - name: Test "${{ matrix.scheme }}"
         run: fastlane scan --scheme "${{ matrix.scheme }}" --code_coverage true --skip_build true output_directory:"test_output"
         working-directory: ${{env.working-directory}}
