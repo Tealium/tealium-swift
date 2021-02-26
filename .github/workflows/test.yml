@@ -31,15 +31,15 @@ jobs:
         destination: ["platform=iOS Simulator,OS=14.4,name=iPhone 12"]
         scheme:
             - TealiumAttributionTests-iOS
-            - TealiumAutotrackingTests-iOS 
-            - TealiumCollectTests-iOS
-            - TealiumCoreTests-iOS
-            - TealiumLifecycleTests-iOS
-            - TealiumLocationTests-iOS
-            - TealiumMediaTests-iOS
-            - TealiumRemoteCommandsTests-iOS
-            - TealiumTagManagementTests-iOS
-            - TealiumVisitorServiceTests-iOS
+            #- TealiumAutotrackingTests-iOS 
+            #- TealiumCollectTests-iOS
+            #- TealiumCoreTests-iOS
+            #- TealiumLifecycleTests-iOS
+            #- TealiumLocationTests-iOS
+            #- TealiumMediaTests-iOS
+            #- TealiumRemoteCommandsTests-iOS
+            #- TealiumTagManagementTests-iOS
+            #- TealiumVisitorServiceTests-iOS
     steps:
       - uses: actions/checkout@v2
       - name: Test - "${{ matrix.scheme }}"
@@ -56,53 +56,53 @@ jobs:
       - name: Generate and Upload Code Coverage
         run: bash <(curl -s https://codecov.io/bash) && ls
         working-directory: ${{env.working-directory}}
-  test_macOS:
-    needs: install
-    name: macOS Tests
-    runs-on: macos-latest
-    timeout-minutes: 60
-    env: 
-      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-      working-directory: ./builder
-    strategy:
-      matrix:
-        destination: ["platform=macOS,arch=x86_64"]
-        scheme: 
-          - TealiumCoreTests-macOS
-          - TealiumCollectTests-macOS
-          - TealiumLifecycleTests-macOS
-          - TealiumMediaTests-macOS
-          - TealiumVisitorServiceTests-macOS
-    steps:
-      - uses: actions/checkout@v2
-      - name: Test - "${{ matrix.scheme }}"
-        run: fastlane scan --scheme "${{ matrix.scheme }}" --code_coverage true --skip_build true output_directory:"test_output"
-        working-directory: ${{env.working-directory}}
-      - name: Generate and Upload Code Coverage
-        run: bash <(curl -s https://codecov.io/bash) && ls
-        working-directory: ${{env.working-directory}}
-  test_tvOS:
-    needs: install
-    name: tvOS Tests
-    runs-on: macos-latest
-    timeout-minutes: 60
-    env: 
-      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-      working-directory: ./builder
-    strategy:
-      matrix:
-        destination: ["platform=tvOS Simulator,name=Apple TV"]
-        scheme: 
-          - TealiumCoreTests-tvOS
-          - TealiumCollectTests-tvOS
-          - TealiumLifecycleTests-tvOS
-          - TealiumMediaTests-tvOS
-          - TealiumVisitorServiceTests-tvOS
-    steps:
-      - uses: actions/checkout@v2
-      - name: Test "${{ matrix.scheme }}"
-        run: fastlane scan --scheme "${{ matrix.scheme }}" --code_coverage true --skip_build true output_directory:"test_output"
-        working-directory: ${{env.working-directory}}
-      - name: Generate and Upload Code Coverage
-        run: bash <(curl -s https://codecov.io/bash) && ls
-        working-directory: ${{env.working-directory}}
+  # test_macOS:
+  #   needs: install
+  #   name: macOS Tests
+  #   runs-on: macos-latest
+  #   timeout-minutes: 60
+  #   env: 
+  #     DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+  #     working-directory: ./builder
+  #   strategy:
+  #     matrix:
+  #       destination: ["platform=macOS,arch=x86_64"]
+  #       scheme: 
+  #         - TealiumCoreTests-macOS
+  #         - TealiumCollectTests-macOS
+  #         - TealiumLifecycleTests-macOS
+  #         - TealiumMediaTests-macOS
+  #         - TealiumVisitorServiceTests-macOS
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Test - "${{ matrix.scheme }}"
+  #       run: fastlane scan --scheme "${{ matrix.scheme }}" --code_coverage true --skip_build true output_directory:"test_output"
+  #       working-directory: ${{env.working-directory}}
+  #     - name: Generate and Upload Code Coverage
+  #       run: bash <(curl -s https://codecov.io/bash) && ls
+  #       working-directory: ${{env.working-directory}}
+  # test_tvOS:
+  #   needs: install
+  #   name: tvOS Tests
+  #   runs-on: macos-latest
+  #   timeout-minutes: 60
+  #   env: 
+  #     DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+  #     working-directory: ./builder
+  #   strategy:
+  #     matrix:
+  #       destination: ["platform=tvOS Simulator,name=Apple TV"]
+  #       scheme: 
+  #         - TealiumCoreTests-tvOS
+  #         - TealiumCollectTests-tvOS
+  #         - TealiumLifecycleTests-tvOS
+  #         - TealiumMediaTests-tvOS
+  #         - TealiumVisitorServiceTests-tvOS
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Test "${{ matrix.scheme }}"
+  #       run: fastlane scan --scheme "${{ matrix.scheme }}" --code_coverage true --skip_build true output_directory:"test_output"
+  #       working-directory: ${{env.working-directory}}
+  #     - name: Generate and Upload Code Coverage
+  #       run: bash <(curl -s https://codecov.io/bash) && ls
+  #       working-directory: ${{env.working-directory}}
