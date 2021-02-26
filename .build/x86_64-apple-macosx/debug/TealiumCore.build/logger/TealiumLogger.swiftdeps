@@ -1,0 +1,290 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "TealiumLogger"
+provides-nominal:
+- "11TealiumCore0A6LoggerC"
+provides-member:
+- ["So9OS_os_logC", ""]
+- ["11TealiumCore0A6LoggerC", ""]
+- ["So9OS_os_logC", "init"]
+- ["So9OS_os_logC", "track"]
+- ["So9OS_os_logC", "general"]
+provides-dynamic-lookup:
+- "config"
+- "general"
+- "getLogCategory"
+- "init"
+- "log"
+- "logThreshold"
+- "loggerType"
+- "osLog"
+- "textLog"
+- "track"
+depends-top-level:
+- !private ">"
+- !private ">="
+- !private "??"
+- "AssignmentPrecedence"
+- "LogRequest"
+- "OSLog"
+- "OSLogType"
+- "StringLiteralType"
+- "TealiumConfig"
+- "TealiumLogLevel"
+- "TealiumLogRequest"
+- "TealiumLogger"
+- "TealiumLoggerProtocol"
+- "TealiumLoggerType"
+- !private "TealiumValue"
+- !private "config"
+- !private "getLogCategory"
+- !private "logThreshold"
+- !private "loggerType"
+- !private "osLog"
+- !private "os_log"
+- !private "print"
+- !private "textLog"
+depends-member:
+- ["s7CVarArgP", "OSLog"]
+- !private ["s7CVarArgP", "general"]
+- ["s7CVarArgP", "init"]
+- !private ["s7CVarArgP", "init"]
+- !private ["s7CVarArgP", "track"]
+- ["SL", "debug"]
+- ["SL", "error"]
+- ["SL", "fault"]
+- ["SL", "info"]
+- !private ["SL", "silent"]
+- ["s28CustomDebugStringConvertibleP", "OSLog"]
+- ["s28CustomDebugStringConvertibleP", "general"]
+- ["s28CustomDebugStringConvertibleP", "init"]
+- ["s28CustomDebugStringConvertibleP", "init"]
+- ["s28CustomDebugStringConvertibleP", "os"]
+- ["s28CustomDebugStringConvertibleP", "print"]
+- ["s28CustomDebugStringConvertibleP", "track"]
+- ["s17CustomReflectableP", "general"]
+- ["s17CustomReflectableP", "init"]
+- ["s17CustomReflectableP", "os"]
+- ["s17CustomReflectableP", "print"]
+- ["s17CustomReflectableP", "track"]
+- ["s23CustomStringConvertibleP", "OSLog"]
+- ["s23CustomStringConvertibleP", "debug"]
+- ["s23CustomStringConvertibleP", "error"]
+- ["s23CustomStringConvertibleP", "fault"]
+- !private ["s23CustomStringConvertibleP", "general"]
+- ["s23CustomStringConvertibleP", "info"]
+- ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "silent"]
+- !private ["s23CustomStringConvertibleP", "track"]
+- ["Se", "general"]
+- ["Se", "init"]
+- ["Se", "os"]
+- ["Se", "print"]
+- ["Se", "track"]
+- ["SE", "general"]
+- ["SE", "init"]
+- ["SE", "os"]
+- ["SE", "print"]
+- ["SE", "track"]
+- ["SQ", "OSLog"]
+- ["SQ", ""]
+- ["SQ", "debug"]
+- ["SQ", "error"]
+- ["SQ", "fault"]
+- ["SQ", "general"]
+- ["SQ", "info"]
+- ["SQ", "init"]
+- ["SQ", "init"]
+- !private ["SQ", "logLevel"]
+- !private ["SQ", "loggerType"]
+- ["SQ", "os"]
+- ["SQ", "print"]
+- !private ["SQ", "silent"]
+- ["SQ", "track"]
+- ["s23ExpressibleByNilLiteralP", "general"]
+- ["s23ExpressibleByNilLiteralP", "init"]
+- ["s23ExpressibleByNilLiteralP", "os"]
+- ["s23ExpressibleByNilLiteralP", "print"]
+- ["s23ExpressibleByNilLiteralP", "track"]
+- ["SH", "OSLog"]
+- ["SH", "debug"]
+- ["SH", "error"]
+- ["SH", "fault"]
+- ["SH", "general"]
+- ["SH", "info"]
+- ["SH", "init"]
+- ["SH", "init"]
+- !private ["SH", "logLevel"]
+- !private ["SH", "loggerType"]
+- ["SH", "os"]
+- ["SH", "print"]
+- !private ["SH", "silent"]
+- ["SH", "track"]
+- !private ["11TealiumCore10LogRequestP", "formattedString"]
+- !private ["11TealiumCore10LogRequestP", "logCategory"]
+- !private ["11TealiumCore10LogRequestP", "logLevel"]
+- ["So8NSObjectC", "OSLog"]
+- ["So8NSObjectC", ""]
+- ["So8NSObjectC", "general"]
+- ["So8NSObjectC", "init"]
+- ["So8NSObjectC", "init"]
+- ["So8NSObjectC", "isEnabled"]
+- ["So8NSObjectC", "track"]
+- ["So8NSObjectP", "OSLog"]
+- ["So8NSObjectP", "general"]
+- ["So8NSObjectP", "init"]
+- ["So8NSObjectP", "init"]
+- ["So8NSObjectP", "isEnabled"]
+- ["So8NSObjectP", "track"]
+- ["So9OS_os_logC", "OSLog"]
+- ["So9OS_os_logC", ""]
+- ["So9OS_os_logC", "general"]
+- ["So9OS_os_logC", "init"]
+- ["So9OS_os_logC", "init"]
+- ["So9OS_os_logC", "track"]
+- !private ["So13os_log_type_ta", "debug"]
+- !private ["So13os_log_type_ta", "error"]
+- !private ["So13os_log_type_ta", "fault"]
+- !private ["So13os_log_type_ta", "info"]
+- ["Sq", "general"]
+- ["Sq", "init"]
+- ["Sq", "os"]
+- ["Sq", "print"]
+- ["Sq", "track"]
+- ["SY", "debug"]
+- ["SY", "error"]
+- ["SY", "fault"]
+- ["SY", "info"]
+- !private ["SY", "silent"]
+- !private ["11TealiumCore0A6ConfigC", "logLevel"]
+- !private ["11TealiumCore0A6ConfigC", "loggerType"]
+- ["11TealiumCore0A11LogCategoryO", "general"]
+- ["11TealiumCore0A11LogCategoryO", "init"]
+- ["11TealiumCore0A11LogCategoryO", "track"]
+- !private ["11TealiumCore0A8LogLevelO", ""]
+- ["11TealiumCore0A8LogLevelO", "debug"]
+- ["11TealiumCore0A8LogLevelO", "error"]
+- ["11TealiumCore0A8LogLevelO", "fault"]
+- ["11TealiumCore0A8LogLevelO", "info"]
+- !private ["11TealiumCore0A8LogLevelO", "silent"]
+- !private ["11TealiumCore0A10LogRequestV", ""]
+- !private ["11TealiumCore0A10LogRequestV", "formattedString"]
+- !private ["11TealiumCore0A10LogRequestV", "logLevel"]
+- ["11TealiumCore0A6LoggerC", "LogRequest"]
+- ["11TealiumCore0A6LoggerC", "OSLog"]
+- !private ["11TealiumCore0A6LoggerC", "OSLogType"]
+- ["11TealiumCore0A6LoggerC", "TealiumConfig"]
+- ["11TealiumCore0A6LoggerC", "TealiumLogLevel"]
+- ["11TealiumCore0A6LoggerC", "TealiumLogRequest"]
+- ["11TealiumCore0A6LoggerC", "TealiumLoggerType"]
+- !private ["11TealiumCore0A6LoggerC", "TealiumValue"]
+- !private ["11TealiumCore0A6LoggerC", ""]
+- ["11TealiumCore0A6LoggerC", "config"]
+- ["11TealiumCore0A6LoggerC", "deinit"]
+- ["11TealiumCore0A6LoggerC", "getLogCategory"]
+- ["11TealiumCore0A6LoggerC", "init"]
+- ["11TealiumCore0A6LoggerC", "log"]
+- ["11TealiumCore0A6LoggerC", "logThreshold"]
+- ["11TealiumCore0A6LoggerC", "loggerType"]
+- ["11TealiumCore0A6LoggerC", "osLog"]
+- !private ["11TealiumCore0A6LoggerC", "os_log"]
+- !private ["11TealiumCore0A6LoggerC", "print"]
+- ["11TealiumCore0A6LoggerC", "textLog"]
+- !private ["11TealiumCore0A14LoggerProtocolP", "TealiumValue"]
+- ["11TealiumCore0A14LoggerProtocolP", ""]
+- ["11TealiumCore0A14LoggerProtocolP", "config"]
+- !private ["11TealiumCore0A14LoggerProtocolP", "getLogCategory"]
+- ["11TealiumCore0A14LoggerProtocolP", "init"]
+- ["11TealiumCore0A14LoggerProtocolP", "log"]
+- !private ["11TealiumCore0A14LoggerProtocolP", "logThreshold"]
+- !private ["11TealiumCore0A14LoggerProtocolP", "loggerType"]
+- !private ["11TealiumCore0A14LoggerProtocolP", "osLog"]
+- !private ["11TealiumCore0A14LoggerProtocolP", "os_log"]
+- !private ["11TealiumCore0A14LoggerProtocolP", "print"]
+- !private ["11TealiumCore0A14LoggerProtocolP", "textLog"]
+- ["11TealiumCore0A10LoggerTypeO", "os"]
+- ["11TealiumCore0A10LoggerTypeO", "print"]
+- !private ["11TealiumCore0A5ValueO", "defaultLogLevel"]
+- ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+- ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "OSLog"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "general"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "init"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "init"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "track"]
+- ["10Foundation37_KeyValueCodingAndObservingPublishingP", "OSLog"]
+- !private ["10Foundation37_KeyValueCodingAndObservingPublishingP", "general"]
+- ["10Foundation37_KeyValueCodingAndObservingPublishingP", "init"]
+- !private ["10Foundation37_KeyValueCodingAndObservingPublishingP", "init"]
+- !private ["10Foundation37_KeyValueCodingAndObservingPublishingP", "track"]
+- ["s21_ObjectiveCBridgeableP", "general"]
+- ["s21_ObjectiveCBridgeableP", "init"]
+- ["s21_ObjectiveCBridgeableP", "os"]
+- ["s21_ObjectiveCBridgeableP", "print"]
+- ["s21_ObjectiveCBridgeableP", "track"]
+depends-nominal:
+- "s7CVarArgP"
+- "SL"
+- "s28CustomDebugStringConvertibleP"
+- "s17CustomReflectableP"
+- "s23CustomStringConvertibleP"
+- "Se"
+- "SE"
+- "SQ"
+- "s23ExpressibleByNilLiteralP"
+- "SH"
+- !private "11TealiumCore10LogRequestP"
+- "So8NSObjectC"
+- "So8NSObjectP"
+- "So9OS_os_logC"
+- !private "So13os_log_type_ta"
+- "Sq"
+- "SY"
+- !private "11TealiumCore0A6ConfigC"
+- "11TealiumCore0A11LogCategoryO"
+- "11TealiumCore0A8LogLevelO"
+- !private "11TealiumCore0A10LogRequestV"
+- "11TealiumCore0A6LoggerC"
+- "11TealiumCore0A14LoggerProtocolP"
+- "11TealiumCore0A10LoggerTypeO"
+- !private "11TealiumCore0A5ValueO"
+- "s35_ExpressibleByBuiltinIntegerLiteralP"
+- "s34_ExpressibleByBuiltinStringLiteralP"
+- "10Foundation27_KeyValueCodingAndObservingP"
+- "10Foundation37_KeyValueCodingAndObservingPublishingP"
+- "s21_ObjectiveCBridgeableP"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/XPC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/ObjectiveC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Dispatch.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Network.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreFoundation.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreGraphics.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Swift.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/IOKit.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/SwiftOnoneSupport.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/dyld.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumMedia.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumVisitorService.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLifecycle.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCollect.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/compact_unwind_encoding.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/xpc/XPC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/Dispatch.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Network.framework/Headers/Network.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/ApplicationServices.framework/Headers/ApplicationServices.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/os.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "a6d6fd7c397c37bb5f00874d36f983a1"

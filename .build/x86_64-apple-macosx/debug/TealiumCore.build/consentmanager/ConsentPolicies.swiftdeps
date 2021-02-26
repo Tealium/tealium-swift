@@ -1,0 +1,322 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "ConsentPolicy"
+- "CCPAConsentPolicy"
+- "GDPRConsentPolicy"
+provides-nominal:
+- "11TealiumCore13ConsentPolicyP"
+- "11TealiumCore17CCPAConsentPolicyV"
+- "11TealiumCore17GDPRConsentPolicyV"
+provides-member:
+- ["11TealiumCore13ConsentPolicyP", ""]
+- ["11TealiumCore17CCPAConsentPolicyV", ""]
+- ["11TealiumCore17GDPRConsentPolicyV", ""]
+provides-dynamic-lookup:
+depends-top-level:
+- "<"
+- "=="
+- !private "??"
+- "AssignmentPrecedence"
+- "Bool"
+- "BooleanLiteralType"
+- "CCPAConsentPolicy"
+- "ConsentKey"
+- "ConsentPolicy"
+- !private "Dictionary"
+- "FloatLiteralType"
+- "GDPRConsentPolicy"
+- "Int"
+- "IntegerLiteralType"
+- "String"
+- "TealiumConsentCategories"
+- !private "TealiumConsentPolicy"
+- "TealiumConsentStatus"
+- "TealiumConsentTrackAction"
+- "TernaryPrecedence"
+- "TimeUnit"
+- "UserConsentPreferences"
+- !private "currentStatus"
+- !private "preferences"
+depends-member:
+- !private ["Sa", "count"]
+- !private ["SK", ""]
+- !private ["SK", "count"]
+- ["11TealiumCore17CCPAConsentPolicyV", "Bool"]
+- ["11TealiumCore17CCPAConsentPolicyV", "ConsentKey"]
+- ["11TealiumCore17CCPAConsentPolicyV", "Int"]
+- ["11TealiumCore17CCPAConsentPolicyV", "String"]
+- !private ["11TealiumCore17CCPAConsentPolicyV", "TealiumConsentPolicy"]
+- ["11TealiumCore17CCPAConsentPolicyV", "TealiumConsentStatus"]
+- ["11TealiumCore17CCPAConsentPolicyV", "TealiumConsentTrackAction"]
+- ["11TealiumCore17CCPAConsentPolicyV", "TimeUnit"]
+- ["11TealiumCore17CCPAConsentPolicyV", "UserConsentPreferences"]
+- !private ["11TealiumCore17CCPAConsentPolicyV", ""]
+- ["11TealiumCore17CCPAConsentPolicyV", "consentPolicyStatusInfo"]
+- ["11TealiumCore17CCPAConsentPolicyV", "consentTrackingEventName"]
+- ["11TealiumCore17CCPAConsentPolicyV", "currentStatus"]
+- ["11TealiumCore17CCPAConsentPolicyV", "defaultConsentExpiry"]
+- ["11TealiumCore17CCPAConsentPolicyV", "init"]
+- ["11TealiumCore17CCPAConsentPolicyV", "preferences"]
+- ["11TealiumCore17CCPAConsentPolicyV", "shouldLogConsentStatus"]
+- ["11TealiumCore17CCPAConsentPolicyV", "shouldUpdateConsentCookie"]
+- ["11TealiumCore17CCPAConsentPolicyV", "trackAction"]
+- ["11TealiumCore17CCPAConsentPolicyV", "updateConsentCookieEventName"]
+- !private ["s7CVarArgP", "count"]
+- !private ["s7CVarArgP", "init"]
+- !private ["s7CVarArgP", "subscript"]
+- !private ["Sl", ""]
+- !private ["Sl", "count"]
+- !private ["Sl", "init"]
+- !private ["Sl", "subscript"]
+- ["11TealiumCore10ConsentKeyO", "ccpaCookieEventName"]
+- !private ["11TealiumCore10ConsentKeyO", "consentDeclinedEventName"]
+- !private ["11TealiumCore10ConsentKeyO", "consentGrantedEventName"]
+- !private ["11TealiumCore10ConsentKeyO", "consentPartialEventName"]
+- !private ["11TealiumCore10ConsentKeyO", "doNotSellKey"]
+- ["11TealiumCore10ConsentKeyO", "gdprConsentCookieEventName"]
+- !private ["11TealiumCore10ConsentKeyO", "policyKey"]
+- ["11TealiumCore13ConsentPolicyP", "Bool"]
+- ["11TealiumCore13ConsentPolicyP", "ConsentKey"]
+- ["11TealiumCore13ConsentPolicyP", "Int"]
+- ["11TealiumCore13ConsentPolicyP", "String"]
+- !private ["11TealiumCore13ConsentPolicyP", "TealiumConsentCategories"]
+- !private ["11TealiumCore13ConsentPolicyP", "TealiumConsentPolicy"]
+- ["11TealiumCore13ConsentPolicyP", "TealiumConsentTrackAction"]
+- ["11TealiumCore13ConsentPolicyP", "TimeUnit"]
+- ["11TealiumCore13ConsentPolicyP", "UserConsentPreferences"]
+- ["11TealiumCore13ConsentPolicyP", ""]
+- ["11TealiumCore13ConsentPolicyP", "consentPolicyStatusInfo"]
+- ["11TealiumCore13ConsentPolicyP", "consentTrackingEventName"]
+- !private ["11TealiumCore13ConsentPolicyP", "currentCategories"]
+- !private ["11TealiumCore13ConsentPolicyP", "currentStatus"]
+- ["11TealiumCore13ConsentPolicyP", "defaultConsentExpiry"]
+- ["11TealiumCore13ConsentPolicyP", "init"]
+- ["11TealiumCore13ConsentPolicyP", "preferences"]
+- ["11TealiumCore13ConsentPolicyP", "shouldLogConsentStatus"]
+- ["11TealiumCore13ConsentPolicyP", "shouldUpdateConsentCookie"]
+- ["11TealiumCore13ConsentPolicyP", "trackAction"]
+- ["11TealiumCore13ConsentPolicyP", "updateConsentCookieEventName"]
+- !private ["10Foundation15ContiguousBytesP", "count"]
+- !private ["s28CustomDebugStringConvertibleP", "count"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "subscript"]
+- !private ["s17CustomReflectableP", "count"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "subscript"]
+- !private ["s23CustomStringConvertibleP", "count"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "subscript"]
+- !private ["10Foundation12DataProtocolP", ""]
+- !private ["10Foundation12DataProtocolP", "count"]
+- !private ["Se", "all"]
+- !private ["Se", "consentCategories"]
+- !private ["Se", "consentStatus"]
+- ["Se", "consented"]
+- !private ["Se", "count"]
+- !private ["Se", "dictionary"]
+- !private ["Se", "init"]
+- ["Se", "notConsented"]
+- !private ["Se", "subscript"]
+- ["Se", "unknown"]
+- !private ["SD", "init"]
+- !private ["SD", "subscript"]
+- !private ["SE", "all"]
+- !private ["SE", "consentCategories"]
+- !private ["SE", "consentStatus"]
+- ["SE", "consented"]
+- !private ["SE", "count"]
+- !private ["SE", "dictionary"]
+- !private ["SE", "init"]
+- ["SE", "notConsented"]
+- !private ["SE", "subscript"]
+- ["SE", "unknown"]
+- !private ["SQ", "=="]
+- ["SQ", ""]
+- !private ["SQ", "all"]
+- !private ["SQ", "ccpa"]
+- !private ["SQ", "consentCategories"]
+- !private ["SQ", "consentStatus"]
+- ["SQ", "consented"]
+- !private ["SQ", "count"]
+- ["SQ", "days"]
+- !private ["SQ", "dictionary"]
+- !private ["SQ", "gdpr"]
+- !private ["SQ", "init"]
+- ["SQ", "notConsented"]
+- !private ["SQ", "rawValue"]
+- !private ["SQ", "subscript"]
+- !private ["SQ", "trackingAllowed"]
+- !private ["SQ", "trackingForbidden"]
+- !private ["SQ", "trackingQueued"]
+- ["SQ", "unknown"]
+- !private ["s25ExpressibleByArrayLiteralP", ""]
+- !private ["s25ExpressibleByArrayLiteralP", "count"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "Key"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "Value"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "init"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "subscript"]
+- ["11TealiumCore17GDPRConsentPolicyV", "ConsentKey"]
+- ["11TealiumCore17GDPRConsentPolicyV", "Int"]
+- ["11TealiumCore17GDPRConsentPolicyV", "String"]
+- ["11TealiumCore17GDPRConsentPolicyV", "TealiumConsentCategories"]
+- !private ["11TealiumCore17GDPRConsentPolicyV", "TealiumConsentPolicy"]
+- ["11TealiumCore17GDPRConsentPolicyV", "TealiumConsentStatus"]
+- ["11TealiumCore17GDPRConsentPolicyV", "TealiumConsentTrackAction"]
+- ["11TealiumCore17GDPRConsentPolicyV", "TimeUnit"]
+- ["11TealiumCore17GDPRConsentPolicyV", "UserConsentPreferences"]
+- !private ["11TealiumCore17GDPRConsentPolicyV", ""]
+- ["11TealiumCore17GDPRConsentPolicyV", "consentPolicyStatusInfo"]
+- ["11TealiumCore17GDPRConsentPolicyV", "consentTrackingEventName"]
+- ["11TealiumCore17GDPRConsentPolicyV", "currentCategories"]
+- ["11TealiumCore17GDPRConsentPolicyV", "currentStatus"]
+- ["11TealiumCore17GDPRConsentPolicyV", "defaultConsentExpiry"]
+- ["11TealiumCore17GDPRConsentPolicyV", "init"]
+- ["11TealiumCore17GDPRConsentPolicyV", "preferences"]
+- ["11TealiumCore17GDPRConsentPolicyV", "shouldLogConsentStatus"]
+- ["11TealiumCore17GDPRConsentPolicyV", "shouldUpdateConsentCookie"]
+- ["11TealiumCore17GDPRConsentPolicyV", "trackAction"]
+- ["11TealiumCore17GDPRConsentPolicyV", "updateConsentCookieEventName"]
+- !private ["SH", "all"]
+- !private ["SH", "ccpa"]
+- ["SH", "consented"]
+- !private ["SH", "count"]
+- ["SH", "days"]
+- !private ["SH", "gdpr"]
+- !private ["SH", "init"]
+- ["SH", "notConsented"]
+- !private ["SH", "rawValue"]
+- !private ["SH", "subscript"]
+- !private ["SH", "trackingAllowed"]
+- !private ["SH", "trackingForbidden"]
+- !private ["SH", "trackingQueued"]
+- ["SH", "unknown"]
+- !private ["SM", ""]
+- !private ["SM", "count"]
+- !private ["10Foundation19MutableDataProtocolP", "count"]
+- ["So8NSCodingP", ""]
+- !private ["So8NSObjectP", ""]
+- !private ["Sk", ""]
+- !private ["Sk", "count"]
+- !private ["Sm", ""]
+- !private ["Sm", "count"]
+- !private ["SY", "all"]
+- !private ["SY", "ccpa"]
+- ["SY", "consented"]
+- !private ["SY", "gdpr"]
+- ["SY", "notConsented"]
+- !private ["SY", "rawValue"]
+- ["SY", "unknown"]
+- !private ["ST", ""]
+- !private ["ST", "count"]
+- !private ["ST", "init"]
+- !private ["ST", "subscript"]
+- !private ["11TealiumCore0A17ConsentCategoriesO", "all"]
+- !private ["11TealiumCore0A13ConsentPolicyO", "RawValue"]
+- !private ["11TealiumCore0A13ConsentPolicyO", ""]
+- !private ["11TealiumCore0A13ConsentPolicyO", "ccpa"]
+- !private ["11TealiumCore0A13ConsentPolicyO", "gdpr"]
+- !private ["11TealiumCore0A13ConsentPolicyO", "rawValue"]
+- !private ["11TealiumCore0A13ConsentStatusO", "RawValue"]
+- !private ["11TealiumCore0A13ConsentStatusO", ""]
+- ["11TealiumCore0A13ConsentStatusO", "consented"]
+- ["11TealiumCore0A13ConsentStatusO", "notConsented"]
+- ["11TealiumCore0A13ConsentStatusO", "unknown"]
+- !private ["11TealiumCore0A18ConsentTrackActionO", "trackingAllowed"]
+- !private ["11TealiumCore0A18ConsentTrackActionO", "trackingForbidden"]
+- !private ["11TealiumCore0A18ConsentTrackActionO", "trackingQueued"]
+- ["11TealiumCore8TimeUnitO", "days"]
+- !private ["11TealiumCore22UserConsentPreferencesV", "consentCategories"]
+- !private ["11TealiumCore22UserConsentPreferencesV", "consentStatus"]
+- !private ["11TealiumCore22UserConsentPreferencesV", "dictionary"]
+- !private ["s14_ArrayProtocolP", "count"]
+- !private ["s24_DestructorSafeContainerP", "count"]
+- ["s35_ExpressibleByBuiltinBooleanLiteralP", "init"]
+- ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+- ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s19_HasContiguousBytesP", "count"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "count"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "init"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "subscript"]
+- !private ["s21_ObjectiveCBridgeableP", "count"]
+- !private ["s21_ObjectiveCBridgeableP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", "subscript"]
+depends-nominal:
+- !private "Sa"
+- !private "SK"
+- "11TealiumCore17CCPAConsentPolicyV"
+- !private "s7CVarArgP"
+- !private "Sl"
+- "11TealiumCore10ConsentKeyO"
+- "11TealiumCore13ConsentPolicyP"
+- !private "10Foundation15ContiguousBytesP"
+- !private "s28CustomDebugStringConvertibleP"
+- !private "s17CustomReflectableP"
+- !private "s23CustomStringConvertibleP"
+- !private "10Foundation12DataProtocolP"
+- "Se"
+- !private "SD"
+- "SE"
+- "SQ"
+- !private "s25ExpressibleByArrayLiteralP"
+- !private "s30ExpressibleByDictionaryLiteralP"
+- "11TealiumCore17GDPRConsentPolicyV"
+- "SH"
+- !private "SM"
+- !private "10Foundation19MutableDataProtocolP"
+- "So8NSCodingP"
+- !private "So8NSObjectP"
+- !private "Sk"
+- !private "Sm"
+- "SY"
+- !private "ST"
+- !private "11TealiumCore0A17ConsentCategoriesO"
+- !private "11TealiumCore0A13ConsentPolicyO"
+- "11TealiumCore0A13ConsentStatusO"
+- !private "11TealiumCore0A18ConsentTrackActionO"
+- "11TealiumCore8TimeUnitO"
+- !private "11TealiumCore22UserConsentPreferencesV"
+- !private "s14_ArrayProtocolP"
+- !private "s24_DestructorSafeContainerP"
+- "s35_ExpressibleByBuiltinBooleanLiteralP"
+- "s35_ExpressibleByBuiltinIntegerLiteralP"
+- "s34_ExpressibleByBuiltinStringLiteralP"
+- !private "s19_HasContiguousBytesP"
+- !private "s35_HasCustomAnyHashableRepresentationP"
+- !private "s21_ObjectiveCBridgeableP"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/XPC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/ObjectiveC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Combine.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Dispatch.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Network.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Darwin.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Foundation.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreFoundation.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreGraphics.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/os.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/IOKit.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/SwiftOnoneSupport.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/dyld.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumMedia.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumVisitorService.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLifecycle.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCollect.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/compact_unwind_encoding.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/xpc/XPC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/Dispatch.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Network.framework/Headers/Network.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/ApplicationServices.framework/Headers/ApplicationServices.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/os.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "50cab31c27c39f17e9d5711e9799aacd"

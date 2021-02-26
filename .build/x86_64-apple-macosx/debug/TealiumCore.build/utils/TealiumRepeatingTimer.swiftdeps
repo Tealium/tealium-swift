@@ -1,0 +1,211 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "Repeater"
+- "TealiumRepeatingTimer"
+provides-nominal:
+- "11TealiumCore8RepeaterP"
+- "11TealiumCore0A14RepeatingTimerC"
+provides-member:
+- ["11TealiumCore8RepeaterP", ""]
+- ["11TealiumCore0A14RepeatingTimerC", ""]
+provides-dynamic-lookup:
+- "$__lazy_storage_$_timer"
+- "dispatchQueue"
+- "eventHandler"
+- "readWriteQueue"
+- "resume"
+- "state"
+- "suspend"
+- "timeInterval"
+- "timer"
+depends-top-level:
+- "+"
+- "=="
+- "Array"
+- "AssignmentPrecedence"
+- "DispatchQueue"
+- "DispatchSource"
+- "DispatchSourceTimer"
+- !private "FloatLiteralType"
+- !private "IntegerLiteralType"
+- "Repeater"
+- "State"
+- "TealiumQueues"
+- "TealiumRepeatingTimer"
+- "TimeInterval"
+- "Void"
+- "dispatchQueue"
+- !private "readWriteQueue"
+- "self"
+depends-member:
+- ["s7CVarArgP", "makeTimerSource"]
+- ["SL", "now"]
+- ["s28CustomDebugStringConvertibleP", "makeTimerSource"]
+- ["s23CustomStringConvertibleP", "makeTimerSource"]
+- ["So18OS_dispatch_objectC", ""]
+- ["So18OS_dispatch_objectC", "makeTimerSource"]
+- ["So18OS_dispatch_sourceC", "makeTimerSource"]
+- ["So24OS_dispatch_source_vnodeP", "makeTimerSource"]
+- ["So28OS_dispatch_source_mach_recvP", "makeTimerSource"]
+- ["So28OS_dispatch_source_mach_sendP", "makeTimerSource"]
+- ["So33OS_dispatch_source_memorypressureP", "makeTimerSource"]
+- ["So23OS_dispatch_source_procP", "makeTimerSource"]
+- ["So18OS_dispatch_sourceP", ""]
+- !private ["So18OS_dispatch_sourceP", "cancel"]
+- ["So18OS_dispatch_sourceP", "makeTimerSource"]
+- !private ["So18OS_dispatch_sourceP", "resume"]
+- ["So18OS_dispatch_sourceP", "schedule"]
+- ["So18OS_dispatch_sourceP", "setEventHandler"]
+- !private ["So18OS_dispatch_sourceP", "suspend"]
+- ["So23OS_dispatch_source_readP", "makeTimerSource"]
+- ["So25OS_dispatch_source_signalP", "makeTimerSource"]
+- !private ["So24OS_dispatch_source_timerP", "cancel"]
+- ["So24OS_dispatch_source_timerP", "makeTimerSource"]
+- !private ["So24OS_dispatch_source_timerP", "resume"]
+- ["So24OS_dispatch_source_timerP", "schedule"]
+- ["So24OS_dispatch_source_timerP", "setEventHandler"]
+- !private ["So24OS_dispatch_source_timerP", "suspend"]
+- ["So27OS_dispatch_source_data_addP", "makeTimerSource"]
+- ["So26OS_dispatch_source_data_orP", "makeTimerSource"]
+- ["So31OS_dispatch_source_data_replaceP", "makeTimerSource"]
+- ["So24OS_dispatch_source_writeP", "makeTimerSource"]
+- ["8Dispatch0A4TimeV", "now"]
+- ["SQ", "=="]
+- ["SQ", ""]
+- ["SQ", "_rawHashValue"]
+- ["SQ", "hash"]
+- ["SQ", "hashValue"]
+- ["SQ", "makeTimerSource"]
+- ["SQ", "now"]
+- !private ["SQ", "resumed"]
+- ["SQ", "suspended"]
+- ["s25ExpressibleByArrayLiteralP", "init"]
+- ["SH", "=="]
+- !private ["SH", ""]
+- ["SH", "_rawHashValue"]
+- ["SH", "hash"]
+- ["SH", "hashValue"]
+- ["SH", "makeTimerSource"]
+- !private ["SH", "resumed"]
+- ["SH", "suspended"]
+- !private ["s6HasherV", "combine"]
+- ["So8NSCodingP", ""]
+- ["So8NSObjectC", "makeTimerSource"]
+- ["So8NSObjectP", ""]
+- !private ["So8NSObjectP", "cancel"]
+- ["So8NSObjectP", "makeTimerSource"]
+- !private ["So8NSObjectP", "resume"]
+- ["So8NSObjectP", "schedule"]
+- ["So8NSObjectP", "setEventHandler"]
+- !private ["So8NSObjectP", "suspend"]
+- ["So9OS_objectC", "makeTimerSource"]
+- !private ["11TealiumCore9ReadWriteC", "write"]
+- ["11TealiumCore8RepeaterP", "DispatchSource"]
+- ["11TealiumCore8RepeaterP", "TealiumQueues"]
+- ["11TealiumCore8RepeaterP", "Void"]
+- ["11TealiumCore8RepeaterP", ""]
+- ["11TealiumCore8RepeaterP", "dispatchQueue"]
+- ["11TealiumCore8RepeaterP", "eventHandler"]
+- !private ["11TealiumCore8RepeaterP", "readWriteQueue"]
+- ["11TealiumCore8RepeaterP", "resume"]
+- ["11TealiumCore8RepeaterP", "self"]
+- !private ["11TealiumCore8RepeaterP", "state"]
+- ["11TealiumCore8RepeaterP", "suspend"]
+- ["11TealiumCore8RepeaterP", "timeInterval"]
+- !private ["11TealiumCore8RepeaterP", "timer"]
+- ["11TealiumCore0A6QueuesC", "backgroundConcurrentQueue"]
+- !private ["11TealiumCore0A6QueuesC", "backgroundSerialQueue"]
+- !private ["11TealiumCore0A14RepeatingTimerC", "$__lazy_storage_$_timer"]
+- ["11TealiumCore0A14RepeatingTimerC", "DispatchQueue"]
+- ["11TealiumCore0A14RepeatingTimerC", "DispatchSource"]
+- ["11TealiumCore0A14RepeatingTimerC", "DispatchSourceTimer"]
+- ["11TealiumCore0A14RepeatingTimerC", "State"]
+- ["11TealiumCore0A14RepeatingTimerC", "TealiumQueues"]
+- ["11TealiumCore0A14RepeatingTimerC", "TimeInterval"]
+- ["11TealiumCore0A14RepeatingTimerC", "Void"]
+- ["11TealiumCore0A14RepeatingTimerC", ""]
+- ["11TealiumCore0A14RepeatingTimerC", "deinit"]
+- ["11TealiumCore0A14RepeatingTimerC", "dispatchQueue"]
+- ["11TealiumCore0A14RepeatingTimerC", "eventHandler"]
+- ["11TealiumCore0A14RepeatingTimerC", "init"]
+- ["11TealiumCore0A14RepeatingTimerC", "readWriteQueue"]
+- ["11TealiumCore0A14RepeatingTimerC", "resume"]
+- ["11TealiumCore0A14RepeatingTimerC", "self"]
+- !private ["11TealiumCore0A14RepeatingTimerC", "state"]
+- ["11TealiumCore0A14RepeatingTimerC", "suspend"]
+- ["11TealiumCore0A14RepeatingTimerC", "timeInterval"]
+- !private ["11TealiumCore0A14RepeatingTimerC", "timer"]
+- !private ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+- ["10Foundation27_KeyValueCodingAndObservingP", "makeTimerSource"]
+- ["10Foundation37_KeyValueCodingAndObservingPublishingP", "makeTimerSource"]
+depends-nominal:
+- "s7CVarArgP"
+- "SL"
+- "s28CustomDebugStringConvertibleP"
+- "s23CustomStringConvertibleP"
+- "So18OS_dispatch_objectC"
+- "So18OS_dispatch_sourceC"
+- "So24OS_dispatch_source_vnodeP"
+- "So28OS_dispatch_source_mach_recvP"
+- "So28OS_dispatch_source_mach_sendP"
+- "So33OS_dispatch_source_memorypressureP"
+- "So23OS_dispatch_source_procP"
+- "So18OS_dispatch_sourceP"
+- "So23OS_dispatch_source_readP"
+- "So25OS_dispatch_source_signalP"
+- "So24OS_dispatch_source_timerP"
+- "So27OS_dispatch_source_data_addP"
+- "So26OS_dispatch_source_data_orP"
+- "So31OS_dispatch_source_data_replaceP"
+- "So24OS_dispatch_source_writeP"
+- "8Dispatch0A4TimeV"
+- "SQ"
+- "s25ExpressibleByArrayLiteralP"
+- "SH"
+- !private "s6HasherV"
+- "So8NSCodingP"
+- "So8NSObjectC"
+- "So8NSObjectP"
+- "So9OS_objectC"
+- !private "11TealiumCore9ReadWriteC"
+- "11TealiumCore8RepeaterP"
+- "11TealiumCore0A6QueuesC"
+- "11TealiumCore0A14RepeatingTimerC"
+- !private "s35_ExpressibleByBuiltinIntegerLiteralP"
+- "10Foundation27_KeyValueCodingAndObservingP"
+- "10Foundation37_KeyValueCodingAndObservingPublishingP"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/XPC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/ObjectiveC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Dispatch.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Network.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Foundation.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreFoundation.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreGraphics.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Swift.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/IOKit.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/SwiftOnoneSupport.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/dyld.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumMedia.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumVisitorService.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLifecycle.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCollect.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/compact_unwind_encoding.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/xpc/XPC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/Dispatch.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Network.framework/Headers/Network.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/ApplicationServices.framework/Headers/ApplicationServices.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/os.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "f2d9e505f1c2cf8822897d0b680ee896"

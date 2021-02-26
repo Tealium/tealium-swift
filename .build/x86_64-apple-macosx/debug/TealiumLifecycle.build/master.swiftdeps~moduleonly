@@ -1,0 +1,10 @@
+version: "Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+options: "85989955c576ca4eccce905618814ec0"
+build_time: [1614369870, 402640000]
+inputs:
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/lifecycle/Lifecycle.swift": [1613515644, 624268240]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/lifecycle/LifecycleConstants.swift": [1613515644, 624407521]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/lifecycle/LifecycleExtensions.swift": [1613515644, 624517772]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/lifecycle/LifecycleModule.swift": [1613515644, 624641744]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/lifecycle/LifecyclePersistentData.swift": [1613515644, 624752244]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/lifecycle/LifecycleSession.swift": [1613515644, 624870644]

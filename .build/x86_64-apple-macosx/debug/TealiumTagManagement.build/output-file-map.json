@@ -1,0 +1,71 @@
+{
+  "": {
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/master.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/tagmanagement/TagManagementConstants.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementConstants.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementConstants.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementConstants~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementConstants.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/tagmanagement/TagManagementExtensions.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementExtensions.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementExtensions.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementExtensions~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementExtensions.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/tagmanagement/TagManagementModule.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementModule.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementModule.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementModule~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementModule.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/tagmanagement/TagManagementProtocol.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementProtocol.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementProtocol.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementProtocol~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementProtocol.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/tagmanagement/TagManagementUtils.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementUtils.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementUtils.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementUtils~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementUtils.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/tagmanagement/TagManagementWKNavigationDelegate.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementWKNavigationDelegate.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementWKNavigationDelegate.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementWKNavigationDelegate~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementWKNavigationDelegate.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/tagmanagement/TagManagementWKWebView.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementWKWebView.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementWKWebView.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementWKWebView~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementWKWebView.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/tagmanagement/TagManagementWKWebViewCookieMigrator.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementWKWebViewCookieMigrator.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementWKWebViewCookieMigrator.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementWKWebViewCookieMigrator~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementWKWebViewCookieMigrator.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/tagmanagement/TagManagementWKWebViewCookieStoreObserver.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementWKWebViewCookieStoreObserver.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementWKWebViewCookieStoreObserver.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementWKWebViewCookieStoreObserver~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TagManagementWKWebViewCookieStoreObserver.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/tagmanagement/TealiumCookieProvider.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TealiumCookieProvider.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TealiumCookieProvider.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TealiumCookieProvider~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/TealiumCookieProvider.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/tagmanagement/WKWebViewAttachToView.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/WKWebViewAttachToView.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/WKWebViewAttachToView.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/WKWebViewAttachToView~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/WKWebViewAttachToView.swiftdeps"
+  }
+}

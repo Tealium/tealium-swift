@@ -1,0 +1,11 @@
+version: "Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+options: "15092f6872090c4cba56fd53b167e290"
+build_time: [1614369870, 404685000]
+inputs:
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/location/Geofences.swift": [1613515644, 625055178]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/location/LocationDelegate.swift": [1613515644, 625155008]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/location/LocationManagerProtocols.swift": [1613515644, 625258874]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/location/LocationModule.swift": [1613515644, 625384904]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/location/TealiumLocationConstants.swift": [1613515644, 625513589]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/location/TealiumLocationExtensions.swift": [1613515644, 625625589]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/location/TealiumLocationManager.swift": [1613515644, 625787306]

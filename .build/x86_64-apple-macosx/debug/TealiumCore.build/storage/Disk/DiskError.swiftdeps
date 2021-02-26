@@ -1,0 +1,101 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "DiskError"
+provides-nominal:
+- "11TealiumCore9DiskErrorV"
+- "11TealiumCore9DiskErrorV0D4KindO"
+provides-member:
+- ["11TealiumCore9DiskErrorV", ""]
+- ["11TealiumCore9DiskErrorV0D4KindO", ""]
+provides-dynamic-lookup:
+depends-top-level:
+- "=="
+- "DiskError"
+- "Error"
+- "ErrorKind"
+- !private "FloatLiteralType"
+- !private "IntegerLiteralType"
+- "String"
+depends-member:
+- ["11TealiumCore9DiskErrorV", "ErrorKind"]
+- ["11TealiumCore9DiskErrorV", "String"]
+- ["11TealiumCore9DiskErrorV", ""]
+- ["11TealiumCore9DiskErrorV", "_code"]
+- ["11TealiumCore9DiskErrorV", "_domain"]
+- ["11TealiumCore9DiskErrorV", "_getEmbeddedNSError"]
+- ["11TealiumCore9DiskErrorV", "_userInfo"]
+- ["11TealiumCore9DiskErrorV", "code"]
+- ["11TealiumCore9DiskErrorV", "domain"]
+- ["11TealiumCore9DiskErrorV", "errorInfo"]
+- ["11TealiumCore9DiskErrorV", "init"]
+- ["11TealiumCore9DiskErrorV", "kind"]
+- ["11TealiumCore9DiskErrorV", "userInfo"]
+- ["SQ", "=="]
+- ["SQ", ""]
+- ["SQ", "_rawHashValue"]
+- ["SQ", "hash"]
+- ["SQ", "hashValue"]
+- ["s5ErrorP", ""]
+- ["s5ErrorP", "_code"]
+- ["s5ErrorP", "_domain"]
+- ["s5ErrorP", "_getEmbeddedNSError"]
+- ["s5ErrorP", "_userInfo"]
+- ["s5ErrorP", "code"]
+- ["s5ErrorP", "domain"]
+- ["s5ErrorP", "userInfo"]
+- ["11TealiumCore9DiskErrorV0D4KindO", "=="]
+- ["11TealiumCore9DiskErrorV0D4KindO", ""]
+- ["11TealiumCore9DiskErrorV0D4KindO", "__derived_enum_equals"]
+- ["11TealiumCore9DiskErrorV0D4KindO", "_rawHashValue"]
+- ["11TealiumCore9DiskErrorV0D4KindO", "couldNotAccessSharedContainer"]
+- ["11TealiumCore9DiskErrorV0D4KindO", "couldNotAccessTemporaryDirectory"]
+- ["11TealiumCore9DiskErrorV0D4KindO", "couldNotAccessUserDomainMask"]
+- ["11TealiumCore9DiskErrorV0D4KindO", "deserialization"]
+- ["11TealiumCore9DiskErrorV0D4KindO", "hash"]
+- ["11TealiumCore9DiskErrorV0D4KindO", "hashValue"]
+- ["11TealiumCore9DiskErrorV0D4KindO", "invalidFileName"]
+- ["11TealiumCore9DiskErrorV0D4KindO", "noFileFound"]
+- ["11TealiumCore9DiskErrorV0D4KindO", "serialization"]
+- ["SH", "=="]
+- ["SH", ""]
+- ["SH", "_rawHashValue"]
+- ["SH", "hash"]
+- ["SH", "hashValue"]
+- !private ["s6HasherV", "combine"]
+- !private ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+depends-nominal:
+- "11TealiumCore9DiskErrorV"
+- "SQ"
+- "s5ErrorP"
+- "11TealiumCore9DiskErrorV0D4KindO"
+- "SH"
+- !private "s6HasherV"
+- !private "s35_ExpressibleByBuiltinIntegerLiteralP"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Network.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Swift.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/SwiftOnoneSupport.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/dyld.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumMedia.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumVisitorService.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLifecycle.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCollect.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/compact_unwind_encoding.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/xpc/XPC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/Dispatch.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Network.framework/Headers/Network.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/ApplicationServices.framework/Headers/ApplicationServices.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/os.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "cc7f89bb97fd1810880c446673db9ad8"

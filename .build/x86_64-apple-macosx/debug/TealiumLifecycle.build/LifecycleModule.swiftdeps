@@ -1,0 +1,499 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "LifecycleModule"
+provides-nominal:
+- "16TealiumLifecycle0B6ModuleC"
+provides-member:
+- ["16TealiumLifecycle0B6ModuleC", ""]
+provides-dynamic-lookup:
+- "config"
+- "data"
+- "delegate"
+- "diskStorage"
+- "enabledPrior"
+- "id"
+- "lastLifecycleEvent"
+- "launch"
+- "lifecycle"
+- "lifecycleAcceptable"
+- "lifecycleData"
+- "lifecycleDetected"
+- "migrated"
+- "process"
+- "requestTrack"
+- "sleep"
+- "userDefaults"
+- "wake"
+depends-top-level:
+- !private "!="
+- !private "&&"
+- !private "+="
+- "=="
+- !private "??"
+- "AssignmentPrecedence"
+- "Bool"
+- "BooleanLiteralType"
+- "CastingPrecedence"
+- "Collector"
+- "Date"
+- "Lifecycle"
+- !private "LifecycleKey"
+- "LifecycleModule"
+- "LifecycleType"
+- "ModuleCompletion"
+- "ModuleDelegate"
+- "ModuleNames"
+- "Storable"
+- "String"
+- !private "Tealium"
+- "TealiumConfig"
+- "TealiumContext"
+- !private "TealiumDiskStorage"
+- "TealiumDiskStorageProtocol"
+- !private "TealiumEvent"
+- "TealiumLifecycleEvents"
+- !private "config"
+- !private "delegate"
+- !private "diskStorage"
+- !private "enabledPrior"
+- !private "lastLifecycleEvent"
+- !private "lifecycle"
+- !private "lifecycleAcceptable"
+- !private "lifecycleData"
+- !private "lifecycleDetected"
+- !private "migrated"
+- !private "process"
+- !private "requestTrack"
+- !private "||"
+depends-member:
+- !private ["SK", ""]
+- !private ["SK", "lowercased"]
+- ["s7CVarArgP", "init"]
+- !private ["s7CVarArgP", "lowercased"]
+- !private ["s7CVarArgP", "subscript"]
+- !private ["Sl", ""]
+- ["Sl", "init"]
+- !private ["Sl", "lowercased"]
+- !private ["Sl", "subscript"]
+- !private ["11TealiumCore9CollectorP", "Date"]
+- !private ["11TealiumCore9CollectorP", "Lifecycle"]
+- !private ["11TealiumCore9CollectorP", "LifecycleKey"]
+- ["11TealiumCore9CollectorP", "ModuleNames"]
+- ["11TealiumCore9CollectorP", "String"]
+- !private ["11TealiumCore9CollectorP", "Tealium"]
+- !private ["11TealiumCore9CollectorP", "TealiumDiskStorage"]
+- !private ["11TealiumCore9CollectorP", "TealiumEvent"]
+- ["11TealiumCore9CollectorP", ""]
+- ["11TealiumCore9CollectorP", "config"]
+- ["11TealiumCore9CollectorP", "data"]
+- !private ["11TealiumCore9CollectorP", "delegate"]
+- !private ["11TealiumCore9CollectorP", "diskStorage"]
+- !private ["11TealiumCore9CollectorP", "enabledPrior"]
+- ["11TealiumCore9CollectorP", "id"]
+- ["11TealiumCore9CollectorP", "init"]
+- !private ["11TealiumCore9CollectorP", "lastLifecycleEvent"]
+- ["11TealiumCore9CollectorP", "launch"]
+- !private ["11TealiumCore9CollectorP", "lifecycle"]
+- !private ["11TealiumCore9CollectorP", "lifecycleAcceptable"]
+- !private ["11TealiumCore9CollectorP", "lifecycleData"]
+- !private ["11TealiumCore9CollectorP", "lifecycleDetected"]
+- !private ["11TealiumCore9CollectorP", "migrated"]
+- !private ["11TealiumCore9CollectorP", "process"]
+- !private ["11TealiumCore9CollectorP", "requestTrack"]
+- ["11TealiumCore9CollectorP", "sleep"]
+- ["11TealiumCore9CollectorP", "wake"]
+- !private ["SL", ""]
+- !private ["SL", "init"]
+- !private ["SL", "lowercased"]
+- !private ["s28CustomDebugStringConvertibleP", ""]
+- ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "launch"]
+- !private ["s28CustomDebugStringConvertibleP", "lowercased"]
+- !private ["s28CustomDebugStringConvertibleP", "retrieve"]
+- !private ["s28CustomDebugStringConvertibleP", "save"]
+- !private ["s28CustomDebugStringConvertibleP", "sleep"]
+- !private ["s28CustomDebugStringConvertibleP", "subscript"]
+- !private ["s28CustomDebugStringConvertibleP", "wake"]
+- ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "launch"]
+- !private ["s17CustomReflectableP", "lowercased"]
+- !private ["s17CustomReflectableP", "retrieve"]
+- !private ["s17CustomReflectableP", "save"]
+- !private ["s17CustomReflectableP", "sleep"]
+- !private ["s17CustomReflectableP", "subscript"]
+- !private ["s17CustomReflectableP", "wake"]
+- !private ["s23CustomStringConvertibleP", ""]
+- ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "lowercased"]
+- !private ["s23CustomStringConvertibleP", "subscript"]
+- !private ["11TealiumCore24DataLayerManagerProtocolP", "all"]
+- !private ["11TealiumCore24DataLayerManagerProtocolP", "delete"]
+- !private ["10Foundation4DateV", "init"]
+- !private ["Se", "asDictionary"]
+- ["Se", "init"]
+- !private ["Se", "launch"]
+- !private ["Se", "lowercased"]
+- !private ["Se", "newLaunch"]
+- !private ["Se", "newSleep"]
+- !private ["Se", "newWake"]
+- !private ["Se", "retrieve"]
+- !private ["Se", "save"]
+- !private ["Se", "sleep"]
+- !private ["Se", "subscript"]
+- !private ["Se", "wake"]
+- ["SD", "init"]
+- !private ["SD", "subscript"]
+- !private ["SE", "asDictionary"]
+- ["SE", "init"]
+- !private ["SE", "launch"]
+- !private ["SE", "lowercased"]
+- !private ["SE", "newLaunch"]
+- !private ["SE", "newSleep"]
+- !private ["SE", "newWake"]
+- !private ["SE", "retrieve"]
+- !private ["SE", "save"]
+- !private ["SE", "sleep"]
+- !private ["SE", "subscript"]
+- !private ["SE", "wake"]
+- ["SQ", ""]
+- !private ["SQ", "config"]
+- !private ["SQ", "dataLayer"]
+- ["SQ", "init"]
+- ["SQ", "launch"]
+- !private ["SQ", "lifecycleAutoTrackingEnabled"]
+- !private ["SQ", "lowercased"]
+- !private ["SQ", "retrieve"]
+- !private ["SQ", "save"]
+- ["SQ", "sleep"]
+- !private ["SQ", "subscript"]
+- !private ["SQ", "success"]
+- ["SQ", "wake"]
+- ["s30ExpressibleByDictionaryLiteralP", "init"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "subscript"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", ""]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "lowercased"]
+- !private ["s23ExpressibleByNilLiteralP", "init"]
+- !private ["s23ExpressibleByNilLiteralP", "launch"]
+- !private ["s23ExpressibleByNilLiteralP", "retrieve"]
+- !private ["s23ExpressibleByNilLiteralP", "save"]
+- !private ["s23ExpressibleByNilLiteralP", "sleep"]
+- !private ["s23ExpressibleByNilLiteralP", "wake"]
+- !private ["s32ExpressibleByStringInterpolationP", ""]
+- !private ["s32ExpressibleByStringInterpolationP", "lowercased"]
+- !private ["s26ExpressibleByStringLiteralP", ""]
+- !private ["s26ExpressibleByStringLiteralP", "lowercased"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", ""]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "lowercased"]
+- !private ["SH", ""]
+- !private ["SH", "config"]
+- !private ["SH", "dataLayer"]
+- ["SH", "init"]
+- ["SH", "launch"]
+- !private ["SH", "lifecycleAutoTrackingEnabled"]
+- !private ["SH", "lowercased"]
+- !private ["SH", "retrieve"]
+- !private ["SH", "save"]
+- ["SH", "sleep"]
+- !private ["SH", "subscript"]
+- !private ["SH", "success"]
+- ["SH", "wake"]
+- !private ["16TealiumLifecycle0B0V", ""]
+- !private ["16TealiumLifecycle0B0V", "asDictionary"]
+- !private ["16TealiumLifecycle0B0V", "init"]
+- !private ["16TealiumLifecycle0B0V", "newLaunch"]
+- !private ["16TealiumLifecycle0B0V", "newSleep"]
+- !private ["16TealiumLifecycle0B0V", "newWake"]
+- !private ["16TealiumLifecycle0B3KeyO", "autotracked"]
+- !private ["16TealiumLifecycle0B3KeyO", "migratedLifecycle"]
+- !private ["16TealiumLifecycle0B3KeyO", "type"]
+- ["16TealiumLifecycle0B6ModuleC", "Bool"]
+- ["16TealiumLifecycle0B6ModuleC", "Date"]
+- ["16TealiumLifecycle0B6ModuleC", "Lifecycle"]
+- !private ["16TealiumLifecycle0B6ModuleC", "LifecycleKey"]
+- ["16TealiumLifecycle0B6ModuleC", "LifecycleType"]
+- ["16TealiumLifecycle0B6ModuleC", "ModuleCompletion"]
+- ["16TealiumLifecycle0B6ModuleC", "ModuleDelegate"]
+- ["16TealiumLifecycle0B6ModuleC", "ModuleNames"]
+- ["16TealiumLifecycle0B6ModuleC", "Storable"]
+- ["16TealiumLifecycle0B6ModuleC", "String"]
+- !private ["16TealiumLifecycle0B6ModuleC", "Tealium"]
+- ["16TealiumLifecycle0B6ModuleC", "TealiumConfig"]
+- ["16TealiumLifecycle0B6ModuleC", "TealiumContext"]
+- !private ["16TealiumLifecycle0B6ModuleC", "TealiumDiskStorage"]
+- ["16TealiumLifecycle0B6ModuleC", "TealiumDiskStorageProtocol"]
+- !private ["16TealiumLifecycle0B6ModuleC", "TealiumEvent"]
+- ["16TealiumLifecycle0B6ModuleC", ""]
+- ["16TealiumLifecycle0B6ModuleC", "config"]
+- ["16TealiumLifecycle0B6ModuleC", "data"]
+- ["16TealiumLifecycle0B6ModuleC", "deinit"]
+- ["16TealiumLifecycle0B6ModuleC", "delegate"]
+- ["16TealiumLifecycle0B6ModuleC", "diskStorage"]
+- ["16TealiumLifecycle0B6ModuleC", "enabledPrior"]
+- ["16TealiumLifecycle0B6ModuleC", "id"]
+- ["16TealiumLifecycle0B6ModuleC", "init"]
+- ["16TealiumLifecycle0B6ModuleC", "lastLifecycleEvent"]
+- ["16TealiumLifecycle0B6ModuleC", "launch"]
+- ["16TealiumLifecycle0B6ModuleC", "lifecycle"]
+- ["16TealiumLifecycle0B6ModuleC", "lifecycleAcceptable"]
+- ["16TealiumLifecycle0B6ModuleC", "lifecycleData"]
+- ["16TealiumLifecycle0B6ModuleC", "lifecycleDetected"]
+- ["16TealiumLifecycle0B6ModuleC", "migrated"]
+- ["16TealiumLifecycle0B6ModuleC", "process"]
+- ["16TealiumLifecycle0B6ModuleC", "requestTrack"]
+- ["16TealiumLifecycle0B6ModuleC", "sleep"]
+- ["16TealiumLifecycle0B6ModuleC", "userDefaults"]
+- ["16TealiumLifecycle0B6ModuleC", "wake"]
+- !private ["16TealiumLifecycle0B4TypeO", ""]
+- ["16TealiumLifecycle0B4TypeO", "launch"]
+- ["16TealiumLifecycle0B4TypeO", "sleep"]
+- ["16TealiumLifecycle0B4TypeO", "wake"]
+- !private ["s25LosslessStringConvertibleP", ""]
+- !private ["s25LosslessStringConvertibleP", "lowercased"]
+- !private ["s10MirrorPathP", "lowercased"]
+- !private ["11TealiumCore14ModuleDelegateP", "requestTrack"]
+- ["11TealiumCore11ModuleNamesO", "lifecycle"]
+- !private ["So8NSCodingP", ""]
+- !private ["So8NSCodingP", "lowercased"]
+- !private ["So9NSCopyingP", "lowercased"]
+- !private ["So21NSItemProviderReadingP", "lowercased"]
+- !private ["So21NSItemProviderWritingP", "lowercased"]
+- !private ["So16NSMutableCopyingP", "lowercased"]
+- !private ["So8NSObjectC", ""]
+- !private ["So8NSObjectC", "lowercaseStringWithLocale"]
+- !private ["So8NSObjectC", "lowercased"]
+- !private ["So8NSObjectP", ""]
+- !private ["So8NSObjectP", "lowercaseStringWithLocale"]
+- !private ["So8NSObjectP", "lowercased"]
+- !private ["So14NSSecureCodingP", "lowercased"]
+- !private ["So8NSStringC", "lowercased"]
+- !private ["Sq", "launch"]
+- !private ["Sq", "retrieve"]
+- !private ["Sq", "save"]
+- !private ["Sq", "sleep"]
+- !private ["Sq", "wake"]
+- !private ["Sm", "lowercased"]
+- !private ["10Foundation20ReferenceConvertibleP", "init"]
+- !private ["s6ResultO", "success"]
+- ["ST", ""]
+- ["ST", "init"]
+- !private ["ST", "lowercased"]
+- !private ["ST", "subscript"]
+- !private ["SS", "lowercased"]
+- !private ["Sy", "lowercased"]
+- !private ["11TealiumCore0A0C", "lifecycleListeners"]
+- !private ["11TealiumCore0A6ConfigC", "lifecycleAutoTrackingEnabled"]
+- !private ["11TealiumCore0A7ContextV", "config"]
+- !private ["11TealiumCore0A7ContextV", "dataLayer"]
+- !private ["11TealiumCore0A15ContextProtocolP", "config"]
+- !private ["11TealiumCore0A15ContextProtocolP", "dataLayer"]
+- !private ["11TealiumCore0A11DiskStorageC", "init"]
+- !private ["11TealiumCore0A19DiskStorageProtocolP", "init"]
+- !private ["11TealiumCore0A19DiskStorageProtocolP", "retrieve"]
+- !private ["11TealiumCore0A19DiskStorageProtocolP", "save"]
+- !private ["11TealiumCore0A8DispatchP", "init"]
+- !private ["11TealiumCore0A8DispatchP", "trackRequest"]
+- !private ["11TealiumCore0A5EventV", "init"]
+- !private ["11TealiumCore0A5EventV", "trackRequest"]
+- !private ["11TealiumCore0A15LifecycleEventsP", "Date"]
+- !private ["11TealiumCore0A15LifecycleEventsP", "Lifecycle"]
+- !private ["11TealiumCore0A15LifecycleEventsP", "LifecycleKey"]
+- ["11TealiumCore0A15LifecycleEventsP", "ModuleNames"]
+- ["11TealiumCore0A15LifecycleEventsP", "String"]
+- !private ["11TealiumCore0A15LifecycleEventsP", "Tealium"]
+- !private ["11TealiumCore0A15LifecycleEventsP", "TealiumDiskStorage"]
+- !private ["11TealiumCore0A15LifecycleEventsP", "TealiumEvent"]
+- ["11TealiumCore0A15LifecycleEventsP", ""]
+- ["11TealiumCore0A15LifecycleEventsP", "config"]
+- ["11TealiumCore0A15LifecycleEventsP", "data"]
+- !private ["11TealiumCore0A15LifecycleEventsP", "delegate"]
+- !private ["11TealiumCore0A15LifecycleEventsP", "diskStorage"]
+- !private ["11TealiumCore0A15LifecycleEventsP", "enabledPrior"]
+- ["11TealiumCore0A15LifecycleEventsP", "id"]
+- ["11TealiumCore0A15LifecycleEventsP", "init"]
+- !private ["11TealiumCore0A15LifecycleEventsP", "lastLifecycleEvent"]
+- ["11TealiumCore0A15LifecycleEventsP", "launch"]
+- !private ["11TealiumCore0A15LifecycleEventsP", "lifecycle"]
+- !private ["11TealiumCore0A15LifecycleEventsP", "lifecycleAcceptable"]
+- !private ["11TealiumCore0A15LifecycleEventsP", "lifecycleData"]
+- !private ["11TealiumCore0A15LifecycleEventsP", "lifecycleDetected"]
+- !private ["11TealiumCore0A15LifecycleEventsP", "migrated"]
+- !private ["11TealiumCore0A15LifecycleEventsP", "process"]
+- !private ["11TealiumCore0A15LifecycleEventsP", "requestTrack"]
+- ["11TealiumCore0A15LifecycleEventsP", "sleep"]
+- ["11TealiumCore0A15LifecycleEventsP", "wake"]
+- !private ["11TealiumCore0A18LifecycleListenersC", "addDelegate"]
+- !private ["11TealiumCore0A18LifecycleListenersC", "removeAll"]
+- !private ["11TealiumCore0A6ModuleP", "Date"]
+- !private ["11TealiumCore0A6ModuleP", "Lifecycle"]
+- !private ["11TealiumCore0A6ModuleP", "LifecycleKey"]
+- ["11TealiumCore0A6ModuleP", "ModuleNames"]
+- ["11TealiumCore0A6ModuleP", "String"]
+- !private ["11TealiumCore0A6ModuleP", "Tealium"]
+- !private ["11TealiumCore0A6ModuleP", "TealiumDiskStorage"]
+- !private ["11TealiumCore0A6ModuleP", "TealiumEvent"]
+- ["11TealiumCore0A6ModuleP", ""]
+- ["11TealiumCore0A6ModuleP", "config"]
+- ["11TealiumCore0A6ModuleP", "data"]
+- !private ["11TealiumCore0A6ModuleP", "delegate"]
+- !private ["11TealiumCore0A6ModuleP", "diskStorage"]
+- !private ["11TealiumCore0A6ModuleP", "enabledPrior"]
+- ["11TealiumCore0A6ModuleP", "id"]
+- ["11TealiumCore0A6ModuleP", "init"]
+- !private ["11TealiumCore0A6ModuleP", "lastLifecycleEvent"]
+- ["11TealiumCore0A6ModuleP", "launch"]
+- !private ["11TealiumCore0A6ModuleP", "lifecycle"]
+- !private ["11TealiumCore0A6ModuleP", "lifecycleAcceptable"]
+- !private ["11TealiumCore0A6ModuleP", "lifecycleData"]
+- !private ["11TealiumCore0A6ModuleP", "lifecycleDetected"]
+- !private ["11TealiumCore0A6ModuleP", "migrated"]
+- !private ["11TealiumCore0A6ModuleP", "process"]
+- !private ["11TealiumCore0A6ModuleP", "requestTrack"]
+- ["11TealiumCore0A6ModuleP", "sleep"]
+- ["11TealiumCore0A6ModuleP", "wake"]
+- !private ["s16TextOutputStreamP", ""]
+- !private ["s16TextOutputStreamP", "lowercased"]
+- !private ["s20TextOutputStreamableP", ""]
+- !private ["s20TextOutputStreamableP", "lowercased"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "init"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "lowercased"]
+- ["s35_ExpressibleByBuiltinBooleanLiteralP", "init"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", ""]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "lowercased"]
+- !private ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "lowercased"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", ""]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "lowercased"]
+- !private ["s19_HasContiguousBytesP", "lowercased"]
+- ["s35_HasCustomAnyHashableRepresentationP", "init"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "lowercased"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "subscript"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "lowercased"]
+- !private ["10Foundation37_KeyValueCodingAndObservingPublishingP", "lowercased"]
+- !private ["s21_ObjectiveCBridgeableP", ""]
+- !private ["s21_ObjectiveCBridgeableP", "_ObjectiveCType"]
+- !private ["s21_ObjectiveCBridgeableP", "_bridgeToObjectiveC"]
+- !private ["s21_ObjectiveCBridgeableP", "_conditionallyBridgeFromObjectiveC"]
+- !private ["s21_ObjectiveCBridgeableP", "_forceBridgeFromObjectiveC"]
+- !private ["s21_ObjectiveCBridgeableP", "_unconditionallyBridgeFromObjectiveC"]
+- ["s21_ObjectiveCBridgeableP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", "launch"]
+- !private ["s21_ObjectiveCBridgeableP", "lowercased"]
+- !private ["s21_ObjectiveCBridgeableP", "retrieve"]
+- !private ["s21_ObjectiveCBridgeableP", "save"]
+- !private ["s21_ObjectiveCBridgeableP", "sleep"]
+- !private ["s21_ObjectiveCBridgeableP", "subscript"]
+- !private ["s21_ObjectiveCBridgeableP", "wake"]
+- !private ["s26_OptionalNilComparisonTypeV", "launch"]
+- !private ["s26_OptionalNilComparisonTypeV", "sleep"]
+- !private ["s26_OptionalNilComparisonTypeV", "wake"]
+depends-nominal:
+- !private "SK"
+- "s7CVarArgP"
+- "Sl"
+- "11TealiumCore9CollectorP"
+- !private "SL"
+- "s28CustomDebugStringConvertibleP"
+- "s17CustomReflectableP"
+- "s23CustomStringConvertibleP"
+- !private "11TealiumCore24DataLayerManagerProtocolP"
+- !private "10Foundation4DateV"
+- "Se"
+- "SD"
+- "SE"
+- "SQ"
+- "s30ExpressibleByDictionaryLiteralP"
+- !private "s43ExpressibleByExtendedGraphemeClusterLiteralP"
+- !private "s23ExpressibleByNilLiteralP"
+- !private "s32ExpressibleByStringInterpolationP"
+- !private "s26ExpressibleByStringLiteralP"
+- !private "s33ExpressibleByUnicodeScalarLiteralP"
+- "SH"
+- !private "16TealiumLifecycle0B0V"
+- !private "16TealiumLifecycle0B3KeyO"
+- "16TealiumLifecycle0B6ModuleC"
+- "16TealiumLifecycle0B4TypeO"
+- !private "s25LosslessStringConvertibleP"
+- !private "s10MirrorPathP"
+- !private "11TealiumCore14ModuleDelegateP"
+- "11TealiumCore11ModuleNamesO"
+- !private "So8NSCodingP"
+- !private "So9NSCopyingP"
+- !private "So21NSItemProviderReadingP"
+- !private "So21NSItemProviderWritingP"
+- !private "So16NSMutableCopyingP"
+- !private "So8NSObjectC"
+- !private "So8NSObjectP"
+- !private "So14NSSecureCodingP"
+- !private "So8NSStringC"
+- !private "Sq"
+- !private "Sm"
+- !private "10Foundation20ReferenceConvertibleP"
+- !private "s6ResultO"
+- "ST"
+- !private "SS"
+- !private "Sy"
+- !private "11TealiumCore0A0C"
+- !private "11TealiumCore0A6ConfigC"
+- !private "11TealiumCore0A7ContextV"
+- !private "11TealiumCore0A15ContextProtocolP"
+- !private "11TealiumCore0A11DiskStorageC"
+- !private "11TealiumCore0A19DiskStorageProtocolP"
+- !private "11TealiumCore0A8DispatchP"
+- !private "11TealiumCore0A5EventV"
+- "11TealiumCore0A15LifecycleEventsP"
+- !private "11TealiumCore0A18LifecycleListenersC"
+- "11TealiumCore0A6ModuleP"
+- !private "s16TextOutputStreamP"
+- !private "s20TextOutputStreamableP"
+- !private "s30_CustomPlaygroundQuickLookableP"
+- "s35_ExpressibleByBuiltinBooleanLiteralP"
+- !private "s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP"
+- !private "s35_ExpressibleByBuiltinIntegerLiteralP"
+- !private "s34_ExpressibleByBuiltinStringLiteralP"
+- !private "s41_ExpressibleByBuiltinUnicodeScalarLiteralP"
+- !private "s19_HasContiguousBytesP"
+- "s35_HasCustomAnyHashableRepresentationP"
+- !private "10Foundation27_KeyValueCodingAndObservingP"
+- !private "10Foundation37_KeyValueCodingAndObservingPublishingP"
+- "s21_ObjectiveCBridgeableP"
+- !private "s26_OptionalNilComparisonTypeV"
+depends-dynamic-lookup:
+depends-external:
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/XPC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/ObjectiveC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Combine.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Dispatch.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Network.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Darwin.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Foundation.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreFoundation.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreGraphics.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/os.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Swift.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/IOKit.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/SwiftOnoneSupport.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/dyld.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumMedia.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumVisitorService.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLifecycle.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCollect.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/compact_unwind_encoding.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/xpc/XPC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/Dispatch.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Network.framework/Headers/Network.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/ApplicationServices.framework/Headers/ApplicationServices.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/os.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "66ce106bdbb545eb80806f582da3e30e"

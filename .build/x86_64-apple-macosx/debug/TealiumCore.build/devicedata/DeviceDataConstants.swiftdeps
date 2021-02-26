@@ -1,0 +1,85 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "DeviceDataKey"
+- "DeviceDataModuleKey"
+- "DeviceDataValue"
+provides-nominal:
+- "11TealiumCore13DeviceDataKeyO"
+- "11TealiumCore19DeviceDataModuleKeyO"
+- "11TealiumCore15DeviceDataValueO"
+provides-member:
+- ["11TealiumCore13DeviceDataKeyO", ""]
+- ["11TealiumCore19DeviceDataModuleKeyO", ""]
+- ["11TealiumCore15DeviceDataValueO", ""]
+provides-dynamic-lookup:
+depends-top-level:
+- "DeviceDataKey"
+- "DeviceDataModuleKey"
+- "DeviceDataValue"
+- "StringLiteralType"
+depends-member:
+- ["11TealiumCore13DeviceDataKeyO", "appMemoryUsage"]
+- ["11TealiumCore13DeviceDataKeyO", "appOrientation"]
+- ["11TealiumCore13DeviceDataKeyO", "appOrientationExtended"]
+- ["11TealiumCore13DeviceDataKeyO", "batteryPercent"]
+- ["11TealiumCore13DeviceDataKeyO", "carrier"]
+- ["11TealiumCore13DeviceDataKeyO", "carrierISO"]
+- ["11TealiumCore13DeviceDataKeyO", "carrierMCC"]
+- ["11TealiumCore13DeviceDataKeyO", "carrierMNC"]
+- ["11TealiumCore13DeviceDataKeyO", "deviceOrientation"]
+- ["11TealiumCore13DeviceDataKeyO", "fileName"]
+- ["11TealiumCore13DeviceDataKeyO", "fullOrientation"]
+- ["11TealiumCore13DeviceDataKeyO", "isCharging"]
+- ["11TealiumCore13DeviceDataKeyO", "manufacturer"]
+- ["11TealiumCore13DeviceDataKeyO", "memoryActive"]
+- ["11TealiumCore13DeviceDataKeyO", "memoryCompressed"]
+- ["11TealiumCore13DeviceDataKeyO", "memoryFree"]
+- ["11TealiumCore13DeviceDataKeyO", "memoryInactive"]
+- ["11TealiumCore13DeviceDataKeyO", "memoryWired"]
+- ["11TealiumCore13DeviceDataKeyO", "orientation"]
+- ["11TealiumCore13DeviceDataKeyO", "osBuild"]
+- ["11TealiumCore13DeviceDataKeyO", "osVersion"]
+- ["11TealiumCore13DeviceDataKeyO", "physicalMemory"]
+- ["11TealiumCore19DeviceDataModuleKeyO", "isMemoryReportingEnabled"]
+- ["11TealiumCore19DeviceDataModuleKeyO", "moduleName"]
+- ["11TealiumCore15DeviceDataValueO", "appleWatch"]
+- ["11TealiumCore15DeviceDataValueO", "manufacturer"]
+- ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+depends-nominal:
+- "11TealiumCore13DeviceDataKeyO"
+- "11TealiumCore19DeviceDataModuleKeyO"
+- "11TealiumCore15DeviceDataValueO"
+- "s34_ExpressibleByBuiltinStringLiteralP"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/XPC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/ObjectiveC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Dispatch.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Network.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreFoundation.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreGraphics.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/os.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/IOKit.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/dyld.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumMedia.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumVisitorService.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLifecycle.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCollect.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/compact_unwind_encoding.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/xpc/XPC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/Dispatch.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Network.framework/Headers/Network.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/ApplicationServices.framework/Headers/ApplicationServices.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/os.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "32d91a7a25f5342ee7a9011e787000a2"

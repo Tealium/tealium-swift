@@ -1,0 +1,493 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "CollectEventDispatcher"
+provides-nominal:
+- "14TealiumCollect0B15EventDispatcherC"
+provides-member:
+- ["14TealiumCollect0B15EventDispatcherC", ""]
+provides-dynamic-lookup:
+- "batchEventDispatchURL"
+- "batchEventPath"
+- "defaultDispatchBaseURL"
+- "dispatch"
+- "dispatchBatch"
+- "isValidUrl"
+- "sendURLRequest"
+- "setUpUrls"
+- "singleEventDispatchURL"
+- "singleEventPath"
+- "tealiumDomain"
+- "urlSession"
+- "urlSessionConfiguration"
+depends-top-level:
+- "!="
+- !private "..."
+- !private "??"
+- !private "Array"
+- "AssignmentPrecedence"
+- "Bool"
+- !private "BooleanLiteralType"
+- !private "CastingPrecedence"
+- "CollectError"
+- "CollectEventDispatcher"
+- "CollectKey"
+- "CollectProtocol"
+- !private "Dictionary"
+- !private "FloatLiteralType"
+- "HTTPURLResponse"
+- !private "IntegerLiteralType"
+- "ModuleCompletion"
+- !private "NSNotFound"
+- !private "NSRange"
+- !private "NSRegularExpression"
+- !private "NetworkUtils"
+- "String"
+- "StringLiteralType"
+- "TealiumConfig"
+- "URLError"
+- "URLRequest"
+- "URLSession"
+- "URLSessionConfiguration"
+- "URLSessionProtocol"
+- !private "batchEventDispatchURL"
+- !private "dispatch"
+- !private "sendURLRequest"
+- !private "setUpUrls"
+- !private "singleEventDispatchURL"
+- !private "urlSession"
+- !private "urlSessionConfiguration"
+depends-member:
+- !private ["SK", ""]
+- !private ["SK", "startIndex"]
+- !private ["s7CVarArgP", "allHeaderFields"]
+- !private ["s7CVarArgP", "ephemeral"]
+- !private ["s7CVarArgP", "init"]
+- !private ["s7CVarArgP", "rangeOfFirstMatch"]
+- !private ["s7CVarArgP", "startIndex"]
+- !private ["s7CVarArgP", "statusCode"]
+- !private ["s7CVarArgP", "subscript"]
+- !private ["s7CVarArgP", "toJSONString"]
+- !private ["14TealiumCollect0B5ErrorO", ""]
+- !private ["14TealiumCollect0B5ErrorO", "noDataToTrack"]
+- !private ["14TealiumCollect0B5ErrorO", "non200Response"]
+- !private ["14TealiumCollect0B5ErrorO", "xErrorDetected"]
+- ["14TealiumCollect0B15EventDispatcherC", "Bool"]
+- !private ["14TealiumCollect0B15EventDispatcherC", "CollectError"]
+- !private ["14TealiumCollect0B15EventDispatcherC", "CollectEventDispatcher"]
+- !private ["14TealiumCollect0B15EventDispatcherC", "CollectKey"]
+- !private ["14TealiumCollect0B15EventDispatcherC", "HTTPURLResponse"]
+- ["14TealiumCollect0B15EventDispatcherC", "ModuleCompletion"]
+- !private ["14TealiumCollect0B15EventDispatcherC", "NSNotFound"]
+- !private ["14TealiumCollect0B15EventDispatcherC", "NSRange"]
+- !private ["14TealiumCollect0B15EventDispatcherC", "NSRegularExpression"]
+- !private ["14TealiumCollect0B15EventDispatcherC", "NetworkUtils"]
+- ["14TealiumCollect0B15EventDispatcherC", "String"]
+- ["14TealiumCollect0B15EventDispatcherC", "TealiumConfig"]
+- !private ["14TealiumCollect0B15EventDispatcherC", "URLError"]
+- ["14TealiumCollect0B15EventDispatcherC", "URLRequest"]
+- ["14TealiumCollect0B15EventDispatcherC", "URLSession"]
+- ["14TealiumCollect0B15EventDispatcherC", "URLSessionConfiguration"]
+- ["14TealiumCollect0B15EventDispatcherC", "URLSessionProtocol"]
+- !private ["14TealiumCollect0B15EventDispatcherC", ""]
+- ["14TealiumCollect0B15EventDispatcherC", "batchEventDispatchURL"]
+- ["14TealiumCollect0B15EventDispatcherC", "batchEventPath"]
+- ["14TealiumCollect0B15EventDispatcherC", "defaultDispatchBaseURL"]
+- ["14TealiumCollect0B15EventDispatcherC", "deinit"]
+- ["14TealiumCollect0B15EventDispatcherC", "dispatch"]
+- ["14TealiumCollect0B15EventDispatcherC", "dispatchBatch"]
+- ["14TealiumCollect0B15EventDispatcherC", "init"]
+- ["14TealiumCollect0B15EventDispatcherC", "isValidUrl"]
+- ["14TealiumCollect0B15EventDispatcherC", "sendURLRequest"]
+- ["14TealiumCollect0B15EventDispatcherC", "setUpUrls"]
+- ["14TealiumCollect0B15EventDispatcherC", "singleEventDispatchURL"]
+- ["14TealiumCollect0B15EventDispatcherC", "singleEventPath"]
+- ["14TealiumCollect0B15EventDispatcherC", "tealiumDomain"]
+- ["14TealiumCollect0B15EventDispatcherC", "urlSession"]
+- ["14TealiumCollect0B15EventDispatcherC", "urlSessionConfiguration"]
+- !private ["14TealiumCollect0B3KeyO", "errorHeaderKey"]
+- !private ["14TealiumCollect0B8ProtocolP", "CollectError"]
+- !private ["14TealiumCollect0B8ProtocolP", "CollectEventDispatcher"]
+- !private ["14TealiumCollect0B8ProtocolP", "CollectKey"]
+- !private ["14TealiumCollect0B8ProtocolP", "NSNotFound"]
+- !private ["14TealiumCollect0B8ProtocolP", "NSRange"]
+- !private ["14TealiumCollect0B8ProtocolP", "NSRegularExpression"]
+- !private ["14TealiumCollect0B8ProtocolP", "NetworkUtils"]
+- !private ["14TealiumCollect0B8ProtocolP", "URLSession"]
+- !private ["14TealiumCollect0B8ProtocolP", "URLSessionConfiguration"]
+- ["14TealiumCollect0B8ProtocolP", ""]
+- !private ["14TealiumCollect0B8ProtocolP", "batchEventDispatchURL"]
+- !private ["14TealiumCollect0B8ProtocolP", "batchEventPath"]
+- !private ["14TealiumCollect0B8ProtocolP", "defaultDispatchBaseURL"]
+- ["14TealiumCollect0B8ProtocolP", "dispatch"]
+- ["14TealiumCollect0B8ProtocolP", "dispatchBatch"]
+- !private ["14TealiumCollect0B8ProtocolP", "isValidUrl"]
+- !private ["14TealiumCollect0B8ProtocolP", "sendURLRequest"]
+- !private ["14TealiumCollect0B8ProtocolP", "setUpUrls"]
+- !private ["14TealiumCollect0B8ProtocolP", "singleEventDispatchURL"]
+- !private ["14TealiumCollect0B8ProtocolP", "singleEventPath"]
+- !private ["14TealiumCollect0B8ProtocolP", "urlSession"]
+- !private ["14TealiumCollect0B8ProtocolP", "urlSessionConfiguration"]
+- !private ["Sl", ""]
+- !private ["Sl", "startIndex"]
+- !private ["Sl", "subscript"]
+- !private ["Sl", "toJSONString"]
+- !private ["SL", ""]
+- !private ["SL", "startIndex"]
+- !private ["s28CustomDebugStringConvertibleP", "allHeaderFields"]
+- !private ["s28CustomDebugStringConvertibleP", "ephemeral"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "location"]
+- !private ["s28CustomDebugStringConvertibleP", "rangeOfFirstMatch"]
+- !private ["s28CustomDebugStringConvertibleP", "startIndex"]
+- !private ["s28CustomDebugStringConvertibleP", "statusCode"]
+- !private ["s28CustomDebugStringConvertibleP", "subscript"]
+- !private ["s28CustomDebugStringConvertibleP", "toJSONString"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "location"]
+- !private ["s17CustomReflectableP", "startIndex"]
+- !private ["s17CustomReflectableP", "subscript"]
+- !private ["s17CustomReflectableP", "toJSONString"]
+- !private ["s23CustomStringConvertibleP", ""]
+- !private ["s23CustomStringConvertibleP", "allHeaderFields"]
+- !private ["s23CustomStringConvertibleP", "appendInterpolation"]
+- !private ["s23CustomStringConvertibleP", "appendLiteral"]
+- !private ["s23CustomStringConvertibleP", "ephemeral"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "location"]
+- !private ["s23CustomStringConvertibleP", "rangeOfFirstMatch"]
+- !private ["s23CustomStringConvertibleP", "startIndex"]
+- !private ["s23CustomStringConvertibleP", "statusCode"]
+- !private ["s23CustomStringConvertibleP", "subscript"]
+- !private ["s23CustomStringConvertibleP", "toJSONString"]
+- !private ["Se", "init"]
+- !private ["Se", "location"]
+- !private ["Se", "startIndex"]
+- !private ["Se", "subscript"]
+- !private ["Se", "toJSONString"]
+- !private ["s26DefaultStringInterpolationV", "appendInterpolation"]
+- !private ["s26DefaultStringInterpolationV", "appendLiteral"]
+- !private ["SD", "subscript"]
+- !private ["SD", "toJSONString"]
+- !private ["SE", "init"]
+- !private ["SE", "location"]
+- !private ["SE", "startIndex"]
+- !private ["SE", "subscript"]
+- !private ["SE", "toJSONString"]
+- !private ["SQ", "ArrayLiteralElement"]
+- !private ["SQ", "Element"]
+- !private ["SQ", ""]
+- !private ["SQ", "allHeaderFields"]
+- !private ["SQ", "ephemeral"]
+- !private ["SQ", "failure"]
+- !private ["SQ", "init"]
+- !private ["SQ", "location"]
+- !private ["SQ", "noDataToTrack"]
+- !private ["SQ", "non200Response"]
+- !private ["SQ", "overrideCollectBatchURL"]
+- !private ["SQ", "overrideCollectDomain"]
+- !private ["SQ", "overrideCollectURL"]
+- !private ["SQ", "rangeOfFirstMatch"]
+- !private ["SQ", "startIndex"]
+- !private ["SQ", "statusCode"]
+- !private ["SQ", "subscript"]
+- !private ["SQ", "success"]
+- !private ["SQ", "toJSONString"]
+- !private ["SQ", "xErrorDetected"]
+- !private ["s5ErrorP", ""]
+- !private ["s5ErrorP", "noDataToTrack"]
+- !private ["s5ErrorP", "non200Response"]
+- !private ["s5ErrorP", "xErrorDetected"]
+- !private ["s25ExpressibleByArrayLiteralP", "ArrayLiteralElement"]
+- !private ["s25ExpressibleByArrayLiteralP", "Element"]
+- !private ["s25ExpressibleByArrayLiteralP", ""]
+- !private ["s25ExpressibleByArrayLiteralP", "init"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "Key"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "Value"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "init"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "subscript"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "toJSONString"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", ""]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "startIndex"]
+- !private ["s32ExpressibleByStringInterpolationP", "StringInterpolation"]
+- !private ["s32ExpressibleByStringInterpolationP", ""]
+- !private ["s32ExpressibleByStringInterpolationP", "init"]
+- !private ["s32ExpressibleByStringInterpolationP", "startIndex"]
+- !private ["s26ExpressibleByStringLiteralP", ""]
+- !private ["s26ExpressibleByStringLiteralP", "startIndex"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", ""]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "startIndex"]
+- !private ["So17NSHTTPURLResponseC", "allHeaderFields"]
+- !private ["So17NSHTTPURLResponseC", "statusCode"]
+- !private ["SH", ""]
+- !private ["SH", "allHeaderFields"]
+- !private ["SH", "ephemeral"]
+- !private ["SH", "failure"]
+- !private ["SH", "init"]
+- !private ["SH", "location"]
+- !private ["SH", "noDataToTrack"]
+- !private ["SH", "non200Response"]
+- !private ["SH", "overrideCollectBatchURL"]
+- !private ["SH", "overrideCollectDomain"]
+- !private ["SH", "overrideCollectURL"]
+- !private ["SH", "rangeOfFirstMatch"]
+- !private ["SH", "startIndex"]
+- !private ["SH", "statusCode"]
+- !private ["SH", "subscript"]
+- !private ["SH", "success"]
+- !private ["SH", "toJSONString"]
+- !private ["SH", "xErrorDetected"]
+- !private ["10Foundation14LocalizedErrorP", "noDataToTrack"]
+- !private ["10Foundation14LocalizedErrorP", "non200Response"]
+- !private ["10Foundation14LocalizedErrorP", "xErrorDetected"]
+- !private ["s25LosslessStringConvertibleP", ""]
+- !private ["s25LosslessStringConvertibleP", "startIndex"]
+- !private ["So17NSMatchingOptionsV", "ArrayLiteralElement"]
+- !private ["So17NSMatchingOptionsV", "Element"]
+- !private ["So17NSMatchingOptionsV", "init"]
+- !private ["s10MirrorPathP", "startIndex"]
+- !private ["So8NSCodingP", ""]
+- !private ["So8NSCodingP", "allHeaderFields"]
+- !private ["So8NSCodingP", "init"]
+- !private ["So8NSCodingP", "rangeOfFirstMatch"]
+- !private ["So8NSCodingP", "startIndex"]
+- !private ["So8NSCodingP", "statusCode"]
+- !private ["So9NSCopyingP", ""]
+- !private ["So9NSCopyingP", "allHeaderFields"]
+- !private ["So9NSCopyingP", "ephemeral"]
+- !private ["So9NSCopyingP", "init"]
+- !private ["So9NSCopyingP", "rangeOfFirstMatch"]
+- !private ["So9NSCopyingP", "startIndex"]
+- !private ["So9NSCopyingP", "statusCode"]
+- !private ["So21NSItemProviderReadingP", "startIndex"]
+- !private ["So21NSItemProviderWritingP", "startIndex"]
+- !private ["So16NSMutableCopyingP", "startIndex"]
+- ["So8NSObjectC", ""]
+- !private ["So8NSObjectC", "allHeaderFields"]
+- !private ["So8NSObjectC", "ephemeral"]
+- !private ["So8NSObjectC", "init"]
+- !private ["So8NSObjectC", "rangeOfFirstMatch"]
+- !private ["So8NSObjectC", "rangeOfFirstMatchInString"]
+- !private ["So8NSObjectC", "regularExpressionWithPattern"]
+- !private ["So8NSObjectC", "sessionWithConfiguration"]
+- !private ["So8NSObjectC", "startIndex"]
+- !private ["So8NSObjectC", "statusCode"]
+- !private ["So8NSObjectP", ""]
+- !private ["So8NSObjectP", "allHeaderFields"]
+- !private ["So8NSObjectP", "ephemeral"]
+- !private ["So8NSObjectP", "init"]
+- !private ["So8NSObjectP", "rangeOfFirstMatch"]
+- !private ["So8NSObjectP", "rangeOfFirstMatchInString"]
+- !private ["So8NSObjectP", "regularExpressionWithPattern"]
+- !private ["So8NSObjectP", "sessionWithConfiguration"]
+- !private ["So8NSObjectP", "startIndex"]
+- !private ["So8NSObjectP", "statusCode"]
+- !private ["So19NSRegularExpressionC", "init"]
+- !private ["So19NSRegularExpressionC", "rangeOfFirstMatch"]
+- !private ["So14NSSecureCodingP", ""]
+- !private ["So14NSSecureCodingP", "allHeaderFields"]
+- !private ["So14NSSecureCodingP", "init"]
+- !private ["So14NSSecureCodingP", "rangeOfFirstMatch"]
+- !private ["So14NSSecureCodingP", "startIndex"]
+- !private ["So14NSSecureCodingP", "statusCode"]
+- !private ["So8NSStringC", "startIndex"]
+- !private ["11TealiumCore12NetworkUtilsC", "urlPOSTRequestWithJSONString"]
+- !private ["Sj", ""]
+- !private ["s9OptionSetP", "ArrayLiteralElement"]
+- !private ["s9OptionSetP", "Element"]
+- !private ["s9OptionSetP", "init"]
+- !private ["So26NSRegularExpressionOptionsV", "ArrayLiteralElement"]
+- !private ["So26NSRegularExpressionOptionsV", "Element"]
+- !private ["So26NSRegularExpressionOptionsV", "init"]
+- !private ["Sm", "startIndex"]
+- !private ["SY", "ArrayLiteralElement"]
+- !private ["SY", "Element"]
+- !private ["SY", ""]
+- !private ["SY", "init"]
+- !private ["SY", "noDataToTrack"]
+- !private ["SY", "non200Response"]
+- !private ["SY", "xErrorDetected"]
+- !private ["s6ResultO", "failure"]
+- !private ["s6ResultO", "success"]
+- !private ["ST", ""]
+- !private ["ST", "startIndex"]
+- !private ["ST", "subscript"]
+- !private ["ST", "toJSONString"]
+- !private ["s10SetAlgebraP", "ArrayLiteralElement"]
+- !private ["s10SetAlgebraP", "Element"]
+- !private ["s10SetAlgebraP", ""]
+- !private ["s10SetAlgebraP", "init"]
+- !private ["Sx", ""]
+- !private ["SS", "startIndex"]
+- !private ["s27StringInterpolationProtocolP", "appendInterpolation"]
+- !private ["s27StringInterpolationProtocolP", "appendLiteral"]
+- !private ["s27StringInterpolationProtocolP", "init"]
+- !private ["Sy", "startIndex"]
+- !private ["11TealiumCore0A6ConfigC", "overrideCollectBatchURL"]
+- !private ["11TealiumCore0A6ConfigC", "overrideCollectDomain"]
+- !private ["11TealiumCore0A6ConfigC", "overrideCollectURL"]
+- !private ["s16TextOutputStreamP", ""]
+- !private ["s16TextOutputStreamP", "appendInterpolation"]
+- !private ["s16TextOutputStreamP", "appendLiteral"]
+- !private ["s16TextOutputStreamP", "startIndex"]
+- !private ["s20TextOutputStreamableP", ""]
+- !private ["s20TextOutputStreamableP", "startIndex"]
+- ["So13NSURLResponseC", ""]
+- !private ["So13NSURLResponseC", "allHeaderFields"]
+- !private ["So13NSURLResponseC", "statusCode"]
+- !private ["So12NSURLSessionC", "init"]
+- !private ["So25NSURLSessionConfigurationC", "ephemeral"]
+- !private ["11TealiumCore26URLSessionDataTaskProtocolP", "resume"]
+- !private ["11TealiumCore18URLSessionProtocolP", "finishTealiumTasksAndInvalidate"]
+- !private ["11TealiumCore18URLSessionProtocolP", "init"]
+- !private ["11TealiumCore18URLSessionProtocolP", "tealiumDataTask"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "init"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "location"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "startIndex"]
+- !private ["s35_ExpressibleByBuiltinBooleanLiteralP", "init"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", ""]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "startIndex"]
+- !private ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+- ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "startIndex"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", ""]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "startIndex"]
+- !private ["s19_HasContiguousBytesP", "startIndex"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "startIndex"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "subscript"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "toJSONString"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "allHeaderFields"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "ephemeral"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "init"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "rangeOfFirstMatch"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "startIndex"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "statusCode"]
+- !private ["10Foundation37_KeyValueCodingAndObservingPublishingP", "allHeaderFields"]
+- !private ["10Foundation37_KeyValueCodingAndObservingPublishingP", "ephemeral"]
+- !private ["10Foundation37_KeyValueCodingAndObservingPublishingP", "init"]
+- !private ["10Foundation37_KeyValueCodingAndObservingPublishingP", "rangeOfFirstMatch"]
+- !private ["10Foundation37_KeyValueCodingAndObservingPublishingP", "startIndex"]
+- !private ["10Foundation37_KeyValueCodingAndObservingPublishingP", "statusCode"]
+- !private ["So8_NSRangeV", "init"]
+- !private ["So8_NSRangeV", "location"]
+- !private ["s21_ObjectiveCBridgeableP", "_ObjectiveCType"]
+- !private ["s21_ObjectiveCBridgeableP", "_bridgeToObjectiveC"]
+- !private ["s21_ObjectiveCBridgeableP", "_conditionallyBridgeFromObjectiveC"]
+- !private ["s21_ObjectiveCBridgeableP", "_forceBridgeFromObjectiveC"]
+- !private ["s21_ObjectiveCBridgeableP", "_unconditionallyBridgeFromObjectiveC"]
+- !private ["s21_ObjectiveCBridgeableP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", "location"]
+- !private ["s21_ObjectiveCBridgeableP", "startIndex"]
+- !private ["s21_ObjectiveCBridgeableP", "subscript"]
+- !private ["s21_ObjectiveCBridgeableP", "toJSONString"]
+depends-nominal:
+- !private "SK"
+- !private "s7CVarArgP"
+- !private "14TealiumCollect0B5ErrorO"
+- "14TealiumCollect0B15EventDispatcherC"
+- !private "14TealiumCollect0B3KeyO"
+- "14TealiumCollect0B8ProtocolP"
+- !private "Sl"
+- !private "SL"
+- !private "s28CustomDebugStringConvertibleP"
+- !private "s17CustomReflectableP"
+- !private "s23CustomStringConvertibleP"
+- !private "Se"
+- !private "s26DefaultStringInterpolationV"
+- !private "SD"
+- !private "SE"
+- !private "SQ"
+- !private "s5ErrorP"
+- !private "s25ExpressibleByArrayLiteralP"
+- !private "s30ExpressibleByDictionaryLiteralP"
+- !private "s43ExpressibleByExtendedGraphemeClusterLiteralP"
+- !private "s32ExpressibleByStringInterpolationP"
+- !private "s26ExpressibleByStringLiteralP"
+- !private "s33ExpressibleByUnicodeScalarLiteralP"
+- !private "So17NSHTTPURLResponseC"
+- !private "SH"
+- !private "10Foundation14LocalizedErrorP"
+- !private "s25LosslessStringConvertibleP"
+- !private "So17NSMatchingOptionsV"
+- !private "s10MirrorPathP"
+- !private "So8NSCodingP"
+- !private "So9NSCopyingP"
+- !private "So21NSItemProviderReadingP"
+- !private "So21NSItemProviderWritingP"
+- !private "So16NSMutableCopyingP"
+- "So8NSObjectC"
+- !private "So8NSObjectP"
+- !private "So19NSRegularExpressionC"
+- !private "So14NSSecureCodingP"
+- !private "So8NSStringC"
+- !private "11TealiumCore12NetworkUtilsC"
+- !private "Sj"
+- !private "s9OptionSetP"
+- !private "So26NSRegularExpressionOptionsV"
+- !private "Sm"
+- !private "SY"
+- !private "s6ResultO"
+- !private "ST"
+- !private "s10SetAlgebraP"
+- !private "Sx"
+- !private "SS"
+- !private "s27StringInterpolationProtocolP"
+- !private "Sy"
+- !private "11TealiumCore0A6ConfigC"
+- !private "s16TextOutputStreamP"
+- !private "s20TextOutputStreamableP"
+- "So13NSURLResponseC"
+- !private "So12NSURLSessionC"
+- !private "So25NSURLSessionConfigurationC"
+- !private "11TealiumCore26URLSessionDataTaskProtocolP"
+- !private "11TealiumCore18URLSessionProtocolP"
+- !private "s30_CustomPlaygroundQuickLookableP"
+- !private "s35_ExpressibleByBuiltinBooleanLiteralP"
+- !private "s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP"
+- !private "s35_ExpressibleByBuiltinIntegerLiteralP"
+- "s34_ExpressibleByBuiltinStringLiteralP"
+- !private "s41_ExpressibleByBuiltinUnicodeScalarLiteralP"
+- !private "s19_HasContiguousBytesP"
+- !private "s35_HasCustomAnyHashableRepresentationP"
+- !private "10Foundation27_KeyValueCodingAndObservingP"
+- !private "10Foundation37_KeyValueCodingAndObservingPublishingP"
+- !private "So8_NSRangeV"
+- !private "s21_ObjectiveCBridgeableP"
+depends-dynamic-lookup:
+depends-external:
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/XPC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/ObjectiveC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Combine.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Dispatch.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Network.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Darwin.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Foundation.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreFoundation.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreGraphics.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/os.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Swift.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/IOKit.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/SwiftOnoneSupport.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/dyld.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumMedia.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumVisitorService.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLifecycle.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCollect.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/compact_unwind_encoding.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/xpc/XPC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/Dispatch.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Network.framework/Headers/Network.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/ApplicationServices.framework/Headers/ApplicationServices.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/os.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "c27e47929f59306308d5c752e4e21b0d"

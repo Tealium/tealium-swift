@@ -1,0 +1,14 @@
+version: "Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+options: "f2dd5fca56205d9602c1c2834d5d946b"
+build_time: [1614369870, 404912000]
+inputs:
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/attribution/AttributionConstants.swift": [1613515644, 622141622]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/attribution/AttributionData.swift": [1613515644, 622280639]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/attribution/AttributionDataProtocol.swift": [1613515644, 622390995]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/attribution/AttributionExtensions.swift": [1613515644, 622485062]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/attribution/AttributionModule.swift": [1613515644, 622615617]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/attribution/Attributor.swift": [1613515644, 622715132]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/attribution/PersistentAttributionData.swift": [1613515644, 622861155]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/attribution/TealiumASIdentifierManager.swift": [1613515644, 622971280]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/attribution/TealiumAdClient.swift": [1613515644, 623080245]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/attribution/TealiumSKAdAttribution.swift": [1613515644, 623180374]

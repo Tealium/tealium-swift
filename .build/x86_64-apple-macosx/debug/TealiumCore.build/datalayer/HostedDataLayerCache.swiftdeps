@@ -1,0 +1,402 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "HostedDataLayerCacheItem"
+- "=="
+provides-nominal:
+- "11TealiumCore24HostedDataLayerCacheItemV"
+- "11TealiumCore24HostedDataLayerCacheItemV10CodingKeysO"
+provides-member:
+- ["11TealiumCore24HostedDataLayerCacheItemV", ""]
+- ["11TealiumCore24HostedDataLayerCacheItemV10CodingKeysO", ""]
+- ["Sa", ""]
+- ["Sa", "subscript"]
+provides-dynamic-lookup:
+depends-top-level:
+- !private "&&"
+- "=="
+- !private "??"
+- !private "AnyDecodable"
+- "Array"
+- "AssignmentPrecedence"
+- "Bool"
+- "CastingPrecedence"
+- "Codable"
+- "CodingKey"
+- !private "CodingKeys"
+- "Date"
+- "Decoder"
+- "Element"
+- "Encoder"
+- "Equatable"
+- !private "FloatLiteralType"
+- "HostedDataLayerCacheItem"
+- !private "HostedDataLayerError"
+- !private "IntegerLiteralType"
+- "String"
+- "StringLiteralType"
+- !private "_findStringSwitchCase"
+- !private "id"
+- !private "retrievalDate"
+- !private "~="
+depends-member:
+- !private ["11TealiumCore12AnyDecodableV", ""]
+- !private ["11TealiumCore12AnyDecodableV", "value"]
+- !private ["11TealiumCore12AnyEncodableV", ""]
+- ["Sa", "HostedDataLayerCacheItem"]
+- ["Sa", "String"]
+- ["Sa", ""]
+- !private ["Sa", "first"]
+- ["Sa", "subscript"]
+- !private ["SK", ""]
+- !private ["SK", "first"]
+- !private ["s7CVarArgP", "encodable"]
+- !private ["s7CVarArgP", "first"]
+- ["s9CodingKeyP", "=="]
+- ["s9CodingKeyP", "Default_RawValue"]
+- ["s9CodingKeyP", "RawValue"]
+- ["s9CodingKeyP", ""]
+- ["s9CodingKeyP", "_Default_RawValue"]
+- !private ["s9CodingKeyP", "_findStringSwitchCase"]
+- ["s9CodingKeyP", "_rawHashValue"]
+- !private ["s9CodingKeyP", "data"]
+- ["s9CodingKeyP", "debugDescription"]
+- ["s9CodingKeyP", "description"]
+- !private ["s9CodingKeyP", "findStringSwitchCase"]
+- ["s9CodingKeyP", "hash"]
+- ["s9CodingKeyP", "hashValue"]
+- !private ["s9CodingKeyP", "id"]
+- ["s9CodingKeyP", "init"]
+- ["s9CodingKeyP", "intValue"]
+- ["s9CodingKeyP", "rawValue"]
+- !private ["s9CodingKeyP", "retrievalDate"]
+- ["s9CodingKeyP", "stringValue"]
+- ["11TealiumCore24HostedDataLayerCacheItemV10CodingKeysO", "=="]
+- ["11TealiumCore24HostedDataLayerCacheItemV10CodingKeysO", "Default_RawValue"]
+- ["11TealiumCore24HostedDataLayerCacheItemV10CodingKeysO", "RawValue"]
+- ["11TealiumCore24HostedDataLayerCacheItemV10CodingKeysO", ""]
+- ["11TealiumCore24HostedDataLayerCacheItemV10CodingKeysO", "_Default_RawValue"]
+- !private ["11TealiumCore24HostedDataLayerCacheItemV10CodingKeysO", "_findStringSwitchCase"]
+- ["11TealiumCore24HostedDataLayerCacheItemV10CodingKeysO", "_rawHashValue"]
+- ["11TealiumCore24HostedDataLayerCacheItemV10CodingKeysO", "data"]
+- ["11TealiumCore24HostedDataLayerCacheItemV10CodingKeysO", "debugDescription"]
+- ["11TealiumCore24HostedDataLayerCacheItemV10CodingKeysO", "description"]
+- !private ["11TealiumCore24HostedDataLayerCacheItemV10CodingKeysO", "findStringSwitchCase"]
+- ["11TealiumCore24HostedDataLayerCacheItemV10CodingKeysO", "hash"]
+- ["11TealiumCore24HostedDataLayerCacheItemV10CodingKeysO", "hashValue"]
+- ["11TealiumCore24HostedDataLayerCacheItemV10CodingKeysO", "id"]
+- ["11TealiumCore24HostedDataLayerCacheItemV10CodingKeysO", "init"]
+- ["11TealiumCore24HostedDataLayerCacheItemV10CodingKeysO", "intValue"]
+- ["11TealiumCore24HostedDataLayerCacheItemV10CodingKeysO", "rawValue"]
+- ["11TealiumCore24HostedDataLayerCacheItemV10CodingKeysO", "retrievalDate"]
+- ["11TealiumCore24HostedDataLayerCacheItemV10CodingKeysO", "stringValue"]
+- !private ["Sl", ""]
+- !private ["Sl", "encodable"]
+- !private ["Sl", "first"]
+- !private ["SL", "init"]
+- !private ["10Foundation15ContiguousBytesP", "first"]
+- ["s28CustomDebugStringConvertibleP", "=="]
+- ["s28CustomDebugStringConvertibleP", "Default_RawValue"]
+- ["s28CustomDebugStringConvertibleP", "RawValue"]
+- ["s28CustomDebugStringConvertibleP", ""]
+- ["s28CustomDebugStringConvertibleP", "_Default_RawValue"]
+- !private ["s28CustomDebugStringConvertibleP", "_findStringSwitchCase"]
+- ["s28CustomDebugStringConvertibleP", "_rawHashValue"]
+- !private ["s28CustomDebugStringConvertibleP", "callAsFunction"]
+- !private ["s28CustomDebugStringConvertibleP", "data"]
+- ["s28CustomDebugStringConvertibleP", "debugDescription"]
+- ["s28CustomDebugStringConvertibleP", "description"]
+- !private ["s28CustomDebugStringConvertibleP", "encodable"]
+- !private ["s28CustomDebugStringConvertibleP", "findStringSwitchCase"]
+- !private ["s28CustomDebugStringConvertibleP", "first"]
+- ["s28CustomDebugStringConvertibleP", "hash"]
+- ["s28CustomDebugStringConvertibleP", "hashValue"]
+- !private ["s28CustomDebugStringConvertibleP", "id"]
+- ["s28CustomDebugStringConvertibleP", "init"]
+- ["s28CustomDebugStringConvertibleP", "intValue"]
+- ["s28CustomDebugStringConvertibleP", "rawValue"]
+- !private ["s28CustomDebugStringConvertibleP", "retrievalDate"]
+- ["s28CustomDebugStringConvertibleP", "stringValue"]
+- !private ["s28CustomDebugStringConvertibleP", "value"]
+- !private ["s17CustomReflectableP", "callAsFunction"]
+- !private ["s17CustomReflectableP", "encodable"]
+- !private ["s17CustomReflectableP", "first"]
+- !private ["s17CustomReflectableP", "init"]
+- ["s23CustomStringConvertibleP", "=="]
+- ["s23CustomStringConvertibleP", "Default_RawValue"]
+- ["s23CustomStringConvertibleP", "RawValue"]
+- ["s23CustomStringConvertibleP", ""]
+- ["s23CustomStringConvertibleP", "_Default_RawValue"]
+- !private ["s23CustomStringConvertibleP", "_findStringSwitchCase"]
+- ["s23CustomStringConvertibleP", "_rawHashValue"]
+- !private ["s23CustomStringConvertibleP", "data"]
+- ["s23CustomStringConvertibleP", "debugDescription"]
+- ["s23CustomStringConvertibleP", "description"]
+- !private ["s23CustomStringConvertibleP", "encodable"]
+- !private ["s23CustomStringConvertibleP", "findStringSwitchCase"]
+- !private ["s23CustomStringConvertibleP", "first"]
+- ["s23CustomStringConvertibleP", "hash"]
+- ["s23CustomStringConvertibleP", "hashValue"]
+- !private ["s23CustomStringConvertibleP", "id"]
+- ["s23CustomStringConvertibleP", "init"]
+- ["s23CustomStringConvertibleP", "intValue"]
+- ["s23CustomStringConvertibleP", "rawValue"]
+- !private ["s23CustomStringConvertibleP", "retrievalDate"]
+- ["s23CustomStringConvertibleP", "stringValue"]
+- !private ["s23CustomStringConvertibleP", "value"]
+- !private ["10Foundation12DataProtocolP", ""]
+- !private ["10Foundation12DataProtocolP", "first"]
+- !private ["10Foundation4DateV", "init"]
+- ["Se", "=="]
+- !private ["Se", "AnyDecodable"]
+- !private ["Se", "CodingKeys"]
+- !private ["Se", "Date"]
+- !private ["Se", "HostedDataLayerError"]
+- !private ["Se", "String"]
+- ["Se", ""]
+- !private ["Se", "_findStringSwitchCase"]
+- !private ["Se", "callAsFunction"]
+- !private ["Se", "data"]
+- !private ["Se", "encodable"]
+- ["Se", "encode"]
+- !private ["Se", "findStringSwitchCase"]
+- !private ["Se", "first"]
+- !private ["Se", "id"]
+- ["Se", "init"]
+- !private ["Se", "retrievalDate"]
+- !private ["Se", "value"]
+- !private ["s7DecoderP", "container"]
+- !private ["SD", "encodable"]
+- ["SE", "=="]
+- !private ["SE", "AnyDecodable"]
+- !private ["SE", "CodingKeys"]
+- !private ["SE", "Date"]
+- !private ["SE", "HostedDataLayerError"]
+- !private ["SE", "String"]
+- ["SE", ""]
+- !private ["SE", "_findStringSwitchCase"]
+- !private ["SE", "callAsFunction"]
+- !private ["SE", "data"]
+- !private ["SE", "encodable"]
+- ["SE", "encode"]
+- !private ["SE", "findStringSwitchCase"]
+- !private ["SE", "first"]
+- !private ["SE", "id"]
+- ["SE", "init"]
+- !private ["SE", "retrievalDate"]
+- !private ["s7EncoderP", "container"]
+- ["SQ", "=="]
+- !private ["SQ", "AnyDecodable"]
+- !private ["SQ", "CodingKeys"]
+- !private ["SQ", "Date"]
+- ["SQ", "Default_RawValue"]
+- !private ["SQ", "HostedDataLayerError"]
+- ["SQ", "RawValue"]
+- !private ["SQ", "String"]
+- ["SQ", ""]
+- ["SQ", "_Default_RawValue"]
+- !private ["SQ", "_findStringSwitchCase"]
+- ["SQ", "_rawHashValue"]
+- !private ["SQ", "callAsFunction"]
+- !private ["SQ", "data"]
+- ["SQ", "debugDescription"]
+- ["SQ", "description"]
+- !private ["SQ", "encodable"]
+- ["SQ", "encode"]
+- !private ["SQ", "findStringSwitchCase"]
+- !private ["SQ", "first"]
+- ["SQ", "hash"]
+- ["SQ", "hashValue"]
+- !private ["SQ", "id"]
+- ["SQ", "init"]
+- ["SQ", "intValue"]
+- ["SQ", "rawValue"]
+- !private ["SQ", "retrievalDate"]
+- ["SQ", "stringValue"]
+- !private ["SQ", "unableToDecodeData"]
+- !private ["SQ", "value"]
+- !private ["s5ErrorP", "unableToDecodeData"]
+- !private ["s25ExpressibleByArrayLiteralP", ""]
+- !private ["s25ExpressibleByArrayLiteralP", "first"]
+- !private ["s25ExpressibleByArrayLiteralP", "init"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "encodable"]
+- !private ["s23ExpressibleByNilLiteralP", "callAsFunction"]
+- ["SH", "=="]
+- ["SH", "Default_RawValue"]
+- ["SH", "RawValue"]
+- ["SH", ""]
+- ["SH", "_Default_RawValue"]
+- !private ["SH", "_findStringSwitchCase"]
+- ["SH", "_rawHashValue"]
+- !private ["SH", "callAsFunction"]
+- !private ["SH", "data"]
+- ["SH", "debugDescription"]
+- ["SH", "description"]
+- !private ["SH", "encodable"]
+- !private ["SH", "findStringSwitchCase"]
+- !private ["SH", "first"]
+- ["SH", "hash"]
+- ["SH", "hashValue"]
+- !private ["SH", "id"]
+- ["SH", "init"]
+- ["SH", "intValue"]
+- ["SH", "rawValue"]
+- !private ["SH", "retrievalDate"]
+- ["SH", "stringValue"]
+- !private ["SH", "unableToDecodeData"]
+- ["11TealiumCore24HostedDataLayerCacheItemV", "=="]
+- !private ["11TealiumCore24HostedDataLayerCacheItemV", "AnyDecodable"]
+- ["11TealiumCore24HostedDataLayerCacheItemV", "Bool"]
+- ["11TealiumCore24HostedDataLayerCacheItemV", "CodingKey"]
+- ["11TealiumCore24HostedDataLayerCacheItemV", "CodingKeys"]
+- ["11TealiumCore24HostedDataLayerCacheItemV", "Date"]
+- ["11TealiumCore24HostedDataLayerCacheItemV", "Decoder"]
+- ["11TealiumCore24HostedDataLayerCacheItemV", "Encoder"]
+- ["11TealiumCore24HostedDataLayerCacheItemV", "HostedDataLayerCacheItem"]
+- !private ["11TealiumCore24HostedDataLayerCacheItemV", "HostedDataLayerError"]
+- ["11TealiumCore24HostedDataLayerCacheItemV", "String"]
+- ["11TealiumCore24HostedDataLayerCacheItemV", ""]
+- !private ["11TealiumCore24HostedDataLayerCacheItemV", "_findStringSwitchCase"]
+- ["11TealiumCore24HostedDataLayerCacheItemV", "data"]
+- ["11TealiumCore24HostedDataLayerCacheItemV", "encode"]
+- !private ["11TealiumCore24HostedDataLayerCacheItemV", "findStringSwitchCase"]
+- ["11TealiumCore24HostedDataLayerCacheItemV", "id"]
+- ["11TealiumCore24HostedDataLayerCacheItemV", "init"]
+- ["11TealiumCore24HostedDataLayerCacheItemV", "retrievalDate"]
+- !private ["11TealiumCore20HostedDataLayerErrorO", ""]
+- !private ["11TealiumCore20HostedDataLayerErrorO", "unableToDecodeData"]
+- !private ["s22KeyedDecodingContainerV", "decode"]
+- !private ["s30KeyedDecodingContainerProtocolP", "decode"]
+- !private ["s22KeyedEncodingContainerV", "encode"]
+- !private ["s30KeyedEncodingContainerProtocolP", "encode"]
+- !private ["SM", ""]
+- !private ["SM", "first"]
+- !private ["10Foundation19MutableDataProtocolP", "first"]
+- ["So8NSCodingP", ""]
+- ["So8NSObjectP", ""]
+- !private ["Sq", "callAsFunction"]
+- !private ["Sk", ""]
+- !private ["Sk", "first"]
+- !private ["Sm", ""]
+- !private ["Sm", "first"]
+- ["SY", "=="]
+- ["SY", "Default_RawValue"]
+- ["SY", "RawValue"]
+- ["SY", ""]
+- ["SY", "_Default_RawValue"]
+- !private ["SY", "_findStringSwitchCase"]
+- ["SY", "_rawHashValue"]
+- !private ["SY", "data"]
+- ["SY", "debugDescription"]
+- ["SY", "description"]
+- !private ["SY", "findStringSwitchCase"]
+- ["SY", "hash"]
+- ["SY", "hashValue"]
+- !private ["SY", "id"]
+- ["SY", "init"]
+- ["SY", "intValue"]
+- ["SY", "rawValue"]
+- !private ["SY", "retrievalDate"]
+- ["SY", "stringValue"]
+- !private ["10Foundation20ReferenceConvertibleP", "init"]
+- !private ["ST", ""]
+- !private ["ST", "encodable"]
+- !private ["ST", "first"]
+- !private ["11TealiumCore13_AnyDecodableP", "value"]
+- !private ["s14_ArrayProtocolP", "first"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "init"]
+- !private ["s24_DestructorSafeContainerP", "first"]
+- !private ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+- ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s19_HasContiguousBytesP", "first"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "encodable"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "first"]
+- !private ["s21_ObjectiveCBridgeableP", ""]
+- !private ["s21_ObjectiveCBridgeableP", "callAsFunction"]
+- !private ["s21_ObjectiveCBridgeableP", "encodable"]
+- !private ["s21_ObjectiveCBridgeableP", "first"]
+- !private ["s21_ObjectiveCBridgeableP", "init"]
+depends-nominal:
+- !private "11TealiumCore12AnyDecodableV"
+- !private "11TealiumCore12AnyEncodableV"
+- "Sa"
+- !private "SK"
+- !private "s7CVarArgP"
+- "s9CodingKeyP"
+- "11TealiumCore24HostedDataLayerCacheItemV10CodingKeysO"
+- !private "Sl"
+- !private "SL"
+- !private "10Foundation15ContiguousBytesP"
+- "s28CustomDebugStringConvertibleP"
+- !private "s17CustomReflectableP"
+- "s23CustomStringConvertibleP"
+- !private "10Foundation12DataProtocolP"
+- !private "10Foundation4DateV"
+- "Se"
+- !private "s7DecoderP"
+- !private "SD"
+- "SE"
+- !private "s7EncoderP"
+- "SQ"
+- !private "s5ErrorP"
+- !private "s25ExpressibleByArrayLiteralP"
+- !private "s30ExpressibleByDictionaryLiteralP"
+- !private "s23ExpressibleByNilLiteralP"
+- "SH"
+- "11TealiumCore24HostedDataLayerCacheItemV"
+- !private "11TealiumCore20HostedDataLayerErrorO"
+- !private "s22KeyedDecodingContainerV"
+- !private "s30KeyedDecodingContainerProtocolP"
+- !private "s22KeyedEncodingContainerV"
+- !private "s30KeyedEncodingContainerProtocolP"
+- !private "SM"
+- !private "10Foundation19MutableDataProtocolP"
+- "So8NSCodingP"
+- "So8NSObjectP"
+- !private "Sq"
+- !private "Sk"
+- !private "Sm"
+- "SY"
+- !private "10Foundation20ReferenceConvertibleP"
+- !private "ST"
+- !private "11TealiumCore13_AnyDecodableP"
+- !private "s14_ArrayProtocolP"
+- !private "s30_CustomPlaygroundQuickLookableP"
+- !private "s24_DestructorSafeContainerP"
+- !private "s35_ExpressibleByBuiltinIntegerLiteralP"
+- "s34_ExpressibleByBuiltinStringLiteralP"
+- !private "s19_HasContiguousBytesP"
+- !private "s35_HasCustomAnyHashableRepresentationP"
+- !private "s21_ObjectiveCBridgeableP"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/XPC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/ObjectiveC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Dispatch.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Network.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreFoundation.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreGraphics.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/os.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/IOKit.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/dyld.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumMedia.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumVisitorService.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLifecycle.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCollect.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/compact_unwind_encoding.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/xpc/XPC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/Dispatch.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Network.framework/Headers/Network.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/ApplicationServices.framework/Headers/ApplicationServices.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/os.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "3a19aa325414e46b47cf4a71415c3a9b"

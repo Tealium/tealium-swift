@@ -1,0 +1,635 @@
+{
+  "": {
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/master.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/ModuleDelegate.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/ModuleDelegate.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/ModuleDelegate.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/ModuleDelegate~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/ModuleDelegate.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/ModulesManager.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/ModulesManager.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/ModulesManager.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/ModulesManager~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/ModulesManager.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/Tealium.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/Tealium.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/Tealium.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/Tealium~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/Tealium.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/TealiumAppDelegateProxy.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TealiumAppDelegateProxy.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TealiumAppDelegateProxy.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TealiumAppDelegateProxy~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TealiumAppDelegateProxy.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/TealiumConfig.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TealiumConfig.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TealiumConfig.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TealiumConfig~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TealiumConfig.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/TealiumConstants.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TealiumConstants.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TealiumConstants.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TealiumConstants~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TealiumConstants.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/TealiumContext.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TealiumContext.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TealiumContext.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TealiumContext~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TealiumContext.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/TealiumInstanceManager.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TealiumInstanceManager.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TealiumInstanceManager.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TealiumInstanceManager~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TealiumInstanceManager.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/TealiumRequests.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TealiumRequests.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TealiumRequests.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TealiumRequests~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TealiumRequests.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/TimedEvent.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TimedEvent.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TimedEvent.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TimedEvent~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TimedEvent.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/TimedEventScheduler.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TimedEventScheduler.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TimedEventScheduler.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TimedEventScheduler~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TimedEventScheduler.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/appdata/AppData.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/appdata/AppData.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/appdata/AppData.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/appdata/AppData~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/appdata/AppData.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/appdata/AppDataCollection.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/appdata/AppDataCollection.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/appdata/AppDataCollection.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/appdata/AppDataCollection~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/appdata/AppDataCollection.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/appdata/AppDataConstants.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/appdata/AppDataConstants.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/appdata/AppDataConstants.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/appdata/AppDataConstants~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/appdata/AppDataConstants.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/appdata/AppDataModule.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/appdata/AppDataModule.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/appdata/AppDataModule.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/appdata/AppDataModule~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/appdata/AppDataModule.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/appdata/AppDataModuleExtensions.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/appdata/AppDataModuleExtensions.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/appdata/AppDataModuleExtensions.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/appdata/AppDataModuleExtensions~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/appdata/AppDataModuleExtensions.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/appdata/PersistentAppData.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/appdata/PersistentAppData.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/appdata/PersistentAppData.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/appdata/PersistentAppData~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/appdata/PersistentAppData.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/connectivity/ConnectivityConfigExtensions.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/connectivity/ConnectivityConfigExtensions.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/connectivity/ConnectivityConfigExtensions.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/connectivity/ConnectivityConfigExtensions~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/connectivity/ConnectivityConfigExtensions.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/connectivity/ConnectivityConstants.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/connectivity/ConnectivityConstants.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/connectivity/ConnectivityConstants.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/connectivity/ConnectivityConstants~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/connectivity/ConnectivityConstants.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/connectivity/ConnectivityDelegate.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/connectivity/ConnectivityDelegate.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/connectivity/ConnectivityDelegate.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/connectivity/ConnectivityDelegate~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/connectivity/ConnectivityDelegate.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/connectivity/ConnectivityModule.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/connectivity/ConnectivityModule.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/connectivity/ConnectivityModule.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/connectivity/ConnectivityModule~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/connectivity/ConnectivityModule.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/connectivity/LegacyConnectivityMonitor.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/connectivity/LegacyConnectivityMonitor.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/connectivity/LegacyConnectivityMonitor.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/connectivity/LegacyConnectivityMonitor~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/connectivity/LegacyConnectivityMonitor.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/connectivity/NWPathMonitor.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/connectivity/NWPathMonitor.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/connectivity/NWPathMonitor.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/connectivity/NWPathMonitor~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/connectivity/NWPathMonitor.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/consentmanager/ConsentConstants.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/ConsentConstants.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/ConsentConstants.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/ConsentConstants~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/ConsentConstants.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/consentmanager/ConsentManager.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/ConsentManager.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/ConsentManager.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/ConsentManager~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/ConsentManager.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/consentmanager/ConsentManagerExtensions.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/ConsentManagerExtensions.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/ConsentManagerExtensions.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/ConsentManagerExtensions~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/ConsentManagerExtensions.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/consentmanager/ConsentManagerModule.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/ConsentManagerModule.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/ConsentManagerModule.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/ConsentManagerModule~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/ConsentManagerModule.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/consentmanager/ConsentPolicies.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/ConsentPolicies.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/ConsentPolicies.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/ConsentPolicies~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/ConsentPolicies.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/consentmanager/ConsentPreferencesStorage.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/ConsentPreferencesStorage.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/ConsentPreferencesStorage.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/ConsentPreferencesStorage~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/ConsentPreferencesStorage.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/consentmanager/UserConsentPreferences.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/UserConsentPreferences.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/UserConsentPreferences.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/UserConsentPreferences~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/consentmanager/UserConsentPreferences.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/datalayer/DataLayer.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/DataLayer.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/DataLayer.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/DataLayer~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/DataLayer.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/datalayer/DataLayerCollection.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/DataLayerCollection.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/DataLayerCollection.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/DataLayerCollection~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/DataLayerCollection.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/datalayer/DataLayerExtensions.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/DataLayerExtensions.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/DataLayerExtensions.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/DataLayerExtensions~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/DataLayerExtensions.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/datalayer/DataLayerManagerProtocol.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/DataLayerManagerProtocol.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/DataLayerManagerProtocol.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/DataLayerManagerProtocol~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/DataLayerManagerProtocol.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/datalayer/Expiry.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/Expiry.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/Expiry.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/Expiry~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/Expiry.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/datalayer/HostedDataLayer.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/HostedDataLayer.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/HostedDataLayer.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/HostedDataLayer~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/HostedDataLayer.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/datalayer/HostedDataLayerCache.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/HostedDataLayerCache.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/HostedDataLayerCache.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/HostedDataLayerCache~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/HostedDataLayerCache.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/datalayer/SessionManager.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/SessionManager.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/SessionManager.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/SessionManager~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/SessionManager.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/datalayer/SessionStarter.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/SessionStarter.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/SessionStarter.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/SessionStarter~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/SessionStarter.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/datalayer/TealiumTrace.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/TealiumTrace.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/TealiumTrace.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/TealiumTrace~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/datalayer/TealiumTrace.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/devicedata/DeviceData.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceData.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceData.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceData~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceData.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/devicedata/DeviceDataCarrierInfo.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataCarrierInfo.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataCarrierInfo.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataCarrierInfo~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataCarrierInfo.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/devicedata/DeviceDataCollection.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataCollection.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataCollection.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataCollection~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataCollection.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/devicedata/DeviceDataConstants.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataConstants.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataConstants.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataConstants~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataConstants.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/devicedata/DeviceDataMemoryInfo.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataMemoryInfo.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataMemoryInfo.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataMemoryInfo~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataMemoryInfo.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/devicedata/DeviceDataModelInfo.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataModelInfo.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataModelInfo.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataModelInfo~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataModelInfo.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/devicedata/DeviceDataModule.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataModule.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataModule.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataModule~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataModule.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/devicedata/DeviceDataModuleExtensions.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataModuleExtensions.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataModuleExtensions.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataModuleExtensions~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataModuleExtensions.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/devicedata/DeviceDataOSInfo.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataOSInfo.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataOSInfo.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataOSInfo~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataOSInfo.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/devicedata/DeviceDataScreenInfo.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataScreenInfo.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataScreenInfo.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataScreenInfo~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceDataScreenInfo.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/devicedata/DeviceNamesLookup.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceNamesLookup.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceNamesLookup.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceNamesLookup~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/devicedata/DeviceNamesLookup.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/dispatchmanager/DispatchManager.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/dispatchmanager/DispatchManager.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/dispatchmanager/DispatchManager.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/dispatchmanager/DispatchManager~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/dispatchmanager/DispatchManager.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/dispatchmanager/TealiumDispatchQueueConstants.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/dispatchmanager/TealiumDispatchQueueConstants.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/dispatchmanager/TealiumDispatchQueueConstants.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/dispatchmanager/TealiumDispatchQueueConstants~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/dispatchmanager/TealiumDispatchQueueConstants.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/dispatchmanager/TealiumDispatchQueueExtensions.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/dispatchmanager/TealiumDispatchQueueExtensions.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/dispatchmanager/TealiumDispatchQueueExtensions.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/dispatchmanager/TealiumDispatchQueueExtensions~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/dispatchmanager/TealiumDispatchQueueExtensions.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/dispatchmanager/TealiumPersistentDispatchQueue.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/dispatchmanager/TealiumPersistentDispatchQueue.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/dispatchmanager/TealiumPersistentDispatchQueue.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/dispatchmanager/TealiumPersistentDispatchQueue~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/dispatchmanager/TealiumPersistentDispatchQueue.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/logger/TealiumLogRequest.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/logger/TealiumLogRequest.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/logger/TealiumLogRequest.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/logger/TealiumLogRequest~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/logger/TealiumLogRequest.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/logger/TealiumLogger.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/logger/TealiumLogger.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/logger/TealiumLogger.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/logger/TealiumLogger~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/logger/TealiumLogger.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/logger/TealiumLoggerConstants.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/logger/TealiumLoggerConstants.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/logger/TealiumLoggerConstants.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/logger/TealiumLoggerConstants~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/logger/TealiumLoggerConstants.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/logger/TealiumLoggerExtensions.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/logger/TealiumLoggerExtensions.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/logger/TealiumLoggerExtensions.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/logger/TealiumLoggerExtensions~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/logger/TealiumLoggerExtensions.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/logger/TealiumLoggerProtocol.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/logger/TealiumLoggerProtocol.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/logger/TealiumLoggerProtocol.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/logger/TealiumLoggerProtocol~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/logger/TealiumLoggerProtocol.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/protocols/Collector.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/protocols/Collector.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/protocols/Collector.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/protocols/Collector~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/protocols/Collector.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/protocols/DispatchListener.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/protocols/DispatchListener.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/protocols/DispatchListener.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/protocols/DispatchListener~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/protocols/DispatchListener.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/protocols/DispatchValidator.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/protocols/DispatchValidator.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/protocols/DispatchValidator.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/protocols/DispatchValidator~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/protocols/DispatchValidator.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/protocols/Dispatcher.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/protocols/Dispatcher.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/protocols/Dispatcher.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/protocols/Dispatcher~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/protocols/Dispatcher.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/protocols/TealiumModule.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/protocols/TealiumModule.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/protocols/TealiumModule.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/protocols/TealiumModule~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/protocols/TealiumModule.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/publishsettings/TealiumPublishSettings.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/publishsettings/TealiumPublishSettings.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/publishsettings/TealiumPublishSettings.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/publishsettings/TealiumPublishSettings~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/publishsettings/TealiumPublishSettings.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/publishsettings/TealiumPublishSettingsRetriever.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/publishsettings/TealiumPublishSettingsRetriever.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/publishsettings/TealiumPublishSettingsRetriever.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/publishsettings/TealiumPublishSettingsRetriever~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/publishsettings/TealiumPublishSettingsRetriever.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/storage/Disk/Disk+Codable.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/Disk+Codable.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/Disk+Codable.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/Disk+Codable~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/Disk+Codable.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/storage/Disk/Disk+Errors.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/Disk+Errors.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/Disk+Errors.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/Disk+Errors~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/Disk+Errors.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/storage/Disk/Disk+Helpers.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/Disk+Helpers.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/Disk+Helpers.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/Disk+Helpers~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/Disk+Helpers.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/storage/Disk/Disk+InternalHelpers.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/Disk+InternalHelpers.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/Disk+InternalHelpers.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/Disk+InternalHelpers~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/Disk+InternalHelpers.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/storage/Disk/Disk+VolumeInformation.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/Disk+VolumeInformation.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/Disk+VolumeInformation.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/Disk+VolumeInformation~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/Disk+VolumeInformation.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/storage/Disk/Disk.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/Disk.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/Disk.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/Disk~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/Disk.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/storage/Disk/DiskError.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/DiskError.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/DiskError.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/DiskError~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/Disk/DiskError.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/storage/LegacyConsentConfiguration.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/LegacyConsentConfiguration.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/LegacyConsentConfiguration.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/LegacyConsentConfiguration~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/LegacyConsentConfiguration.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/storage/LegacyStorageProtocols.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/LegacyStorageProtocols.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/LegacyStorageProtocols.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/LegacyStorageProtocols~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/LegacyStorageProtocols.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/storage/TealiumDiskStorage.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/TealiumDiskStorage.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/TealiumDiskStorage.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/TealiumDiskStorage~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/TealiumDiskStorage.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/storage/TealiumDiskStorageConfig.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/TealiumDiskStorageConfig.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/TealiumDiskStorageConfig.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/TealiumDiskStorageConfig~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/TealiumDiskStorageConfig.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/storage/TealiumDiskStorageProtocol.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/TealiumDiskStorageProtocol.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/TealiumDiskStorageProtocol.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/TealiumDiskStorageProtocol~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/storage/TealiumDiskStorageProtocol.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/utils/AnyCodable/AnyCodable.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/AnyCodable/AnyCodable.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/AnyCodable/AnyCodable.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/AnyCodable/AnyCodable~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/AnyCodable/AnyCodable.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/utils/AnyCodable/AnyDecodable.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/AnyCodable/AnyDecodable.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/AnyCodable/AnyDecodable.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/AnyCodable/AnyDecodable~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/AnyCodable/AnyDecodable.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/utils/AnyCodable/AnyEncodable.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/AnyCodable/AnyEncodable.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/AnyCodable/AnyEncodable.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/AnyCodable/AnyEncodable~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/AnyCodable/AnyEncodable.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/utils/Array+Tealium.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Array+Tealium.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Array+Tealium.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Array+Tealium~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Array+Tealium.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/utils/Atomic.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Atomic.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Atomic.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Atomic~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Atomic.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/utils/AtomicInteger.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/AtomicInteger.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/AtomicInteger.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/AtomicInteger~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/AtomicInteger.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/utils/Data+Gzip/Data+Gzip.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Data+Gzip/Data+Gzip.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Data+Gzip/Data+Gzip.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Data+Gzip/Data+Gzip~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Data+Gzip/Data+Gzip.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/utils/Date+Tealium.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Date+Tealium.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Date+Tealium.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Date+Tealium~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Date+Tealium.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/utils/Dictionary+Tealium.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Dictionary+Tealium.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Dictionary+Tealium.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Dictionary+Tealium~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Dictionary+Tealium.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/utils/Double+Tealium.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Double+Tealium.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Double+Tealium.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Double+Tealium~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Double+Tealium.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/utils/JSONEncoderDecoder.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/JSONEncoderDecoder.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/JSONEncoderDecoder.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/JSONEncoderDecoder~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/JSONEncoderDecoder.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/utils/Migrator.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Migrator.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Migrator.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Migrator~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Migrator.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/utils/String+Tealium.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/String+Tealium.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/String+Tealium.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/String+Tealium~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/String+Tealium.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/utils/Tealium+Encodable.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Tealium+Encodable.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Tealium+Encodable.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Tealium+Encodable~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Tealium+Encodable.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/utils/TealiumLifecycleEventsDelegate.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumLifecycleEventsDelegate.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumLifecycleEventsDelegate.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumLifecycleEventsDelegate~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumLifecycleEventsDelegate.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/utils/TealiumLifecycleListeners.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumLifecycleListeners.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumLifecycleListeners.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumLifecycleListeners~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumLifecycleListeners.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/utils/TealiumMulticastDelegate.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumMulticastDelegate.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumMulticastDelegate.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumMulticastDelegate~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumMulticastDelegate.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/utils/TealiumNetworkUtils.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumNetworkUtils.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumNetworkUtils.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumNetworkUtils~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumNetworkUtils.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/utils/TealiumQueues.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumQueues.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumQueues.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumQueues~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumQueues.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/utils/TealiumReadWrite.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumReadWrite.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumReadWrite.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumReadWrite~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumReadWrite.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/utils/TealiumRepeatingTimer.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumRepeatingTimer.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumRepeatingTimer.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumRepeatingTimer~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumRepeatingTimer.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/utils/TealiumURLSession.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumURLSession.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumURLSession.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumURLSession~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumURLSession.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/utils/TealiumUtils.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumUtils.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumUtils.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumUtils~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TealiumUtils.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/utils/Time.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Time.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Time.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Time~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/Time.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/utils/TimedEvent+Tealium.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TimedEvent+Tealium.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TimedEvent+Tealium.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TimedEvent+Tealium~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/TimedEvent+Tealium.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/core/utils/URLSessionProtocol.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/URLSessionProtocol.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/URLSessionProtocol.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/URLSessionProtocol~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/utils/URLSessionProtocol.swiftdeps"
+  }
+}

@@ -1,0 +1,145 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "LifecycleKey"
+- "LifecycleType"
+provides-nominal:
+- "16TealiumLifecycle0B3KeyO"
+- "16TealiumLifecycle0B3KeyO7SessionO"
+- "16TealiumLifecycle0B4TypeO"
+provides-member:
+- ["16TealiumLifecycle0B3KeyO", ""]
+- ["16TealiumLifecycle0B3KeyO7SessionO", ""]
+- ["16TealiumLifecycle0B4TypeO", ""]
+provides-dynamic-lookup:
+depends-top-level:
+- "=="
+- "FloatLiteralType"
+- "IntegerLiteralType"
+- "LifecycleKey"
+- "LifecycleType"
+- "String"
+- "StringLiteralType"
+depends-member:
+- ["SQ", "=="]
+- ["SQ", ""]
+- ["SQ", "_rawHashValue"]
+- ["SQ", "hash"]
+- ["SQ", "hashValue"]
+- ["SQ", "launch"]
+- ["SQ", "sleep"]
+- ["SQ", "wake"]
+- ["SH", "=="]
+- ["SH", ""]
+- ["SH", "_rawHashValue"]
+- ["SH", "hash"]
+- ["SH", "hashValue"]
+- ["SH", "launch"]
+- ["SH", "sleep"]
+- ["SH", "wake"]
+- !private ["s6HasherV", "combine"]
+- ["16TealiumLifecycle0B3KeyO", "Session"]
+- ["16TealiumLifecycle0B3KeyO", "autotracked"]
+- ["16TealiumLifecycle0B3KeyO", "dayOfWeek"]
+- ["16TealiumLifecycle0B3KeyO", "daysSinceFirstLaunch"]
+- ["16TealiumLifecycle0B3KeyO", "daysSinceLastUpdate"]
+- ["16TealiumLifecycle0B3KeyO", "daysSinceLastWake"]
+- ["16TealiumLifecycle0B3KeyO", "defaultSessionsSize"]
+- ["16TealiumLifecycle0B3KeyO", "didDetectCrash"]
+- ["16TealiumLifecycle0B3KeyO", "firstLaunchDate"]
+- ["16TealiumLifecycle0B3KeyO", "firstLaunchDateMMDDYYYY"]
+- ["16TealiumLifecycle0B3KeyO", "hourOfDayLocal"]
+- ["16TealiumLifecycle0B3KeyO", "isFirstLaunch"]
+- ["16TealiumLifecycle0B3KeyO", "isFirstLaunchUpdate"]
+- ["16TealiumLifecycle0B3KeyO", "isFirstWakeThisMonth"]
+- ["16TealiumLifecycle0B3KeyO", "isFirstWakeToday"]
+- ["16TealiumLifecycle0B3KeyO", "lastLaunchDate"]
+- ["16TealiumLifecycle0B3KeyO", "lastSleepDate"]
+- ["16TealiumLifecycle0B3KeyO", "lastUpdateDate"]
+- ["16TealiumLifecycle0B3KeyO", "lastWakeDate"]
+- ["16TealiumLifecycle0B3KeyO", "launchCount"]
+- ["16TealiumLifecycle0B3KeyO", "migratedLifecycle"]
+- ["16TealiumLifecycle0B3KeyO", "moduleName"]
+- ["16TealiumLifecycle0B3KeyO", "priorSecondsAwake"]
+- ["16TealiumLifecycle0B3KeyO", "secondsAwake"]
+- ["16TealiumLifecycle0B3KeyO", "sleepCount"]
+- ["16TealiumLifecycle0B3KeyO", "totalCrashCount"]
+- ["16TealiumLifecycle0B3KeyO", "totalLaunchCount"]
+- ["16TealiumLifecycle0B3KeyO", "totalSecondsAwake"]
+- ["16TealiumLifecycle0B3KeyO", "totalSleepCount"]
+- ["16TealiumLifecycle0B3KeyO", "totalWakeCount"]
+- ["16TealiumLifecycle0B3KeyO", "type"]
+- ["16TealiumLifecycle0B3KeyO", "updateLaunchDate"]
+- ["16TealiumLifecycle0B3KeyO", "wakeCount"]
+- ["16TealiumLifecycle0B4TypeO", "=="]
+- ["16TealiumLifecycle0B4TypeO", "String"]
+- ["16TealiumLifecycle0B4TypeO", ""]
+- ["16TealiumLifecycle0B4TypeO", "__derived_enum_equals"]
+- ["16TealiumLifecycle0B4TypeO", "_rawHashValue"]
+- ["16TealiumLifecycle0B4TypeO", "description"]
+- ["16TealiumLifecycle0B4TypeO", "hash"]
+- ["16TealiumLifecycle0B4TypeO", "hashValue"]
+- ["16TealiumLifecycle0B4TypeO", "launch"]
+- ["16TealiumLifecycle0B4TypeO", "sleep"]
+- ["16TealiumLifecycle0B4TypeO", "wake"]
+- ["So8NSCodingP", ""]
+- ["So8NSObjectP", ""]
+- ["16TealiumLifecycle0B3KeyO7SessionO", "secondsElapsed"]
+- ["16TealiumLifecycle0B3KeyO7SessionO", "sessionFirst"]
+- ["16TealiumLifecycle0B3KeyO7SessionO", "sessions"]
+- ["16TealiumLifecycle0B3KeyO7SessionO", "sessionsSize"]
+- ["16TealiumLifecycle0B3KeyO7SessionO", "sleepDate"]
+- ["16TealiumLifecycle0B3KeyO7SessionO", "totalSecondsAwake"]
+- ["16TealiumLifecycle0B3KeyO7SessionO", "wakeDate"]
+- ["16TealiumLifecycle0B3KeyO7SessionO", "wasLaunch"]
+- ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+- ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+depends-nominal:
+- "SQ"
+- "SH"
+- !private "s6HasherV"
+- "16TealiumLifecycle0B3KeyO"
+- "16TealiumLifecycle0B4TypeO"
+- "So8NSCodingP"
+- "So8NSObjectP"
+- "16TealiumLifecycle0B3KeyO7SessionO"
+- "s35_ExpressibleByBuiltinIntegerLiteralP"
+- "s34_ExpressibleByBuiltinStringLiteralP"
+depends-dynamic-lookup:
+depends-external:
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/XPC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/ObjectiveC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Combine.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Dispatch.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Network.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Darwin.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Foundation.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreFoundation.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreGraphics.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/os.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Swift.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/IOKit.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/SwiftOnoneSupport.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/dyld.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumMedia.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumVisitorService.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLifecycle.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCollect.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/compact_unwind_encoding.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/xpc/XPC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/Dispatch.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Network.framework/Headers/Network.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/ApplicationServices.framework/Headers/ApplicationServices.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/os.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "4604d498f002ba2653cd2614eaff8b66"

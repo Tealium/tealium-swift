@@ -1,0 +1,491 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "TealiumVisitorProfile"
+- "TealiumCurrentVisitProfile"
+provides-nominal:
+- "21TealiumVisitorService0aB7ProfileV"
+- "21TealiumVisitorService0aB7ProfileV10CodingKeysO"
+- "21TealiumVisitorService0A19CurrentVisitProfileV"
+- "21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO"
+provides-member:
+- ["21TealiumVisitorService0aB7ProfileV", ""]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", ""]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV", ""]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO", ""]
+provides-dynamic-lookup:
+depends-top-level:
+- !private "&&"
+- "=="
+- !private "Array"
+- "AssignmentPrecedence"
+- "Bool"
+- "Codable"
+- "CodingKey"
+- !private "CodingKeys"
+- "Decoder"
+- "Double"
+- !private "FloatLiteralType"
+- "Int64"
+- !private "IntegerLiteralType"
+- "Set"
+- "String"
+- "StringLiteralType"
+- "TealiumCurrentVisitProfile"
+- "TealiumVisitorProfile"
+- !private "_findStringSwitchCase"
+- !private "arraysOfBooleans"
+- !private "arraysOfNumbers"
+- !private "arraysOfStrings"
+- !private "audiences"
+- !private "badges"
+- !private "booleans"
+- !private "currentVisit"
+- !private "dates"
+- !private "numbers"
+- !private "setsOfStrings"
+- !private "strings"
+- !private "tallies"
+- !private "~="
+depends-member:
+- ["s9CodingKeyP", "=="]
+- ["s9CodingKeyP", "Default_RawValue"]
+- ["s9CodingKeyP", "RawValue"]
+- ["s9CodingKeyP", ""]
+- ["s9CodingKeyP", "_Default_RawValue"]
+- !private ["s9CodingKeyP", "_findStringSwitchCase"]
+- ["s9CodingKeyP", "_rawHashValue"]
+- !private ["s9CodingKeyP", "arraysOfBooleans"]
+- !private ["s9CodingKeyP", "arraysOfNumbers"]
+- !private ["s9CodingKeyP", "arraysOfStrings"]
+- !private ["s9CodingKeyP", "audiences"]
+- !private ["s9CodingKeyP", "badges"]
+- !private ["s9CodingKeyP", "booleans"]
+- !private ["s9CodingKeyP", "currentVisit"]
+- !private ["s9CodingKeyP", "dates"]
+- ["s9CodingKeyP", "debugDescription"]
+- ["s9CodingKeyP", "description"]
+- !private ["s9CodingKeyP", "findStringSwitchCase"]
+- ["s9CodingKeyP", "hash"]
+- ["s9CodingKeyP", "hashValue"]
+- ["s9CodingKeyP", "init"]
+- ["s9CodingKeyP", "intValue"]
+- !private ["s9CodingKeyP", "numbers"]
+- ["s9CodingKeyP", "rawValue"]
+- !private ["s9CodingKeyP", "setsOfStrings"]
+- ["s9CodingKeyP", "stringValue"]
+- !private ["s9CodingKeyP", "strings"]
+- !private ["s9CodingKeyP", "tallies"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO", "=="]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "=="]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO", "Default_RawValue"]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "Default_RawValue"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO", "RawValue"]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "RawValue"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO", ""]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", ""]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO", "_Default_RawValue"]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "_Default_RawValue"]
+- !private ["21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO", "_findStringSwitchCase"]
+- !private ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "_findStringSwitchCase"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO", "_rawHashValue"]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "_rawHashValue"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO", "arraysOfBooleans"]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "arraysOfBooleans"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO", "arraysOfNumbers"]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "arraysOfNumbers"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO", "arraysOfStrings"]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "arraysOfStrings"]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "audiences"]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "badges"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO", "booleans"]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "booleans"]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "currentVisit"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO", "dates"]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "dates"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO", "debugDescription"]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "debugDescription"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO", "description"]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "description"]
+- !private ["21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO", "findStringSwitchCase"]
+- !private ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "findStringSwitchCase"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO", "hash"]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "hash"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO", "hashValue"]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "hashValue"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO", "init"]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "init"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO", "intValue"]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "intValue"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO", "numbers"]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "numbers"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO", "rawValue"]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "rawValue"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO", "setsOfStrings"]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "setsOfStrings"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO", "stringValue"]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "stringValue"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO", "strings"]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "strings"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO", "tallies"]
+- ["21TealiumVisitorService0aB7ProfileV10CodingKeysO", "tallies"]
+- ["s28CustomDebugStringConvertibleP", "=="]
+- ["s28CustomDebugStringConvertibleP", "Default_RawValue"]
+- ["s28CustomDebugStringConvertibleP", "RawValue"]
+- ["s28CustomDebugStringConvertibleP", ""]
+- ["s28CustomDebugStringConvertibleP", "_Default_RawValue"]
+- !private ["s28CustomDebugStringConvertibleP", "_findStringSwitchCase"]
+- ["s28CustomDebugStringConvertibleP", "_rawHashValue"]
+- !private ["s28CustomDebugStringConvertibleP", "arraysOfBooleans"]
+- !private ["s28CustomDebugStringConvertibleP", "arraysOfNumbers"]
+- !private ["s28CustomDebugStringConvertibleP", "arraysOfStrings"]
+- !private ["s28CustomDebugStringConvertibleP", "audiences"]
+- !private ["s28CustomDebugStringConvertibleP", "badges"]
+- !private ["s28CustomDebugStringConvertibleP", "booleans"]
+- !private ["s28CustomDebugStringConvertibleP", "currentVisit"]
+- !private ["s28CustomDebugStringConvertibleP", "dates"]
+- ["s28CustomDebugStringConvertibleP", "debugDescription"]
+- ["s28CustomDebugStringConvertibleP", "description"]
+- !private ["s28CustomDebugStringConvertibleP", "findStringSwitchCase"]
+- ["s28CustomDebugStringConvertibleP", "hash"]
+- ["s28CustomDebugStringConvertibleP", "hashValue"]
+- ["s28CustomDebugStringConvertibleP", "init"]
+- ["s28CustomDebugStringConvertibleP", "intValue"]
+- !private ["s28CustomDebugStringConvertibleP", "numbers"]
+- ["s28CustomDebugStringConvertibleP", "rawValue"]
+- !private ["s28CustomDebugStringConvertibleP", "setsOfStrings"]
+- ["s28CustomDebugStringConvertibleP", "stringValue"]
+- !private ["s28CustomDebugStringConvertibleP", "strings"]
+- !private ["s28CustomDebugStringConvertibleP", "tallies"]
+- ["s23CustomStringConvertibleP", "=="]
+- ["s23CustomStringConvertibleP", "Default_RawValue"]
+- ["s23CustomStringConvertibleP", "RawValue"]
+- ["s23CustomStringConvertibleP", ""]
+- ["s23CustomStringConvertibleP", "_Default_RawValue"]
+- !private ["s23CustomStringConvertibleP", "_findStringSwitchCase"]
+- ["s23CustomStringConvertibleP", "_rawHashValue"]
+- !private ["s23CustomStringConvertibleP", "arraysOfBooleans"]
+- !private ["s23CustomStringConvertibleP", "arraysOfNumbers"]
+- !private ["s23CustomStringConvertibleP", "arraysOfStrings"]
+- !private ["s23CustomStringConvertibleP", "audiences"]
+- !private ["s23CustomStringConvertibleP", "badges"]
+- !private ["s23CustomStringConvertibleP", "booleans"]
+- !private ["s23CustomStringConvertibleP", "currentVisit"]
+- !private ["s23CustomStringConvertibleP", "dates"]
+- ["s23CustomStringConvertibleP", "debugDescription"]
+- ["s23CustomStringConvertibleP", "description"]
+- !private ["s23CustomStringConvertibleP", "findStringSwitchCase"]
+- ["s23CustomStringConvertibleP", "hash"]
+- ["s23CustomStringConvertibleP", "hashValue"]
+- ["s23CustomStringConvertibleP", "init"]
+- ["s23CustomStringConvertibleP", "intValue"]
+- !private ["s23CustomStringConvertibleP", "numbers"]
+- ["s23CustomStringConvertibleP", "rawValue"]
+- !private ["s23CustomStringConvertibleP", "setsOfStrings"]
+- ["s23CustomStringConvertibleP", "stringValue"]
+- !private ["s23CustomStringConvertibleP", "strings"]
+- !private ["s23CustomStringConvertibleP", "tallies"]
+- !private ["Se", "Bool"]
+- !private ["Se", "CodingKeys"]
+- !private ["Se", "Double"]
+- !private ["Se", "Int64"]
+- !private ["Se", "Set"]
+- !private ["Se", "String"]
+- !private ["Se", "TealiumCurrentVisitProfile"]
+- ["Se", ""]
+- !private ["Se", "_findStringSwitchCase"]
+- !private ["Se", "arraysOfBooleans"]
+- !private ["Se", "arraysOfNumbers"]
+- !private ["Se", "arraysOfStrings"]
+- !private ["Se", "audiences"]
+- !private ["Se", "badges"]
+- !private ["Se", "booleans"]
+- !private ["Se", "currentVisit"]
+- !private ["Se", "dates"]
+- ["Se", "encode"]
+- !private ["Se", "findStringSwitchCase"]
+- ["Se", "init"]
+- !private ["Se", "numbers"]
+- !private ["Se", "setsOfStrings"]
+- !private ["Se", "strings"]
+- !private ["Se", "tallies"]
+- !private ["s7DecoderP", "container"]
+- !private ["SE", "Bool"]
+- !private ["SE", "CodingKeys"]
+- !private ["SE", "Double"]
+- !private ["SE", "Int64"]
+- !private ["SE", "Set"]
+- !private ["SE", "String"]
+- !private ["SE", "TealiumCurrentVisitProfile"]
+- ["SE", ""]
+- !private ["SE", "_findStringSwitchCase"]
+- !private ["SE", "arraysOfBooleans"]
+- !private ["SE", "arraysOfNumbers"]
+- !private ["SE", "arraysOfStrings"]
+- !private ["SE", "audiences"]
+- !private ["SE", "badges"]
+- !private ["SE", "booleans"]
+- !private ["SE", "currentVisit"]
+- !private ["SE", "dates"]
+- ["SE", "encode"]
+- !private ["SE", "findStringSwitchCase"]
+- ["SE", "init"]
+- !private ["SE", "numbers"]
+- !private ["SE", "setsOfStrings"]
+- !private ["SE", "strings"]
+- !private ["SE", "tallies"]
+- !private ["s7EncoderP", "container"]
+- ["SQ", "=="]
+- ["SQ", "Default_RawValue"]
+- ["SQ", "RawValue"]
+- ["SQ", ""]
+- ["SQ", "_Default_RawValue"]
+- !private ["SQ", "_findStringSwitchCase"]
+- ["SQ", "_rawHashValue"]
+- !private ["SQ", "arraysOfBooleans"]
+- !private ["SQ", "arraysOfNumbers"]
+- !private ["SQ", "arraysOfStrings"]
+- !private ["SQ", "audiences"]
+- !private ["SQ", "badges"]
+- !private ["SQ", "booleans"]
+- !private ["SQ", "currentVisit"]
+- !private ["SQ", "dates"]
+- ["SQ", "debugDescription"]
+- ["SQ", "description"]
+- !private ["SQ", "findStringSwitchCase"]
+- ["SQ", "hash"]
+- ["SQ", "hashValue"]
+- ["SQ", "init"]
+- ["SQ", "intValue"]
+- !private ["SQ", "numbers"]
+- ["SQ", "rawValue"]
+- !private ["SQ", "setsOfStrings"]
+- ["SQ", "stringValue"]
+- !private ["SQ", "strings"]
+- !private ["SQ", "tallies"]
+- !private ["s25ExpressibleByArrayLiteralP", "init"]
+- !private ["s23ExpressibleByNilLiteralP", "init"]
+- ["SH", "=="]
+- ["SH", "Default_RawValue"]
+- ["SH", "RawValue"]
+- ["SH", ""]
+- ["SH", "_Default_RawValue"]
+- !private ["SH", "_findStringSwitchCase"]
+- ["SH", "_rawHashValue"]
+- !private ["SH", "arraysOfBooleans"]
+- !private ["SH", "arraysOfNumbers"]
+- !private ["SH", "arraysOfStrings"]
+- !private ["SH", "audiences"]
+- !private ["SH", "badges"]
+- !private ["SH", "booleans"]
+- !private ["SH", "currentVisit"]
+- !private ["SH", "dates"]
+- ["SH", "debugDescription"]
+- ["SH", "description"]
+- !private ["SH", "findStringSwitchCase"]
+- ["SH", "hash"]
+- ["SH", "hashValue"]
+- ["SH", "init"]
+- ["SH", "intValue"]
+- !private ["SH", "numbers"]
+- ["SH", "rawValue"]
+- !private ["SH", "setsOfStrings"]
+- ["SH", "stringValue"]
+- !private ["SH", "strings"]
+- !private ["SH", "tallies"]
+- !private ["s22KeyedDecodingContainerV", "decodeIfPresent"]
+- !private ["s30KeyedDecodingContainerProtocolP", "decodeIfPresent"]
+- !private ["s22KeyedEncodingContainerV", "encodeIfPresent"]
+- !private ["s30KeyedEncodingContainerProtocolP", "encodeIfPresent"]
+- ["So8NSCodingP", ""]
+- ["So8NSObjectP", ""]
+- ["SY", "=="]
+- ["SY", "Default_RawValue"]
+- ["SY", "RawValue"]
+- ["SY", ""]
+- ["SY", "_Default_RawValue"]
+- !private ["SY", "_findStringSwitchCase"]
+- ["SY", "_rawHashValue"]
+- !private ["SY", "arraysOfBooleans"]
+- !private ["SY", "arraysOfNumbers"]
+- !private ["SY", "arraysOfStrings"]
+- !private ["SY", "audiences"]
+- !private ["SY", "badges"]
+- !private ["SY", "booleans"]
+- !private ["SY", "currentVisit"]
+- !private ["SY", "dates"]
+- ["SY", "debugDescription"]
+- ["SY", "description"]
+- !private ["SY", "findStringSwitchCase"]
+- ["SY", "hash"]
+- ["SY", "hashValue"]
+- ["SY", "init"]
+- ["SY", "intValue"]
+- !private ["SY", "numbers"]
+- ["SY", "rawValue"]
+- !private ["SY", "setsOfStrings"]
+- ["SY", "stringValue"]
+- !private ["SY", "strings"]
+- !private ["SY", "tallies"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV", "Bool"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV", "CodingKey"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV", "CodingKeys"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV", "Decoder"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV", "Double"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV", "Int64"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV", "Set"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV", "String"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV", ""]
+- !private ["21TealiumVisitorService0A19CurrentVisitProfileV", "_findStringSwitchCase"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV", "arraysOfBooleans"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV", "arraysOfNumbers"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV", "arraysOfStrings"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV", "booleans"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV", "dates"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV", "encode"]
+- !private ["21TealiumVisitorService0A19CurrentVisitProfileV", "findStringSwitchCase"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV", "init"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV", "numbers"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV", "setsOfStrings"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV", "strings"]
+- ["21TealiumVisitorService0A19CurrentVisitProfileV", "tallies"]
+- ["21TealiumVisitorService0aB7ProfileV", "Bool"]
+- ["21TealiumVisitorService0aB7ProfileV", "CodingKey"]
+- ["21TealiumVisitorService0aB7ProfileV", "CodingKeys"]
+- ["21TealiumVisitorService0aB7ProfileV", "Decoder"]
+- ["21TealiumVisitorService0aB7ProfileV", "Double"]
+- ["21TealiumVisitorService0aB7ProfileV", "Int64"]
+- ["21TealiumVisitorService0aB7ProfileV", "Set"]
+- ["21TealiumVisitorService0aB7ProfileV", "String"]
+- ["21TealiumVisitorService0aB7ProfileV", "TealiumCurrentVisitProfile"]
+- ["21TealiumVisitorService0aB7ProfileV", ""]
+- !private ["21TealiumVisitorService0aB7ProfileV", "_findStringSwitchCase"]
+- ["21TealiumVisitorService0aB7ProfileV", "arraysOfBooleans"]
+- ["21TealiumVisitorService0aB7ProfileV", "arraysOfNumbers"]
+- ["21TealiumVisitorService0aB7ProfileV", "arraysOfStrings"]
+- ["21TealiumVisitorService0aB7ProfileV", "audiences"]
+- ["21TealiumVisitorService0aB7ProfileV", "badges"]
+- ["21TealiumVisitorService0aB7ProfileV", "booleans"]
+- ["21TealiumVisitorService0aB7ProfileV", "currentVisit"]
+- ["21TealiumVisitorService0aB7ProfileV", "dates"]
+- ["21TealiumVisitorService0aB7ProfileV", "encode"]
+- !private ["21TealiumVisitorService0aB7ProfileV", "findStringSwitchCase"]
+- ["21TealiumVisitorService0aB7ProfileV", "init"]
+- ["21TealiumVisitorService0aB7ProfileV", "isEmpty"]
+- ["21TealiumVisitorService0aB7ProfileV", "numbers"]
+- ["21TealiumVisitorService0aB7ProfileV", "setsOfStrings"]
+- ["21TealiumVisitorService0aB7ProfileV", "strings"]
+- ["21TealiumVisitorService0aB7ProfileV", "tallies"]
+- !private ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+- ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+depends-nominal:
+- "s9CodingKeyP"
+- "21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO"
+- "21TealiumVisitorService0aB7ProfileV10CodingKeysO"
+- "21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO"
+- "21TealiumVisitorService0aB7ProfileV10CodingKeysO"
+- "21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO"
+- "21TealiumVisitorService0aB7ProfileV10CodingKeysO"
+- "21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO"
+- "21TealiumVisitorService0aB7ProfileV10CodingKeysO"
+- "21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO"
+- "21TealiumVisitorService0aB7ProfileV10CodingKeysO"
+- !private "21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO"
+- !private "21TealiumVisitorService0aB7ProfileV10CodingKeysO"
+- "21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO"
+- "21TealiumVisitorService0aB7ProfileV10CodingKeysO"
+- "21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO"
+- "21TealiumVisitorService0aB7ProfileV10CodingKeysO"
+- "21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO"
+- "21TealiumVisitorService0aB7ProfileV10CodingKeysO"
+- "21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO"
+- "21TealiumVisitorService0aB7ProfileV10CodingKeysO"
+- "21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO"
+- "21TealiumVisitorService0aB7ProfileV10CodingKeysO"
+- "21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO"
+- "21TealiumVisitorService0aB7ProfileV10CodingKeysO"
+- "21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO"
+- "21TealiumVisitorService0aB7ProfileV10CodingKeysO"
+- "21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO"
+- "21TealiumVisitorService0aB7ProfileV10CodingKeysO"
+- !private "21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO"
+- !private "21TealiumVisitorService0aB7ProfileV10CodingKeysO"
+- "21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO"
+- "21TealiumVisitorService0aB7ProfileV10CodingKeysO"
+- "21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO"
+- "21TealiumVisitorService0aB7ProfileV10CodingKeysO"
+- "21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO"
+- "21TealiumVisitorService0aB7ProfileV10CodingKeysO"
+- "21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO"
+- "21TealiumVisitorService0aB7ProfileV10CodingKeysO"
+- "21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO"
+- "21TealiumVisitorService0aB7ProfileV10CodingKeysO"
+- "21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO"
+- "21TealiumVisitorService0aB7ProfileV10CodingKeysO"
+- "21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO"
+- "21TealiumVisitorService0aB7ProfileV10CodingKeysO"
+- "21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO"
+- "21TealiumVisitorService0aB7ProfileV10CodingKeysO"
+- "21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO"
+- "21TealiumVisitorService0aB7ProfileV10CodingKeysO"
+- "21TealiumVisitorService0A19CurrentVisitProfileV10CodingKeysO"
+- "21TealiumVisitorService0aB7ProfileV10CodingKeysO"
+- "s28CustomDebugStringConvertibleP"
+- "s23CustomStringConvertibleP"
+- "Se"
+- !private "s7DecoderP"
+- "SE"
+- !private "s7EncoderP"
+- "SQ"
+- !private "s25ExpressibleByArrayLiteralP"
+- !private "s23ExpressibleByNilLiteralP"
+- "SH"
+- !private "s22KeyedDecodingContainerV"
+- !private "s30KeyedDecodingContainerProtocolP"
+- !private "s22KeyedEncodingContainerV"
+- !private "s30KeyedEncodingContainerProtocolP"
+- "So8NSCodingP"
+- "So8NSObjectP"
+- "SY"
+- "21TealiumVisitorService0A19CurrentVisitProfileV"
+- "21TealiumVisitorService0aB7ProfileV"
+- !private "s35_ExpressibleByBuiltinIntegerLiteralP"
+- "s34_ExpressibleByBuiltinStringLiteralP"
+depends-dynamic-lookup:
+depends-external:
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/XPC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/ObjectiveC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Combine.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Dispatch.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Network.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Darwin.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Foundation.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreFoundation.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreGraphics.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/os.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Swift.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/IOKit.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/SwiftOnoneSupport.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/dyld.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumMedia.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumVisitorService.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLifecycle.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCollect.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/compact_unwind_encoding.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/xpc/XPC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/Dispatch.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Network.framework/Headers/Network.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/ApplicationServices.framework/Headers/ApplicationServices.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/os.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "fdf8b7d7dd74052b88255a23a46d6030"

@@ -1,0 +1,223 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "MediaDispatch"
+- "TealiumMediaEvent"
+provides-nominal:
+- "12TealiumMedia0B8DispatchP"
+- "12TealiumMedia0aB5EventV"
+provides-member:
+- ["12TealiumMedia0B8DispatchP", ""]
+- ["12TealiumMedia0aB5EventV", ""]
+provides-dynamic-lookup:
+depends-top-level:
+- !private "!="
+- !private "+="
+- "AssignmentPrecedence"
+- "MediaCollection"
+- "MediaDispatch"
+- "MediaEvent"
+- "Segment"
+- !private "StandardMediaEvent"
+- "String"
+- "TealiumDispatch"
+- !private "TealiumKey"
+- "TealiumMediaEvent"
+- "TealiumTrackRequest"
+- !private "event"
+- !private "parameters"
+- !private "segment"
+depends-member:
+- !private ["s7CVarArgP", "flattened"]
+- !private ["s7CVarArgP", "init"]
+- !private ["s7CVarArgP", "merge"]
+- !private ["s7CVarArgP", "subscript"]
+- !private ["Sl", "flattened"]
+- !private ["Sl", "init"]
+- !private ["Sl", "merge"]
+- !private ["Sl", "subscript"]
+- !private ["SL", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "flattened"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "merge"]
+- !private ["s28CustomDebugStringConvertibleP", "subscript"]
+- !private ["s17CustomReflectableP", "flattened"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "merge"]
+- !private ["s17CustomReflectableP", "subscript"]
+- !private ["s23CustomStringConvertibleP", "flattened"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "merge"]
+- !private ["s23CustomStringConvertibleP", "subscript"]
+- !private ["Se", "encoded"]
+- !private ["Se", "flattened"]
+- ["Se", "init"]
+- !private ["Se", "merge"]
+- !private ["Se", "milestone"]
+- !private ["Se", "subscript"]
+- !private ["SD", "flattened"]
+- !private ["SD", "init"]
+- !private ["SD", "merge"]
+- !private ["SD", "subscript"]
+- !private ["SE", "encoded"]
+- !private ["SE", "flattened"]
+- !private ["SE", "init"]
+- !private ["SE", "merge"]
+- !private ["SE", "milestone"]
+- !private ["SE", "subscript"]
+- !private ["SQ", ""]
+- !private ["SQ", "flattened"]
+- !private ["SQ", "init"]
+- !private ["SQ", "merge"]
+- !private ["SQ", "milestone"]
+- !private ["SQ", "rawValue"]
+- !private ["SQ", "subscript"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "flattened"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "init"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "merge"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "subscript"]
+- !private ["SH", "flattened"]
+- !private ["SH", "init"]
+- !private ["SH", "merge"]
+- !private ["SH", "milestone"]
+- !private ["SH", "rawValue"]
+- !private ["SH", "subscript"]
+- !private ["12TealiumMedia0B10CollectionC", ""]
+- !private ["12TealiumMedia0B10CollectionC", "encoded"]
+- !private ["12TealiumMedia0B10CollectionC", "milestone"]
+- ["12TealiumMedia0B8DispatchP", "MediaCollection"]
+- ["12TealiumMedia0B8DispatchP", "MediaEvent"]
+- ["12TealiumMedia0B8DispatchP", "Segment"]
+- !private ["12TealiumMedia0B8DispatchP", "StandardMediaEvent"]
+- !private ["12TealiumMedia0B8DispatchP", "String"]
+- !private ["12TealiumMedia0B8DispatchP", "TealiumKey"]
+- !private ["12TealiumMedia0B8DispatchP", "TealiumTrackRequest"]
+- ["12TealiumMedia0B8DispatchP", ""]
+- !private ["12TealiumMedia0B8DispatchP", "data"]
+- ["12TealiumMedia0B8DispatchP", "event"]
+- ["12TealiumMedia0B8DispatchP", "parameters"]
+- ["12TealiumMedia0B8DispatchP", "segment"]
+- ["12TealiumMedia0B8DispatchP", "trackRequest"]
+- ["12TealiumMedia0B5EventO", "custom"]
+- ["12TealiumMedia0B5EventO", "event"]
+- ["So8NSCodingP", ""]
+- !private ["So8NSObjectP", ""]
+- !private ["SY", "milestone"]
+- !private ["SY", "rawValue"]
+- !private ["12TealiumMedia7SegmentO", "dictionary"]
+- !private ["ST", ""]
+- !private ["ST", "flattened"]
+- !private ["ST", "init"]
+- !private ["ST", "merge"]
+- !private ["ST", "subscript"]
+- !private ["12TealiumMedia08StandardB5EventO", "RawValue"]
+- !private ["12TealiumMedia08StandardB5EventO", ""]
+- !private ["12TealiumMedia08StandardB5EventO", "milestone"]
+- !private ["12TealiumMedia08StandardB5EventO", "rawValue"]
+- ["11TealiumCore0A8DispatchP", "MediaCollection"]
+- ["11TealiumCore0A8DispatchP", "MediaEvent"]
+- ["11TealiumCore0A8DispatchP", "Segment"]
+- !private ["11TealiumCore0A8DispatchP", "StandardMediaEvent"]
+- !private ["11TealiumCore0A8DispatchP", "String"]
+- !private ["11TealiumCore0A8DispatchP", "TealiumKey"]
+- !private ["11TealiumCore0A8DispatchP", "TealiumTrackRequest"]
+- ["11TealiumCore0A8DispatchP", ""]
+- !private ["11TealiumCore0A8DispatchP", "data"]
+- ["11TealiumCore0A8DispatchP", "event"]
+- ["11TealiumCore0A8DispatchP", "parameters"]
+- ["11TealiumCore0A8DispatchP", "segment"]
+- ["11TealiumCore0A8DispatchP", "trackRequest"]
+- !private ["11TealiumCore0A3KeyO", "event"]
+- ["12TealiumMedia0aB5EventV", "MediaCollection"]
+- ["12TealiumMedia0aB5EventV", "MediaEvent"]
+- ["12TealiumMedia0aB5EventV", "Segment"]
+- !private ["12TealiumMedia0aB5EventV", "StandardMediaEvent"]
+- ["12TealiumMedia0aB5EventV", "String"]
+- !private ["12TealiumMedia0aB5EventV", "TealiumKey"]
+- ["12TealiumMedia0aB5EventV", "TealiumTrackRequest"]
+- ["12TealiumMedia0aB5EventV", ""]
+- ["12TealiumMedia0aB5EventV", "data"]
+- ["12TealiumMedia0aB5EventV", "event"]
+- ["12TealiumMedia0aB5EventV", "init"]
+- ["12TealiumMedia0aB5EventV", "parameters"]
+- ["12TealiumMedia0aB5EventV", "segment"]
+- ["12TealiumMedia0aB5EventV", "trackRequest"]
+- !private ["11TealiumCore0A7RequestP", "init"]
+- !private ["11TealiumCore0A12TrackRequestV", "init"]
+- ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "flattened"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "init"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "merge"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "subscript"]
+- !private ["s21_ObjectiveCBridgeableP", "flattened"]
+- !private ["s21_ObjectiveCBridgeableP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", "merge"]
+- !private ["s21_ObjectiveCBridgeableP", "subscript"]
+depends-nominal:
+- !private "s7CVarArgP"
+- !private "Sl"
+- !private "SL"
+- !private "s28CustomDebugStringConvertibleP"
+- !private "s17CustomReflectableP"
+- !private "s23CustomStringConvertibleP"
+- "Se"
+- !private "SD"
+- !private "SE"
+- !private "SQ"
+- !private "s30ExpressibleByDictionaryLiteralP"
+- !private "SH"
+- !private "12TealiumMedia0B10CollectionC"
+- "12TealiumMedia0B8DispatchP"
+- "12TealiumMedia0B5EventO"
+- "So8NSCodingP"
+- !private "So8NSObjectP"
+- !private "SY"
+- !private "12TealiumMedia7SegmentO"
+- !private "ST"
+- !private "12TealiumMedia08StandardB5EventO"
+- "11TealiumCore0A8DispatchP"
+- !private "11TealiumCore0A3KeyO"
+- "12TealiumMedia0aB5EventV"
+- !private "11TealiumCore0A7RequestP"
+- !private "11TealiumCore0A12TrackRequestV"
+- "s35_ExpressibleByBuiltinIntegerLiteralP"
+- !private "s35_HasCustomAnyHashableRepresentationP"
+- !private "s21_ObjectiveCBridgeableP"
+depends-dynamic-lookup:
+depends-external:
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/XPC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/ObjectiveC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Combine.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Dispatch.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Network.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Darwin.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Foundation.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreFoundation.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreGraphics.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/os.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Swift.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/IOKit.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/SwiftOnoneSupport.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/dyld.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumMedia.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumVisitorService.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLifecycle.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCollect.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/compact_unwind_encoding.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/xpc/XPC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/Dispatch.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Network.framework/Headers/Network.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/ApplicationServices.framework/Headers/ApplicationServices.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/os.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "b29f5a4aa72c7916422b337dfa8862df"

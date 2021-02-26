@@ -1,0 +1,15 @@
+version: "Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+options: "c35d186e91c838c26a597ae491ddc0bf"
+build_time: [1614369870, 405925000]
+inputs:
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/remotecommands/JSONRemoteCommandResponse.swift": [1613515644, 640774451]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/remotecommands/RemoteCommand.swift": [1613515644, 640929185]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/remotecommands/RemoteCommandConfig.swift": [1613515644, 641066329]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/remotecommands/RemoteCommandProtocols.swift": [1613515644, 641183372]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/remotecommands/RemoteCommandResponse.swift": [1613515644, 641284894]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/remotecommands/RemoteCommandsConstants.swift": [1613515644, 641385502]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/remotecommands/RemoteCommandsExtensions.swift": [1613515644, 641494705]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/remotecommands/RemoteCommandsManager.swift": [1613515644, 641628783]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/remotecommands/RemoteCommandsModule.swift": [1613515644, 641748667]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/remotecommands/RemoteHTTPCommand.swift": [1614104191, 562582700]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/remotecommands/TealiumRegistration.swift": [1613515644, 642085192]

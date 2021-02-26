@@ -1,0 +1,220 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "Expiry"
+- "TimeUnit"
+provides-nominal:
+- "11TealiumCore6ExpiryO"
+- "11TealiumCore8TimeUnitO"
+provides-member:
+- ["11TealiumCore6ExpiryO", ""]
+- ["11TealiumCore8TimeUnitO", ""]
+provides-dynamic-lookup:
+depends-top-level:
+- "=="
+- "AssignmentPrecedence"
+- "Calendar"
+- "Date"
+- !private "DateComponents"
+- "Expiry"
+- !private "FloatLiteralType"
+- "Int"
+- !private "IntegerLiteralType"
+- !private "TealiumValue"
+- "TimeUnit"
+depends-member:
+- ["10Foundation8CalendarV", "Component"]
+- !private ["10Foundation8CalendarV", "autoupdatingCurrent"]
+- !private ["10Foundation8CalendarV", "date"]
+- !private ["10Foundation8CalendarV", "init"]
+- !private ["SL", "init"]
+- !private ["10Foundation8CalendarV9ComponentO", "day"]
+- !private ["10Foundation8CalendarV9ComponentO", "hour"]
+- !private ["10Foundation8CalendarV9ComponentO", "minute"]
+- !private ["10Foundation8CalendarV9ComponentO", "month"]
+- !private ["10Foundation8CalendarV9ComponentO", "year"]
+- ["s28CustomDebugStringConvertibleP", "Component"]
+- ["s28CustomDebugStringConvertibleP", ""]
+- !private ["s28CustomDebugStringConvertibleP", "autoupdatingCurrent"]
+- !private ["s28CustomDebugStringConvertibleP", "calendar"]
+- !private ["s28CustomDebugStringConvertibleP", "date"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "setValue"]
+- ["s17CustomReflectableP", "Component"]
+- !private ["s17CustomReflectableP", "autoupdatingCurrent"]
+- !private ["s17CustomReflectableP", "calendar"]
+- !private ["s17CustomReflectableP", "date"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "setValue"]
+- ["s23CustomStringConvertibleP", "Component"]
+- ["s23CustomStringConvertibleP", ""]
+- !private ["s23CustomStringConvertibleP", "autoupdatingCurrent"]
+- !private ["s23CustomStringConvertibleP", "calendar"]
+- !private ["s23CustomStringConvertibleP", "date"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "setValue"]
+- !private ["10Foundation4DateV", "init"]
+- !private ["10Foundation14DateComponentsV", "calendar"]
+- !private ["10Foundation14DateComponentsV", "init"]
+- !private ["10Foundation14DateComponentsV", "setValue"]
+- ["Se", "Component"]
+- !private ["Se", "autoupdatingCurrent"]
+- !private ["Se", "calendar"]
+- !private ["Se", "date"]
+- !private ["Se", "init"]
+- !private ["Se", "setValue"]
+- ["SE", "Component"]
+- !private ["SE", "autoupdatingCurrent"]
+- !private ["SE", "calendar"]
+- !private ["SE", "date"]
+- !private ["SE", "init"]
+- !private ["SE", "setValue"]
+- ["SQ", "=="]
+- ["SQ", "Component"]
+- ["SQ", ""]
+- ["SQ", "_rawHashValue"]
+- !private ["SQ", "autoupdatingCurrent"]
+- !private ["SQ", "calendar"]
+- !private ["SQ", "component"]
+- !private ["SQ", "date"]
+- !private ["SQ", "day"]
+- ["SQ", "days"]
+- !private ["SQ", "gregorian"]
+- ["SQ", "hash"]
+- ["SQ", "hashValue"]
+- !private ["SQ", "hour"]
+- ["SQ", "hours"]
+- !private ["SQ", "init"]
+- !private ["SQ", "minute"]
+- ["SQ", "minutes"]
+- !private ["SQ", "month"]
+- ["SQ", "months"]
+- !private ["SQ", "setValue"]
+- !private ["SQ", "year"]
+- ["SQ", "years"]
+- !private ["11TealiumCore6ExpiryO", "Calendar"]
+- ["11TealiumCore6ExpiryO", "Date"]
+- !private ["11TealiumCore6ExpiryO", "DateComponents"]
+- ["11TealiumCore6ExpiryO", "Int"]
+- !private ["11TealiumCore6ExpiryO", "TealiumValue"]
+- ["11TealiumCore6ExpiryO", "TimeUnit"]
+- ["11TealiumCore6ExpiryO", "after"]
+- ["11TealiumCore6ExpiryO", "afterCustom"]
+- ["11TealiumCore6ExpiryO", "date"]
+- ["11TealiumCore6ExpiryO", "forever"]
+- ["11TealiumCore6ExpiryO", "session"]
+- ["11TealiumCore6ExpiryO", "untilRestart"]
+- ["SH", "=="]
+- ["SH", "Component"]
+- ["SH", ""]
+- ["SH", "_rawHashValue"]
+- !private ["SH", "autoupdatingCurrent"]
+- !private ["SH", "calendar"]
+- !private ["SH", "component"]
+- !private ["SH", "date"]
+- !private ["SH", "day"]
+- ["SH", "days"]
+- !private ["SH", "gregorian"]
+- ["SH", "hash"]
+- ["SH", "hashValue"]
+- !private ["SH", "hour"]
+- ["SH", "hours"]
+- !private ["SH", "init"]
+- !private ["SH", "minute"]
+- ["SH", "minutes"]
+- !private ["SH", "month"]
+- ["SH", "months"]
+- !private ["SH", "setValue"]
+- !private ["SH", "year"]
+- ["SH", "years"]
+- !private ["s6HasherV", "combine"]
+- !private ["10Foundation8CalendarV10IdentifierO", "gregorian"]
+- !private ["So8NSCodingP", ""]
+- ["10Foundation20ReferenceConvertibleP", "Component"]
+- !private ["10Foundation20ReferenceConvertibleP", "autoupdatingCurrent"]
+- !private ["10Foundation20ReferenceConvertibleP", "calendar"]
+- !private ["10Foundation20ReferenceConvertibleP", "date"]
+- !private ["10Foundation20ReferenceConvertibleP", "init"]
+- !private ["10Foundation20ReferenceConvertibleP", "setValue"]
+- !private ["11TealiumCore0A5ValueO", "defaultMinutesBetweenSession"]
+- ["11TealiumCore8TimeUnitO", "=="]
+- ["11TealiumCore8TimeUnitO", "Calendar"]
+- ["11TealiumCore8TimeUnitO", ""]
+- ["11TealiumCore8TimeUnitO", "__derived_enum_equals"]
+- ["11TealiumCore8TimeUnitO", "_rawHashValue"]
+- ["11TealiumCore8TimeUnitO", "component"]
+- ["11TealiumCore8TimeUnitO", "days"]
+- ["11TealiumCore8TimeUnitO", "hash"]
+- ["11TealiumCore8TimeUnitO", "hashValue"]
+- ["11TealiumCore8TimeUnitO", "hours"]
+- ["11TealiumCore8TimeUnitO", "minutes"]
+- ["11TealiumCore8TimeUnitO", "months"]
+- ["11TealiumCore8TimeUnitO", "years"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "init"]
+- !private ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+- ["s21_ObjectiveCBridgeableP", "Component"]
+- ["s21_ObjectiveCBridgeableP", ""]
+- !private ["s21_ObjectiveCBridgeableP", "autoupdatingCurrent"]
+- !private ["s21_ObjectiveCBridgeableP", "calendar"]
+- !private ["s21_ObjectiveCBridgeableP", "date"]
+- !private ["s21_ObjectiveCBridgeableP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", "setValue"]
+depends-nominal:
+- "10Foundation8CalendarV"
+- !private "SL"
+- !private "10Foundation8CalendarV9ComponentO"
+- "s28CustomDebugStringConvertibleP"
+- "s17CustomReflectableP"
+- "s23CustomStringConvertibleP"
+- !private "10Foundation4DateV"
+- !private "10Foundation14DateComponentsV"
+- "Se"
+- "SE"
+- "SQ"
+- "11TealiumCore6ExpiryO"
+- "SH"
+- !private "s6HasherV"
+- !private "10Foundation8CalendarV10IdentifierO"
+- !private "So8NSCodingP"
+- "10Foundation20ReferenceConvertibleP"
+- !private "11TealiumCore0A5ValueO"
+- "11TealiumCore8TimeUnitO"
+- !private "s30_CustomPlaygroundQuickLookableP"
+- !private "s35_ExpressibleByBuiltinIntegerLiteralP"
+- "s21_ObjectiveCBridgeableP"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/XPC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/ObjectiveC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Combine.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Dispatch.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Network.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Darwin.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Foundation.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreFoundation.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreGraphics.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/os.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/IOKit.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/SwiftOnoneSupport.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/dyld.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumMedia.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumVisitorService.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLifecycle.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCollect.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/compact_unwind_encoding.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/xpc/XPC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/Dispatch.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Network.framework/Headers/Network.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/ApplicationServices.framework/Headers/ApplicationServices.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/os.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "44091d7393e3dfb32252b028de499647"

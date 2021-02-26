@@ -1,0 +1,4 @@
+module TealiumLocation {
+    header "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/TealiumLocation-Swift.h"
+    requires objc
+}

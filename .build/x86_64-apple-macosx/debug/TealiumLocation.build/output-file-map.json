@@ -1,0 +1,47 @@
+{
+  "": {
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/master.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/location/Geofences.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/Geofences.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/Geofences.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/Geofences~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/Geofences.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/location/LocationDelegate.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/LocationDelegate.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/LocationDelegate.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/LocationDelegate~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/LocationDelegate.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/location/LocationManagerProtocols.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/LocationManagerProtocols.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/LocationManagerProtocols.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/LocationManagerProtocols~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/LocationManagerProtocols.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/location/LocationModule.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/LocationModule.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/LocationModule.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/LocationModule~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/LocationModule.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/location/TealiumLocationConstants.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/TealiumLocationConstants.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/TealiumLocationConstants.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/TealiumLocationConstants~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/TealiumLocationConstants.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/location/TealiumLocationExtensions.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/TealiumLocationExtensions.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/TealiumLocationExtensions.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/TealiumLocationExtensions~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/TealiumLocationExtensions.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/location/TealiumLocationManager.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/TealiumLocationManager.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/TealiumLocationManager.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/TealiumLocationManager~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/TealiumLocationManager.swiftdeps"
+  }
+}

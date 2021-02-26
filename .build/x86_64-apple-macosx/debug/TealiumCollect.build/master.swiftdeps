@@ -1,0 +1,10 @@
+version: "Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+options: "4d829f1c4bb055f8260802c6e2a28cfc"
+build_time: [1614369870, 404097000]
+inputs:
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/collect/CollectConstants.swift": [1613515644, 639910464]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/collect/CollectError.swift": [1613515644, 640027762]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/collect/CollectEventDispatcher.swift": [1613515644, 640163798]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/collect/CollectExtensions.swift": [1613515644, 640261994]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/collect/CollectModule.swift": [1613515644, 640474713]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/collect/TealiumCollectProtocol.swift": [1613515644, 640571225]

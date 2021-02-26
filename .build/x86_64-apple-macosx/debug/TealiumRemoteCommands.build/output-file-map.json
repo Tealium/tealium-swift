@@ -1,0 +1,71 @@
+{
+  "": {
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/master.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/remotecommands/JSONRemoteCommandResponse.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/JSONRemoteCommandResponse.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/JSONRemoteCommandResponse.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/JSONRemoteCommandResponse~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/JSONRemoteCommandResponse.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/remotecommands/RemoteCommand.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommand.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommand.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommand~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommand.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/remotecommands/RemoteCommandConfig.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandConfig.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandConfig.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandConfig~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandConfig.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/remotecommands/RemoteCommandProtocols.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandProtocols.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandProtocols.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandProtocols~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandProtocols.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/remotecommands/RemoteCommandResponse.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandResponse.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandResponse.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandResponse~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandResponse.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/remotecommands/RemoteCommandsConstants.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandsConstants.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandsConstants.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandsConstants~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandsConstants.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/remotecommands/RemoteCommandsExtensions.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandsExtensions.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandsExtensions.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandsExtensions~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandsExtensions.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/remotecommands/RemoteCommandsManager.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandsManager.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandsManager.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandsManager~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandsManager.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/remotecommands/RemoteCommandsModule.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandsModule.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandsModule.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandsModule~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteCommandsModule.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/remotecommands/RemoteHTTPCommand.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteHTTPCommand.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteHTTPCommand.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteHTTPCommand~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/RemoteHTTPCommand.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/dispatchers/remotecommands/TealiumRegistration.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/TealiumRegistration.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/TealiumRegistration.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/TealiumRegistration~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/TealiumRegistration.swiftdeps"
+  }
+}

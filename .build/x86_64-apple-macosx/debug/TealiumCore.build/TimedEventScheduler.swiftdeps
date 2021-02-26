@@ -1,0 +1,347 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "Schedulable"
+- "TimedEventScheduler"
+provides-nominal:
+- "11TealiumCore11SchedulableP"
+- "11TealiumCore19TimedEventSchedulerC"
+provides-member:
+- ["11TealiumCore11SchedulableP", ""]
+- ["11TealiumCore19TimedEventSchedulerC", ""]
+provides-dynamic-lookup:
+- "cancel"
+- "clearAll"
+- "context"
+- "events"
+- "id"
+- "log"
+- "sendTimedEvent"
+- "shouldDrop"
+- "shouldPurge"
+- "shouldQueue"
+- "start"
+- "stop"
+depends-top-level:
+- "=="
+- "??"
+- "AssignmentPrecedence"
+- "Bool"
+- !private "BooleanLiteralType"
+- "CastingPrecedence"
+- "DispatchValidator"
+- "FloatLiteralType"
+- "IntegerLiteralType"
+- "Schedulable"
+- "String"
+- "StringLiteralType"
+- "TealiumContextProtocol"
+- !private "TealiumEvent"
+- "TealiumLogLevel"
+- !private "TealiumLogRequest"
+- "TealiumRequest"
+- "TealiumTrackRequest"
+- !private "TealiumValue"
+- "TimedEvent"
+- "TimedEventScheduler"
+- !private "context"
+- !private "events"
+- !private "log"
+depends-member:
+- !private ["Sa", "forEach"]
+- !private ["SK", ""]
+- !private ["SK", "forEach"]
+- !private ["s7CVarArgP", "forEach"]
+- !private ["s7CVarArgP", "init"]
+- !private ["s7CVarArgP", "removeAll"]
+- !private ["s7CVarArgP", "subscript"]
+- !private ["Sl", ""]
+- !private ["Sl", "forEach"]
+- !private ["Sl", "init"]
+- !private ["Sl", "removeAll"]
+- !private ["Sl", "subscript"]
+- !private ["SL", "debug"]
+- !private ["SL", "error"]
+- !private ["SL", "event"]
+- !private ["10Foundation15ContiguousBytesP", "forEach"]
+- !private ["s28CustomDebugStringConvertibleP", "forEach"]
+- !private ["s28CustomDebugStringConvertibleP", "general"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "removeAll"]
+- !private ["s28CustomDebugStringConvertibleP", "subscript"]
+- !private ["s17CustomReflectableP", "forEach"]
+- !private ["s17CustomReflectableP", "general"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "removeAll"]
+- !private ["s17CustomReflectableP", "subscript"]
+- !private ["s23CustomStringConvertibleP", "appendInterpolation"]
+- !private ["s23CustomStringConvertibleP", "appendLiteral"]
+- !private ["s23CustomStringConvertibleP", "debug"]
+- !private ["s23CustomStringConvertibleP", "error"]
+- !private ["s23CustomStringConvertibleP", "forEach"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "removeAll"]
+- !private ["s23CustomStringConvertibleP", "subscript"]
+- !private ["10Foundation12DataProtocolP", ""]
+- !private ["10Foundation12DataProtocolP", "forEach"]
+- !private ["Se", "event"]
+- !private ["Se", "forEach"]
+- !private ["Se", "general"]
+- !private ["Se", "init"]
+- !private ["Se", "removeAll"]
+- !private ["Se", "subscript"]
+- !private ["s26DefaultStringInterpolationV", "appendInterpolation"]
+- !private ["s26DefaultStringInterpolationV", "appendLiteral"]
+- !private ["SD", "init"]
+- !private ["SD", "removeAll"]
+- !private ["SD", "subscript"]
+- ["11TealiumCore17DispatchValidatorP", "String"]
+- !private ["11TealiumCore17DispatchValidatorP", "TealiumEvent"]
+- !private ["11TealiumCore17DispatchValidatorP", "TealiumLogRequest"]
+- !private ["11TealiumCore17DispatchValidatorP", "TealiumValue"]
+- ["11TealiumCore17DispatchValidatorP", "TimedEvent"]
+- ["11TealiumCore17DispatchValidatorP", ""]
+- ["11TealiumCore17DispatchValidatorP", "cancel"]
+- ["11TealiumCore17DispatchValidatorP", "clearAll"]
+- !private ["11TealiumCore17DispatchValidatorP", "context"]
+- ["11TealiumCore17DispatchValidatorP", "events"]
+- ["11TealiumCore17DispatchValidatorP", "id"]
+- !private ["11TealiumCore17DispatchValidatorP", "log"]
+- ["11TealiumCore17DispatchValidatorP", "sendTimedEvent"]
+- ["11TealiumCore17DispatchValidatorP", "shouldDrop"]
+- ["11TealiumCore17DispatchValidatorP", "shouldPurge"]
+- ["11TealiumCore17DispatchValidatorP", "shouldQueue"]
+- ["11TealiumCore17DispatchValidatorP", "start"]
+- ["11TealiumCore17DispatchValidatorP", "stop"]
+- !private ["SE", "event"]
+- !private ["SE", "forEach"]
+- !private ["SE", "general"]
+- !private ["SE", "init"]
+- !private ["SE", "removeAll"]
+- !private ["SE", "subscript"]
+- !private ["SQ", ""]
+- !private ["SQ", "debug"]
+- !private ["SQ", "error"]
+- !private ["SQ", "event"]
+- !private ["SQ", "eventInfo"]
+- !private ["SQ", "forEach"]
+- !private ["SQ", "general"]
+- !private ["SQ", "init"]
+- !private ["SQ", "logger"]
+- !private ["SQ", "name"]
+- !private ["SQ", "removeAll"]
+- !private ["SQ", "stopTimer"]
+- !private ["SQ", "subscript"]
+- !private ["SQ", "timedEventTriggers"]
+- !private ["s25ExpressibleByArrayLiteralP", ""]
+- !private ["s25ExpressibleByArrayLiteralP", "forEach"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "init"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "removeAll"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "subscript"]
+- !private ["s23ExpressibleByNilLiteralP", "general"]
+- !private ["s23ExpressibleByNilLiteralP", "init"]
+- !private ["s32ExpressibleByStringInterpolationP", "StringInterpolation"]
+- !private ["s32ExpressibleByStringInterpolationP", "init"]
+- !private ["SH", "debug"]
+- !private ["SH", "error"]
+- !private ["SH", "eventInfo"]
+- !private ["SH", "forEach"]
+- !private ["SH", "general"]
+- !private ["SH", "init"]
+- !private ["SH", "logger"]
+- !private ["SH", "name"]
+- !private ["SH", "removeAll"]
+- !private ["SH", "stopTimer"]
+- !private ["SH", "subscript"]
+- !private ["SH", "timedEventTriggers"]
+- !private ["11TealiumCore10LogRequestP", "init"]
+- !private ["SM", ""]
+- !private ["SM", "forEach"]
+- !private ["10Foundation19MutableDataProtocolP", "forEach"]
+- !private ["Sq", "general"]
+- !private ["Sk", ""]
+- !private ["Sk", "forEach"]
+- !private ["Sm", ""]
+- !private ["Sm", "forEach"]
+- !private ["SY", "debug"]
+- !private ["SY", "error"]
+- ["11TealiumCore11SchedulableP", "String"]
+- !private ["11TealiumCore11SchedulableP", "TealiumEvent"]
+- !private ["11TealiumCore11SchedulableP", "TealiumLogRequest"]
+- !private ["11TealiumCore11SchedulableP", "TealiumValue"]
+- ["11TealiumCore11SchedulableP", "TimedEvent"]
+- ["11TealiumCore11SchedulableP", ""]
+- ["11TealiumCore11SchedulableP", "cancel"]
+- ["11TealiumCore11SchedulableP", "clearAll"]
+- !private ["11TealiumCore11SchedulableP", "context"]
+- ["11TealiumCore11SchedulableP", "events"]
+- ["11TealiumCore11SchedulableP", "id"]
+- !private ["11TealiumCore11SchedulableP", "log"]
+- ["11TealiumCore11SchedulableP", "sendTimedEvent"]
+- ["11TealiumCore11SchedulableP", "shouldDrop"]
+- ["11TealiumCore11SchedulableP", "shouldPurge"]
+- ["11TealiumCore11SchedulableP", "shouldQueue"]
+- ["11TealiumCore11SchedulableP", "start"]
+- ["11TealiumCore11SchedulableP", "stop"]
+- !private ["ST", ""]
+- !private ["ST", "forEach"]
+- !private ["ST", "init"]
+- !private ["ST", "removeAll"]
+- !private ["ST", "subscript"]
+- !private ["s27StringInterpolationProtocolP", "appendInterpolation"]
+- !private ["s27StringInterpolationProtocolP", "appendLiteral"]
+- !private ["s27StringInterpolationProtocolP", "init"]
+- !private ["11TealiumCore0A6ConfigC", "logger"]
+- !private ["11TealiumCore0A6ConfigC", "timedEventTriggers"]
+- !private ["11TealiumCore0A15ContextProtocolP", "config"]
+- !private ["11TealiumCore0A15ContextProtocolP", "track"]
+- !private ["11TealiumCore0A8DispatchP", "init"]
+- !private ["11TealiumCore0A5EventV", ""]
+- !private ["11TealiumCore0A5EventV", "init"]
+- !private ["11TealiumCore0A11LogCategoryO", "general"]
+- !private ["11TealiumCore0A8LogLevelO", "debug"]
+- !private ["11TealiumCore0A8LogLevelO", "error"]
+- !private ["11TealiumCore0A10LogRequestV", "init"]
+- !private ["11TealiumCore0A14LoggerProtocolP", "log"]
+- !private ["11TealiumCore0A7RequestP", "event"]
+- !private ["11TealiumCore0A12TrackRequestV", ""]
+- !private ["11TealiumCore0A12TrackRequestV", "event"]
+- !private ["11TealiumCore0A5ValueO", "timedEvent"]
+- !private ["s16TextOutputStreamP", "appendInterpolation"]
+- !private ["s16TextOutputStreamP", "appendLiteral"]
+- !private ["11TealiumCore10TimedEventV", ""]
+- !private ["11TealiumCore10TimedEventV", "eventInfo"]
+- !private ["11TealiumCore10TimedEventV", "init"]
+- !private ["11TealiumCore10TimedEventV", "name"]
+- !private ["11TealiumCore10TimedEventV", "stopTimer"]
+- ["11TealiumCore19TimedEventSchedulerC", "Bool"]
+- ["11TealiumCore19TimedEventSchedulerC", "String"]
+- ["11TealiumCore19TimedEventSchedulerC", "TealiumContextProtocol"]
+- !private ["11TealiumCore19TimedEventSchedulerC", "TealiumEvent"]
+- ["11TealiumCore19TimedEventSchedulerC", "TealiumLogLevel"]
+- !private ["11TealiumCore19TimedEventSchedulerC", "TealiumLogRequest"]
+- ["11TealiumCore19TimedEventSchedulerC", "TealiumRequest"]
+- !private ["11TealiumCore19TimedEventSchedulerC", "TealiumTrackRequest"]
+- !private ["11TealiumCore19TimedEventSchedulerC", "TealiumValue"]
+- ["11TealiumCore19TimedEventSchedulerC", "TimedEvent"]
+- ["11TealiumCore19TimedEventSchedulerC", ""]
+- ["11TealiumCore19TimedEventSchedulerC", "cancel"]
+- ["11TealiumCore19TimedEventSchedulerC", "clearAll"]
+- ["11TealiumCore19TimedEventSchedulerC", "context"]
+- ["11TealiumCore19TimedEventSchedulerC", "deinit"]
+- ["11TealiumCore19TimedEventSchedulerC", "events"]
+- ["11TealiumCore19TimedEventSchedulerC", "id"]
+- ["11TealiumCore19TimedEventSchedulerC", "init"]
+- !private ["11TealiumCore19TimedEventSchedulerC", "log"]
+- ["11TealiumCore19TimedEventSchedulerC", "sendTimedEvent"]
+- ["11TealiumCore19TimedEventSchedulerC", "shouldDrop"]
+- ["11TealiumCore19TimedEventSchedulerC", "shouldPurge"]
+- ["11TealiumCore19TimedEventSchedulerC", "shouldQueue"]
+- ["11TealiumCore19TimedEventSchedulerC", "start"]
+- ["11TealiumCore19TimedEventSchedulerC", "stop"]
+- !private ["11TealiumCore17TimedEventTriggerV", "end"]
+- !private ["11TealiumCore17TimedEventTriggerV", "name"]
+- !private ["11TealiumCore17TimedEventTriggerV", "start"]
+- !private ["s14_ArrayProtocolP", "forEach"]
+- !private ["s24_DestructorSafeContainerP", "forEach"]
+- !private ["s35_ExpressibleByBuiltinBooleanLiteralP", "init"]
+- !private ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+- ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s19_HasContiguousBytesP", "forEach"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "forEach"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "init"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "removeAll"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "subscript"]
+- !private ["s21_ObjectiveCBridgeableP", "forEach"]
+- !private ["s21_ObjectiveCBridgeableP", "general"]
+- !private ["s21_ObjectiveCBridgeableP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", "removeAll"]
+- !private ["s21_ObjectiveCBridgeableP", "subscript"]
+depends-nominal:
+- !private "Sa"
+- !private "SK"
+- !private "s7CVarArgP"
+- !private "Sl"
+- !private "SL"
+- !private "10Foundation15ContiguousBytesP"
+- !private "s28CustomDebugStringConvertibleP"
+- !private "s17CustomReflectableP"
+- !private "s23CustomStringConvertibleP"
+- !private "10Foundation12DataProtocolP"
+- !private "Se"
+- !private "s26DefaultStringInterpolationV"
+- !private "SD"
+- "11TealiumCore17DispatchValidatorP"
+- !private "SE"
+- !private "SQ"
+- !private "s25ExpressibleByArrayLiteralP"
+- !private "s30ExpressibleByDictionaryLiteralP"
+- !private "s23ExpressibleByNilLiteralP"
+- !private "s32ExpressibleByStringInterpolationP"
+- !private "SH"
+- !private "11TealiumCore10LogRequestP"
+- !private "SM"
+- !private "10Foundation19MutableDataProtocolP"
+- !private "Sq"
+- !private "Sk"
+- !private "Sm"
+- !private "SY"
+- "11TealiumCore11SchedulableP"
+- !private "ST"
+- !private "s27StringInterpolationProtocolP"
+- !private "11TealiumCore0A6ConfigC"
+- !private "11TealiumCore0A15ContextProtocolP"
+- !private "11TealiumCore0A8DispatchP"
+- !private "11TealiumCore0A5EventV"
+- !private "11TealiumCore0A11LogCategoryO"
+- !private "11TealiumCore0A8LogLevelO"
+- !private "11TealiumCore0A10LogRequestV"
+- !private "11TealiumCore0A14LoggerProtocolP"
+- !private "11TealiumCore0A7RequestP"
+- !private "11TealiumCore0A12TrackRequestV"
+- !private "11TealiumCore0A5ValueO"
+- !private "s16TextOutputStreamP"
+- !private "11TealiumCore10TimedEventV"
+- "11TealiumCore19TimedEventSchedulerC"
+- !private "11TealiumCore17TimedEventTriggerV"
+- !private "s14_ArrayProtocolP"
+- !private "s24_DestructorSafeContainerP"
+- !private "s35_ExpressibleByBuiltinBooleanLiteralP"
+- !private "s35_ExpressibleByBuiltinIntegerLiteralP"
+- "s34_ExpressibleByBuiltinStringLiteralP"
+- !private "s19_HasContiguousBytesP"
+- !private "s35_HasCustomAnyHashableRepresentationP"
+- !private "s21_ObjectiveCBridgeableP"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/XPC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/ObjectiveC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Dispatch.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Network.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreFoundation.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreGraphics.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/os.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/IOKit.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/SwiftOnoneSupport.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/dyld.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumMedia.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumVisitorService.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLifecycle.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCollect.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/compact_unwind_encoding.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/xpc/XPC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/Dispatch.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Network.framework/Headers/Network.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/ApplicationServices.framework/Headers/ApplicationServices.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/os.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "70e896f9e31932810b249ba7e66b8bde"

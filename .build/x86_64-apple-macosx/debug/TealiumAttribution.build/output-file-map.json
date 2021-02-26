@@ -1,0 +1,65 @@
+{
+  "": {
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/master.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/attribution/AttributionConstants.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/AttributionConstants.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/AttributionConstants.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/AttributionConstants~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/AttributionConstants.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/attribution/AttributionData.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/AttributionData.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/AttributionData.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/AttributionData~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/AttributionData.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/attribution/AttributionDataProtocol.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/AttributionDataProtocol.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/AttributionDataProtocol.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/AttributionDataProtocol~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/AttributionDataProtocol.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/attribution/AttributionExtensions.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/AttributionExtensions.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/AttributionExtensions.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/AttributionExtensions~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/AttributionExtensions.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/attribution/AttributionModule.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/AttributionModule.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/AttributionModule.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/AttributionModule~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/AttributionModule.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/attribution/Attributor.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/Attributor.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/Attributor.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/Attributor~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/Attributor.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/attribution/PersistentAttributionData.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/PersistentAttributionData.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/PersistentAttributionData.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/PersistentAttributionData~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/PersistentAttributionData.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/attribution/TealiumASIdentifierManager.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/TealiumASIdentifierManager.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/TealiumASIdentifierManager.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/TealiumASIdentifierManager~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/TealiumASIdentifierManager.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/attribution/TealiumAdClient.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/TealiumAdClient.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/TealiumAdClient.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/TealiumAdClient~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/TealiumAdClient.swiftdeps"
+  },
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/attribution/TealiumSKAdAttribution.swift": {
+    "dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/TealiumSKAdAttribution.d",
+    "object": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/TealiumSKAdAttribution.swift.o",
+    "swiftmodule": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/TealiumSKAdAttribution~partial.swiftmodule",
+    "swift-dependencies": "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/TealiumSKAdAttribution.swiftdeps"
+  }
+}

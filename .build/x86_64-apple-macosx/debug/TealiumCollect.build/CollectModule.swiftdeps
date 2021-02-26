@@ -1,0 +1,388 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "CollectModule"
+provides-nominal:
+- "14TealiumCollect0B6ModuleC"
+provides-member:
+- ["14TealiumCollect0B6ModuleC", ""]
+provides-dynamic-lookup:
+- "batchTrack"
+- "collect"
+- "config"
+- "delegate"
+- "dynamicTrack"
+- "id"
+- "isConsentEvent"
+- "prepareForDispatch"
+- "track"
+depends-top-level:
+- "!"
+- !private "!="
+- !private "=="
+- "AssignmentPrecedence"
+- "Bool"
+- !private "BooleanLiteralType"
+- "CastingPrecedence"
+- !private "CollectError"
+- !private "CollectEventDispatcher"
+- !private "CollectKey"
+- "CollectModule"
+- "CollectProtocol"
+- "Dispatcher"
+- "ModuleCompletion"
+- "ModuleDelegate"
+- "ModuleNames"
+- "String"
+- "TealiumBatchTrackRequest"
+- "TealiumConfig"
+- !private "TealiumKey"
+- "TealiumRequest"
+- "TealiumTrackRequest"
+- !private "collect"
+- !private "config"
+- "isConsentEvent"
+- "prepareForDispatch"
+depends-member:
+- !private ["Sa", "contains"]
+- !private ["Sa", "filter"]
+- !private ["Sa", "isEmpty"]
+- !private ["Sa", "map"]
+- !private ["SK", ""]
+- !private ["SK", "contains"]
+- !private ["SK", "filter"]
+- !private ["SK", "isEmpty"]
+- !private ["SK", "map"]
+- !private ["s7CVarArgP", "contains"]
+- !private ["s7CVarArgP", "filter"]
+- !private ["s7CVarArgP", "isEmpty"]
+- !private ["s7CVarArgP", "map"]
+- !private ["s7CVarArgP", "subscript"]
+- !private ["14TealiumCollect0B5ErrorO", ""]
+- !private ["14TealiumCollect0B5ErrorO", "collectNotInitialized"]
+- !private ["14TealiumCollect0B5ErrorO", "invalidBatchRequest"]
+- !private ["14TealiumCollect0B5ErrorO", "trackNotApplicableForCollectModule"]
+- !private ["14TealiumCollect0B15EventDispatcherC", ""]
+- !private ["14TealiumCollect0B15EventDispatcherC", "init"]
+- !private ["14TealiumCollect0B3KeyO", "moduleName"]
+- ["14TealiumCollect0B6ModuleC", "Bool"]
+- !private ["14TealiumCollect0B6ModuleC", "CollectError"]
+- !private ["14TealiumCollect0B6ModuleC", "CollectEventDispatcher"]
+- !private ["14TealiumCollect0B6ModuleC", "CollectKey"]
+- ["14TealiumCollect0B6ModuleC", "CollectProtocol"]
+- ["14TealiumCollect0B6ModuleC", "ModuleCompletion"]
+- ["14TealiumCollect0B6ModuleC", "ModuleDelegate"]
+- ["14TealiumCollect0B6ModuleC", "ModuleNames"]
+- ["14TealiumCollect0B6ModuleC", "String"]
+- ["14TealiumCollect0B6ModuleC", "TealiumBatchTrackRequest"]
+- ["14TealiumCollect0B6ModuleC", "TealiumConfig"]
+- !private ["14TealiumCollect0B6ModuleC", "TealiumKey"]
+- ["14TealiumCollect0B6ModuleC", "TealiumRequest"]
+- ["14TealiumCollect0B6ModuleC", "TealiumTrackRequest"]
+- ["14TealiumCollect0B6ModuleC", ""]
+- ["14TealiumCollect0B6ModuleC", "batchTrack"]
+- ["14TealiumCollect0B6ModuleC", "collect"]
+- ["14TealiumCollect0B6ModuleC", "config"]
+- ["14TealiumCollect0B6ModuleC", "deinit"]
+- ["14TealiumCollect0B6ModuleC", "delegate"]
+- ["14TealiumCollect0B6ModuleC", "dynamicTrack"]
+- ["14TealiumCollect0B6ModuleC", "id"]
+- ["14TealiumCollect0B6ModuleC", "init"]
+- ["14TealiumCollect0B6ModuleC", "isConsentEvent"]
+- ["14TealiumCollect0B6ModuleC", "prepareForDispatch"]
+- ["14TealiumCollect0B6ModuleC", "track"]
+- !private ["14TealiumCollect0B8ProtocolP", "dispatch"]
+- !private ["14TealiumCollect0B8ProtocolP", "dispatchBatch"]
+- !private ["14TealiumCollect0B8ProtocolP", "init"]
+- !private ["Sl", ""]
+- !private ["Sl", "contains"]
+- !private ["Sl", "filter"]
+- !private ["Sl", "isEmpty"]
+- !private ["Sl", "map"]
+- !private ["Sl", "subscript"]
+- !private ["SL", "init"]
+- !private ["SL", "trackDictionary"]
+- !private ["10Foundation15ContiguousBytesP", "contains"]
+- !private ["10Foundation15ContiguousBytesP", "filter"]
+- !private ["10Foundation15ContiguousBytesP", "isEmpty"]
+- !private ["10Foundation15ContiguousBytesP", "map"]
+- !private ["s28CustomDebugStringConvertibleP", "contains"]
+- !private ["s28CustomDebugStringConvertibleP", "filter"]
+- !private ["s28CustomDebugStringConvertibleP", "isEmpty"]
+- !private ["s28CustomDebugStringConvertibleP", "map"]
+- !private ["s28CustomDebugStringConvertibleP", "subscript"]
+- !private ["s17CustomReflectableP", "contains"]
+- !private ["s17CustomReflectableP", "filter"]
+- !private ["s17CustomReflectableP", "isEmpty"]
+- !private ["s17CustomReflectableP", "map"]
+- !private ["s17CustomReflectableP", "subscript"]
+- !private ["s23CustomStringConvertibleP", "contains"]
+- !private ["s23CustomStringConvertibleP", "filter"]
+- !private ["s23CustomStringConvertibleP", "isEmpty"]
+- !private ["s23CustomStringConvertibleP", "map"]
+- !private ["s23CustomStringConvertibleP", "subscript"]
+- !private ["10Foundation12DataProtocolP", ""]
+- !private ["10Foundation12DataProtocolP", "contains"]
+- !private ["10Foundation12DataProtocolP", "filter"]
+- !private ["10Foundation12DataProtocolP", "isEmpty"]
+- !private ["10Foundation12DataProtocolP", "map"]
+- !private ["Se", "compressed"]
+- !private ["Se", "contains"]
+- !private ["Se", "filter"]
+- !private ["Se", "init"]
+- !private ["Se", "isEmpty"]
+- !private ["Se", "map"]
+- !private ["Se", "subscript"]
+- !private ["Se", "trackDictionary"]
+- !private ["Se", "trackRequests"]
+- !private ["SD", "subscript"]
+- !private ["11TealiumCore10DispatcherP", "CollectError"]
+- !private ["11TealiumCore10DispatcherP", "CollectEventDispatcher"]
+- !private ["11TealiumCore10DispatcherP", "CollectKey"]
+- ["11TealiumCore10DispatcherP", "ModuleNames"]
+- !private ["11TealiumCore10DispatcherP", "TealiumBatchTrackRequest"]
+- !private ["11TealiumCore10DispatcherP", "TealiumKey"]
+- !private ["11TealiumCore10DispatcherP", "TealiumTrackRequest"]
+- ["11TealiumCore10DispatcherP", ""]
+- !private ["11TealiumCore10DispatcherP", "batchTrack"]
+- !private ["11TealiumCore10DispatcherP", "collect"]
+- ["11TealiumCore10DispatcherP", "config"]
+- !private ["11TealiumCore10DispatcherP", "delegate"]
+- ["11TealiumCore10DispatcherP", "dynamicTrack"]
+- ["11TealiumCore10DispatcherP", "id"]
+- ["11TealiumCore10DispatcherP", "init"]
+- !private ["11TealiumCore10DispatcherP", "isConsentEvent"]
+- !private ["11TealiumCore10DispatcherP", "prepareForDispatch"]
+- !private ["11TealiumCore10DispatcherP", "track"]
+- !private ["SE", "compressed"]
+- !private ["SE", "contains"]
+- !private ["SE", "filter"]
+- !private ["SE", "init"]
+- !private ["SE", "isEmpty"]
+- !private ["SE", "map"]
+- !private ["SE", "subscript"]
+- !private ["SE", "trackDictionary"]
+- !private ["SE", "trackRequests"]
+- !private ["SQ", ""]
+- !private ["SQ", "account"]
+- !private ["SQ", "collectNotInitialized"]
+- !private ["SQ", "contains"]
+- !private ["SQ", "failure"]
+- !private ["SQ", "filter"]
+- !private ["SQ", "init"]
+- !private ["SQ", "invalidBatchRequest"]
+- !private ["SQ", "isEmpty"]
+- !private ["SQ", "map"]
+- !private ["SQ", "overrideCollectProfile"]
+- !private ["SQ", "profile"]
+- !private ["SQ", "subscript"]
+- !private ["SQ", "success"]
+- !private ["SQ", "trackDictionary"]
+- !private ["SQ", "trackNotApplicableForCollectModule"]
+- !private ["s5ErrorP", ""]
+- !private ["s5ErrorP", "collectNotInitialized"]
+- !private ["s5ErrorP", "invalidBatchRequest"]
+- !private ["s5ErrorP", "trackNotApplicableForCollectModule"]
+- !private ["s25ExpressibleByArrayLiteralP", ""]
+- !private ["s25ExpressibleByArrayLiteralP", "contains"]
+- !private ["s25ExpressibleByArrayLiteralP", "filter"]
+- !private ["s25ExpressibleByArrayLiteralP", "isEmpty"]
+- !private ["s25ExpressibleByArrayLiteralP", "map"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "subscript"]
+- !private ["s23ExpressibleByNilLiteralP", "init"]
+- !private ["SH", "account"]
+- !private ["SH", "collectNotInitialized"]
+- !private ["SH", "contains"]
+- !private ["SH", "failure"]
+- !private ["SH", "filter"]
+- !private ["SH", "invalidBatchRequest"]
+- !private ["SH", "isEmpty"]
+- !private ["SH", "map"]
+- !private ["SH", "overrideCollectProfile"]
+- !private ["SH", "profile"]
+- !private ["SH", "subscript"]
+- !private ["SH", "success"]
+- !private ["SH", "trackNotApplicableForCollectModule"]
+- !private ["10Foundation14LocalizedErrorP", "collectNotInitialized"]
+- !private ["10Foundation14LocalizedErrorP", "invalidBatchRequest"]
+- !private ["10Foundation14LocalizedErrorP", "trackNotApplicableForCollectModule"]
+- ["11TealiumCore11ModuleNamesO", "collect"]
+- !private ["SM", ""]
+- !private ["SM", "contains"]
+- !private ["SM", "filter"]
+- !private ["SM", "isEmpty"]
+- !private ["SM", "map"]
+- !private ["10Foundation19MutableDataProtocolP", "contains"]
+- !private ["10Foundation19MutableDataProtocolP", "filter"]
+- !private ["10Foundation19MutableDataProtocolP", "isEmpty"]
+- !private ["10Foundation19MutableDataProtocolP", "map"]
+- !private ["So8NSCodingP", ""]
+- !private ["So8NSObjectP", ""]
+- !private ["Sk", ""]
+- !private ["Sk", "contains"]
+- !private ["Sk", "filter"]
+- !private ["Sk", "isEmpty"]
+- !private ["Sk", "map"]
+- !private ["Sm", ""]
+- !private ["Sm", "contains"]
+- !private ["Sm", "filter"]
+- !private ["Sm", "isEmpty"]
+- !private ["Sm", "map"]
+- !private ["SY", "collectNotInitialized"]
+- !private ["SY", "invalidBatchRequest"]
+- !private ["SY", "trackNotApplicableForCollectModule"]
+- !private ["s6ResultO", "failure"]
+- !private ["s6ResultO", "success"]
+- !private ["ST", ""]
+- !private ["ST", "contains"]
+- !private ["ST", "filter"]
+- !private ["ST", "isEmpty"]
+- !private ["ST", "map"]
+- !private ["ST", "subscript"]
+- !private ["11TealiumCore0A17BatchTrackRequestV", "compressed"]
+- !private ["11TealiumCore0A17BatchTrackRequestV", "init"]
+- !private ["11TealiumCore0A17BatchTrackRequestV", "trackRequests"]
+- !private ["11TealiumCore0A6ConfigC", "account"]
+- !private ["11TealiumCore0A6ConfigC", "overrideCollectProfile"]
+- !private ["11TealiumCore0A6ConfigC", "profile"]
+- !private ["11TealiumCore0A3KeyO", "account"]
+- !private ["11TealiumCore0A3KeyO", "dispatchService"]
+- !private ["11TealiumCore0A3KeyO", "event"]
+- !private ["11TealiumCore0A3KeyO", "profile"]
+- !private ["11TealiumCore0A3KeyO", "updateConsentCookieEventNames"]
+- !private ["11TealiumCore0A6ModuleP", "CollectError"]
+- !private ["11TealiumCore0A6ModuleP", "CollectEventDispatcher"]
+- !private ["11TealiumCore0A6ModuleP", "CollectKey"]
+- ["11TealiumCore0A6ModuleP", "ModuleNames"]
+- !private ["11TealiumCore0A6ModuleP", "TealiumBatchTrackRequest"]
+- !private ["11TealiumCore0A6ModuleP", "TealiumKey"]
+- !private ["11TealiumCore0A6ModuleP", "TealiumTrackRequest"]
+- ["11TealiumCore0A6ModuleP", ""]
+- !private ["11TealiumCore0A6ModuleP", "batchTrack"]
+- !private ["11TealiumCore0A6ModuleP", "collect"]
+- ["11TealiumCore0A6ModuleP", "config"]
+- !private ["11TealiumCore0A6ModuleP", "delegate"]
+- ["11TealiumCore0A6ModuleP", "dynamicTrack"]
+- ["11TealiumCore0A6ModuleP", "id"]
+- ["11TealiumCore0A6ModuleP", "init"]
+- !private ["11TealiumCore0A6ModuleP", "isConsentEvent"]
+- !private ["11TealiumCore0A6ModuleP", "prepareForDispatch"]
+- !private ["11TealiumCore0A6ModuleP", "track"]
+- !private ["11TealiumCore0A7RequestP", "compressed"]
+- !private ["11TealiumCore0A7RequestP", "init"]
+- !private ["11TealiumCore0A7RequestP", "trackDictionary"]
+- !private ["11TealiumCore0A7RequestP", "trackRequests"]
+- !private ["11TealiumCore0A12TrackRequestV", "init"]
+- !private ["11TealiumCore0A12TrackRequestV", "trackDictionary"]
+- !private ["s14_ArrayProtocolP", "contains"]
+- !private ["s14_ArrayProtocolP", "filter"]
+- !private ["s14_ArrayProtocolP", "isEmpty"]
+- !private ["s14_ArrayProtocolP", "map"]
+- !private ["s24_DestructorSafeContainerP", "contains"]
+- !private ["s24_DestructorSafeContainerP", "filter"]
+- !private ["s24_DestructorSafeContainerP", "isEmpty"]
+- !private ["s24_DestructorSafeContainerP", "map"]
+- !private ["s35_ExpressibleByBuiltinBooleanLiteralP", "init"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s19_HasContiguousBytesP", "contains"]
+- !private ["s19_HasContiguousBytesP", "filter"]
+- !private ["s19_HasContiguousBytesP", "isEmpty"]
+- !private ["s19_HasContiguousBytesP", "map"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "contains"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "filter"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "isEmpty"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "map"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "subscript"]
+- !private ["s21_ObjectiveCBridgeableP", "contains"]
+- !private ["s21_ObjectiveCBridgeableP", "filter"]
+- !private ["s21_ObjectiveCBridgeableP", "isEmpty"]
+- !private ["s21_ObjectiveCBridgeableP", "map"]
+- !private ["s21_ObjectiveCBridgeableP", "subscript"]
+depends-nominal:
+- !private "Sa"
+- !private "SK"
+- !private "s7CVarArgP"
+- !private "14TealiumCollect0B5ErrorO"
+- !private "14TealiumCollect0B15EventDispatcherC"
+- !private "14TealiumCollect0B3KeyO"
+- "14TealiumCollect0B6ModuleC"
+- !private "14TealiumCollect0B8ProtocolP"
+- !private "Sl"
+- !private "SL"
+- !private "10Foundation15ContiguousBytesP"
+- !private "s28CustomDebugStringConvertibleP"
+- !private "s17CustomReflectableP"
+- !private "s23CustomStringConvertibleP"
+- !private "10Foundation12DataProtocolP"
+- !private "Se"
+- !private "SD"
+- "11TealiumCore10DispatcherP"
+- !private "SE"
+- !private "SQ"
+- !private "s5ErrorP"
+- !private "s25ExpressibleByArrayLiteralP"
+- !private "s30ExpressibleByDictionaryLiteralP"
+- !private "s23ExpressibleByNilLiteralP"
+- !private "SH"
+- !private "10Foundation14LocalizedErrorP"
+- "11TealiumCore11ModuleNamesO"
+- !private "SM"
+- !private "10Foundation19MutableDataProtocolP"
+- !private "So8NSCodingP"
+- !private "So8NSObjectP"
+- !private "Sk"
+- !private "Sm"
+- !private "SY"
+- !private "s6ResultO"
+- !private "ST"
+- !private "11TealiumCore0A17BatchTrackRequestV"
+- !private "11TealiumCore0A6ConfigC"
+- !private "11TealiumCore0A3KeyO"
+- "11TealiumCore0A6ModuleP"
+- !private "11TealiumCore0A7RequestP"
+- !private "11TealiumCore0A12TrackRequestV"
+- !private "s14_ArrayProtocolP"
+- !private "s24_DestructorSafeContainerP"
+- !private "s35_ExpressibleByBuiltinBooleanLiteralP"
+- !private "s34_ExpressibleByBuiltinStringLiteralP"
+- !private "s19_HasContiguousBytesP"
+- !private "s35_HasCustomAnyHashableRepresentationP"
+- !private "s21_ObjectiveCBridgeableP"
+depends-dynamic-lookup:
+depends-external:
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/XPC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/ObjectiveC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Combine.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Dispatch.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Network.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Darwin.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Foundation.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreFoundation.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreGraphics.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/os.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Swift.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/IOKit.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/SwiftOnoneSupport.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/dyld.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumMedia.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumVisitorService.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLifecycle.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCollect.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/compact_unwind_encoding.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/xpc/XPC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/Dispatch.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Network.framework/Headers/Network.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/ApplicationServices.framework/Headers/ApplicationServices.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/os.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "5dd1efdcc38e3ccaa006dcccf0a14844"

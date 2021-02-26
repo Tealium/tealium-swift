@@ -1,0 +1,513 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "LegacyConnectivityMonitor"
+provides-nominal:
+- "11TealiumCore25LegacyConnectivityMonitorC"
+provides-member:
+- ["11TealiumCore25LegacyConnectivityMonitorC", ""]
+provides-dynamic-lookup:
+- "cancelAutoStatusRefresh"
+- "checkConnectionFromURLSessionTask"
+- "checkIsConnected"
+- "completion"
+- "config"
+- "connectionLost"
+- "connectionRestored"
+- "connectionType"
+- "currentConnectionStatus"
+- "currentConnnectionType"
+- "isCellular"
+- "isConnected"
+- "isConnectedToNetwork"
+- "isExpensive"
+- "isWired"
+- "refreshConnectivityStatus"
+- "timer"
+- "urlSession"
+depends-top-level:
+- !private "!"
+- "!="
+- !private "&"
+- !private "&&"
+- !private "=="
+- !private "??"
+- !private "AF_INET"
+- "AssignmentPrecedence"
+- "Bool"
+- !private "BooleanLiteralType"
+- !private "CastingPrecedence"
+- "ConnectivityConstants"
+- !private "ConnectivityKey"
+- "ConnectivityMonitorProtocol"
+- !private "DispatchQueue"
+- "Error"
+- !private "FloatLiteralType"
+- "Int"
+- !private "IntegerLiteralType"
+- "LegacyConnectivityMonitor"
+- !private "MemoryLayout"
+- "Result"
+- "SCNetworkReachabilityCreateWithAddress"
+- "SCNetworkReachabilityFlags"
+- !private "SCNetworkReachabilityGetFlags"
+- "String"
+- !private "StringLiteralType"
+- "TealiumConfig"
+- "TealiumConnectivityError"
+- "TealiumRepeatingTimer"
+- !private "TimeInterval"
+- !private "UInt32"
+- !private "UInt8"
+- !private "URL"
+- "URLError"
+- !private "URLRequest"
+- !private "URLSession"
+- "URLSessionProtocol"
+- "Void"
+- !private "config"
+- !private "connectionType"
+- !private "currentConnnectionType"
+- !private "in_addr"
+- !private "isCellular"
+- !private "isConnected"
+- !private "isConnectedToNetwork"
+- !private "kSCNetworkFlagsConnectionRequired"
+- !private "kSCNetworkFlagsReachable"
+- !private "sa_family_t"
+- "sockaddr"
+- !private "sockaddr_in"
+- !private "timer"
+- !private "withUnsafePointer"
+depends-member:
+- !private ["s18AdditiveArithmeticP", ""]
+- !private ["s18AdditiveArithmeticP", "callAsFunction"]
+- !private ["s18AdditiveArithmeticP", "init"]
+- !private ["SB", "init"]
+- !private ["Sz", ""]
+- !private ["Sz", "callAsFunction"]
+- !private ["Sz", "init"]
+- !private ["s7CVarArgP", ""]
+- !private ["s7CVarArgP", "callAsFunction"]
+- !private ["s7CVarArgP", "ephemeral"]
+- !private ["s7CVarArgP", "init"]
+- !private ["s7CVarArgP", "withMemoryRebound"]
+- !private ["SL", ""]
+- !private ["SL", "callAsFunction"]
+- !private ["SL", "init"]
+- !private ["SL", "withMemoryRebound"]
+- !private ["11TealiumCore21ConnectivityConstantsO", "connectivityTestURL"]
+- !private ["11TealiumCore21ConnectivityConstantsO", "defaultInterval"]
+- !private ["11TealiumCore15ConnectivityKeyO", "connectionTypeCell"]
+- !private ["11TealiumCore15ConnectivityKeyO", "connectionTypeNone"]
+- !private ["11TealiumCore15ConnectivityKeyO", "connectionTypeWifi"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "AF_INET"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "ConnectivityConstants"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "ConnectivityKey"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "DispatchQueue"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "MemoryLayout"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "SCNetworkReachabilityCreateWithAddress"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "SCNetworkReachabilityFlags"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "SCNetworkReachabilityGetFlags"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "TealiumConnectivityError"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "TealiumRepeatingTimer"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "TimeInterval"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "UInt32"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "UInt8"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "URL"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "URLRequest"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "URLSession"]
+- ["11TealiumCore27ConnectivityMonitorProtocolP", ""]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "cancelAutoStatusRefresh"]
+- ["11TealiumCore27ConnectivityMonitorProtocolP", "checkIsConnected"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "completion"]
+- ["11TealiumCore27ConnectivityMonitorProtocolP", "config"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "connectionLost"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "connectionRestored"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "connectionType"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "currentConnectionStatus"]
+- ["11TealiumCore27ConnectivityMonitorProtocolP", "currentConnnectionType"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "in_addr"]
+- ["11TealiumCore27ConnectivityMonitorProtocolP", "init"]
+- ["11TealiumCore27ConnectivityMonitorProtocolP", "isCellular"]
+- ["11TealiumCore27ConnectivityMonitorProtocolP", "isConnected"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "isConnectedToNetwork"]
+- ["11TealiumCore27ConnectivityMonitorProtocolP", "isExpensive"]
+- ["11TealiumCore27ConnectivityMonitorProtocolP", "isWired"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "kSCNetworkFlagsConnectionRequired"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "kSCNetworkFlagsReachable"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "refreshConnectivityStatus"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "sa_family_t"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "sockaddr"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "sockaddr_in"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "timer"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "urlSession"]
+- !private ["11TealiumCore27ConnectivityMonitorProtocolP", "withUnsafePointer"]
+- !private ["s28CustomDebugStringConvertibleP", ""]
+- !private ["s28CustomDebugStringConvertibleP", "ephemeral"]
+- !private ["s28CustomDebugStringConvertibleP", "httpMethod"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "withMemoryRebound"]
+- !private ["s17CustomReflectableP", ""]
+- !private ["s17CustomReflectableP", "callAsFunction"]
+- !private ["s17CustomReflectableP", "httpMethod"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "withMemoryRebound"]
+- !private ["s23CustomStringConvertibleP", ""]
+- !private ["s23CustomStringConvertibleP", "callAsFunction"]
+- !private ["s23CustomStringConvertibleP", "ephemeral"]
+- !private ["s23CustomStringConvertibleP", "httpMethod"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- !private ["Se", "callAsFunction"]
+- !private ["Se", "init"]
+- ["So18OS_dispatch_objectC", ""]
+- !private ["So18OS_dispatch_objectC", "init"]
+- !private ["So18OS_dispatch_objectC", "sync"]
+- !private ["So17OS_dispatch_queueC", "init"]
+- !private ["Sd", "init"]
+- !private ["SE", "callAsFunction"]
+- !private ["SE", "init"]
+- !private ["SQ", "ArrayLiteralElement"]
+- !private ["SQ", "Element"]
+- !private ["SQ", "RawValue"]
+- !private ["SQ", ""]
+- !private ["SQ", "callAsFunction"]
+- !private ["SQ", "connectivityRefreshEnabled"]
+- !private ["SQ", "connectivityRefreshInterval"]
+- !private ["SQ", "ephemeral"]
+- !private ["SQ", "failure"]
+- !private ["SQ", "httpMethod"]
+- !private ["SQ", "init"]
+- !private ["SQ", "noConnection"]
+- !private ["SQ", "rawValue"]
+- !private ["SQ", "success"]
+- !private ["SQ", "wifiOnlySending"]
+- !private ["SQ", "withMemoryRebound"]
+- !private ["s5ErrorP", ""]
+- !private ["s5ErrorP", "noConnection"]
+- !private ["s25ExpressibleByArrayLiteralP", "ArrayLiteralElement"]
+- !private ["s25ExpressibleByArrayLiteralP", "Element"]
+- !private ["s25ExpressibleByArrayLiteralP", "RawValue"]
+- !private ["s25ExpressibleByArrayLiteralP", ""]
+- !private ["s25ExpressibleByArrayLiteralP", "init"]
+- !private ["s25ExpressibleByArrayLiteralP", "rawValue"]
+- !private ["s25ExpressibleByFloatLiteralP", ""]
+- !private ["s25ExpressibleByFloatLiteralP", "init"]
+- !private ["s27ExpressibleByIntegerLiteralP", ""]
+- !private ["s27ExpressibleByIntegerLiteralP", "callAsFunction"]
+- !private ["s27ExpressibleByIntegerLiteralP", "init"]
+- !private ["s23ExpressibleByNilLiteralP", "init"]
+- !private ["s17FixedWidthIntegerP", "callAsFunction"]
+- !private ["s17FixedWidthIntegerP", "init"]
+- !private ["SF", ""]
+- !private ["SF", "init"]
+- !private ["SH", ""]
+- !private ["SH", "callAsFunction"]
+- !private ["SH", "connectivityRefreshEnabled"]
+- !private ["SH", "connectivityRefreshInterval"]
+- !private ["SH", "ephemeral"]
+- !private ["SH", "failure"]
+- !private ["SH", "httpMethod"]
+- !private ["SH", "init"]
+- !private ["SH", "noConnection"]
+- !private ["SH", "success"]
+- !private ["SH", "wifiOnlySending"]
+- !private ["SH", "withMemoryRebound"]
+- !private ["Si", "callAsFunction"]
+- !private ["11TealiumCore25LegacyConnectivityMonitorC", "AF_INET"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "Bool"]
+- !private ["11TealiumCore25LegacyConnectivityMonitorC", "ConnectivityConstants"]
+- !private ["11TealiumCore25LegacyConnectivityMonitorC", "ConnectivityKey"]
+- !private ["11TealiumCore25LegacyConnectivityMonitorC", "DispatchQueue"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "Error"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "Int"]
+- !private ["11TealiumCore25LegacyConnectivityMonitorC", "MemoryLayout"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "Result"]
+- !private ["11TealiumCore25LegacyConnectivityMonitorC", "SCNetworkReachabilityCreateWithAddress"]
+- !private ["11TealiumCore25LegacyConnectivityMonitorC", "SCNetworkReachabilityFlags"]
+- !private ["11TealiumCore25LegacyConnectivityMonitorC", "SCNetworkReachabilityGetFlags"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "String"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "TealiumConfig"]
+- !private ["11TealiumCore25LegacyConnectivityMonitorC", "TealiumConnectivityError"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "TealiumRepeatingTimer"]
+- !private ["11TealiumCore25LegacyConnectivityMonitorC", "TimeInterval"]
+- !private ["11TealiumCore25LegacyConnectivityMonitorC", "UInt32"]
+- !private ["11TealiumCore25LegacyConnectivityMonitorC", "UInt8"]
+- !private ["11TealiumCore25LegacyConnectivityMonitorC", "URL"]
+- !private ["11TealiumCore25LegacyConnectivityMonitorC", "URLError"]
+- !private ["11TealiumCore25LegacyConnectivityMonitorC", "URLRequest"]
+- !private ["11TealiumCore25LegacyConnectivityMonitorC", "URLSession"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "URLSessionProtocol"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "Void"]
+- !private ["11TealiumCore25LegacyConnectivityMonitorC", ""]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "cancelAutoStatusRefresh"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "checkConnectionFromURLSessionTask"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "checkIsConnected"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "completion"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "config"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "connectionLost"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "connectionRestored"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "connectionType"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "currentConnectionStatus"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "currentConnnectionType"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "deinit"]
+- !private ["11TealiumCore25LegacyConnectivityMonitorC", "in_addr"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "init"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "isCellular"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "isConnected"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "isConnectedToNetwork"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "isExpensive"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "isWired"]
+- !private ["11TealiumCore25LegacyConnectivityMonitorC", "kSCNetworkFlagsConnectionRequired"]
+- !private ["11TealiumCore25LegacyConnectivityMonitorC", "kSCNetworkFlagsReachable"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "refreshConnectivityStatus"]
+- !private ["11TealiumCore25LegacyConnectivityMonitorC", "sa_family_t"]
+- !private ["11TealiumCore25LegacyConnectivityMonitorC", "sockaddr"]
+- !private ["11TealiumCore25LegacyConnectivityMonitorC", "sockaddr_in"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "timer"]
+- ["11TealiumCore25LegacyConnectivityMonitorC", "urlSession"]
+- !private ["11TealiumCore25LegacyConnectivityMonitorC", "withUnsafePointer"]
+- !private ["10Foundation14LocalizedErrorP", "noConnection"]
+- !private ["s25LosslessStringConvertibleP", ""]
+- !private ["s25LosslessStringConvertibleP", "callAsFunction"]
+- !private ["s25LosslessStringConvertibleP", "init"]
+- !private ["s12MemoryLayoutO", "size"]
+- !private ["s10MirrorPathP", "callAsFunction"]
+- !private ["So8NSCodingP", ""]
+- !private ["So9NSCopyingP", "ephemeral"]
+- ["So8NSObjectC", ""]
+- !private ["So8NSObjectC", "activate"]
+- !private ["So8NSObjectC", "ephemeral"]
+- !private ["So8NSObjectC", "init"]
+- !private ["So8NSObjectC", "resume"]
+- !private ["So8NSObjectC", "sessionWithConfiguration"]
+- !private ["So8NSObjectC", "setTarget"]
+- !private ["So8NSObjectC", "suspend"]
+- !private ["So8NSObjectC", "sync"]
+- !private ["So8NSObjectP", ""]
+- !private ["So8NSObjectP", "activate"]
+- !private ["So8NSObjectP", "ephemeral"]
+- !private ["So8NSObjectP", "init"]
+- !private ["So8NSObjectP", "resume"]
+- !private ["So8NSObjectP", "sessionWithConfiguration"]
+- !private ["So8NSObjectP", "setTarget"]
+- !private ["So8NSObjectP", "suspend"]
+- !private ["So8NSObjectP", "sync"]
+- !private ["Sj", ""]
+- !private ["Sj", "callAsFunction"]
+- !private ["Sj", "init"]
+- ["So9OS_objectC", ""]
+- !private ["So9OS_objectC", "activate"]
+- !private ["So9OS_objectC", "init"]
+- !private ["So9OS_objectC", "resume"]
+- !private ["So9OS_objectC", "setTarget"]
+- !private ["So9OS_objectC", "suspend"]
+- !private ["So9OS_objectC", "sync"]
+- !private ["s9OptionSetP", "ArrayLiteralElement"]
+- !private ["s9OptionSetP", "Element"]
+- !private ["s9OptionSetP", "RawValue"]
+- !private ["s9OptionSetP", "init"]
+- !private ["s9OptionSetP", "rawValue"]
+- !private ["SY", "ArrayLiteralElement"]
+- !private ["SY", "Element"]
+- !private ["SY", "RawValue"]
+- !private ["SY", ""]
+- !private ["SY", "init"]
+- !private ["SY", "noConnection"]
+- !private ["SY", "rawValue"]
+- !private ["10Foundation20ReferenceConvertibleP", "httpMethod"]
+- !private ["10Foundation20ReferenceConvertibleP", "init"]
+- !private ["11TealiumCore8RepeaterP", "eventHandler"]
+- !private ["11TealiumCore8RepeaterP", "init"]
+- !private ["11TealiumCore8RepeaterP", "resume"]
+- !private ["11TealiumCore8RepeaterP", "suspend"]
+- !private ["s6ResultO", "failure"]
+- !private ["s6ResultO", "success"]
+- !private ["So26SCNetworkReachabilityFlagsV", "ArrayLiteralElement"]
+- !private ["So26SCNetworkReachabilityFlagsV", "Element"]
+- !private ["So26SCNetworkReachabilityFlagsV", "RawValue"]
+- !private ["So26SCNetworkReachabilityFlagsV", "init"]
+- !private ["So26SCNetworkReachabilityFlagsV", "rawValue"]
+- !private ["s10SIMDScalarP", "callAsFunction"]
+- !private ["s10SIMDScalarP", "init"]
+- !private ["7Combine9SchedulerP", "init"]
+- !private ["ST", "Element"]
+- !private ["s10SetAlgebraP", "ArrayLiteralElement"]
+- !private ["s10SetAlgebraP", "Element"]
+- !private ["s10SetAlgebraP", "RawValue"]
+- !private ["s10SetAlgebraP", ""]
+- !private ["s10SetAlgebraP", "init"]
+- !private ["s10SetAlgebraP", "rawValue"]
+- !private ["SZ", "callAsFunction"]
+- !private ["s13SignedNumericP", ""]
+- !private ["s13SignedNumericP", "callAsFunction"]
+- !private ["s13SignedNumericP", "init"]
+- !private ["Sx", ""]
+- !private ["Sx", "callAsFunction"]
+- !private ["Sx", "init"]
+- !private ["Sx", "withMemoryRebound"]
+- !private ["11TealiumCore0A6ConfigC", "connectivityRefreshEnabled"]
+- !private ["11TealiumCore0A6ConfigC", "connectivityRefreshInterval"]
+- !private ["11TealiumCore0A6ConfigC", "wifiOnlySending"]
+- !private ["11TealiumCore0A17ConnectivityErrorO", ""]
+- !private ["11TealiumCore0A17ConnectivityErrorO", "noConnection"]
+- !private ["11TealiumCore0A14RepeatingTimerC", ""]
+- !private ["11TealiumCore0A14RepeatingTimerC", "eventHandler"]
+- !private ["11TealiumCore0A14RepeatingTimerC", "init"]
+- !private ["11TealiumCore0A14RepeatingTimerC", "resume"]
+- !private ["11TealiumCore0A14RepeatingTimerC", "suspend"]
+- !private ["s20TextOutputStreamableP", "init"]
+- !private ["s6UInt32V", "init"]
+- !private ["s5UInt8V", "init"]
+- !private ["10Foundation3URLV", "init"]
+- !private ["10Foundation10URLRequestV", "httpMethod"]
+- !private ["10Foundation10URLRequestV", "init"]
+- !private ["So12NSURLSessionC", ""]
+- !private ["So12NSURLSessionC", "init"]
+- !private ["So25NSURLSessionConfigurationC", "ephemeral"]
+- !private ["11TealiumCore26URLSessionDataTaskProtocolP", "resume"]
+- !private ["11TealiumCore18URLSessionProtocolP", "init"]
+- !private ["11TealiumCore18URLSessionProtocolP", "tealiumDataTask"]
+- !private ["SP", "withMemoryRebound"]
+- !private ["SU", "init"]
+- !private ["s15_CVarArgAlignedP", "init"]
+- !private ["s22_CVarArgPassedAsDoubleP", "init"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "callAsFunction"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "init"]
+- !private ["s30_CustomPlaygroundQuickLookableP", "withMemoryRebound"]
+- !private ["s35_ExpressibleByBuiltinBooleanLiteralP", "init"]
+- !private ["s33_ExpressibleByBuiltinFloatLiteralP", "init"]
+- !private ["s35_ExpressibleByBuiltinIntegerLiteralP", "callAsFunction"]
+- ["s35_ExpressibleByBuiltinIntegerLiteralP", "init"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s34_ExpressibleByFileReferenceLiteralP", "init"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "callAsFunction"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "init"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "ephemeral"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "init"]
+- !private ["10Foundation37_KeyValueCodingAndObservingPublishingP", "ephemeral"]
+- !private ["10Foundation37_KeyValueCodingAndObservingPublishingP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", ""]
+- !private ["s21_ObjectiveCBridgeableP", "callAsFunction"]
+- !private ["s21_ObjectiveCBridgeableP", "httpMethod"]
+- !private ["s21_ObjectiveCBridgeableP", "init"]
+- !private ["s8_PointerP", "withMemoryRebound"]
+- !private ["s14_StringElementP", "init"]
+- !private ["So7in_addrV", "init"]
+- !private ["So11sockaddr_inV", "init"]
+- !private ["So11sockaddr_inV", "sin_family"]
+- !private ["So11sockaddr_inV", "sin_len"]
+depends-nominal:
+- !private "s18AdditiveArithmeticP"
+- !private "SB"
+- !private "Sz"
+- !private "s7CVarArgP"
+- !private "SL"
+- !private "11TealiumCore21ConnectivityConstantsO"
+- !private "11TealiumCore15ConnectivityKeyO"
+- "11TealiumCore27ConnectivityMonitorProtocolP"
+- !private "s28CustomDebugStringConvertibleP"
+- !private "s17CustomReflectableP"
+- !private "s23CustomStringConvertibleP"
+- !private "Se"
+- "So18OS_dispatch_objectC"
+- !private "So17OS_dispatch_queueC"
+- !private "Sd"
+- !private "SE"
+- !private "SQ"
+- !private "s5ErrorP"
+- !private "s25ExpressibleByArrayLiteralP"
+- !private "s25ExpressibleByFloatLiteralP"
+- !private "s27ExpressibleByIntegerLiteralP"
+- !private "s23ExpressibleByNilLiteralP"
+- !private "s17FixedWidthIntegerP"
+- !private "SF"
+- !private "SH"
+- !private "Si"
+- "11TealiumCore25LegacyConnectivityMonitorC"
+- !private "10Foundation14LocalizedErrorP"
+- !private "s25LosslessStringConvertibleP"
+- !private "s12MemoryLayoutO"
+- !private "s10MirrorPathP"
+- !private "So8NSCodingP"
+- !private "So9NSCopyingP"
+- "So8NSObjectC"
+- !private "So8NSObjectP"
+- !private "Sj"
+- "So9OS_objectC"
+- !private "s9OptionSetP"
+- !private "SY"
+- !private "10Foundation20ReferenceConvertibleP"
+- !private "11TealiumCore8RepeaterP"
+- !private "s6ResultO"
+- !private "So26SCNetworkReachabilityFlagsV"
+- !private "s10SIMDScalarP"
+- !private "7Combine9SchedulerP"
+- !private "ST"
+- !private "s10SetAlgebraP"
+- !private "SZ"
+- !private "s13SignedNumericP"
+- !private "Sx"
+- !private "11TealiumCore0A6ConfigC"
+- !private "11TealiumCore0A17ConnectivityErrorO"
+- !private "11TealiumCore0A14RepeatingTimerC"
+- !private "s20TextOutputStreamableP"
+- !private "s6UInt32V"
+- !private "s5UInt8V"
+- !private "10Foundation3URLV"
+- !private "10Foundation10URLRequestV"
+- !private "So12NSURLSessionC"
+- !private "So25NSURLSessionConfigurationC"
+- !private "11TealiumCore26URLSessionDataTaskProtocolP"
+- !private "11TealiumCore18URLSessionProtocolP"
+- !private "SP"
+- !private "SU"
+- !private "s15_CVarArgAlignedP"
+- !private "s22_CVarArgPassedAsDoubleP"
+- !private "s30_CustomPlaygroundQuickLookableP"
+- !private "s35_ExpressibleByBuiltinBooleanLiteralP"
+- !private "s33_ExpressibleByBuiltinFloatLiteralP"
+- "s35_ExpressibleByBuiltinIntegerLiteralP"
+- !private "s34_ExpressibleByBuiltinStringLiteralP"
+- !private "s34_ExpressibleByFileReferenceLiteralP"
+- !private "s35_HasCustomAnyHashableRepresentationP"
+- !private "10Foundation27_KeyValueCodingAndObservingP"
+- !private "10Foundation37_KeyValueCodingAndObservingPublishingP"
+- !private "s21_ObjectiveCBridgeableP"
+- !private "s8_PointerP"
+- !private "s14_StringElementP"
+- !private "So7in_addrV"
+- !private "So11sockaddr_inV"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/XPC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/ObjectiveC.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Dispatch.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/Network.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreFoundation.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/CoreGraphics.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/os.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/IOKit.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/SwiftOnoneSupport.swiftmodule/x86_64-apple-macos.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/dyld.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumMedia.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumVisitorService.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLifecycle.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumLocation.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumAttribution.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumRemoteCommands.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCollect.build/module.modulemap"
+- "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumTagManagement.build/module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/mach-o/compact_unwind_encoding.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/xpc/XPC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/Dispatch.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Network.framework/Headers/Network.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/ApplicationServices.framework/Headers/ApplicationServices.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/apinotes/os.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "cb395f80cb2dc75185e30ba2e3c70d23"

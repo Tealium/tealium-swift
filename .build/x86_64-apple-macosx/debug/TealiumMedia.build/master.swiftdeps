@@ -1,0 +1,14 @@
+version: "Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+options: "41120c81f3dbf627e69d90f76c65ff99"
+build_time: [1614369870, 403848000]
+inputs:
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/media/MediaCollection.swift": [1614104191, 556301620]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/media/MediaDispatch.swift": [1614104191, 556570795]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/media/MediaEventService.swift": [1614104191, 556747287]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/media/MediaExtensions.swift": [1614104191, 557024949]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/media/MediaModule.swift": [1614104191, 557183772]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/media/MediaSession.swift": [1614104191, 557325439]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/media/MediaSessionEvents.swift": [1614104191, 557459711]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/media/MediaSessionFactory.swift": [1614104191, 557585628]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/media/MediaSessionModels.swift": [1614104191, 557864124]
+  "/Users/christina/Projects/work-repos/github/tealium-swift/tealium/collectors/media/MediaSessionTypes.swift": [1614104191, 558154531]
