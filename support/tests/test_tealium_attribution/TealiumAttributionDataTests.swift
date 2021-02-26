@@ -196,68 +196,6 @@ class TealiumAttributionDataTests: XCTestCase {
         XCTAssertEqual("restricted", trackingAuthStatus, "Tracking Authorization Status was an unexpected value")
     }
 
-    @available(iOS 14, *)
-    func testTrackingEnabled_ReturnsTrue_WhenTrackingAuthorized() {
-        let expect = expectation(description: "testTrackingEnabled_ReturnsTrue_WhenTrackingAuthorized")
-        var idManager = TealiumASIdentifierManager.shared
-        idManager.attManager = MockATTrackingManagerTrackingAuthorized()
-        TestTealiumHelper.delay(for: 2.0, on: DispatchQueue(label: Thread.threadName)) {
-            XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "true")
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 2.2)
-    }
-
-    @available(iOS 14, *)
-    func testTrackingEnabled_ReturnsFalse_WhenTrackingDenied() {
-        let expect = expectation(description: "testTrackingEnabled_ReturnsFalse_WhenTrackingDenied")
-        var idManager = TealiumASIdentifierManager.shared
-        idManager.attManager = MockATTrackingManagerTrackingDenied()
-        TestTealiumHelper.delay(on: DispatchQueue(label: expect.description)) {
-            XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "false")
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 1.2)
-    }
-
-    @available(iOS 14, *)
-    func testTrackingEnabled_ReturnsFalse_WhenTrackingRestricted() {
-        let expect = expectation(description: "testTrackingEnabled_ReturnsFalse_WhenTrackingRestricted")
-        var idManager = TealiumASIdentifierManager.shared
-        idManager.attManager = MockATTrackingManagerTrackingRestricted()
-        TestTealiumHelper.delay(on: DispatchQueue(label: expect.description)) {
-            XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "false")
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 1.2)
-    }
-
-    @available(iOS 14, *)
-    func testTrackingEnabled_ReturnsFalse_WhenTrackingNotDetermined() {
-        let expect = expectation(description: "testTrackingEnabled_ReturnsFalse_WhenTrackingNotDetermined")
-        var idManager = TealiumASIdentifierManager.shared
-        idManager.attManager = MockATTrackingManagerTrackingNotDetermined()
-        TestTealiumHelper.delay(on: DispatchQueue(label: expect.description)) {
-            XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "false")
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 1.2)
-    }
-
-}
-
-extension Thread {
-
-    static var threadName: String {
-        if let currentOperationQueue = OperationQueue.current?.name {
-            return "\(currentOperationQueue)"
-        } else if let underlyingDispatchQueue = OperationQueue.current?.underlyingQueue?.label {
-            return "\(underlyingDispatchQueue)"
-        } else {
-            let name = __dispatch_queue_get_label(nil)
-            return String(cString: name, encoding: .utf8) ?? Thread.current.description
-        }
-    }
 }
 
 public class TealiumASIdentifierManagerAdTrackingEnabled: TealiumASIdentifierManagerProtocol {
