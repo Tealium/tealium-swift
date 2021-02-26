@@ -19,7 +19,9 @@ jobs:
         run: |
           gem install fastlane
   test_iOS:
-    needs: install 
+    needs: install
+    container:
+      image: swift:5.4 
     name: iOS Tests
     runs-on: macos-latest
     timeout-minutes: 60
@@ -30,22 +32,22 @@ jobs:
       matrix:
         destination: ["platform=iOS Simulator,OS=14.4,name=iPhone 12"]
         scheme:
-            - TealiumAttributionTests-iOS
-            - TealiumAutotrackingTests-iOS 
-            - TealiumCollectTests-iOS
+            # - TealiumAttributionTests-iOS
+            # - TealiumAutotrackingTests-iOS 
+            # - TealiumCollectTests-iOS
             - TealiumCoreTests-iOS
-            - TealiumLifecycleTests-iOS
-            - TealiumLocationTests-iOS
-            - TealiumMediaTests-iOS
-            - TealiumRemoteCommandsTests-iOS
-            - TealiumTagManagementTests-iOS
-            - TealiumVisitorServiceTests-iOS
+            # - TealiumLifecycleTests-iOS
+            # - TealiumLocationTests-iOS
+            # - TealiumMediaTests-iOS
+            # - TealiumRemoteCommandsTests-iOS
+            # - TealiumTagManagementTests-iOS
+            # - TealiumVisitorServiceTests-iOS
     steps:
       - uses: actions/checkout@v2
       - name: Test - "${{ matrix.scheme }}"
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output-style "raw" --xcargs "-quiet" --output_files "${{ matrix.scheme }}".html
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
-        run: fastlane scan --scheme "${{ matrix.scheme }}" --configuration "Debug" --code_coverage true --skip_build true output_directory:"test_output"
+        run: fastlane scan --scheme "${{ matrix.scheme }}" --code_coverage true --skip_build true output_directory:"test_output"
         working-directory: ${{env.working-directory}}
       # - name: Code Coverage - "${{ matrix.scheme }}"
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output-style "raw" --xcargs "-quiet" --output_files "${{ matrix.scheme }}".html
@@ -56,6 +58,11 @@ jobs:
       - name: Generate and Upload Code Coverage
         run: bash <(curl -s https://codecov.io/bash) && ls
         working-directory: ${{env.working-directory}}
+      - name: Validate Minimum Coverage  
+        #run: swift test --enable-test-discovery --enable-code-coverage
+        uses: mattpolzin/swift-codecov-action@0.6.0
+        with:
+          MINIMUM_COVERAGE: 75
   test_macOS:
     needs: install
     name: macOS Tests

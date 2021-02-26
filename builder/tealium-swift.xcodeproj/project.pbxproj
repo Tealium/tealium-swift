@@ -261,10 +261,10 @@
 		CFAC000125AF81A000CD51C6 /* MediaSessionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAC000025AF81A000CD51C6 /* MediaSessionFactory.swift */; };
 		CFAC004A25AFBF5400CD51C6 /* CoreMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA558BF24E4E6B200BFBED8 /* CoreMocks.swift */; };
 		CFAC006F25AFBF5B00CD51C6 /* TestTealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716C7D1B1DDBC3A500512C99 /* TestTealiumHelper.swift */; };
-		CFACF42025E855530065E65E /* TealiumTraceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79EFE5924E4100100F43375 /* TealiumTraceTests.swift */; };
 		CFACF49125E85E550065E65E /* MockSessionStarter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7187F1A24768F5000CF0AB0 /* MockSessionStarter.swift */; };
 		CFACF4DA25E85E730065E65E /* TealiumMediaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAD9D2B25A66BE90079B19A /* TealiumMediaTests.swift */; };
 		CFACF52325E85E840065E65E /* TealiumMediaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAD9D2B25A66BE90079B19A /* TealiumMediaTests.swift */; };
+		CFACF63625E986540065E65E /* TealiumTraceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79EFE5924E4100100F43375 /* TealiumTraceTests.swift */; };
 		CFACFFDB25AF816400CD51C6 /* MediaEventService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFACFFDA25AF816400CD51C6 /* MediaEventService.swift */; };
 		CFAD58A5253910D7007D4EDB /* DeviceDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAD58A3253910D7007D4EDB /* DeviceDataTests.swift */; };
 		CFAD58A6253910D7007D4EDB /* DeviceDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAD58A3253910D7007D4EDB /* DeviceDataTests.swift */; };
@@ -4232,6 +4232,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF13D87224FD61F80024E79A /* TestTealiumHelper.swift in Sources */,
+				CFACF63625E986540065E65E /* TealiumTraceTests.swift in Sources */,
 				CFAD63F42541FD93007D4EDB /* MockSessionStarter.swift in Sources */,
 				CFAD62B42541FCFE007D4EDB /* CoreMocks.swift in Sources */,
 			);
@@ -4293,7 +4294,6 @@
 				CF880D372554C9830020E1B2 /* TealiumModulesManagerTests.swift in Sources */,
 				CF880D2C2554C9830020E1B2 /* TealiumRequestsTests.swift in Sources */,
 				CF880CB62554C96F0020E1B2 /* SessionManagerTests.swift in Sources */,
-				CFACF42025E855530065E65E /* TealiumTraceTests.swift in Sources */,
 				CF880D292554C9830020E1B2 /* TealiumDiskTests.swift in Sources */,
 				CF880CB92554C96F0020E1B2 /* MockEventDataDiskStorage.swift in Sources */,
 				CF880C392554C9190020E1B2 /* CoreMocks.swift in Sources */,
