@@ -75,12 +75,6 @@ jobs:
           - TealiumVisitorServiceTests-macOS
     steps:
       - uses: actions/checkout@v2
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '2.7'
-      - name: install fastlane
-        run: |
-          brew install fastlane
       - name: Test - "${{ matrix.scheme }}"
         run: fastlane scan --scheme "${{ matrix.scheme }}" --code_coverage true --skip_build true output_directory:"test_output"
         working-directory: ${{env.working-directory}}
@@ -88,6 +82,7 @@ jobs:
         run: bash <(curl -s https://codecov.io/bash) && ls
         working-directory: ${{env.working-directory}}
   test_tvOS:
+    needs: install
     name: tvOS Tests
     runs-on: macos-latest
     timeout-minutes: 60
