@@ -197,39 +197,31 @@ class TealiumAttributionDataTests: XCTestCase {
     }
 
     @available(iOS 14, *)
-    func testTrackingEnabled_returnsTrueWhenTrackingAuthorized() {
+    func testTrackingEnabled_ReturnsTrue_WhenTrackingAuthorized() {
         var idManager = TealiumASIdentifierManager.shared
         idManager.attManager = MockATTrackingManagerTrackingAuthorized()
-        TestTealiumHelper.delay {
-            XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "true")
-        }
+        XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "true")
     }
 
     @available(iOS 14, *)
-    func testTrackingEnabled_returnsFalseWhenTrackingDenied() {
+    func testTrackingEnabled_ReturnsFalse_WhenTrackingDenied() {
         var idManager = TealiumASIdentifierManager.shared
         idManager.attManager = MockATTrackingManagerTrackingDenied()
-        TestTealiumHelper.delay {
-            XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "false")
-        }
+        XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "false")
     }
 
     @available(iOS 14, *)
-    func testTrackingEnabled_returnsFalseWhenTrackingRestricted() {
+    func testTrackingEnabled_ReturnsFalse_WhenTrackingRestricted() {
         var idManager = TealiumASIdentifierManager.shared
         idManager.attManager = MockATTrackingManagerTrackingRestricted()
-        TestTealiumHelper.delay {
-            XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "false")
-        }
+        XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "false")
     }
 
     @available(iOS 14, *)
-    func testTrackingEnabled_returnsFalseWhenTrackingNotDetermined() {
+    func testTrackingEnabled_ReturnsFalse_WhenTrackingNotDetermined() {
         var idManager = TealiumASIdentifierManager.shared
         idManager.attManager = MockATTrackingManagerTrackingNotDetermined()
-        TestTealiumHelper.delay {
-            XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "false")
-        }
+        XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "false")
     }
 
 }
