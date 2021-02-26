@@ -201,11 +201,11 @@ class TealiumAttributionDataTests: XCTestCase {
         let expect = expectation(description: "testTrackingEnabled_ReturnsTrue_WhenTrackingAuthorized")
         var idManager = TealiumASIdentifierManager.shared
         idManager.attManager = MockATTrackingManagerTrackingAuthorized()
-        TestTealiumHelper.delay(on: DispatchQueue(label: expect.description)) {
+        TestTealiumHelper.delay(for: 2.0, on: DispatchQueue(label: expect.description)) {
             XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "true")
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.2)
+        wait(for: [expect], timeout: 2.2)
     }
 
     @available(iOS 14, *)
