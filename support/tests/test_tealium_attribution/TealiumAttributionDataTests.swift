@@ -198,30 +198,50 @@ class TealiumAttributionDataTests: XCTestCase {
 
     @available(iOS 14, *)
     func testTrackingEnabled_ReturnsTrue_WhenTrackingAuthorized() {
+        let expect = expectation(description: "testTrackingEnabled_ReturnsTrue_WhenTrackingAuthorized")
         var idManager = TealiumASIdentifierManager.shared
         idManager.attManager = MockATTrackingManagerTrackingAuthorized()
-        XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "true")
+        TestTealiumHelper.delay(on: DispatchQueue(label: expect.description)) {
+            XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "true")
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: 1.2)
     }
 
     @available(iOS 14, *)
     func testTrackingEnabled_ReturnsFalse_WhenTrackingDenied() {
+        let expect = expectation(description: "testTrackingEnabled_ReturnsFalse_WhenTrackingDenied")
         var idManager = TealiumASIdentifierManager.shared
         idManager.attManager = MockATTrackingManagerTrackingDenied()
-        XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "false")
+        TestTealiumHelper.delay(on: DispatchQueue(label: expect.description)) {
+            XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "false")
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: 1.2)
     }
 
     @available(iOS 14, *)
     func testTrackingEnabled_ReturnsFalse_WhenTrackingRestricted() {
+        let expect = expectation(description: "testTrackingEnabled_ReturnsFalse_WhenTrackingRestricted")
         var idManager = TealiumASIdentifierManager.shared
         idManager.attManager = MockATTrackingManagerTrackingRestricted()
-        XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "false")
+        TestTealiumHelper.delay(on: DispatchQueue(label: expect.description)) {
+            XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "false")
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: 1.2)
     }
 
     @available(iOS 14, *)
     func testTrackingEnabled_ReturnsFalse_WhenTrackingNotDetermined() {
+        let expect = expectation(description: "testTrackingEnabled_ReturnsFalse_WhenTrackingNotDetermined")
         var idManager = TealiumASIdentifierManager.shared
         idManager.attManager = MockATTrackingManagerTrackingNotDetermined()
-        XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "false")
+        TestTealiumHelper.delay(on: DispatchQueue(label: expect.description)) {
+            XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "false")
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: 1.2)
     }
 
 }
