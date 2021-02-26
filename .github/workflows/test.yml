@@ -19,11 +19,9 @@ jobs:
         run: |
           gem install fastlane
   test_iOS:
-    needs: install
-    container:
-      image: swift:5.4 
+    needs: install 
     name: iOS Tests
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     timeout-minutes: 60
     env: 
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
