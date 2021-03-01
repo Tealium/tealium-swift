@@ -30,16 +30,16 @@ jobs:
       matrix:
         destination: ["platform=iOS Simulator,OS=14.4,name=iPhone 12"]
         scheme:
-            # - TealiumAttributionTests-iOS
-            # - TealiumAutotrackingTests-iOS 
-            # - TealiumCollectTests-iOS
+            - TealiumAttributionTests-iOS
+            - TealiumAutotrackingTests-iOS 
+            - TealiumCollectTests-iOS
             - TealiumCoreTests-iOS
-            # - TealiumLifecycleTests-iOS
-            # - TealiumLocationTests-iOS
-            # - TealiumMediaTests-iOS
-            # - TealiumRemoteCommandsTests-iOS
-            # - TealiumTagManagementTests-iOS
-            # - TealiumVisitorServiceTests-iOS
+            - TealiumLifecycleTests-iOS
+            - TealiumLocationTests-iOS
+            - TealiumMediaTests-iOS
+            - TealiumRemoteCommandsTests-iOS
+            - TealiumTagManagementTests-iOS
+            - TealiumVisitorServiceTests-iOS
     steps:
       - uses: actions/checkout@v2
       - name: Test - "${{ matrix.scheme }}"
@@ -61,8 +61,6 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.8'   
-      - name: Display Python version
-        run: python -c "import sys; print(sys.version)"
       - name: Validate Code Coverage Percengage
         run: python3 coverage.py "${{secrets.CODECOV_API_URL}}" && exit <(echo $?)
         working-directory: ${{env.working-directory}}     
