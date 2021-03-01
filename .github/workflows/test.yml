@@ -57,6 +57,9 @@ jobs:
       - name: Generate and Upload Code Coverage
         run: bash <(curl -s https://codecov.io/bash) && ls
         working-directory: ${{env.working-directory}}
+      - name: Validate Code Coverage Percengate
+        run: python3 coverage.py "${{secrets.CODECOV_API_URL}}" && exit <(echo $?)
+        working-directory: ${{env.working-directory}}  
   test_macOS:
     needs: install
     name: macOS Tests
