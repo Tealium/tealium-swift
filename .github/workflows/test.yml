@@ -18,6 +18,10 @@ jobs:
       - name: Install Fastlane
         run: |
           gem install fastlane
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'    
   test_iOS:
     needs: install 
     name: iOS Tests
@@ -57,9 +61,11 @@ jobs:
       - name: Generate and Upload Code Coverage
         run: bash <(curl -s https://codecov.io/bash) && ls
         working-directory: ${{env.working-directory}}
-      - name: Validate Code Coverage Percengate
-        run: python3 coverage.py "${{secrets.CODECOV_API_URL}}" && exit <(echo $?)
-        working-directory: ${{env.working-directory}}  
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
+      - name: Validate Code Coverage Percengage
+        run: python coverage.py "${{secrets.CODECOV_API_URL}}" && exit <(echo $?)
+        working-directory: ${{env.working-directory}}     
   # test_macOS:
   #   needs: install
   #   name: macOS Tests

@@ -14,6 +14,7 @@ if len(content):
 		totals = latest['totals']
 		if 'c' in totals:
 			coverage = totals['c']
+			print("Coverage: ", coverage)
 			if Decimal(coverage) > 65.0:
 				sys.exit(0)
 			else:
