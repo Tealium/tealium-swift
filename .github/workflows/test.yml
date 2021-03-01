@@ -57,6 +57,15 @@ jobs:
       - name: Generate and Upload Code Coverage
         run: bash <(curl -s https://codecov.io/bash) && ls
         working-directory: ${{env.working-directory}}
+  validate_codecov:
+    needs: [install, test_iOS]
+    name: Validate Coverage
+    runs-on: macos-latest
+    env: 
+      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+      working-directory: ./builder
+    steps:
+      - uses: actions/checkout@v2    
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
