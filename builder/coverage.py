@@ -5,7 +5,6 @@ from decimal import Decimal
 with open(filename) as f:
 	lines = f.readlines()
 	line = lines[2]
-	print(line)
 	coverage = re.findall('\d*\.?\d+',line)[2]
 	print(coverage)
 	if Decimal(coverage) > 65.0:

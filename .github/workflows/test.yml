@@ -8,7 +8,7 @@ on:
 
 jobs:
   install:
-    name: Install Tools
+    name: Setup Fastlane
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
@@ -30,16 +30,16 @@ jobs:
       matrix:
         destination: ["platform=iOS Simulator,OS=14.4,name=iPhone 12"]
         scheme:
-            # - TealiumAttributionTests-iOS
-            # - TealiumAutotrackingTests-iOS 
-            # - TealiumCollectTests-iOS
+            - TealiumAttributionTests-iOS
+            - TealiumAutotrackingTests-iOS 
+            - TealiumCollectTests-iOS
             - TealiumCoreTests-iOS
-            # - TealiumLifecycleTests-iOS
-            # - TealiumLocationTests-iOS
-            # - TealiumMediaTests-iOS
-            # - TealiumRemoteCommandsTests-iOS
-            # - TealiumTagManagementTests-iOS
-            # - TealiumVisitorServiceTests-iOS
+            - TealiumLifecycleTests-iOS
+            - TealiumLocationTests-iOS
+            - TealiumMediaTests-iOS
+            - TealiumRemoteCommandsTests-iOS
+            - TealiumTagManagementTests-iOS
+            - TealiumVisitorServiceTests-iOS
     steps:
       - uses: actions/checkout@v2 
       - name: Test - "${{ matrix.scheme }}"
