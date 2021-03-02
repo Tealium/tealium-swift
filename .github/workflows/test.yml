@@ -41,17 +41,19 @@ jobs:
             - TealiumTagManagementTests-iOS
             - TealiumVisitorServiceTests-iOS
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.8' 
+      - uses: actions/checkout@v2 
       - name: Test - "${{ matrix.scheme }}"
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output-style "raw" --xcargs "-quiet" --output_files "${{ matrix.scheme }}".html
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
-        run: fastlane scan --scheme "${{ matrix.scheme }}" derived_data_path /output --code_coverage true --skip_build true && python3 coverage.py coverage.txt && OUTPUT=$(echo $?) && echo "$OUTPUT"
+        run: rm -rf output && fastlane scan --scheme "${{ matrix.scheme }}" derived_data_path /output --code_coverage true --skip_build true && xcrun xccov view --report --only-targets output/Logs/Test/*.xcresult >> "${{ matrix.scheme }}".txt
         working-directory: ${{env.working-directory}}
-      # - name: Code Coverage - "${{ matrix.scheme }}"
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: Validate Code Coverage - "${{ matrix.scheme }}"
+        run: python3 coverage.py ${{ matrix.scheme }}".txt && OUTPUT=$(echo $?) && echo "$OUTPUT"
+        working-directory: ${{env.working-directory}}  
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output-style "raw" --xcargs "-quiet" --output_files "${{ matrix.scheme }}".html
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
         # run: fastlane run xcov workspace:"" project:"tealium-swift.xcodeproj" scheme:"${{ matrix.scheme }}" output_directory:"test_output"

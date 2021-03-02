@@ -1,1 +1,0 @@
-{"object": {"artifacts": [], "dependencies": [{"basedOn": null, "packageRef": {"identity": "gsplayer", "kind": "remote", "name": "GSPlayer", "path": "https://github.com/wxxsw/GSPlayer"}, "state": {"checkoutState": {"branch": null, "revision": "95c5498ac7be1101cbe5520a2bf5536352a3b1a0", "version": "0.2.18"}, "name": "checkout"}, "subpath": "GSPlayer"}]}, "version": 4}
