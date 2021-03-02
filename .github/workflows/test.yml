@@ -42,11 +42,14 @@ jobs:
             - TealiumVisitorServiceTests-iOS
     steps:
       - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8' 
       - name: Test - "${{ matrix.scheme }}"
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output-style "raw" --xcargs "-quiet" --output_files "${{ matrix.scheme }}".html
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
-        run: fastlane scan --scheme "${{ matrix.scheme }}" --code_coverage true --skip_build true --output_directory "test_output"
-        # run: swift test --enable-test-discovery --enable-code-coverage
+        run: fastlane scan --scheme "${{ matrix.scheme }}" derived_data_path /output --code_coverage true --skip_build true && python3 coverage2.py coverage.txt && OUTPUT=$(echo $?) && echo "$OUTPUT"
         working-directory: ${{env.working-directory}}
       # - name: Code Coverage - "${{ matrix.scheme }}"
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output-style "raw" --xcargs "-quiet" --output_files "${{ matrix.scheme }}".html
@@ -54,27 +57,27 @@ jobs:
         # run: fastlane run xcov workspace:"" project:"tealium-swift.xcodeproj" scheme:"${{ matrix.scheme }}" output_directory:"test_output"
         # run: fastlane run xcov project:"tealium-swift.xcodeproj" scheme:"${{ matrix.scheme }}" output_directory:"test_output"
         # working-directory: ${{env.working-directory}}
-      - name: Generate and Upload Code Coverage
-        run: bash <(curl -s https://codecov.io/bash) && ls
-        working-directory: ${{env.working-directory}}
-  validate_codecov:
-    needs: [install, test_iOS]
-    name: Validate Coverage
-    runs-on: macos-latest
-    env: 
-      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-      working-directory: ./builder
-    steps:
-      - uses: actions/checkout@v2    
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'   
-      - name: Display Python version
-        run: python -c "import sys; print(sys.version)"
-      - name: Validate Code Coverage Percengage
-        run: python coverage.py "${{secrets.CODECOV_API_URL}}" && exit echo $?
-        working-directory: ${{env.working-directory}}     
+      # - name: Generate and Upload Code Coverage
+      #   run: bash <(curl -s https://codecov.io/bash) && ls
+      #   working-directory: ${{env.working-directory}}
+  # validate_codecov:
+  #   needs: [install, test_iOS]
+  #   name: Validate Coverage
+  #   runs-on: macos-latest
+  #   env: 
+  #     DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+  #     working-directory: ./builder
+  #   steps:
+  #     - uses: actions/checkout@v2    
+  #     - name: Setup Python
+  #       uses: actions/setup-python@v2
+  #       with:
+  #         python-version: '3.8'   
+  #     - name: Display Python version
+  #       run: python -c "import sys; print(sys.version)"
+  #     - name: Validate Code Coverage Percengage
+  #       run: python coverage.py "${{secrets.CODECOV_API_URL}}" && exit echo $?
+  #       working-directory: ${{env.working-directory}}     
   # test_macOS:
   #   needs: install
   #   name: macOS Tests

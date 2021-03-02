@@ -1,0 +1,4 @@
+ID Name                  # Source Files Coverage           
+-- --------------------- -------------- ------------------ 
+0  TealiumCore.framework 87             65.97% (4560/6912) 
+

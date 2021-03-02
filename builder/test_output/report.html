@@ -1,0 +1,2344 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Test Results | xcpretty</title>
+    <style type="text/css">
+      body { font-family:Avenir Next, Helvetica Neue, sans-serif; color: #4A4A4A; background-color: #F0F3FB; margin:0;}
+      h1 { font-weight: normal; font-size: 24px; margin: 10px 0 0 0;}
+      h3 { font-weight: normal; margin: 2px; font-size: 1.1em;}
+      header { position: fixed;width: 100%;background: rgba(249, 254, 255, 0.9);margin: 0;padding: 10px;}
+      header:before, header:after { content:""; display:table;}
+      header:after { clear:both;}
+      a:link { color: #A1D761;}
+      footer { clear: both;position: relative;z-index: 10;height: 40px;margin-top: -10px; margin-left:30px; font-size:12px;}
+      table { width:100%; border-collapse: collapse;}
+      tr td:first-child { width:7%}
+      .left { float: left; margin-left:30px;}
+      .right { float: right; margin-right: 40px; margin-top: 0; margin-bottom:0;}
+      .test-suite { margin: 0 0 30px 0;}
+      .test-suite > .heading { font-family:Menlo, Monaco, monospace; font-weight: bold; border-color: #A1D761; background-color: #B8E986; border-width: 1px;}
+      .test-suite.failing > .heading { border-color: #C84F5E; background-color: #E58591;}
+      .test-suite > .heading > .title { margin-top: 4px; margin-left: 10px;}
+      .tests { overflow: scroll;margin: 0 30px 0 60px;}
+      .test, .test-suite > .heading { height: 30px; overflow: hidden; margin: 0 30px;}
+      .test, .test-suite > .heading { border-width: 1px; border-collapse: collapse; border-style: solid; }
+      .test { margin-left: 30px; border-top:none;}
+      .test.failing { border-color: #C84F5E; background-color: #F4DDE0;}
+      .test.passing { border-color: #A1D761;}
+      .test.failing { background-color: #E7A1AA;}
+      .test.passing { background-color: #CAF59F;}
+      .test.failing.odd { background-color: #EEC7CC;}
+      .test.passing.odd { background-color: #E5FBCF;}
+      .details.failing { background-color: #F4DDE0; border: 1px solid #C84F5E;}
+      .details.passing { background-color: #E5F4DC; border: 1px solid #A1D761;}
+      .test .test-detail:last-child { padding-bottom: 8px;}
+      .test .title { float: left; font-size: 0.9em; margin-top: 8px; font-family: Menlo, Monaco, monospace;}
+      .test .time { float: left;margin: 4px 10px 0 20px;}
+      .test-detail { font-family:Menlo, Monaco, monospace; font-size: 0.9em; margin: 5px 0 5px 0px;}
+      .screenshots { height: auto; overflow: hidden; padding: 4px 4px 0 4px; background-color: #B8E986; border: #A1D761; border-width: 0 1px; border-style: solid; }
+      .screenshots.failing { border-color: #C84F5E; background-color: #E58591; }
+      .screenshot { max-height: 60px; float: left; transition: max-height 0.2s; margin: 0 4px 4px 0 }
+      .screenshot.selected { max-height: 568px; }
+      #test-suites { display: inline-block; width: 100%;margin-top:100px;}
+      #segment-bar { margin-top: 10px;margin-left: 14px;float:right;}
+      #segment-bar a:first-child { border-radius: 9px 0 0 9px; border-right: none;}
+      #segment-bar a:last-child { border-radius: 0 9px 9px 0; border-left: none;}
+      #segment-bar > a { color: #565656; border: 2px solid  #7B7B7B; width: 80px; font-weight: bold; display:inline-block;text-align:center; font-weight: normal;}
+      #segment-bar > a.selected { background-color: #979797; color: #F0F3FB;}
+      #counters { float: left;margin: 10px;text-align: right;}
+      #counters h2 { font-size: 16px; font-family: Avenir, sans-serif; font-weight: lighter; display:inline;}
+      #counters .number { font-size: 20px;}
+      #fail-count { color: #D0021B; margin-left:10px;}
+      @media (max-width: 640px) {
+        h1, #counters, #segment-bar { margin: 5px auto; text-align:center;}
+        header, #segment-bar { width: 100%; position: relative; background:none;}
+        .left, .right { float:none; margin:0;}
+        #test-suites { margin-top: 0;}
+        #counters { float:none;}
+      }
+    </style>
+    <script type="text/javascript">
+      var hide = function(element) { element.style.display = 'none';}
+      var show = function(element) { element.style.display = '';}
+      var isHidden = function(element) { return element.style.display == 'none';}
+      var isSelected = function(element) { return element.classList.contains("selected");}
+      var deselect = function(element) { return element.classList.remove("selected");}
+      var select = function(element) { return element.classList.add("selected");}
+      var toggle = function(element) { isHidden(element) ? show(element) : hide(element);};
+      var toggleTests = function(heading) { toggle(heading.parentNode.children[1]);};
+      var toggleDetails = function(detailClass) {
+        var details = document.querySelectorAll('.' + detailClass);
+        for (var i = details.length - 1; i >= 0; i--) { toggle(details[i]);};
+      };
+      var hideAll = function(collection) {
+        for (var i = collection.length - 1; i >= 0; i--) { hide(collection[i]); };
+      }
+      var showAll = function(collection) {
+        for (var i = collection.length - 1; i >= 0; i--) { show(collection[i]); };
+      }
+      var selectSegment = function(segment) {
+        if (isSelected(segment)) return;
+        var segments = document.querySelectorAll('#segment-bar > a');
+        for (var i = segments.length - 1; i >= 0; i--) { deselect(segments[i]);};
+        select(segment);
+        if (segment.id == "all-segment") {
+          showAll(document.querySelectorAll('.test-suite'));
+          showAll(document.querySelectorAll('.test'));
+        } else if (segment.id == "failing-segment") {
+          hideAll(document.querySelectorAll('.test.passing'));
+          showAll(document.querySelectorAll('.test.failing'));
+          hideAll(document.querySelectorAll('.test-suite.passing'));
+          showAll(document.querySelectorAll('.test-suite.failing'));
+        } else if (segment.id == "passing-segment") {
+          hideAll(document.querySelectorAll('.test.failing'));
+          showAll(document.querySelectorAll('.test.passing'));
+          hideAll(document.querySelectorAll('.test-suite.failing'));
+          showAll(document.querySelectorAll('.test-suite.passing'));
+        }
+      }
+      var toggleScreenshot = function(suiteName, index) {
+        var screenshot = document.getElementById("screenshot-" + suiteName + "-" + index);
+        isSelected(screenshot) ? deselect(screenshot) : select(screenshot);
+      }
+    </script>
+  </head>
+  <body>
+    <header>
+      <section class="left">
+        <h1>Test Results</h1>
+      </section>
+      <section class="right">
+        <section id="counters">
+          <h2 id="test-count"><span class="number">182</span> tests</h2>
+          
+        </section>
+        <section id="segment-bar">
+          <a id="all-segment" onclick="selectSegment(this);" class="selected">All</a><a id="failing-segment" onclick="selectSegment(this);">Failing</a><a id="passing-segment" onclick="selectSegment(this);">Passing</a>
+        </section>
+      </section>
+    </header>
+    <section id="test-suites">
+      
+        
+        <section class="test-suite passing" id="TealiumCoreTests_iOS.AppDataModuleTests">
+          <section class="heading" onclick="toggleTests(this);">
+            <h3 class="title">TealiumCoreTests_iOS.AppDataModuleTests</h3>
+          </section>
+          <section class="tests">
+            <table>
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testAppDataDictionary');">
+                <td>
+                  
+                    <h3 class="time">0.019s</h3>
+                  
+                </td>
+                <td><h3 class="title">testAppDataDictionary</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testDeleteAllData');">
+                <td>
+                  
+                    <h3 class="time">0.005s</h3>
+                  
+                </td>
+                <td><h3 class="title">testDeleteAllData</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testInitCreatesNewVisitorWhenNoMigratedData');">
+                <td>
+                  
+                    <h3 class="time">0.006s</h3>
+                  
+                </td>
+                <td><h3 class="title">testInitCreatesNewVisitorWhenNoMigratedData</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testInitMigratesLegacyAppData');">
+                <td>
+                  
+                    <h3 class="time">0.005s</h3>
+                  
+                </td>
+                <td><h3 class="title">testInitMigratesLegacyAppData</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testInitRemovesAppDataFromDataLayerAfterMigration');">
+                <td>
+                  
+                    <h3 class="time">0.006s</h3>
+                  
+                </td>
+                <td><h3 class="title">testInitRemovesAppDataFromDataLayerAfterMigration</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testInitSetsExistingAppData');">
+                <td>
+                  
+                    <h3 class="time">0.008s</h3>
+                  
+                </td>
+                <td><h3 class="title">testInitSetsExistingAppData</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testIsMissingPersistentKeys');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testIsMissingPersistentKeys</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testNewPersistentData');">
+                <td>
+                  
+                    <h3 class="time">0.023s</h3>
+                  
+                </td>
+                <td><h3 class="title">testNewPersistentData</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testNewVolatileData');">
+                <td>
+                  
+                    <h3 class="time">0.020s</h3>
+                  
+                </td>
+                <td><h3 class="title">testNewVolatileData</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testPersistentDataInitFromDictionary');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testPersistentDataInitFromDictionary</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testSetLoadedAppData');">
+                <td>
+                  
+                    <h3 class="time">0.011s</h3>
+                  
+                </td>
+                <td><h3 class="title">testSetLoadedAppData</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testSetNewAppData');">
+                <td>
+                  
+                    <h3 class="time">0.016s</h3>
+                  
+                </td>
+                <td><h3 class="title">testSetNewAppData</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testVisitorIdFromUUID');">
+                <td>
+                  
+                    <h3 class="time">0.006s</h3>
+                  
+                </td>
+                <td><h3 class="title">testVisitorIdFromUUID</h3></td>
+              </tr>
+              
+            
+            </table>
+          </section>
+        </section>
+      
+        
+        <section class="test-suite passing" id="TealiumCoreTests_iOS.ConsentManagerTests">
+          <section class="heading" onclick="toggleTests(this);">
+            <h3 class="title">TealiumCoreTests_iOS.ConsentManagerTests</h3>
+          </section>
+          <section class="tests">
+            <table>
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testAStartDefault');">
+                <td>
+                  
+                    <h3 class="time">0.002s</h3>
+                  
+                </td>
+                <td><h3 class="title">testAStartDefault</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testCanUpdateCategories');">
+                <td>
+                  
+                    <h3 class="time">0.002s</h3>
+                  
+                </td>
+                <td><h3 class="title">testCanUpdateCategories</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testCanUpdateStatus');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testCanUpdateStatus</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testConsentStatusConsentedSetsAllCategoryNames');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testConsentStatusConsentedSetsAllCategoryNames</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testConsentStatusIsConsentedIfCategoriesAreSet');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testConsentStatusIsConsentedIfCategoriesAreSet</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testConsentStatusIsUknownIfNoStatusSet');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testConsentStatusIsUknownIfNoStatusSet</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testConsentStoreConfigFromDictionary');">
+                <td>
+                  
+                    <h3 class="time">0.002s</h3>
+                  
+                </td>
+                <td><h3 class="title">testConsentStoreConfigFromDictionary</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testDefaultConsentExpirationCCPA');">
+                <td>
+                  
+                    <h3 class="time">0.005s</h3>
+                  
+                </td>
+                <td><h3 class="title">testDefaultConsentExpirationCCPA</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testDefaultConsentExpirationGDPR');">
+                <td>
+                  
+                    <h3 class="time">0.008s</h3>
+                  
+                </td>
+                <td><h3 class="title">testDefaultConsentExpirationGDPR</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testGetTrackingStatusWhenConsented');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testGetTrackingStatusWhenConsented</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testGetTrackingStatusWhenNotConsented');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testGetTrackingStatusWhenNotConsented</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testGetTrackingStatusWhenNotConsentedCCPA');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testGetTrackingStatusWhenNotConsentedCCPA</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testGetUserConsentCategoriesOnceSet');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testGetUserConsentCategoriesOnceSet</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testloadSavedPreferencesEmpty');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testloadSavedPreferencesEmpty</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testloadSavedPreferencesExistingPersistentData');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testloadSavedPreferencesExistingPersistentData</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testNotConsentedRemovesAllCategoryNames');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testNotConsentedRemovesAllCategoryNames</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testOnConsentExpirationCallbackSetFromConfig');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testOnConsentExpirationCallbackSetFromConfig</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testResetUserConsentPreferences');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testResetUserConsentPreferences</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testSetConsentCategories');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testSetConsentCategories</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testSetConsentStatus');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testSetConsentStatus</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testSetUserConsentPreferences');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testSetUserConsentPreferences</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testShouldDropTrackingCall');">
+                <td>
+                  
+                    <h3 class="time">0.006s</h3>
+                  
+                </td>
+                <td><h3 class="title">testShouldDropTrackingCall</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testShouldDropTrackingCallCCPA');">
+                <td>
+                  
+                    <h3 class="time">0.009s</h3>
+                  
+                </td>
+                <td><h3 class="title">testShouldDropTrackingCallCCPA</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testShouldNotQueueTrackingCall');">
+                <td>
+                  
+                    <h3 class="time">0.007s</h3>
+                  
+                </td>
+                <td><h3 class="title">testShouldNotQueueTrackingCall</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testShouldQueueTrackingCall');">
+                <td>
+                  
+                    <h3 class="time">0.009s</h3>
+                  
+                </td>
+                <td><h3 class="title">testShouldQueueTrackingCall</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testStoreUserConsentPreferences');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testStoreUserConsentPreferences</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testTrackUserConsentPreferences');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testTrackUserConsentPreferences</h3></td>
+              </tr>
+              
+            
+            </table>
+          </section>
+        </section>
+      
+        
+        <section class="test-suite passing" id="TealiumCoreTests_iOS.DispatchQueueModuleTests">
+          <section class="heading" onclick="toggleTests(this);">
+            <h3 class="title">TealiumCoreTests_iOS.DispatchQueueModuleTests</h3>
+          </section>
+          <section class="tests">
+            <table>
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testCanQueueRequest');">
+                <td>
+                  
+                    <h3 class="time">0.006s</h3>
+                  
+                </td>
+                <td><h3 class="title">testCanQueueRequest</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testClearQueue');">
+                <td>
+                  
+                    <h3 class="time">0.009s</h3>
+                  
+                </td>
+                <td><h3 class="title">testClearQueue</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testDequeue');">
+                <td>
+                  
+                    <h3 class="time">0.016s</h3>
+                  
+                </td>
+                <td><h3 class="title">testDequeue</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testNegativeDispatchLimit');">
+                <td>
+                  
+                    <h3 class="time">0.009s</h3>
+                  
+                </td>
+                <td><h3 class="title">testNegativeDispatchLimit</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testQueue');">
+                <td>
+                  
+                    <h3 class="time">0.013s</h3>
+                  
+                </td>
+                <td><h3 class="title">testQueue</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testRemoteAPIEnabled');">
+                <td>
+                  
+                    <h3 class="time">0.010s</h3>
+                  
+                </td>
+                <td><h3 class="title">testRemoteAPIEnabled</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testRemoveOldDispatches');">
+                <td>
+                  
+                    <h3 class="time">0.013s</h3>
+                  
+                </td>
+                <td><h3 class="title">testRemoveOldDispatches</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testTrack');">
+                <td>
+                  
+                    <h3 class="time">0.016s</h3>
+                  
+                </td>
+                <td><h3 class="title">testTrack</h3></td>
+              </tr>
+              
+            
+            </table>
+          </section>
+        </section>
+      
+        
+        <section class="test-suite passing" id="TealiumCoreTests_iOS.DispatchQueueTests">
+          <section class="heading" onclick="toggleTests(this);">
+            <h3 class="title">TealiumCoreTests_iOS.DispatchQueueTests</h3>
+          </section>
+          <section class="tests">
+            <table>
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testappendDispatchEmptyQueue');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testappendDispatchEmptyQueue</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testClearQueue');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testClearQueue</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testDequeueDispatches');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testDequeueDispatches</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testPeek');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testPeek</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testRemoveOldDispatches');">
+                <td>
+                  
+                    <h3 class="time">0.002s</h3>
+                  
+                </td>
+                <td><h3 class="title">testRemoveOldDispatches</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testSaveAndOverwrite');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testSaveAndOverwrite</h3></td>
+              </tr>
+              
+            
+            </table>
+          </section>
+        </section>
+      
+        
+        <section class="test-suite passing" id="TealiumCoreTests_iOS.HostedDataLayerTests">
+          <section class="heading" onclick="toggleTests(this);">
+            <h3 class="title">TealiumCoreTests_iOS.HostedDataLayerTests</h3>
+          </section>
+          <section class="tests">
+            <table>
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testCacheExpiresWhenCacheSizeExceeded');">
+                <td>
+                  
+                    <h3 class="time">0.002s</h3>
+                  
+                </td>
+                <td><h3 class="title">testCacheExpiresWhenCacheSizeExceeded</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testCacheItemAddedOnSuccessfulResponse');">
+                <td>
+                  
+                    <h3 class="time">0.002s</h3>
+                  
+                </td>
+                <td><h3 class="title">testCacheItemAddedOnSuccessfulResponse</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testCacheItemAddedOnSuccessfulResponseArray');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testCacheItemAddedOnSuccessfulResponseArray</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testCacheItemsExpire');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testCacheItemsExpire</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testCacheItemsExpireOnShouldQueue');">
+                <td>
+                  
+                    <h3 class="time">0.002s</h3>
+                  
+                </td>
+                <td><h3 class="title">testCacheItemsExpireOnShouldQueue</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testGetURLForItemId');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testGetURLForItemId</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testInvalidRequestShouldQueueReturnsFalse');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testInvalidRequestShouldQueueReturnsFalse</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testNoRetryIfEmptyResponse');">
+                <td>
+                  
+                    <h3 class="time">0.002s</h3>
+                  
+                </td>
+                <td><h3 class="title">testNoRetryIfEmptyResponse</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testNoRetryIfUnableToDecode');">
+                <td>
+                  
+                    <h3 class="time">0.002s</h3>
+                  
+                </td>
+                <td><h3 class="title">testNoRetryIfUnableToDecode</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testRetrieverReturnsFailureIfBadResponse');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testRetrieverReturnsFailureIfBadResponse</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testRetrieverReturnsFailureIfHTTPError');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testRetrieverReturnsFailureIfHTTPError</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testRetrieverReturnsSuccessWithExpectedResponse');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testRetrieverReturnsSuccessWithExpectedResponse</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testShouldDropAlwaysReturnsFalse');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testShouldDropAlwaysReturnsFalse</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testShouldPurgeAlwaysReturnsFalse');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testShouldPurgeAlwaysReturnsFalse</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testShouldQueueReturnsFalseWhenDispatchContainsRequiredKeysAndCachedDataAvailable');">
+                <td>
+                  
+                    <h3 class="time">0.003s</h3>
+                  
+                </td>
+                <td><h3 class="title">testShouldQueueReturnsFalseWhenDispatchContainsRequiredKeysAndCachedDataAvailable</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testShouldQueueReturnsFalseWhenDispatchDoesNotContainRequiredKeys');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testShouldQueueReturnsFalseWhenDispatchDoesNotContainRequiredKeys</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testShouldQueueReturnsTrueWhenDispatchContainsRequiredKeysButCachedDataLayerNotAvailable');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testShouldQueueReturnsTrueWhenDispatchContainsRequiredKeysButCachedDataLayerNotAvailable</h3></td>
+              </tr>
+              
+            
+            </table>
+          </section>
+        </section>
+      
+        
+        <section class="test-suite passing" id="TealiumCoreTests_iOS.PublishSettingsTests">
+          <section class="heading" onclick="toggleTests(this);">
+            <h3 class="title">TealiumCoreTests_iOS.PublishSettingsTests</h3>
+          </section>
+          <section class="tests">
+            <table>
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testGetAndSave');">
+                <td>
+                  
+                    <h3 class="time">0.003s</h3>
+                  
+                </td>
+                <td><h3 class="title">testGetAndSave</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testGetPublishSettingsFromJSON');">
+                <td>
+                  
+                    <h3 class="time">0.002s</h3>
+                  
+                </td>
+                <td><h3 class="title">testGetPublishSettingsFromJSON</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testGetRemoteSettings');">
+                <td>
+                  
+                    <h3 class="time">0.003s</h3>
+                  
+                </td>
+                <td><h3 class="title">testGetRemoteSettings</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testGetRemoteSettingsExtraContent');">
+                <td>
+                  
+                    <h3 class="time">0.002s</h3>
+                  
+                </td>
+                <td><h3 class="title">testGetRemoteSettingsExtraContent</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testGetRemoteSettingsNoContent');">
+                <td>
+                  
+                    <h3 class="time">0.003s</h3>
+                  
+                </td>
+                <td><h3 class="title">testGetRemoteSettingsNoContent</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testRefresh');">
+                <td>
+                  
+                    <h3 class="time">0.002s</h3>
+                  
+                </td>
+                <td><h3 class="title">testRefresh</h3></td>
+              </tr>
+              
+            
+            </table>
+          </section>
+        </section>
+      
+        
+        <section class="test-suite passing" id="TealiumCoreTests_iOS.SessionManagerTests">
+          <section class="heading" onclick="toggleTests(this);">
+            <h3 class="title">TealiumCoreTests_iOS.SessionManagerTests</h3>
+          </section>
+          <section class="tests">
+            <table>
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testLastTrackDateNilIncrementsNumberOfTracksBackingAndSetsLastTrackDate');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testLastTrackDateNilIncrementsNumberOfTracksBackingAndSetsLastTrackDate</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testRefreshSessionData');">
+                <td>
+                  
+                    <h3 class="time">0.002s</h3>
+                  
+                </td>
+                <td><h3 class="title">testRefreshSessionData</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testSessionIdReturnsFromPersistentStorage');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testSessionIdReturnsFromPersistentStorage</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testSessionIdSavesToPersistentStorage');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testSessionIdSavesToPersistentStorage</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testSessionRefreshWhenSessionIdNil');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testSessionRefreshWhenSessionIdNil</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testSessionRefreshWhenSessionIdNotNil');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testSessionRefreshWhenSessionIdNotNil</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testStartNewSessionWhenTagManageMentEnabledTriggerNewSessionFalse');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testStartNewSessionWhenTagManageMentEnabledTriggerNewSessionFalse</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testStartNewSessionWhenTagManageMentEnabledTriggerNewSessionTrue');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testStartNewSessionWhenTagManageMentEnabledTriggerNewSessionTrue</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testStartNewSessionWhenTagManageMentNotEnabledTriggerNewSessionTrue');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testStartNewSessionWhenTagManageMentNotEnabledTriggerNewSessionTrue</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testTwoTracksInSecondsBetweenTracksStartsNewSession');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testTwoTracksInSecondsBetweenTracksStartsNewSession</h3></td>
+              </tr>
+              
+            
+            </table>
+          </section>
+        </section>
+      
+        
+        <section class="test-suite passing" id="TealiumCoreTests_iOS.SessionStarterTests">
+          <section class="heading" onclick="toggleTests(this);">
+            <h3 class="title">TealiumCoreTests_iOS.SessionStarterTests</h3>
+          </section>
+          <section class="tests">
+            <table>
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testRequestSessionErrorInResponse');">
+                <td>
+                  
+                    <h3 class="time">0.000s</h3>
+                  
+                </td>
+                <td><h3 class="title">testRequestSessionErrorInResponse</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testRequestSessionInvalidResponse');">
+                <td>
+                  
+                    <h3 class="time">0.000s</h3>
+                  
+                </td>
+                <td><h3 class="title">testRequestSessionInvalidResponse</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testRequestSessionSuccessful');">
+                <td>
+                  
+                    <h3 class="time">0.000s</h3>
+                  
+                </td>
+                <td><h3 class="title">testRequestSessionSuccessful</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testSessionURL');">
+                <td>
+                  
+                    <h3 class="time">0.000s</h3>
+                  
+                </td>
+                <td><h3 class="title">testSessionURL</h3></td>
+              </tr>
+              
+            
+            </table>
+          </section>
+        </section>
+      
+        
+        <section class="test-suite passing" id="TealiumCoreTests_iOS.TealiumConfigTests">
+          <section class="heading" onclick="toggleTests(this);">
+            <h3 class="title">TealiumCoreTests_iOS.TealiumConfigTests</h3>
+          </section>
+          <section class="tests">
+            <table>
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testInit');">
+                <td>
+                  
+                    <h3 class="time">0.000s</h3>
+                  
+                </td>
+                <td><h3 class="title">testInit</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testSetAndGetOptionalData');">
+                <td>
+                  
+                    <h3 class="time">0.000s</h3>
+                  
+                </td>
+                <td><h3 class="title">testSetAndGetOptionalData</h3></td>
+              </tr>
+              
+            
+            </table>
+          </section>
+        </section>
+      
+        
+        <section class="test-suite passing" id="TealiumCoreTests_iOS.TealiumConnectivityTests">
+          <section class="heading" onclick="toggleTests(this);">
+            <h3 class="title">TealiumCoreTests_iOS.TealiumConnectivityTests</h3>
+          </section>
+          <section class="tests">
+            <table>
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testCheckIsConnectedFalse');">
+                <td>
+                  
+                    <h3 class="time">0.104s</h3>
+                  
+                </td>
+                <td><h3 class="title">testCheckIsConnectedFalse</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testCheckIsConnectedLegacy');">
+                <td>
+                  
+                    <h3 class="time">0.006s</h3>
+                  
+                </td>
+                <td><h3 class="title">testCheckIsConnectedLegacy</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testCheckIsConnectedNoConnectionURLTask');">
+                <td>
+                  
+                    <h3 class="time">0.007s</h3>
+                  
+                </td>
+                <td><h3 class="title">testCheckIsConnectedNoConnectionURLTask</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testCheckIsConnectedTrue');">
+                <td>
+                  
+                    <h3 class="time">0.109s</h3>
+                  
+                </td>
+                <td><h3 class="title">testCheckIsConnectedTrue</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testCheckIsConnectedURLTask');">
+                <td>
+                  
+                    <h3 class="time">0.005s</h3>
+                  
+                </td>
+                <td><h3 class="title">testCheckIsConnectedURLTask</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testCurrentConnectionTypeCellular');">
+                <td>
+                  
+                    <h3 class="time">0.110s</h3>
+                  
+                </td>
+                <td><h3 class="title">testCurrentConnectionTypeCellular</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testCurrentConnectionTypeLegacy');">
+                <td>
+                  
+                    <h3 class="time">0.006s</h3>
+                  
+                </td>
+                <td><h3 class="title">testCurrentConnectionTypeLegacy</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testCurrentConnectionTypeNone');">
+                <td>
+                  
+                    <h3 class="time">0.104s</h3>
+                  
+                </td>
+                <td><h3 class="title">testCurrentConnectionTypeNone</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testCurrentConnectionTypeWifi');">
+                <td>
+                  
+                    <h3 class="time">0.108s</h3>
+                  
+                </td>
+                <td><h3 class="title">testCurrentConnectionTypeWifi</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testCurrentConnectionTypeWired');">
+                <td>
+                  
+                    <h3 class="time">0.107s</h3>
+                  
+                </td>
+                <td><h3 class="title">testCurrentConnectionTypeWired</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testDefaultConnectivityInterval');">
+                <td>
+                  
+                    <h3 class="time">0.004s</h3>
+                  
+                </td>
+                <td><h3 class="title">testDefaultConnectivityInterval</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testInitNoRefresh');">
+                <td>
+                  
+                    <h3 class="time">0.004s</h3>
+                  
+                </td>
+                <td><h3 class="title">testInitNoRefresh</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testInitWithRefresh');">
+                <td>
+                  
+                    <h3 class="time">0.005s</h3>
+                  
+                </td>
+                <td><h3 class="title">testInitWithRefresh</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testOverriddenConnectivityInterval');">
+                <td>
+                  
+                    <h3 class="time">0.002s</h3>
+                  
+                </td>
+                <td><h3 class="title">testOverriddenConnectivityInterval</h3></td>
+              </tr>
+              
+            
+            </table>
+          </section>
+        </section>
+      
+        
+        <section class="test-suite passing" id="TealiumCoreTests_iOS.TealiumConstantsTests">
+          <section class="heading" onclick="toggleTests(this);">
+            <h3 class="title">TealiumCoreTests_iOS.TealiumConstantsTests</h3>
+          </section>
+          <section class="tests">
+            <table>
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testConstantsStrings');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testConstantsStrings</h3></td>
+              </tr>
+              
+            
+            </table>
+          </section>
+        </section>
+      
+        
+        <section class="test-suite passing" id="TealiumCoreTests_iOS.TealiumDeviceDataTests">
+          <section class="heading" onclick="toggleTests(this);">
+            <h3 class="title">TealiumCoreTests_iOS.TealiumDeviceDataTests</h3>
+          </section>
+          <section class="tests">
+            <table>
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testBatteryPercent');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testBatteryPercent</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testCarrierInfo');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testCarrierInfo</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testCPUType');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testCPUType</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testDeviceDataCollectorMemoryDisabled');">
+                <td>
+                  
+                    <h3 class="time">0.004s</h3>
+                  
+                </td>
+                <td><h3 class="title">testDeviceDataCollectorMemoryDisabled</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testDeviceDataCollectorMemoryEnabled');">
+                <td>
+                  
+                    <h3 class="time">0.016s</h3>
+                  
+                </td>
+                <td><h3 class="title">testDeviceDataCollectorMemoryEnabled</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testGetMemoryUsage');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testGetMemoryUsage</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testIsCharging');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testIsCharging</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testIsoLanguage');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testIsoLanguage</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testModel');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testModel</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testOrientation');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testOrientation</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testOSBuild');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testOSBuild</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testOSName');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testOSName</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testOSVersion');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testOSVersion</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testPlatform');">
+                <td>
+                  
+                    <h3 class="time">0.005s</h3>
+                  
+                </td>
+                <td><h3 class="title">testPlatform</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testResolution');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testResolution</h3></td>
+              </tr>
+              
+            
+            </table>
+          </section>
+        </section>
+      
+        
+        <section class="test-suite passing" id="TealiumCoreTests_iOS.TealiumDiskTests">
+          <section class="heading" onclick="toggleTests(this);">
+            <h3 class="title">TealiumCoreTests_iOS.TealiumDiskTests</h3>
+          </section>
+          <section class="tests">
+            <table>
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testAppend');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testAppend</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testExample');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testExample</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testInit');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testInit</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testSave');">
+                <td>
+                  
+                    <h3 class="time">0.012s</h3>
+                  
+                </td>
+                <td><h3 class="title">testSave</h3></td>
+              </tr>
+              
+            
+            </table>
+          </section>
+        </section>
+      
+        
+        <section class="test-suite passing" id="TealiumCoreTests_iOS.TealiumExtensionTests">
+          <section class="heading" onclick="toggleTests(this);">
+            <h3 class="title">TealiumCoreTests_iOS.TealiumExtensionTests</h3>
+          </section>
+          <section class="tests">
+            <table>
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testAutotrackingNilWhenNotSetAsCollector');">
+                <td>
+                  
+                    <h3 class="time">0.032s</h3>
+                  
+                </td>
+                <td><h3 class="title">testAutotrackingNilWhenNotSetAsCollector</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testAutotrackingNotNil');">
+                <td>
+                  
+                    <h3 class="time">0.013s</h3>
+                  
+                </td>
+                <td><h3 class="title">testAutotrackingNotNil</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testCancelTimedEventCallsEventSchedulerCancel');">
+                <td>
+                  
+                    <h3 class="time">0.009s</h3>
+                  
+                </td>
+                <td><h3 class="title">testCancelTimedEventCallsEventSchedulerCancel</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testClearAllTimedEventsCallsEventSchedulerClearAll');">
+                <td>
+                  
+                    <h3 class="time">0.032s</h3>
+                  
+                </td>
+                <td><h3 class="title">testClearAllTimedEventsCallsEventSchedulerClearAll</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testConsentManagerNilWhenPolicyNotSet');">
+                <td>
+                  
+                    <h3 class="time">0.012s</h3>
+                  
+                </td>
+                <td><h3 class="title">testConsentManagerNilWhenPolicyNotSet</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testConsentManagerNotNil');">
+                <td>
+                  
+                    <h3 class="time">0.045s</h3>
+                  
+                </td>
+                <td><h3 class="title">testConsentManagerNotNil</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testLifecycleNilWhenNotSetAsCollector');">
+                <td>
+                  
+                    <h3 class="time">0.009s</h3>
+                  
+                </td>
+                <td><h3 class="title">testLifecycleNilWhenNotSetAsCollector</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testLifecycleNotNil');">
+                <td>
+                  
+                    <h3 class="time">0.023s</h3>
+                  
+                </td>
+                <td><h3 class="title">testLifecycleNotNil</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testLocationNilWhenNotSetAsCollector');">
+                <td>
+                  
+                    <h3 class="time">0.033s</h3>
+                  
+                </td>
+                <td><h3 class="title">testLocationNilWhenNotSetAsCollector</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testLocationNotNil');">
+                <td>
+                  
+                    <h3 class="time">0.282s</h3>
+                  
+                </td>
+                <td><h3 class="title">testLocationNotNil</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testLoggerNotNil');">
+                <td>
+                  
+                    <h3 class="time">0.017s</h3>
+                  
+                </td>
+                <td><h3 class="title">testLoggerNotNil</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testRemoteCommandsNilWhenNotSetAsDispatcher');">
+                <td>
+                  
+                    <h3 class="time">0.025s</h3>
+                  
+                </td>
+                <td><h3 class="title">testRemoteCommandsNilWhenNotSetAsDispatcher</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testRemoteCommandsNotNil');">
+                <td>
+                  
+                    <h3 class="time">0.019s</h3>
+                  
+                </td>
+                <td><h3 class="title">testRemoteCommandsNotNil</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testResetVisitorId');">
+                <td>
+                  
+                    <h3 class="time">0.040s</h3>
+                  
+                </td>
+                <td><h3 class="title">testResetVisitorId</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testStartTimedEventCallsEventSchedulerStart');">
+                <td>
+                  
+                    <h3 class="time">0.008s</h3>
+                  
+                </td>
+                <td><h3 class="title">testStartTimedEventCallsEventSchedulerStart</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testStopTimedEventCallsEventSchedulerStopAndTimedEventInfo');">
+                <td>
+                  
+                    <h3 class="time">0.043s</h3>
+                  
+                </td>
+                <td><h3 class="title">testStopTimedEventCallsEventSchedulerStopAndTimedEventInfo</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testTagManagementNilWhenNotSetAsDispatcher');">
+                <td>
+                  
+                    <h3 class="time">0.007s</h3>
+                  
+                </td>
+                <td><h3 class="title">testTagManagementNilWhenNotSetAsDispatcher</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testTagManagementNotNil');">
+                <td>
+                  
+                    <h3 class="time">0.084s</h3>
+                  
+                </td>
+                <td><h3 class="title">testTagManagementNotNil</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testVisitorIdNotNil');">
+                <td>
+                  
+                    <h3 class="time">0.016s</h3>
+                  
+                </td>
+                <td><h3 class="title">testVisitorIdNotNil</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testVisitorServiceNilWhenNotSetAsCollector');">
+                <td>
+                  
+                    <h3 class="time">0.011s</h3>
+                  
+                </td>
+                <td><h3 class="title">testVisitorServiceNilWhenNotSetAsCollector</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testVisitorServiceNotNil');">
+                <td>
+                  
+                    <h3 class="time">0.025s</h3>
+                  
+                </td>
+                <td><h3 class="title">testVisitorServiceNotNil</h3></td>
+              </tr>
+              
+            
+            </table>
+          </section>
+        </section>
+      
+        
+        <section class="test-suite passing" id="TealiumCoreTests_iOS.TealiumLoggerTests">
+          <section class="heading" onclick="toggleTests(this);">
+            <h3 class="title">TealiumCoreTests_iOS.TealiumLoggerTests</h3>
+          </section>
+          <section class="tests">
+            <table>
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testTealiumLogLevelDebug');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testTealiumLogLevelDebug</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testTealiumLogLevelError');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testTealiumLogLevelError</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testTealiumLogLevelFault');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testTealiumLogLevelFault</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testTealiumLogLevelInfo');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testTealiumLogLevelInfo</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testTealiumLogLevelSilent');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testTealiumLogLevelSilent</h3></td>
+              </tr>
+              
+            
+            </table>
+          </section>
+        </section>
+      
+        
+        <section class="test-suite passing" id="TealiumCoreTests_iOS.TealiumModulesManagerTests">
+          <section class="heading" onclick="toggleTests(this);">
+            <h3 class="title">TealiumCoreTests_iOS.TealiumModulesManagerTests</h3>
+          </section>
+          <section class="tests">
+            <table>
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testAddCollector');">
+                <td>
+                  
+                    <h3 class="time">0.021s</h3>
+                  
+                </td>
+                <td><h3 class="title">testAddCollector</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testConfigPropertyUpdate');">
+                <td>
+                  
+                    <h3 class="time">0.028s</h3>
+                  
+                </td>
+                <td><h3 class="title">testConfigPropertyUpdate</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testConnectionRestored');">
+                <td>
+                  
+                    <h3 class="time">0.010s</h3>
+                  
+                </td>
+                <td><h3 class="title">testConnectionRestored</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testDequeue');">
+                <td>
+                  
+                    <h3 class="time">0.010s</h3>
+                  
+                </td>
+                <td><h3 class="title">testDequeue</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testDisableModule');">
+                <td>
+                  
+                    <h3 class="time">0.011s</h3>
+                  
+                </td>
+                <td><h3 class="title">testDisableModule</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testDispatchListenerAddedFromConfig');">
+                <td>
+                  
+                    <h3 class="time">0.014s</h3>
+                  
+                </td>
+                <td><h3 class="title">testDispatchListenerAddedFromConfig</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testDispatchValidatorAddedFromConfig');">
+                <td>
+                  
+                    <h3 class="time">0.017s</h3>
+                  
+                </td>
+                <td><h3 class="title">testDispatchValidatorAddedFromConfig</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testGatherTrackData');">
+                <td>
+                  
+                    <h3 class="time">0.014s</h3>
+                  
+                </td>
+                <td><h3 class="title">testGatherTrackData</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testGatherTrackDataAfterMigratingLegacyData');">
+                <td>
+                  
+                    <h3 class="time">0.008s</h3>
+                  
+                </td>
+                <td><h3 class="title">testGatherTrackDataAfterMigratingLegacyData</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testGatherTrackDataWithModulesList');">
+                <td>
+                  
+                    <h3 class="time">0.011s</h3>
+                  
+                </td>
+                <td><h3 class="title">testGatherTrackDataWithModulesList</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testRequestTrack');">
+                <td>
+                  
+                    <h3 class="time">0.008s</h3>
+                  
+                </td>
+                <td><h3 class="title">testRequestTrack</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testSendTrack');">
+                <td>
+                  
+                    <h3 class="time">0.010s</h3>
+                  
+                </td>
+                <td><h3 class="title">testSendTrack</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testSetModules');">
+                <td>
+                  
+                    <h3 class="time">0.012s</h3>
+                  
+                </td>
+                <td><h3 class="title">testSetModules</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testSetupDispatchListeners');">
+                <td>
+                  
+                    <h3 class="time">0.008s</h3>
+                  
+                </td>
+                <td><h3 class="title">testSetupDispatchListeners</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testSetupDispatchValidators');">
+                <td>
+                  
+                    <h3 class="time">0.006s</h3>
+                  
+                </td>
+                <td><h3 class="title">testSetupDispatchValidators</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testUpdateConfig');">
+                <td>
+                  
+                    <h3 class="time">0.007s</h3>
+                  
+                </td>
+                <td><h3 class="title">testUpdateConfig</h3></td>
+              </tr>
+              
+            
+            </table>
+          </section>
+        </section>
+      
+        
+        <section class="test-suite passing" id="TealiumCoreTests_iOS.TealiumRequestsTests">
+          <section class="heading" onclick="toggleTests(this);">
+            <h3 class="title">TealiumCoreTests_iOS.TealiumRequestsTests</h3>
+          </section>
+          <section class="tests">
+            <table>
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testExtractKeyReturnsExpectedValue');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testExtractKeyReturnsExpectedValue</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testExtractKeyReturnsNil_lookupNil');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testExtractKeyReturnsNil_lookupNil</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testExtractKeyReturnsNil_noEventMatch');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testExtractKeyReturnsNil_noEventMatch</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testExtractKeyReturnsNil_tealiumEventNotInPayload');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testExtractKeyReturnsNil_tealiumEventNotInPayload</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testExtractLookupValueReturnsExpected_valueIsInt');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testExtractLookupValueReturnsExpected_valueIsInt</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testExtractLookupValueReturnsExpected_valueIsIntArray');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testExtractLookupValueReturnsExpected_valueIsIntArray</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testExtractLookupValueReturnsExpected_valueIsString');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testExtractLookupValueReturnsExpected_valueIsString</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testExtractLookupValueReturnsExpected_valueIsStringArray');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testExtractLookupValueReturnsExpected_valueIsStringArray</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testExtractLookupValueReturnsNil_keyNotInTrackDictionary');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testExtractLookupValueReturnsNil_keyNotInTrackDictionary</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testExtractLookupValueReturnsNil_valueIsEmptyArray');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testExtractLookupValueReturnsNil_valueIsEmptyArray</h3></td>
+              </tr>
+              
+            
+            </table>
+          </section>
+        </section>
+      
+        
+        <section class="test-suite passing" id="TealiumCoreTests_iOS.TealiumUtilsTests">
+          <section class="heading" onclick="toggleTests(this);">
+            <h3 class="title">TealiumCoreTests_iOS.TealiumUtilsTests</h3>
+          </section>
+          <section class="tests">
+            <table>
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testJSONStringWithDictionary');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testJSONStringWithDictionary</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing odd"  onclick="toggleDetails('testURLRequest');">
+                <td>
+                  
+                    <h3 class="time">0.001s</h3>
+                  
+                </td>
+                <td><h3 class="title">testURLRequest</h3></td>
+              </tr>
+              
+            
+              
+              <tr class="test passing "  onclick="toggleDetails('testURLRequestWithNaN');">
+                <td>
+                  
+                    <h3 class="time">0.528s</h3>
+                  
+                </td>
+                <td><h3 class="title">testURLRequestWithNaN</h3></td>
+              </tr>
+              
+            
+            </table>
+          </section>
+        </section>
+      
+    </section>
+    <footer>Report generated with <a href="https://github.com/supermarin/xcpretty">xcpretty</a></footer>
+  </body>
+</html>

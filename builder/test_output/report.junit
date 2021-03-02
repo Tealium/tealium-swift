@@ -1,0 +1,221 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites name='TealiumCoreTests-iOS.xctest' tests='182' failures='0'>
+  <testsuite name='TealiumCoreTests_iOS.AppDataModuleTests' tests='13' failures='0'>
+    <testcase classname='TealiumCoreTests_iOS.AppDataModuleTests' name='testAppDataDictionary' time='0.019'/>
+    <testcase classname='TealiumCoreTests_iOS.AppDataModuleTests' name='testDeleteAllData' time='0.005'/>
+    <testcase classname='TealiumCoreTests_iOS.AppDataModuleTests' name='testInitCreatesNewVisitorWhenNoMigratedData' time='0.006'/>
+    <testcase classname='TealiumCoreTests_iOS.AppDataModuleTests' name='testInitMigratesLegacyAppData' time='0.005'/>
+    <testcase classname='TealiumCoreTests_iOS.AppDataModuleTests' name='testInitRemovesAppDataFromDataLayerAfterMigration' time='0.006'/>
+    <testcase classname='TealiumCoreTests_iOS.AppDataModuleTests' name='testInitSetsExistingAppData' time='0.008'/>
+    <testcase classname='TealiumCoreTests_iOS.AppDataModuleTests' name='testIsMissingPersistentKeys' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.AppDataModuleTests' name='testNewPersistentData' time='0.023'/>
+    <testcase classname='TealiumCoreTests_iOS.AppDataModuleTests' name='testNewVolatileData' time='0.020'/>
+    <testcase classname='TealiumCoreTests_iOS.AppDataModuleTests' name='testPersistentDataInitFromDictionary' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.AppDataModuleTests' name='testSetLoadedAppData' time='0.011'/>
+    <testcase classname='TealiumCoreTests_iOS.AppDataModuleTests' name='testSetNewAppData' time='0.016'/>
+    <testcase classname='TealiumCoreTests_iOS.AppDataModuleTests' name='testVisitorIdFromUUID' time='0.006'/>
+  </testsuite>
+  <testsuite name='TealiumCoreTests_iOS.ConsentManagerTests' tests='27' failures='0'>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testAStartDefault' time='0.002'/>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testCanUpdateCategories' time='0.002'/>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testCanUpdateStatus' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testConsentStatusConsentedSetsAllCategoryNames' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testConsentStatusIsConsentedIfCategoriesAreSet' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testConsentStatusIsUknownIfNoStatusSet' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testConsentStoreConfigFromDictionary' time='0.002'/>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testDefaultConsentExpirationCCPA' time='0.005'/>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testDefaultConsentExpirationGDPR' time='0.008'/>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testGetTrackingStatusWhenConsented' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testGetTrackingStatusWhenNotConsented' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testGetTrackingStatusWhenNotConsentedCCPA' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testGetUserConsentCategoriesOnceSet' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testloadSavedPreferencesEmpty' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testloadSavedPreferencesExistingPersistentData' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testNotConsentedRemovesAllCategoryNames' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testOnConsentExpirationCallbackSetFromConfig' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testResetUserConsentPreferences' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testSetConsentCategories' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testSetConsentStatus' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testSetUserConsentPreferences' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testShouldDropTrackingCall' time='0.006'/>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testShouldDropTrackingCallCCPA' time='0.009'/>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testShouldNotQueueTrackingCall' time='0.007'/>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testShouldQueueTrackingCall' time='0.009'/>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testStoreUserConsentPreferences' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.ConsentManagerTests' name='testTrackUserConsentPreferences' time='0.001'/>
+  </testsuite>
+  <testsuite name='TealiumCoreTests_iOS.DispatchQueueModuleTests' tests='8' failures='0'>
+    <testcase classname='TealiumCoreTests_iOS.DispatchQueueModuleTests' name='testCanQueueRequest' time='0.006'/>
+    <testcase classname='TealiumCoreTests_iOS.DispatchQueueModuleTests' name='testClearQueue' time='0.009'/>
+    <testcase classname='TealiumCoreTests_iOS.DispatchQueueModuleTests' name='testDequeue' time='0.016'/>
+    <testcase classname='TealiumCoreTests_iOS.DispatchQueueModuleTests' name='testNegativeDispatchLimit' time='0.009'/>
+    <testcase classname='TealiumCoreTests_iOS.DispatchQueueModuleTests' name='testQueue' time='0.013'/>
+    <testcase classname='TealiumCoreTests_iOS.DispatchQueueModuleTests' name='testRemoteAPIEnabled' time='0.010'/>
+    <testcase classname='TealiumCoreTests_iOS.DispatchQueueModuleTests' name='testRemoveOldDispatches' time='0.013'/>
+    <testcase classname='TealiumCoreTests_iOS.DispatchQueueModuleTests' name='testTrack' time='0.016'/>
+  </testsuite>
+  <testsuite name='TealiumCoreTests_iOS.DispatchQueueTests' tests='6' failures='0'>
+    <testcase classname='TealiumCoreTests_iOS.DispatchQueueTests' name='testappendDispatchEmptyQueue' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.DispatchQueueTests' name='testClearQueue' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.DispatchQueueTests' name='testDequeueDispatches' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.DispatchQueueTests' name='testPeek' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.DispatchQueueTests' name='testRemoveOldDispatches' time='0.002'/>
+    <testcase classname='TealiumCoreTests_iOS.DispatchQueueTests' name='testSaveAndOverwrite' time='0.001'/>
+  </testsuite>
+  <testsuite name='TealiumCoreTests_iOS.HostedDataLayerTests' tests='17' failures='0'>
+    <testcase classname='TealiumCoreTests_iOS.HostedDataLayerTests' name='testCacheExpiresWhenCacheSizeExceeded' time='0.002'/>
+    <testcase classname='TealiumCoreTests_iOS.HostedDataLayerTests' name='testCacheItemAddedOnSuccessfulResponse' time='0.002'/>
+    <testcase classname='TealiumCoreTests_iOS.HostedDataLayerTests' name='testCacheItemAddedOnSuccessfulResponseArray' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.HostedDataLayerTests' name='testCacheItemsExpire' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.HostedDataLayerTests' name='testCacheItemsExpireOnShouldQueue' time='0.002'/>
+    <testcase classname='TealiumCoreTests_iOS.HostedDataLayerTests' name='testGetURLForItemId' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.HostedDataLayerTests' name='testInvalidRequestShouldQueueReturnsFalse' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.HostedDataLayerTests' name='testNoRetryIfEmptyResponse' time='0.002'/>
+    <testcase classname='TealiumCoreTests_iOS.HostedDataLayerTests' name='testNoRetryIfUnableToDecode' time='0.002'/>
+    <testcase classname='TealiumCoreTests_iOS.HostedDataLayerTests' name='testRetrieverReturnsFailureIfBadResponse' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.HostedDataLayerTests' name='testRetrieverReturnsFailureIfHTTPError' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.HostedDataLayerTests' name='testRetrieverReturnsSuccessWithExpectedResponse' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.HostedDataLayerTests' name='testShouldDropAlwaysReturnsFalse' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.HostedDataLayerTests' name='testShouldPurgeAlwaysReturnsFalse' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.HostedDataLayerTests' name='testShouldQueueReturnsFalseWhenDispatchContainsRequiredKeysAndCachedDataAvailable' time='0.003'/>
+    <testcase classname='TealiumCoreTests_iOS.HostedDataLayerTests' name='testShouldQueueReturnsFalseWhenDispatchDoesNotContainRequiredKeys' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.HostedDataLayerTests' name='testShouldQueueReturnsTrueWhenDispatchContainsRequiredKeysButCachedDataLayerNotAvailable' time='0.001'/>
+  </testsuite>
+  <testsuite name='TealiumCoreTests_iOS.PublishSettingsTests' tests='6' failures='0'>
+    <testcase classname='TealiumCoreTests_iOS.PublishSettingsTests' name='testGetAndSave' time='0.003'/>
+    <testcase classname='TealiumCoreTests_iOS.PublishSettingsTests' name='testGetPublishSettingsFromJSON' time='0.002'/>
+    <testcase classname='TealiumCoreTests_iOS.PublishSettingsTests' name='testGetRemoteSettings' time='0.003'/>
+    <testcase classname='TealiumCoreTests_iOS.PublishSettingsTests' name='testGetRemoteSettingsExtraContent' time='0.002'/>
+    <testcase classname='TealiumCoreTests_iOS.PublishSettingsTests' name='testGetRemoteSettingsNoContent' time='0.003'/>
+    <testcase classname='TealiumCoreTests_iOS.PublishSettingsTests' name='testRefresh' time='0.002'/>
+  </testsuite>
+  <testsuite name='TealiumCoreTests_iOS.SessionManagerTests' tests='10' failures='0'>
+    <testcase classname='TealiumCoreTests_iOS.SessionManagerTests' name='testLastTrackDateNilIncrementsNumberOfTracksBackingAndSetsLastTrackDate' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.SessionManagerTests' name='testRefreshSessionData' time='0.002'/>
+    <testcase classname='TealiumCoreTests_iOS.SessionManagerTests' name='testSessionIdReturnsFromPersistentStorage' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.SessionManagerTests' name='testSessionIdSavesToPersistentStorage' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.SessionManagerTests' name='testSessionRefreshWhenSessionIdNil' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.SessionManagerTests' name='testSessionRefreshWhenSessionIdNotNil' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.SessionManagerTests' name='testStartNewSessionWhenTagManageMentEnabledTriggerNewSessionFalse' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.SessionManagerTests' name='testStartNewSessionWhenTagManageMentEnabledTriggerNewSessionTrue' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.SessionManagerTests' name='testStartNewSessionWhenTagManageMentNotEnabledTriggerNewSessionTrue' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.SessionManagerTests' name='testTwoTracksInSecondsBetweenTracksStartsNewSession' time='0.001'/>
+  </testsuite>
+  <testsuite name='TealiumCoreTests_iOS.SessionStarterTests' tests='4' failures='0'>
+    <testcase classname='TealiumCoreTests_iOS.SessionStarterTests' name='testRequestSessionErrorInResponse' time='0.000'/>
+    <testcase classname='TealiumCoreTests_iOS.SessionStarterTests' name='testRequestSessionInvalidResponse' time='0.000'/>
+    <testcase classname='TealiumCoreTests_iOS.SessionStarterTests' name='testRequestSessionSuccessful' time='0.000'/>
+    <testcase classname='TealiumCoreTests_iOS.SessionStarterTests' name='testSessionURL' time='0.000'/>
+  </testsuite>
+  <testsuite name='TealiumCoreTests_iOS.TealiumConfigTests' tests='2' failures='0'>
+    <testcase classname='TealiumCoreTests_iOS.TealiumConfigTests' name='testInit' time='0.000'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumConfigTests' name='testSetAndGetOptionalData' time='0.000'/>
+  </testsuite>
+  <testsuite name='TealiumCoreTests_iOS.TealiumConnectivityTests' tests='14' failures='0'>
+    <testcase classname='TealiumCoreTests_iOS.TealiumConnectivityTests' name='testCheckIsConnectedFalse' time='0.104'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumConnectivityTests' name='testCheckIsConnectedLegacy' time='0.006'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumConnectivityTests' name='testCheckIsConnectedNoConnectionURLTask' time='0.007'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumConnectivityTests' name='testCheckIsConnectedTrue' time='0.109'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumConnectivityTests' name='testCheckIsConnectedURLTask' time='0.005'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumConnectivityTests' name='testCurrentConnectionTypeCellular' time='0.110'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumConnectivityTests' name='testCurrentConnectionTypeLegacy' time='0.006'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumConnectivityTests' name='testCurrentConnectionTypeNone' time='0.104'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumConnectivityTests' name='testCurrentConnectionTypeWifi' time='0.108'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumConnectivityTests' name='testCurrentConnectionTypeWired' time='0.107'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumConnectivityTests' name='testDefaultConnectivityInterval' time='0.004'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumConnectivityTests' name='testInitNoRefresh' time='0.004'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumConnectivityTests' name='testInitWithRefresh' time='0.005'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumConnectivityTests' name='testOverriddenConnectivityInterval' time='0.002'/>
+  </testsuite>
+  <testsuite name='TealiumCoreTests_iOS.TealiumConstantsTests' tests='1' failures='0'>
+    <testcase classname='TealiumCoreTests_iOS.TealiumConstantsTests' name='testConstantsStrings' time='0.001'/>
+  </testsuite>
+  <testsuite name='TealiumCoreTests_iOS.TealiumDeviceDataTests' tests='15' failures='0'>
+    <testcase classname='TealiumCoreTests_iOS.TealiumDeviceDataTests' name='testBatteryPercent' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumDeviceDataTests' name='testCarrierInfo' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumDeviceDataTests' name='testCPUType' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumDeviceDataTests' name='testDeviceDataCollectorMemoryDisabled' time='0.004'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumDeviceDataTests' name='testDeviceDataCollectorMemoryEnabled' time='0.016'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumDeviceDataTests' name='testGetMemoryUsage' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumDeviceDataTests' name='testIsCharging' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumDeviceDataTests' name='testIsoLanguage' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumDeviceDataTests' name='testModel' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumDeviceDataTests' name='testOrientation' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumDeviceDataTests' name='testOSBuild' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumDeviceDataTests' name='testOSName' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumDeviceDataTests' name='testOSVersion' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumDeviceDataTests' name='testPlatform' time='0.005'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumDeviceDataTests' name='testResolution' time='0.001'/>
+  </testsuite>
+  <testsuite name='TealiumCoreTests_iOS.TealiumDiskTests' tests='4' failures='0'>
+    <testcase classname='TealiumCoreTests_iOS.TealiumDiskTests' name='testAppend' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumDiskTests' name='testExample' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumDiskTests' name='testInit' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumDiskTests' name='testSave' time='0.012'/>
+  </testsuite>
+  <testsuite name='TealiumCoreTests_iOS.TealiumExtensionTests' tests='21' failures='0'>
+    <testcase classname='TealiumCoreTests_iOS.TealiumExtensionTests' name='testAutotrackingNilWhenNotSetAsCollector' time='0.032'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumExtensionTests' name='testAutotrackingNotNil' time='0.013'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumExtensionTests' name='testCancelTimedEventCallsEventSchedulerCancel' time='0.009'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumExtensionTests' name='testClearAllTimedEventsCallsEventSchedulerClearAll' time='0.032'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumExtensionTests' name='testConsentManagerNilWhenPolicyNotSet' time='0.012'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumExtensionTests' name='testConsentManagerNotNil' time='0.045'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumExtensionTests' name='testLifecycleNilWhenNotSetAsCollector' time='0.009'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumExtensionTests' name='testLifecycleNotNil' time='0.023'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumExtensionTests' name='testLocationNilWhenNotSetAsCollector' time='0.033'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumExtensionTests' name='testLocationNotNil' time='0.282'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumExtensionTests' name='testLoggerNotNil' time='0.017'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumExtensionTests' name='testRemoteCommandsNilWhenNotSetAsDispatcher' time='0.025'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumExtensionTests' name='testRemoteCommandsNotNil' time='0.019'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumExtensionTests' name='testResetVisitorId' time='0.040'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumExtensionTests' name='testStartTimedEventCallsEventSchedulerStart' time='0.008'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumExtensionTests' name='testStopTimedEventCallsEventSchedulerStopAndTimedEventInfo' time='0.043'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumExtensionTests' name='testTagManagementNilWhenNotSetAsDispatcher' time='0.007'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumExtensionTests' name='testTagManagementNotNil' time='0.084'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumExtensionTests' name='testVisitorIdNotNil' time='0.016'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumExtensionTests' name='testVisitorServiceNilWhenNotSetAsCollector' time='0.011'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumExtensionTests' name='testVisitorServiceNotNil' time='0.025'/>
+  </testsuite>
+  <testsuite name='TealiumCoreTests_iOS.TealiumLoggerTests' tests='5' failures='0'>
+    <testcase classname='TealiumCoreTests_iOS.TealiumLoggerTests' name='testTealiumLogLevelDebug' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumLoggerTests' name='testTealiumLogLevelError' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumLoggerTests' name='testTealiumLogLevelFault' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumLoggerTests' name='testTealiumLogLevelInfo' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumLoggerTests' name='testTealiumLogLevelSilent' time='0.001'/>
+  </testsuite>
+  <testsuite name='TealiumCoreTests_iOS.TealiumModulesManagerTests' tests='16' failures='0'>
+    <testcase classname='TealiumCoreTests_iOS.TealiumModulesManagerTests' name='testAddCollector' time='0.021'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumModulesManagerTests' name='testConfigPropertyUpdate' time='0.028'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumModulesManagerTests' name='testConnectionRestored' time='0.010'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumModulesManagerTests' name='testDequeue' time='0.010'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumModulesManagerTests' name='testDisableModule' time='0.011'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumModulesManagerTests' name='testDispatchListenerAddedFromConfig' time='0.014'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumModulesManagerTests' name='testDispatchValidatorAddedFromConfig' time='0.017'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumModulesManagerTests' name='testGatherTrackData' time='0.014'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumModulesManagerTests' name='testGatherTrackDataAfterMigratingLegacyData' time='0.008'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumModulesManagerTests' name='testGatherTrackDataWithModulesList' time='0.011'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumModulesManagerTests' name='testRequestTrack' time='0.008'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumModulesManagerTests' name='testSendTrack' time='0.010'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumModulesManagerTests' name='testSetModules' time='0.012'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumModulesManagerTests' name='testSetupDispatchListeners' time='0.008'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumModulesManagerTests' name='testSetupDispatchValidators' time='0.006'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumModulesManagerTests' name='testUpdateConfig' time='0.007'/>
+  </testsuite>
+  <testsuite name='TealiumCoreTests_iOS.TealiumRequestsTests' tests='10' failures='0'>
+    <testcase classname='TealiumCoreTests_iOS.TealiumRequestsTests' name='testExtractKeyReturnsExpectedValue' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumRequestsTests' name='testExtractKeyReturnsNil_lookupNil' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumRequestsTests' name='testExtractKeyReturnsNil_noEventMatch' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumRequestsTests' name='testExtractKeyReturnsNil_tealiumEventNotInPayload' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumRequestsTests' name='testExtractLookupValueReturnsExpected_valueIsInt' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumRequestsTests' name='testExtractLookupValueReturnsExpected_valueIsIntArray' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumRequestsTests' name='testExtractLookupValueReturnsExpected_valueIsString' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumRequestsTests' name='testExtractLookupValueReturnsExpected_valueIsStringArray' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumRequestsTests' name='testExtractLookupValueReturnsNil_keyNotInTrackDictionary' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumRequestsTests' name='testExtractLookupValueReturnsNil_valueIsEmptyArray' time='0.001'/>
+  </testsuite>
+  <testsuite name='TealiumCoreTests_iOS.TealiumUtilsTests' tests='3' failures='0'>
+    <testcase classname='TealiumCoreTests_iOS.TealiumUtilsTests' name='testJSONStringWithDictionary' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumUtilsTests' name='testURLRequest' time='0.001'/>
+    <testcase classname='TealiumCoreTests_iOS.TealiumUtilsTests' name='testURLRequestWithNaN' time='0.528'/>
+  </testsuite>
+</testsuites>
