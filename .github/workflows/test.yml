@@ -57,7 +57,7 @@ jobs:
         with:
           python-version: '3.8'
       - name: Validate Code Coverage - "${{ matrix.scheme }}"
-        run: python3 coverage.py ${{ matrix.scheme }}".txt && OUTPUT=$(echo $?) && echo "$OUTPUT"
+        run: python3 coverage.py "${{ matrix.scheme }}".txt && exit $(echo $?)
         working-directory: ${{env.working-directory}}  
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output-style "raw" --xcargs "-quiet" --output_files "${{ matrix.scheme }}".html
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
