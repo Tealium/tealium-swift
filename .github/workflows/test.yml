@@ -30,22 +30,22 @@ jobs:
       matrix:
         destination: ["platform=iOS Simulator,OS=14.4,name=iPhone 12"]
         scheme:
-            - TealiumAttributionTests-iOS
-            - TealiumAutotrackingTests-iOS 
-            - TealiumCollectTests-iOS
+            # - TealiumAttributionTests-iOS
+            # - TealiumAutotrackingTests-iOS 
+            # - TealiumCollectTests-iOS
             - TealiumCoreTests-iOS
-            - TealiumLifecycleTests-iOS
-            - TealiumLocationTests-iOS
-            - TealiumMediaTests-iOS
-            - TealiumRemoteCommandsTests-iOS
-            - TealiumTagManagementTests-iOS
-            - TealiumVisitorServiceTests-iOS
+            # - TealiumLifecycleTests-iOS
+            # - TealiumLocationTests-iOS
+            # - TealiumMediaTests-iOS
+            # - TealiumRemoteCommandsTests-iOS
+            # - TealiumTagManagementTests-iOS
+            # - TealiumVisitorServiceTests-iOS
     steps:
       - uses: actions/checkout@v2 
       - name: Test - "${{ matrix.scheme }}"
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output-style "raw" --xcargs "-quiet" --output_files "${{ matrix.scheme }}".html
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
-        run: rm -rf output && fastlane scan --scheme "${{ matrix.scheme }}" derived_data_path /output --code_coverage true --skip_build true && xcrun xccov view --report --only-targets output/Logs/Test/*.xcresult >> "${{ matrix.scheme }}".txt
+        run: rm -rf output && fastlane scan --scheme "${{ matrix.scheme }}" derived_data_path /output --code_coverage true --skip_build true && ls output/Logs/Test && xcrun xccov view --report --only-targets output/Logs/Test/*.xcresult >> "${{ matrix.scheme }}".txt
         working-directory: ${{env.working-directory}}
       - name: Setup Python
         uses: actions/setup-python@v2
