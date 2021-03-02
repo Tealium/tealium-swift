@@ -49,7 +49,7 @@ jobs:
       - name: Test - "${{ matrix.scheme }}"
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output-style "raw" --xcargs "-quiet" --output_files "${{ matrix.scheme }}".html
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
-        run: fastlane scan --scheme "${{ matrix.scheme }}" derived_data_path /output --code_coverage true --skip_build true && python3 coverage2.py coverage.txt && OUTPUT=$(echo $?) && echo "$OUTPUT"
+        run: fastlane scan --scheme "${{ matrix.scheme }}" derived_data_path /output --code_coverage true --skip_build true && python3 coverage.py coverage.txt && OUTPUT=$(echo $?) && echo "$OUTPUT"
         working-directory: ${{env.working-directory}}
       # - name: Code Coverage - "${{ matrix.scheme }}"
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output-style "raw" --xcargs "-quiet" --output_files "${{ matrix.scheme }}".html
