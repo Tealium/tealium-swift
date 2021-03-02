@@ -47,6 +47,11 @@ jobs:
         # run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
         run: rm -rf output && fastlane scan --scheme "${{ matrix.scheme }}" derived_data_path /output --code_coverage true --skip_build true && ls output/Logs/Test && xcrun xccov view --report --only-targets output/Logs/Test/*.xcresult >> "${{ matrix.scheme }}".txt
         working-directory: ${{env.working-directory}}
+      - name: Save Code Coverage Report - "${{ matrix.scheme }}"
+        # run: fastlane scan --scheme "${{ matrix.scheme }}" --output-style "raw" --xcargs "-quiet" --output_files "${{ matrix.scheme }}".html
+        # run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
+        run: ls output/Logs/Test && xcrun xccov view --report --only-targets output/Logs/Test/*.xcresult >> "${{ matrix.scheme }}".txt
+        working-directory: ${{env.working-directory}}
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
