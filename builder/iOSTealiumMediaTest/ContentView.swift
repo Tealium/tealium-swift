@@ -39,16 +39,19 @@ struct ContentView: View {
                     .mute(video.mute)
                     .onBufferChanged { progress in
                         mediaSession?.startBuffer()
+                        // Simulate bitrate change
                         mediaSession?.bitrate = 4000
                         mediaSession?.endBuffer()
                     }
                     .onPlayToEndTime {
+                        // When content plays to end, end the chapter, content, and session
                         mediaSession?.endChapter()
                         mediaSession?.endContent()
                         mediaSession?.endSession()
                         video.time = .zero
                     }
                     .onReplay {
+                        // restart media and chapter
                         mediaSession?.play()
                         mediaSession?.startChapter(Chapter(name: "Chapter 1", duration: 30))
                     }
@@ -62,11 +65,15 @@ struct ContentView: View {
                             video.stateText = "Playing!"
                             video.totalDuration = totalDuration
                             if !video.started {
+                                // if state is playing and video has not already started, start session
                                 mediaSession?.startSession()
                                 video.started = true
                             }
                             mediaSession?.play()
-                            if !video.started { mediaSession?.startChapter(Chapter(name: "Chapter 1", duration: 30)) }
+                            if !video.started {
+                                // if state is playing and video has not already started, start chapter
+                                mediaSession?.startChapter(Chapter(name: "Chapter 1", duration: 30))
+                            }
                         case .paused(let playProgress, let bufferProgress):
                             video.stateText = "Paused: play \(Int(playProgress * 100))% buffer \(Int(bufferProgress * 100))%"
                             if !video.paused {
@@ -79,6 +86,7 @@ struct ContentView: View {
                     }
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                            // For older devices, make sure Teal has been initialized before starting session
                             _session = TealiumHelper.mediaSession(from: media)
                             self.video.play = true
                         })
@@ -98,6 +106,7 @@ struct ContentView: View {
 
                     Divider().frame(height: 20)
                     
+                    // Update player state on toggle
                     IconButtonView(iconName: self.video.mute ? "speaker.slash.fill" : "speaker.fill") {
                         self.video.mute.toggle()
                         if self.mediaSession?.playerState == .mute {
@@ -120,6 +129,7 @@ struct ContentView: View {
                         self.video.time = CMTimeMakeWithSeconds(max(0, self.video.time.seconds - 15),
                                                                 preferredTimescale: self.video.time.timescale)
                         mediaSession?.endSeek(at: self.video.time.seconds)
+                        // Simulate dropped frames
                         mediaSession?.droppedFrames = 15
                     }
 
@@ -135,6 +145,7 @@ struct ContentView: View {
                                                                     self.video.time.seconds + 15),
                                                                 preferredTimescale: self.video.time.timescale)
                         mediaSession?.endSeek(at: self.video.time.seconds)
+                        // Simulate dropped frames
                         mediaSession?.droppedFrames = 20
                     }
                 }.padding()
