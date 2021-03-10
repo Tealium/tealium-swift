@@ -21,7 +21,7 @@ class TagManagementUtilsTests: XCTestCase {
     }
 
     func testGetLegacyTypeView() {
-        let eventType = "call_type"
+        let eventType = "tealium_event_type"
         let viewValue = "view"
         let viewDictionary: [String: Any] = [eventType: viewValue]
         let viewResult = viewDictionary.legacyType
@@ -30,7 +30,7 @@ class TagManagementUtilsTests: XCTestCase {
     }
 
     func testGetLegacyTypeEvent() {
-        let eventType = "call_type"
+        let eventType = "tealium_event_type"
         let linkValue = "link"
         let eventDictionary: [String: Any] = [eventType: linkValue]
         let eventResult = eventDictionary.legacyType
@@ -39,7 +39,7 @@ class TagManagementUtilsTests: XCTestCase {
     }
 
     func testRandomEventType() {
-        let eventType = "call_type"
+        let eventType = "tealium_event_type"
         let anyValue = "any"
         let eventDictionary: [String: Any] = [eventType: anyValue]
         let eventResult = eventDictionary.legacyType

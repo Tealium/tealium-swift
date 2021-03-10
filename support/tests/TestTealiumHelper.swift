@@ -216,3 +216,9 @@ extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any {
     }
 
 }
+
+extension Dictionary where Key == String, Value == Any {
+    func equal(to dictionary: [String: Any] ) -> Bool {
+        NSDictionary(dictionary: self).isEqual(to: dictionary)
+    }
+}
