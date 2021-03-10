@@ -42,7 +42,7 @@ public extension Tealium {
             return
         }
         let dispatch = TealiumEvent(TealiumKey.killVisitorSession,
-                                    dataLayer: [TealiumKey.killVisitorSessionEvent: TealiumKey.killVisitorSession, TealiumKey.callType: TealiumKey.killVisitorSession, TealiumKey.traceId: traceId])
+                                    dataLayer: [TealiumKey.killVisitorSessionEvent: TealiumKey.killVisitorSession, TealiumKey.eventType: TealiumKey.killVisitorSession, TealiumKey.traceId: traceId])
         self.track(dispatch)
     }
 

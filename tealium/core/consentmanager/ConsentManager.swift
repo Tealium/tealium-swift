@@ -115,7 +115,7 @@ public class ConsentManager {
             // this track call must only be sent if "Log Consent Changes" is enabled and user has consented
             if consentLoggingEnabled, currentPolicy.shouldLogConsentStatus {
                 // call type must be set to override "link" or "view"
-                consentData[TealiumKey.callType] = consentData[TealiumKey.event]
+                consentData[TealiumKey.eventType] = consentData[TealiumKey.event]
                 delegate?.requestTrack(TealiumTrackRequest(data: consentData))
             }
             // in all cases, update the cookie data in TiQ/webview
@@ -134,7 +134,7 @@ public class ConsentManager {
             }
             // collect module ignores this hit
             consentData[TealiumKey.event] = currentPolicy.updateConsentCookieEventName
-            consentData[TealiumKey.callType] = currentPolicy.updateConsentCookieEventName
+            consentData[TealiumKey.eventType] = currentPolicy.updateConsentCookieEventName
             delegate?.requestTrack(TealiumTrackRequest(data: consentData))
         }
     }

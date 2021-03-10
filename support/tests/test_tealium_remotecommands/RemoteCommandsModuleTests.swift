@@ -160,6 +160,12 @@ class RemoteCommandsModuleTests: XCTestCase {
         XCTAssertEqual(remoteCommandsManager.triggerCount, 0)
         XCTAssertEqual(remoteCommandsManager.refreshCount, 0)
     }
+    
+    func testTealiumEventType() {
+        let request = TealiumRemoteAPIRequest(trackRequest: TealiumTrackRequest(data: ["test": "data"]))
+        XCTAssertNil(request.trackRequest.trackDictionary["call_type"])
+        XCTAssertEqual(request.trackRequest.trackDictionary[TealiumKey.eventType] as! String, "remote_api")
+    }
 
 }
 

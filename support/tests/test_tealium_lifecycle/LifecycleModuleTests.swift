@@ -62,7 +62,7 @@ class LifecycleModuleTests: XCTestCase {
             let appVersion = event.app_version!
             let ts = Double(event.timestamp_unix!)
             let time = Date(timeIntervalSince1970: ts!)
-            let expectedData = event.expected_data.dictionary
+            let expectedData = event.expected_data?.encoded
             let type = event.expected_data?.lifecycle_type!
             var returnedData = [String: Any]()
             switch type {
@@ -119,6 +119,74 @@ class LifecycleModuleTests: XCTestCase {
         lifecycle.sessions.append(sessionCrashed)
         _ = lifecycle.newLaunch(at: Date(), overrideSession: nil)
         XCTAssertTrue(lifecycle.crashDetected == "true", "Crashed prior session not caught. Sessions: \(lifecycle.sessions)")
+    }
+    
+    func testCrashDetected_DidDetectLaunchKey_NotPresentOnSleep() {
+        let module = createModule()
+        let lifecycleData: [String: Any] = [
+            "lifecycle_dayofweek_local": 1,
+            "lifecycle_dayssincelastwake": 0,
+            "lifecycle_dayssincelaunch": 38,
+            "lifecycle_diddetectcrash": "true",
+            "lifecycle_firstlaunchdate": "1970-01-01T00:00:00Z",
+            "lifecycle_firstlaunchdate_MMDDYYYY": "01/01/1970",
+            "lifecycle_hourofday_local": 6,
+            "lifecycle_lastlaunchdate": "1970-01-13T09:32:41Z",
+            "lifecycle_lastsleepdate": "1970-02-02T09:04:39Z",
+            "lifecycle_lastwakedate": "1970-02-08T14:13:12Z",
+            "lifecycle_launchcount": 2,
+            "lifecycle_sleepcount": 10,
+            "lifecycle_totalcrashcount": 1,
+            "lifecycle_totallaunchcount": 2,
+            "lifecycle_totalsecondsawake": 2091,
+            "lifecycle_totalsleepcount": 10,
+            "lifecycle_totalwakecount": 12,
+            "lifecycle_type": "launch",
+            "lifecycle_wakecount": 12
+        ]
+        
+        module.lifecycleData = lifecycleData
+        
+        // make sure the value is true first, on launch
+        module.process(type: .launch, at: Date())
+        XCTAssertEqual(module.lifecycleData["lifecycle_diddetectcrash"] as! String, "true")
+        
+        module.process(type: .sleep, at: Date())
+        XCTAssertNil(module.lifecycleData["lifecycle_diddetectcrash"])
+    }
+    
+    func testCrashDetected_DidDetectLaunchKey_NotPresentOnWake() {
+        let module = createModule()
+        let lifecycleData: [String: Any] = [
+            "lifecycle_dayofweek_local": 1,
+            "lifecycle_dayssincelastwake": 0,
+            "lifecycle_dayssincelaunch": 38,
+            "lifecycle_diddetectcrash": "true",
+            "lifecycle_firstlaunchdate": "1970-01-01T00:00:00Z",
+            "lifecycle_firstlaunchdate_MMDDYYYY": "01/01/1970",
+            "lifecycle_hourofday_local": 6,
+            "lifecycle_lastlaunchdate": "1970-01-13T09:32:41Z",
+            "lifecycle_lastsleepdate": "1970-02-02T09:04:39Z",
+            "lifecycle_lastwakedate": "1970-02-08T14:13:12Z",
+            "lifecycle_launchcount": 2,
+            "lifecycle_sleepcount": 10,
+            "lifecycle_totalcrashcount": 1,
+            "lifecycle_totallaunchcount": 2,
+            "lifecycle_totalsecondsawake": 2091,
+            "lifecycle_totalsleepcount": 10,
+            "lifecycle_totalwakecount": 12,
+            "lifecycle_type": "launch",
+            "lifecycle_wakecount": 12
+        ]
+        
+        module.lifecycleData = lifecycleData
+        
+        // make sure the value is true first, on launch
+        module.process(type: .launch, at: Date())
+        XCTAssertEqual(module.lifecycleData["lifecycle_diddetectcrash"] as! String, "true")
+        
+        module.process(type: .wake, at: Date())
+        XCTAssertNil(module.lifecycleData["lifecycle_diddetectcrash"])
     }
 
     func testLifecycleLoadedFromStorage() {
@@ -197,7 +265,7 @@ class LifecycleModuleTests: XCTestCase {
     func testLifecycleDataMigrated() {
         lifecycleModule = createModule(dataLayer: MockMigratedDataLayer())
 
-        let retrieved = lifecycleModule.lifecycle?.dictionary
+        let retrieved = lifecycleModule.lifecycle?.encoded
 
         let expected: [String: Any] = [
             "countLaunch": "12",

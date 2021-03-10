@@ -84,9 +84,3 @@ class TimedEventTests: XCTestCase {
     }
 
 }
-
-fileprivate extension Dictionary where Key == String, Value == Any {
-    func equal(to dictionary: [String: Any] ) -> Bool {
-        NSDictionary(dictionary: self).isEqual(to: dictionary)
-    }
-}
