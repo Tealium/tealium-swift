@@ -125,6 +125,10 @@ class ConsentManagerTests: XCTestCase {
             if trackInfo["tealium_event"] as? String == ConsentKey.gdprConsentCookieEventName {
                 return
             }
+            
+            XCTAssertNil(trackInfo["call_type"])
+            XCTAssertNotNil(trackInfo[TealiumKey.eventType])
+            
             if let categories = trackInfo["consent_categories"] as? [String], categories.count > 0 {
                 let catEnum = TealiumConsentCategories.consentCategoriesStringArrayToEnum(categories)
                 XCTAssertTrue([TealiumConsentCategories.cdp] == catEnum, "Consent Manager Test: testTrackUserConsentPreferences: Categories array contained unexpected values")

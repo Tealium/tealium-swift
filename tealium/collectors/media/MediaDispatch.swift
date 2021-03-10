@@ -6,19 +6,19 @@
 //
 
 import Foundation
-//#if media
+#if media
 import TealiumCore
-//#endif
+#endif
 
 public protocol MediaDispatch: TealiumDispatch {
     var event: MediaEvent { get }
-    var parameters: MediaCollection { get }
+    var parameters: MediaContent { get }
     var segment: Segment? { get }
 }
 
 public struct TealiumMediaEvent: MediaDispatch {
     public var event: MediaEvent
-    public var parameters: MediaCollection
+    public var parameters: MediaContent
     public var segment: Segment?
     
     /// Consolidates all the data from the media session for a given track call

@@ -24,11 +24,15 @@ extension Dictionary where Key == String, Value == Any {
         return "utag.track(\'\(trackType)\',\(encodedPayload))"
     }
 
-    /// Gets the call type from the track call. Defaults to "link" unless callType is specified
+    /// Gets the tealium event type from the track call. Defaults to "link" unless `eventType` is specified
     ///
-    /// - Returns: `String` containing the type of event based on the "call_type" variable in the dictionary.
+    /// - Returns: `String` containing the type of event based on the `tealium_event_type` variable in the dictionary.
     var legacyType: String {
-        return self[TealiumKey.callType] as? String ?? "link"
+        guard let eventType = self[TealiumKey.eventType] as? String,
+              eventType != "event" else {
+            return "link"
+        }
+        return eventType
     }
 }
 #endif

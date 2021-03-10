@@ -1,16 +1,16 @@
 //
-//  MediaCollection.swift
+//  MediaContent.swift
 //  tealium-swift
 //
 //  Copyright © 2021 Tealium, Inc. All rights reserved.
 //
 
 import Foundation
-//#if media
+#if media
 import TealiumCore
-//#endif
+#endif
 
-public class MediaCollection: Codable {
+public class MediaContent: Codable {
     var uuid = UUID().uuidString
     var name: String
     var streamType: StreamType
@@ -18,6 +18,7 @@ public class MediaCollection: Codable {
     var qoe: QoE
     var trackingType: TrackingType
     var milestoneInterval: Double?
+    var contentCompletePercentage: Double?
     var startTime: Date?
     var state: PlayerState?
     var customId: String?
@@ -25,24 +26,23 @@ public class MediaCollection: Codable {
     var playerName: String?
     var channelName: String?
     var metadata: AnyCodable?
-    
+    var milestone: String?
+    var summary: Summary?
     var adBreaks = [AdBreak]()
     var ads = [Ad]()
     var chapters = [Chapter]()
-    var milestone: String?
-    var summary: Summary?
-    
+
     enum CodingKeys: String, CodingKey {
         case uuid = "media_uuid"
         case name = "media_name"
         case streamType = "media_stream_type"
         case mediaType = "media_type"
         case qoe = "media_qoe"
-        case trackingType = "media_tracking_interval"
+        case trackingType = "media_tracking_type"
         case startTime = "media_session_start_time"
         case state = "media_player_state"
         case customId = "media_custom_id"
-        case duration = "media_length"
+        case duration = "media_duration"
         case playerName = "media_player_name"
         case channelName = "media_channel_name"
         case metadata = "media_metadata"
@@ -57,6 +57,7 @@ public class MediaCollection: Codable {
         qoe: QoE,
         trackingType: TrackingType = .significant,
         milestoneInterval: Double = 5.0,
+        contentCompletePercentage: Double? = nil,
         state: PlayerState? = nil,
         customId: String? = nil,
         duration: Int? = nil,
@@ -80,7 +81,7 @@ public class MediaCollection: Codable {
 
 }
 
-extension MediaCollection {
+extension MediaContent {
     
     /// Adds to an array for a given segment
     /// - Parameter segment: `Segment`
@@ -95,11 +96,4 @@ extension MediaCollection {
         }
     }
     
-    /// Removes from segment array for a given `uuidString`
-    /// - Parameter uuid: `String`
-    func remove(by uuid: String) {
-        ads.removeAll(where: { $0.uuid == uuid })
-        adBreaks.removeAll(where: { $0.uuid == uuid })
-        chapters.removeAll(where: { $0.uuid == uuid })
-    }
 }

@@ -39,6 +39,8 @@ class TealiumHelper {
         if enableLogs { config.logLevel = .info }
         config.shouldUseRemotePublishSettings = false
         config.memoryReportingEnabled = true
+        config.enableBackgroundMediaTracking = true
+        config.backgroundMediaAutoEndSessionTime = 30.0
         config.collectors = [Collectors.AppData,
                              Collectors.Device,
                              Collectors.Connectivity,
@@ -53,7 +55,7 @@ class TealiumHelper {
         _ = TealiumHelper.shared
     }
     
-    class func mediaSession(from media: MediaCollection) -> MediaSession? {
+    class func mediaSession(from media: MediaContent) -> MediaSession? {
         guard let mediaModule = TealiumHelper.shared.tealium?.media else {
             return nil
         }
@@ -70,12 +72,14 @@ class TealiumHelper {
         TealiumHelper.shared.tealium?.track(eventDispatch)
     }
 
-    class func joinTrace(_ traceID: String) {
-        TealiumHelper.shared.tealium?.joinTrace(id: traceID)
+    class func joinTrace(_ traceId: String) {
+        TealiumHelper.shared.tealium?.joinTrace(id: traceId)
         TealiumHelper.trackEvent(title: "trace_started", data: nil)
     }
 
-    class func leaveTrace() {
-        TealiumHelper.shared.tealium?.leaveTrace()
+    class func killTrace(_ traceId: String) {
+        TealiumHelper.trackEvent(title: "kill_trace",
+                                 data: ["event": "kill_visitor_session",
+                                             "cp.trace_id": traceId])
     }
 }

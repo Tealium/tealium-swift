@@ -6,9 +6,9 @@
 //
 
 import Foundation
-//#if media
+#if media
 import TealiumCore
-//#endif
+#endif
 
 public protocol MediaSessionProtocol: MediaSessionEvents {
     var bitrate: Int? { get set }
@@ -16,12 +16,14 @@ public protocol MediaSessionProtocol: MediaSessionEvents {
     var mediaService: MediaEventDispatcher? { get set }
     var playbackSpeed: Double { get set }
     var playerState: PlayerState? { get set }
-    func calculate(duration: Date?) -> Int?
+    var backgroundStatusResumed: Bool { get set }
+    func calculate(duration: Date?) -> Double?
 }
 
 public class MediaSession: MediaSessionProtocol {
     
     public var mediaService: MediaEventDispatcher?
+    public var backgroundStatusResumed = false
     
     public init(with mediaService: MediaEventDispatcher?) {
         self.mediaService = mediaService
@@ -67,7 +69,16 @@ public class MediaSession: MediaSessionProtocol {
         }
     }
     
+    public func resumeSession() {
+        backgroundStatusResumed = true
+        mediaService?.track(.event(.sessionResume))
+    }
+    
     public func startSession() {
+        guard !backgroundStatusResumed else {
+            resumeSession()
+            return
+        }
         mediaService?.track(.event(.sessionStart))
     }
     
@@ -91,7 +102,6 @@ public class MediaSession: MediaSessionProtocol {
             .event(.chapterSkip),
             .chapter(chapter)
         )
-        mediaService?.media.remove(by: chapter.uuid)
     }
     
     public func endChapter() {
@@ -102,7 +112,6 @@ public class MediaSession: MediaSessionProtocol {
             .event(.chapterEnd),
             .chapter(chapter)
         )
-        mediaService?.media.remove(by: chapter.uuid)
     }
     
     public func startBuffer() {
@@ -113,11 +122,11 @@ public class MediaSession: MediaSessionProtocol {
         mediaService?.track(.event(.bufferEnd))
     }
     
-    public func startSeek() {
+    public func startSeek(at position: Double? = nil) {
         mediaService?.track(.event(.seekStart))
     }
     
-    public func endSeek() {
+    public func endSeek(at position: Double? = nil) {
         mediaService?.track(.event(.seekEnd))
     }
     
@@ -131,7 +140,7 @@ public class MediaSession: MediaSessionProtocol {
     
     /// Sends `adBreakEnd` event and calculates duration of the adBreak
     public func endAdBreak() {
-        guard var adBreak = mediaService?.media.adBreaks.first else {
+        guard var adBreak = mediaService?.media.adBreaks.last else {
             return
         }
         if adBreak.duration == nil {
@@ -141,7 +150,6 @@ public class MediaSession: MediaSessionProtocol {
             .event(.adBreakEnd),
             .adBreak(adBreak)
         )
-        mediaService?.media.remove(by: adBreak.uuid)
     }
     
     public func startAd(_ ad: Ad) {
@@ -160,7 +168,6 @@ public class MediaSession: MediaSessionProtocol {
             .event(.adClick),
             .ad(ad)
         )
-        mediaService?.media.remove(by: ad.uuid)
     }
     
     public func skipAd() {
@@ -171,12 +178,11 @@ public class MediaSession: MediaSessionProtocol {
             .event(.adSkip),
             .ad(ad)
         )
-        mediaService?.media.remove(by: ad.uuid)
     }
     
     /// Sends `adEnd` event and calculates duration of the ad
     public func endAd() {
-        guard var ad = mediaService?.media.ads.first else {
+        guard var ad = mediaService?.media.ads.last else {
             return
         }
         if ad.duration == nil {
@@ -186,7 +192,6 @@ public class MediaSession: MediaSessionProtocol {
             .event(.adEnd),
             .ad(ad)
         )
-        mediaService?.media.remove(by: ad.uuid)
     }
     
     /// Sends a custom media event
@@ -198,8 +203,9 @@ public class MediaSession: MediaSessionProtocol {
         mediaService?.track(.event(.pause))
     }
     
-    public func stop() {
-        mediaService?.track(.event(.stop))
+    /// Sends an event signaling that the content has played until the end
+    public func endContent() {
+        mediaService?.track(.event(.contentEnd))
     }
     
     public func endSession() {
@@ -207,14 +213,14 @@ public class MediaSession: MediaSessionProtocol {
     }
     
     /// Calculates the duration of the content, in seconds
-    public func calculate(duration: Date?) -> Int? {
+    public func calculate(duration: Date?) -> Double? {
         guard let duration = duration else {
             return nil
         }
         let calculated = Calendar.current.dateComponents([.second],
                                                          from: duration,
                                                          to: Date())
-        return calculated.second
+        return Double(calculated.second ?? 0)
     }
     
     public func sendMilestone(_ milestone: Milestone) {
