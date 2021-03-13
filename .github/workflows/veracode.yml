@@ -1,13 +1,9 @@
 name: Builds Veracode Package, Uploads, Scans
 
- on:
-   push:
-     branches:
-#     - feature/*
+on:
+  push: # will run when PR is merged into master or main
+    branches:
       - cicd
-#   pull_request:
-#     branches:
-#       - ci-tests
 
 jobs:
   veracode_pkg:
