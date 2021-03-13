@@ -1,0 +1,56 @@
+name: Builds Veracode Package, Uploads, Scans
+
+ on:
+   push:
+     branches:
+#     - feature/*
+      - cicd
+#   pull_request:
+#     branches:
+#       - ci-tests
+
+jobs:
+  veracode_pkg:
+    name: Setup Environment
+    runs-on: macos-latest
+    env: 
+      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+      working-directory: ./builder
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup provisioning profile
+        env:
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+          CERTIFICATES_P12: ${{ secrets.CERTIFICATES_P12 }}
+          CERTIFICATES_P12_PASSWORD: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
+          CERTIFICATES_PROFILE: ${{ secrets.CERTIFICATES_PROFILE }}
+        run: |
+            chmod +x ./.github/secrets/decrypt_certs.sh
+            sh ./.github/secrets/decrypt_certs.sh
+      - name: Build iOS Package
+        run: |
+            set -o pipefail
+            env NSUnbufferedIO=YES
+            sh ./veracode.sh
+            cd veracode
+            brew install coreutils
+            export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+            ls -l --block-size=MB
+        working-directory: ${{ env.working-directory }}
+      - name: Upload Package
+        uses: actions/upload-artifact@v2
+        with:
+          name: veracode
+          path: ./builder/veracode/tealium-swift.bca
+          #   #   - name: Send for Security Scan
+#   #     uses: veracode/veracode-uploadandscan-action@master
+#   #     with:
+#   #       appname: Mobile Libraries
+#   #       filepath: $HOME/Desktop/veracode/tealium-swift.bca
+#   #       vid: ${{ secrets.VERACODE_API_ID }}
+#   #       vkey: ${{ secrets.VERACODE_API_KEY }}
+#   #       createsandbox: false
+#   #       sandboxname: tealium-swift 2.X
+#   #       #scanallnonfataltoplevelmodules: true
+#   #       #toplevel: true
+#   #       #selectedpreviously: true
