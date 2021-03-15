@@ -1,6 +1,8 @@
 brew install coreutils
-gbase64 -di "$CERTIFICATES_P12" > cert.p12
-gbase64 -di "$CERTIFICATES_PROFILE" > profile.mobileprovision
+echo "$CERTIFICATES_P12" > cert.txt
+echo "$CERTIFICATES_PROFILE" > profile.txt
+gbase64 -di cert.txt > cert.p12
+gbase64 -di profile.txt > profile.mobileprovision
 KEYCHAIN_PATH=$RUNNER_TEMP/login.keychain
 security create-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_PATH
 security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
