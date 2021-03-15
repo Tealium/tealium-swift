@@ -48,7 +48,9 @@ jobs:
         with:
           name: veracode
       - name: Unzip File
-        run: unzip veracode.zip
+        run: ls
+          ls ..
+          unzip veracode.zip
         working-directory: ${{ env.working-directory }}
       - name: Setup Java  
         uses: actions/setup-java@v1 # Make java accessible on path so the uploadandscan action can run.
