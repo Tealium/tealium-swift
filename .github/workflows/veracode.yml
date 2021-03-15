@@ -49,6 +49,7 @@ jobs:
           name: veracode
       - name: Unzip File
         run: unzip veracode.zip
+      - name: Setup Java  
       - uses: actions/setup-java@v1 # Make java accessible on path so the uploadandscan action can run.
         with: 
           java-version: '8'    
