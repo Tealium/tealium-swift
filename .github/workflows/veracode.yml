@@ -28,26 +28,33 @@ jobs:
             set -o pipefail
             env NSUnbufferedIO=YES
             sh ./veracode.sh
-            cd veracode
-            brew install coreutils
-            export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-            ls -l --block-size=MB
-            pwd
         working-directory: ${{ env.working-directory }}
       - name: Upload Package
         uses: actions/upload-artifact@v2
         with:
           name: veracode
           path: ./builder/veracode/tealium-swift.bca
-      # - name: Send for Security Scan
-      #   uses: veracode/veracode-uploadandscan-action@master
+      # - uses: actions/download-artifact@v2
       #   with:
-      #     appname: Mobile Libraries
-      #     filepath: ./builder/veracode/tealium-swift.bca
-      #     vid: ${{ secrets.VERACODE_API_ID }}
-      #     vkey: ${{ secrets.VERACODE_API_KEY }}
-      #     createsandbox: false
-      #     sandboxname: tealium-swift 2.X
-          #scanallnonfataltoplevelmodules: true
-          #toplevel: true
-          #selectedpreviously: true
+      #     name: my-artifact
+      - uses: actions/setup-java@v1 # Make java accessible on path so the uploadandscan action can run.
+        with: 
+          java-version: '8'    
+      - name: Send for Security Scan
+        uses: veracode/veracode-uploadandscan-action@master
+        with:
+          appname: Mobile Libraries
+          filepath: ./builder/veracode/tealium-swift.bca
+          vid: ${{ secrets.VERACODE_API_ID }}
+          vkey: ${{ secrets.VERACODE_API_KEY }}
+          createsandbox: false
+          sandboxname: tealium-swift 2.X
+          scanallnonfataltoplevelmodules: true
+          toplevel: true
+          selectedpreviously: true
+          ### Testing
+            # cd veracode
+            # brew install coreutils
+            # export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+            # ls -l --block-size=MB
+            # pwd
