@@ -6,7 +6,7 @@ on:
       - cicd
 
 jobs:
-  veracode_pkg:
+  build_pkg:
     name: Veracode
     runs-on: macos-latest
     env: 
@@ -34,24 +34,34 @@ jobs:
         with:
           name: veracode
           path: ./builder/veracode/tealium-swift.bca
-      # - uses: actions/download-artifact@v2
-      #   with:
-      #     name: my-artifact
-      - uses: actions/setup-java@v1 # Make java accessible on path so the uploadandscan action can run.
-        with: 
-          java-version: '8'    
-      - name: Send for Security Scan
-        uses: veracode/veracode-uploadandscan-action@master
+  send_pkg:
+    needs: [build_pkg]
+    name: Veracode
+    runs-on: ubuntu-latest
+    env: 
+      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+      working-directory: ./builder
+      - name: Download Artifact      
+      - uses: actions/download-artifact@v2
         with:
-          appname: Mobile Libraries
-          filepath: ./builder/veracode/tealium-swift.bca
-          vid: ${{ secrets.VERACODE_API_ID }}
-          vkey: ${{ secrets.VERACODE_API_KEY }}
-          createsandbox: false
-          sandboxname: tealium-swift 2.X
-          scanallnonfataltoplevelmodules: true
-          toplevel: true
-          selectedpreviously: true
+          name: veracode
+      - name: Unzip File
+        run: unzip veracode.zip
+    - uses: actions/setup-java@v1 # Make java accessible on path so the uploadandscan action can run.
+      with: 
+        java-version: '8'    
+    - name: Send for Security Scan
+      uses: veracode/veracode-uploadandscan-action@master
+      with:
+        appname: Mobile Libraries
+        filepath: ./builder/veracode/tealium-swift.bca
+        vid: ${{ secrets.VERACODE_API_ID }}
+        vkey: ${{ secrets.VERACODE_API_KEY }}
+        createsandbox: false
+        sandboxname: tealium-swift 2.X
+        scanallnonfataltoplevelmodules: true
+        toplevel: true
+        selectedpreviously: true
           ### Testing
             # cd veracode
             # brew install coreutils
