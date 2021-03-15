@@ -12,6 +12,7 @@ import TealiumLifecycle
 import TealiumVisitorService
 #if os(iOS)
 import WebKit
+import AppTrackingTransparency
 import TealiumAttribution
 import TealiumLocation
 import TealiumRemoteCommands
@@ -74,6 +75,7 @@ class TealiumHelper: NSObject {
             ]
             
             // config.appDelegateProxyEnabled = false
+            config.searchAdsEnabled = true
             config.remoteAPIEnabled = true
             config.remoteCommandConfigRefresh = .every(24, .hours)
             config.searchAdsEnabled = true
@@ -132,6 +134,11 @@ class TealiumHelper: NSObject {
                 print("Remote Command data: hello = \(hello), key = \(key), tealium = \(tealium) 🎉🎊")
             }
             remoteCommands.add(display)
+            
+            ATTrackingManager.requestTrackingAuthorization { _ in
+                ///
+            }
+            
             #endif
             
         }
