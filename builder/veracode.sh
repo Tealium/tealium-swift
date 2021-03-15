@@ -2,7 +2,7 @@
 
 # GET XCODE PROJECT (OR WORKSPACE) PATH, SCHEME, AND OUTPUT LOCATION
 PROJECT="tealium-swift"
-SCHEME="iOSTealiumTest"
+SCHEME="iOSTealiumTester"
 OUTPUT_LOCATION="veracode"
 
 # CLEAN OUTPUT FOLDER
@@ -11,7 +11,7 @@ mkdir "$OUTPUT_LOCATION"
 
 xcodebuild archive \
 	-project "tealium-swift.xcodeproj" \
-	-scheme "iOSTealiumTest" \
+	-scheme "iOSTealiumTester" \
 	-archivePath "tealium-swift.xcodeproj" \
 	-destination "generic/platform=iOS" \
 	-allowProvisioningUpdates \
