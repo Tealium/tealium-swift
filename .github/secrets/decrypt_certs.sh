@@ -1,3 +1,4 @@
+rm -rf ~/Library/MobileDevice/Provisioning Profiles/
 echo -n "$CERTIFICATES_P12" | base64 --decode --output cert.p12
 echo -n "$CERTIFICATES_PROFILE" | base64 --decode --output Tealium_Automation.mobileprovision
 KEYCHAIN_PATH=$RUNNER_TEMP/login.keychain
