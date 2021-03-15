@@ -11,4 +11,4 @@ mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
 echo "$BASH_PASSWORD" | sudo mkdir -p /Library/MobileDevice
 echo "$BASH_PASSWORD" | sudo mkdir -p /Library/MobileDevice/Provisioning\ Profiles
 cp profile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles
-cp profile.mobileprovision /Library/MobileDevice/Provisioning\ Profiles
+echo "$BASH_PASSWORD" | sudo cp profile.mobileprovision /Library/MobileDevice/Provisioning\ Profiles
