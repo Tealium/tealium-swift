@@ -8,7 +8,7 @@ security import cert.p12 -P $CERTIFICATES_P12_PASSWORD -A -t cert -f pkcs12 -k $
 security list-keychain -d user -s $KEYCHAIN_PATH
 
 mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-mkdir -p /Library/MobileDevice
-mkdir -p /Library/MobileDevice/Provisioning\ Profiles
+echo "$BASH_PASSWORD" | sudo mkdir -p /Library/MobileDevice
+echo "$BASH_PASSWORD" | sudo mkdir -p /Library/MobileDevice/Provisioning\ Profiles
 cp profile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles
 cp profile.mobileprovision /Library/MobileDevice/Provisioning\ Profiles
