@@ -35,18 +35,18 @@ jobs:
           name: veracode
           path: ./builder/veracode/tealium-swift.bca
   send_pkg:
-    needs: [build_pkg]
+    needs: build_pkg
     name: Veracode
     runs-on: ubuntu-latest
     env: 
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
       working-directory: ./builder
-      - name: Download Artifact      
-      - uses: actions/download-artifact@v2
-        with:
-          name: veracode
-      - name: Unzip File
-        run: unzip veracode.zip
+    - name: Download Artifact      
+    - uses: actions/download-artifact@v2
+      with:
+        name: veracode
+    - name: Unzip File
+      run: unzip veracode.zip
     - uses: actions/setup-java@v1 # Make java accessible on path so the uploadandscan action can run.
       with: 
         java-version: '8'    
