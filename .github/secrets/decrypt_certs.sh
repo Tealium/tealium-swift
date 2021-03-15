@@ -1,5 +1,6 @@
-echo -n "$CERTIFICATES_P12" | base64 --decode --output cert.p12
-echo -n "$CERTIFICATES_PROFILE" | base64 --decode --output profile.mobileprovision
+brew install coreutils
+echo -n "$CERTIFICATES_P12" | gbase64 -di > cert.p12
+echo -n "$CERTIFICATES_PROFILE" | gbase64 -di > profile.mobileprovision
 KEYCHAIN_PATH=$RUNNER_TEMP/login.keychain
 security create-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_PATH
 security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
