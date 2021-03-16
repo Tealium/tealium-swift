@@ -10,13 +10,15 @@ rm -rf "$OUTPUT_LOCATION"
 mkdir "$OUTPUT_LOCATION"
 
 xcodebuild archive \
-	-project "tealium-swift.xcodeproj" \
-	-scheme "iOSTealiumTest" \
-	-archivePath "$PWD/tealium-swift.xcarchive" \
+	-project "${PROJECT}.xcodeproj" \
+	-scheme $SCHEME \
+	-archivePath "$PWD/${PROJECT}.xcarchive" \
 	-destination "generic/platform=iOS" \
 	-allowProvisioningUpdates \
 	DEBUG_INFORMATION_FORMAT=dwarf-with-dsym \
 	ENABLE_BITCODE=YES
+
+cd ${PROJECT}.xcarchive
 
 # MOVE APPLICATIONS DIRECTORY OUT OF PRODUCTS AND UP TO PARENT
 cp -R Products/Applications Payload
@@ -26,11 +28,12 @@ rm -rf Products
 rm -rf ${PROJECT}.xcarchive/Products/
 
 # ZIP ALL FILES IN XCODE ARCHIVE
-cd ${PROJECT}.xcarchive
 zip -r "../${OUTPUT_LOCATION}/${PROJECT}.bca" $(ls)
 
+cd ..
+
 # REMOVE ARCHIVE
-rm -rf "tealium-swift.xcarchive"
+rm -rf "${PROJECT}.xcarchive"
 
 echo ""
-echo "Package Created!"
+echo "Package ${PROJECT}.bca created!"
