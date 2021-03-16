@@ -61,5 +61,4 @@ jobs:
           createsandbox: false
           sandboxname: tealium-swift 2.X
           scanallnonfataltoplevelmodules: true
-          #toplevel: true
-          #selectedpreviously: true
+          #selectedpreviously: true # If a new module is added, you must scan manually first
