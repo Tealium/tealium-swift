@@ -19,8 +19,8 @@ xcodebuild archive \
 	ENABLE_BITCODE=YES
 
 # MOVE APPLICATIONS DIRECTORY OUT OF PRODUCTS AND UP TO PARENT
-mkdir "${PROJECT}.xcarchive/Payload/"
-mv -v "${PROJECT}.xcarchive/Products/Applications/*" "${PROJECT}.xcarchive/Payload/"
+cp -R Products/Applications Payload
+rm -rf Products
 
 # REMOVE THE PRODUCTS DIRECTORY
 rm -rf ${PROJECT}.xcarchive/Products/
