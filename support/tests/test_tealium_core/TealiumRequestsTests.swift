@@ -73,5 +73,46 @@ class TealiumRequestsTests: XCTestCase {
         let result = track.extractLookupValue(for: "hello") as? Int
         XCTAssertEqual(result, 10)
     }
+    
+    func testTealiumView_ContainsExpectedInfo_NoCustomData() {
+        let view = TealiumView("screenName")
+        var result = view.trackRequest.trackDictionary
+        XCTAssertNotNil(result[TealiumKey.requestUUID] as! String)
+        result[TealiumKey.requestUUID] = nil
+        XCTAssertTrue(result.equal(to: ["tealium_event": "screenName",
+                                        "tealium_event_type": "view",
+                                        "screen_title": "screenName"]))
+    }
+    
+    func testTealiumView_ContainsExpectedInfo_WithCustomData() {
+        let view = TealiumView("screenName", dataLayer: ["hello": "world"])
+        var result = view.trackRequest.trackDictionary
+        XCTAssertNotNil(result[TealiumKey.requestUUID] as! String)
+        result[TealiumKey.requestUUID] = nil
+        XCTAssertTrue(result.equal(to: ["tealium_event": "screenName",
+                                        "tealium_event_type": "view",
+                                        "screen_title": "screenName",
+                                        "hello": "world"]))
+    }
+    
+    func testTealiumEvent_ContainsExpectedInfo_NoCustomData() {
+        let event = TealiumEvent("eventName")
+        var result = event.trackRequest.trackDictionary
+        XCTAssertNotNil(result[TealiumKey.requestUUID] as! String)
+        result[TealiumKey.requestUUID] = nil
+        XCTAssertTrue(result.equal(to: ["tealium_event": "eventName",
+                                        "tealium_event_type": "event"]))
+    }
+    
+    func testTealiumEvent_ContainsExpectedInfo_WithCustomData() {
+        let event = TealiumEvent("eventName", dataLayer: ["hello": "world"])
+        var result = event.trackRequest.trackDictionary
+        XCTAssertNotNil(result[TealiumKey.requestUUID] as! String)
+        result[TealiumKey.requestUUID] = nil
+        XCTAssertTrue(result.equal(to: ["tealium_event": "eventName",
+                                        "tealium_event_type": "event",
+                                        "hello": "world"]))
+    }
+
 
 }
