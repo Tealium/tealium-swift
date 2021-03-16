@@ -15,7 +15,7 @@ public enum Dispatchers {}
 
 public enum TealiumValue {
     public static let libraryName = "swift"
-    public static let libraryVersion = "2.2.2"
+    public static let libraryVersion = "2.3.0"
     // This is the current limit for performance reasons. May be increased in future
     public static let maxEventBatchSize = 10
     public static let defaultMinimumDiskSpace: Int32 = 20_000_000
@@ -54,7 +54,6 @@ public enum TealiumKey {
     public static let profile = "tealium_profile"
     public static let environment = "tealium_environment"
     public static let event = "tealium_event"
-    public static let callType = "call_type"
     public static let screenTitle = "screen_title"
     public static let eventType = "tealium_event_type"
     public static let libraryName = "tealium_library_name"
@@ -96,7 +95,7 @@ public enum TealiumKey {
     // swiftlint:enable identifier_name
     public static let errorHeaderKey = "X-Error"
     public static let diskStorageDirectory = "disk_storage_directory"
-    public static let remoteAPICallType = "remote_api"
+    public static let remoteAPIEventType = "remote_api"
     public static let publishSettings = "remote_publish_settings"
     public static let publishSettingsURL = "publish_settings_url"
     public static let publishSettingsProfile = "publish_settings_profile"

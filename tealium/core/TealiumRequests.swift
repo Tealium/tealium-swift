@@ -78,7 +78,7 @@ public struct TealiumRemoteAPIRequest: TealiumRequest {
 
     public init(trackRequest: TealiumTrackRequest) {
         var trackRequestData = trackRequest.trackDictionary
-        trackRequestData[TealiumKey.callType] = TealiumKey.remoteAPICallType
+        trackRequestData[TealiumKey.eventType] = TealiumKey.remoteAPIEventType
         self.trackRequest = TealiumTrackRequest(data: trackRequestData)
     }
 
@@ -300,6 +300,7 @@ public struct TealiumEvent: TealiumDispatch {
     public var trackRequest: TealiumTrackRequest {
         var data = dataLayer ?? [String: Any]()
         data[TealiumKey.event] = eventName
+        data[TealiumKey.eventType] = TealiumTrackType.event.description
         return TealiumTrackRequest(data: data)
     }
 }
@@ -317,7 +318,7 @@ public struct TealiumView: TealiumDispatch {
     public var trackRequest: TealiumTrackRequest {
         var data = dataLayer ?? [String: Any]()
         data[TealiumKey.event] = viewName
-        data[TealiumKey.callType] = TealiumTrackType.view.description
+        data[TealiumKey.eventType] = TealiumTrackType.view.description
         data[TealiumKey.screenTitle] = viewName
         return TealiumTrackRequest(data: data)
     }

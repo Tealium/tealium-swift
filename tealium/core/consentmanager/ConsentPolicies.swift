@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol ConsentPolicy {
+public protocol ConsentPolicy {
     init (_ preferences: UserConsentPreferences)
     var defaultConsentExpiry: (time: Int, unit: TimeUnit) { get }
     var shouldUpdateConsentCookie: Bool { get }
