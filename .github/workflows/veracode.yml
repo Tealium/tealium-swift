@@ -47,11 +47,6 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: veracode
-      - name: Unzip File
-        run: ls
-          ls ..
-          unzip veracode.zip
-        working-directory: ${{ env.working-directory }}
       - name: Setup Java  
         uses: actions/setup-java@v1 # Make java accessible on path so the uploadandscan action can run.
         with: 
@@ -60,7 +55,7 @@ jobs:
         uses: veracode/veracode-uploadandscan-action@master
         with:
           appname: Mobile Libraries
-          filepath: ./builder/veracode/tealium-swift.bca
+          filepath: tealium-swift.bca
           vid: ${{ secrets.VERACODE_API_ID }}
           vkey: ${{ secrets.VERACODE_API_KEY }}
           createsandbox: false
