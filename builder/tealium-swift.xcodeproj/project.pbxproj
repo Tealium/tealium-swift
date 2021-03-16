@@ -90,6 +90,14 @@
 		CF3C1AFC2473251900A4DEE9 /* ConsentManagerModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73E7A0C209B0601001D05D3 /* ConsentManagerModuleTests.swift */; };
 		CF3C1AFE2473252000A4DEE9 /* ConsentMockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D788A59C2321392D00BC6D60 /* ConsentMockDiskStorage.swift */; };
 		CF3C1AFF2473252000A4DEE9 /* ConsentMockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D788A59C2321392D00BC6D60 /* ConsentMockDiskStorage.swift */; };
+		CF42645825BB8984005561FC /* TealiumCollect.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D736D6B32195CCB600B3BDEE /* TealiumCollect.framework */; };
+		CF42645925BB8984005561FC /* TealiumCollect.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D736D6B32195CCB600B3BDEE /* TealiumCollect.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CF42645C25BB8984005561FC /* TealiumCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D755DD0D21945E41003C6BA1 /* TealiumCore.framework */; };
+		CF42645D25BB8984005561FC /* TealiumCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D755DD0D21945E41003C6BA1 /* TealiumCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CF42646025BB8984005561FC /* TealiumLifecycle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7881EFF21998DAD002CDCC1 /* TealiumLifecycle.framework */; };
+		CF42646125BB8984005561FC /* TealiumLifecycle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7881EFF21998DAD002CDCC1 /* TealiumLifecycle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CF42646425BB8984005561FC /* TealiumMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFAD9D1C25A66BE80079B19A /* TealiumMedia.framework */; };
+		CF42646525BB8984005561FC /* TealiumMedia.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CFAD9D1C25A66BE80079B19A /* TealiumMedia.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CF6E3ADC25F9356900900902 /* Tealium+Encodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6E3ADB25F9356900900902 /* Tealium+Encodable.swift */; };
 		CF6E9E31249AEFCE0032A663 /* RemoteCommandResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6E9E30249AEFCE0032A663 /* RemoteCommandResponseTests.swift */; };
 		CF6E9E33249AEFD90032A663 /* RemoteCommandExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6E9E32249AEFD90032A663 /* RemoteCommandExtensionsTests.swift */; };
