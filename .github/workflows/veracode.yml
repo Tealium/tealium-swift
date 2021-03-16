@@ -1,20 +1,20 @@
 name: Builds Veracode Package, Uploads, Scans
 
-on:
-  push: # will run when PR is merged into master or main
+on: #[pull_request]
+  push:
     branches:
-      - cicd
+      - cicd # temp
 
 jobs:
   build_pkg:
-    name: Veracode
+    name: Prepare and Build Veracode Package
     runs-on: macos-latest
     env: 
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
       working-directory: ./builder
     steps:
       - uses: actions/checkout@v2
-      - name: Setup provisioning profile
+      - name: Setup Provisioning Profile
         env:
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
           CERTIFICATES_P12: ${{ secrets.CERTIFICATES_P12 }}
@@ -29,14 +29,14 @@ jobs:
             env NSUnbufferedIO=YES
             sh ./veracode.sh
         working-directory: ${{ env.working-directory }}
-      - name: Upload Package
+      - name: Upload Package as Artifact
         uses: actions/upload-artifact@v2
         with:
           name: veracode
           path: ./builder/veracode/tealium-swift.bca
   send_pkg:
     needs: build_pkg
-    name: Veracode
+    name: Download Archived Package and Scan 
     runs-on: ubuntu-latest
     env: 
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -48,7 +48,7 @@ jobs:
         with:
           name: veracode
       - name: Setup Java  
-        uses: actions/setup-java@v1 # Make java accessible on path so the uploadandscan action can run.
+        uses: actions/setup-java@v1
         with: 
           java-version: '8'    
       - name: Send for Security Scan
@@ -60,12 +60,6 @@ jobs:
           vkey: ${{ secrets.VERACODE_API_KEY }}
           createsandbox: false
           sandboxname: tealium-swift 2.X
-          # scanallnonfataltoplevelmodules: true
-          # toplevel: true
-          selectedpreviously: true
-          ### Testing
-            # cd veracode
-            # brew install coreutils
-            # export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-            # ls -l --block-size=MB
-            # pwd
+          scanallnonfataltoplevelmodules: true
+          #toplevel: true
+          #selectedpreviously: true
