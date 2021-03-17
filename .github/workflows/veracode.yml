@@ -33,7 +33,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: veracode
-          path: ./builder/veracode/tealium-swift.bca
+          path: ./builder/tealium-swift.zip
   send_pkg:
     needs: build_pkg
     name: Download Archived Package and Scan 
@@ -55,10 +55,9 @@ jobs:
         uses: veracode/veracode-uploadandscan-action@master
         with:
           appname: Mobile Libraries
-          filepath: tealium-swift.bca
+          filepath: tealium-swift.zip
           vid: ${{ secrets.VERACODE_API_ID }}
           vkey: ${{ secrets.VERACODE_API_KEY }}
           createsandbox: false
           sandboxname: tealium-swift 2.X
-          scanallnonfataltoplevelmodules: true
-          #selectedpreviously: true # If a new module is added, you must scan manually first
+          selectedpreviously: true # If a new module is added, you must scan manually first
