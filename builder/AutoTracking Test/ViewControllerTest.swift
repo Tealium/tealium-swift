@@ -37,6 +37,15 @@ class ViewControllerTest: TealiumViewController {
     
     var headerView: UIView!
     var titleLabel: UILabel!
+    var _title: String? = "RealViewController"
+    override var title: String? {
+        get {
+            _title
+        }
+        set {
+            _title = newValue
+        }
+    }
     var numbersCollectionView: UICollectionView!
 //    let numbersCollectionViewDelegateAndDataSource = NumbersCollectionViewDelegateAndDataSource()
     

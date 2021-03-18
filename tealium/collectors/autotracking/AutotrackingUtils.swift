@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 
 final class NotificationToken: NSObject {
@@ -19,5 +20,19 @@ final class NotificationToken: NSObject {
 
     deinit {
         notificationCenter.removeObserver(token)
+    }
+}
+
+struct ViewNotification {
+    private init() {}
+    static func forView(_ viewName: String) -> Notification {
+        return Notification(name: Notification.Name(rawValue: "com.tealium.autotracking.view"), userInfo: ["view_name": viewName])
+    }
+}
+
+
+extension UIViewController {
+    var viewTitle: String {
+        return self.title ?? String(describing: type(of: self)).replacingOccurrences(of: "ViewController", with: "")
     }
 }

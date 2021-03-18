@@ -571,6 +571,7 @@
 		D7EA6B9025DD24DD00BECC3C /* TealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8809262554BD490020E1B2 /* TealiumHelper.swift */; };
 		D7ECB8C725E6B6B10043BA83 /* AutotrackingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7ECB8C625E6B6B10043BA83 /* AutotrackingUtils.swift */; };
 		D7ECB90B25E6B6E10043BA83 /* AutoTrackingExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FF987B24ACBD1300E87A80 /* AutoTrackingExtensions.swift */; };
+		D7ECB92E25E919D50043BA83 /* blocklist.json in Resources */ = {isa = PBXBuildFile; fileRef = D7ECB92D25E919D50043BA83 /* blocklist.json */; };
 		D7F1EBD52361CBF80088B103 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F1EBD42361CBF80088B103 /* Atomic.swift */; };
 		D7F2DED3233279A1000D0E0F /* TealiumConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716C7D101DDBC3A500512C99 /* TealiumConfigTests.swift */; };
 		D7F2DED4233279A1000D0E0F /* TealiumConstantsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716C7D111DDBC3A500512C99 /* TealiumConstantsTests.swift */; };
@@ -1645,6 +1646,7 @@
 		D7D5C1AF23D755CB002DB7C6 /* MockURLSessionPublishSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLSessionPublishSettings.swift; sourceTree = "<group>"; };
 		D7DB82E2245B1473005392B2 /* DispatchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchManager.swift; sourceTree = "<group>"; };
 		D7ECB8C625E6B6B10043BA83 /* AutotrackingUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutotrackingUtils.swift; sourceTree = "<group>"; };
+		D7ECB92D25E919D50043BA83 /* blocklist.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = blocklist.json; sourceTree = "<group>"; };
 		D7F1EBD42361CBF80088B103 /* Atomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
 		D7F2DEE2233279A1000D0E0F /* TealiumCoreTests-macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TealiumCoreTests-macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7F2DF0F233279B2000D0E0F /* TealiumCoreTests-tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TealiumCoreTests-tvOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2719,6 +2721,7 @@
 				D7BF512D25DAC80F00AD3A0D /* Info.plist */,
 				D7BF512A25DAC80F00AD3A0D /* Preview Content */,
 				D7BF515225DAC89000AD3A0D /* ViewControllerTest.swift */,
+				D7ECB92D25E919D50043BA83 /* blocklist.json */,
 			);
 			path = "AutoTracking Test";
 			sourceTree = "<group>";
@@ -3974,6 +3977,7 @@
 			files = (
 				D7BF512C25DAC80F00AD3A0D /* Preview Assets.xcassets in Resources */,
 				D7BF512925DAC80F00AD3A0D /* Assets.xcassets in Resources */,
+				D7ECB92E25E919D50043BA83 /* blocklist.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5510,6 +5514,7 @@
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = iOSTealiumTest/iOSTealiumTest.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"iOSTealiumTest/Preview Content\"";
 				DEVELOPMENT_TEAM = XC939GDC9P;
@@ -5545,6 +5550,7 @@
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = iOSTealiumTest/iOSTealiumTest.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"iOSTealiumTest/Preview Content\"";
 				DEVELOPMENT_TEAM = XC939GDC9P;

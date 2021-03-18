@@ -28,6 +28,7 @@ public class AutotrackingModule: Collector {
     weak var autotrackingDelegate: AutoTrackingDelegate?
     var lastEvent: String?
     var token: NotificationToken?
+    var blockList: [String]?
     
     /// Initializes the module
     ///
@@ -42,6 +43,7 @@ public class AutotrackingModule: Collector {
         self.delegate = delegate
         self.context = context
         self.config = context.config
+        loadBlocklist()
         enableNotifications()
         self.autotrackingDelegate = config.autoTrackingCollectorDelegate
         completion((.success(true), nil))
@@ -64,6 +66,10 @@ public class AutotrackingModule: Collector {
             context.log(logRequest)
             return
         }
+        
+        guard shouldBlock(viewName) == false else {
+        return
+        }
 
         var data: [String: Any] = [TealiumKey.event: viewName,
                                    TealiumAutotrackingKey.autotracked: "true"]
@@ -77,5 +83,33 @@ public class AutotrackingModule: Collector {
         context.track(view)
         self.lastEvent = viewName
     }
+    
+    func shouldBlock(_ eventName: String) -> Bool {
+        guard let blockList = blockList else {
+            return false
+        }
+        return blockList.contains(eventName)
+    }
 
+    func loadBlocklist() {
+        do {
+            if let file = config.autoTrackingBlocklistFilename,
+               let blockList: [String]? = try JSONLoader.fromFile(file, bundle: .main, logger: nil) {
+                self.blockList = blockList
+            } else if let url = config.autoTrackingBlocklistURL,
+                      let blockList: [String]? = try JSONLoader.fromURL(url: url, logger: nil) {
+                self.blockList = blockList
+            } else {
+                self.blockList = nil
+            }
+        } catch let error {
+            if let error = error as? LocalizedError {
+                let logRequest = TealiumLogRequest(title: "Auto Tracking", message: "BlockList could not be loaded. Error: \(error.localizedDescription)", info: nil, logLevel: .error, category: .general)
+                context.log(logRequest)
+            }
+            
+        }
+        
+    }
+    
 }

@@ -3,5 +3,4 @@
 //
 
 // Alternatively add the following imports to a preexisting bridging header
-//#import "UIApplication+TealiumTracker.h"
 #import "UIViewController+TealiumTracker.h"

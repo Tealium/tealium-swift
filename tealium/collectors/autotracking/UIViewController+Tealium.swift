@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import SwiftUI
 import TealiumCore
 
 @objc extension UIViewController {
@@ -16,13 +15,21 @@ import TealiumCore
 
     private static let cls: AnyClass = UIViewController.self
 
+    
+    fileprivate static var isTrackingEnabled: Bool {
+        return Bundle.main.object(forInfoDictionaryKey: "TealiumAutoTrackingEnabled") as? Bool ?? true
+    }
+    
     @objc static func setUp() {
-//        TealiumQueues.mainQueue.async {
+        TealiumQueues.mainQueue.async {
             _ = runOnce
-//        }
+        }
     }
 
     @nonobjc private static let runOnce: () = {
+        guard isTrackingEnabled else {
+            return
+        }
         let originalMethodSelector = #selector(viewDidAppear(_:))
         let originalMethod = class_getInstanceMethod(cls, originalMethodSelector)
         let newMethodSelector = #selector(tealiumViewDidAppear(_:))
@@ -46,33 +53,32 @@ import TealiumCore
                 return
         }
         
-        print("TealiumViewDidAppear: \(viewTitle)")
-
-        let cls = type(of: self)
-
-        if #available(iOS 13.0, *) {
-            var anyClass: AnyClass = UIHostingController<AnyView>.self
-            if let vi = class_getInstanceVariable(anyClass, "rootView") {
-                print("RootView: \(vi.debugDescription)")
+        let cls = String(reflecting: type(of: self))
+        switch cls {
+        case let x where x.contains("SwiftUI."):
+                break
+        case let x where x.contains("UIInputWindowController"):
+                break
+        default:
+            if getSuperclasses(cls: self) == "" {
+                break
             }
-        } else {
-            // Fallback on earlier versions
-        }
-
-
-        if #available(iOS 13.0, *) {
-            switch self {
-            case let sel as UINavigationController:
-                print("Navigation")
-
-
-            default:
-                print("default")
-
-            }
-        } else {
-            // Fallback on earlier versions
+            let notification = ViewNotification.forView(viewTitle)
+            NotificationCenter.default.post(notification)
         }
     }
+    
+    func getSuperclasses(cls: AnyObject) -> String {
+        var str = ""
+        let separatorToken = " >> "
+        var cls = cls
+        while let supercls = cls.superclass, let value = supercls {
+            str += String(describing: cls) + separatorToken
+            cls = value
+        }
+        str.removeLast(separatorToken.count)
+        return str
+    }
+
 
 }

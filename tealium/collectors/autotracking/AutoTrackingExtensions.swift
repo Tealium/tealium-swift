@@ -22,7 +22,10 @@ public extension Collectors {
     
     public var wrappedValue: (name: String, track: Bool) {
         get {
-            print("View: \(_wrapped)")
+            let notification = ViewNotification.forView(_wrapped.name)
+            TealiumQueues.backgroundSerialQueue.asyncAfter(deadline: .now() + 0.1) {
+                NotificationCenter.default.post(notification)
+            }
             return _wrapped
         }
         
@@ -66,13 +69,31 @@ public extension TealiumConfig {
         }
     }
     
-//    var autoTrackingBlocklistFilename: String? {
-//
-//    }
+    var autoTrackingBlocklistFilename: String? {
+        get {
+            options[TealiumAutotrackingKey.filename] as? String
+        }
+
+        set {
+            guard let newValue = newValue else {
+                return
+            }
+            options[TealiumAutotrackingKey.filename] = newValue
+        }
+    }
     
-//    var autoTrackingBlocklistURL: String? {
-//
-//    }
+    var autoTrackingBlocklistURL: String? {
+        get {
+            options[TealiumAutotrackingKey.url] as? String
+        }
+
+        set {
+            guard let newValue = newValue else {
+                return
+            }
+            options[TealiumAutotrackingKey.url] = newValue
+        }
+    }
 }
 
 public enum AutoTrackingMode {
@@ -89,6 +110,8 @@ enum TealiumAutotrackingKey {
     static let autotracked = "autotracked"
     static let delegate = "delegate"
     static let mode = "mode"
+    static let filename = "filename"
+    static let url = "url"
     
 }
 
