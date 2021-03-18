@@ -47,7 +47,6 @@ class ViewControllerTest: TealiumViewController {
         }
     }
     var numbersCollectionView: UICollectionView!
-//    let numbersCollectionViewDelegateAndDataSource = NumbersCollectionViewDelegateAndDataSource()
     
     @objc
     public override func viewDidAppear(_ animated: Bool) {
