@@ -44,7 +44,7 @@ class TealiumHelper  {
         config.dispatchListeners = [self]
         config.dispatchValidators = [self]
         config.shouldUseRemotePublishSettings = false
-        config.autoTrackingBlocklistFilename = "blockist"
+        config.autoTrackingBlocklistFilename = "blocklist"
         // config.batchingEnabled = true
         // config.batchSize = 5
         config.memoryReportingEnabled = true
