@@ -14,7 +14,6 @@ import TealiumCore
     private typealias ViewDidAppear = @convention(c) (Bool) -> Void
 
     private static let cls: AnyClass = UIViewController.self
-
     
     fileprivate static var isTrackingEnabled: Bool {
         return Bundle.main.object(forInfoDictionaryKey: "TealiumAutoTrackingEnabled") as? Bool ?? true

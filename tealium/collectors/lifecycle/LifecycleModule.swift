@@ -38,11 +38,11 @@ public class LifecycleModule: Collector {
     /// Initializes the module
     ///
     /// - Parameters:
-    ///     -  context: `TealiumContext` instance
+    ///     -  context: `TealiumContextProtocol` instance
     ///     - delegate: `TealiumModuleDelegate` instance
     ///     - diskStorage: `TealiumDiskStorageProtocol` instance
     ///     - completion: `ModuleCompletion` block to be called when init is finished
-    required public init(context: TealiumContext,
+    required public init(context: TealiumContextProtocol,
                          delegate: ModuleDelegate?,
                          diskStorage: TealiumDiskStorageProtocol?,
                          completion: ModuleCompletion) {

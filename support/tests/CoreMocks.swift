@@ -37,7 +37,7 @@ class DummyCollector: Collector, DispatchListener, DispatchValidator {
         ["dummy": true]
     }
 
-    required init(context: TealiumContext, delegate: ModuleDelegate?, diskStorage: TealiumDiskStorageProtocol?, completion: ((Result<Bool, Error>, [String: Any]?)) -> Void) {
+    required init(context: TealiumContextProtocol, delegate: ModuleDelegate?, diskStorage: TealiumDiskStorageProtocol?, completion: ((Result<Bool, Error>, [String: Any]?)) -> Void) {
         self.config = context.config
         self.id = "Dummy"
     }
@@ -581,5 +581,21 @@ class MockTimedEventScheduler: Schedulable {
     func clearAll() {
         clearAllCallCount += 1
     }
+    
+}
+
+class MockJSONLoader: JSONLoadable {
+    func fromFile<T>(_ file: String, bundle: Bundle, logger: TealiumLoggerProtocol?) throws -> T? where T : Decodable, T : Encodable {
+        nil
+    }
+    
+    func fromURL<T>(url: String, logger: TealiumLoggerProtocol?) throws -> T? where T : Decodable, T : Encodable {
+        nil
+    }
+    
+    func fromString<T>(json: String, logger: TealiumLoggerProtocol?) throws -> T? where T : Decodable, T : Encodable {
+        nil
+    }
+    
     
 }

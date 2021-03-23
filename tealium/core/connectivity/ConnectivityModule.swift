@@ -45,7 +45,7 @@ public class ConnectivityModule: Collector, ConnectivityDelegate {
     var connectivityMonitor: ConnectivityMonitorProtocol?
     var connectivityDelegates = TealiumMulticastDelegate<ConnectivityDelegate>()
 
-    required public init(context: TealiumContext,
+    required public init(context: TealiumContextProtocol,
                          delegate: ModuleDelegate?,
                          diskStorage: TealiumDiskStorageProtocol?,
                          completion: ((Result<Bool, Error>, [String: Any]?)) -> Void) {

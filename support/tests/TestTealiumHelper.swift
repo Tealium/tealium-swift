@@ -76,7 +76,7 @@ class TestTealiumHelper {
     
     class func context(with config: TealiumConfig, dataLayer: DataLayerManagerProtocol? = nil) -> TealiumContext {
         let tealium = Tealium(config: config)
-        return TealiumContext(config: config, dataLayer: dataLayer ?? DummyDataManager(), tealium: tealium)
+        return TealiumContext(config: config, dataLayer: dataLayer ?? DummyDataManager(), jsonLoader: MockJSONLoader(), tealium: tealium)
     }
     
     class func delay(_ completion: @escaping () -> Void) {

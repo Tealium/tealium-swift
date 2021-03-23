@@ -20,7 +20,7 @@ class ConsentManagerModule: Collector, DispatchValidator {
         consentManager?.currentPolicy.consentPolicyStatusInfo
     }
 
-    required init(context: TealiumContext,
+    required init(context: TealiumContextProtocol,
                   delegate: ModuleDelegate?,
                   diskStorage: TealiumDiskStorageProtocol?,
                   completion: ModuleCompletion) {

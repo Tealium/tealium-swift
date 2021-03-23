@@ -9,7 +9,7 @@ import Foundation
 
 public protocol Collector: TealiumModule {
     var data: [String: Any]? { get }
-    init(context: TealiumContext,
+    init(context: TealiumContextProtocol,
          delegate: ModuleDelegate?,
          diskStorage: TealiumDiskStorageProtocol?,
          completion: ModuleCompletion)

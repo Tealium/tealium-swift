@@ -24,19 +24,19 @@ public class AutotrackingModule: Collector {
     public var data: [String: Any]?
     weak var delegate: ModuleDelegate?
     public var config: TealiumConfig
-    var context: TealiumContext
+    var context: TealiumContextProtocol
     weak var autotrackingDelegate: AutoTrackingDelegate?
     var lastEvent: String?
     var token: NotificationToken?
     var blockList: [String]?
-    
+
     /// Initializes the module
     ///
-    /// - Parameter context: `TealiumContext` instance
+    /// - Parameter context: `TealiumContextProtocol` instance
     /// - Parameter delegate: `ModuleDelegate` instance
     /// - Parameter diskStorage: `TealiumDiskStorageProtocol` instance
     /// - Parameter completion: `ModuleCompletion` block to be called when init is finished
-    required public init(context: TealiumContext,
+    required public init(context: TealiumContextProtocol,
                          delegate: ModuleDelegate?,
                          diskStorage: TealiumDiskStorageProtocol?,
                          completion: ModuleCompletion) {
@@ -49,17 +49,6 @@ public class AutotrackingModule: Collector {
         completion((.success(true), nil))
     }
 
-    func enableNotifications() {
-        let viewName = Notification.Name(rawValue: TealiumAutotrackingKey.viewNotificationName)
-        let token = NotificationCenter.default.addObserver(forName: viewName, object: nil, queue: nil) { [weak self] notification in
-            guard let viewName = notification.userInfo?["view_name"] as? String, let self = self else {
-                return
-            }
-            self.requestViewTrack(viewName: viewName)
-        }
-        self.token = NotificationToken(token: token)
-    }
-
     func requestViewTrack(viewName: String) {
         guard lastEvent != viewName else {
             let logRequest = TealiumLogRequest(message: "Suppressing duplicate screen view: \(viewName)")
@@ -68,7 +57,7 @@ public class AutotrackingModule: Collector {
         }
         
         guard shouldBlock(viewName) == false else {
-        return
+            return
         }
 
         var data: [String: Any] = [TealiumKey.event: viewName,
@@ -84,20 +73,31 @@ public class AutotrackingModule: Collector {
         self.lastEvent = viewName
     }
     
-    func shouldBlock(_ eventName: String) -> Bool {
+    private func enableNotifications() {
+        let observedNotification = Notification.Name(rawValue: TealiumAutotrackingKey.viewNotificationName)
+        let token = NotificationCenter.default.addObserver(forName: observedNotification, object: nil, queue: nil) { [weak self] notification in
+            guard let viewName = notification.userInfo?["view_name"] as? String, let self = self else {
+                return
+            }
+            self.requestViewTrack(viewName: viewName)
+        }
+        self.token = NotificationToken(token: token)
+    }
+    
+    private func shouldBlock(_ eventName: String) -> Bool {
         guard let blockList = blockList else {
             return false
         }
         return blockList.contains(eventName)
     }
 
-    func loadBlocklist() {
+    private func loadBlocklist() {
         do {
             if let file = config.autoTrackingBlocklistFilename,
-               let blockList: [String]? = try JSONLoader.fromFile(file, bundle: .main, logger: nil) {
+               let blockList: [String]? = try context.jsonLoader?.fromFile(file, bundle: .main, logger: nil) {
                 self.blockList = blockList
             } else if let url = config.autoTrackingBlocklistURL,
-                      let blockList: [String]? = try JSONLoader.fromURL(url: url, logger: nil) {
+                      let blockList: [String]? = try context.jsonLoader?.fromURL(url: url, logger: nil) {
                 self.blockList = blockList
             } else {
                 self.blockList = nil
@@ -107,9 +107,8 @@ public class AutotrackingModule: Collector {
                 let logRequest = TealiumLogRequest(title: "Auto Tracking", message: "BlockList could not be loaded. Error: \(error.localizedDescription)", info: nil, logLevel: .error, category: .general)
                 context.log(logRequest)
             }
-            
+
         }
-        
     }
     
 }

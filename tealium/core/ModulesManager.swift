@@ -101,9 +101,9 @@ public class ModulesManager {
         }
     }
 
-    var context: TealiumContext
+    var context: TealiumContextProtocol
 
-    init (_ context: TealiumContext,
+    init (_ context: TealiumContextProtocol,
           optionalCollectors: [String]? = nil,
           knownDispatchers: [String]? = nil) {
         self.context = context

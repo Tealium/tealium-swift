@@ -7,13 +7,16 @@
 
 import Foundation
 import UIKit
-
+#if autotracking
+import TealiumCore
+#endif
 
 final class NotificationToken: NSObject {
-    let notificationCenter: NotificationCenter
+    let notificationCenter: NotificationCenterObservable
     let token: Any
 
-    init(notificationCenter: NotificationCenter = .default, token: Any) {
+    init(notificationCenter: NotificationCenterObservable = NotificationCenter.default,
+         token: Any) {
         self.notificationCenter = notificationCenter
         self.token = token
     }

@@ -49,12 +49,12 @@ public class AppDataModule: Collector {
 
     /// Provided for testing - allows `Bundle` and `AppDataCollection` to be overridden
     ///
-    /// - Parameter context: `TealiumContext` instance
+    /// - Parameter context: `TealiumContextProtocol` instance
     /// - Parameter delegate: `ModuleDelegate` instance
     /// - Parameter diskStorage: `TealiumDiskStorageProtocol` instance
     /// - Parameter bundle: `Bundle` for testing
     /// - Parameter appDataCollector: `AppDataCollection` for testing
-    convenience init(context: TealiumContext,
+    convenience init(context: TealiumContextProtocol,
                      delegate: ModuleDelegate,
                      diskStorage: TealiumDiskStorageProtocol?,
                      bundle: Bundle,
@@ -66,11 +66,11 @@ public class AppDataModule: Collector {
 
     /// Initializes the module
     ///
-    /// - Parameter context: `TealiumContext` instance
+    /// - Parameter context: `TealiumContextProtocol` instance
     /// - Parameter delegate: `ModuleDelegate` instance
     /// - Parameter diskStorage: `TealiumDiskStorageProtocol` instance
     /// - Parameter completion: `ModuleCompletion` block to be called when init is finished
-    required public init(context: TealiumContext,
+    required public init(context: TealiumContextProtocol,
                          delegate: ModuleDelegate?,
                          diskStorage: TealiumDiskStorageProtocol?,
                          completion: ModuleCompletion) {

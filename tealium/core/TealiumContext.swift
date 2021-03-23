@@ -9,7 +9,11 @@ import Foundation
 
 public protocol TealiumContextProtocol {
     var config: TealiumConfig { get }
+    var dataLayer: DataLayerManagerProtocol? { get }
+    var jsonLoader: JSONLoadable? { get }
     func track(_ dispatch: TealiumDispatch)
+    func handleDeepLink(_ url: URL)
+    func log(_ logRequest: TealiumLogRequest)
 }
 
 public struct TealiumContext: Hashable, TealiumContextProtocol {
@@ -23,13 +27,16 @@ public struct TealiumContext: Hashable, TealiumContextProtocol {
 
     public unowned var config: TealiumConfig
     public weak var dataLayer: DataLayerManagerProtocol?
+    public weak var jsonLoader: JSONLoadable?
     fileprivate weak var tealium: Tealium?
 
     public init(config: TealiumConfig,
                 dataLayer: DataLayerManagerProtocol,
+                jsonLoader: JSONLoadable,
                 tealium: Tealium) {
         self.config = config
         self.dataLayer = dataLayer
+        self.jsonLoader = jsonLoader
         self.tealium = tealium
     }
 

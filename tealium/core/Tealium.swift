@@ -38,7 +38,10 @@ public class Tealium {
         if config.shouldMigratePersistentData {
             self.migrator.migratePersistent(dataLayer: self.dataLayer)
         }
-        let context = TealiumContext(config: config, dataLayer: self.dataLayer, tealium: self)
+        let context = TealiumContext(config: config,
+                                     dataLayer: self.dataLayer,
+                                     jsonLoader: JSONLoader(),
+                                     tealium: self)
         #if os(iOS)
         if config.appDelegateProxyEnabled {
             TealiumAppDelegateProxy.setup(context: context)

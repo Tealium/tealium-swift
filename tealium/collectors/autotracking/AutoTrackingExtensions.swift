@@ -56,19 +56,6 @@ public extension TealiumConfig {
         }
     }
     
-    var autoTrackingMode: AutoTrackingMode? {
-        get {
-            options[TealiumAutotrackingKey.mode] as? AutoTrackingMode
-        }
-
-        set {
-            guard let newValue = newValue else {
-                return
-            }
-            options[TealiumAutotrackingKey.mode] = newValue
-        }
-    }
-    
     var autoTrackingBlocklistFilename: String? {
         get {
             options[TealiumAutotrackingKey.filename] as? String
@@ -120,3 +107,4 @@ public protocol AutoTrackingDelegate: class {
     func onCollectScreenView(screenName: String) -> [String: Any]
     
 }
+
