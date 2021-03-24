@@ -17,7 +17,9 @@ class AutotrackingTests: XCTestCase {
 
     // MARK: Module
     func testInit_LoadsBlockList_WhenFileNameDefined() {
-        let config = TealiumConfig(account: "account", profile: "profile", environment: "env")
+        let config = TealiumConfig(account: "account",
+                                   profile: "profile",
+                                   environment: "env")
         config.autoTrackingBlocklistFilename = "filename"
         
         let module = createModule(from: config, loader: MockJSONLoaderBlockListFile())
@@ -26,7 +28,9 @@ class AutotrackingTests: XCTestCase {
     }
     
     func testInit_LoadsBlockList_WhenURLDefined() {
-        let config = TealiumConfig(account: "account", profile: "profile", environment: "env")
+        let config = TealiumConfig(account: "account",
+                                   profile: "profile",
+                                   environment: "env")
         config.autoTrackingBlocklistURL = "url"
         
         let module = createModule(from: config, loader: MockJSONLoaderBlockListURL())
@@ -36,12 +40,16 @@ class AutotrackingTests: XCTestCase {
     
     func testInit_ErrorWhileLoadingBlockList() {
         let mockContext = MockTealiumContext()
-        let config = TealiumConfig(account: "account", profile: "profile", environment: "env")
+        let config = TealiumConfig(account: "account",
+                                   profile: "profile",
+                                   environment: "env")
         config.autoTrackingBlocklistFilename = "filename"
         mockContext.config = config
         mockContext.jsonLoader = MockJSONLoaderError()
         
-        _ = AutotrackingModule(context: mockContext, delegate: nil, diskStorage: nil) { _ in }
+        _ = AutotrackingModule(context: mockContext,
+                               delegate: nil,
+                               diskStorage: nil) { _ in }
 
         XCTAssertEqual(mockContext.logRequest?.messages.first!, "BlockList could not be loaded. Error: couldNotDecode")
     }
@@ -58,7 +66,9 @@ class AutotrackingTests: XCTestCase {
     
     func testRequestViewTrack_Returns_WhenLastEventEqualsViewName() {
         let mockContext = MockTealiumContext()
-        let module = AutotrackingModule(context: mockContext, delegate: nil, diskStorage: nil) { _ in }
+        let module = AutotrackingModule(context: mockContext,
+                                        delegate: nil,
+                                        diskStorage: nil) { _ in }
         module.lastEvent = "SomeView"
         
         module.requestViewTrack(viewName: "SomeView")
@@ -69,7 +79,9 @@ class AutotrackingTests: XCTestCase {
     
     func testRequestViewTrack_Returns_WhenViewNameInBlockList() {
         let mockContext = MockTealiumContext()
-        let module = AutotrackingModule(context: mockContext, delegate: nil, diskStorage: nil) { _ in }
+        let module = AutotrackingModule(context: mockContext,
+                                        delegate: nil,
+                                        diskStorage: nil) { _ in }
         module.blockList = ["PaymentView", "EmojiView"]
         
         module.requestViewTrack(viewName: "PaymentView")
@@ -79,7 +91,9 @@ class AutotrackingTests: XCTestCase {
     
     func testRequestViewTrack_CallsTrack_WhenViewNameNotInBlockList() {
         let mockContext = MockTealiumContext()
-        let module = AutotrackingModule(context: mockContext, delegate: nil, diskStorage: nil) { _ in }
+        let module = AutotrackingModule(context: mockContext,
+                                        delegate: nil,
+                                        diskStorage: nil) { _ in }
         module.blockList = ["EmojiView"]
         
         module.requestViewTrack(viewName: "PaymentView")
@@ -92,12 +106,16 @@ class AutotrackingTests: XCTestCase {
         let expect = expectation(description: "testRequestViewTrack_CallsDelegateMethodAndAddsDataToPayload")
         
         let mockContext = MockTealiumContext()
-        let config = TealiumConfig(account: "account", profile: "profile", environment: "env")
+        let config = TealiumConfig(account: "account",
+                                   profile: "profile",
+                                   environment: "env")
         let mockDelegate = MockAutoTrackingDelegate()
         mockDelegate.asyncExpectation = expect
         config.autoTrackingCollectorDelegate = mockDelegate
         mockContext.config = config
-        let module = AutotrackingModule(context: mockContext, delegate: nil, diskStorage: nil) { _ in }
+        let module = AutotrackingModule(context: mockContext,
+                                        delegate: nil,
+                                        diskStorage: nil) { _ in }
         
         module.requestViewTrack(viewName: "PaymentView")
         
@@ -124,7 +142,8 @@ class AutotrackingTests: XCTestCase {
         let mockNotificationCenter = MockNotificationCenter()
         mockTealiumVC.notificationCenter = mockNotificationCenter
         mockTealiumVC.viewDidAppear(true)
-        XCTAssertEqual(mockNotificationCenter.didPostNotification?.name.rawValue, "com.tealium.autotracking.view")
+        XCTAssertEqual(mockNotificationCenter.didPostNotification?.name.rawValue,
+                       "com.tealium.autotracking.view")
         XCTAssertEqual(mockNotificationCenter.didPostNotification?.userInfo?[
         "view_name"] as! String, "MockTealium")
     }
@@ -134,8 +153,13 @@ class AutotrackingTests: XCTestCase {
                 loader: JSONLoadable? = nil) -> AutotrackingModule {
         let localConfig = config ?? testTealiumConfig.copy
         let tealium = Tealium(config: localConfig)
-        let context = TealiumContext(config: localConfig, dataLayer: DummyDataManager(), jsonLoader: loader ?? MockJSONLoader(), tealium: tealium)
-        return AutotrackingModule(context: context, delegate: self, diskStorage: nil) { _ in }
+        let context = TealiumContext(config: localConfig,
+                                     dataLayer: DummyDataManager(),
+                                     jsonLoader: loader ?? MockJSONLoader(),
+                                     tealium: tealium)
+        return AutotrackingModule(context: context,
+                                  delegate: self,
+                                  diskStorage: nil) { _ in }
     }
     
 }
@@ -234,7 +258,10 @@ class MockNotificationCenter: NotificationCenterObservable {
         didPostNotification = notification
     }
     
-    func addObserver(forName name: NSNotification.Name?, object obj: Any?, queue: OperationQueue?, using block: @escaping (Notification) -> Void) -> NSObjectProtocol {
+    func addObserver(forName name: NSNotification.Name?,
+                     object obj: Any?,
+                     queue: OperationQueue?,
+                     using block: @escaping (Notification) -> Void) -> NSObjectProtocol {
         didAddObserverWithName = name
         return Mock()
     }

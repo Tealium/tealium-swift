@@ -112,4 +112,3 @@ public protocol AutoTrackingDelegate: class {
     func onCollectScreenView(screenName: String) -> [String: Any]
     
 }
-

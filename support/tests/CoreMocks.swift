@@ -585,17 +585,7 @@ class MockTimedEventScheduler: Schedulable {
 }
 
 class MockJSONLoader: JSONLoadable {
-    func fromFile<T>(_ file: String, bundle: Bundle, logger: TealiumLoggerProtocol?) throws -> T? where T : Decodable, T : Encodable {
-        nil
-    }
-    
-    func fromURL<T>(url: String, logger: TealiumLoggerProtocol?) throws -> T? where T : Decodable, T : Encodable {
-        nil
-    }
-    
-    func fromString<T>(json: String, logger: TealiumLoggerProtocol?) throws -> T? where T : Decodable, T : Encodable {
-        nil
-    }
-    
-    
+    func fromFile<T: Codable>(_ file: String, bundle: Bundle, logger: TealiumLoggerProtocol?) throws -> T? { nil }
+    func fromURL<T: Codable>(url: String, logger: TealiumLoggerProtocol?) throws -> T? { nil }
+    func fromString<T: Codable>(json: String, logger: TealiumLoggerProtocol?) throws -> T? { nil }
 }

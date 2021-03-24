@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 import SwiftUI
-import TealiumCore
 import TealiumAutotracking
 
 struct ViewControllerWrapper: View, UIViewControllerRepresentable {
@@ -39,7 +38,6 @@ class AutotrackingViewController: TealiumViewController {
                     """
         return label
     }()
-    
     
     var _title: String? // To set a custom screen_title, set this property
     

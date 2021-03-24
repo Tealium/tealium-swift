@@ -74,7 +74,6 @@ public class JSONLoader: JSONLoadable {
         }
     }
     
-    
     public func fromString<T: Codable>(json: String,
                                        logger: TealiumLoggerProtocol? = nil) throws -> T? {
         guard !json.isEmpty else {

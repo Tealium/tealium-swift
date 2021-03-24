@@ -2,7 +2,6 @@
 //  AutotrackingView.swift
 //  iOSTealiumTest
 //
-//  Created by Christina Schell on 3/23/21.
 //  Copyright © 2021 Tealium, Inc. All rights reserved.
 //
 
