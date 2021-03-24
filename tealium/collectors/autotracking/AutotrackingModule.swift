@@ -25,6 +25,7 @@ public class AutotrackingModule: Collector {
     weak var delegate: ModuleDelegate?
     public var config: TealiumConfig
     var context: TealiumContextProtocol
+    var jsonLoader: JSONLoadable
     weak var autotrackingDelegate: AutoTrackingDelegate?
     var lastEvent: String?
     var token: NotificationToken?
@@ -43,6 +44,7 @@ public class AutotrackingModule: Collector {
         self.delegate = delegate
         self.context = context
         self.config = context.config
+        self.jsonLoader = context.jsonLoader ?? JSONLoader()
         loadBlocklist()
         enableNotifications()
         self.autotrackingDelegate = config.autoTrackingCollectorDelegate
@@ -94,10 +96,10 @@ public class AutotrackingModule: Collector {
     private func loadBlocklist() {
         do {
             if let file = config.autoTrackingBlocklistFilename,
-               let blockList: [String]? = try context.jsonLoader?.fromFile(file, bundle: .main, logger: nil) {
+               let blockList: [String]? = try jsonLoader.fromFile(file, bundle: .main, logger: nil) {
                 self.blockList = blockList
             } else if let url = config.autoTrackingBlocklistURL,
-                      let blockList: [String]? = try context.jsonLoader?.fromURL(url: url, logger: nil) {
+                      let blockList: [String]? = try jsonLoader.fromURL(url: url, logger: nil) {
                 self.blockList = blockList
             } else {
                 self.blockList = nil

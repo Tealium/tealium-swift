@@ -16,27 +16,32 @@ public extension Collectors {
 }
 #endif
 
-@propertyWrapper public class AutoTracked {
+@propertyWrapper
+public class AutoTracked {
 
-    private var _wrapped: (name: String, track: Bool) = ("", false)
+    private var value: String
+    private var track: Bool
     
-    public var wrappedValue: (name: String, track: Bool) {
+    public var wrappedValue: String {
         get {
-            let notification = ViewNotification.forView(_wrapped.name)
+            let notification = ViewNotification.forView(value)
             TealiumQueues.backgroundSerialQueue.asyncAfter(deadline: .now() + 0.1) {
-                NotificationCenter.default.post(notification)
+                if self.track {
+                    NotificationCenter.default.post(notification)
+                }
             }
-            return _wrapped
+            return value
         }
         
         set {
-            _wrapped = newValue
+            value = newValue
         }
-        
     }
 
-    public init(wrappedValue: (name: String, track: Bool)) {
-        self.wrappedValue = wrappedValue
+    public init(wrappedValue: String,
+                _ track: Bool = true) {
+        self.value = wrappedValue
+        self.track = track
     }
 }
 

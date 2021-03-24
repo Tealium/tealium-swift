@@ -38,9 +38,9 @@ class TealiumHelper  {
         config.connectivityRefreshInterval = 5
         config.loggerType = .os
         config.logLevel = .info
-//        config.consentPolicy = .gdpr
+        config.consentPolicy = .gdpr
         config.consentLoggingEnabled = true
-//        config.remoteHTTPCommandDisabled = false
+        config.remoteHTTPCommandDisabled = false
         config.dispatchListeners = [self]
         config.dispatchValidators = [self]
         config.shouldUseRemotePublishSettings = false
@@ -68,7 +68,7 @@ class TealiumHelper  {
                 Collectors.AppData,
                 Collectors.Connectivity,
                 Collectors.Device,
-//                Collectors.Location,
+                Collectors.Location,
                 Collectors.VisitorService,
                 Collectors.AutoTracking
                 
@@ -76,13 +76,13 @@ class TealiumHelper  {
         
             config.dispatchers = [
                 Dispatchers.Collect,
-//                Dispatchers.TagManagement,
+                Dispatchers.TagManagement,
                 Dispatchers.RemoteCommands
             ]
             
-            // config.appDelegateProxyEnabled = false
+            config.appDelegateProxyEnabled = false
             config.remoteAPIEnabled = true
-//            config.remoteCommandConfigRefresh = .every(24, .hours)
+            config.remoteCommandConfigRefresh = .every(24, .hours)
             config.searchAdsEnabled = true
             config.skAdAttributionEnabled = true
             config.skAdConversionKeys = ["conversion_event": "conversion_value"]
@@ -112,34 +112,24 @@ class TealiumHelper  {
 
             let dataLayer = teal.dataLayer
             teal.consentManager?.userConsentStatus = .consented
-//            dataLayer.add(key: "myvarforever", value: 123_456, expiry: .forever)
-//            dataLayer.add(data: ["some_key1": "some_val1"], expiry: .session)
-//            dataLayer.add(data: ["some_key_forever": "some_val_forever"], expiry: .forever) // forever
-//            dataLayer.add(data: ["until": "restart"], expiry: .untilRestart)
-//            dataLayer.add(data: ["custom": "expire in 3 min"], expiry: .afterCustom((.minutes, 3)))
-//            dataLayer.delete(for: ["myvarforever"])
-//            dataLayer.add(data: ["hello": "world"], expiry: .untilRestart)
-//            dataLayer.add(key: "test", value: 123, expiry: .session)
-//            dataLayer.delete(for: ["hello", "test"])
-//            dataLayer.add(key: "hello", value: "itsme", expiry: .afterCustom((.months, 1)))
+            dataLayer.add(key: "myvarforever", value: 123_456, expiry: .forever)
+            dataLayer.add(data: ["some_key1": "some_val1"], expiry: .session)
+            dataLayer.add(data: ["custom": "expire in 3 min"], expiry: .afterCustom((.minutes, 3)))
 
             #if os(iOS)
-//            teal.location?.requestAuthorization()
-//
-//            guard let remoteCommands = self.tealium?.remoteCommands else {
-//                return
-//            }
-//
-//            let display = RemoteCommand(commandId: "display", description: "Test") { response in
-//                guard let payload = response.payload,
-//                      let hello = payload["hello"] as? String,
-//                      let key = payload["key"] as? String,
-//                      let tealium = payload["tealium"] as? String else {
-//                    return
-//                }
-//                print("Remote Command data: hello = \(hello), key = \(key), tealium = \(tealium) 🎉🎊")
-//            }
-//            remoteCommands.add(display)
+            teal.location?.requestAuthorization()
+
+            guard let remoteCommands = self.tealium?.remoteCommands else {
+                return
+            }
+
+            let display = RemoteCommand(commandId: "display", description: "Test") { response in
+                guard let payload = response.payload else {
+                    return
+                }
+                print("Remote Command data: \(payload)")
+            }
+            remoteCommands.add(display)
             #endif
         }
 
@@ -239,7 +229,7 @@ class MyDateCollector: Collector {
 
     var config: TealiumConfig
 
-    required init(context: TealiumContext,
+    required init(context: TealiumContextProtocol,
                   delegate: ModuleDelegate?,
                   diskStorage: TealiumDiskStorageProtocol?,
                   completion: ((Result<Bool, Error>, [String: Any]?)) -> Void) {

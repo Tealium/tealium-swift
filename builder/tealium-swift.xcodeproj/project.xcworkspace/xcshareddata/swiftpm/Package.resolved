@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "TealiumSwiftUI",
+        "repositoryURL": "https://github.com/christinasund/tealium-swift-ui",
+        "state": {
+          "branch": "main",
+          "revision": "f14e3fd2058d12c31f5d9cd4d6c4f694c5cc0092",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
