@@ -459,7 +459,6 @@
 		D788A55823198A0C00BC6D60 /* RemoteHTTPCommandTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BAF2C91E8DA56D00071239 /* RemoteHTTPCommandTests.swift */; };
 		D788A56F23198A4D00BC6D60 /* TagManagementModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166E7F71E6007B000FCA9EE /* TagManagementModuleTests.swift */; };
 		D788A57023198A4D00BC6D60 /* TagManagementUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7166E7F81E6007B000FCA9EE /* TagManagementUtilsTests.swift */; };
-		D788A58C23198E8300BC6D60 /* AutotrackingModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7102BF6F1E0CF05700ED5783 /* AutotrackingModuleTests.swift */; };
 		D788A59B231FB8F300BC6D60 /* LifecycleMockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D788A599231FB8F300BC6D60 /* LifecycleMockDiskStorage.swift */; };
 		D788A5AB2326AD1700BC6D60 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D788A5A82326AD1100BC6D60 /* MockURLSession.swift */; };
 		D788A5F12327A7C800BC6D60 /* TealiumCollectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716C7D0E1DDBC3A500512C99 /* TealiumCollectTests.swift */; };
@@ -1314,7 +1313,6 @@
 		4BD9036F24F5CE100041EFA0 /* Dictionary+Tealium.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Tealium.swift"; sourceTree = "<group>"; };
 		4BD9037124F5CED40041EFA0 /* Double+Tealium.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Tealium.swift"; sourceTree = "<group>"; };
 		4BE69B0E20126B91000759D8 /* MockAppDataDiskStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAppDataDiskStorage.swift; sourceTree = "<group>"; };
-		7102BF6F1E0CF05700ED5783 /* AutotrackingModuleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutotrackingModuleTests.swift; sourceTree = "<group>"; };
 		712184851E5360B5000DCE07 /* lifecycle_events.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lifecycle_events.json; sourceTree = "<group>"; };
 		712184861E5360B5000DCE07 /* lifecycle_events_with_crashes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lifecycle_events_with_crashes.json; sourceTree = "<group>"; };
 		7121848A1E5360B5000DCE07 /* LifecyclePersistentDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LifecyclePersistentDataTests.swift; sourceTree = "<group>"; };
@@ -1927,7 +1925,6 @@
 		7102BF6E1E0CF03300ED5783 /* test_tealium_autotracking */ = {
 			isa = PBXGroup;
 			children = (
-				7102BF6F1E0CF05700ED5783 /* AutotrackingModuleTests.swift */,
 				CF6C653C2609480800EB3A6D /* AutotrackingTests.swift */,
 			);
 			path = test_tealium_autotracking;
@@ -4277,7 +4274,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D788A58C23198E8300BC6D60 /* AutotrackingModuleTests.swift in Sources */,
 				CFA55A2C24E5902B00BFBED8 /* TestTealiumHelper.swift in Sources */,
 				CFAD63322541FD88007D4EDB /* MockSessionStarter.swift in Sources */,
 				CF6C655F2609481C00EB3A6D /* AutotrackingTests.swift in Sources */,
