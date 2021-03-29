@@ -25,6 +25,26 @@ public extension TealiumConfig {
             options[TagManagementConfigKey.delegate] = newValue
         }
     }
+    
+    var webviewProcessPool: WKProcessPool? {
+        get {
+            options[TagManagementConfigKey.processPool] as? WKProcessPool
+        }
+
+        set {
+            options[TagManagementConfigKey.processPool] = newValue
+        }
+    }
+    
+    var webviewConfig: WKWebViewConfiguration {
+        get {
+            options[TagManagementConfigKey.wkConfig] as? WKWebViewConfiguration ?? WKWebViewConfiguration()
+        }
+
+        set {
+            options[TagManagementConfigKey.wkConfig] = newValue
+        }
+    }
 
     /// Optional override for the tag management webview URL.
     var tagManagementOverrideURL: String? {

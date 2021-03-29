@@ -115,7 +115,10 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol {
             if #available(iOS 11, *), shouldAddCookieObserver {
                 WKWebsiteDataStore.default().httpCookieStore.add(self)
             }
-            let config = WKWebViewConfiguration()
+            let config = self.tealConfig.webviewConfig
+            if let processPool = self.tealConfig.webviewProcessPool {
+                config.processPool = processPool
+            }
             self.webview = WKWebView(frame: .zero, configuration: config)
             self.webview?.navigationDelegate = self
             guard let webview = self.webview else {
