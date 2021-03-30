@@ -125,6 +125,18 @@ class AutotrackingTests: XCTestCase {
         wait(for: [expect], timeout: 1.0)
     }
     
+    func testWillTrack_RecordsLastEvent() {
+        let mockContext = MockTealiumContext()
+        let module = AutotrackingModule(context: mockContext,
+                                        delegate: nil,
+                                        diskStorage: nil) { _ in }
+        let request = TealiumTrackRequest(data: ["tealium_event": "helloWorld"])
+        
+        module.willTrack(request: request)
+        
+        XCTAssertEqual(module.lastEvent, "helloWorld")
+    }
+    
     // MARK: Utils
     func testViewTitle_Set_WhenDefinedOnViewController() {
         let mockTealiumVC = MockTealiumViewController()

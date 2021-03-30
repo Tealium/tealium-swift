@@ -7,7 +7,9 @@
 
 import Foundation
 import UIKit
+#if autotracking
 import TealiumCore
+#endif
 
 @objc extension UIViewController {
 

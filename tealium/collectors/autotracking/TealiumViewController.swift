@@ -8,7 +8,9 @@
 import Foundation
 import UIKit
 import SwiftUI
+#if autotracking
 import TealiumCore
+#endif
 
 open class TealiumViewController: UIViewController {
     
