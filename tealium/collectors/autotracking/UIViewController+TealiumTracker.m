@@ -1,7 +1,8 @@
 //
-//  UIViewController+TealiumTracker.m
+//  UIViewController+TealiumTracker.h
+//  tealium-swift
 //
-//  Copyright (c) 2013 Tealium. All rights reserved.
+//  Copyright © 2021 Tealium, Inc. All rights reserved.
 //
 
 #import <TealiumAutotracking/TealiumAutotracking-Swift.h>

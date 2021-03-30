@@ -2,7 +2,7 @@
 //  AutoTrackingExtensions.swift
 //  tealium-swift
 //
-//  Copyright © 2020 Tealium, Inc. All rights reserved.
+//  Copyright © 2021 Tealium, Inc. All rights reserved.
 //
 
 #if os(iOS)
@@ -98,12 +98,20 @@ public enum AutoTrackingMode {
 
 enum TealiumAutotrackingKey {
     static let moduleName = "autotracking"
-    static let viewNotificationName = "com.tealium.autotracking.view"
     static let autotracked = "autotracked"
     static let delegate = "delegate"
     static let mode = "mode"
     static let filename = "filename"
     static let url = "url"
+    static let viewName = "view_name"
+    static let autoTrackingEnabled = "TealiumAutoTrackingEnabled"
+}
+
+enum TealiumAutotrackingValue {
+    static let viewControllerName = "TealiumViewController"
+    static let viewNotificationName = "com.tealium.autotracking.view"
+    static let viewControllerClassPrefix = "ViewController"
+    static let logModuleName = "Auto Tracking"
     
 }
 

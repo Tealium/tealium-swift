@@ -47,6 +47,7 @@ struct AutotrackingView: View {
             })
             
             TealiumTextButton(title: "Back") {
+                TealiumHelper.shared.track(title: "Back", data: nil)
                 presentationMode.wrappedValue.dismiss()
             }
             
