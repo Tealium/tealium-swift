@@ -16,7 +16,7 @@ import TealiumCore
     private static let cls: AnyClass = UIViewController.self
     
     fileprivate static var isTrackingEnabled: Bool {
-        return Bundle.main.object(forInfoDictionaryKey: "TealiumAutoTrackingEnabled") as? Bool ?? true
+        return Bundle.main.object(forInfoDictionaryKey: TealiumAutotrackingKey.autoTrackingEnabled) as? Bool ?? true
     }
     
     @objc static func setUp() {
@@ -48,7 +48,7 @@ import TealiumCore
     @objc func tealiumViewDidAppear(_ animated: Bool) {
         // Avoid double-tracking if this is a TealiumViewController already
         if let superclass = self.superclass,
-           String(describing: superclass) == "TealiumViewController" {
+           String(describing: superclass) == TealiumAutotrackingValue.viewControllerName {
                 return
         }
         

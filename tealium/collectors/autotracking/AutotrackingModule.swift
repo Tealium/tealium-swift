@@ -2,7 +2,7 @@
 //  AutotrackingModule.swift
 //  tealium-swift
 //
-//  Copyright © 2016 Tealium, Inc. All rights reserved.
+//  Copyright © 2021 Tealium, Inc. All rights reserved.
 //
 
 #if TEST
@@ -19,7 +19,7 @@ import TealiumCore
 #endif
 
 public class AutotrackingModule: Collector {
-
+    
     public let id: String = TealiumAutotrackingKey.moduleName
     public var data: [String: Any]?
     weak var delegate: ModuleDelegate?
@@ -76,9 +76,9 @@ public class AutotrackingModule: Collector {
     }
     
     private func enableNotifications() {
-        let observedNotification = Notification.Name(rawValue: TealiumAutotrackingKey.viewNotificationName)
+        let observedNotification = Notification.Name(rawValue: TealiumAutotrackingValue.viewNotificationName)
         let token = NotificationCenter.default.addObserver(forName: observedNotification, object: nil, queue: nil) { [weak self] notification in
-            guard let viewName = notification.userInfo?["view_name"] as? String, let self = self else {
+            guard let viewName = notification.userInfo?[TealiumAutotrackingKey.viewName] as? String, let self = self else {
                 return
             }
             self.requestViewTrack(viewName: viewName)
@@ -106,11 +106,21 @@ public class AutotrackingModule: Collector {
             }
         } catch let error {
             if let error = error as? LocalizedError {
-                let logRequest = TealiumLogRequest(title: "Auto Tracking", message: "BlockList could not be loaded. Error: \(error.localizedDescription)", info: nil, logLevel: .error, category: .general)
+                let logRequest = TealiumLogRequest(title: TealiumAutotrackingValue.logModuleName, message: "BlockList could not be loaded. Error: \(error.localizedDescription)", info: nil, logLevel: .error, category: .general)
                 context.log(logRequest)
             }
 
         }
     }
     
+}
+
+extension AutotrackingModule: DispatchListener {
+    // Records last event in case events are sent from other sources than the AutoTracking module
+    public func willTrack(request: TealiumRequest) {
+        if let request = request as? TealiumTrackRequest,
+           let event = request.event {
+                self.lastEvent = event
+        }
+    }
 }

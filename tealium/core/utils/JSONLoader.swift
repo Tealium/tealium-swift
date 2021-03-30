@@ -59,11 +59,11 @@ public class JSONLoader: JSONLoadable {
         guard !url.isEmpty else {
             throw JSONLoaderError.noURL
         }
-        guard let geofenceUrl = URL(string: url) else {
+        guard let url = URL(string: url) else {
             throw JSONLoaderError.invalidURL
         }
         do {
-            let jsonString = try String(contentsOf: geofenceUrl)
+            let jsonString = try String(contentsOf: url)
             guard let data = jsonString.data(using: .utf8),
                   let converted = try? Tealium.jsonDecoder.decode(T.self, from: data) else {
                 return nil

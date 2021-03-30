@@ -1,6 +1,8 @@
+///
+//  TealiumViewController.swift
+//  tealium-swift
 //
-// Created by Craig Rouse on 08/02/2021.
-// Copyright (c) 2021 Tealium, Inc. All rights reserved.
+//  Copyright © 2021 Tealium, Inc. All rights reserved.
 //
 
 import Foundation

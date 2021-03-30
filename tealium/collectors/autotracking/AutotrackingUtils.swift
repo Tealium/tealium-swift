@@ -29,13 +29,13 @@ final class NotificationToken: NSObject {
 struct ViewNotification {
     private init() {}
     static func forView(_ viewName: String) -> Notification {
-        return Notification(name: Notification.Name(rawValue: "com.tealium.autotracking.view"), userInfo: ["view_name": viewName])
+        return Notification(name: Notification.Name(rawValue: TealiumAutotrackingValue.viewNotificationName), userInfo: [TealiumAutotrackingKey.viewName: viewName])
     }
 }
 
 
 extension UIViewController {
     var viewTitle: String {
-        return self.title ?? String(describing: type(of: self)).replacingOccurrences(of: "ViewController", with: "")
+        return self.title ?? String(describing: type(of: self)).replacingOccurrences(of: TealiumAutotrackingValue.viewControllerClassPrefix, with: "")
     }
 }
