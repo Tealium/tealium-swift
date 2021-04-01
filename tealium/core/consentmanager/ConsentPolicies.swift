@@ -8,19 +8,40 @@
 import Foundation
 
 public protocol ConsentPolicy {
+    
+    /// The name of the `ConsentPolicy`
     var name: String { get }
+    
+    /// Sets the default expiry time for this `ConsentPolicy`. This is also overridable
+    /// from `TealiumConfig.consentExpiry`
     var defaultConsentExpiry: (time: Int, unit: TimeUnit) { get }
+    
+    /// Sets whether or not to update a cookie in the TagManagement module's webview.
     var shouldUpdateConsentCookie: Bool { get }
+    
+    /// Sets the event name to use when `shouldUpdateConsentCookie` is set to true.
     var updateConsentCookieEventName: String { get }
+    
+    /// - Returns:`[String: Any]` of key value data to be added to the payload of each `TealiumDispatch`
+    /// `["consent_policy": "ccpa", "consent_status": "consented"]`
     var consentPolicyStatusInfo: [String: Any]? { get }
+    
+    /// The current `UserConsentPreferences`
+    /// This will be automatically updated by the `ConsentManager`when the preferences change.
     var preferences: UserConsentPreferences { get set }
+    
+    /// The tracking action based on the consent status (allowed, forbidden, queued)
     var trackAction: TealiumConsentTrackAction { get }
+    
+    /// Sets the event name (key: tealium_event) to use when logging a change in consent.
     var consentTrackingEventName: String { get }
+    
+    /// Sets whether or not logging of consent changes are required
     var shouldLogConsentStatus: Bool { get }
 }
 
 public class ConsentPolicyFactory {
-    static func create(_ policy: TealiumConsentPolicy,
+    public static func create(_ policy: TealiumConsentPolicy,
                        preferences: UserConsentPreferences) -> ConsentPolicy {
         switch policy {
         case .ccpa:
@@ -33,7 +54,7 @@ public class ConsentPolicyFactory {
     }
 }
 
-struct CCPAConsentPolicy: ConsentPolicy {
+class CCPAConsentPolicy: ConsentPolicy {
 
     init(_ preferences: UserConsentPreferences) {
         self.preferences = preferences
@@ -71,7 +92,7 @@ struct CCPAConsentPolicy: ConsentPolicy {
     }
 }
 
-struct GDPRConsentPolicy: ConsentPolicy {
+class GDPRConsentPolicy: ConsentPolicy {
 
     init(_ preferences: UserConsentPreferences) {
         self.preferences = preferences
