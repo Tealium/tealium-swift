@@ -122,8 +122,6 @@ class ConsentManagerTests: XCTestCase {
         }
     }
     
-    //func testCusomConsentPolicy_CanOverride
-    
     func testDefaultConsentExpirationCCPA() {
         config.consentPolicy = .ccpa
         let module = createModule(with: config)

@@ -28,9 +28,6 @@ class TealiumHelper  {
     private init() { }
 
     func start() {
-        
-        
-        
         let config = TealiumConfig(account: "tealiummobile",
                                    profile: "demo",
                                    environment: "dev",
@@ -153,10 +150,6 @@ class TealiumHelper  {
                 TealiumHelper.shared.tealium?.consentManager?.userConsentStatus = .consented
             }
         }
-    }
-    
-    func customPartialConsent() {
-        
     }
 
     func track(title: String, data: [String: Any]?) {

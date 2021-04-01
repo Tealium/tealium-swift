@@ -25,7 +25,7 @@ public enum ConsentKey {
 }
 
 public enum TealiumConsentCategories: String, Codable {
-    
+
     case analytics = "analytics"
     case affiliates = "affiliates"
     case displayAds = "display_ads"
