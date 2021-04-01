@@ -315,6 +315,7 @@
 		CFC3FB9F24C6232400763C9E /* MockTealiumVisitorServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC3FB9C24C6232400763C9E /* MockTealiumVisitorServiceManager.swift */; };
 		CFCBFB5D2524FDA30094C1EC /* TestTealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716C7D1B1DDBC3A500512C99 /* TestTealiumHelper.swift */; };
 		CFCBFCBF2524FF0D0094C1EC /* MockTagManagementWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7F94782464A03200399774 /* MockTagManagementWebView.swift */; };
+		CFD4D7E926162F1400175202 /* ConsentPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD4D7E826162F1400175202 /* ConsentPolicyTests.swift */; };
 		CFD64B9C255F56E500A7137C /* TimedEventSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD64B9B255F56E500A7137C /* TimedEventSchedulerTests.swift */; };
 		CFD64B9D255F56E500A7137C /* TimedEventSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD64B9B255F56E500A7137C /* TimedEventSchedulerTests.swift */; };
 		CFD64B9E255F56E500A7137C /* TimedEventSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD64B9B255F56E500A7137C /* TimedEventSchedulerTests.swift */; };
@@ -1442,6 +1443,7 @@
 		CFB7D83424C2576B000BA6F3 /* TealiumAppDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumAppDataTests.swift; sourceTree = "<group>"; };
 		CFC3FB9C24C6232400763C9E /* MockTealiumVisitorServiceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockTealiumVisitorServiceManager.swift; sourceTree = "<group>"; };
 		CFCBFB642524FDA30094C1EC /* TealiumTagManagementIntegrationTests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TealiumTagManagementIntegrationTests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CFD4D7E826162F1400175202 /* ConsentPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentPolicyTests.swift; sourceTree = "<group>"; };
 		CFD64B9B255F56E500A7137C /* TimedEventSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimedEventSchedulerTests.swift; sourceTree = "<group>"; };
 		CFE55FB124FED06400956B9D /* HostedDataLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HostedDataLayer.swift; sourceTree = "<group>"; };
 		CFE55FB224FED06400956B9D /* HostedDataLayerCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HostedDataLayerCache.swift; sourceTree = "<group>"; };
@@ -2286,6 +2288,7 @@
 			children = (
 				D7052C602098A02F00723DC5 /* ConsentManagerTests.swift */,
 				D73E7A0C209B0601001D05D3 /* ConsentManagerModuleTests.swift */,
+				CFD4D7E826162F1400175202 /* ConsentPolicyTests.swift */,
 				D788A59C2321392D00BC6D60 /* ConsentMockDiskStorage.swift */,
 				CF9F427C24F438E1009B93C2 /* MockConsentDelegate.swift */,
 			);
@@ -3905,6 +3908,7 @@
 			files = (
 				CFAD62BF2541FCFF007D4EDB /* CoreMocks.swift in Sources */,
 				CF13D84724FD601E0024E79A /* MockURLSessionPublishSettings.swift in Sources */,
+				CFD4D7E926162F1400175202 /* ConsentPolicyTests.swift in Sources */,
 				CF13D83524FD5FE30024E79A /* AppDelegateProxyTests.swift in Sources */,
 				CFAD630C2541FD87007D4EDB /* MockSessionStarter.swift in Sources */,
 				CF13D83824FD5FE30024E79A /* TestTealiumHelper.swift in Sources */,

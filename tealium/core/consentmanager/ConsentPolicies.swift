@@ -8,7 +8,7 @@
 import Foundation
 
 public protocol ConsentPolicy {
-    init (_ preferences: UserConsentPreferences)
+    var name: String { get }
     var defaultConsentExpiry: (time: Int, unit: TimeUnit) { get }
     var shouldUpdateConsentCookie: Bool { get }
     var updateConsentCookieEventName: String { get }
@@ -19,11 +19,27 @@ public protocol ConsentPolicy {
     var shouldLogConsentStatus: Bool { get }
 }
 
+public class ConsentPolicyFactory {
+    static func create(_ policy: TealiumConsentPolicy,
+                       preferences: UserConsentPreferences) -> ConsentPolicy {
+        switch policy {
+        case .ccpa:
+            return CCPAConsentPolicy(preferences)
+        case .gdpr:
+            return GDPRConsentPolicy(preferences)
+        case .custom(let customPolicy):
+            return customPolicy
+        }
+    }
+}
+
 struct CCPAConsentPolicy: ConsentPolicy {
 
     init(_ preferences: UserConsentPreferences) {
         self.preferences = preferences
     }
+    
+    var name = "ccpa"
     
     var defaultConsentExpiry: (time: Int, unit: TimeUnit) = (395, .days)
 
@@ -40,7 +56,7 @@ struct CCPAConsentPolicy: ConsentPolicy {
         preferences.consentStatus
     }
 
-    var shouldUpdateConsentCookie: Bool = true
+    var shouldUpdateConsentCookie = true
 
     var updateConsentCookieEventName = ConsentKey.ccpaCookieEventName
 
@@ -51,7 +67,7 @@ struct CCPAConsentPolicy: ConsentPolicy {
     var consentPolicyStatusInfo: [String: Any]? {
         let doNotSell = currentStatus == .notConsented ? true : false
         return [ConsentKey.doNotSellKey: doNotSell,
-                ConsentKey.policyKey: TealiumConsentPolicy.ccpa.rawValue]
+                ConsentKey.policyKey: name]
     }
 }
 
@@ -60,6 +76,8 @@ struct GDPRConsentPolicy: ConsentPolicy {
     init(_ preferences: UserConsentPreferences) {
         self.preferences = preferences
     }
+    
+    var name = "gdpr"
     
     var defaultConsentExpiry: (time: Int, unit: TimeUnit) = (365, .days)
 
@@ -92,7 +110,7 @@ struct GDPRConsentPolicy: ConsentPolicy {
 
     var consentPolicyStatusInfo: [String: Any]? {
         var params = preferences.dictionary ?? [String: Any]()
-        params[ConsentKey.policyKey] = TealiumConsentPolicy.gdpr.rawValue
+        params[ConsentKey.policyKey] = name
         return params
     }
 

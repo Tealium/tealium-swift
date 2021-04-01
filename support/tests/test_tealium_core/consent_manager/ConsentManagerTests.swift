@@ -68,6 +68,20 @@ class ConsentManagerTests: XCTestCase {
         return nil
     }
     
+    func testConsentPolicyFactory_CreatesCCPAPolicy() {
+        
+    }
+    
+    func testConsentPolicyFactory_CreatesGDPRPolicy() {
+        
+    }
+    
+    func testConsentPolicyFactory_CreatesCustomPolicy() {
+        
+    }
+    
+    //func testCusomConsentPolicy_CanOverride
+    
     func testDefaultConsentExpirationCCPA() {
         config.consentPolicy = .ccpa
         let module = createModule(with: config)

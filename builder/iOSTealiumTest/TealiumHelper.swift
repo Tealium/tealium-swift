@@ -36,7 +36,8 @@ class TealiumHelper  {
         config.connectivityRefreshInterval = 5
         config.loggerType = .os
         config.logLevel = .info
-        config.consentPolicy = .gdpr
+        //config.consentPolicy = .gdpr
+        config.consentPolicy = .custom(CustomConsentPolicy())
         config.consentLoggingEnabled = true
         config.dispatchListeners = [self]
         config.dispatchValidators = [self]
@@ -52,9 +53,9 @@ class TealiumHelper  {
         config.timedEventTriggers = [TimedEventTrigger(start: "product_view", end: "order_complete"),
                                      TimedEventTrigger(start: "start_game", end: "buy_coins")]
 
-        config.consentExpiry = (time: 2, unit: .minutes)
+       // config.consentExpiry = (time: 2, unit: .minutes)
         config.onConsentExpiration = {
-            print("Consent expired")
+            print("💎💎💎Consent expired")
         }
         #if os(iOS)
             config.collectors = [
@@ -151,6 +152,10 @@ class TealiumHelper  {
             }
         }
     }
+    
+    func customPartialConsent() {
+        
+    }
 
     func track(title: String, data: [String: Any]?) {
         let dispatch = TealiumEvent(title, dataLayer: data)
@@ -174,6 +179,30 @@ class TealiumHelper  {
         NSException.raise(NSExceptionName(rawValue: "Exception"), format: "This is a test exception", arguments: getVaList(["nil"]))
     }
 
+}
+
+struct CustomConsentPolicy: ConsentPolicy {
+    
+    var name: String = "custom"
+    
+    var preferences: UserConsentPreferences = UserConsentPreferences(consentStatus: .unknown, consentCategories: nil)
+    
+    var defaultConsentExpiry: (time: Int, unit: TimeUnit) = (2, .minutes)
+    
+    var shouldUpdateConsentCookie: Bool = true
+    
+    var updateConsentCookieEventName: String = "custom_consent_cookie"
+    
+    var consentPolicyStatusInfo: [String : Any]? {
+        ["custom_consent_status": preferences.consentStatus.rawValue, "custom_consent_categories": TealiumConsentCategories.all, "policy": name]
+    }
+    
+    var trackAction: TealiumConsentTrackAction = .trackingAllowed
+    
+    var consentTrackingEventName: String = "consented_to_tracking"
+    
+    var shouldLogConsentStatus: Bool = true
+    
 }
 
 extension TealiumHelper: VisitorServiceDelegate {
