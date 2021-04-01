@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol NotificationCenterObservable: class {
+public protocol NotificationCenterObservable: AnyObject {
     func post(_ notification: Notification)
     func addObserver(forName name: NSNotification.Name?,
                      object obj: Any?,

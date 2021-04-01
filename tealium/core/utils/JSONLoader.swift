@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol JSONLoadable: class {
+public protocol JSONLoadable: AnyObject {
         
     func fromFile<T: Codable>(_ file: String,
                   bundle: Bundle,

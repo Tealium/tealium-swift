@@ -11,7 +11,7 @@ public protocol TimestampCollection {
     var currentTimeStamps: [String: Any] { get }
 }
 
-public protocol DataLayerManagerProtocol: class {
+public protocol DataLayerManagerProtocol: AnyObject {
     var all: [String: Any] { get set }
     var allSessionData: [String: Any] { get }
     var sessionId: String? { get set }

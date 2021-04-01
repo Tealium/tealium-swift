@@ -115,7 +115,7 @@ enum TealiumAutotrackingValue {
     
 }
 
-public protocol AutoTrackingDelegate: class {
+public protocol AutoTrackingDelegate: AnyObject {
     
     func onCollectScreenView(screenName: String) -> [String: Any]
     
