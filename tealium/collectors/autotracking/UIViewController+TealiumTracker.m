@@ -6,7 +6,7 @@
 //
 
 #if COCOAPODS
-#import "TealiumAutotracking-Swift.h"
+#import "TealiumAutotracking-Swift-Manual.h"
 #else
 #import <TealiumAutotracking/TealiumAutotracking-Swift.h>
 #endif
