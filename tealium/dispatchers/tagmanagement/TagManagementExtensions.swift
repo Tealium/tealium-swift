@@ -26,6 +26,9 @@ public extension TealiumConfig {
         }
     }
     
+    /// Optionally sets a `WKProcessPool` for the Tealium WKWebView to use.
+    /// Required if multiple webviews are in use; prevents issues with cookie setting.
+    /// A singleton WKProcessPool instance should be passed that is used for all `WKWebView`s in your app.
     var webviewProcessPool: WKProcessPool? {
         get {
             options[TagManagementConfigKey.processPool] as? WKProcessPool
@@ -36,6 +39,8 @@ public extension TealiumConfig {
         }
     }
     
+    /// Optionally sets a `WKWebViewConfiguration` for the Tealium WKWebView to use.
+    /// Not normally required, but provides some additional customization options if requred.
     var webviewConfig: WKWebViewConfiguration {
         get {
             options[TagManagementConfigKey.wkConfig] as? WKWebViewConfiguration ?? WKWebViewConfiguration()
