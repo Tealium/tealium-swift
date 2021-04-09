@@ -23,7 +23,7 @@ enum InternalWebViewState: Int {
 class TagManagementWKWebView: NSObject, TagManagementProtocol {
 
     var webview: WKWebView?
-    var webviewConfig: WKWebViewConfiguration?
+//    var webviewConfig: WKWebViewConfiguration?
     var tealConfig: TealiumConfig
     var webviewDidFinishLoading = false
     var enableCompletion: ((_ success: Bool, _ error: Error?) -> Void)?
