@@ -84,16 +84,14 @@ class ConsentManagerTests: XCTestCase {
     
     func testConsentPolicyFactory_CreatesCustomPolicy() {
         let preferences = UserConsentPreferences(consentStatus: .consented, consentCategories: nil)
-        let mockCustomPolicy = MockCustomConsentPolicy()
-        let custom = ConsentPolicyFactory.create(.custom(mockCustomPolicy), preferences: preferences)
+        let custom = ConsentPolicyFactory.create(.custom(MockCustomConsentPolicy.self), preferences: preferences)
         
         XCTAssertEqual(custom.name, "custom")
     }
     
     func testCustomConsentPolicyStatusInfo_SentInTrack() {
         let config = testTealiumConfig
-        let mockCustomPolicy = MockCustomConsentPolicy()
-        config.consentPolicy = .custom(mockCustomPolicy)
+        config.consentPolicy = .custom(MockCustomConsentPolicy.self)
         let mockConsentDelegate = MockConsentDelegate()
         let consentManager = ConsentManager(config: config, delegate: mockConsentDelegate, diskStorage: ConsentMockDiskStorage(), dataLayer: DummyDataManager())
         let expect = expectation(description: "testCustomConsentPolicyStatusInfo_SentInTrack")
@@ -413,6 +411,11 @@ class ConsentManagerTests: XCTestCase {
 }
 
 class MockCustomConsentPolicy: ConsentPolicy {
+    
+    required init(_ preferences: UserConsentPreferences) {
+        self.preferences = preferences
+    }
+    
     var name = "custom"
     
     var defaultConsentExpiry: (time: Int, unit: TimeUnit) = (2, .months)

@@ -82,7 +82,7 @@ public enum TealiumConsentCategories: String, Codable {
 public enum TealiumConsentPolicy {
     case ccpa
     case gdpr
-    case custom(ConsentPolicy)
+    case custom(ConsentPolicy.Type)
 }
 
 public enum TealiumConsentStatus: String, Codable {
