@@ -34,7 +34,7 @@ class TealiumHelper {
 
         // Set up consent manager
         config.consentLoggingEnabled = true
-        config.consentPolicy = .gdpr
+        config.consentPolicy = .gdpr // You can also create your own custom policy by using `.custom(MyCustomPolicy.self)`
         config.consentExpiry = (90, .days)
         config.onConsentExpiration = {
             print("Consent Expired")
@@ -97,4 +97,66 @@ class TealiumHelper {
         return ["tracking_consented": stringStatus, "consent_categories": stringCategories]
     }
 
+}
+
+// Create your own consent policy
+class MyCustomPolicy: ConsentPolicy {
+    
+    var preferences: UserConsentPreferences
+    
+    required init(_ preferences: UserConsentPreferences) {
+        self.preferences = preferences
+    }
+    
+    var name: String = "Acme Custom Consent Policy"
+    
+    var defaultConsentExpiry: (time: Int, unit: TimeUnit) = (45, .days)
+    
+    var shouldUpdateConsentCookie: Bool = false
+    
+    var updateConsentCookieEventName: String = ""
+    
+    var consentPolicyStatusInfo: [String : Any]? {
+        var info = [String: Any]()
+        if let categories = preferences.consentCategories {
+            info["allowed_tracking_categories"] = categories.map { $0.rawValue }
+        }
+        info["privacy_preference"] = preferences.consentStatus.rawValue
+        info["last_updated"] = Date().extendedIso8601String
+        info["policy_name"] = name
+        return info
+    }
+    
+    var trackAction: TealiumConsentTrackAction = .trackingAllowed
+    
+    var consentTrackingEventName: String = "privacy_preference_update"
+    
+    var shouldLogConsentStatus: Bool = true
+    
+}
+
+// Extend and override the existing GDPR or CCPA consent policies
+class MyCustomGDPRPolicy: GDPRConsentPolicyCreatable {
+    
+    var preferences: UserConsentPreferences
+    
+    required init(_ preferences: UserConsentPreferences) {
+        self.preferences = preferences
+    }
+    
+    // Override the default GDPR consent policy name
+    var name: String = "Acme GDPR Preferences"
+    
+    // Override the default GDPR consent keys and add additional info
+    var consentPolicyStatusInfo: [String : Any]? {
+        var info = [String: Any]()
+        if let categories = preferences.consentCategories {
+            info["gdpr_categories"] = categories.map { $0.rawValue }
+        }
+        info["gdpr_consent"] = preferences.consentStatus.rawValue
+        info["last_updated"] = Date().extendedIso8601String
+        info["gdpr_policy_name"] = name
+        return info
+    }
+    
 }
