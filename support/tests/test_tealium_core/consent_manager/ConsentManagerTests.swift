@@ -68,6 +68,58 @@ class ConsentManagerTests: XCTestCase {
         return nil
     }
     
+    func testConsentPolicyFactory_CreatesCCPAPolicy() {
+        let preferences = UserConsentPreferences(consentStatus: .consented, consentCategories: nil)
+        let ccpa = ConsentPolicyFactory.create(.ccpa, preferences: preferences)
+        
+        XCTAssertEqual(ccpa.name, "ccpa")
+    }
+    
+    func testConsentPolicyFactory_CreatesGDPRPolicy() {
+        let preferences = UserConsentPreferences(consentStatus: .consented, consentCategories: nil)
+        let gdpr = ConsentPolicyFactory.create(.gdpr, preferences: preferences)
+        
+        XCTAssertEqual(gdpr.name, "gdpr")
+    }
+    
+    func testConsentPolicyFactory_CreatesCustomPolicy() {
+        let preferences = UserConsentPreferences(consentStatus: .consented, consentCategories: nil)
+        let custom = ConsentPolicyFactory.create(.custom(MockCustomConsentPolicy.self), preferences: preferences)
+        
+        XCTAssertEqual(custom.name, "custom")
+    }
+    
+    func testCustomConsentPolicyStatusInfo_SentInTrack() {
+        let config = testTealiumConfig
+        config.consentPolicy = .custom(MockCustomConsentPolicy.self)
+        let mockConsentDelegate = MockConsentDelegate()
+        let consentManager = ConsentManager(config: config, delegate: mockConsentDelegate, diskStorage: ConsentMockDiskStorage(), dataLayer: DummyDataManager())
+        let expect = expectation(description: "testCustomConsentPolicyStatusInfo_SentInTrack")
+        mockConsentDelegate.asyncExpectation = expect
+
+        let consentPreferences = UserConsentPreferences(consentStatus: .consented, consentCategories: [.cdp])
+        consentManager.trackUserConsentPreferences(consentPreferences)
+
+        waitForExpectations(timeout: 2) { error in
+            if let error = error {
+                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
+            }
+
+            guard let trackInfo = mockConsentDelegate.trackInfo else {
+                XCTFail("Expected delegate to be called")
+                return
+            }
+
+            if trackInfo["tealium_event"] as? String == "mockCookieName" {
+                return
+            }
+            
+            XCTAssertNotNil(trackInfo["customConsentCategories"] as? [TealiumConsentCategories])
+            XCTAssertNotNil(trackInfo["custom_consent_key"] as? String)
+
+        }
+    }
+    
     func testDefaultConsentExpirationCCPA() {
         config.consentPolicy = .ccpa
         let module = createModule(with: config)
@@ -356,6 +408,33 @@ class ConsentManagerTests: XCTestCase {
         XCTAssertNotNil(consentManager.lastConsentUpdate)
     }
 
+}
+
+class MockCustomConsentPolicy: ConsentPolicy {
+    
+    required init(_ preferences: UserConsentPreferences) {
+        self.preferences = preferences
+    }
+    
+    var name = "custom"
+    
+    var defaultConsentExpiry: (time: Int, unit: TimeUnit) = (2, .months)
+    
+    var shouldUpdateConsentCookie: Bool = true
+    
+    var updateConsentCookieEventName: String = "mockCookieName"
+    
+    var consentPolicyStatusInfo: [String : Any]? {
+        ["custom_consent_key": "didConsent", "customConsentCategories": TealiumConsentCategories.all, "policy": name]
+    }
+    
+    var preferences: UserConsentPreferences = UserConsentPreferences(consentStatus: .consented, consentCategories: nil)
+    
+    var trackAction: TealiumConsentTrackAction = .trackingAllowed
+    
+    var consentTrackingEventName: String = "mockTrackingEventName"
+    
+    var shouldLogConsentStatus: Bool = true
 }
 
 extension ConsentManagerTests: ModuleDelegate {
