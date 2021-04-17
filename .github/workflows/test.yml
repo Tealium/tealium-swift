@@ -55,8 +55,8 @@ jobs:
 #        run: python3 coverage.py "${{ matrix.scheme }}".txt && exit $(echo $?)
 #        working-directory: ${{env.working-directory}}
       - name: Generate and Upload Code Coverage
-      run: bash <(curl -s https://codecov.io/bash) && ls
-      working-directory: ${{env.working-directory}}
+        run: bash <(curl -s https://codecov.io/bash) && ls
+        working-directory: ${{env.working-directory}}
    test_macOS:
      needs: install
      name: macOS Tests
