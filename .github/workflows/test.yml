@@ -58,7 +58,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: "${{ matrix.scheme }} Code Coverage"
-          path: "./builder/${{ matrix.scheme }}.txt"
+          path: ./builder/"${{ matrix.scheme }}".txt
    test_macOS:
      needs: install
      name: macOS Tests
@@ -95,7 +95,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: "${{ matrix.scheme }} Code Coverage"
-          path: "./builder/${{ matrix.scheme }}.txt"
+          path: ./builder/"${{ matrix.scheme }}".txt
    test_tvOS:
      needs: install
      name: tvOS Tests
@@ -132,4 +132,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: "${{ matrix.scheme }} Code Coverage"
-          path: "./builder/${{ matrix.scheme }}.txt"
+          path: ./builder/"${{ matrix.scheme }}".txt
