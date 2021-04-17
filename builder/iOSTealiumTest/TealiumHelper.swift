@@ -108,15 +108,7 @@ class TealiumHelper: NSObject {
             teal.consentManager?.userConsentStatus = .consented
             dataLayer.add(key: "myvarforever", value: 123_456, expiry: .forever)
             dataLayer.add(data: ["some_key1": "some_val1"], expiry: .session)
-            dataLayer.add(data: ["some_key_forever": "some_val_forever"], expiry: .forever) // forever
-            dataLayer.add(data: ["until": "restart"], expiry: .untilRestart)
             dataLayer.add(data: ["custom": "expire in 3 min"], expiry: .afterCustom((.minutes, 3)))
-            dataLayer.delete(for: ["myvarforever"])
-            dataLayer.add(data: ["hello": "world"], expiry: .untilRestart)
-            dataLayer.add(key: "test", value: 123, expiry: .session)
-            dataLayer.delete(for: ["hello", "test"])
-            dataLayer.add(key: "hello", value: "itsme", expiry: .afterCustom((.months, 1)))
-            
             #if os(iOS)
             teal.location?.requestAuthorization()
 
@@ -153,9 +145,11 @@ class TealiumHelper: NSObject {
         if let consentStatus = tealium?.consentManager?.userConsentStatus {
             switch consentStatus {
             case .notConsented:
-                TealiumHelper.shared.tealium?.consentManager?.userConsentStatus = .notConsented
-            default:
+                TealiumHelper.shared.tealium?.consentManager?.userConsentCategories = [.affiliates, .analytics, .bigData]
+            case .unknown:
                 TealiumHelper.shared.tealium?.consentManager?.userConsentStatus = .consented
+            default:
+                TealiumHelper.shared.tealium?.consentManager?.userConsentStatus = .notConsented
             }
         }
     }

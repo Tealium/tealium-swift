@@ -72,7 +72,7 @@ extension _AnyEncodable {
         switch value {
         #if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
         case let number as NSNumber:
-            if Double(truncating: number) == Double.nan {
+            if Double(truncating: number).isNaN {
                 try container.encode("NaN")
             } else if Double(truncating: number) == Double.infinity {
                 try container.encode("Infinity")
@@ -107,7 +107,7 @@ extension _AnyEncodable {
         case let float as Float:
             try container.encode(float)
         case let double as Double:
-            if double == Double.nan {
+            if double.isNaN {
                 try container.encode("NaN")
             } else if double == Double.infinity {
                 try container.encode("Infinity")

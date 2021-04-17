@@ -23,6 +23,13 @@ class WKWebViewIntegrationTests: XCTestCase {
     var module: TagManagementModule!
     var config: TealiumConfig!
     var mockTagmanagement: MockTagManagementWebView!
+    static var processPool = WKProcessPool()
+    static var wkConfig: WKWebViewConfiguration = {
+      let config = WKWebViewConfiguration()
+        config.processPool = WKWebViewIntegrationTests.processPool
+        config.allowsAirPlayForMediaPlayback = false
+        return config
+    }()
 
     override func setUp() {
         super.setUp()
@@ -40,6 +47,64 @@ class WKWebViewIntegrationTests: XCTestCase {
         let expectation = self.expectation(description: "testEnableWebView")
         tagManagementWKWebView.enable(webviewURL: testURL, delegates: nil, shouldAddCookieObserver: true, view: nil) { _, _ in
             XCTAssertNotNil(self.tagManagementWKWebView.webview, "Webview instance was unexpectedly nil")
+            expectation.fulfill()
+        }
+        self.wait(for: [expectation], timeout: 5.0)
+    }
+    
+    func testEnableWebViewWithProcessPool() {
+        let config = self.config.copy
+        config.webviewProcessPool = WKWebViewIntegrationTests.processPool
+        let webview = TagManagementWKWebView(config: config, delegate: TagManagementModuleDelegate())
+        let expectation = self.expectation(description: "testEnableWebView")
+        webview.enable(webviewURL: testURL, delegates: nil, shouldAddCookieObserver: true, view: nil) { _, _ in
+            let originalAddress = Unmanaged.passUnretained(WKWebViewIntegrationTests.processPool).toOpaque()
+            let moduleAddress = Unmanaged.passUnretained(webview.webview!.configuration.processPool).toOpaque()
+            XCTAssertEqual(originalAddress, moduleAddress)
+            expectation.fulfill()
+        }
+        self.wait(for: [expectation], timeout: 5.0)
+    }
+    
+    func testEnableWebViewWithoutProcessPool() {
+        let config = self.config.copy
+        let webview = TagManagementWKWebView(config: config, delegate: TagManagementModuleDelegate())
+        let expectation = self.expectation(description: "testEnableWebView")
+        webview.enable(webviewURL: testURL, delegates: nil, shouldAddCookieObserver: true, view: nil) { _, _ in
+            let originalAddress = Unmanaged.passUnretained(WKWebViewIntegrationTests.processPool).toOpaque()
+            let moduleAddress = Unmanaged.passUnretained(webview.webview!.configuration.processPool).toOpaque()
+            XCTAssertNotEqual(originalAddress, moduleAddress)
+            expectation.fulfill()
+        }
+        self.wait(for: [expectation], timeout: 5.0)
+    }
+    
+    func testEnableWebViewWithConfig() {
+        let config = self.config.copy
+        config.webviewConfig = WKWebViewIntegrationTests.wkConfig
+        let webview = TagManagementWKWebView(config: config, delegate: TagManagementModuleDelegate())
+        let expectation = self.expectation(description: "testEnableWebView")
+        webview.enable(webviewURL: testURL, delegates: nil, shouldAddCookieObserver: true, view: nil) { _, _ in
+            let originalAddress = Unmanaged.passUnretained(WKWebViewIntegrationTests.processPool).toOpaque()
+            let moduleAddress = Unmanaged.passUnretained(webview.webview!.configuration.processPool).toOpaque()
+            XCTAssertEqual(originalAddress, moduleAddress)
+            // check that custom property passed in config is present on Tealium webview. Default for this option is true if not specified.
+            XCTAssertFalse(webview.webview!.configuration.allowsAirPlayForMediaPlayback)
+            expectation.fulfill()
+        }
+        self.wait(for: [expectation], timeout: 5.0)
+    }
+    
+    func testEnableWebViewWithoutConfig() {
+        let config = self.config.copy
+        let webview = TagManagementWKWebView(config: config, delegate: TagManagementModuleDelegate())
+        let expectation = self.expectation(description: "testEnableWebView")
+        webview.enable(webviewURL: testURL, delegates: nil, shouldAddCookieObserver: true, view: nil) { _, _ in
+            let originalAddress = Unmanaged.passUnretained(WKWebViewIntegrationTests.processPool).toOpaque()
+            let moduleAddress = Unmanaged.passUnretained(webview.webview!.configuration.processPool).toOpaque()
+            XCTAssertNotEqual(originalAddress, moduleAddress)
+            // check that custom property passed in config is present on Tealium webview
+            XCTAssertTrue(webview.webview!.configuration.allowsAirPlayForMediaPlayback)
             expectation.fulfill()
         }
         self.wait(for: [expectation], timeout: 5.0)

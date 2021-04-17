@@ -166,7 +166,7 @@ class ConsentManagerModuleTests: XCTestCase {
                                               "cookiematch",
                                               "misc"],
             "test": "track",
-            "policy": "gdpr"
+            "consent_policy": "gdpr"
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
         var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
@@ -183,7 +183,7 @@ class ConsentManagerModuleTests: XCTestCase {
             ConsentKey.consentStatus: "notConsented",
             ConsentKey.consentCategoriesKey: [],
             "test": "track",
-            "policy": "gdpr"
+            "consent_policy": "gdpr"
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
         var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
@@ -201,7 +201,7 @@ class ConsentManagerModuleTests: XCTestCase {
             ConsentKey.consentStatus: TealiumValue.unknown,
             ConsentKey.consentCategoriesKey: [],
             "test": "track",
-            "policy": "gdpr"
+            "consent_policy": "gdpr"
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
         var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
@@ -219,7 +219,7 @@ class ConsentManagerModuleTests: XCTestCase {
                                               TealiumConsentCategories.crm.rawValue,
                                               TealiumConsentCategories.engagement.rawValue],
             "test": "track",
-            "policy": "gdpr"
+            "consent_policy": "gdpr"
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
         var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
@@ -233,7 +233,7 @@ class ConsentManagerModuleTests: XCTestCase {
         let module = createModule(with: config, dataLayer: MockMigratedDataLayerNoData())
         let expected: [String: Any] = [
             "test": "track",
-            "policy": "ccpa",
+            "consent_policy": "ccpa",
             "do_not_sell": false
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
