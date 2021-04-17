@@ -315,6 +315,10 @@
 		CFC3FB9F24C6232400763C9E /* MockTealiumVisitorServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC3FB9C24C6232400763C9E /* MockTealiumVisitorServiceManager.swift */; };
 		CFCBFB5D2524FDA30094C1EC /* TestTealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716C7D1B1DDBC3A500512C99 /* TestTealiumHelper.swift */; };
 		CFCBFCBF2524FF0D0094C1EC /* MockTagManagementWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7F94782464A03200399774 /* MockTagManagementWebView.swift */; };
+		CFD2E3CA262A691D00B38AD9 /* TestingSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD2E3C9262A691D00B38AD9 /* TestingSceneDelegate.swift */; };
+		CFD2E3EC262A694100B38AD9 /* TestingRootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD2E3EB262A694100B38AD9 /* TestingRootViewController.swift */; };
+		CFD2E4B0262A6B7E00B38AD9 /* TestingSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD2E3C9262A691D00B38AD9 /* TestingSceneDelegate.swift */; };
+		CFD2E4D1262A6B8100B38AD9 /* TestingRootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD2E3EB262A694100B38AD9 /* TestingRootViewController.swift */; };
 		CFD64B9C255F56E500A7137C /* TimedEventSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD64B9B255F56E500A7137C /* TimedEventSchedulerTests.swift */; };
 		CFD64B9D255F56E500A7137C /* TimedEventSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD64B9B255F56E500A7137C /* TimedEventSchedulerTests.swift */; };
 		CFD64B9E255F56E500A7137C /* TimedEventSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD64B9B255F56E500A7137C /* TimedEventSchedulerTests.swift */; };
@@ -1443,6 +1447,8 @@
 		CFB7D83424C2576B000BA6F3 /* TealiumAppDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumAppDataTests.swift; sourceTree = "<group>"; };
 		CFC3FB9C24C6232400763C9E /* MockTealiumVisitorServiceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockTealiumVisitorServiceManager.swift; sourceTree = "<group>"; };
 		CFCBFB642524FDA30094C1EC /* TealiumTagManagementIntegrationTests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TealiumTagManagementIntegrationTests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CFD2E3C9262A691D00B38AD9 /* TestingSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingSceneDelegate.swift; sourceTree = "<group>"; };
+		CFD2E3EB262A694100B38AD9 /* TestingRootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingRootViewController.swift; sourceTree = "<group>"; };
 		CFD64B9B255F56E500A7137C /* TimedEventSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimedEventSchedulerTests.swift; sourceTree = "<group>"; };
 		CFE55FB124FED06400956B9D /* HostedDataLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HostedDataLayer.swift; sourceTree = "<group>"; };
 		CFE55FB224FED06400956B9D /* HostedDataLayerCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HostedDataLayerCache.swift; sourceTree = "<group>"; };
@@ -2014,6 +2020,7 @@
 		716C7D0F1DDBC3A500512C99 /* test_tealium_core */ = {
 			isa = PBXGroup;
 			children = (
+				CFD2E42E262A69BC00B38AD9 /* delegate_proxy */,
 				CFAD58A225390FDE007D4EDB /* device_data */,
 				D7187F1324768F5000CF0AB0 /* datalayer */,
 				D71912772473E8BC000FD63E /* appdata */,
@@ -2030,7 +2037,6 @@
 				D7D5C1AF23D755CB002DB7C6 /* MockURLSessionPublishSettings.swift */,
 				CF7F94892469E98500399774 /* PerformanceTests.swift */,
 				CF8FF2C524466FD90081C1A9 /* big-visitor.json */,
-				D72DB0BF24F7BF4000183D48 /* AppDelegateProxyTests.swift */,
 				CFEF6C0F2527933D00902EC6 /* TealiumExtensionTests.swift */,
 				CFA0C19A2534FC87009CDF33 /* MigratorTests.swift */,
 				CF9DB1C425434EE2007C0317 /* TealiumRequestsTests.swift */,
@@ -2405,6 +2411,16 @@
 				CFE55FB224FED06400956B9D /* HostedDataLayerCache.swift */,
 			);
 			path = datalayer;
+			sourceTree = "<group>";
+		};
+		CFD2E42E262A69BC00B38AD9 /* delegate_proxy */ = {
+			isa = PBXGroup;
+			children = (
+				D72DB0BF24F7BF4000183D48 /* AppDelegateProxyTests.swift */,
+				CFD2E3C9262A691D00B38AD9 /* TestingSceneDelegate.swift */,
+				CFD2E3EB262A694100B38AD9 /* TestingRootViewController.swift */,
+			);
+			path = delegate_proxy;
 			sourceTree = "<group>";
 		};
 		CFF242BF23CE77F10091B7BF /* location */ = {
@@ -3908,8 +3924,10 @@
 				CFAD62BF2541FCFF007D4EDB /* CoreMocks.swift in Sources */,
 				CF13D84724FD601E0024E79A /* MockURLSessionPublishSettings.swift in Sources */,
 				CF13D83524FD5FE30024E79A /* AppDelegateProxyTests.swift in Sources */,
+				CFD2E3EC262A694100B38AD9 /* TestingRootViewController.swift in Sources */,
 				CFAD630C2541FD87007D4EDB /* MockSessionStarter.swift in Sources */,
 				CF13D83824FD5FE30024E79A /* TestTealiumHelper.swift in Sources */,
+				CFD2E3CA262A691D00B38AD9 /* TestingSceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3931,8 +3949,10 @@
 				CF8809312554BD510020E1B2 /* TealiumHelper.swift in Sources */,
 				CF88094A2554BD560020E1B2 /* iOSTealiumTestApp.swift in Sources */,
 				CF8809982554BD710020E1B2 /* ButtonView.swift in Sources */,
+				CFD2E4D1262A6B8100B38AD9 /* TestingRootViewController.swift in Sources */,
 				CF8809972554BD6F0020E1B2 /* TraceIdTextField.swift in Sources */,
 				CF8809652554BD5F0020E1B2 /* ContentView.swift in Sources */,
+				CFD2E4B0262A6B7E00B38AD9 /* TestingSceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5231,6 +5251,7 @@
 					"TEST=1",
 				);
 				INFOPLIST_FILE = "TealiumTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@loader_path/Frameworks",
@@ -5271,6 +5292,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../Carthage/Build/iOS";
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = "TealiumTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@loader_path/Frameworks",
