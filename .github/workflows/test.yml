@@ -54,9 +54,11 @@ jobs:
 #      - name: Validate Code Coverage - "${{ matrix.scheme }}"
 #        run: python3 coverage.py "${{ matrix.scheme }}".txt && exit $(echo $?)
 #        working-directory: ${{env.working-directory}}
-      - name: Generate and Upload Code Coverage
-        run: bash <(curl -s https://codecov.io/bash)>
-        working-directory: ${{env.working-directory}}
+      - name: Archive Code Coverage Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: "${{ matrix.scheme }} Code Coverage"
+          path: "./builder/${{ matrix.scheme }}.txt"
    test_macOS:
      needs: install
      name: macOS Tests
@@ -89,9 +91,11 @@ jobs:
 #      - name: Validate Code Coverage - "${{ matrix.scheme }}"
 #        run: python3 coverage.py "${{ matrix.scheme }}".txt && exit $(echo $?)
 #        working-directory: ${{env.working-directory}}
-      - name: Generate and Upload Code Coverage
-        run: bash <(curl -s https://codecov.io/bash)>
-        working-directory: ${{env.working-directory}}
+      - name: Archive Code Coverage Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: "${{ matrix.scheme }} Code Coverage"
+          path: "./builder/${{ matrix.scheme }}.txt"
    test_tvOS:
      needs: install
      name: tvOS Tests
@@ -124,6 +128,8 @@ jobs:
 #      - name: Validate Code Coverage - "${{ matrix.scheme }}"
 #        run: python3 coverage.py "${{ matrix.scheme }}".txt && exit $(echo $?)
 #        working-directory: ${{env.working-directory}}
-      - name: Generate and Upload Code Coverage
-        run: bash <(curl -s https://codecov.io/bash)>
-        working-directory: ${{env.working-directory}}
+      - name: Archive Code Coverage Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: "${{ matrix.scheme }} Code Coverage"
+          path: "./builder/${{ matrix.scheme }}.txt"
