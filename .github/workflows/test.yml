@@ -55,7 +55,7 @@ jobs:
 #        run: python3 coverage.py "${{ matrix.scheme }}".txt && exit $(echo $?)
 #        working-directory: ${{env.working-directory}}
       - name: Generate and Upload Code Coverage
-        run: bash <(curl -s https://codecov.io/bash) && ls
+        run: bash <(curl -s https://codecov.io/bash)>
         working-directory: ${{env.working-directory}}
    test_macOS:
      needs: install
@@ -90,7 +90,7 @@ jobs:
 #        run: python3 coverage.py "${{ matrix.scheme }}".txt && exit $(echo $?)
 #        working-directory: ${{env.working-directory}}
       - name: Generate and Upload Code Coverage
-        run: bash <(curl -s https://codecov.io/bash) && ls
+        run: bash <(curl -s https://codecov.io/bash)>
         working-directory: ${{env.working-directory}}
    test_tvOS:
      needs: install
@@ -125,5 +125,5 @@ jobs:
 #        run: python3 coverage.py "${{ matrix.scheme }}".txt && exit $(echo $?)
 #        working-directory: ${{env.working-directory}}
       - name: Generate and Upload Code Coverage
-        run: bash <(curl -s https://codecov.io/bash) && ls
+        run: bash <(curl -s https://codecov.io/bash)>
         working-directory: ${{env.working-directory}}
