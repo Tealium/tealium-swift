@@ -47,16 +47,16 @@ jobs:
       - name: Save Code Coverage Report - "${{ matrix.scheme }}"
         run: xcrun xccov view --report --only-targets ./output/Logs/Test/*.xcresult >> "${{ matrix.scheme }}".txt
         working-directory: ${{env.working-directory}}
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'
+      # - name: Setup Python
+      #   uses: actions/setup-python@v2
+      #   with:
+      #     python-version: '3.8'
 #      - name: Validate Code Coverage - "${{ matrix.scheme }}"
 #        run: python3 coverage.py "${{ matrix.scheme }}".txt && exit $(echo $?)
 #        working-directory: ${{env.working-directory}}
-       - name: Generate and Upload Code Coverage
-         run: bash <(curl -s https://codecov.io/bash) && ls
-         working-directory: ${{env.working-directory}}
+      - name: Generate and Upload Code Coverage
+      run: bash <(curl -s https://codecov.io/bash) && ls
+      working-directory: ${{env.working-directory}}
    test_macOS:
      needs: install
      name: macOS Tests
@@ -82,16 +82,16 @@ jobs:
       - name: Save Code Coverage Report - "${{ matrix.scheme }}"
         run: xcrun xccov view --report --only-targets ./output/Logs/Test/*.xcresult >> "${{ matrix.scheme }}".txt
         working-directory: ${{env.working-directory}}
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'
+      # - name: Setup Python
+      #   uses: actions/setup-python@v2
+      #   with:
+      #     python-version: '3.8'
 #      - name: Validate Code Coverage - "${{ matrix.scheme }}"
 #        run: python3 coverage.py "${{ matrix.scheme }}".txt && exit $(echo $?)
 #        working-directory: ${{env.working-directory}}
-       - name: Generate and Upload Code Coverage
-         run: bash <(curl -s https://codecov.io/bash) && ls
-         working-directory: ${{env.working-directory}}
+      - name: Generate and Upload Code Coverage
+        run: bash <(curl -s https://codecov.io/bash) && ls
+        working-directory: ${{env.working-directory}}
    test_tvOS:
      needs: install
      name: tvOS Tests
@@ -117,13 +117,13 @@ jobs:
       - name: Save Code Coverage Report - "${{ matrix.scheme }}"
         run: xcrun xccov view --report --only-targets ./output/Logs/Test/*.xcresult >> "${{ matrix.scheme }}".txt
         working-directory: ${{env.working-directory}}
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'
+      # - name: Setup Python
+      #   uses: actions/setup-python@v2
+      #   with:
+      #     python-version: '3.8'
 #      - name: Validate Code Coverage - "${{ matrix.scheme }}"
 #        run: python3 coverage.py "${{ matrix.scheme }}".txt && exit $(echo $?)
 #        working-directory: ${{env.working-directory}}
-       - name: Generate and Upload Code Coverage
-         run: bash <(curl -s https://codecov.io/bash) && ls
-         working-directory: ${{env.working-directory}}
+      - name: Generate and Upload Code Coverage
+        run: bash <(curl -s https://codecov.io/bash) && ls
+        working-directory: ${{env.working-directory}}
