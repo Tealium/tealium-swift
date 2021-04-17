@@ -5,6 +5,7 @@
 //  Copyright © 2020 Tealium. All rights reserved.
 //
 import SwiftUI
+import UIKit
 
 struct ContentView: View {
     @State private var traceId: String = ""
@@ -37,6 +38,9 @@ struct ContentView: View {
                 VStack(spacing: 20) {
                     TraceIdTextField(traceId: $traceId)
                         .padding(.bottom, 20)
+                    ButtonView(title: "Deeplink") {
+                        UIApplication.shared.open(URL(string: "iostealiumtest://tealium.com/?deeplinkkey=deeplinkvalue")!, options: [:], completionHandler: nil)
+                    }
                     ButtonView(title: "Start Trace") {
                         TealiumHelper.shared.joinTrace(self.traceId)
                     }
@@ -66,7 +70,6 @@ struct ContentView: View {
                     ButtonView(title: "Reset Consent") {
                         TealiumHelper.shared.resetConsentPreferences()
                     }
-                    Spacer()
                 }
                 .navigationTitle("iOSTealiumTest")
                 .navigationBarTitleDisplayMode(.inline)

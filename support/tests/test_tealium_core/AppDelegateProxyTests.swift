@@ -56,39 +56,75 @@ class AppDelegateProxyTests: XCTestCase {
 
     func testOpenURL() throws {
         let teal = tealium!
-        let appDelegate = UIApplication.shared.delegate!
-        _ = appDelegate.application?(UIApplication.shared, open: URL(string: "https://my-test-app.com/?test_param=true")!, options: [:])
-        XCTAssertEqual(teal.dataLayer.all["deep_link_param_test_param"] as! String, "true")
-        XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://my-test-app.com/?test_param=true")
+        if #available(iOS 13.0, *) {
+            UIApplication.shared.open(URL(string: "https://my-test-app.com/?test_param=true")!, options: [:])
+            XCTAssertEqual(teal.dataLayer.all["deep_link_param_test_param"] as! String, "true")
+            XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://my-test-app.com/?test_param=true")
+        } else {
+            if let appDelegate = UIApplication.shared.delegate {
+                _ = appDelegate.application?(UIApplication.shared, open: URL(string: "https://my-test-app.com/?test_param=true")!, options: [:])
+                XCTAssertEqual(teal.dataLayer.all["deep_link_param_test_param"] as! String, "true")
+                XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://my-test-app.com/?test_param=true")
+                return
+            }
+        }
     }
 
     func testOpenURLWithTraceId() throws {
         let teal = tealium!
-        let appDelegate = UIApplication.shared.delegate!
-        _ = appDelegate.application?(UIApplication.shared, open: URL(string: "https://my-test-app.com/?test_param=true&tealium_trace_id=23456")!, options: [:])
-        XCTAssertEqual(teal.dataLayer.all["deep_link_param_test_param"] as! String, "true")
-        XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://my-test-app.com/?test_param=true&tealium_trace_id=23456")
-        XCTAssertEqual(teal.dataLayer.all["cp.trace_id"] as! String, "23456")
+        if let appDelegate = UIApplication.shared.delegate {
+            _ = appDelegate.application?(UIApplication.shared, open: URL(string: "https://my-test-app.com/?test_param=true&tealium_trace_id=23456")!, options: [:])
+            XCTAssertEqual(teal.dataLayer.all["deep_link_param_test_param"] as! String, "true")
+            XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://my-test-app.com/?test_param=true&tealium_trace_id=23456")
+            XCTAssertEqual(teal.dataLayer.all["cp.trace_id"] as! String, "23456")
+            return
+        }
+        if #available(iOS 13.0, *) {
+            UIApplication.shared.open(URL(string: "https://my-test-app.com/?test_param=true&tealium_trace_id=23456")!, options: [:])
+            XCTAssertEqual(teal.dataLayer.all["deep_link_param_test_param"] as! String, "true")
+            XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://my-test-app.com/?test_param=true&tealium_trace_id=23456")
+            XCTAssertEqual(teal.dataLayer.all["cp.trace_id"] as! String, "23456")
+        }
     }
 
     func testUniversalLink() throws {
         let teal = tealium!
-        let appDelegate = UIApplication.shared.delegate!
         let activity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
         activity.webpageURL = URL(string: "https://www.tealium.com/universalLink/?universal_link=true")!
-        appDelegate.application?(UIApplication.shared, didUpdate: activity)
-        XCTAssertEqual(teal.dataLayer.all["deep_link_param_universal_link"] as! String, "true")
-        XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://www.tealium.com/universalLink/?universal_link=true")
+        if let appDelegate = UIApplication.shared.delegate {
+            appDelegate.application?(UIApplication.shared, didUpdate: activity)
+            XCTAssertEqual(teal.dataLayer.all["deep_link_param_universal_link"] as! String, "true")
+            XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://www.tealium.com/universalLink/?universal_link=true")
+            return
+        }
+        if #available(iOS 13.0, *) {
+            if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate,
+               let scene = UIApplication.shared.connectedScenes.first {
+                sceneDelegate.scene?(scene, continue: activity)
+                XCTAssertEqual(teal.dataLayer.all["deep_link_param_universal_link"] as! String, "true")
+                XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://www.tealium.com/universalLink/?universal_link=true")
+            }
+        }
     }
 
     func testUniversalLinkWithTraceId() throws {
         let teal = tealium!
-        let appDelegate = UIApplication.shared.delegate!
         let activity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
         activity.webpageURL = URL(string: "https://www.tealium.com/universalLink/?universal_link=true&tealium_trace_id=12345")!
-        appDelegate.application?(UIApplication.shared, didUpdate: activity)
-        XCTAssertEqual(teal.dataLayer.all["cp.trace_id"] as! String, "12345")
-        XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://www.tealium.com/universalLink/?universal_link=true&tealium_trace_id=12345")
+        if let appDelegate = UIApplication.shared.delegate {
+            appDelegate.application?(UIApplication.shared, didUpdate: activity)
+            XCTAssertEqual(teal.dataLayer.all["cp.trace_id"] as! String, "12345")
+            XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://www.tealium.com/universalLink/?universal_link=true&tealium_trace_id=12345")
+            return
+        }
+        if #available(iOS 13.0, *) {
+            if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate,
+               let scene = UIApplication.shared.connectedScenes.first {
+                sceneDelegate.scene?(scene, continue: activity)
+                XCTAssertEqual(teal.dataLayer.all["cp.trace_id"] as! String, "12345")
+                XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://www.tealium.com/universalLink/?universal_link=true&tealium_trace_id=12345")
+            }
+        }
     }
 }
 
