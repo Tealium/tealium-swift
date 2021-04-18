@@ -1453,6 +1453,7 @@ class TealiumMediaTests: XCTestCase {
     
     // MARK: Lifecycle Tests
     func testSleep_Returns_WhenBackgroundMediaTrackingDisabled() {
+        #if !os(tvOS) && !os(macOS)
         let config = TealiumConfig(account: "account",
                                    profile: "profile",
                                    environment: "env")
@@ -1468,9 +1469,11 @@ class TealiumMediaTests: XCTestCase {
         module.sleep()
         XCTAssertEqual(mockMediaService.standardEventCounts[.sessionEnd], 0)
         XCTAssertTrue(session.backgroundStatusResumed)
+        #endif
     }
     
     func testWake_Returns_WhenBackgroundMediaTrackingDisabled() {
+        #if !os(tvOS) && !os(macOS)
         let config = TealiumConfig(account: "account",
                                    profile: "profile",
                                    environment: "env")
@@ -1484,9 +1487,11 @@ class TealiumMediaTests: XCTestCase {
         
         module.wake()
         XCTAssertFalse(session.backgroundStatusResumed)
+        #endif
     }
     
     func testSleep_SetsBackgroundResumedToFalse_WhenBackgroundMediaTrackingEnabled() {
+        #if !os(tvOS) && !os(macOS)
         let config = TealiumConfig(account: "account",
                                    profile: "profile",
                                    environment: "env")
@@ -1502,9 +1507,11 @@ class TealiumMediaTests: XCTestCase {
         
         module.sleep()
         XCTAssertFalse(session.backgroundStatusResumed)
+        #endif
     }
     
     func testSleep_CallsEndSessionAfterConfiguredTime_WhenBackgroundMediaTrackingEnabled() {
+        #if !os(tvOS) && !os(macOS)
         let expect = expectation(description: "CallsEndSessionAfterConfiguredTime")
         let config = TealiumConfig(account: "account",
                                    profile: "profile",
@@ -1527,9 +1534,11 @@ class TealiumMediaTests: XCTestCase {
             expect.fulfill()
         }
         wait(for: [expect], timeout: 3.5)
+        #endif
     }
     
     func testWake_SetsBackgroundResumedToTrue_WhenBackgroundMediaTrackingEnabled() {
+        #if !os(tvOS) && !os(macOS)
         let config = TealiumConfig(account: "account",
                                    profile: "profile",
                                    environment: "env")
@@ -1545,6 +1554,7 @@ class TealiumMediaTests: XCTestCase {
         
         module.wake()
         XCTAssertTrue(session.backgroundStatusResumed)
+        #endif
     }
     
     // MARK: Extensions Tests
