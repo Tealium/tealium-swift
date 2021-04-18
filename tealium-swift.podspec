@@ -134,8 +134,8 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "Media" do |media|
-    location.source_files = "tealium/collectors/media/*"
-    location.dependency "tealium-swift/Core"
+    media.source_files = "tealium/collectors/media/*"
+    media.dependency "tealium-swift/Core"
   end
 
   s.subspec "RemoteCommands" do |remotecommands|
