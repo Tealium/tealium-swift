@@ -87,7 +87,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build iOS - ${{ matrix.scheme }}
-        run: set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -project TealiumSwiftExample.xcodeproj -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" clean build | xcpretty
+        run: set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumSwiftExample.xcworkspace -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" clean build | xcpretty
         working-directory: ${{ env.working-directory }}
   build_TealiumSwiftExample_tvOS:
     name: Build TealiumSwiftExample tvOS
@@ -99,7 +99,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build TealiumSwiftExample tvOS
-        run: set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -project TealiumSwiftExample.xcodeproj -scheme "TealiumSwiftTVExample" -destination "platform=tvOS Simulator,name=Apple TV" clean build | xcpretty
+        run: set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumSwiftExample.xcworkspace -scheme "TealiumSwiftTVExample" -destination "platform=tvOS Simulator,name=Apple TV" clean build | xcpretty
         working-directory: ${{ env.working-directory }}
   build_TealiumSwiftExample_macOS:
     name: Build TealiumSwiftExample tvOS
@@ -111,7 +111,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build TealiumSwiftExample macOS
-        run: set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -project TealiumSwiftExample.xcodeproj -scheme "TealiumSwiftExample" -destination "platform=macOS,arch=x86_64" clean build | xcpretty
+        run: set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumSwiftExample.xcworkspace -scheme "TealiumSwiftExample" -destination "platform=macOS,arch=x86_64" clean build | xcpretty
         working-directory: ${{ env.working-directory }}
   build_ConsentManagerDemo:
     name: Build ConsentManagerDemo
@@ -123,7 +123,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build ConsentManagerDemo iOS
-        run: set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -project ConsentManagerDemo.xcodeproj -scheme "ConsentManagerDemo" -destination "platform=iOS Simulator,name=iPhone 12" clean build | xcpretty
+        run: set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace ConsentManagerDemo.xcworkspace -scheme "ConsentManagerDemo" -destination "platform=iOS Simulator,name=iPhone 12" clean build | xcpretty
         working-directory: ${{ env.working-directory }}
   build_VisitorServiceDemo:
     name: Build TealiumVisitorProfileDemo
@@ -135,5 +135,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build TealiumVisitorProfileDemo iOS
-        run: set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -project TealiumVisitorProfileDemo.xcodeproj -scheme "TealiumVisitorProfileDemo" -destination "platform=iOS Simulator,name=iPhone 12" clean build | xcpretty
+        run: set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumVisitorProfileDemo.xcworkspace -scheme "TealiumVisitorProfileDemo" -destination "platform=iOS Simulator,name=iPhone 12" clean build | xcpretty
         working-directory: ${{ env.working-directory }}                                          
