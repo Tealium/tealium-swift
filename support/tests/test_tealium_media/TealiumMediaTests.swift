@@ -602,7 +602,7 @@ class TealiumMediaTests: XCTestCase {
     func testHeartbeatManualPing_CallsTrack() {
         session = HeartbeatMediaSession(with: mockMediaService)
         session.startSession()
-        session.sendPing()
+        session.ping()
         XCTAssertEqual(mockMediaService.standardEventCounts[.heartbeat], 1)
     }
     
