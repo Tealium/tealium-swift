@@ -78,12 +78,12 @@ jobs:
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
       working-directory: ./samples/TealiumSwiftExample
-        strategy:
-    matrix:
-      destination: ["platform=iOS Simulator,name=iPhone 12"]
-      scheme: 
-        - TealiumSwiftExample
-        - TealiumSwiftWatchExample
+    strategy:
+      matrix:
+        destination: ["platform=iOS Simulator,name=iPhone 12"]
+        scheme: 
+          - TealiumSwiftExample
+          - TealiumSwiftWatchExample
     steps:
       - uses: actions/checkout@v2
       - name: Build iOS - ${{ matrix.scheme }}
