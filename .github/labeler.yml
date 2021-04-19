@@ -22,11 +22,11 @@ lifecycle:
   - tealium/collectors/lifecycle/*
 dispatchers:
   - tealium/dispatchers/**/*
-dispatchers:
+remotecommands:
   - tealium/dispatchers/remotecommands/*
-dispatchers:
+collect:
   - tealium/dispatchers/collect/*
-dispatchers:
+tagmanagement:
   - tealium/dispatchers/tagmanagement/*
 tests:
   - support/tests/**/*
