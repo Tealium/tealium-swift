@@ -1,0 +1,35 @@
+core:
+  - tealium/core/**/*
+datalayer:
+  - tealium/core/datalayer/*     
+consent:
+  - tealium/core/consentmanager/*
+storage:
+  - tealium/core/storage/*
+collectors:
+  - tealium/collectors/**/*
+media:
+  - tealium/collectors/media/*
+visitorservice:
+  - tealium/collectors/visitorservice/*
+location:
+  - tealium/collectors/location/*
+attribution:
+  - tealium/collectors/attribution/*
+autotracking:
+  - tealium/collectors/autotracking/*
+lifecycle:
+  - tealium/collectors/lifecycle/*
+dispatchers:
+  - tealium/dispatchers/**/*
+dispatchers:
+  - tealium/dispatchers/remotecommands/*
+dispatchers:
+  - tealium/dispatchers/collect/*
+dispatchers:
+  - tealium/dispatchers/tagmanagement/*
+tests:
+  - support/tests/**/*
+sampleapps:
+  - samples/**/*
+            

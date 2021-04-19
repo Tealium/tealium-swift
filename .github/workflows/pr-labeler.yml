@@ -1,12 +1,11 @@
-name: PR Labeler
+name: "Pull Request Labeler"
 on:
-  pull_request:
-    types: [opened]
+- pull_request_target
 
 jobs:
-  pr-labeler:
+  triage:
     runs-on: ubuntu-latest
     steps:
-      - uses: TimonVS/pr-labeler-action@v3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - uses: actions/labeler@main
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
