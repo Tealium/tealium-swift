@@ -14,7 +14,7 @@ class AppDelegateProxyTests: XCTestCase {
     let mockDataLayer = DummyDataManagerAppDelegate()
     var semaphore: DispatchSemaphore!
     static var testNumber = 0
-
+    
     var testTealium: Tealium {
         let config = TealiumConfig(account: "tealiummobile", profile: "\(AppDelegateProxyTests.testNumber))", environment: "dev")
         AppDelegateProxyTests.testNumber += 1
@@ -55,19 +55,35 @@ class AppDelegateProxyTests: XCTestCase {
     }
 
     func testOpenURL() throws {
+//        let app = XCUIApplication(bundleIdentifier: "com.tealium.TestHost")
+//        app.launch()
         let teal = tealium!
+        //let expect = expectation(description: "open url")
         if #available(iOS 13.0, *) {
-            UIApplication.shared.open(URL(string: "https://my-test-app.com/?test_param=true")!, options: [:])
+            //TealiumQueues.mainQueue.asyncAfter(deadline: .now() + 1.0) {
+//            guard let scene = UIApplication.shared.connectedScenes.first else {
+//                return XCTFail()
+//            }
+//            TealiumDelegateProxy.sharedApplication?.open(URL(string: "deeplink://tealium.com/?test_param=true&tealium_trace_id=23456")!, options: [:], completionHandler: nil)
+            guard let scene = TealiumDelegateProxy.sharedApplication?.connectedScenes.first else {
+                return
+            }
+            scene.open(URL(string: "deeplink://tealium.com/?test_param=true&tealium_trace_id=23456")!, options: nil, completionHandler: nil)
+           // UIApplication.shared.open(URL(string: "deeplink://tealium.com/?test_param=true&tealium_trace_id=23456")!, options: [:])
+            //expect.fulfill()
             XCTAssertEqual(teal.dataLayer.all["deep_link_param_test_param"] as! String, "true")
             XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://my-test-app.com/?test_param=true")
+           // }
         } else {
             if let appDelegate = UIApplication.shared.delegate {
                 _ = appDelegate.application?(UIApplication.shared, open: URL(string: "https://my-test-app.com/?test_param=true")!, options: [:])
+                //expect.fulfill()
                 XCTAssertEqual(teal.dataLayer.all["deep_link_param_test_param"] as! String, "true")
                 XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://my-test-app.com/?test_param=true")
                 return
             }
         }
+        //wait(for: [expect], timeout: 1.25)
     }
 
     func testOpenURLWithTraceId() throws {

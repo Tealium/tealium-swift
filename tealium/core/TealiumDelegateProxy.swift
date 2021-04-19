@@ -298,13 +298,12 @@ class TealiumDelegateProxy: NSProxy {
     @available(iOS 13.0, *)
     @objc
     private func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-        TealiumQueues.backgroundConcurrentQueue.write {
-            URLContexts.forEach { urlContext in
-                TealiumDelegateProxy.contexts?.forEach {
-                    TealiumDelegateProxy.log("Received Deep Link: \(urlContext.url.absoluteString)")
-                        $0.handleDeepLink(urlContext.url)
-                    }
-                }
+        print("tealium delegate proxy scene open")
+        URLContexts.forEach { urlContext in
+            TealiumDelegateProxy.contexts?.forEach {
+                TealiumDelegateProxy.log("Received Deep Link: \(urlContext.url.absoluteString)")
+                $0.handleDeepLink(urlContext.url)
+            }
         }
         let methodSelector = #selector(scene(_:openURLContexts:))
         guard let pointer = TealiumDelegateProxy.originalMethodImplementation(for: methodSelector, object: self),

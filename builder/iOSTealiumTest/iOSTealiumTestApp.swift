@@ -67,7 +67,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-        
+        print("hello")
     }
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
         
