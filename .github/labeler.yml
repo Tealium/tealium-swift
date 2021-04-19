@@ -6,8 +6,6 @@ consent:
   - tealium/core/consentmanager/*
 storage:
   - tealium/core/storage/*
-collectors:
-  - tealium/collectors/**/*
 media:
   - tealium/collectors/media/*
 visitorservice:
@@ -20,8 +18,6 @@ autotracking:
   - tealium/collectors/autotracking/*
 lifecycle:
   - tealium/collectors/lifecycle/*
-dispatchers:
-  - tealium/dispatchers/**/*
 remotecommands:
   - tealium/dispatchers/remotecommands/*
 collect:
