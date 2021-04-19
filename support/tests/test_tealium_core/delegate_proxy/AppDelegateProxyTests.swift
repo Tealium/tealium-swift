@@ -56,29 +56,18 @@ class AppDelegateProxyTests: XCTestCase {
 
     func testOpenURL() throws {
         let teal = tealium!
-        let expect = expectation(description: "open url")
         if #available(iOS 13.0, *) {
-            
-//            UIApplication.shared.open(URL(string: "https://my-test-app.com/?test_param=true")!, options: [:])
-            if let scene = UIApplication.shared.connectedScenes.first {
-                scene.open(URL(string: "https://my-test-app.com/?test_param=true")!, options: nil)
-            TealiumQueues.mainQueue.asyncAfter(deadline: .now() + 1.0) {
-                expect.fulfill()
+            UIApplication.shared.open(URL(string: "https://my-test-app.com/?test_param=true")!, options: [:])
+            XCTAssertEqual(teal.dataLayer.all["deep_link_param_test_param"] as! String, "true")
+            XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://my-test-app.com/?test_param=true")
+        } else {
+            if let appDelegate = UIApplication.shared.delegate {
+                _ = appDelegate.application?(UIApplication.shared, open: URL(string: "https://my-test-app.com/?test_param=true")!, options: [:])
                 XCTAssertEqual(teal.dataLayer.all["deep_link_param_test_param"] as! String, "true")
                 XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://my-test-app.com/?test_param=true")
+                return
             }
-
-           }
         }
-//        else {
-//            if let appDelegate = UIApplication.shared.delegate {
-//                _ = appDelegate.application?(UIApplication.shared, open: URL(string: "https://my-test-app.com/?test_param=true")!, options: [:])
-//                XCTAssertEqual(teal.dataLayer.all["deep_link_param_test_param"] as! String, "true")
-//                XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://my-test-app.com/?test_param=true")
-//                return
-//            }
-//        }
-        wait(for: [expect], timeout: 1.5)
     }
 
     func testOpenURLWithTraceId() throws {
