@@ -42,7 +42,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2 
       - name: Test - "${{ matrix.scheme }}"
-        run: fastlane scan --scheme "${{ matrix.scheme }}" --xcargs "CICD=YES" --output_files "${{ matrix.scheme }}".html
+        run: fastlane scan --scheme "${{ matrix.scheme }}" --xcargs CICD="YES" --output_files "${{ matrix.scheme }}".html
         working-directory: ${{env.working-directory}} 
       - name: Archive Code Coverage Report
         uses: actions/upload-artifact@v2
