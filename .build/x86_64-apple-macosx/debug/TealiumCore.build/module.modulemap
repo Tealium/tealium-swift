@@ -1,4 +1,0 @@
-module TealiumCore {
-    header "/Users/christina/Projects/work-repos/github/tealium-swift/.build/x86_64-apple-macosx/debug/TealiumCore.build/TealiumCore-Swift.h"
-    requires objc
-}
