@@ -1510,38 +1510,6 @@ class TealiumMediaTests: XCTestCase {
         #endif
     }
     
-    func testSleep_CallsEndSessionAfterConfiguredTime_WhenBackgroundMediaTrackingEnabled() {
-        #if !os(tvOS) && !os(macOS)
-        if let isCICD = ProcessInfo.processInfo.environment["CICD"] {
-            if isCICD == "YES" {
-                return
-            }
-        }
-        let expect = expectation(description: "CallsEndSessionAfterConfiguredTime")
-        let config = TealiumConfig(account: "account",
-                                   profile: "profile",
-                                   environment: "env")
-        config.enableBackgroundMediaTracking = true
-        config.backgroundMediaAutoEndSessionTime = 3.0
-        let tealium = Tealium(config: config)
-        let context = TealiumContext(config: config,
-                                      dataLayer: DummyDataManager(),
-                                      tealium: tealium)
-        let module = MediaModule(context: context, delegate: MockModuleDelegate(), diskStorage: nil) { _ in }
-        let session = HeartbeatMediaSession(with: mockMediaService)
-        session.backgroundStatusResumed = true
-        module.activeSessions = [session]
-        
-        module.sleep()
-        TealiumQueues.mainQueue.asyncAfter(deadline:
-                                            .now() + 3.2) {
-            XCTAssertEqual(self.mockMediaService.standardEventCounts[.sessionEnd], 1)
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 3.5)
-        #endif
-    }
-    
     func testWake_SetsBackgroundResumedToTrue_WhenBackgroundMediaTrackingEnabled() {
         #if !os(tvOS) && !os(macOS)
         let config = TealiumConfig(account: "account",
