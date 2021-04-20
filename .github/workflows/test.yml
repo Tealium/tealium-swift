@@ -42,7 +42,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2 
       - name: Test - "${{ matrix.scheme }}"
-        run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
+        run: fastlane scan --scheme "${{ matrix.scheme }}" --xcargs "CICD=YES" --output_files "${{ matrix.scheme }}".html
         working-directory: ${{env.working-directory}} 
       - name: Archive Code Coverage Report
         uses: actions/upload-artifact@v2
@@ -145,7 +145,7 @@ jobs:
         with:
           name: code-coverage-report
           path: ${{env.working-directory}}/test_output/"${{ matrix.scheme }}".html
-          
+
       ### The following will upload the code coverage reports to Codecov.io if we can get approval for it ###
 
       # - name: Upload to Codecov - "${{ matrix.scheme }}"

@@ -1511,7 +1511,7 @@ class TealiumMediaTests: XCTestCase {
     }
     
     func testSleep_CallsEndSessionAfterConfiguredTime_WhenBackgroundMediaTrackingEnabled() {
-        #if !os(tvOS) && !os(macOS)
+        #if !os(tvOS) && !os(macOS) && !CICD
         let expect = expectation(description: "CallsEndSessionAfterConfiguredTime")
         let config = TealiumConfig(account: "account",
                                    profile: "profile",
