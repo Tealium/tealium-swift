@@ -1,4 +1,4 @@
-name: Builds for various architectures
+name: Builds for Various Architectures
 
 on: #[pull_request]
   push:
@@ -93,7 +93,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build TealiumSwiftExample watchOS
-        run: set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumSwiftExample.xcworkspace -scheme "TealiumSwiftWatchExample" -destination "platform=watchOS Simulator,name=Apple Watch Series 6 - 44mm" clean build | xcpretty
+        run: set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumSwiftExample.xcworkspace -scheme "TealiumSwiftWatchExample" -destination "platform=watchOS,name=Any watchOS Device" clean build | xcpretty
         working-directory: ${{ env.working-directory }}
   build_TealiumSwiftExample_tvOS:
     name: Build TealiumSwiftExample tvOS

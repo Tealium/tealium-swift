@@ -1568,7 +1568,7 @@ class TealiumMediaTests: XCTestCase {
             XCTAssertNotNil(self.tealium?.media)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        wait(for: [expect], timeout: 2.0)
     }
     
     func testMediaServiceNilWhenAddedToCollectors() {
@@ -1580,7 +1580,7 @@ class TealiumMediaTests: XCTestCase {
             XCTAssertNil(self.tealium?.media)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        wait(for: [expect], timeout: 2.0)
     }
     
     func testEnableBackgroundMediaTracking_IsDefault_WhenNotSet() {
