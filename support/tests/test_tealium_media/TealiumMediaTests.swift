@@ -1557,32 +1557,6 @@ class TealiumMediaTests: XCTestCase {
         #endif
     }
     
-    // MARK: Extensions Tests
-    func testMediaServiceNotNilWhenAddedToCollectors() {
-        let expect = expectation(description: "testMediaServiceNotNilWhenAddedToCollectors")
-        let config = TealiumConfig(account: "account",
-                                   profile: "profile",
-                                   environment: "env")
-        config.collectors = [Collectors.Media]
-        tealium = Tealium(config: config) { _ in
-            XCTAssertNotNil(self.tealium?.media)
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 2.0)
-    }
-    
-    func testMediaServiceNilWhenAddedToCollectors() {
-        let expect = expectation(description: "testMediaServiceNotNilWhenAddedToCollectors")
-        let config = TealiumConfig(account: "account",
-                                   profile: "profile",
-                                   environment: "env")
-        tealium = Tealium(config: config) { _ in
-            XCTAssertNil(self.tealium?.media)
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 2.0)
-    }
-    
     func testEnableBackgroundMediaTracking_IsDefault_WhenNotSet() {
         let config = TealiumConfig(account: "account",
                                    profile: "profile",

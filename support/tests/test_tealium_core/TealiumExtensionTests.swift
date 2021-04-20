@@ -101,6 +101,25 @@ class TealiumExtensionTests: XCTestCase {
         }
         wait(for: [expect], timeout: 1.0)
     }
+    
+    func testMediaServiceNotNilWhenAddedToCollectors() {
+        let expect = expectation(description: "Media Not not nil")
+        config.collectors = [Collectors.Media]
+        tealium = Tealium(config: defaultTealiumConfig) { _ in
+            XCTAssertNotNil(self.tealium.media)
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: 1.0)
+    }
+    
+    func testMediaServiceNilWhenAddedToCollectors() {
+        let expect = expectation(description: "Media Nil")
+        tealium = Tealium(config: defaultTealiumConfig) { _ in
+            XCTAssertNil(self.tealium.media)
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: 1.0)
+    }
 
     func testVisitorServiceNilWhenNotSetAsCollector() {
         let expect = expectation(description: "Visitor Service Manager nil")
@@ -179,7 +198,6 @@ class TealiumExtensionTests: XCTestCase {
         }
         wait(for: [expect], timeout: 1.0)
     }
-    
     
 
     #if os(iOS)
