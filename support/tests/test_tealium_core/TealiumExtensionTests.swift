@@ -9,6 +9,7 @@
 @testable import TealiumCore
 @testable import TealiumLifecycle
 @testable import TealiumVisitorService
+@testable import TealiumMedia
 #if os(iOS)
 @testable import TealiumAutotracking
 @testable import TealiumLocation
@@ -104,7 +105,7 @@ class TealiumExtensionTests: XCTestCase {
     
     func testMediaServiceNotNilWhenAddedToCollectors() {
         let expect = expectation(description: "Media Not not nil")
-        config.collectors = [Collectors.Media]
+        defaultTealiumConfig.collectors = [Collectors.Media]
         tealium = Tealium(config: defaultTealiumConfig) { _ in
             XCTAssertNotNil(self.tealium.media)
             expect.fulfill()

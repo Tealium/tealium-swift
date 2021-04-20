@@ -83,18 +83,6 @@ jobs:
       - name: Build TealiumSwiftExample iOS
         run: set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumSwiftExample.xcworkspace -scheme "TealiumSwiftExample" -destination "platform=iOS Simulator,name=iPhone 12" clean build | xcpretty
         working-directory: ${{ env.working-directory }}
-  build_TealiumSwiftExample_watchOS:
-    name: Build TealiumSwiftExample watchOS
-    runs-on: macos-latest
-    timeout-minutes: 60
-    env:
-      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-      working-directory: ./samples/TealiumSwiftExample
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build TealiumSwiftExample watchOS
-        run: set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumSwiftExample.xcworkspace -scheme "TealiumSwiftWatchExample" -destination "platform=watchOS,name=Any watchOS Device" clean build | xcpretty
-        working-directory: ${{ env.working-directory }}
   build_TealiumSwiftExample_tvOS:
     name: Build TealiumSwiftExample tvOS
     runs-on: macos-latest
