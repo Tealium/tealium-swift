@@ -314,10 +314,6 @@
 		CFAD9F5E25A66D700079B19A /* TestTealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716C7D1B1DDBC3A500512C99 /* TestTealiumHelper.swift */; };
 		CFAD9F6025A66D700079B19A /* CoreMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA558BF24E4E6B200BFBED8 /* CoreMocks.swift */; };
 		CFAD9F6425A66D700079B19A /* MockSessionStarter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7187F1A24768F5000CF0AB0 /* MockSessionStarter.swift */; };
-		CFAD9F6725A66D700079B19A /* visitor-nils.json in Resources */ = {isa = PBXBuildFile; fileRef = D7805857233A68DC00DAD90E /* visitor-nils.json */; };
-		CFAD9F6825A66D700079B19A /* visitor-empties.json in Resources */ = {isa = PBXBuildFile; fileRef = D7805855233A68DC00DAD90E /* visitor-empties.json */; };
-		CFAD9F6925A66D700079B19A /* visitor.json in Resources */ = {isa = PBXBuildFile; fileRef = D7805856233A68DC00DAD90E /* visitor.json */; };
-		CFAD9F6A25A66D700079B19A /* visitor-all-nil.json in Resources */ = {isa = PBXBuildFile; fileRef = D7805854233A68DC00DAD90E /* visitor-all-nil.json */; };
 		CFADA00025A66E0A0079B19A /* TealiumCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D755DD0D21945E41003C6BA1 /* TealiumCore.framework */; };
 		CFADA04D25A66F020079B19A /* MediaModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAD9D5C25A66C220079B19A /* MediaModule.swift */; };
 		CFADA22125A781CA0079B19A /* MediaSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFADA16E25A679AA0079B19A /* MediaSession.swift */; };
@@ -730,6 +726,27 @@
 			proxyType = 1;
 			remoteGlobalIDString = D755DD1121945F99003C6BA1;
 			remoteInfo = TealiumTagManagement;
+		};
+		CF1EF4C3262F664500A9EE07 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CFAD9D1B25A66BE80079B19A;
+			remoteInfo = TealiumMedia;
+		};
+		CF1EF4C5262F664A00A9EE07 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CFAD9D1B25A66BE80079B19A;
+			remoteInfo = TealiumMedia;
+		};
+		CF1EF4C7262F665500A9EE07 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CFAD9D1B25A66BE80079B19A;
+			remoteInfo = TealiumMedia;
 		};
 		CF38C36125B79CD5000913E1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -3203,6 +3220,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				CF1EF4C8262F665500A9EE07 /* PBXTargetDependency */,
 				CF880DF42554CA5C0020E1B2 /* PBXTargetDependency */,
 				CF880DD92554CA4C0020E1B2 /* PBXTargetDependency */,
 				CF880DBE2554CA3A0020E1B2 /* PBXTargetDependency */,
@@ -3756,6 +3774,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				CF1EF4C4262F664500A9EE07 /* PBXTargetDependency */,
 				D7075A0E2368E8DC00AE3D69 /* PBXTargetDependency */,
 				D7F2DEBA233279A1000D0E0F /* PBXTargetDependency */,
 				D7F2DEC6233279A1000D0E0F /* PBXTargetDependency */,
@@ -3777,6 +3796,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				CF1EF4C6262F664A00A9EE07 /* PBXTargetDependency */,
 				D7075A102368E8E100AE3D69 /* PBXTargetDependency */,
 				D7F2DF1A23327B26000D0E0F /* PBXTargetDependency */,
 				D7F2DF2023327B26000D0E0F /* PBXTargetDependency */,
@@ -4056,10 +4076,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CFAD9F6725A66D700079B19A /* visitor-nils.json in Resources */,
-				CFAD9F6825A66D700079B19A /* visitor-empties.json in Resources */,
-				CFAD9F6925A66D700079B19A /* visitor.json in Resources */,
-				CFAD9F6A25A66D700079B19A /* visitor-all-nil.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5040,6 +5056,21 @@
 			isa = PBXTargetDependency;
 			target = D755DD1121945F99003C6BA1 /* TealiumTagManagement */;
 			targetProxy = CF13D85824FD61F80024E79A /* PBXContainerItemProxy */;
+		};
+		CF1EF4C4262F664500A9EE07 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CFAD9D1B25A66BE80079B19A /* TealiumMedia */;
+			targetProxy = CF1EF4C3262F664500A9EE07 /* PBXContainerItemProxy */;
+		};
+		CF1EF4C6262F664A00A9EE07 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CFAD9D1B25A66BE80079B19A /* TealiumMedia */;
+			targetProxy = CF1EF4C5262F664A00A9EE07 /* PBXContainerItemProxy */;
+		};
+		CF1EF4C8262F665500A9EE07 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CFAD9D1B25A66BE80079B19A /* TealiumMedia */;
+			targetProxy = CF1EF4C7262F665500A9EE07 /* PBXContainerItemProxy */;
 		};
 		CF42645B25BB8984005561FC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -6227,6 +6258,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CICD = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -6266,6 +6298,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CICD = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -6300,6 +6333,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CICD = NO;
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Manual;
@@ -6339,6 +6373,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CICD = NO;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -6378,6 +6413,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CICD = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -6418,6 +6454,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CICD = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
