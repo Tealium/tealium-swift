@@ -1,9 +1,6 @@
 name: Tests and Code Coverage
 
-on: #[pull_request]
-  push:
-    branches:
-      - cicd # temp - update to use on: pull_request only
+on: [pull_request]
 
 jobs:
   install:

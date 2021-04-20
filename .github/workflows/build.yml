@@ -1,9 +1,6 @@
 name: Builds for Various Architectures
 
-on: #[pull_request]
-  push:
-    branches:
-      - cicd # temp - update to use on: pull_request only
+on: [pull_request]
 
 jobs:
   build_iOS:

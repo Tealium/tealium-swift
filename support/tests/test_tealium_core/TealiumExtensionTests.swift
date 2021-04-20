@@ -62,7 +62,7 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertEqual(self.tealium.visitorId, newVisitorId)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        wait(for: [expect], timeout: 2.0)
     }
 
     func testConsentManagerNotNil() {
