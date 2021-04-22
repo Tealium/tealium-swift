@@ -47,7 +47,7 @@ jobs:
           name: code-coverage-report
           path: ${{env.working-directory}}/test_output/"${{ matrix.scheme }}".html
 
-      ### The following will upload the code coverage reports to Codecov.io if we can get approval for it ###
+      ### The following will upload the code coverage reports to Codecov.io ###
 
       # - name: Upload to Codecov - "${{ matrix.scheme }}"
       #   run: bash <(curl -s https://codecov.io/bash)
@@ -96,7 +96,7 @@ jobs:
           name: code-coverage-report
           path: ${{env.working-directory}}/test_output/"${{ matrix.scheme }}".html
 
-      ### The following will upload the code coverage reports to Codecov.io if we can get approval for it ###
+      ### The following will upload the code coverage reports to Codecov.io ###
 
       # - name: Upload to Codecov - "${{ matrix.scheme }}"
       #   run: bash <(curl -s https://codecov.io/bash)
@@ -143,7 +143,7 @@ jobs:
           name: code-coverage-report
           path: ${{env.working-directory}}/test_output/"${{ matrix.scheme }}".html
 
-      ### The following will upload the code coverage reports to Codecov.io if we can get approval for it ###
+      ### The following will upload the code coverage reports to Codecov.io ###
 
       # - name: Upload to Codecov - "${{ matrix.scheme }}"
       #   run: bash <(curl -s https://codecov.io/bash)
