@@ -15,6 +15,9 @@ class TealiumDelegateProxy: NSProxy {
     private typealias ApplicationOpenURL = @convention(c) (Any, Selector, UIApplication, URL, [UIApplication.OpenURLOptionsKey: Any]) -> Bool
     @available(iOS 13.0, *)
     private typealias SceneOpenURLContexts = @convention(c) (Any, Selector, UIScene, Set<UIOpenURLContext>) -> Void
+    @available(iOS 13.0, *)
+    private typealias SceneContinueUserActivity = @convention(c) (Any, Selector, UIScene, NSUserActivity) -> Void
+    
     private typealias ApplicationContinueUserActivity = @convention(c) (Any, Selector, UIResponder, NSUserActivity) -> Void
 
     private static var contexts: Set<TealiumContext>?
@@ -44,9 +47,14 @@ class TealiumDelegateProxy: NSProxy {
             TealiumDelegateProxy.contexts?.insert(context)
         }
         // Let the property be initialized and run its block.
-        TealiumQueues.mainQueue.async {
+        if !Thread.isMainThread {
+            TealiumQueues.mainQueue.async {
+                _ = runOnce
+            }
+        } else {
             _ = runOnce
         }
+        
     }
 
     public static func tearDown() {
@@ -140,8 +148,8 @@ class TealiumDelegateProxy: NSProxy {
                     fromSelector: sceneOpenURLContexts,
                     withOriginalClass: originalClass,
                     storeOriginalImplementationInto: &originalImplementationsStore)
-                
-                let sceneContinueUserActivity = #selector(scene(_:continue:))
+  
+                let sceneContinueUserActivity = #selector(scene(_:continueUserActivity:))
                 self.proxyInstanceMethod(toClass: subClass,
                     withSelector: sceneContinueUserActivity,
                     fromClass: TealiumDelegateProxy.self,
@@ -316,23 +324,24 @@ class TealiumDelegateProxy: NSProxy {
     
     @available(iOS 13.0, *)
     @objc
-    private func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
-        guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
-            let urlToOpen = userActivity.webpageURL else {
+    private func scene(_ scene: UIScene, continueUserActivity: NSUserActivity) {
+        guard continueUserActivity.activityType == NSUserActivityTypeBrowsingWeb,
+            let urlToOpen = continueUserActivity.webpageURL else {
               return
           }
         TealiumDelegateProxy.log("Received Deep Link: \(urlToOpen.absoluteString)")
         TealiumDelegateProxy.contexts?.forEach {
             $0.handleDeepLink(urlToOpen)
         }
-        let methodSelector = #selector(scene(_:continue:))
+        let methodSelector = #selector(scene(_:continueUserActivity:))
         guard let pointer = TealiumDelegateProxy.originalMethodImplementation(for: methodSelector, object: self),
               let pointerValue = pointer.pointerValue else {
             return
         }
         
-        let originalImplementation = unsafeBitCast(pointerValue, to: ApplicationContinueUserActivity.self)
-        _ = originalImplementation(self, methodSelector, scene, userActivity)
+        let originalImplementation = unsafeBitCast(pointerValue, to: SceneContinueUserActivity.self)
+        _ = originalImplementation(self, methodSelector, scene, continueUserActivity)
     }
+    
 }
 #endif

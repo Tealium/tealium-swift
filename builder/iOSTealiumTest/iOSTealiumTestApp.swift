@@ -20,7 +20,13 @@ struct iOSTealiumTestApp: App {
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        TealiumHelper.shared.start()
+        
+        if let _ = ProcessInfo.processInfo.environment["TEST"] {
+            print("testing - no tealium init")
+        } else {
+            TealiumHelper.shared.start()
+        }
+//        TealiumHelper.shared.start()
         return true
     }
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {

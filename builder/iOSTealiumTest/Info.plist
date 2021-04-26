@@ -25,7 +25,7 @@
 			<string>com.tealium.iOSTealiumTest</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>iostealiumtest</string>
+				<string>deep</string>
 			</array>
 		</dict>
 	</array>

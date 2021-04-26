@@ -9,6 +9,7 @@
 @testable import TealiumCore
 import XCTest
 
+
 // Only for iOS versions below 13.0, the tests will not execute otherwise
 class AppDelegateProxyTests: XCTestCase {
 
