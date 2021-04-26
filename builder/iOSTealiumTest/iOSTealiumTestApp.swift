@@ -26,7 +26,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         } else {
             TealiumHelper.shared.start()
         }
-//        TealiumHelper.shared.start()
+
         return true
     }
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
