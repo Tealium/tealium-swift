@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TealiumCore
 
 @main
 struct iOSTealiumTestApp: App {
@@ -13,7 +14,9 @@ struct iOSTealiumTestApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TealiumAppTrackable{
+                ContentView()
+            }
         }
     }
 }

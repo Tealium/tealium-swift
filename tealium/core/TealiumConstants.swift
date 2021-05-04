@@ -31,6 +31,7 @@ public enum TealiumValue {
     static let mobile = "mobile"
     public static let unknown = "unknown"
     public static let timedEvent = "timed_event"
+    static let deepLinkNotificationName = "com.tealium.deeplink"
 }
 
 public enum ModuleNames {
@@ -131,7 +132,6 @@ public enum TealiumKey {
     static let traceIdQueryParam = "tealium_trace_id"
     public static let traceId = "cp.trace_id"
     static let appDelegateProxy = "app_delegate_proxy"
-    static let sceneDelegateProxy = "scene_delegate_proxy"
     static let skAdConversionKeys = "attribution_conversion_keys"
     static let hostedDataLayerKeys = "hosted_data_layer_keys"
     static let hostedDataLayerExpiry = "hosted_data_layer_expiry"

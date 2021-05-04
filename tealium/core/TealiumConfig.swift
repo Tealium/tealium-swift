@@ -52,18 +52,6 @@ open class TealiumConfig {
             options[TealiumKey.appDelegateProxy] = newValue
         }
     }
-    
-    public var sceneDelegateProxyEnabled: Bool {
-        get {
-            guard #available(iOS 13, *) else {
-                return false
-            }
-            return options[TealiumKey.sceneDelegateProxy] as? Bool ?? appDelegateProxyEnabled
-        }
-        set {
-            options[TealiumKey.sceneDelegateProxy] = newValue
-        }
-    }
 
     /// Define the conversion event and value if using `SKAdNetwork.updateConversionValue(_ value:)`
     /// The key in the dictionary is the `tealium_event` for which to count as a conversion and the value in the dictionary is the variable that holds the conversion value.
