@@ -57,8 +57,6 @@ class TealiumHelper  {
             print("Consent expired")
         }
         #if os(iOS)
-        config.batterySaverEnabled = false
-        config.appDelegateProxyEnabled = true
             config.collectors = [
                 Collectors.Attribution,
                 Collectors.Lifecycle,

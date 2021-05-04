@@ -29,7 +29,6 @@ struct iOSTealiumTestApp: App {
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-//        TealiumHelper.shared.start()
         return true
     }
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
@@ -42,7 +41,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         return true
     }
     func application(_ application: UIApplication, didUpdate userActivity: NSUserActivity) {
-        print("hello")
     }
     
 }
