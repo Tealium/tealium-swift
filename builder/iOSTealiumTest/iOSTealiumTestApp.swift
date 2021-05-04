@@ -12,10 +12,16 @@ import TealiumCore
 struct iOSTealiumTestApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
+    init() {
+        TealiumHelper.shared.start()
+    }
+    
     var body: some Scene {
         WindowGroup {
             TealiumAppTrackable{
-                ContentView()
+                ContentView().onOpenURL(perform: { url in
+                    print(url)
+                })
             }
         }
     }
@@ -23,7 +29,7 @@ struct iOSTealiumTestApp: App {
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        TealiumHelper.shared.start()
+//        TealiumHelper.shared.start()
         return true
     }
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
@@ -36,6 +42,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         return true
     }
     func application(_ application: UIApplication, didUpdate userActivity: NSUserActivity) {
+        print("hello")
     }
     
 }
