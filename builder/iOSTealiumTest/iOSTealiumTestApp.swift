@@ -19,9 +19,7 @@ struct iOSTealiumTestApp: App {
     var body: some Scene {
         WindowGroup {
             TealiumAppTrackable{
-                ContentView().onOpenURL(perform: { url in
-                    print(url)
-                })
+                ContentView()
             }
         }
     }
