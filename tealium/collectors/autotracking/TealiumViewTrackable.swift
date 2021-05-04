@@ -1,5 +1,5 @@
 // 
-// TealiumTrackable.swift
+// TealiumViewTrackable.swift
 // tealium-swift
 //
 //  Copyright © 2021 Tealium, Inc. All rights reserved.
@@ -12,7 +12,7 @@ import SwiftUI
 
 
 @available(iOS 13.0, *)
-public struct TealiumTrackable<Content: View>: View {
+public struct TealiumViewTrackable<Content: View>: View {
 
     public var viewName: String
 
