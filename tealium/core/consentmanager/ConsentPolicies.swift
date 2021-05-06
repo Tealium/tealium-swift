@@ -27,7 +27,7 @@ public protocol ConsentPolicy {
     var updateConsentCookieEventName: String { get }
     
     /// - Returns:`[String: Any]` of key value data to be added to the payload of each `TealiumDispatch`
-    /// `["consent_policy": "ccpa", "consent_status": "consented"]`
+    /// `["policy": "ccpa", "consent_status": "consented"]`
     var consentPolicyStatusInfo: [String: Any]? { get }
     
     /// The current `UserConsentPreferences`
