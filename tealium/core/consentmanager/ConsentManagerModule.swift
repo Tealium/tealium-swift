@@ -58,15 +58,11 @@ class ConsentManagerModule: Collector, DispatchValidator {
             return (true, [TealiumKey.queueReason: TealiumKey.batchingEnabled])
         }
         expireConsent()
-        // allow tracking calls to continue if they are for auditing purposes
-        if let event = request.trackDictionary[TealiumKey.event] as? String,
-           (event == ConsentKey.consentPartialEventName ||
-                event == ConsentKey.consentGrantedEventName ||
-                event == ConsentKey.consentDeclinedEventName ||
-                event == ConsentKey.gdprConsentCookieEventName ||
-                event == ConsentKey.ccpaCookieEventName) {
+        
+        if request.containsAuditEvent {
             return (false, nil)
         }
+        
         switch consentManager?.trackingStatus {
         case .trackingQueued:
             var newData = request.trackDictionary
@@ -86,14 +82,26 @@ class ConsentManagerModule: Collector, DispatchValidator {
     /// - Parameter request: incoming `TealiumRequest`
     /// - Returns: `Bool` true/false if should be dropped.
     func shouldDrop(request: TealiumRequest) -> Bool {
-        consentManager?.trackingStatus == .trackingForbidden
+        guard let request = request as? TealiumTrackRequest else {
+            return true
+        }
+        if request.containsAuditEvent {
+            return false
+        }
+        return consentManager?.trackingStatus == .trackingForbidden
     }
 
     /// Determines whether or not a request should be purged based on a user's consent preferences selection.
     /// - Parameter request: incoming `TealiumRequest`
     /// - Returns: `Bool` true/false if should be purged.
     func shouldPurge(request: TealiumRequest) -> Bool {
-        consentManager?.trackingStatus == .trackingForbidden
+        guard let request = request as? TealiumTrackRequest else {
+            return true
+        }
+        if request.containsAuditEvent {
+            return false
+        }
+        return consentManager?.trackingStatus == .trackingForbidden
     }
 
     /// Adds consent categories and status to the tracking request.￼
@@ -129,4 +137,19 @@ class ConsentManagerModule: Collector, DispatchValidator {
         callback()
     }
 
+}
+
+fileprivate extension TealiumTrackRequest {
+    // allow tracking calls to continue if they are for auditing purposes
+    var containsAuditEvent: Bool {
+        if let event = self.trackDictionary[TealiumKey.event] as? String,
+           (event == ConsentKey.consentPartialEventName ||
+                event == ConsentKey.consentGrantedEventName ||
+                event == ConsentKey.consentDeclinedEventName ||
+                event == ConsentKey.gdprConsentCookieEventName ||
+                event == ConsentKey.ccpaCookieEventName) {
+            return true
+        }
+        return false
+    }
 }

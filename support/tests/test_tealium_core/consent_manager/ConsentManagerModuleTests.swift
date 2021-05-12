@@ -136,6 +136,51 @@ class ConsentManagerModuleTests: XCTestCase {
         let purge = module.shouldPurge(request: track)
         XCTAssertTrue(purge)
     }
+    
+    func testShouldNotQueueWhenIsAuditEvent() {
+        let auditEvents = [ConsentKey.consentPartialEventName,
+                           ConsentKey.consentGrantedEventName,
+                           ConsentKey.consentDeclinedEventName,
+                           ConsentKey.gdprConsentCookieEventName,
+                           ConsentKey.ccpaCookieEventName]
+        let module = createModule(with: config)
+        module.consentManager?.userConsentStatus = .notConsented
+        auditEvents.forEach {
+            track = TealiumTrackRequest(data: ["tealium_event": $0])
+            let queue = module.shouldQueue(request: track)
+            XCTAssertFalse(queue.0)
+        }
+    }
+    
+    func testShouldNotDropWhenIsAuditEvent() {
+        let auditEvents = [ConsentKey.consentPartialEventName,
+                           ConsentKey.consentGrantedEventName,
+                           ConsentKey.consentDeclinedEventName,
+                           ConsentKey.gdprConsentCookieEventName,
+                           ConsentKey.ccpaCookieEventName]
+        let module = createModule(with: config)
+        module.consentManager?.userConsentStatus = .notConsented
+        auditEvents.forEach {
+            track = TealiumTrackRequest(data: ["tealium_event": $0])
+            let drop = module.shouldDrop(request: track)
+            XCTAssertFalse(drop)
+        }
+    }
+    
+    func testShouldNotPurgeWhenIsAuditEvent() {
+        let auditEvents = [ConsentKey.consentPartialEventName,
+                           ConsentKey.consentGrantedEventName,
+                           ConsentKey.consentDeclinedEventName,
+                           ConsentKey.gdprConsentCookieEventName,
+                           ConsentKey.ccpaCookieEventName]
+        let module = createModule(with: config)
+        module.consentManager?.userConsentStatus = .notConsented
+        auditEvents.forEach {
+            track = TealiumTrackRequest(data: ["tealium_event": $0])
+            let purge = module.shouldPurge(request: track)
+            XCTAssertFalse(purge)
+        }
+    }
 
     func testShouldNotPurgeWhenTrackingAllowed() {
         module.consentManager?.userConsentStatus = .consented
