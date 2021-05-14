@@ -145,7 +145,7 @@ public struct QoE: Codable {
 public struct Chapter: Codable {
     var uuid = UUID().uuidString
     var name: String
-    var duration: Int
+    var duration: Double?
     var position: Int?
     var startTime: Date?
     var metadata: AnyCodable?
@@ -160,7 +160,7 @@ public struct Chapter: Codable {
     }
     
     public init(name: String,
-                duration: Int,
+                duration: Double? = nil,
                 position: Int? = nil,
                 startTime: Date? = Date(),
                 metadata: AnyCodable? = nil) {

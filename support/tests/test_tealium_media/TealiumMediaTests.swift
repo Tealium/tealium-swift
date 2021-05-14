@@ -373,6 +373,26 @@ class TealiumMediaTests: XCTestCase {
             break
         }
     }
+    
+    func testChapterComplete_DurationSet_WhenDefined() {
+        session.mediaService?.media.chapters = [Chapter(name: "TestChapter", duration: 300.0)]
+        session.endChapter()
+        switch mockMediaService.updatedSegment {
+        case .chapter(let chapter): XCTAssertEqual(chapter.duration, 300.0)
+        default:
+            break
+        }
+    }
+    
+    func testChapterComplete_DurationCalculated_WhenNotDefined() {
+        session.mediaService?.media.chapters = [Chapter(name: "TestChapter")]
+        session.endChapter()
+        switch mockMediaService.updatedSegment {
+        case .chapter(let chapter): XCTAssertNotNil(chapter.duration)
+        default:
+            break
+        }
+    }
         
     func testChapterComplete_ChapterDataIsCorrect() {
         let chapter = Chapter(name: "Test Chapter Complete", duration: 960, position: 1, startTime: Date(), metadata: ["chapter_meta_key": "chapter_meta_value"])

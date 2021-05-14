@@ -758,6 +758,20 @@
 			remoteGlobalIDString = D755DD1121945F99003C6BA1;
 			remoteInfo = TealiumTagManagement;
 		};
+		CF2F9EA5264EC83900DB792C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CFAD9D1B25A66BE80079B19A;
+			remoteInfo = TealiumMedia;
+		};
+		CF2F9EA7264EC84200DB792C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CFAD9D1B25A66BE80079B19A;
+			remoteInfo = TealiumMedia;
+		};
 		CF38C36125B79CD5000913E1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
@@ -1108,26 +1122,12 @@
 			remoteGlobalIDString = D755DC9821945E41003C6BA1;
 			remoteInfo = TealiumCore;
 		};
-		CFAD9EB025A66D540079B19A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D7805825233A65FB00DAD90E;
-			remoteInfo = TealiumVisitorService;
-		};
 		CFAD9EB225A66D540079B19A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = D755DC9821945E41003C6BA1;
 			remoteInfo = TealiumCore;
-		};
-		CFAD9F5725A66D700079B19A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D7805825233A65FB00DAD90E;
-			remoteInfo = TealiumVisitorService;
 		};
 		D7075A0F2368E8E100AE3D69 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -3343,7 +3343,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				CFAD9EAF25A66D540079B19A /* PBXTargetDependency */,
+				CF2F9EA6264EC83900DB792C /* PBXTargetDependency */,
 				CFAD9EB125A66D540079B19A /* PBXTargetDependency */,
 			);
 			name = "TealiumMediaTests-tvOS";
@@ -3362,7 +3362,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				CFAD9F5625A66D700079B19A /* PBXTargetDependency */,
+				CF2F9EA8264EC84200DB792C /* PBXTargetDependency */,
 				CFAD9F5825A66D700079B19A /* PBXTargetDependency */,
 			);
 			name = "TealiumMediaTests-macOS";
@@ -5257,6 +5257,16 @@
 			target = D755DD1121945F99003C6BA1 /* TealiumTagManagement */;
 			targetProxy = CF13D85824FD61F80024E79A /* PBXContainerItemProxy */;
 		};
+		CF2F9EA6264EC83900DB792C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CFAD9D1B25A66BE80079B19A /* TealiumMedia */;
+			targetProxy = CF2F9EA5264EC83900DB792C /* PBXContainerItemProxy */;
+		};
+		CF2F9EA8264EC84200DB792C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CFAD9D1B25A66BE80079B19A /* TealiumMedia */;
+			targetProxy = CF2F9EA7264EC84200DB792C /* PBXContainerItemProxy */;
+		};
 		CF42645B25BB8984005561FC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D736D6A42195CCB600B3BDEE /* TealiumCollect */;
@@ -5473,20 +5483,10 @@
 			target = D755DC9821945E41003C6BA1 /* TealiumCore */;
 			targetProxy = CFAD9DC925A66CD50079B19A /* PBXContainerItemProxy */;
 		};
-		CFAD9EAF25A66D540079B19A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D7805825233A65FB00DAD90E /* TealiumVisitorService */;
-			targetProxy = CFAD9EB025A66D540079B19A /* PBXContainerItemProxy */;
-		};
 		CFAD9EB125A66D540079B19A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D755DC9821945E41003C6BA1 /* TealiumCore */;
 			targetProxy = CFAD9EB225A66D540079B19A /* PBXContainerItemProxy */;
-		};
-		CFAD9F5625A66D700079B19A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D7805825233A65FB00DAD90E /* TealiumVisitorService */;
-			targetProxy = CFAD9F5725A66D700079B19A /* PBXContainerItemProxy */;
 		};
 		CFAD9F5825A66D700079B19A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
