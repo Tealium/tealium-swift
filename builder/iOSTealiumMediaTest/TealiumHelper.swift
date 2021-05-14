@@ -8,10 +8,7 @@
 import Foundation
 
 import Foundation
-import TealiumCore
-import TealiumCollect
-import TealiumLifecycle
-import TealiumMedia
+import TealiumSwift
 
 enum TealiumConfiguration {
     static let account = "tealiummobile"

@@ -1,0 +1,472 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 52;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		03702485B2267DDDDA9AD197 /* Pods_TealiumMediaExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9990252460E675FFB9BCAC1 /* Pods_TealiumMediaExample.framework */; };
+		CF2F9F02264F361D00DB792C /* TealiumMediaExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2F9F01264F361D00DB792C /* TealiumMediaExampleApp.swift */; };
+		CF2F9F06264F361E00DB792C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF2F9F05264F361E00DB792C /* Assets.xcassets */; };
+		CF2F9F09264F361E00DB792C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF2F9F08264F361E00DB792C /* Preview Assets.xcassets */; };
+		CF2F9F14264F362900DB792C /* tealium.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = CF2F9F11264F362900DB792C /* tealium.mp4 */; };
+		CF2F9F15264F362900DB792C /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2F9F12264F362900DB792C /* Video.swift */; };
+		CF2F9F16264F362900DB792C /* CustomVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2F9F13264F362900DB792C /* CustomVideoPlayer.swift */; };
+		CF2F9F19264F363B00DB792C /* TealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2F9F17264F363B00DB792C /* TealiumHelper.swift */; };
+		CF2F9F1A264F363B00DB792C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2F9F18264F363B00DB792C /* ContentView.swift */; };
+		CF2F9F1D264F367F00DB792C /* GSPlayer in Frameworks */ = {isa = PBXBuildFile; productRef = CF2F9F1C264F367F00DB792C /* GSPlayer */; };
+		CF2F9F20264F379C00DB792C /* TealiumSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = CF2F9F1F264F379C00DB792C /* TealiumSwiftUI */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		423D8A7FCA863E2B546C7942 /* Pods-TealiumMediaExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TealiumMediaExample.release.xcconfig"; path = "Target Support Files/Pods-TealiumMediaExample/Pods-TealiumMediaExample.release.xcconfig"; sourceTree = "<group>"; };
+		A241C0C1EE98AD1A99F9F4D0 /* Pods-TealiumMediaExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TealiumMediaExample.debug.xcconfig"; path = "Target Support Files/Pods-TealiumMediaExample/Pods-TealiumMediaExample.debug.xcconfig"; sourceTree = "<group>"; };
+		CF2F9EFE264F361D00DB792C /* TealiumMediaExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TealiumMediaExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF2F9F01264F361D00DB792C /* TealiumMediaExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TealiumMediaExampleApp.swift; sourceTree = "<group>"; };
+		CF2F9F05264F361E00DB792C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CF2F9F08264F361E00DB792C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		CF2F9F0A264F361E00DB792C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CF2F9F11264F362900DB792C /* tealium.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = tealium.mp4; sourceTree = "<group>"; };
+		CF2F9F12264F362900DB792C /* Video.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
+		CF2F9F13264F362900DB792C /* CustomVideoPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomVideoPlayer.swift; sourceTree = "<group>"; };
+		CF2F9F17264F363B00DB792C /* TealiumHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TealiumHelper.swift; path = ../../../builder/iOSTealiumMediaTest/TealiumHelper.swift; sourceTree = "<group>"; };
+		CF2F9F18264F363B00DB792C /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = ../../../builder/iOSTealiumMediaTest/ContentView.swift; sourceTree = "<group>"; };
+		F9990252460E675FFB9BCAC1 /* Pods_TealiumMediaExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TealiumMediaExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CF2F9EFB264F361D00DB792C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CF2F9F1D264F367F00DB792C /* GSPlayer in Frameworks */,
+				CF2F9F20264F379C00DB792C /* TealiumSwiftUI in Frameworks */,
+				03702485B2267DDDDA9AD197 /* Pods_TealiumMediaExample.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8BA8B57081AFC2B69486382B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A241C0C1EE98AD1A99F9F4D0 /* Pods-TealiumMediaExample.debug.xcconfig */,
+				423D8A7FCA863E2B546C7942 /* Pods-TealiumMediaExample.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		CF2F9EF5264F361D00DB792C = {
+			isa = PBXGroup;
+			children = (
+				CF2F9F00264F361D00DB792C /* TealiumMediaExample */,
+				CF2F9EFF264F361D00DB792C /* Products */,
+				8BA8B57081AFC2B69486382B /* Pods */,
+				F96426EC3592E3752E524B74 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		CF2F9EFF264F361D00DB792C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CF2F9EFE264F361D00DB792C /* TealiumMediaExample.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CF2F9F00264F361D00DB792C /* TealiumMediaExample */ = {
+			isa = PBXGroup;
+			children = (
+				CF2F9F10264F362900DB792C /* video */,
+				CF2F9F17264F363B00DB792C /* TealiumHelper.swift */,
+				CF2F9F01264F361D00DB792C /* TealiumMediaExampleApp.swift */,
+				CF2F9F18264F363B00DB792C /* ContentView.swift */,
+				CF2F9F05264F361E00DB792C /* Assets.xcassets */,
+				CF2F9F0A264F361E00DB792C /* Info.plist */,
+				CF2F9F07264F361E00DB792C /* Preview Content */,
+			);
+			path = TealiumMediaExample;
+			sourceTree = "<group>";
+		};
+		CF2F9F07264F361E00DB792C /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				CF2F9F08264F361E00DB792C /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		CF2F9F10264F362900DB792C /* video */ = {
+			isa = PBXGroup;
+			children = (
+				CF2F9F11264F362900DB792C /* tealium.mp4 */,
+				CF2F9F12264F362900DB792C /* Video.swift */,
+				CF2F9F13264F362900DB792C /* CustomVideoPlayer.swift */,
+			);
+			name = video;
+			path = ../../../builder/iOSTealiumMediaTest/video;
+			sourceTree = "<group>";
+		};
+		F96426EC3592E3752E524B74 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F9990252460E675FFB9BCAC1 /* Pods_TealiumMediaExample.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CF2F9EFD264F361D00DB792C /* TealiumMediaExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CF2F9F0D264F361E00DB792C /* Build configuration list for PBXNativeTarget "TealiumMediaExample" */;
+			buildPhases = (
+				70D0EF1DFAEF4CADC1D5D29B /* [CP] Check Pods Manifest.lock */,
+				CF2F9EFA264F361D00DB792C /* Sources */,
+				CF2F9EFB264F361D00DB792C /* Frameworks */,
+				CF2F9EFC264F361D00DB792C /* Resources */,
+				4E8EBBE9CBC9494D7D8ABBD8 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TealiumMediaExample;
+			packageProductDependencies = (
+				CF2F9F1C264F367F00DB792C /* GSPlayer */,
+				CF2F9F1F264F379C00DB792C /* TealiumSwiftUI */,
+			);
+			productName = TealiumMediaExample;
+			productReference = CF2F9EFE264F361D00DB792C /* TealiumMediaExample.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CF2F9EF6264F361D00DB792C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1250;
+				LastUpgradeCheck = 1250;
+				TargetAttributes = {
+					CF2F9EFD264F361D00DB792C = {
+						CreatedOnToolsVersion = 12.5;
+					};
+				};
+			};
+			buildConfigurationList = CF2F9EF9264F361D00DB792C /* Build configuration list for PBXProject "TealiumMediaExample" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CF2F9EF5264F361D00DB792C;
+			packageReferences = (
+				CF2F9F1B264F367F00DB792C /* XCRemoteSwiftPackageReference "GSPlayer" */,
+				CF2F9F1E264F379C00DB792C /* XCRemoteSwiftPackageReference "tealium-swift-ui" */,
+			);
+			productRefGroup = CF2F9EFF264F361D00DB792C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CF2F9EFD264F361D00DB792C /* TealiumMediaExample */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CF2F9EFC264F361D00DB792C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CF2F9F09264F361E00DB792C /* Preview Assets.xcassets in Resources */,
+				CF2F9F14264F362900DB792C /* tealium.mp4 in Resources */,
+				CF2F9F06264F361E00DB792C /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4E8EBBE9CBC9494D7D8ABBD8 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TealiumMediaExample/Pods-TealiumMediaExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TealiumMediaExample/Pods-TealiumMediaExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TealiumMediaExample/Pods-TealiumMediaExample-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		70D0EF1DFAEF4CADC1D5D29B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TealiumMediaExample-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CF2F9EFA264F361D00DB792C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CF2F9F16264F362900DB792C /* CustomVideoPlayer.swift in Sources */,
+				CF2F9F1A264F363B00DB792C /* ContentView.swift in Sources */,
+				CF2F9F15264F362900DB792C /* Video.swift in Sources */,
+				CF2F9F02264F361D00DB792C /* TealiumMediaExampleApp.swift in Sources */,
+				CF2F9F19264F363B00DB792C /* TealiumHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		CF2F9F0B264F361E00DB792C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		CF2F9F0C264F361E00DB792C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CF2F9F0E264F361E00DB792C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A241C0C1EE98AD1A99F9F4D0 /* Pods-TealiumMediaExample.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"TealiumMediaExample/Preview Content\"";
+				DEVELOPMENT_TEAM = XC939GDC9P;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = TealiumMediaExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumMediaExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CF2F9F0F264F361E00DB792C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 423D8A7FCA863E2B546C7942 /* Pods-TealiumMediaExample.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"TealiumMediaExample/Preview Content\"";
+				DEVELOPMENT_TEAM = XC939GDC9P;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = TealiumMediaExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumMediaExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CF2F9EF9264F361D00DB792C /* Build configuration list for PBXProject "TealiumMediaExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CF2F9F0B264F361E00DB792C /* Debug */,
+				CF2F9F0C264F361E00DB792C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CF2F9F0D264F361E00DB792C /* Build configuration list for PBXNativeTarget "TealiumMediaExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CF2F9F0E264F361E00DB792C /* Debug */,
+				CF2F9F0F264F361E00DB792C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CF2F9F1B264F367F00DB792C /* XCRemoteSwiftPackageReference "GSPlayer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/wxxsw/GSPlayer";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.25;
+			};
+		};
+		CF2F9F1E264F379C00DB792C /* XCRemoteSwiftPackageReference "tealium-swift-ui" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/christinasund/tealium-swift-ui";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CF2F9F1C264F367F00DB792C /* GSPlayer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF2F9F1B264F367F00DB792C /* XCRemoteSwiftPackageReference "GSPlayer" */;
+			productName = GSPlayer;
+		};
+		CF2F9F1F264F379C00DB792C /* TealiumSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF2F9F1E264F379C00DB792C /* XCRemoteSwiftPackageReference "tealium-swift-ui" */;
+			productName = TealiumSwiftUI;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = CF2F9EF6264F361D00DB792C /* Project object */;
+}
