@@ -71,7 +71,7 @@ class CollectEventDispatcher: CollectProtocol {
     /// - Parameter url: `String` containing a URL to be validated
     /// - Returns: `Bool` `true` if URL is a valid web address
     static func isValidUrl(_ url: String) -> Bool {
-        let urlRegexPattern = "^(https?://)?(www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z0-9]{0,61}[a-z0-9]\\.[a-z]{2,6}(/[-\\w@\\+\\.~#\\?&/=%]*)?$"
+        let urlRegexPattern = "^((https?)://)?(([a-zA-Z]\\.?)+?|(([0-9]{1,3}\\.){3}[0-9]{1,3}))(:[0-9]{1,5})?(/[-\\w@\\+\\.~#\\?&/=%]*)?$"
         guard let validURLRegex = try? NSRegularExpression(pattern: urlRegexPattern, options: []) else {
             return false
         }
