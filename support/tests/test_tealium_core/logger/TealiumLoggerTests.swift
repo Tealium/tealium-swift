@@ -22,7 +22,7 @@ class TealiumLoggerTests: XCTestCase {
 
     func testTealiumLogLevelError() {
         let logLevel = TealiumLogLevel.error
-        let logger = TealiumLogger(config: testTealiumConfig)
+        _ = TealiumLogger(config: testTealiumConfig)
         let message = "test"
         let logRequest = TealiumLogRequest(title: message, message: message, info: nil, logLevel: logLevel, category: .general)
 
@@ -31,7 +31,7 @@ class TealiumLoggerTests: XCTestCase {
 
     func testTealiumLogLevelSilent() {
         let logLevel = TealiumLogLevel.silent
-        let logger = TealiumLogger(config: testTealiumConfig)
+        _ = TealiumLogger(config: testTealiumConfig)
         let message = "test"
         let logRequest = TealiumLogRequest(title: message, message: message, info: nil, logLevel: logLevel, category: .general)
 
@@ -40,7 +40,7 @@ class TealiumLoggerTests: XCTestCase {
 
     func testTealiumLogLevelDebug () {
         let logLevel = TealiumLogLevel.debug
-        let logger = TealiumLogger(config: testTealiumConfig)
+        _ = TealiumLogger(config: testTealiumConfig)
         let message = "test"
         let logRequest = TealiumLogRequest(title: message, message: message, info: nil, logLevel: logLevel, category: .general)
 
@@ -49,7 +49,7 @@ class TealiumLoggerTests: XCTestCase {
 
     func testTealiumLogLevelFault () {
         let logLevel = TealiumLogLevel.fault
-        let logger = TealiumLogger(config: testTealiumConfig)
+        _ = TealiumLogger(config: testTealiumConfig)
         let message = "test"
         let logRequest = TealiumLogRequest(title: message, message: message, info: nil, logLevel: logLevel, category: .general)
 
@@ -58,7 +58,7 @@ class TealiumLoggerTests: XCTestCase {
 
     func testTealiumLogLevelInfo () {
         let logLevel = TealiumLogLevel.info
-        let logger = TealiumLogger(config: testTealiumConfig)
+        _ = TealiumLogger(config: testTealiumConfig)
         let message = "test"
         let logRequest = TealiumLogRequest(title: message, message: message, info: nil, logLevel: logLevel, category: .general)
 

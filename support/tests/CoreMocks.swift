@@ -276,8 +276,15 @@ class MockUserDefaultsConsent: Storable {
 
     func object(forKey defaultName: String) -> Any? {
         objectCount += 1
-        let mockData = NSKeyedArchiver.archivedData(withRootObject: MockTEALConsentConfiguration())
-        UserDefaults.standard.set(mockData, forKey: "mockDataConsent")
+        if #available(iOS 11.0, macOS 10.13, tvOS 11.0, *) {
+            guard let mockData = try? NSKeyedArchiver.archivedData(withRootObject: MockTEALConsentConfiguration(), requiringSecureCoding: true) else {
+                return nil
+            }
+            UserDefaults.standard.set(mockData, forKey: "mockDataConsent")
+        } else {
+            let mockData = NSKeyedArchiver.archivedData(withRootObject: MockTEALConsentConfiguration())
+            UserDefaults.standard.set(mockData, forKey: "mockDataConsent")
+        }
         return UserDefaults.standard.data(forKey: "mockDataConsent")
     }
 

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol ModuleDelegate: class {
+public protocol ModuleDelegate: AnyObject {
 
     /// Called by a module send a new track request to the Dispatch Manager
     ///

@@ -85,7 +85,7 @@ extension TagManagementWKWebView: WKNavigationDelegate {
                     decisionAction = .allow
                 case .cancel:
                     decisionAction = .cancel
-                @unknown default:
+                default:
                     decisionAction = .cancel
                 }
             }

@@ -177,8 +177,6 @@ class TealiumLocationTests: XCTestCase {
 
         let region2 = CLCircularRegion(center: coordinate, radius: 10.0, identifier: "testRegion2")
 
-        let region3 = CLCircularRegion(center: coordinate, radius: 10.0, identifier: "testRegion")
-
         tealiumLocation.startMonitoring([region1, region2])
 
         XCTAssertNil(tealiumLocation.createdGeofences)
@@ -483,7 +481,6 @@ class TealiumLocationTests: XCTestCase {
         mockModuleDelegate.asyncExpectation = expect
 
         config = TealiumConfig(account: "tealiummobile", profile: "location", environment: "dev")
-        let mockDisk = MockLocationDiskStorage(config: config)
         let locationModule = createModule(with: config,
                                           delegate: mockModuleDelegate)
 
