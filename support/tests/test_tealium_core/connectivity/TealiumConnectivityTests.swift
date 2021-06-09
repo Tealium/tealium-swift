@@ -86,6 +86,7 @@ class TealiumConnectivityTests: XCTestCase {
         XCTAssertEqual(data[ConnectivityKey.connectionType] as! String, ConnectivityKey.connectionTypeWifi)
     }
 
+    #if os(iOS)
     func testCheckIsConnected() {
         let expectation = self.expectation(description: "isConnected")
         let connectivity = nwPathConnectivity
@@ -103,6 +104,7 @@ class TealiumConnectivityTests: XCTestCase {
         }
         self.wait(for: [expectation], timeout: 1.0)
     }
+    #endif
 
     func testCheckIsConnectedLegacy() {
         let connectivity = legacyConnectivityRefreshDisabled

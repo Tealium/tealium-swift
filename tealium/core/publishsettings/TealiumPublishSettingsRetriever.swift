@@ -6,7 +6,7 @@
 //
 import Foundation
 
-protocol TealiumPublishSettingsDelegate: class {
+protocol TealiumPublishSettingsDelegate: AnyObject {
     func didUpdate(_ publishSettings: RemotePublishSettings)
 }
 

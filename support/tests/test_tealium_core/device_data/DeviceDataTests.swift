@@ -164,6 +164,8 @@ class TealiumDeviceDataTests: XCTestCase {
     }
     
     func testCarrierInfo() {
+        #if os(iOS)
+        #if targetEnvironment(simulator)
         let simulatorCarrierInfo = [
             DeviceDataKey.carrierMNC: "00",
             DeviceDataKey.carrierMCC: "000",
@@ -172,10 +174,10 @@ class TealiumDeviceDataTests: XCTestCase {
         ]
         
         let retrievedCarrierInfo = DeviceData.carrierInfo
-        #if os(iOS)
-        #if targetEnvironment(simulator)
+
         XCTAssertEqual(simulatorCarrierInfo, retrievedCarrierInfo)
         #else
+        let retrievedCarrierInfo = DeviceData.carrierInfo
         XCTAssertNotEqual("", retrievedCarrierInfo[TealiumDeviceDataKey.carrierMNC]!)
         XCTAssertNotEqual("", retrievedCarrierInfo[TealiumDeviceDataKey.carrierMCC]!)
         XCTAssertNotEqual("", retrievedCarrierInfo[TealiumDeviceDataKey.carrierISO]!)

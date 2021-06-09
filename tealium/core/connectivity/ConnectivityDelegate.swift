@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol ConnectivityDelegate: class {
+public protocol ConnectivityDelegate: AnyObject {
 
     /// Called when network connectivity is lost.
     func connectionLost()

@@ -28,7 +28,7 @@ class LifecyclePersistentDataTests: XCTestCase {
         lifecycle.sessions = [
             LifecycleSession(launchDate: date)
         ]
-        persistentData.save(lifecycle)
+        _ = persistentData.save(lifecycle)
         guard let data = persistentData.load() else {
             XCTFail("Persistent data not returned")
             return
@@ -46,7 +46,7 @@ class LifecyclePersistentDataTests: XCTestCase {
         lifecycle.sessions = [
             LifecycleSession(launchDate: date)
         ]
-        persistentData.save(lifecycle)
+        _ = persistentData.save(lifecycle)
         let data = mockStorage.retrieve(as: Lifecycle.self)
         XCTAssertEqual(data!.countCrashTotal, 5)
         XCTAssertEqual(data!.sessions, lifecycle.sessions)

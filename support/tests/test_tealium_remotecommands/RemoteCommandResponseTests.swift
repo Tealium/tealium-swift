@@ -93,7 +93,7 @@ class RemoteCommandResponseTests: XCTestCase {
     func testConfigDictionaryFromRequest() {
 
         // Returns config
-        var urlString = "tealium://test?request={\"config\":{\"response_id\":\"123\"}, \"payload\":{\"hello\": \"world\"}}"
+        let urlString = "tealium://test?request={\"config\":{\"response_id\":\"123\"}, \"payload\":{\"hello\": \"world\"}}"
         guard let escapedString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             XCTFail("Could not encode url string: \(urlString)")
             return

@@ -210,6 +210,9 @@ class RemoteCommandsManagerTests: XCTestCase {
     func testTriggerCommandWithPayload() {
         let mockDelegate = MockRemoteCommandDelegate()
         let expect = expectation(description: "delegate method is executed")
+        guard let payload = payload else {
+            return
+        }
         let data: [String: Any] = ["js_result": ["hello": "world"], "payload": payload]
         tealiumRemoteCommandsManager.jsonCommands = [tealiumLocalJSONCommand]
         tealiumRemoteCommandsManager.jsonCommands.forEach { command in

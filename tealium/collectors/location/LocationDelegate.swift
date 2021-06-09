@@ -8,7 +8,7 @@
 #if os(iOS)
 import Foundation
 
-protocol LocationDelegate: class {
+protocol LocationDelegate: AnyObject {
     func didEnterGeofence(_ data: [String: Any])
     func didExitGeofence(_ data: [String: Any])
 }
