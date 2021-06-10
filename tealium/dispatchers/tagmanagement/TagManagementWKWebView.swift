@@ -126,15 +126,13 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol {
             }
             // attach the webview to the view before continuing
             self.attachToUIView(specificView: specificView) { _ in
-                self.migrateCookies(forWebView: webview) {
-                    guard let url = url else {
-                        self.enableCompletion?(false, WebviewError.webviewURLMissing)
-                        return
-                    }
-                    let request = URLRequest(url: url)
-                    TealiumQueues.mainQueue.async {
-                        webview.load(request)
-                    }
+                guard let url = url else {
+                    self.enableCompletion?(false, WebviewError.webviewURLMissing)
+                    return
+                }
+                let request = URLRequest(url: url)
+                TealiumQueues.mainQueue.async {
+                    webview.load(request)
                 }
             }
         }

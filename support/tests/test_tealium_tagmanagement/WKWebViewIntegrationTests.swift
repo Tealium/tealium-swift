@@ -158,38 +158,6 @@ class WKWebViewIntegrationTests: XCTestCase {
         }
     }
 
-    func testGetSetHasMigrated() {
-        tagManagementWKWebView.setHasMigrated(userDefaults: userDefaults)
-        // manual check of userDefaults
-        if let hasMigrated = userDefaults?.bool(forKey: "com.tealium.tagmanagement.cookiesMigrated") {
-            XCTAssertTrue(hasMigrated, "Migration flag was not set correctly")
-            // API check of userDefaults
-            XCTAssertTrue(tagManagementWKWebView.getHasMigrated(userDefaults: userDefaults), "GetHasMigrated should return true")
-        } else {
-            XCTFail("Migrated flag not found in userDefaults")
-        }
-    }
-
-    // integration test - tests setting cookies on real webview
-    func testMigrateCookies() {
-        let expectation = self.expectation(description: "testMigrateCookies")
-        let myCookieStorage = MyCookieStorage.shared
-        WKWebsiteDataStore.default().httpCookieStore.add(self)
-        let config = WKWebViewConfiguration()
-        // we don't want persistent cookies interfering with the test
-        config.websiteDataStore = WKWebsiteDataStore.nonPersistent()
-        let webview = WKWebView(frame: .zero, configuration: config)
-        tagManagementWKWebView.migrateCookies(forWebView: webview, withCookieProvider: myCookieStorage, userDefaults: userDefaults) {
-            webview.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
-                cookies.forEach { cookie in
-                    XCTAssertEqual(cookie.name, "test", "Expected cookie could not be found")
-                    expectation.fulfill()
-                }
-            }
-        }
-        self.wait(for: [expectation], timeout: 5.0)
-    }
-
     func testDispatchTrackCreatesTrackRequest() {
         expect = expectation(description: "trackRequest")
         module = TagManagementModule(config: config, delegate: TagManagementModuleDelegate(), completion: { _ in })
