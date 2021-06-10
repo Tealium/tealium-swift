@@ -14,7 +14,7 @@ import Foundation
 
 extension DeviceData {
     
-    #if os(iOS)
+    #if os(iOS) && !targetEnvironment(macCatalyst)
     private static let networkInfo = CTTelephonyNetworkInfo()
     #endif
     
