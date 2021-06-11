@@ -48,7 +48,6 @@ public class TagManagementModule: Dispatcher {
         self.tagManagement = tagManagement ?? TagManagementWKWebView(config: config, delegate: delegate)
         self.tagManagement?.enable(webviewURL: config.webviewURL,
                                    delegates: config.webViewDelegates,
-                                   shouldAddCookieObserver: config.shouldAddCookieObserver,
                                    view: config.rootView) { [weak self] _, error in
             guard let self = self else {
                 return
