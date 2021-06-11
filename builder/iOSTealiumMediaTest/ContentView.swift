@@ -8,6 +8,7 @@
 import SwiftUI
 import AVKit
 import TealiumMedia
+import TealiumSwiftUI
 
 struct ContentView: View {
     @State private var video = Video()
@@ -51,7 +52,7 @@ struct ContentView: View {
                         video.time = .zero
                     }
                     .onReplay {
-                        // restart media and chapter
+                        // Restart media and chapter
                         mediaSession?.play()
                         mediaSession?.startChapter(Chapter(name: "Chapter 1", duration: 30))
                     }
@@ -65,13 +66,13 @@ struct ContentView: View {
                             video.stateText = "Playing!"
                             video.totalDuration = totalDuration
                             if !video.started {
-                                // if state is playing and video has not already started, start session
+                                // If state is playing and video has not already started, start session
                                 mediaSession?.startSession()
                                 video.started = true
                             }
                             mediaSession?.play()
                             if !video.started {
-                                // if state is playing and video has not already started, start chapter
+                                // If state is playing and video has not already started, start chapter
                                 mediaSession?.startChapter(Chapter(name: "Chapter 1", duration: 30))
                             }
                         case .paused(let playProgress, let bufferProgress):
@@ -100,14 +101,14 @@ struct ContentView: View {
                     .padding()
                 
                 HStack {
-                    IconButtonView(iconName: self.video.play ? "pause.fill" : "play.fill") {
+                    TealiumIconButton(iconName: self.video.play ? "pause.fill" : "play.fill") {
                         self.video.play.toggle()
                     }
 
                     Divider().frame(height: 20)
                     
                     // Update player state on toggle
-                    IconButtonView(iconName: self.video.mute ? "speaker.slash.fill" : "speaker.fill") {
+                    TealiumIconButton(iconName: self.video.mute ? "speaker.slash.fill" : "speaker.fill") {
                         self.video.mute.toggle()
                         if self.mediaSession?.playerState == .mute {
                             self.mediaSession?.playerState = .closedCaption
@@ -117,14 +118,14 @@ struct ContentView: View {
 
                     Divider().frame(height: 20)
                     
-                    IconButtonView(iconName: "repeat", color: self.video.autoReplay ? .tealBlue : .gray) {
+                    TealiumIconButton(iconName: "repeat", color: self.video.autoReplay ? .tealBlue : .gray) {
                         self.video.autoReplay.toggle()
                     }
 
                 }
                 
                 HStack {
-                    IconButtonView(iconName: "gobackward.15") {
+                    TealiumIconButton(iconName: "gobackward.15") {
                         mediaSession?.startSeek(at: self.video.time.seconds)
                         self.video.time = CMTimeMakeWithSeconds(max(0, self.video.time.seconds - 15),
                                                                 preferredTimescale: self.video.time.timescale)
@@ -139,7 +140,7 @@ struct ContentView: View {
                     
                     Divider().frame(height: 20)
                     
-                    IconButtonView(iconName: "goforward.15") {
+                    TealiumIconButton(iconName: "goforward.15") {
                         mediaSession?.startSeek(at: self.video.time.seconds)
                         self.video.time = CMTimeMakeWithSeconds(min(self.video.totalDuration,
                                                                     self.video.time.seconds + 15),
@@ -150,23 +151,23 @@ struct ContentView: View {
                     }
                 }.padding()
                 
-                TextButtonView(title: "Chapter 1 Skip") {
+                TealiumTextButton(title: "Chapter 1 Skip") {
                     mediaSession?.skipChapter()
                     mediaSession?.startChapter(Chapter(name: "Chapter 2", duration: 30))
                 }
                 
-                TextButtonView(title: "Ad 1 Start") {
+                TealiumTextButton(title: "Ad 1 Start") {
                     self.video.play = false
                     mediaSession?.startAdBreak(AdBreak(name: "Ad Break 1"))
                     mediaSession?.startAd(Ad(name: "Ad 1"))
                 }
                 
-                TextButtonView(title: "Ad 1 Skip, Ad 2 Start") {
+                TealiumTextButton(title: "Ad 1 Skip, Ad 2 Start") {
                     mediaSession?.skipAd()
                     mediaSession?.startAd(Ad(name: "Ad 2"))
                 }
                 
-                TextButtonView(title: "Ad 2 Complete") {
+                TealiumTextButton(title: "Ad 2 Complete") {
                     self.video.play = true
                     mediaSession?.endAd()
                     mediaSession?.endAdBreak()
@@ -176,7 +177,6 @@ struct ContentView: View {
             }
             .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
                     self.video.isBackgrounded = true
-                    TealiumHelper.killTrace(tealTraceId)
             }
             .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
                     self.video.isBackgrounded = false
@@ -185,7 +185,7 @@ struct ContentView: View {
                     
             }
             .onDisappear { self.video.play = false }
-            .navigationTitle("iOSTealiumMediaTest")
+            .navigationTitle("TealiumMediaTest")
             .navigationBarTitleDisplayMode(.inline)
         }
         .navigationViewStyle(StackNavigationViewStyle())

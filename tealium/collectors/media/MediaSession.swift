@@ -105,8 +105,11 @@ public class MediaSession: MediaSessionProtocol {
     }
     
     public func endChapter() {
-        guard let chapter = mediaService?.media.chapters.last else {
+        guard var chapter = mediaService?.media.chapters.last else {
             return
+        }
+        if chapter.duration == nil {
+            chapter.duration = calculate(duration: chapter.startTime)
         }
         mediaService?.track(
             .event(.chapterEnd),

@@ -5,13 +5,14 @@
 //  Copyright © 2020 Tealium. All rights reserved.
 //
 import SwiftUI
+import TealiumSwiftUI
 
 struct ContentView: View {
     @State private var traceId: String = ""
     
     // Timed event start
     var playButton: some View {
-        IconButtonView(iconName: "play.fill") {
+        TealiumIconButton(iconName: "play.fill") {
             TealiumHelper.shared.track(title: "product_view",
                                        data: ["product_id": ["prod123"]])
         }
@@ -19,7 +20,7 @@ struct ContentView: View {
     
     // Timed event stop
     var stopButton: some View {
-        IconButtonView(iconName: "stop.fill") {
+        TealiumIconButton(iconName: "stop.fill") {
             TealiumHelper.shared.track(title: "order_complete",
                                        data: ["order_id": "ord123"])
         }
@@ -29,35 +30,35 @@ struct ContentView: View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 20) {
-                    TraceIdTextField(traceId: $traceId)
+                    TealiumTextField($traceId, imageName: "person.fill", placeholder: "Enter Trace Id")
                         .padding(.bottom, 20)
-                    TextButtonView(title: "Start Trace") {
+                    TealiumTextButton(title: "Start Trace") {
                         TealiumHelper.shared.joinTrace(self.traceId)
                     }
-                    TextButtonView(title: "Leave Trace") {
+                    TealiumTextButton(title: "Leave Trace") {
                         TealiumHelper.shared.leaveTrace()
                     }
-                    TextButtonView(title: "Track View") {
+                    TealiumTextButton(title: "Track View") {
                         TealiumHelper.shared.trackView(title: "screen_view", data: nil)
                     }
-                    TextButtonView(title: "Track Event") {
+                    TealiumTextButton(title: "Track Event") {
                         TealiumHelper.shared.track(title: "button_tapped",
                                                 data: ["event_category": "example",
                                                        "event_action": "tap",
                                                        "event_label": "Track Event"])
                     }
-                    TextButtonView(title: "Hosted Data Layer") {
+                    TealiumTextButton(title: "Hosted Data Layer") {
                         TealiumHelper.shared.track(title: "hdl-test",
                                                    data: ["product_id": "abc123"])
                     }
-                    TextButtonView(title: "SKAdNetwork Conversion") {
+                    TealiumTextButton(title: "SKAdNetwork Conversion") {
                         TealiumHelper.shared.track(title: "conversion_event",
                                                    data: ["conversion_value": 10])
                     }
-                    TextButtonView(title: "Toggle Consent Status") {
+                    TealiumTextButton(title: "Toggle Consent Status") {
                         TealiumHelper.shared.toggleConsentStatus()
                     }
-                    TextButtonView(title: "Reset Consent") {
+                    TealiumTextButton(title: "Reset Consent") {
                         TealiumHelper.shared.resetConsentPreferences()
                     }
                 }
