@@ -829,6 +829,20 @@
 			remoteGlobalIDString = D755DC9821945E41003C6BA1;
 			remoteInfo = TealiumCore;
 		};
+		CF665AA12673F94E00742E9D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CFAD9D1B25A66BE80079B19A;
+			remoteInfo = TealiumMedia;
+		};
+		CF665AA32673F95600742E9D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CFAD9D1B25A66BE80079B19A;
+			remoteInfo = TealiumMedia;
+		};
 		CF8807842554B9610020E1B2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
@@ -3255,6 +3269,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				CF665AA22673F94E00742E9D /* PBXTargetDependency */,
 				CFAD9EB125A66D540079B19A /* PBXTargetDependency */,
 			);
 			name = "TealiumMediaTests-tvOS";
@@ -3273,6 +3288,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				CF665AA42673F95600742E9D /* PBXTargetDependency */,
 				CFAD9F5825A66D700079B19A /* PBXTargetDependency */,
 			);
 			name = "TealiumMediaTests-macOS";
@@ -5054,6 +5070,16 @@
 			isa = PBXTargetDependency;
 			target = CFAD9D1B25A66BE80079B19A /* TealiumMedia */;
 			targetProxy = CF42646625BB8984005561FC /* PBXContainerItemProxy */;
+		};
+		CF665AA22673F94E00742E9D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CFAD9D1B25A66BE80079B19A /* TealiumMedia */;
+			targetProxy = CF665AA12673F94E00742E9D /* PBXContainerItemProxy */;
+		};
+		CF665AA42673F95600742E9D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CFAD9D1B25A66BE80079B19A /* TealiumMedia */;
+			targetProxy = CF665AA32673F95600742E9D /* PBXContainerItemProxy */;
 		};
 		CF8807852554B9610020E1B2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

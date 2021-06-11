@@ -46,7 +46,7 @@ struct WidgetExampleEntryView : View {
     var body: some View {
         Text(entry.date, style: .time)
             .onAppear {
-                    TealiumHelper.trackView(title: "widget_view", dataLayer: nil)
+                TealiumHelper.shared.trackView(title: "widget_view", data: nil)
             }
     }
 }
