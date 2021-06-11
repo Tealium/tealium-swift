@@ -24,10 +24,10 @@ extension WebView.Coordinator: WKScriptMessageHandler {
         switch command {
         case Constants.track:
             print("tealium track called: \(trackPayload)")
-            TealiumHelper.trackEvent(title: title, dataLayer: trackPayload)
+            TealiumHelper.shared.track(title: title, data: trackPayload)
         case Constants.trackView:
             print("tealium trackView called: \(trackPayload)")
-            TealiumHelper.trackView(title: title, dataLayer: trackPayload)
+            TealiumHelper.shared.trackView(title: title, data: trackPayload)
         default:
             break
         }
