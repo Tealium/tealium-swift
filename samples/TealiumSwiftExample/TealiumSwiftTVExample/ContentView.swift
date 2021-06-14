@@ -13,13 +13,13 @@ struct ContentView: View {
         NavigationView {
             VStack(spacing: 40) {
                 Button(action: {
-                    TealiumHelper.trackView(title: "screen_view", dataLayer: nil)
+                    TealiumHelper.shared.trackView(title: "screen_view", data: nil)
                 }) {
                     Text("Track View")
                 }
                 Button(action: {
-                    TealiumHelper.trackView(title: "button_click",
-                                            dataLayer: ["event_category": "example",
+                    TealiumHelper.shared.trackView(title: "button_click",
+                                            data: ["event_category": "example",
                                                         "event_action": "click",
                                                         "event_label": "Track Event"])
                 }) {
@@ -27,12 +27,12 @@ struct ContentView: View {
                 }
                 TextField("Trace ID", text: $traceId).frame(width: 250)
                 Button(action: {
-                    TealiumHelper.joinTrace(self.traceId)
+                    TealiumHelper.shared.joinTrace(self.traceId)
                 }) {
                     Text("Start Trace")
                 }
                 Button(action: {
-                    TealiumHelper.leaveTrace()
+                    TealiumHelper.shared.leaveTrace()
                 }) {
                     Text("Leave Trace")
                 }

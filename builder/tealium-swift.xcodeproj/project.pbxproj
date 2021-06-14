@@ -304,6 +304,7 @@
 		CFB5CA9A2511787800697C22 /* RemoteCommandsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB5CA8F2511787800697C22 /* RemoteCommandsConstants.swift */; };
 		CFB5CA9B2511787800697C22 /* JSONRemoteCommandResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB5CA902511787800697C22 /* JSONRemoteCommandResponse.swift */; };
 		CFB5CA9C2511787800697C22 /* RemoteCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB5CA912511787800697C22 /* RemoteCommand.swift */; };
+		CFB6B4922677C47C00D62D87 /* TealiumSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = CFB6B4912677C47C00D62D87 /* TealiumSwiftUI */; };
 		CFB6E75D255DF033007F2773 /* TimedEvent+Tealium.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB6E75C255DF033007F2773 /* TimedEvent+Tealium.swift */; };
 		CFB6E7D8255F3E0E007F2773 /* TimedEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB6E7A6255F3DE0007F2773 /* TimedEventTests.swift */; };
 		CFB6E7F1255F3E0E007F2773 /* TimedEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB6E7A6255F3DE0007F2773 /* TimedEventTests.swift */; };
@@ -315,7 +316,6 @@
 		CFC3FB9F24C6232400763C9E /* MockTealiumVisitorServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC3FB9C24C6232400763C9E /* MockTealiumVisitorServiceManager.swift */; };
 		CFCBFB5D2524FDA30094C1EC /* TestTealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716C7D1B1DDBC3A500512C99 /* TestTealiumHelper.swift */; };
 		CFCBFCBF2524FF0D0094C1EC /* MockTagManagementWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7F94782464A03200399774 /* MockTagManagementWebView.swift */; };
-		CFD2E8BE262E0D0B00B38AD9 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CFD2E8BD262E0D0B00B38AD9 /* Info.plist */; };
 		CFD64B9C255F56E500A7137C /* TimedEventSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD64B9B255F56E500A7137C /* TimedEventSchedulerTests.swift */; };
 		CFD64B9D255F56E500A7137C /* TimedEventSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD64B9B255F56E500A7137C /* TimedEventSchedulerTests.swift */; };
 		CFD64B9E255F56E500A7137C /* TimedEventSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD64B9B255F56E500A7137C /* TimedEventSchedulerTests.swift */; };
@@ -1645,6 +1645,7 @@
 				CF8807A12554BB3B0020E1B2 /* TealiumAttribution.framework in Frameworks */,
 				CF8807C12554BB3B0020E1B2 /* TealiumVisitorService.framework in Frameworks */,
 				CF8807B12554BB3B0020E1B2 /* TealiumLifecycle.framework in Frameworks */,
+				CFB6B4922677C47C00D62D87 /* TealiumSwiftUI in Frameworks */,
 				CF8807B52554BB3B0020E1B2 /* TealiumLocation.framework in Frameworks */,
 				CF8807BD2554BB3B0020E1B2 /* TealiumTagManagement.framework in Frameworks */,
 				CF8807A92554BB3B0020E1B2 /* TealiumCollect.framework in Frameworks */,
@@ -2882,6 +2883,9 @@
 				CF8807C42554BB3B0020E1B2 /* PBXTargetDependency */,
 			);
 			name = iOSTealiumTest;
+			packageProductDependencies = (
+				CFB6B4912677C47C00D62D87 /* TealiumSwiftUI */,
+			);
 			productName = iOSTealiumTest;
 			productReference = CF8805742554B74B0020E1B2 /* iOSTealiumTest.app */;
 			productType = "com.apple.product-type.application";
@@ -3643,6 +3647,7 @@
 			);
 			mainGroup = 7182DD001D77492D0001A95B;
 			packageReferences = (
+				CFB6B4902677C47C00D62D87 /* XCRemoteSwiftPackageReference "tealium-swift-ui" */,
 			);
 			productRefGroup = 7182DD0A1D77492D0001A95B /* Products */;
 			projectDirPath = "";
@@ -3708,7 +3713,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CFD2E8BE262E0D0B00B38AD9 /* Info.plist in Resources */,
 				CF880A302554BD8D0020E1B2 /* Preview Assets.xcassets in Resources */,
 				CF880A172554BD8A0020E1B2 /* Assets.xcassets in Resources */,
 			);
@@ -8342,6 +8346,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CFB6B4902677C47C00D62D87 /* XCRemoteSwiftPackageReference "tealium-swift-ui" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/christinasund/tealium-swift-ui";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CFB6B4912677C47C00D62D87 /* TealiumSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFB6B4902677C47C00D62D87 /* XCRemoteSwiftPackageReference "tealium-swift-ui" */;
+			productName = TealiumSwiftUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 7182DD011D77492D0001A95B /* Project object */;
 }
