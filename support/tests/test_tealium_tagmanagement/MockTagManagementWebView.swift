@@ -7,7 +7,9 @@
 
 @testable import TealiumCore
 @testable import TealiumTagManagement
+#if os(iOS)
 import WebKit
+#endif
 
 class MockTagManagementWebView: TagManagementProtocol {
 

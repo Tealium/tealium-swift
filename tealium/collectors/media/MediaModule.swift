@@ -4,8 +4,9 @@
 //
 //  Copyright © 2021 Tealium, Inc. All rights reserved.
 //
-
+#if !os(tvOS) && !os(macOS)
 import UIKit
+#endif
 #if media
 import TealiumCore
 #endif
@@ -24,7 +25,9 @@ public class MediaModule: Collector {
                          completion: ((Result<Bool, Error>, [String : Any]?)) -> Void) {
         self.config = context.config
         self.delegate = delegate
+        #if !os(tvOS) && !os(macOS)
         Tealium.lifecycleListeners.addDelegate(delegate: self)
+        #endif
     }
     
     /// Creates a `MediaSession` for a given tracking type
@@ -37,7 +40,7 @@ public class MediaModule: Collector {
     }
     
 }
-
+#if !os(tvOS) && !os(macOS)
 extension MediaModule: TealiumLifecycleEvents {
     
     #if os(iOS)
@@ -78,7 +81,7 @@ extension MediaModule: TealiumLifecycleEvents {
             let pInfo = ProcessInfo()
             pInfo.performExpiringActivity(withReason: "Tealium Swift: End Media Session") { willBeSuspended in
                 if !willBeSuspended {
-                    TealiumQueues.backgroundSerialQueue.asyncAfter(deadline: now() + config.backgroundMediaAutoEndSessionTime) {
+                    TealiumQueues.backgroundSerialQueue.asyncAfter(deadline: .now() + self.config.backgroundMediaAutoEndSessionTime) {
                         self.sendEndSessionInBackground(session)
                     }
                 }
@@ -97,7 +100,6 @@ extension MediaModule: TealiumLifecycleEvents {
             session.backgroundStatusResumed = true
         }
     }
-    
     public func launch(at date: Date) { }
     
     func sendEndSessionInBackground(_ session: MediaSession) {
@@ -106,4 +108,4 @@ extension MediaModule: TealiumLifecycleEvents {
         }
     }
 }
-
+#endif

@@ -37,7 +37,7 @@ CATALYST_ARCHIVE="ios-catalyst.xcarchive"
 function define_product_name {
     case $1 in
         *"$LATEST_MAJOR"*)
-            PRODUCT_NAME=(TealiumCore TealiumAttribution TealiumAutotracking TealiumCollect TealiumLifecycle TealiumLocation TealiumRemoteCommands TealiumTagManagement TealiumVisitorService)
+            PRODUCT_NAME=(TealiumCore TealiumAttribution TealiumAutotracking TealiumCollect TealiumLifecycle TealiumLocation TealiumMedia TealiumRemoteCommands TealiumTagManagement TealiumVisitorService)
             ;;
         *"$PREVIOUS_MAJOR"*)
             PRODUCT_NAME=(TealiumCore TealiumAppData TealiumAttribution TealiumAutotracking TealiumCollect TealiumConsentManager TealiumCrash TealiumDelegate TealiumDeviceData TealiumDispatchQueue TealiumLifecycle TealiumLocation TealiumLogger TealiumPersistentData TealiumRemoteCommands TealiumTagManagement TealiumVisitorService TealiumVolatileData)
@@ -174,6 +174,8 @@ clean_build_folder
 # do the work
 create_archives "$1"
 zip_xcframeworks
+
+mv "${XCFRAMEWORK_PATH}.zip" "../"
 
 echo ""
 echo "Done! Upload ${XCFRAMEWORK_PATH}.zip to GitHub when you create the release."

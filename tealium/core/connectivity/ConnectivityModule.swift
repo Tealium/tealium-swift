@@ -44,6 +44,17 @@ public class ConnectivityModule: Collector, ConnectivityDelegate {
 
     var connectivityMonitor: ConnectivityMonitorProtocol?
     var connectivityDelegates = TealiumMulticastDelegate<ConnectivityDelegate>()
+    
+    /// Provided for unit testing￼.
+    ///
+    /// - Parameter connectivityMonitor: Class instance conforming to `ConnectivityMonitorProtocol`
+    convenience init (context: TealiumContext,
+                      delegate: ModuleDelegate?,
+                      diskStorage: TealiumDiskStorageProtocol?,
+                      connectivityMonitor: ConnectivityMonitorProtocol) {
+        self.init(context: context, delegate: delegate, diskStorage: diskStorage) { _ in }
+        self.connectivityMonitor = connectivityMonitor
+    }
 
     required public init(context: TealiumContext,
                          delegate: ModuleDelegate?,
