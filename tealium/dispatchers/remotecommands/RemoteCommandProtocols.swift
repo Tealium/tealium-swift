@@ -48,7 +48,7 @@ public protocol RemoteCommandResponseProtocol {
     var hasCustomCompletionHandler: Bool { get set }
 }
 
-public protocol RemoteCommandDelegate: class {
+public protocol RemoteCommandDelegate: AnyObject {
 
     /// Triggers the completion block registered for a specific remote command
     ///

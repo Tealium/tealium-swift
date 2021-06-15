@@ -24,7 +24,6 @@ enum TagManagementConfigKey {
     static let overrideURL = "tagmanagement_override_url"
     static let delegate = "delegate"
     static let uiview = "ui_view"
-    static let cookieObserver = "cookie_observer"
     static let processPool = "wk_process_pool"
     static let wkConfig = "wk_config"
 }

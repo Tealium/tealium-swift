@@ -19,7 +19,7 @@ class MockTagManagementWebView: TagManagementProtocol {
         self.success = success
     }
 
-    func enable(webviewURL: URL?, delegates: [WKNavigationDelegate]?, shouldAddCookieObserver: Bool, view: UIView?, completion: ((Bool, Error?) -> Void)?) {
+    func enable(webviewURL: URL?, delegates: [WKNavigationDelegate]?, view: UIView?, completion: ((Bool, Error?) -> Void)?) {
 
     }
 

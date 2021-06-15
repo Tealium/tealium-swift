@@ -136,6 +136,51 @@ class ConsentManagerModuleTests: XCTestCase {
         let purge = module.shouldPurge(request: track)
         XCTAssertTrue(purge)
     }
+    
+    func testShouldNotQueueWhenIsAuditEvent() {
+        let auditEvents = [ConsentKey.consentPartialEventName,
+                           ConsentKey.consentGrantedEventName,
+                           ConsentKey.consentDeclinedEventName,
+                           ConsentKey.gdprConsentCookieEventName,
+                           ConsentKey.ccpaCookieEventName]
+        let module = createModule(with: config)
+        module.consentManager?.userConsentStatus = .notConsented
+        auditEvents.forEach {
+            track = TealiumTrackRequest(data: ["tealium_event": $0])
+            let queue = module.shouldQueue(request: track)
+            XCTAssertFalse(queue.0)
+        }
+    }
+    
+    func testShouldNotDropWhenIsAuditEvent() {
+        let auditEvents = [ConsentKey.consentPartialEventName,
+                           ConsentKey.consentGrantedEventName,
+                           ConsentKey.consentDeclinedEventName,
+                           ConsentKey.gdprConsentCookieEventName,
+                           ConsentKey.ccpaCookieEventName]
+        let module = createModule(with: config)
+        module.consentManager?.userConsentStatus = .notConsented
+        auditEvents.forEach {
+            track = TealiumTrackRequest(data: ["tealium_event": $0])
+            let drop = module.shouldDrop(request: track)
+            XCTAssertFalse(drop)
+        }
+    }
+    
+    func testShouldNotPurgeWhenIsAuditEvent() {
+        let auditEvents = [ConsentKey.consentPartialEventName,
+                           ConsentKey.consentGrantedEventName,
+                           ConsentKey.consentDeclinedEventName,
+                           ConsentKey.gdprConsentCookieEventName,
+                           ConsentKey.ccpaCookieEventName]
+        let module = createModule(with: config)
+        module.consentManager?.userConsentStatus = .notConsented
+        auditEvents.forEach {
+            track = TealiumTrackRequest(data: ["tealium_event": $0])
+            let purge = module.shouldPurge(request: track)
+            XCTAssertFalse(purge)
+        }
+    }
 
     func testShouldNotPurgeWhenTrackingAllowed() {
         module.consentManager?.userConsentStatus = .consented
@@ -166,7 +211,7 @@ class ConsentManagerModuleTests: XCTestCase {
                                               "cookiematch",
                                               "misc"],
             "test": "track",
-            "consent_policy": "gdpr"
+            "policy": "gdpr"
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
         var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
@@ -183,7 +228,7 @@ class ConsentManagerModuleTests: XCTestCase {
             ConsentKey.trackingConsentedKey: "notConsented",
             ConsentKey.consentCategoriesKey: [],
             "test": "track",
-            "consent_policy": "gdpr"
+            "policy": "gdpr"
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
         var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
@@ -201,7 +246,7 @@ class ConsentManagerModuleTests: XCTestCase {
             ConsentKey.trackingConsentedKey: TealiumValue.unknown,
             ConsentKey.consentCategoriesKey: [],
             "test": "track",
-            "consent_policy": "gdpr"
+            "policy": "gdpr"
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
         var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
@@ -219,7 +264,7 @@ class ConsentManagerModuleTests: XCTestCase {
                                               TealiumConsentCategories.crm.rawValue,
                                               TealiumConsentCategories.engagement.rawValue],
             "test": "track",
-            "consent_policy": "gdpr"
+            "policy": "gdpr"
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
         var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
@@ -233,7 +278,7 @@ class ConsentManagerModuleTests: XCTestCase {
         let module = createModule(with: config, dataLayer: MockMigratedDataLayerNoData())
         let expected: [String: Any] = [
             "test": "track",
-            "consent_policy": "ccpa",
+            "policy": "ccpa",
             "do_not_sell": false
         ]
         track = TealiumTrackRequest(data: ["test": "track"])

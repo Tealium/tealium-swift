@@ -9,7 +9,7 @@
 import Foundation
 import StoreKit
 
-public protocol Attributable: class {
+public protocol Attributable: AnyObject {
     @available(iOS 11.3, *)
     static func registerAppForAdNetworkAttribution()
     @available(iOS 14.0, *)

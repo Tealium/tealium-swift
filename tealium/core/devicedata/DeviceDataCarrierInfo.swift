@@ -13,6 +13,11 @@ import CoreTelephony
 import Foundation
 
 extension DeviceData {
+    
+    #if os(iOS) && !targetEnvironment(macCatalyst)
+    private static let networkInfo = CTTelephonyNetworkInfo()
+    #endif
+    
     /// - Returns: `[String: String]` containing current network carrier info
     class var carrierInfo: [String: String] {
         // only available on iOS
@@ -38,15 +43,11 @@ extension DeviceData {
             DeviceDataKey.carrier: "macCatalyst"
         ]
         #else
-        let networkInfo = CTTelephonyNetworkInfo()
         var carrier: CTCarrier?
         if #available(iOS 12.1, *) {
             if let newCarrier = networkInfo.serviceSubscriberCellularProviders {
                 // pick up the first carrier in the list
-                for currentCarrier in newCarrier {
-                    carrier = currentCarrier.value
-                    break
-                }
+                carrier = newCarrier.first?.value
             }
         } else {
             carrier = networkInfo.subscriberCellularProvider

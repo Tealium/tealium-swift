@@ -43,12 +43,12 @@
 		CF2E31692376359A000CEDD3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF2E31682376359A000CEDD3 /* Preview Assets.xcassets */; };
 		CF2E316C2376359A000CEDD3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF2E316A2376359A000CEDD3 /* LaunchScreen.storyboard */; };
 		CF2E3171237635C3000CEDD3 /* TealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2E312823762361000CEDD3 /* TealiumHelper.swift */; };
-		CFB6B54F26792F5C00D62D87 /* CustomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB6B54926792F5C00D62D87 /* CustomAlert.swift */; };
-		CFB6B55026792F5C00D62D87 /* TealiumInvalidView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB6B54A26792F5C00D62D87 /* TealiumInvalidView.swift */; };
-		CFB6B55126792F5C00D62D87 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB6B54B26792F5C00D62D87 /* UIColor+Hex.swift */; };
-		CFB6B55226792F5C00D62D87 /* ButtonViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB6B54C26792F5C00D62D87 /* ButtonViews.swift */; };
-		CFB6B55326792F5C00D62D87 /* TealiumTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB6B54D26792F5C00D62D87 /* TealiumTextField.swift */; };
-		CFB6B55426792F5C00D62D87 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB6B54E26792F5C00D62D87 /* Colors.swift */; };
+		CFB6B52A2679114000D62D87 /* TealiumInvalidView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB6B5242679114000D62D87 /* TealiumInvalidView.swift */; };
+		CFB6B52B2679114000D62D87 /* ButtonViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB6B5252679114000D62D87 /* ButtonViews.swift */; };
+		CFB6B52C2679114000D62D87 /* TealiumTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB6B5262679114000D62D87 /* TealiumTextField.swift */; };
+		CFB6B52D2679114000D62D87 /* CustomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB6B5272679114000D62D87 /* CustomAlert.swift */; };
+		CFB6B52E2679114000D62D87 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB6B5282679114000D62D87 /* UIColor+Hex.swift */; };
+		CFB6B52F2679114000D62D87 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB6B5292679114000D62D87 /* Colors.swift */; };
 		CFD4E03324B3DED900A8C0CA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD4E03224B3DED900A8C0CA /* AppDelegate.swift */; };
 		CFD4E03524B3DED900A8C0CA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD4E03424B3DED900A8C0CA /* SceneDelegate.swift */; };
 		CFD4E03724B3DED900A8C0CA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD4E03624B3DED900A8C0CA /* ContentView.swift */; };
@@ -176,12 +176,12 @@
 		CF2E316B2376359A000CEDD3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CF2E316D2376359A000CEDD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CF2E3172237639BF000CEDD3 /* TealiumSwiftExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TealiumSwiftExample.entitlements; sourceTree = "<group>"; };
-		CFB6B54926792F5C00D62D87 /* CustomAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAlert.swift; sourceTree = "<group>"; };
-		CFB6B54A26792F5C00D62D87 /* TealiumInvalidView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumInvalidView.swift; sourceTree = "<group>"; };
-		CFB6B54B26792F5C00D62D87 /* UIColor+Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
-		CFB6B54C26792F5C00D62D87 /* ButtonViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonViews.swift; sourceTree = "<group>"; };
-		CFB6B54D26792F5C00D62D87 /* TealiumTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumTextField.swift; sourceTree = "<group>"; };
-		CFB6B54E26792F5C00D62D87 /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		CFB6B5242679114000D62D87 /* TealiumInvalidView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumInvalidView.swift; sourceTree = "<group>"; };
+		CFB6B5252679114000D62D87 /* ButtonViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonViews.swift; sourceTree = "<group>"; };
+		CFB6B5262679114000D62D87 /* TealiumTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumTextField.swift; sourceTree = "<group>"; };
+		CFB6B5272679114000D62D87 /* CustomAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAlert.swift; sourceTree = "<group>"; };
+		CFB6B5282679114000D62D87 /* UIColor+Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
+		CFB6B5292679114000D62D87 /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		CFD4E03024B3DED900A8C0CA /* TealiumJSInterfaceExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TealiumJSInterfaceExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFD4E03224B3DED900A8C0CA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CFD4E03424B3DED900A8C0CA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -322,7 +322,7 @@
 				CF2E311A237622AB000CEDD3 /* Assets.xcassets */,
 				CF2E311F237622AB000CEDD3 /* LaunchScreen.storyboard */,
 				CF2E3122237622AB000CEDD3 /* Info.plist */,
-				CFB6B54826792F4A00D62D87 /* Supporting Views */,
+				CFB6B5232679110900D62D87 /* Supporting Views */,
 				CF2E311C237622AB000CEDD3 /* Preview Content */,
 			);
 			path = TealiumSwiftExample;
@@ -391,15 +391,15 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		CFB6B54826792F4A00D62D87 /* Supporting Views */ = {
+		CFB6B5232679110900D62D87 /* Supporting Views */ = {
 			isa = PBXGroup;
 			children = (
-				CFB6B54C26792F5C00D62D87 /* ButtonViews.swift */,
-				CFB6B54E26792F5C00D62D87 /* Colors.swift */,
-				CFB6B54926792F5C00D62D87 /* CustomAlert.swift */,
-				CFB6B54A26792F5C00D62D87 /* TealiumInvalidView.swift */,
-				CFB6B54D26792F5C00D62D87 /* TealiumTextField.swift */,
-				CFB6B54B26792F5C00D62D87 /* UIColor+Hex.swift */,
+				CFB6B5252679114000D62D87 /* ButtonViews.swift */,
+				CFB6B5292679114000D62D87 /* Colors.swift */,
+				CFB6B5272679114000D62D87 /* CustomAlert.swift */,
+				CFB6B5242679114000D62D87 /* TealiumInvalidView.swift */,
+				CFB6B5262679114000D62D87 /* TealiumTextField.swift */,
+				CFB6B5282679114000D62D87 /* UIColor+Hex.swift */,
 			);
 			path = "Supporting Views";
 			sourceTree = "<group>";
@@ -889,9 +889,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFB6B52B2679114000D62D87 /* ButtonViews.swift in Sources */,
+				CFB6B52F2679114000D62D87 /* Colors.swift in Sources */,
+				CFB6B52A2679114000D62D87 /* TealiumInvalidView.swift in Sources */,
 				CF2E3115237622A9000CEDD3 /* AppDelegate.swift in Sources */,
-				CFB6B55426792F5C00D62D87 /* Colors.swift in Sources */,
-				CFB6B55126792F5C00D62D87 /* UIColor+Hex.swift in Sources */,
+				CFB6B52D2679114000D62D87 /* CustomAlert.swift in Sources */,
+				CFB6B52C2679114000D62D87 /* TealiumTextField.swift in Sources */,
 				CF2E3117237622A9000CEDD3 /* SceneDelegate.swift in Sources */,
 				CF290C352523A4CA00BDCAE6 /* WidgetExample.intentdefinition in Sources */,
 				CFB6B54F26792F5C00D62D87 /* CustomAlert.swift in Sources */,
@@ -899,7 +902,7 @@
 				CF2E3119237622A9000CEDD3 /* ContentView.swift in Sources */,
 				CFB6B55026792F5C00D62D87 /* TealiumInvalidView.swift in Sources */,
 				CF2E312923762361000CEDD3 /* TealiumHelper.swift in Sources */,
-				CFB6B55226792F5C00D62D87 /* ButtonViews.swift in Sources */,
+				CFB6B52E2679114000D62D87 /* UIColor+Hex.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

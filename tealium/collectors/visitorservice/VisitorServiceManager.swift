@@ -10,7 +10,7 @@ import Foundation
 import TealiumCore
 #endif
 
-public protocol VisitorServiceDelegate: class {
+public protocol VisitorServiceDelegate: AnyObject {
     func didUpdate(visitorProfile: TealiumVisitorProfile)
 }
 

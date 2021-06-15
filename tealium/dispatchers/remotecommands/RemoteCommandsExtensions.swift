@@ -121,18 +121,7 @@ extension URLRequest {
 }
 
 public extension String {
-
-    /// URL initializer does not actually validate web addresses successfully (it's too permissive), so this additional check is required￼.
-    ///
-    /// - Returns: `Bool` `true` if URL is a valid web address
-    var isValidUrl: Bool {
-        let urlRegexPattern = "^(https?://)?(www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z0-9]{0,61}[a-z0-9]\\.[a-z]{2,6}(/[-\\w@\\+\\.~#\\?&/=%]*)?$"
-        guard let validURLRegex = try? NSRegularExpression(pattern: urlRegexPattern, options: []) else {
-            return false
-        }
-        return validURLRegex.rangeOfFirstMatch(in: self, options: [], range: NSRange(self.startIndex..., in: self)).location != NSNotFound
-    }
-
+    
     /// Adds the key _cb= to the end of the url with a random number to clear the cached file from the CDN
     var cacheBuster: String {
         return ("\(self)?_cb=\(Int.random(in: 1...10_000))")

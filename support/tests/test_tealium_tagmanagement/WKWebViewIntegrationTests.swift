@@ -43,7 +43,7 @@ class WKWebViewIntegrationTests: XCTestCase {
 
     func testEnableWebView() {
         let expectation = self.expectation(description: "testEnableWebView")
-        tagManagementWKWebView.enable(webviewURL: testURL, delegates: nil, shouldAddCookieObserver: true, view: nil) { _, _ in
+        tagManagementWKWebView.enable(webviewURL: testURL, delegates: nil, view: nil) { _, _ in
             XCTAssertNotNil(self.tagManagementWKWebView.webview, "Webview instance was unexpectedly nil")
             expectation.fulfill()
         }
@@ -55,7 +55,7 @@ class WKWebViewIntegrationTests: XCTestCase {
         config.webviewProcessPool = WKWebViewIntegrationTests.processPool
         let webview = TagManagementWKWebView(config: config, delegate: TagManagementModuleDelegate())
         let expectation = self.expectation(description: "testEnableWebView")
-        webview.enable(webviewURL: testURL, delegates: nil, shouldAddCookieObserver: true, view: nil) { _, _ in
+        webview.enable(webviewURL: testURL, delegates: nil, view: nil) { _, _ in
             let originalAddress = Unmanaged.passUnretained(WKWebViewIntegrationTests.processPool).toOpaque()
             let moduleAddress = Unmanaged.passUnretained(webview.webview!.configuration.processPool).toOpaque()
             XCTAssertEqual(originalAddress, moduleAddress)
@@ -68,7 +68,7 @@ class WKWebViewIntegrationTests: XCTestCase {
         let config = self.config.copy
         let webview = TagManagementWKWebView(config: config, delegate: TagManagementModuleDelegate())
         let expectation = self.expectation(description: "testEnableWebView")
-        webview.enable(webviewURL: testURL, delegates: nil, shouldAddCookieObserver: true, view: nil) { _, _ in
+        webview.enable(webviewURL: testURL, delegates: nil, view: nil) { _, _ in
             let originalAddress = Unmanaged.passUnretained(WKWebViewIntegrationTests.processPool).toOpaque()
             let moduleAddress = Unmanaged.passUnretained(webview.webview!.configuration.processPool).toOpaque()
             XCTAssertNotEqual(originalAddress, moduleAddress)
@@ -82,7 +82,7 @@ class WKWebViewIntegrationTests: XCTestCase {
         config.webviewConfig = WKWebViewIntegrationTests.wkConfig
         let webview = TagManagementWKWebView(config: config, delegate: TagManagementModuleDelegate())
         let expectation = self.expectation(description: "testEnableWebView")
-        webview.enable(webviewURL: testURL, delegates: nil, shouldAddCookieObserver: true, view: nil) { _, _ in
+        webview.enable(webviewURL: testURL, delegates: nil, view: nil) { _, _ in
             let originalAddress = Unmanaged.passUnretained(WKWebViewIntegrationTests.processPool).toOpaque()
             let moduleAddress = Unmanaged.passUnretained(webview.webview!.configuration.processPool).toOpaque()
             XCTAssertEqual(originalAddress, moduleAddress)
@@ -97,7 +97,7 @@ class WKWebViewIntegrationTests: XCTestCase {
         let config = self.config.copy
         let webview = TagManagementWKWebView(config: config, delegate: TagManagementModuleDelegate())
         let expectation = self.expectation(description: "testEnableWebView")
-        webview.enable(webviewURL: testURL, delegates: nil, shouldAddCookieObserver: true, view: nil) { _, _ in
+        webview.enable(webviewURL: testURL, delegates: nil, view: nil) { _, _ in
             let originalAddress = Unmanaged.passUnretained(WKWebViewIntegrationTests.processPool).toOpaque()
             let moduleAddress = Unmanaged.passUnretained(webview.webview!.configuration.processPool).toOpaque()
             XCTAssertNotEqual(originalAddress, moduleAddress)
@@ -109,7 +109,7 @@ class WKWebViewIntegrationTests: XCTestCase {
     }
 
     func testDisableWebView() {
-        tagManagementWKWebView.enable(webviewURL: testURL, delegates: nil, shouldAddCookieObserver: true, view: nil, completion: nil)
+        tagManagementWKWebView.enable(webviewURL: testURL, delegates: nil, view: nil, completion: nil)
         tagManagementWKWebView.disable()
         XCTAssertNil(tagManagementWKWebView.webview, "WKWebView instance did not successfully deinit")
     }
@@ -121,7 +121,7 @@ class WKWebViewIntegrationTests: XCTestCase {
                         {\n  "test_track" : "track me"\n}
                         """
         let expectedJS = "utag.track(\'link\',\(dataString))"
-        tagManagementWKWebView.enable(webviewURL: testURL, delegates: nil, shouldAddCookieObserver: true, view: nil, completion: nil)
+        tagManagementWKWebView.enable(webviewURL: testURL, delegates: nil, view: nil, completion: nil)
         tagManagementWKWebView.track(data) { _, info, error in
             XCTAssertNil(error, "Error returned from track call")
             if let jsFromInfoDictionary = info[TagManagementKey.jsCommand] as? String,
@@ -137,7 +137,7 @@ class WKWebViewIntegrationTests: XCTestCase {
     func testWebViewStateDidChange() {
         let expectation = self.expectation(description: "testWebViewStateDidChange")
         XCTAssertFalse(tagManagementWKWebView.isWebViewReady, "Webview should not be ready yet; webview has not been enabled")
-        tagManagementWKWebView.enable(webviewURL: testURL, delegates: nil, shouldAddCookieObserver: true, view: nil) { _, _ in
+        tagManagementWKWebView.enable(webviewURL: testURL, delegates: nil, view: nil) { _, _ in
             XCTAssertTrue(self.tagManagementWKWebView.isWebViewReady, "Webview should be ready, but was found to be nil")
             self.tagManagementWKWebView.webviewStateDidChange(.loadFailure, withError: nil)
             XCTAssertFalse(self.tagManagementWKWebView.isWebViewReady, "Webview should not be ready - failure condition expected")
@@ -156,38 +156,6 @@ class WKWebViewIntegrationTests: XCTestCase {
         if let actualJS = data.tealiumJavaScriptTrackCall {
             XCTAssertEqual(expectedJS, actualJS, "")
         }
-    }
-
-    func testGetSetHasMigrated() {
-        tagManagementWKWebView.setHasMigrated(userDefaults: userDefaults)
-        // manual check of userDefaults
-        if let hasMigrated = userDefaults?.bool(forKey: "com.tealium.tagmanagement.cookiesMigrated") {
-            XCTAssertTrue(hasMigrated, "Migration flag was not set correctly")
-            // API check of userDefaults
-            XCTAssertTrue(tagManagementWKWebView.getHasMigrated(userDefaults: userDefaults), "GetHasMigrated should return true")
-        } else {
-            XCTFail("Migrated flag not found in userDefaults")
-        }
-    }
-
-    // integration test - tests setting cookies on real webview
-    func testMigrateCookies() {
-        let expectation = self.expectation(description: "testMigrateCookies")
-        let myCookieStorage = MyCookieStorage.shared
-        WKWebsiteDataStore.default().httpCookieStore.add(self)
-        let config = WKWebViewConfiguration()
-        // we don't want persistent cookies interfering with the test
-        config.websiteDataStore = WKWebsiteDataStore.nonPersistent()
-        let webview = WKWebView(frame: .zero, configuration: config)
-        tagManagementWKWebView.migrateCookies(forWebView: webview, withCookieProvider: myCookieStorage, userDefaults: userDefaults) {
-            webview.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
-                cookies.forEach { cookie in
-                    XCTAssertEqual(cookie.name, "test", "Expected cookie could not be found")
-                    expectation.fulfill()
-                }
-            }
-        }
-        self.wait(for: [expectation], timeout: 5.0)
     }
 
     func testDispatchTrackCreatesTrackRequest() {
@@ -223,38 +191,6 @@ class WKWebViewIntegrationTests: XCTestCase {
         wait(for: [expect], timeout: 2.0)
     }
 
-}
-
-class MyCookieStorage: TealiumCookieProvider {
-    static var shared: TealiumCookieProvider = MyCookieStorage()
-
-    public var cookies: [HTTPCookie]? = [HTTPCookie]()
-
-    private init() {
-        let cookie = HTTPCookie(properties: [
-            .domain: "https://tags.tiqcdn.com",
-            HTTPCookiePropertyKey.path: "/",
-            HTTPCookiePropertyKey.name: "test",
-            HTTPCookiePropertyKey.value: "test",
-            HTTPCookiePropertyKey.secure: "TRUE",
-            HTTPCookiePropertyKey.expires: NSDate(timeIntervalSinceNow: TimeInterval(60 * 60 * 24 * 365))
-        ])
-        if let cookie = cookie {
-            cookies?.append(cookie)
-        }
-    }
-}
-
-@available(iOS 11.0, *)
-extension WKWebViewIntegrationTests: WKHTTPCookieStoreObserver {
-    public func cookiesDidChange(in cookieStore: WKHTTPCookieStore) {
-        DispatchQueue.main.async {
-            cookieStore.getAllCookies { _ in
-                // this exists purely to work around an issue where cookies are not properly synced to WKWebView instances
-                print("Cookie Monster")
-            }
-        }
-    }
 }
 
 @available(iOS 11.0, *)
