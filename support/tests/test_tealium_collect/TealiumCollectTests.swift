@@ -64,8 +64,8 @@ class TealiumCollectTests: XCTestCase {
     func testInitWithValidURLOverrides() {
         // invalid url
         let config = testTealiumConfig.copy
-        config.overrideCollectURL = "https://collect-eu-west-1.tealiumiq.com/event"
-        config.overrideCollectBatchURL = "https://collect-us-east-1.tealiumiq.com/bulk-event"
+        config.overrideCollectURL = "https://collect-eu-west-1.tealiumiq.com:445/event"
+        config.overrideCollectBatchURL = "https://collect-us-east-1.tealiumiq.com:445/bulk-event"
         
         let dispatcher = CollectEventDispatcher(config: config) { result in
             switch result.0 {
@@ -75,8 +75,134 @@ class TealiumCollectTests: XCTestCase {
                 break
             }
         }
-        XCTAssertEqual(dispatcher.singleEventDispatchURL, "https://collect-eu-west-1.tealiumiq.com/event")
-        XCTAssertEqual(dispatcher.batchEventDispatchURL, "https://collect-us-east-1.tealiumiq.com/bulk-event")
+        XCTAssertEqual(dispatcher.singleEventDispatchURL, "https://collect-eu-west-1.tealiumiq.com:445/event")
+        XCTAssertEqual(dispatcher.batchEventDispatchURL, "https://collect-us-east-1.tealiumiq.com:445/bulk-event")
+        
+    }
+    
+    func testIsValidURL() {
+        
+        let badURLs = [
+            "Collect",
+            "xfdufhdugh.sdfsdfn",
+            "tealium",
+            "212345.6462",
+            "1",
+            "12",
+            "127",
+            "127.",
+            "127.0",
+            "127.0.0",
+            "127.0.0.",
+            "127.0.0.1:",
+            "127.0.0.1:123456",
+            "file:127.0.0.1",
+            "html://127.0.0.1",
+            "http:127.0.0.1",
+            "httpd://127.0.0.1",
+            "file:127.0.0.1",
+            "https:127.0.0.1",
+            "htmls://127.0.0.1",
+            "htts://127.0.0.1",
+            "hello@hello.com",
+            "http://hello@hello.com",
+            "http://google.com@hello",
+            "file:c:test",
+            "ftp://test.com/",
+            "git:test.com:path/to/res.git",
+            "ssh:google.com",
+            "http://localhost/",
+            "https://localhost/",
+            "localhost",
+        ]
+        
+        let goodUrls = [
+            "collect.tealiumiq.com",
+            "collect.tealiumiq.com/event",
+            "collect.tealiumiq.com/bulk-event",
+            "https://collect.tealiumiq.com/bulk-event",
+            "https://collect-eu-west-1.tealiumiq.com/event",
+            "https://collect-eu-west-1.tealiumiq.com/bulk-event",
+            "http://google.com/a/b/c/d/e/f/g",
+            "http://google.com/a/b/c?",
+            "http://google.com/a/b/c?z=2&y=hello",
+            "http://google.com/a/b/c?text=%2FHi%2F",
+            "https://google.com/a/b/c/d/e/f/g",
+            "https://google.com/a/b/c?",
+            "https://google.com/a/b/c?z=2&y=hello",
+            "https://google.com/a/b/c?text=%2FHi%2F",
+            "http://google.co",
+            "http://google.com",
+            "http://google.co.uk",
+            "http://www.google.co",
+            "http://www.google.com",
+            "http://www.google.co.uk",
+            "http://www.google.co.uk:12345",
+            "https://google.co",
+            "https://google.com",
+            "https://google.co.uk",
+            "https://www.google.co",
+            "https://www.google.com",
+            "https://www.google.co.uk",
+            "https://www.google.co.uk:12345",
+            "myMac.local",
+            "https://127.0.0.1:1",
+            "https://127.0.0.1:12",
+            "https://127.0.0.1:123",
+            "https://127.0.0.1:1234",
+            "https://127.0.0.1:12345",
+            "https://127.0.0.1:12345/",
+            "https://127.0.0.1:12345/a",
+            "https://127.0.0.1:12345/a/",
+            "https://127.0.0.1:12345/a/b",
+            "https://127.0.0.1:12345/a/b?",
+            "https://127.0.0.1:12345/a/b?z",
+            "https://127.0.0.1:12345/a/b?z=",
+            "https://127.0.0.1:12345/a/b?z=%",
+            "http://127.0.0.1:1",
+            "http://127.0.0.1:12",
+            "http://127.0.0.1:123",
+            "http://127.0.0.1:1234",
+            "http://127.0.0.1:12345",
+            "http://127.0.0.1:12345/",
+            "http://127.0.0.1:12345/a",
+            "http://127.0.0.1:12345/a/",
+            "http://127.0.0.1:12345/a/b",
+            "http://127.0.0.1:12345/a/b?",
+            "http://127.0.0.1:12345/a/b?z",
+            "http://127.0.0.1:12345/a/b?z=",
+            "http://127.0.0.1:12345/a/b?z=%",
+            "127.0.0.1:1",
+            "127.0.0.1:12",
+            "127.0.0.1:123",
+            "127.0.0.1:1234",
+            "127.0.0.1:12345",
+            "127.0.0.1:12345/",
+            "127.0.0.1:12345/a",
+            "127.0.0.1:12345/a/",
+            "127.0.0.1:12345/a/b",
+            "127.0.0.1:12345/a/b?",
+            "127.0.0.1:12345/a/b?z",
+            "127.0.0.1:12345/a/b?z=",
+            "127.0.0.1:12345/a/b?z=%",
+            "127.0.0.1",
+            "127.0.0.1/",
+            "127.0.0.1/a",
+            "127.0.0.1/a/",
+            "127.0.0.1/a/b",
+            "127.0.0.1/a/b?",
+            "127.0.0.1/a/b?z",
+            "127.0.0.1/a/b?z=",
+            "127.0.0.1/a/b?z=%"
+        ]
+        
+        badURLs.forEach {
+            XCTAssertFalse(CollectEventDispatcher.isValidUrl($0), "Unexpected Success for url: \($0)")
+        }
+        
+        goodUrls.forEach {
+            XCTAssertTrue(CollectEventDispatcher.isValidUrl($0), "Unexpected Failure for url: \($0)")
+        }
     }
     
     func testInitWithDomainOverrides() {
