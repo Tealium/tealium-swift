@@ -60,7 +60,6 @@ struct ContentView: View {
                     TealiumTextButton(title: "Reset Consent") {
                         TealiumHelper.shared.resetConsentPreferences()
                     }
-                    Spacer()
                 }
                 .navigationTitle("iOSTealiumTest")
                 .navigationBarTitleDisplayMode(.inline)
@@ -70,6 +69,7 @@ struct ContentView: View {
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
