@@ -275,7 +275,7 @@ class TimedEventSchedulerTests: XCTestCase {
             self.tealium?.zz_internal_modulesManager?.addDispatchValidator(mockTimedEventScheduler)
             self.tealium?.track(TealiumEvent("start_event"))
         }
-        TestTealiumHelper.delay {
+        TestTealiumHelper.delay(on: TealiumQueues.mainQueue) {
             XCTAssertEqual(mockTimedEventScheduler.shouldQueueCallCount, 1)
             XCTAssertEqual(mockTimedEventScheduler.startCallCount, 1)
         }
