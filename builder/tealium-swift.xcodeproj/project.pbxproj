@@ -7276,7 +7276,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.tealium.tealium-swift-tests";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -7309,7 +7309,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.tealium.tealium-swift-tests";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;

@@ -71,7 +71,7 @@ class TealiumConnectivityTests: XCTestCase {
         let expectation = self.expectation(description: "connection type")
         let connectivity = nwPathConnectivity
         // need to wait for NWPathMonitor callback to finish first
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             let data = connectivity.data!
 
             XCTAssertEqual(data[ConnectivityKey.connectionType] as! String, ConnectivityKey.connectionTypeWifi)
@@ -91,7 +91,7 @@ class TealiumConnectivityTests: XCTestCase {
         let expectation = self.expectation(description: "isConnected")
         let connectivity = nwPathConnectivity
         // need to wait for NWPathMonitor callback to finish first
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             connectivity.checkIsConnected { result in
                 switch result {
                 case .success(let isConnected):
