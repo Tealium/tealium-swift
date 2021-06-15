@@ -318,6 +318,7 @@ public struct Summary: Codable {
         case totalSeekTime = "media_total_seek_time"
         case sessionEndTime = "media_session_end_time"
     }
+
     
 }
 

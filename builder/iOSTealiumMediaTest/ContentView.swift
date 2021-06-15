@@ -7,7 +7,7 @@
 
 import SwiftUI
 import AVKit
-import TealiumSwift
+import TealiumMedia
 import TealiumSwiftUI
 
 struct ContentView: View {

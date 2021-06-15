@@ -196,42 +196,6 @@ class TealiumAttributionDataTests: XCTestCase {
         XCTAssertEqual("restricted", trackingAuthStatus, "Tracking Authorization Status was an unexpected value")
     }
 
-    @available(iOS 14, *)
-    func testTrackingEnabled_returnsTrueWhenTrackingAuthorized() {
-        var idManager = TealiumASIdentifierManager.shared
-        idManager.attManager = MockATTrackingManagerTrackingAuthorized()
-        TestTealiumHelper.delay {
-            XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "true")
-        }
-    }
-
-    @available(iOS 14, *)
-    func testTrackingEnabled_returnsFalseWhenTrackingDenied() {
-        var idManager = TealiumASIdentifierManager.shared
-        idManager.attManager = MockATTrackingManagerTrackingDenied()
-        TestTealiumHelper.delay {
-            XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "false")
-        }
-    }
-
-    @available(iOS 14, *)
-    func testTrackingEnabled_returnsFalseWhenTrackingRestricted() {
-        var idManager = TealiumASIdentifierManager.shared
-        idManager.attManager = MockATTrackingManagerTrackingRestricted()
-        TestTealiumHelper.delay {
-            XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "false")
-        }
-    }
-
-    @available(iOS 14, *)
-    func testTrackingEnabled_returnsFalseWhenTrackingNotDetermined() {
-        var idManager = TealiumASIdentifierManager.shared
-        idManager.attManager = MockATTrackingManagerTrackingNotDetermined()
-        TestTealiumHelper.delay {
-            XCTAssertEqual(idManager.isAdvertisingTrackingEnabled, "false")
-        }
-    }
-
 }
 
 public class TealiumASIdentifierManagerAdTrackingEnabled: TealiumASIdentifierManagerProtocol {

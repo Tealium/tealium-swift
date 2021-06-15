@@ -24,6 +24,7 @@ public enum ConsentKey {
 }
 
 public enum TealiumConsentCategories: String, Codable {
+
     case analytics = "analytics"
     case affiliates = "affiliates"
     case displayAds = "display_ads"
@@ -77,9 +78,10 @@ public enum TealiumConsentCategories: String, Codable {
     }
 }
 
-public enum TealiumConsentPolicy: String {
+public enum TealiumConsentPolicy {
     case ccpa
     case gdpr
+    case custom(ConsentPolicy.Type)
 }
 
 public enum TealiumConsentStatus: String, Codable {

@@ -8,7 +8,7 @@
 
 import Foundation
 import TealiumCore
-@testable import TealiumMedia
+import TealiumMedia
 
 class MockMediaService: MediaEventDispatcher {
     var delegate: ModuleDelegate?
