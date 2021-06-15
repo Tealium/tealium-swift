@@ -4,17 +4,7 @@
 //
 
 import Foundation
-import TealiumCollect
-import TealiumCore
-import TealiumLifecycle
-import TealiumMedia
-import TealiumVisitorService
-#if os(iOS)
-import TealiumAttribution
-import TealiumLocation
-import TealiumRemoteCommands
-import TealiumTagManagement
-#endif
+import TealiumSwift
 
 enum TealiumConfiguration {
     static let account = "tealiummobile"

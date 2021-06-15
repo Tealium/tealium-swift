@@ -9,15 +9,6 @@
           "revision": "5904551cf33e0c38831fdc56c6a2c9770eadc30d",
           "version": "0.2.25"
         }
-      },
-      {
-        "package": "TealiumSwiftUI",
-        "repositoryURL": "https://github.com/christinasund/tealium-swift-ui",
-        "state": {
-          "branch": null,
-          "revision": "47754f380843eb4c699c4520e35b7062b0217727",
-          "version": "1.0.0"
-        }
       }
     ]
   },

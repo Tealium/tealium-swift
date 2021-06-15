@@ -55,7 +55,7 @@ public class MediaContent: Codable {
         streamType: StreamType,
         mediaType: MediaType,
         qoe: QoE,
-        trackingType: TrackingType = .significant,
+        trackingType: TrackingType = .fullPlayback,
         milestoneInterval: Double = 5.0,
         contentCompletePercentage: Double? = nil,
         state: PlayerState? = nil,

@@ -2,8 +2,6 @@
 //  TealiumMediaExampleApp.swift
 //  TealiumMediaExample
 //
-//  Created by Christina Schell on 5/14/21.
-//
 
 import SwiftUI
 

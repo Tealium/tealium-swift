@@ -15,14 +15,14 @@ public struct MediaSessionFactory {
                        with delegate: ModuleDelegate?) -> MediaSession {
         let mediaService = MediaEventService(media: media, delegate: delegate)
         switch media.trackingType {
-        case .significant:
-            return SignificantEventMediaSession(with: mediaService)
-        case .heartbeat:
-            return HeartbeatMediaSession(with: mediaService)
+        case .fullPlayback:
+            return FullPlaybackMediaSession(with: mediaService)
+        case .interval:
+            return IntervalMediaSession(with: mediaService)
         case .milestone:
             return MilestoneMediaSession(with: mediaService, interval: mediaService.media.milestoneInterval ?? 5.0)
-        case .heartbeatMilestone:
-            return HeartbeatMilestoneMediaSession(with: mediaService, interval: 1.0)
+        case .intervalMilestone:
+            return IntervalMilestoneMediaSession(with: mediaService, interval: 1.0)
         case .summary:
             return SummaryMediaSession(with: mediaService)
         }

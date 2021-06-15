@@ -1,13 +1,11 @@
 //
 //  ContentView.swift
-//  iOSTealiumMediaTest
-//
-//  Created by Christina S on 1/14/21.
+//  TealiumMediaExample
 //
 
 import SwiftUI
 import AVKit
-import TealiumMedia
+import TealiumSwift
 
 struct ContentView: View {
     @State private var video = Video()

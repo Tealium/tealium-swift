@@ -31,10 +31,10 @@ public enum MediaType: String, Codable {
 }
 
 public enum TrackingType: String, Codable {
-    case heartbeat
+    case interval
     case milestone
-    case heartbeatMilestone = "heartbeat_and_milestone"
-    case significant
+    case intervalMilestone = "interval_and_milestone"
+    case fullPlayback = "full_playback"
     case summary
 }
 
@@ -86,7 +86,7 @@ public enum StandardMediaEvent: String {
     case chapterSkip = "media_chapter_skip"
     case chapterStart = "media_chapter_start"
     case sessionEnd = "media_session_end"
-    case heartbeat = "media_heartbeat"
+    case interval = "media_interval"
     case milestone = "media_milestone"
     case pause = "media_pause"
     case play = "media_play"
