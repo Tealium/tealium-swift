@@ -45,13 +45,18 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
         self.isDiskStorageEnabled = config.diskStorageEnabled
         let defaultDirectory = self.defaultDirectory
         currentDirectory = config.diskStorageDirectory ?? defaultDirectory
-        migrateFrom(.caches, to: .applicationSupport, moduleName: module)
+        // Migrate data from old cache location to Application Support to avoid data loss on OS upgrade
+        migrateFrom(.caches, to: currentDirectory, moduleName: module)
         // Provides userdefaults backing for critical data (e.g. appdata, consentmanager)
         if isCritical {
             self.defaultsStorage = UserDefaults(suiteName: filePath)
         }
     }
     
+    /// - Parameters:
+    ///     - from: `Disk.Directory` to migrate data from
+    ///     - to: `Disk.Directory` to migrate data from
+    ///     - moduleName: `String` name of the module for which to migrate the data
     func migrateFrom(_ from: Disk.Directory,
                      to: Disk.Directory,
                      moduleName: String) {
