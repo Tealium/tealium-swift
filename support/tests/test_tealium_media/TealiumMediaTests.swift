@@ -1512,7 +1512,6 @@ class TealiumMediaTests: XCTestCase {
     
     #if os(iOS)
     func testSleep_SetsBackgroundResumedToFalse_WhenBackgroundMediaTrackingEnabled() {
-        #if !os(tvOS) && !os(macOS)
         let config = TealiumConfig(account: "account",
                                    profile: "profile",
                                    environment: "env")
@@ -1554,10 +1553,8 @@ class TealiumMediaTests: XCTestCase {
         }
         wait(for: [expect], timeout: 3.5)
     }
-    #endif
     
     func testWake_SetsBackgroundResumedToTrue_WhenBackgroundMediaTrackingEnabled() {
-        #if !os(tvOS) && !os(macOS)
         let config = TealiumConfig(account: "account",
                                    profile: "profile",
                                    environment: "env")
@@ -1573,8 +1570,8 @@ class TealiumMediaTests: XCTestCase {
         
         module.wake()
         XCTAssertTrue(session.backgroundStatusResumed)
-        #endif
     }
+    #endif
     
     func testEnableBackgroundMediaTracking_IsDefault_WhenNotSet() {
         let config = TealiumConfig(account: "account",
