@@ -48,10 +48,7 @@ public class Disk {
 
         /// Put app-created support files in the <Application_Home>/Library/Application support directory. In general, this directory includes files that the app uses to run but that should remain hidden from the user. This directory can also include data files, configuration files, templates and modified versions of resources loaded from the app bundle.
         /// Files in this directory are automatically backed up by iCloud. To disable this feature for a specific file, use the .doNotBackup(:in:) method.
-        #if os(tvOS)
-        #else
         case applicationSupport
-        #endif
 
         /// Data that is used only temporarily should be stored in the <Application_Home>/tmp directory. Although these files are not backed up to iCloud, remember to delete those files when you are done with them so that they do not continue to consume space on the user's device.
         /// The system will periodically purge these files when your app is not running; therefore, you cannot rely on these files persisting after your app terminates.
@@ -68,10 +65,23 @@ public class Disk {
         public var pathDescription: String {
             switch self {
             #if os(tvOS)
+            case .applicationSupport:
+                let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory,
+                                                                   in: .userDomainMask).map(\.path).last ?? ""
+                
+                // Create app support directory for tvOS
+                if !FileManager.default.fileExists(atPath: appSupportDir,
+                                isDirectory: nil) {
+                    try? FileManager.default.createDirectory(atPath: appSupportDir,
+                                                                     withIntermediateDirectories: true,
+                                                                     attributes: nil)
+                }
+    
+                return appSupportDir
             #else
+            case .applicationSupport: return "<Application_Home>/Library/Application"
             case .documents: return "<Application_Home>/Documents"
             case .sharedContainer(let appGroupName): return "\(appGroupName)"
-            case .applicationSupport: return "<Application_Home>/Library/Application"
             #endif
             case .caches: return "<Application_Home>/Library/Caches"
             case .temporary: return "<Application_Home>/tmp"

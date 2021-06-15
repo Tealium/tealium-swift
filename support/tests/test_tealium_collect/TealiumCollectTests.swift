@@ -64,8 +64,8 @@ class TealiumCollectTests: XCTestCase {
     func testInitWithValidURLOverrides() {
         // invalid url
         let config = testTealiumConfig.copy
-        config.overrideCollectURL = "https://collect-eu-west-1.tealiumiq.com/event"
-        config.overrideCollectBatchURL = "https://collect-us-east-1.tealiumiq.com/bulk-event"
+        config.overrideCollectURL = "https://collect-eu-west-1.tealiumiq.com:445/event"
+        config.overrideCollectBatchURL = "https://collect-us-east-1.tealiumiq.com:445/bulk-event"
         
         let dispatcher = CollectEventDispatcher(config: config) { result in
             switch result.0 {
@@ -75,8 +75,9 @@ class TealiumCollectTests: XCTestCase {
                 break
             }
         }
-        XCTAssertEqual(dispatcher.singleEventDispatchURL, "https://collect-eu-west-1.tealiumiq.com/event")
-        XCTAssertEqual(dispatcher.batchEventDispatchURL, "https://collect-us-east-1.tealiumiq.com/bulk-event")
+        XCTAssertEqual(dispatcher.singleEventDispatchURL, "https://collect-eu-west-1.tealiumiq.com:445/event")
+        XCTAssertEqual(dispatcher.batchEventDispatchURL, "https://collect-us-east-1.tealiumiq.com:445/bulk-event")
+        
     }
     
     func testInitWithDomainOverrides() {
@@ -175,9 +176,9 @@ class TealiumCollectTests: XCTestCase {
 
     func testValidURL() {
         let validURL = "https://collect.tealiumiq.com/event/"
-        XCTAssertTrue(CollectEventDispatcher.isValidUrl(validURL), "isValidURL returned unexpected failure")
+        XCTAssertTrue(validURL.isValidUrl, "isValidURL returned unexpected failure")
         let invalidURL = "invalidURL"
-        XCTAssertFalse(CollectEventDispatcher.isValidUrl(invalidURL), "isValidURL returned unexpected success")
+        XCTAssertFalse(invalidURL.isValidUrl, "isValidURL returned unexpected success")
     }
 
     func testSendURLRequest() {

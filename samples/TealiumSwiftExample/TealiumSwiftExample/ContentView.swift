@@ -2,74 +2,73 @@
 //  ContentView.swift
 //  TealiumSwiftExample
 //
-//  Copyright © 2019 Tealium. All rights reserved.
+//  Copyright © 2020 Tealium. All rights reserved.
 //
 import SwiftUI
 
 struct ContentView: View {
     @State private var traceId: String = ""
-    var body: some View {
-        NavigationView {
-            VStack(spacing: 40) {
-                ButtonView(title: "Track View") {
-                    TealiumHelper.trackView(title: "screen_view", dataLayer: nil)
-                }
-                ButtonView(title: "Track Event") {
-                    TealiumHelper.trackEvent(title: "button_tapped",
-                                            dataLayer: ["event_category": "example",
-                                                   "event_action": "tap",
-                                                   "event_label": "Track Event"])
-                }
-                TraceIdTextField(traceId: $traceId)
-                ButtonView(title: "Start Trace") {
-                    TealiumHelper.joinTrace(self.traceId)
-                }
-                ButtonView(title: "Leave Trace") {
-                    TealiumHelper.leaveTrace()
-                }
-            Spacer()
-                }.navigationBarTitle("TealiumSwiftExample", displayMode: .inline).padding(50)
-        }.navigationViewStyle(StackNavigationViewStyle())
-    }
-}
-
-struct ButtonView: View {
-    var title: String
-    var action: () -> Void
     
-    init(title: String, _ action: @escaping () -> Void) {
-        self.title = title
-        self.action = action
-    }
-    
-    var body: some View {
-        Button(action: action) {
-                Text(title)
-                   .frame(width: 200.0)
-                   .padding()
-                   .background(Color.gray)
-                   .foregroundColor(.white)
-                   .cornerRadius(10)
-                   .shadow(radius: 8)
-                   .overlay(
-                       RoundedRectangle(cornerRadius: 10)
-                           .stroke(Color.purple, lineWidth: 2)
-                   )
+    // Timed event start
+    var playButton: some View {
+        TealiumIconButton(iconName: "play.fill") {
+            TealiumHelper.shared.track(title: "product_view",
+                                       data: ["product_id": ["prod123"]])
         }
     }
-}
-
-struct TraceIdTextField: View {
-    @Binding var traceId: String
+    
+    // Timed event stop
+    var stopButton: some View {
+        TealiumIconButton(iconName: "stop.fill") {
+            TealiumHelper.shared.track(title: "order_complete",
+                                       data: ["order_id": "ord123"])
+        }
+    }
+    
     var body: some View {
-        HStack {
-              Image(systemName: "person").foregroundColor(.gray)
-              TextField("Enter your Trace ID", text: $traceId)
-          }
-        .frame(width: 200.0)
-        .padding()
-        .overlay(RoundedRectangle(cornerRadius: 10)
-                    .stroke(Color.gray, lineWidth: 1))
+        NavigationView {
+            ScrollView {
+                VStack(spacing: 20) {
+                    TealiumTextField($traceId, imageName: "person.fill", placeholder: "Enter Trace Id")
+                        .padding(.bottom, 20)
+                    TealiumTextButton(title: "Start Trace") {
+                        TealiumHelper.shared.joinTrace(self.traceId)
+                    }
+                    TealiumTextButton(title: "Leave Trace") {
+                        TealiumHelper.shared.leaveTrace()
+                    }
+                    TealiumTextButton(title: "Track View") {
+                        TealiumHelper.shared.trackView(title: "screen_view", data: nil)
+                    }
+                    TealiumTextButton(title: "Track Event") {
+                        TealiumHelper.shared.track(title: "button_tapped",
+                                                data: ["event_category": "example",
+                                                       "event_action": "tap",
+                                                       "event_label": "Track Event"])
+                    }
+                    TealiumTextButton(title: "Hosted Data Layer") {
+                        TealiumHelper.shared.track(title: "hdl-test",
+                                                   data: ["product_id": "abc123"])
+                    }
+                    TealiumTextButton(title: "SKAdNetwork Conversion") {
+                        TealiumHelper.shared.track(title: "conversion_event",
+                                                   data: ["conversion_value": 10])
+                    }
+                    TealiumTextButton(title: "Toggle Consent Status") {
+                        TealiumHelper.shared.toggleConsentStatus()
+                    }
+                    TealiumTextButton(title: "Reset Consent") {
+                        TealiumHelper.shared.resetConsentPreferences()
+                    }
+                    Spacer()
+                }
+                .navigationTitle("iOSTealiumTest")
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationBarItems(leading: playButton, trailing: stopButton)
+                .padding(50)
+            }
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 

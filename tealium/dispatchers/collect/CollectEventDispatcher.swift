@@ -38,7 +38,7 @@ class CollectEventDispatcher: CollectProtocol {
     
     func setUpUrls(config: TealiumConfig) {
         if let overrideUrl = config.overrideCollectURL,
-           CollectEventDispatcher.isValidUrl(overrideUrl) {
+           overrideUrl.isValidUrl {
             self.singleEventDispatchURL = overrideUrl
         } else {
             if let overrideDomain = config.overrideCollectDomain {
@@ -49,7 +49,7 @@ class CollectEventDispatcher: CollectProtocol {
         }
         
         if let overrideBatchUrl = config.overrideCollectBatchURL,
-           CollectEventDispatcher.isValidUrl(overrideBatchUrl) {
+           overrideBatchUrl.isValidUrl {
             self.batchEventDispatchURL = overrideBatchUrl
         } else {
             if let overrideDomain = config.overrideCollectDomain {
@@ -64,18 +64,6 @@ class CollectEventDispatcher: CollectProtocol {
     class var urlSession: URLSession {
         let config = URLSessionConfiguration.ephemeral
         return URLSession(configuration: config)
-    }
-
-    /// URL initializer does not actually validate web addresses successfully (it's too permissive), so this additional check is required￼.
-    ///
-    /// - Parameter url: `String` containing a URL to be validated
-    /// - Returns: `Bool` `true` if URL is a valid web address
-    static func isValidUrl(_ url: String) -> Bool {
-        let urlRegexPattern = "^(https?://)?(www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z0-9]{0,61}[a-z0-9]\\.[a-z]{2,6}(/[-\\w@\\+\\.~#\\?&/=%]*)?$"
-        guard let validURLRegex = try? NSRegularExpression(pattern: urlRegexPattern, options: []) else {
-            return false
-        }
-        return validURLRegex.rangeOfFirstMatch(in: url, options: [], range: NSRange(url.startIndex..., in: url)).location != NSNotFound
     }
 
     func dispatch(data: [String: Any],

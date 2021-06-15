@@ -41,8 +41,6 @@ extension Disk {
         #else
         case .documents:
             searchPathDirectory = .documentDirectory
-        case .applicationSupport:
-            searchPathDirectory = .applicationSupportDirectory
         case .sharedContainer(let appGroupName):
             if var url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupName) {
                 if let validPath = validPath {
@@ -62,6 +60,8 @@ extension Disk {
                 )
             }
         #endif
+        case .applicationSupport:
+            searchPathDirectory = .applicationSupportDirectory
         case .caches:
             searchPathDirectory = .cachesDirectory
         case .temporary:

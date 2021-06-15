@@ -14,7 +14,8 @@ enum TealiumConfiguration {
     static let dataSourceKey = "abc123"
 }
 
-let enableLogs = true
+// Change this to false to disable all the Tealium logs
+let enableHelperLogs = true
 
 public enum WebViewExampleType: Equatable {
     case noUtag // example webview without utag
@@ -38,7 +39,7 @@ class TealiumHelper {
     // MARK: Tealium Initilization
     private init() {
         // Optional Config Settings
-        if enableLogs { config.logLevel = .info }
+        if enableHelperLogs { config.logLevel = .info }
 
         config.shouldUseRemotePublishSettings = false
         config.memoryReportingEnabled = true
@@ -46,6 +47,9 @@ class TealiumHelper {
         config.visitorServiceDelegate = self
         config.consentLoggingEnabled = true
         config.consentPolicy = .ccpa
+        config.hostedDataLayerKeys = ["hdl-test": "product_id"]
+        config.timedEventTriggers = [TimedEventTrigger(start: "product_view", end: "order_complete"),
+                                     TimedEventTrigger(start: "start_game", end: "buy_coins")]
 
         #if os(iOS)
         // Add dispatchers
@@ -67,6 +71,11 @@ class TealiumHelper {
         config.geofenceUrl = "https://tags.tiqcdn.com/dle/tealiummobile/location/geofences.json"
         config.useHighAccuracy = true
         config.updateDistance = 200.0
+        
+        // SKAdNetwork event handling
+        config.searchAdsEnabled = true
+        config.skAdAttributionEnabled = true
+        config.skAdConversionKeys = ["conversion_event": "conversion_value"]
 
         // Remote Commands:
         let remoteCommand = RemoteCommand(commandId: "hello", description: "world") { response in
@@ -74,7 +83,7 @@ class TealiumHelper {
                 return
             }
             // Do something w/remote command payload
-            if enableLogs {
+            if enableHelperLogs {
                 print(payload)
             }
         }
@@ -104,23 +113,39 @@ class TealiumHelper {
         _ = TealiumHelper.shared
     }
 
-    class func trackView(title: String, dataLayer: [String: Any]?) {
-        let dispatch = TealiumView(title, dataLayer: dataLayer)
-        TealiumHelper.shared.tealium?.track(dispatch)
+    func resetConsentPreferences() {
+        tealium?.consentManager?.resetUserConsentPreferences()
     }
 
-    class func trackEvent(title: String, dataLayer: [String: Any]?) {
-        let dispatch = TealiumEvent(title, dataLayer: dataLayer)
-        TealiumHelper.shared.tealium?.track(dispatch)
+    func toggleConsentStatus() {
+        if let consentStatus = tealium?.consentManager?.userConsentStatus {
+            switch consentStatus {
+            case .notConsented:
+                TealiumHelper.shared.tealium?.consentManager?.userConsentCategories = [.affiliates, .analytics, .bigData]
+            case .unknown:
+                TealiumHelper.shared.tealium?.consentManager?.userConsentStatus = .consented
+            default:
+                TealiumHelper.shared.tealium?.consentManager?.userConsentStatus = .notConsented
+            }
+        }
     }
 
-    class func joinTrace(_ traceID: String) {
-        TealiumHelper.shared.tealium?.joinTrace(id: traceID)
-        TealiumHelper.trackEvent(title: "trace_started", dataLayer: nil)
+    func track(title: String, data: [String: Any]?) {
+        let dispatch = TealiumEvent(title, dataLayer: data)
+        tealium?.track(dispatch)
     }
 
-    class func leaveTrace() {
-        TealiumHelper.shared.tealium?.leaveTrace()
+    func trackView(title: String, data: [String: Any]?) {
+        let dispatch = TealiumView(title, dataLayer: data)
+        tealium?.track(dispatch)
+    }
+
+    func joinTrace(_ traceID: String) {
+        self.tealium?.joinTrace(id: traceID)
+    }
+
+    func leaveTrace() {
+        self.tealium?.leaveTrace()
     }
 }
 
@@ -129,7 +154,7 @@ extension TealiumHelper: VisitorServiceDelegate {
     func didUpdate(visitorProfile: TealiumVisitorProfile) {
         if let json = try? JSONEncoder().encode(visitorProfile),
            let string = String(data: json, encoding: .utf8) {
-            if enableLogs {
+            if enableHelperLogs {
                 print(string)
             }
         }

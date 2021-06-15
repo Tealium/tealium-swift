@@ -45,12 +45,10 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol {
     /// - Parameters:
     ///     - webviewURL: `URL?` (typically for "mobile.html") to be loaded by the webview
     ///     - delegates: `[WKNavigationDelegate]?` Array of delegates
-    ///     - shouldAddCookieObserver: `Bool` indicating whether the cookie observer should be added. Default `true`.
     ///     - view: `UIView? ` - required `WKWebView`, if one is not provided we attach to the window object
     ///     - completion: completion block to be called when the webview has finished loading
     func enable(webviewURL: URL?,
                 delegates: [WKNavigationDelegate]?,
-                shouldAddCookieObserver: Bool,
                 view: UIView?,
                 completion: ((_ success: Bool, _ error: Error?) -> Void)?) {
         guard webview == nil else {
@@ -62,7 +60,7 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol {
         }
         enableCompletion = completion
         self.url = webviewURL
-        setupWebview(forURL: webviewURL, shouldAddCookieObserver: shouldAddCookieObserver, withSpecificView: view)
+        setupWebview(forURL: webviewURL, withSpecificView: view)
     }
 
     /// Sets a root view for `WKWebView` to be attached to. Only required for complex view hierarchies.
@@ -101,18 +99,12 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol {
     ///￼
     /// - Parameters:
     ///    - url: `URL` (typically for mobile.html) to load in the webview
-    ///    - shouldAddCookieObserver: `Bool` Whether or not to attach a cookie observer
     ///    - specificView: `UIView?` to attach to
     func setupWebview(forURL url: URL?,
-                      shouldAddCookieObserver: Bool,
                       withSpecificView specificView: UIView?) {
         TealiumQueues.mainQueue.async { [weak self] in
             guard let self = self else {
                 return
-            }
-            // required to force cookies to sync
-            if #available(iOS 11, *), shouldAddCookieObserver {
-                WKWebsiteDataStore.default().httpCookieStore.add(self)
             }
             let config = self.tealConfig.webviewConfig
             if let processPool = self.tealConfig.webviewProcessPool {
@@ -126,15 +118,13 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol {
             }
             // attach the webview to the view before continuing
             self.attachToUIView(specificView: specificView) { _ in
-                self.migrateCookies(forWebView: webview) {
-                    guard let url = url else {
-                        self.enableCompletion?(false, WebviewError.webviewURLMissing)
-                        return
-                    }
-                    let request = URLRequest(url: url)
-                    TealiumQueues.mainQueue.async {
-                        webview.load(request)
-                    }
+                guard let url = url else {
+                    self.enableCompletion?(false, WebviewError.webviewURLMissing)
+                    return
+                }
+                let request = URLRequest(url: url)
+                TealiumQueues.mainQueue.async {
+                    webview.load(request)
                 }
             }
         }
