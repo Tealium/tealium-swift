@@ -19,6 +19,7 @@ jobs:
           - TealiumLifecycle
           - TealiumVisitorService
           - TealiumLocation
+          - TealiumMedia
           - TealiumRemoteCommands
           - TealiumTagManagement
           - TealiumAttribution
@@ -42,6 +43,7 @@ jobs:
           - TealiumCore
           - TealiumCollect
           - TealiumLifecycle
+          - TealiumMedia
           - TealiumVisitorService
     steps:
       - uses: actions/checkout@v2
@@ -62,6 +64,7 @@ jobs:
           - TealiumCore
           - TealiumCollect
           - TealiumLifecycle
+          - TealiumMedia
           - TealiumVisitorService
     steps:
       - uses: actions/checkout@v2
