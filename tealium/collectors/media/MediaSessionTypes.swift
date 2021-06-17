@@ -22,12 +22,12 @@ class IntervalMediaSession: MediaSession {
         super.init(with: mediaService)
     }
     
-    /// Sends a heartbeat event
+    /// Sends a interval event
     override func ping() {
         mediaService?.track(.event(.interval))
     }
     
-    /// Cancels the heartbeat timer
+    /// Cancels the interval timer
     override func stopPing() {
         timer.suspend()
     }
@@ -66,7 +66,7 @@ class IntervalMediaSession: MediaSession {
 
 class IntervalMilestoneMediaSession: MilestoneMediaSession {
     
-    /// Adds a heartbeat ping every 10 seconds to the milestone tracking type
+    /// Adds a interval ping every 10 seconds to the milestone tracking type
     override func ping() {
         if Int(totalContentPlayed) % 10 == 0  {
             mediaService?.track(.event(.interval))
