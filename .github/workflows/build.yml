@@ -1,0 +1,121 @@
+name: Builds for Various Architectures
+
+on: [pull_request]
+
+jobs:
+  build_iOS:
+    name: Build iOS
+    runs-on: macos-latest
+    timeout-minutes: 60
+    env: 
+      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+      working-directory: ./builder
+    strategy:
+      matrix:
+        destination: ["platform=iOS Simulator,name=iPhone 12"]
+        scheme: 
+          - TealiumCore
+          - TealiumCollect
+          - TealiumLifecycle
+          - TealiumVisitorService
+          - TealiumLocation
+          - TealiumMedia
+          - TealiumRemoteCommands
+          - TealiumTagManagement
+          - TealiumAttribution
+          - TealiumAutotracking
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build iOS - ${{ matrix.scheme }}
+        run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project tealium-swift.xcodeproj -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" clean build | xcpretty
+        working-directory: ${{ env.working-directory }}
+  build_macOS:
+    name: Build macOS
+    runs-on: macos-latest
+    timeout-minutes: 60
+    env: 
+      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+      working-directory: ./builder
+    strategy:
+      matrix:
+        destination: ["platform=macOS,arch=x86_64"]
+        scheme: 
+          - TealiumCore
+          - TealiumCollect
+          - TealiumLifecycle
+          - TealiumMedia
+          - TealiumVisitorService
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build macOS - ${{ matrix.scheme }}
+        run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project tealium-swift.xcodeproj -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" clean build | xcpretty
+        working-directory: ${{ env.working-directory }}
+  build_tvOS:
+    name: Build tvOS
+    runs-on: macos-latest
+    timeout-minutes: 60
+    env: 
+      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+      working-directory: ./builder
+    strategy:
+      matrix:
+        destination: ["platform=tvOS Simulator,name=Apple TV"]
+        scheme: 
+          - TealiumCore
+          - TealiumCollect
+          - TealiumLifecycle
+          - TealiumMedia
+          - TealiumVisitorService
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build tvOS - ${{ matrix.scheme }}
+        run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project tealium-swift.xcodeproj -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" clean build | xcpretty
+        working-directory: ${{ env.working-directory }}
+  build_TealiumSwiftExample_iOS:
+    name: Build TealiumSwiftExample iOS
+    runs-on: macos-latest
+    timeout-minutes: 60
+    env:
+      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+      working-directory: ./samples/TealiumSwiftExample
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build TealiumSwiftExample iOS
+        run: set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumSwiftExample.xcworkspace -scheme "TealiumSwiftExample" -destination "platform=iOS Simulator,name=iPhone 12" clean build | xcpretty
+        working-directory: ${{ env.working-directory }}
+  build_TealiumSwiftExample_tvOS:
+    name: Build TealiumSwiftExample tvOS
+    runs-on: macos-latest
+    timeout-minutes: 60
+    env:
+      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+      working-directory: ./samples/TealiumSwiftExample
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build TealiumSwiftExample tvOS
+        run: set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumSwiftExample.xcworkspace -scheme "TealiumSwiftTVExample" -destination "platform=tvOS Simulator,name=Apple TV" clean build | xcpretty
+        working-directory: ${{ env.working-directory }}
+  build_ConsentManagerDemo:
+    name: Build ConsentManagerDemo
+    runs-on: macos-latest
+    timeout-minutes: 60
+    env:
+      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+      working-directory: ./samples/ConsentManagerDemo
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build ConsentManagerDemo iOS
+        run: set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace ConsentManagerDemo.xcworkspace -scheme "ConsentManagerDemo" -destination "platform=iOS Simulator,name=iPhone 12" clean build | xcpretty
+        working-directory: ${{ env.working-directory }}
+  build_VisitorServiceDemo:
+    name: Build TealiumVisitorProfileDemo
+    runs-on: macos-latest
+    timeout-minutes: 60
+    env:
+      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+      working-directory: ./samples/VisitorServiceDemo
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build TealiumVisitorProfileDemo iOS
+        run: set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumVisitorProfileDemo.xcworkspace -scheme "TealiumVisitorProfileDemo" -destination "platform=iOS Simulator,name=iPhone 12" clean build | xcpretty
+        working-directory: ${{ env.working-directory }}                                          

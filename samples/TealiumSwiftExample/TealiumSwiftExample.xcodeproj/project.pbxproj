@@ -225,6 +225,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF665AA02673F6EB00742E9D /* TealiumSwiftUI in Frameworks */,
 				404CCC703F3B94710F0F70B9 /* Pods_TealiumSwiftExample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1475,6 +1476,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CF665A9E2673F6EB00742E9D /* XCRemoteSwiftPackageReference "tealium-swift-ui" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/christinasund/tealium-swift-ui";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CF665A9F2673F6EB00742E9D /* TealiumSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF665A9E2673F6EB00742E9D /* XCRemoteSwiftPackageReference "tealium-swift-ui" */;
+			productName = TealiumSwiftUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CF2E3109237622A9000CEDD3 /* Project object */;
 }

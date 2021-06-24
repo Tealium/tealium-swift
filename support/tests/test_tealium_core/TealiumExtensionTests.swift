@@ -9,6 +9,7 @@
 @testable import TealiumCore
 @testable import TealiumLifecycle
 @testable import TealiumVisitorService
+@testable import TealiumMedia
 #if os(iOS)
 @testable import TealiumAutotracking
 @testable import TealiumLocation
@@ -33,14 +34,15 @@ class TealiumExtensionTests: XCTestCase {
     }
 
     override func tearDownWithError() throws { }
-
+    
     func testVisitorIdNotNil() {
+        let config = TealiumConfig(account: "test", profile: "test", environment: "test")
         let expect = expectation(description: "Visitor id not nil")
-        tealium = Tealium(config: defaultTealiumConfig) { _ in
+        tealium = Tealium(config: config) { _ in
             XCTAssertNotNil(self.tealium.visitorId)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        wait(for: [expect], timeout: 2.0)
     }
     
     func testResetVisitorId() {
@@ -60,7 +62,7 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertEqual(self.tealium.visitorId, newVisitorId)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        wait(for: [expect], timeout: 2.0)
     }
 
     func testConsentManagerNotNil() {
@@ -70,7 +72,7 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNotNil(self.tealium.consentManager)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        wait(for: [expect], timeout: 2.0)
     }
 
     func testConsentManagerNilWhenPolicyNotSet() {
@@ -79,7 +81,7 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNil(self.tealium.consentManager)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        wait(for: [expect], timeout: 2.0)
     }
 
     func testLoggerNotNil() {
@@ -88,7 +90,7 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNotNil(self.tealium.logger)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        wait(for: [expect], timeout: 2.0)
     }
 
     func testVisitorServiceNotNil() {
@@ -98,7 +100,26 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNotNil(self.tealium.visitorService)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        wait(for: [expect], timeout: 2.0)
+    }
+    
+    func testMediaServiceNotNilWhenAddedToCollectors() {
+        let expect = expectation(description: "Media Not not nil")
+        defaultTealiumConfig.collectors = [Collectors.Media]
+        tealium = Tealium(config: defaultTealiumConfig) { _ in
+            XCTAssertNotNil(self.tealium.media)
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: 2.0)
+    }
+    
+    func testMediaServiceNilWhenAddedToCollectors() {
+        let expect = expectation(description: "Media Nil")
+        tealium = Tealium(config: defaultTealiumConfig) { _ in
+            XCTAssertNil(self.tealium.media)
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: 2.0)
     }
 
     func testVisitorServiceNilWhenNotSetAsCollector() {
@@ -117,7 +138,7 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNotNil(self.tealium.lifecycle)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        wait(for: [expect], timeout: 2.0)
     }
 
     func testLifecycleNilWhenNotSetAsCollector() {
@@ -126,7 +147,7 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNil(self.tealium.lifecycle)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        wait(for: [expect], timeout: 2.0)
     }
     
     func testStartTimedEventCallsEventSchedulerStart() {
@@ -138,7 +159,7 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertEqual(1, self.mockEventScheduler.startCallCount)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        wait(for: [expect], timeout: 2.0)
     }
     
     func testStopTimedEventCallsEventSchedulerStopAndTimedEventInfo() {
@@ -164,7 +185,7 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertEqual(1, self.mockEventScheduler.cancelCallCount)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        wait(for: [expect], timeout: 2.0)
     }
     
     func testClearAllTimedEventsCallsEventSchedulerClearAll() {
@@ -176,8 +197,9 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertEqual(1, self.mockEventScheduler.clearAllCallCount)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        wait(for: [expect], timeout: 2.0)
     }
+    
 
     #if os(iOS)
     func testLocationNotNil() {
@@ -187,7 +209,7 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNotNil(self.tealium.location)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        wait(for: [expect], timeout: 2.0)
     }
 
     func testLocationNilWhenNotSetAsCollector() {
@@ -196,7 +218,7 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNil(self.tealium.location)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        wait(for: [expect], timeout: 2.0)
     }
 
     func testAutotrackingNotNil() {
@@ -206,7 +228,7 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNotNil(self.tealium.autotracking)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        wait(for: [expect], timeout: 2.0)
     }
 
     func testAutotrackingNilWhenNotSetAsCollector() {
@@ -215,7 +237,7 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNil(self.tealium.autotracking)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        wait(for: [expect], timeout: 2.0)
     }
 
     func testRemoteCommandsNotNil() {
@@ -225,7 +247,7 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNotNil(self.tealium.remoteCommands)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        wait(for: [expect], timeout: 2.0)
     }
 
     func testRemoteCommandsNilWhenNotSetAsDispatcher() {
@@ -234,7 +256,7 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNil(self.tealium.remoteCommands)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        wait(for: [expect], timeout: 2.0)
     }
 
     func testTagManagementNotNil() {
@@ -245,7 +267,7 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNotNil(self.tealium.tagManagement)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        wait(for: [expect], timeout: 2.0)
     }
 
     func testTagManagementNilWhenNotSetAsDispatcher() {
@@ -255,14 +277,8 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNil(self.tealium.tagManagement)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        wait(for: [expect], timeout: 2.0)
     }
     #endif
-    
-    private func delay(_ completion: @escaping () -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            completion()
-        }
-    }
 
 }

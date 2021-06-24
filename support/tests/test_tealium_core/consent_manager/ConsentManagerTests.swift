@@ -145,7 +145,7 @@ class ConsentManagerTests: XCTestCase {
     func testConsentStoreConfigFromDictionary() {
         let categories = ["cdp", "analytics"]
         let status = "consented"
-        let consentDictionary: [String: Any] = [ConsentKey.consentCategoriesKey: categories, ConsentKey.trackingConsentedKey: status]
+        let consentDictionary: [String: Any] = [ConsentKey.consentCategoriesKey: categories, ConsentKey.consentStatus: status]
         var userConsentPreferences = UserConsentPreferences(consentStatus: .unknown, consentCategories: nil)
         userConsentPreferences.initWithDictionary(preferencesDictionary: consentDictionary)
         XCTAssertNotNil(userConsentPreferences, "Consent Manager Test: \(#function) - Consent Preferences could not be initialized from dictionary")
@@ -379,20 +379,6 @@ class ConsentManagerTests: XCTestCase {
         }
         let consentManager = consentManagerForConfig(config)
         XCTAssertNotNil(consentManager.onConsentExpiraiton)
-    }
-    
-    func testOnConsentExpirationCallbackSetFromTealium() {
-        let expect = expectation(description: "testOnConsentExpirationCallbackSetFromTealium")
-        config.consentPolicy = .gdpr
-        let tealium = Tealium(config: config)
-        TestTealiumHelper.delay {
-            tealium.consentManager?.onConsentExpiraiton = {
-                print("hello")
-            }
-            XCTAssertNotNil(tealium.consentManager?.onConsentExpiraiton)
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 1.0)
     }
     
     func consentLastSetSaved() {

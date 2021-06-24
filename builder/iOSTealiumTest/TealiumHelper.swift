@@ -6,7 +6,6 @@
 //
 
 import Foundation
-
 import TealiumCollect
 import TealiumCore
 import TealiumLifecycle
@@ -19,13 +18,13 @@ import TealiumTagManagement
 #endif
 
 
-class TealiumHelper  {
+class TealiumHelper: NSObject {
 
     static let shared = TealiumHelper()
     var tealium: Tealium?
     var enableHelperLogs = true
 
-    private init() { }
+    override init() { }
 
     func start() {
         let config = TealiumConfig(account: "tealiummobile",
@@ -74,6 +73,7 @@ class TealiumHelper  {
             ]
             
             // config.appDelegateProxyEnabled = false
+            config.searchAdsEnabled = true
             config.remoteAPIEnabled = true
             config.remoteCommandConfigRefresh = .every(24, .hours)
             config.searchAdsEnabled = true
@@ -101,7 +101,7 @@ class TealiumHelper  {
                 return
 
             }
-
+            
             let dataLayer = teal.dataLayer
             teal.consentManager?.userConsentStatus = .consented
             dataLayer.add(key: "myvarforever", value: 123_456, expiry: .forever)
@@ -126,6 +126,7 @@ class TealiumHelper  {
             }
             remoteCommands.add(display)
             #endif
+            
         }
 
     }

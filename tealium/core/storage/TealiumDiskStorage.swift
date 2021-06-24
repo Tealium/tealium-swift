@@ -176,7 +176,9 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
                 return
             }
             do {
-                try Disk.save(data, to: self.currentDirectory, as: self.filePath(fileName))
+                let path = self.filePath(fileName)
+                try Disk.save(data, to: self.currentDirectory, as: path)
+                try Disk.doNotBackup(path, in: self.currentDirectory)
             } catch let error {
                 completion?(false, nil, error)
             }
@@ -225,7 +227,9 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
                     completion?(false, nil, nil)
                     return
                 }
-                try Disk.save(data, to: self.currentDirectory, as: self.filePath(fileName))
+                let path = self.filePath(fileName)
+                try Disk.save(data, to: self.currentDirectory, as: path)
+                try Disk.doNotBackup(path, in: self.currentDirectory)
             } catch let error {
                 completion?(false, nil, error)
             }
@@ -267,7 +271,9 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
                     completion?(false, nil, nil)
                     return
                 }
-                try Disk.append(data, to: self.filePath(fileName), in: self.currentDirectory)
+                let path = self.filePath(fileName)
+                try Disk.append(data, to: path, in: self.currentDirectory)
+                try Disk.doNotBackup(path, in: self.currentDirectory)
             } catch let error {
                 completion?(false, nil, error)
             }
@@ -289,7 +295,9 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
             }
             do {
                 let data = AnyCodable(data)
-                try Disk.append(data, to: self.filePath(fileName), in: self.currentDirectory)
+                let path = self.filePath(fileName)
+                try Disk.append(data, to: path, in: self.currentDirectory)
+                try Disk.doNotBackup(path, in: self.currentDirectory)
             } catch let error {
                 completion?(false, nil, error)
             }
@@ -463,7 +471,6 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
 
     /// - Parameter error: `String`
     func log(error: String) {
-        //        logger.log(message: error, logLevel: .warnings)
         let logRequest = TealiumLogRequest(title: "DiskStorage", message: error, info: nil, logLevel: .error)
         logger?.log(logRequest)
     }

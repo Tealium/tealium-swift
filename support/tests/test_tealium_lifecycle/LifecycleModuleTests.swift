@@ -495,20 +495,6 @@ class LifecycleModuleTests: XCTestCase {
         self.waitForExpectations(timeout: 8.0, handler: nil)
     }
     
-    func testRemovalOfLifecycleListenersOnDeinit() {
-        let expect = expectation(description: "testRemovalOfLifecycleListenersOnDeinit")
-        config.collectors = [Collectors.Lifecycle]
-        var tealium: Tealium? = Tealium(config: config)
-        TestTealiumHelper.delay {
-            XCTAssertTrue(Tealium.lifecycleListeners.listeningDelegates.count > 0)
-            TealiumInstanceManager.shared.removeInstance(config: self.config)
-            tealium = nil
-            XCTAssertEqual(Tealium.lifecycleListeners.listeningDelegates.count, 0)
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 1.0)
-    }
-    
 }
 
 extension LifecycleModuleTests: ModuleDelegate {
@@ -564,11 +550,4 @@ fileprivate extension XCTestCase {
         return try JSONDecoder().decode(LifecycleStubs.self, from: data)
     }
 
-}
-
-fileprivate extension Encodable {
-    var dictionary: [String: Any]? {
-        guard let data = try? JSONEncoder().encode(self) else { return nil }
-        return (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)).flatMap { $0 as? [String: Any] }
-    }
 }

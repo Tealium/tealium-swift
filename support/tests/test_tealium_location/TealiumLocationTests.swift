@@ -641,19 +641,6 @@ class TealiumLocationTests: XCTestCase {
     }
 
     // MARK: Location Module Tests
-
-    func testLocationManagerInitializedWhileOnABackgroundThread() {
-        let expect = expectation(description: "Module latest location called")
-        DispatchQueue.global(qos: .background).async {
-            self.locationModule = self.createModule()
-            TealiumQueues.mainQueue.async {
-                XCTAssertNotNil(self.locationModule?.tealiumLocationManager)
-                expect.fulfill()
-            }
-        }
-        wait(for: [expect], timeout: 2.0)
-    }
-
     func testModuleIsAuthorized() {
         let expect = expectation(description: "Module latest location called")
         locationModule?.tealiumLocationManager = mockTealiumLocationManager

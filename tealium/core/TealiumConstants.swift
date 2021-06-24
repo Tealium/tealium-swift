@@ -15,7 +15,7 @@ public enum Dispatchers {}
 
 public enum TealiumValue {
     public static let libraryName = "swift"
-    public static let libraryVersion = "2.3.2"
+    public static let libraryVersion = "2.4.0"
     // This is the current limit for performance reasons. May be increased in future
     public static let maxEventBatchSize = 10
     public static let defaultMinimumDiskSpace: Int32 = 20_000_000
@@ -70,6 +70,8 @@ public enum TealiumKey {
     public static let dataSource = "tealium_datasource"
     public static let sessionId = "tealium_session_id"
     public static let visitorId = "tealium_visitor_id"
+    public static let persistentData = "persistentData"
+    public static let persistentVisitorId = "visitorId"
     public static let random = "tealium_random"
     public static let uuid = "app_uuid"
     public static let requestUUID = "request_uuid"
@@ -143,6 +145,8 @@ public enum TealiumKey {
     static let eventStart = "timed_event_start"
     static let eventStop = "timed_event_end"
     static let eventDuration = "timed_event_duration"
+    public static let enableBackgroundMedia = "enable_background_media_tracking"
+    public static let autoEndSesssionTime = "media_auto_end_session_time"
 }
 
 public enum TealiumTrackType {

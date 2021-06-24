@@ -1,3 +1,4 @@
+.build/
 *.DS_Store*
 *.xcuserstate
 *.xcbkptlist
@@ -13,8 +14,10 @@ Pods/
 build/
 .swiftpm/*
 tealium-xcframeworks/
-tealium-xcframeworks.zip
 builder/tealium-xcframeworks/
 builder/tealium-xcframeworks.zip
 build/
 builder/build/
+veracode/
+builder/veracode/
+
