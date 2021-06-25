@@ -85,7 +85,7 @@ class TealiumConnectivityTests: XCTestCase {
             XCTAssertEqual(data[ConnectivityKey.connectionType] as! String, ConnectivityKey.connectionTypeWifi)
             expectation.fulfill()
         }
-        self.wait(for: [expectation], timeout: 3.0)
+        self.wait(for: [expectation], timeout: 10.0)
     }
     
     func testCurrentConnectionTypeCellular() {
@@ -99,7 +99,7 @@ class TealiumConnectivityTests: XCTestCase {
             XCTAssertEqual(data[ConnectivityKey.connectionType] as! String, ConnectivityKey.connectionTypeCell)
             expectation.fulfill()
         }
-        self.wait(for: [expectation], timeout: 3.0)
+        self.wait(for: [expectation], timeout: 10.0)
     }
     
     func testCurrentConnectionTypeWired() {
@@ -113,7 +113,7 @@ class TealiumConnectivityTests: XCTestCase {
             XCTAssertEqual(data[ConnectivityKey.connectionType] as! String, ConnectivityKey.connectionTypeWired)
             expectation.fulfill()
         }
-        self.wait(for: [expectation], timeout: 3.0)
+        self.wait(for: [expectation], timeout: 10.0)
     }
     
     func testCurrentConnectionTypeNone() {
@@ -127,7 +127,7 @@ class TealiumConnectivityTests: XCTestCase {
             XCTAssertEqual(data[ConnectivityKey.connectionType] as! String, ConnectivityKey.connectionTypeNone)
             expectation.fulfill()
         }
-        self.wait(for: [expectation], timeout: 3.0)
+        self.wait(for: [expectation], timeout: 10.0)
     }
     
     func testCurrentConnectionTypeLegacy() {
@@ -152,7 +152,7 @@ class TealiumConnectivityTests: XCTestCase {
                 }
             }
         }
-        self.wait(for: [expectation], timeout: 4.0)
+        self.wait(for: [expectation], timeout: 10.0)
     }
     #endif
 
