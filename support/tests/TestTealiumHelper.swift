@@ -76,9 +76,13 @@ class TestTealiumHelper {
         }
         
         func submit(completion: @escaping () -> Void) {
-            queue.async {
-                completion()
-            }
+            if let delay = delay {
+                queue.asyncAfter(deadline: .now() + delay, execute: completion)
+           } else {
+                queue.async {
+                    completion()
+                }
+           }
         }
     }
     

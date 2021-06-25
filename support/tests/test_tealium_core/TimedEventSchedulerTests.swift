@@ -267,50 +267,66 @@ class TimedEventSchedulerTests: XCTestCase {
     }
     
     func testProcessTrackCallsStartWhenTriggersAreSet() {
-        let mockTimedEventScheduler = MockTimedEventScheduler()
+        let expectation = self.expectation(description: "timedevent")
         config = TealiumConfig(account: "TestAccount", profile: "TestProfile", environment: "TestEnv")
         config!.timedEventTriggers = [TimedEventTrigger(start: "start_event", end: "stop_event")]
+        context = TestTealiumHelper.context(with: config!)
+        let timedEventScheduler = TimedEventScheduler(context: context!)
         tealium = Tealium(config: config!) { _ in
             self.tealium?.zz_internal_modulesManager?.dispatchValidators = []
-            self.tealium?.zz_internal_modulesManager?.addDispatchValidator(mockTimedEventScheduler)
+            self.tealium?.zz_internal_modulesManager?.addDispatchValidator(timedEventScheduler)
             self.tealium?.track(TealiumEvent("start_event"))
+            TestTealiumHelper.delay(on: TealiumQueues.backgroundSerialQueue) {
+                expectation.fulfill()
+            }
         }
-        TestTealiumHelper.delay(on: TealiumQueues.mainQueue) {
-            XCTAssertEqual(mockTimedEventScheduler.shouldQueueCallCount, 1)
-            XCTAssertEqual(mockTimedEventScheduler.startCallCount, 1)
+
+        waitForExpectations(timeout: 100.0) {_ in
+            XCTAssertNotNil(timedEventScheduler.events["start_event::stop_event"], "Event not started correctly")
         }
     }
     
     func testProcessTrackCallsStopWhenTriggersAreSet() {
-        let mockTimedEventScheduler = MockTimedEventScheduler()
+        let expectation = self.expectation(description: "timedevent")
         config = TealiumConfig(account: "TestAccount", profile: "TestProfile", environment: "TestEnv")
         config!.timedEventTriggers = [TimedEventTrigger(start: "start_event", end: "stop_event")]
+        context = TestTealiumHelper.context(with: config!)
+        let timedEventScheduler = TimedEventScheduler(context: context!)
         tealium = Tealium(config: config!) { _ in
             self.tealium?.zz_internal_modulesManager?.dispatchValidators = []
-            self.tealium?.zz_internal_modulesManager?.addDispatchValidator(mockTimedEventScheduler)
+            self.tealium?.zz_internal_modulesManager?.addDispatchValidator(timedEventScheduler)
             self.tealium?.track(TealiumEvent("start_event"))
             self.tealium?.track(TealiumEvent("stop_event"))
+            TestTealiumHelper.delay(on: TealiumQueues.backgroundSerialQueue) {
+                expectation.fulfill()
+            }
         }
-        TestTealiumHelper.delay(for: 1.0, on: .main) {
-            XCTAssertEqual(mockTimedEventScheduler.shouldQueueCallCount, 2)
-            XCTAssertEqual(mockTimedEventScheduler.stopCallCount, 1)
+
+        waitForExpectations(timeout: 100.0) {_ in
+            XCTAssertNil(timedEventScheduler.events["start_event::stop_event"], "Event not started correctly")
         }
     }
     
     func testProcessTrackDoesntCallStartWhenTriggersArentSet() {
-        let mockTimedEventScheduler = MockTimedEventScheduler()
+        let expectation = self.expectation(description: "timedevent")
         config = TealiumConfig(account: "TestAccount", profile: "TestProfile", environment: "TestEnv")
+        context = TestTealiumHelper.context(with: config!)
+        let timedEventScheduler = TimedEventScheduler(context: context!)
         tealium = Tealium(config: config!) { _ in
             self.tealium?.zz_internal_modulesManager?.dispatchValidators = []
-            self.tealium?.zz_internal_modulesManager?.addDispatchValidator(mockTimedEventScheduler)
-            self.tealium?.track(TealiumEvent("test"))
+            self.tealium?.zz_internal_modulesManager?.addDispatchValidator(timedEventScheduler)
+            self.tealium?.track(TealiumEvent("start_event"))
+            TestTealiumHelper.delay(on: TealiumQueues.backgroundSerialQueue) {
+                expectation.fulfill()
+            }
         }
-        TestTealiumHelper.delay(for: 1.0, on: .main) {
-            XCTAssertEqual(mockTimedEventScheduler.shouldQueueCallCount, 0)
-            XCTAssertEqual(mockTimedEventScheduler.startCallCount, 0)
+
+        waitForExpectations(timeout: 100.0) {_ in
+            XCTAssertNil(timedEventScheduler.events["start_event::stop_event"], "Event not started correctly")
         }
     }
 
+    
 }
 
 class MockTealiumContextTimedEvent: TealiumContextProtocol {
