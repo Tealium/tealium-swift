@@ -167,7 +167,8 @@ extension _AnyEncodable {
             }
         #if swift(>=5.0)
         @unknown default:
-            fatalError("Data type not yet supported. Error in \(#file) at \(#line)")
+            let context = EncodingError.Context(codingPath: container.codingPath, debugDescription: "AnyCodable value cannot be encoded")
+            throw EncodingError.invalidValue(value, context)
         #endif
         }
     }
