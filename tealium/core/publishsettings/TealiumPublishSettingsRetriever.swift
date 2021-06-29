@@ -130,4 +130,8 @@ class TealiumPublishSettingsRetriever {
 
         return try? JSONDecoder().decode(RemotePublishSettings.self, from: data)
     }
+    
+    deinit {
+        urlSession?.finishTealiumTasksAndInvalidate()
+    }
 }

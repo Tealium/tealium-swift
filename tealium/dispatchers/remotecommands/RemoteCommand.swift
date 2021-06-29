@@ -20,7 +20,7 @@ open class RemoteCommand: RemoteCommandProtocol {
     public var description: String?
     public var config: RemoteCommandConfig?
     public var type: RemoteCommandType
-    static var urlSession: URLSessionProtocol = URLSession.shared
+    static var urlSession: URLSessionProtocol = URLSession(configuration: .ephemeral)
     public var completion: (_ response: RemoteCommandResponseProtocol) -> Void
 
     /// Constructor for a Tealium Remote Command.
@@ -192,5 +192,9 @@ open class RemoteCommand: RemoteCommandProtocol {
         }
     }
 
+    deinit {
+        RemoteCommand.urlSession.finishTealiumTasksAndInvalidate()
+    }
+    
 }
 #endif

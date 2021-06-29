@@ -228,5 +228,6 @@ class LegacyConnectivityMonitor: ConnectivityMonitorProtocol {
 
     deinit {
         timer = nil
+        urlSession?.finishTealiumTasksAndInvalidate()
     }
 }

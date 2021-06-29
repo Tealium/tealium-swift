@@ -180,4 +180,8 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
         (1..<16).reduce(into: "") { string, _ in string += String(Int(arc4random_uniform(10))) }
     }
 
+    deinit {
+        sessionStarter.urlSession.finishTealiumTasksAndInvalidate()
+    }
+    
 }

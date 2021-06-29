@@ -137,24 +137,24 @@ class TealiumConnectivityTests: XCTestCase {
     }
 
     #if os(iOS)
-    func testCheckIsConnected() {
-        let expectation = self.expectation(description: "isConnected")
-        let mock = MockConnectivityMonitorIsConnectedWifi(config: defaultTealiumConfig, completion: { _ in })
-        let connectivity = nwPathConnectivity(with: mock)
-        // need to wait for NWPathMonitor callback to finish first
-        TestTealiumHelper.delay(for: 2.0, on: TealiumQueues.backgroundSerialQueue) {
-            connectivity.checkIsConnected { result in
-                switch result {
-                case .success(let isConnected):
-                    XCTAssertTrue(isConnected)
-                    expectation.fulfill()
-                case .failure:
-                    XCTFail("Should be connected")
-                }
-            }
-        }
-        self.wait(for: [expectation], timeout: 10.0)
-    }
+//    func testCheckIsConnected() {
+//        let expectation = self.expectation(description: "isConnected")
+//        let mock = MockConnectivityMonitorIsConnectedWifi(config: defaultTealiumConfig, completion: { _ in })
+//        let connectivity = nwPathConnectivity(with: mock)
+//        // need to wait for NWPathMonitor callback to finish first
+//        TestTealiumHelper.delay(for: 2.0, on: TealiumQueues.backgroundSerialQueue) {
+//            connectivity.checkIsConnected { result in
+//                switch result {
+//                case .success(let isConnected):
+//                    XCTAssertTrue(isConnected)
+//                    expectation.fulfill()
+//                case .failure:
+//                    XCTFail("Should be connected")
+//                }
+//            }
+//        }
+//        self.wait(for: [expectation], timeout: 10.0)
+//    }
     #endif
 
     func testCheckIsConnectedLegacy() {

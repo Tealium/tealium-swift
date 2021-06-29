@@ -80,15 +80,6 @@ public class RemoteHTTPCommand: RemoteCommand {
             request.httpBody = try? JSONSerialization.data(withJSONObject: body)
             request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         }
-        if let authenticationData = payload[RemoteCommandsKey.authenticate] as? [String: Any] {
-            if let username = authenticationData[RemoteCommandsKey.username] as? String,
-               let password = authenticationData[RemoteCommandsKey.password] as? String {
-                if let loginData = "\(username):\(password)".data(using: .utf8) {
-                    let base64LoginString = loginData.base64EncodedString()
-                    request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-                }
-            }
-        }
         return (request, nil)
     }
 

@@ -51,7 +51,9 @@ class TealiumHelper {
                              Collectors.Media]
         config.dispatchers = [Dispatchers.Collect]
 
-        tealium = Tealium(config: config)
+        tealium = Tealium(config: config) {_ in 
+            self.tealium?.joinTrace(id: "aLnGjnyz")
+        }
     }
 
     public func start() {
