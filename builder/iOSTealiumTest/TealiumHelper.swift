@@ -18,13 +18,13 @@ import TealiumTagManagement
 #endif
 
 
-class TealiumHelper: NSObject {
+class TealiumHelper {
 
     static let shared = TealiumHelper()
     var tealium: Tealium?
     var enableHelperLogs = true
 
-    override init() { }
+    private init() { }
 
     func start() {
         let config = TealiumConfig(account: "tealiummobile",
