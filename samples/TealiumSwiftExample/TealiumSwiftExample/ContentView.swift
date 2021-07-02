@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  TealiumSwiftExample
+//  iOSTealiumTest
 //
 //  Copyright © 2020 Tealium. All rights reserved.
 //

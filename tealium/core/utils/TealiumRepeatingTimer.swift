@@ -9,8 +9,14 @@
 
 import Foundation
 
+public protocol Repeater {
+    var eventHandler: (() -> Void)? { get set }
+    func resume()
+    func suspend()
+}
+
 /// Safe implementation of a repeating timer for scheduling connectivity checks
-public class TealiumRepeatingTimer {
+public class TealiumRepeatingTimer: Repeater {
 
     let timeInterval: TimeInterval
     let dispatchQueue: DispatchQueue

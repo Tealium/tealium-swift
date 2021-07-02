@@ -22,6 +22,9 @@ let package = Package(
             name: "TealiumLocation",
             targets: ["TealiumLocation"]),
         .library(
+            name: "TealiumMedia",
+            targets: ["TealiumMedia"]),
+        .library(
             name: "TealiumRemoteCommands",
             targets: ["TealiumRemoteCommands"]),
         .library(
@@ -61,6 +64,12 @@ let package = Package(
             dependencies: ["TealiumCore"],
             path: "tealium/collectors/location/",
             swiftSettings: [.define("location")]
+        ),
+        .target(
+            name: "TealiumMedia",
+            dependencies: ["TealiumCore"],
+            path: "tealium/collectors/media/",
+            swiftSettings: [.define("media")]
         ),
         .target(
             name: "TealiumRemoteCommands",

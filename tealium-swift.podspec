@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 
   s.name         = "tealium-swift"
   s.module_name  = "TealiumSwift"
-  s.version      = "2.3.2"
+  s.version      = "2.4.0"
   s.summary      = "Tealium Swift Integration Library"
 
   # This description is used to generate tags and improve search results.
@@ -131,6 +131,11 @@ Pod::Spec.new do |s|
     location.platform = :ios, "9.0"
     location.source_files = "tealium/collectors/location/*"
     location.dependency "tealium-swift/Core"
+  end
+
+  s.subspec "Media" do |media|
+    media.source_files = "tealium/collectors/media/*"
+    media.dependency "tealium-swift/Core"
   end
 
   s.subspec "RemoteCommands" do |remotecommands|

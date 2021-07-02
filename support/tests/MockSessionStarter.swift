@@ -12,6 +12,7 @@ class MockTealiumSessionStarter: SessionStarterProtocol {
 
     var sessionURLCount = 0
     var sessionRequestCount = 0
+    public var urlSession: URLSessionProtocol = MockURLSessionSessionStarter()
 
     var sessionURL: String {
         sessionURLCount += 1

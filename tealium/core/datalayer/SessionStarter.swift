@@ -9,16 +9,17 @@ import Foundation
 
 public protocol SessionStarterProtocol {
     var sessionURL: String { get }
+    var urlSession: URLSessionProtocol { get }
     func requestSession(_ completion: @escaping (Result<HTTPURLResponse, Error>) -> Void)
 }
 
 public struct SessionStarter: SessionStarterProtocol {
 
     var config: TealiumConfig
-    var urlSession: URLSessionProtocol
+    public var urlSession: URLSessionProtocol
 
     public init(config: TealiumConfig,
-                urlSession: URLSessionProtocol = URLSession.shared) {
+                urlSession: URLSessionProtocol = URLSession(configuration: .ephemeral)) {
         self.config = config
         self.urlSession = urlSession
     }

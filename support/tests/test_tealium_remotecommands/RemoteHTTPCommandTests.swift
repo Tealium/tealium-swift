@@ -27,17 +27,13 @@ class RemoteHTTPCommandTests: XCTestCase {
         let commandId = "test"
         let url = "\(scheme)://\(commandId)"
         let method = "GET"
-        let username = "testUsername"
-        let password = "testPassword"
         let headers = ["a": "b",
                        "c": "d"]
         let params = ["1": "2",
                       "3": "4",
                       "a": ["a1", "a2", "a3"]] as [String: Any]
         let body = ["a1k": "a1v"]
-        let payload: [String: Any] = ["authenticate": ["username": username,
-                                                       "password": password],
-                                      "url": url,
+        let payload: [String: Any] = ["url": url,
                                       "headers": headers,
                                       "parameters": params,
                                       "body": body,
@@ -60,15 +56,14 @@ class RemoteHTTPCommandTests: XCTestCase {
         //  httpMethod = GET
         //  url = tealium://test?1=2&3=4
 
-        let expectedHeaderFields: [String: String] = ["Authorization": "Basic dGVzdFVzZXJuYW1lOnRlc3RQYXNzd29yZA==",
-                                                      "Content-Type": "application/json; charset=utf-8",
+        let expectedHeaderFields: [String: String] = ["Content-Type": "application/json; charset=utf-8",
                                                       "a": "b",
                                                       "c": "d"]
         let returnedHeaderFields = request.allHTTPHeaderFields!
 
         XCTAssertTrue(expectedHeaderFields == returnedHeaderFields, "Unexpected result from returned header fields: \(returnedHeaderFields)")
         XCTAssertTrue(request.httpMethod == method, "Unexpected method type:\(String(describing: request.httpMethod))")
-        let expectedUrl = "\(scheme)://\(commandId)?1=2&3=4&a=%5B%22a1%22,%20%22a2%22,%20%22a3%22%5D"   // Being lazy here
+        let expectedUrl = "\(scheme)://\(commandId)?1=2&3=4&a=%5B%22a1%22,%20%22a2%22,%20%22a3%22%5D"
         XCTAssertTrue(expectedUrl == request.url?.absoluteString, "Unexpected request url: \(String(describing: request.url?.absoluteString))")
 
         // requestUrl

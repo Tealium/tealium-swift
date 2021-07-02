@@ -67,6 +67,25 @@ class TimeTraveler {
 
 class TestTealiumHelper {
     
+    class TestRetryManager {
+        var queue: DispatchQueue
+        var delay: TimeInterval?
+        required init(queue: DispatchQueue, delay: TimeInterval?) {
+            self.queue = queue
+            self.delay = delay
+        }
+        
+        func submit(completion: @escaping () -> Void) {
+            if let delay = delay {
+                queue.asyncAfter(deadline: .now() + delay, execute: completion)
+           } else {
+                queue.async {
+                    completion()
+                }
+           }
+        }
+    }
+    
     class func loadStub(from file: String,
                         _ cls: AnyClass) -> Data {
       let bundle = Bundle(for: cls)
@@ -79,8 +98,11 @@ class TestTealiumHelper {
         return TealiumContext(config: config, dataLayer: dataLayer ?? DummyDataManager(), tealium: tealium)
     }
     
-    class func delay(_ completion: @escaping () -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+    class func delay(for delay: TimeInterval? = nil,
+                     on queue: DispatchQueue = DispatchQueue(label: "test"),
+                     _ completion: @escaping () -> Void) {
+        let retry = TestRetryManager(queue: queue, delay: delay ?? 1.0)
+        retry.submit {
             completion()
         }
     }

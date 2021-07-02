@@ -27,7 +27,7 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
 
     public init(config: TealiumConfig,
                 delegate: ModuleDelegate?,
-                urlSession: URLSessionProtocol = URLSession.shared,
+                urlSession: URLSessionProtocol = URLSession(configuration: .ephemeral),
                 diskStorage: TealiumDiskStorageProtocol? = nil) {
         self.config = config
         self.logger = config.logger
@@ -264,6 +264,10 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
                                         logLevel: .error,
                                         category: .general)
         logger?.log(request)
+    }
+    
+    deinit {
+        urlSession?.finishTealiumTasksAndInvalidate()
     }
 }
 
