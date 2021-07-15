@@ -60,9 +60,9 @@ public class AttributionData: AttributionDataProtocol {
     }
 
     /// - Returns: `String` representation of IDFA
-    public lazy var idfa: String = {
+    public var idfa: String {
         return identifierManager.advertisingIdentifier
-    }()
+    }
 
     /// - Returns: `String` representation of IDFV
     public lazy var idfv: String = {
