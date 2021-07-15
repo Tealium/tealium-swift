@@ -39,9 +39,9 @@ class MockAttributionData: AttributionDataProtocol {
         return allData
     }
 
-    var idfa: String {
+    var idfa: String = {
         "IDFA8250-458d-40ed-b150-e0bffeeee849"
-    }
+    }()
 
     var idfv: String {
         "IDFV72a0-aef8-47be-9cf5-2628b031d4d9"

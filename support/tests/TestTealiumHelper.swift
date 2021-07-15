@@ -24,6 +24,7 @@ enum TealiumTestValue {
     static let visitorID = "someVisitorId"
     static let random = "someRandomNumber"
     static let testIDFAString = "6D92078A-8246-4BA4-AE5B-76104861E7DC"
+    static let testIDFAResetString = "7U64320E-8765-2OK3-PO4K-12345678H8DS"
     static let testIDFAStringAdTrackingDisabled = "00000000-0000-0000-0000-000000000000"
     static let testIDFVString = "599F9C00-92DC-4B5C-9464-7971F01F8370"
 }

@@ -44,7 +44,7 @@ class TealiumAttributionDataTests: XCTestCase {
         defaultConfig = TestTealiumHelper().getConfig()
     }
 
-    func createAttributionData(from config: TealiumConfig? = nil, idManager: TealiumASIdentifierManagerProtocol? = nil) -> AttributionDataProtocol {
+    func createAttributionData(from config: TealiumConfig? = nil, idManager: TealiumASIdentifierManagerProtocol? = nil) -> AttributionData {
         AttributionData(config: config ?? defaultConfig, diskStorage: mockDisk, identifierManager: idManager ?? TealiumASIdentifierManagerAdTrackingEnabled.shared, adClient: TestTealiumAdClient.shared, adAttribution: mockAdAttribution)
     }
 
@@ -73,14 +73,14 @@ class TealiumAttributionDataTests: XCTestCase {
 
     func testSetPersistentAppDataWhenSearchAdsEnalbed() {
         defaultConfig.searchAdsEnabled = true
-        let attributionData = AttributionData(config: defaultConfig, diskStorage: mockDisk, identifierManager: TealiumASIdentifierManagerAdTrackingEnabled.shared, adClient: TestTealiumAdClient.shared, adAttribution: mockAdAttribution)
+        let attributionData = createAttributionData(from: defaultConfig)
         attributionData.setPersistentAttributionData()
         XCTAssertEqual(mockDisk.retrieveCount, 2)
         XCTAssertNotNil(attributionData.persistentAttributionData)
     }
 
     func testSetPersistentAppDataWhenSearchAdNotEnalbed() {
-        let attributionData = AttributionData(config: defaultConfig, diskStorage: mockDisk, identifierManager: TealiumASIdentifierManagerAdTrackingEnabled.shared, adClient: TestTealiumAdClient.shared, adAttribution: mockAdAttribution)
+        let attributionData = createAttributionData(from: defaultConfig)
         attributionData.setPersistentAttributionData()
         XCTAssertEqual(mockDisk.retrieveCount, 1)
         XCTAssertNotNil(attributionData.persistentAttributionData)
@@ -90,6 +90,14 @@ class TealiumAttributionDataTests: XCTestCase {
         let attributionData = createAttributionData()
         let idfa = attributionData.idfa
         XCTAssertEqual(idfa, TealiumTestValue.testIDFAString, "IDFA values were unexpectedly different")
+    }
+    
+    func testIDFAAdTrackingReset() {
+        let identifierManager = TealiumASIdentifierManagerAdTrackingEnabled()
+        let attributionData = createAttributionData(from: defaultConfig, idManager: identifierManager)
+        XCTAssertEqual(attributionData.allAttributionData[AttributionKey.idfa] as! String, TealiumTestValue.testIDFAString, "IDFA values were unexpectedly different")
+        identifierManager.advertisingIdentifier = TealiumTestValue.testIDFAResetString
+        XCTAssertEqual(attributionData.allAttributionData[AttributionKey.idfa] as! String, TealiumTestValue.testIDFAResetString, "IDFA values were unexpectedly different")
     }
 
     func testIDFAAdTrackingDisabled() {
@@ -166,7 +174,7 @@ class TealiumAttributionDataTests: XCTestCase {
 
     @available(iOS 14, *)
     func testTrackingAuthorized() {
-        let attributionData = AttributionData(config: defaultConfig, diskStorage: mockDisk, identifierManager: TealiumASIdentifierManagerAdTrackingEnabled.shared, adClient: TestTealiumAdClient.shared, adAttribution: mockAdAttribution)
+        let attributionData = createAttributionData(from: defaultConfig, idManager: TealiumASIdentifierManagerAdTrackingEnabled.shared)
         attributionData.identifierManager.attManager = MockATTrackingManagerTrackingAuthorized()
         let trackingAuthStatus = attributionData.trackingAuthorizationStatus
         XCTAssertEqual("authorized", trackingAuthStatus, "Tracking Authorization Status was an unexpected value")
@@ -174,7 +182,7 @@ class TealiumAttributionDataTests: XCTestCase {
 
     @available(iOS 14, *)
     func testTrackingDenied() {
-        let attributionData = AttributionData(config: defaultConfig, diskStorage: mockDisk, identifierManager: TealiumASIdentifierManagerAdTrackingDisabled.shared, adClient: TestTealiumAdClient.shared, adAttribution: mockAdAttribution)
+        let attributionData = createAttributionData(from: defaultConfig, idManager: TealiumASIdentifierManagerAdTrackingDisabled.shared)
         attributionData.identifierManager.attManager = MockATTrackingManagerTrackingDenied()
         let trackingAuthStatus = attributionData.trackingAuthorizationStatus
         XCTAssertEqual("denied", trackingAuthStatus, "Tracking Authorization Status was an unexpected value")
@@ -182,7 +190,7 @@ class TealiumAttributionDataTests: XCTestCase {
 
     @available(iOS 14, *)
     func testTrackingNotDetermined() {
-        let attributionData = AttributionData(config: defaultConfig, diskStorage: mockDisk, identifierManager: TealiumASIdentifierManagerAdTrackingDisabled.shared, adClient: TestTealiumAdClient.shared, adAttribution: mockAdAttribution)
+        let attributionData = createAttributionData(from: defaultConfig, idManager: TealiumASIdentifierManagerAdTrackingDisabled.shared)
         attributionData.identifierManager.attManager = MockATTrackingManagerTrackingNotDetermined()
         let trackingAuthStatus = attributionData.trackingAuthorizationStatus
         XCTAssertEqual("notDetermined", trackingAuthStatus, "Tracking Authorization Status was an unexpected value")
@@ -190,7 +198,7 @@ class TealiumAttributionDataTests: XCTestCase {
 
     @available(iOS 14, *)
     func testTrackingRestricted() {
-        let attributionData = AttributionData(config: defaultConfig, diskStorage: mockDisk, identifierManager: TealiumASIdentifierManagerAdTrackingDisabled.shared, adClient: TestTealiumAdClient.shared, adAttribution: mockAdAttribution)
+        let attributionData = createAttributionData(from: defaultConfig, idManager: TealiumASIdentifierManagerAdTrackingDisabled.shared)
         attributionData.identifierManager.attManager = MockATTrackingManagerTrackingRestricted()
         let trackingAuthStatus = attributionData.trackingAuthorizationStatus
         XCTAssertEqual("restricted", trackingAuthStatus, "Tracking Authorization Status was an unexpected value")
@@ -199,7 +207,7 @@ class TealiumAttributionDataTests: XCTestCase {
     @available(iOS 14, *)
     func testTrackingAuthorizationStatusChanged() {
         let identifierManager = TealiumASIdentifierManagerAdTrackingChangable(enabled: false)
-        let attributionData = AttributionData(config: defaultConfig, diskStorage: mockDisk, identifierManager: identifierManager, adClient: TestTealiumAdClient.shared, adAttribution: mockAdAttribution)
+        let attributionData = createAttributionData(from: defaultConfig, idManager: identifierManager)
         XCTAssertEqual("denied", attributionData.allAttributionData[AttributionKey.trackingAuthorization] as! String, "Tracking Authorization Status was an unexpected value")
         identifierManager.select(enabled: true)
         XCTAssertEqual("authorized", attributionData.allAttributionData[AttributionKey.trackingAuthorization] as! String, "Tracking Authorization Status was an unexpected value")
@@ -213,7 +221,7 @@ public class TealiumASIdentifierManagerAdTrackingEnabled: TealiumASIdentifierMan
 
     public var attManager: TealiumATTrackingManagerProtocol? = MockATTrackingManagerTrackingAuthorized()
 
-    private init() {
+    init() {
 
     }
 
@@ -243,7 +251,7 @@ public class TealiumASIdentifierManagerAdTrackingDisabled: TealiumASIdentifierMa
 
     public var attManager: TealiumATTrackingManagerProtocol? = MockATTrackingManagerTrackingDenied()
 
-    private init() {
+    init() {
 
     }
 
@@ -289,11 +297,11 @@ public class TealiumASIdentifierManagerAdTrackingChangable: TealiumASIdentifierM
     
     private var selected: TealiumASIdentifierManagerProtocol
     
-    public func select(enabled: Bool) {
+    func select(enabled: Bool) {
         self.selected = identifierManager(forEnabledState: enabled)
     }
 
-    public init(enabled: Bool) {
+    init(enabled: Bool) {
         self.selected = identifierManager(forEnabledState: enabled)
     }
 
