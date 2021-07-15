@@ -136,7 +136,7 @@ class TealiumAttributionDataTests: XCTestCase {
         let expectation = self.expectation(description: "search_ads")
         let waiter = XCTWaiter()
         attributionData.appleSearchAdsData { _ in
-            guard let appleAttributionDetails = attributionData.appleAttributionDetails else {
+            guard let appleAttributionDetails = attributionData.persistentAttributionData else {
                 XCTFail("Attribution returned a nil dictionary")
                 return
             }

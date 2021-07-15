@@ -19,7 +19,6 @@ public class AttributionData: AttributionDataProtocol {
     var config: TealiumConfig
     let diskStorage: TealiumDiskStorageProtocol
     var persistentAttributionData: PersistentAttributionData?
-    public var appleAttributionDetails: PersistentAttributionData?
     public var adAttribution: TealiumSKAdAttributionProtocol?
 
     /// Init with optional injectable dependencies (for unit testing)￼.
@@ -103,7 +102,7 @@ public class AttributionData: AttributionDataProtocol {
     ///
     /// - Parameter completion: Completion block to be executed asynchronously when Search Ads data is returned
     // swiftlint:disable cyclomatic_complexity
-    public func appleSearchAdsData(_ completion: @escaping (PersistentAttributionData) -> Void) {
+    func appleSearchAdsData(_ completion: @escaping (PersistentAttributionData) -> Void) {
         var appleAttributionDetails = PersistentAttributionData()
         let completionHander = { (details: [String: NSObject]?, error: Error?) in
             // closure callback
@@ -157,7 +156,6 @@ public class AttributionData: AttributionDataProtocol {
                     appleAttributionDetails.region = region
                 }
             }
-            self.appleAttributionDetails = appleAttributionDetails
             completion(appleAttributionDetails)
         }
         adClient.requestAttributionDetails(completionHander)
