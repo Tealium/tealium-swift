@@ -195,6 +195,15 @@ class TealiumAttributionDataTests: XCTestCase {
         let trackingAuthStatus = attributionData.trackingAuthorizationStatus
         XCTAssertEqual("restricted", trackingAuthStatus, "Tracking Authorization Status was an unexpected value")
     }
+    
+    @available(iOS 14, *)
+    func testTrackingAuthorizationStatusChanged() {
+        let identifierManager = TealiumASIdentifierManagerAdTrackingChangable(enabled: false)
+        let attributionData = AttributionData(config: defaultConfig, diskStorage: mockDisk, identifierManager: identifierManager, adClient: TestTealiumAdClient.shared, adAttribution: mockAdAttribution)
+        XCTAssertEqual("denied", attributionData.allAttributionData[AttributionKey.trackingAuthorization] as! String, "Tracking Authorization Status was an unexpected value")
+        identifierManager.select(enabled: true)
+        XCTAssertEqual("authorized", attributionData.allAttributionData[AttributionKey.trackingAuthorization] as! String, "Tracking Authorization Status was an unexpected value")
+    }
 
 }
 
@@ -256,6 +265,53 @@ public class TealiumASIdentifierManagerAdTrackingDisabled: TealiumASIdentifierMa
     public lazy var identifierForVendor: String = {
         return TealiumTestValue.testIDFVString
     }()
+}
+
+fileprivate func identifierManager(forEnabledState enabled: Bool) -> TealiumASIdentifierManagerProtocol {
+    if (enabled) {
+        return TealiumASIdentifierManagerAdTrackingEnabled.shared
+    } else {
+        return TealiumASIdentifierManagerAdTrackingDisabled.shared
+    }
+}
+
+public class TealiumASIdentifierManagerAdTrackingChangable: TealiumASIdentifierManagerProtocol {
+    public var attManager: TealiumATTrackingManagerProtocol? {
+        get {
+            self.selected.attManager
+        }
+        set {
+            
+        }
+    }
+    
+    public static let shared: TealiumASIdentifierManagerProtocol = TealiumASIdentifierManagerAdTrackingChangable(enabled: false)
+    
+    private var selected: TealiumASIdentifierManagerProtocol
+    
+    public func select(enabled: Bool) {
+        self.selected = identifierManager(forEnabledState: enabled)
+    }
+
+    public init(enabled: Bool) {
+        self.selected = identifierManager(forEnabledState: enabled)
+    }
+
+    public var advertisingIdentifier: String {
+        self.selected.advertisingIdentifier
+    }
+
+    public var isAdvertisingTrackingEnabled: String {
+        self.selected.isAdvertisingTrackingEnabled
+    }
+
+    public var trackingAuthorizationStatus: String {
+        self.selected.trackingAuthorizationStatus
+    }
+
+    public var identifierForVendor: String {
+        self.selected.identifierForVendor
+    }
 }
 
 public class MockATTrackingManagerTrackingAuthorized: TealiumATTrackingManagerProtocol {
