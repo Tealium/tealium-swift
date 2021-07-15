@@ -200,9 +200,9 @@ class MigratorTests: XCTestCase {
         XCTAssertEqual(mockMigrator.migrateCount, 1)
     }
 
-    func testMigratePersistent_methodNotRunUponTealiumInit_migrateFlagDefault() {
+    func testMigratePersistent_methodRunUponTealiumInit_migrateFlagDefault() {
         tealium = Tealium(config: config, dataLayer: DummyDataManager(), modulesManager: nil, migrator: mockMigrator, enableCompletion: { _ in })
-        XCTAssertEqual(mockMigrator.migrateCount, 0)
+        XCTAssertEqual(mockMigrator.migrateCount, 1)
     }
 
     func testMigratePersistent_methodNotRunUponTealiumInit_migrateFlagFalse() {

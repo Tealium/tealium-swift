@@ -16,9 +16,6 @@ public protocol AttributionDataProtocol {
     /// - Returns: `[String: Any]` containing all attribution data
     var allAttributionData: [String: Any] { get }
 
-    /// - Returns: `PersistentAttributionData` containing all Apple Search Ads info, if available
-    var appleAttributionDetails: `PersistentAttributionData`? { get set }
-
     /// - Returns: `String` representation of IDFA
     var idfa: String { get }
 
@@ -30,11 +27,6 @@ public protocol AttributionDataProtocol {
 
     /// - Returns: `String` representation of Limit Ad Tracking setting (true if tracking allowed, false if disabled)
     var isAdvertisingTrackingEnabled: String { get }
-
-    /// Requests Apple Search Ads data from AdClient API￼.
-    ///
-    /// - Parameter completion: Completion block to be executed asynchronously when Search Ads data is returned
-    func appleSearchAdsData(_ completion: @escaping (PersistentAttributionData) -> Void)
 
     /// Calls the `SKAdNetwork.updateConversionValue()` method
     /// - Parameter dispatch: `TealiumRequest`
