@@ -70,34 +70,34 @@ public class AttributionData: AttributionDataProtocol {
     }()
 
     /// - Returns: `String` representation of Limit Ad Tracking setting (true if tracking allowed, false if disabled)
-    public lazy var isAdvertisingTrackingEnabled: String = {
+    public var isAdvertisingTrackingEnabled: String {
         return self.identifierManager.isAdvertisingTrackingEnabled
-    }()
+    }
 
     /// - Returns: `String` representation of ATTrackingManager.trackingAuthorizationStatus
-    public lazy var trackingAuthorizationStatus: String = {
+    public var trackingAuthorizationStatus: String {
         return self.identifierManager.trackingAuthorizationStatus
-    }()
+    }
 
     /// - Returns: `[String: Any]` of all volatile data (collected at init time): IDFV, IDFA, isTrackingAllowed
-    public lazy var volatileData: [String: Any] = {
+    public var volatileData: [String: Any] {
         return [
             AttributionKey.idfa: idfa,
             AttributionKey.idfv: idfv,
             AttributionKey.isTrackingAllowed: isAdvertisingTrackingEnabled,
             AttributionKey.trackingAuthorization: trackingAuthorizationStatus
         ]
-    }()
+    }
 
     /// - Returns:`[String: Any]` containing all attribution data
-    public lazy var allAttributionData: [String: Any] = {
+    public var allAttributionData: [String: Any] {
         var all = [String: Any]()
         if let persistentAttributionData = persistentAttributionData {
             all += persistentAttributionData.dictionary
         }
         all += volatileData
         return all
-    }()
+    }
 
     /// Requests Apple Search Ads data from AdClient API￼.
     ///
