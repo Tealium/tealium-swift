@@ -67,11 +67,11 @@ open class TealiumConfig {
         }
     }
 
-    /// Set to `false` to disable the Tealium AppDelegate proxy for deep link handling.
+    /// Set to `false` to disable data migration from the Objective-c library
     /// Default `true`.
     public var shouldMigratePersistentData: Bool {
         get {
-            options[TealiumKey.shouldMigrate] as? Bool ?? false
+            options[TealiumKey.shouldMigrate] as? Bool ?? true
         }
 
         set {

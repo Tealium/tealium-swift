@@ -19,7 +19,6 @@ public class AttributionData: AttributionDataProtocol {
     var config: TealiumConfig
     let diskStorage: TealiumDiskStorageProtocol
     var persistentAttributionData: PersistentAttributionData?
-    public var appleAttributionDetails: PersistentAttributionData?
     public var adAttribution: TealiumSKAdAttributionProtocol?
 
     /// Init with optional injectable dependencies (for unit testing)￼.
@@ -60,9 +59,9 @@ public class AttributionData: AttributionDataProtocol {
     }
 
     /// - Returns: `String` representation of IDFA
-    public lazy var idfa: String = {
+    public var idfa: String {
         return identifierManager.advertisingIdentifier
-    }()
+    }
 
     /// - Returns: `String` representation of IDFV
     public lazy var idfv: String = {
@@ -70,40 +69,40 @@ public class AttributionData: AttributionDataProtocol {
     }()
 
     /// - Returns: `String` representation of Limit Ad Tracking setting (true if tracking allowed, false if disabled)
-    public lazy var isAdvertisingTrackingEnabled: String = {
+    public var isAdvertisingTrackingEnabled: String {
         return self.identifierManager.isAdvertisingTrackingEnabled
-    }()
+    }
 
     /// - Returns: `String` representation of ATTrackingManager.trackingAuthorizationStatus
-    public lazy var trackingAuthorizationStatus: String = {
+    public var trackingAuthorizationStatus: String {
         return self.identifierManager.trackingAuthorizationStatus
-    }()
+    }
 
     /// - Returns: `[String: Any]` of all volatile data (collected at init time): IDFV, IDFA, isTrackingAllowed
-    public lazy var volatileData: [String: Any] = {
+    public var volatileData: [String: Any] {
         return [
             AttributionKey.idfa: idfa,
             AttributionKey.idfv: idfv,
             AttributionKey.isTrackingAllowed: isAdvertisingTrackingEnabled,
             AttributionKey.trackingAuthorization: trackingAuthorizationStatus
         ]
-    }()
+    }
 
     /// - Returns:`[String: Any]` containing all attribution data
-    public lazy var allAttributionData: [String: Any] = {
+    public var allAttributionData: [String: Any] {
         var all = [String: Any]()
         if let persistentAttributionData = persistentAttributionData {
             all += persistentAttributionData.dictionary
         }
         all += volatileData
         return all
-    }()
+    }
 
     /// Requests Apple Search Ads data from AdClient API￼.
     ///
     /// - Parameter completion: Completion block to be executed asynchronously when Search Ads data is returned
     // swiftlint:disable cyclomatic_complexity
-    public func appleSearchAdsData(_ completion: @escaping (PersistentAttributionData) -> Void) {
+    func appleSearchAdsData(_ completion: @escaping (PersistentAttributionData) -> Void) {
         var appleAttributionDetails = PersistentAttributionData()
         let completionHander = { (details: [String: NSObject]?, error: Error?) in
             // closure callback
@@ -157,7 +156,6 @@ public class AttributionData: AttributionDataProtocol {
                     appleAttributionDetails.region = region
                 }
             }
-            self.appleAttributionDetails = appleAttributionDetails
             completion(appleAttributionDetails)
         }
         adClient.requestAttributionDetails(completionHander)

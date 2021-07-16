@@ -10,11 +10,11 @@ import Foundation
 @testable import TealiumCore
 
 class MockAttributionData: AttributionDataProtocol {
-    var appleAttributionDetails: PersistentAttributionData?
+    var persistentAttributionData: PersistentAttributionData?
     var appleSearchAdsDataCalled = 0
     var updateConversionValueCalled = 0
     init() {
-        self.appleAttributionDetails = PersistentAttributionData(withDictionary: [
+        self.persistentAttributionData = PersistentAttributionData(withDictionary: [
             AttributionKey.clickedWithin30D: "true",
             AttributionKey.orgName: "org name",
             AttributionKey.orgId: "555555",
@@ -34,14 +34,14 @@ class MockAttributionData: AttributionDataProtocol {
     }
 
     var allAttributionData: [String: Any] {
-        var allData = appleAttributionDetails!.dictionary as [String: Any]
+        var allData = persistentAttributionData!.dictionary as [String: Any]
         allData += volatileData
         return allData
     }
 
-    var idfa: String {
+    var idfa: String = {
         "IDFA8250-458d-40ed-b150-e0bffeeee849"
-    }
+    }()
 
     var idfv: String {
         "IDFV72a0-aef8-47be-9cf5-2628b031d4d9"
@@ -57,7 +57,7 @@ class MockAttributionData: AttributionDataProtocol {
 
     func appleSearchAdsData(_ completion: @escaping (PersistentAttributionData) -> Void) {
         appleSearchAdsDataCalled += 1
-        completion(appleAttributionDetails!)
+        completion(persistentAttributionData!)
     }
 
     func updateConversionValue(from dispatch: TealiumRequest) {
