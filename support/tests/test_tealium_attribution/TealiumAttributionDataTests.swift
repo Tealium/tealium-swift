@@ -219,7 +219,7 @@ public class TealiumASIdentifierManagerAdTrackingEnabled: TealiumASIdentifierMan
 
     public static var shared: TealiumASIdentifierManagerProtocol = TealiumASIdentifierManagerAdTrackingEnabled()
 
-    public var attManager: TealiumATTrackingManagerProtocol? = MockATTrackingManagerTrackingAuthorized()
+    public var attManager: TealiumATTrackingManagerProtocol = MockATTrackingManagerTrackingAuthorized()
 
     init() {
 
@@ -234,10 +234,7 @@ public class TealiumASIdentifierManagerAdTrackingEnabled: TealiumASIdentifierMan
     }()
 
     public var trackingAuthorizationStatus: String {
-        if #available(iOS 14, *) {
-            return attManager?.trackingAuthorizationStatusDescription ?? TealiumValue.unknown
-        }
-        return TealiumValue.unknown
+        return attManager.trackingAuthorizationStatusDescription
     }
 
     public lazy var identifierForVendor: String = {
@@ -249,7 +246,7 @@ public class TealiumASIdentifierManagerAdTrackingDisabled: TealiumASIdentifierMa
 
     public static var shared: TealiumASIdentifierManagerProtocol = TealiumASIdentifierManagerAdTrackingDisabled()
 
-    public var attManager: TealiumATTrackingManagerProtocol? = MockATTrackingManagerTrackingDenied()
+    public var attManager: TealiumATTrackingManagerProtocol = MockATTrackingManagerTrackingDenied()
 
     init() {
 
@@ -264,10 +261,7 @@ public class TealiumASIdentifierManagerAdTrackingDisabled: TealiumASIdentifierMa
     }()
 
     public var trackingAuthorizationStatus: String {
-        if #available(iOS 14, *) {
-            return attManager?.trackingAuthorizationStatusDescription ?? TealiumValue.unknown
-        }
-        return TealiumValue.unknown
+        return attManager.trackingAuthorizationStatusDescription
     }
 
     public lazy var identifierForVendor: String = {
@@ -284,7 +278,7 @@ fileprivate func identifierManager(forEnabledState enabled: Bool) -> TealiumASId
 }
 
 public class TealiumASIdentifierManagerAdTrackingChangable: TealiumASIdentifierManagerProtocol {
-    public var attManager: TealiumATTrackingManagerProtocol? {
+    public var attManager: TealiumATTrackingManagerProtocol {
         get {
             self.selected.attManager
         }
