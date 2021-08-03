@@ -44,9 +44,9 @@ struct ContentView: View {
                         }
                         TealiumTextButton(title: "Track Event") {
                             TealiumHelper.shared.track(title: "button_tapped",
-                                                    data: ["event_category": "example",
-                                                           "event_action": "tap",
-                                                           "event_label": "Track Event"])
+                                                       data: ["event_category": "example",
+                                                              "event_action": "tap",
+                                                              "event_label": "Track Event"])
                         }
                         TealiumTextButton(title: "Hosted Data Layer") {
                             TealiumHelper.shared.track(title: "hdl-test",
@@ -90,7 +90,7 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-          ContentView().previewDevice(PreviewDevice(rawValue: "iPhone X"))
+            ContentView().previewDevice(PreviewDevice(rawValue: "iPhone X"))
             ContentView().previewDevice(PreviewDevice(rawValue: "iPhone 8"))
             ContentView().previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
             ContentView().previewDevice(PreviewDevice(rawValue: "iPhone 11 SE (1st generation)"))
