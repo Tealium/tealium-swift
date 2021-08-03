@@ -44,20 +44,20 @@ public class TealiumASIdentifierManager: TealiumASIdentifierManagerProtocol {
     }
 
     /// - Returns: `String` representation of IDFA
-    public lazy var advertisingIdentifier: String = {
+    public var advertisingIdentifier: String {
         return idManager.advertisingIdentifier.uuidString
-    }()
+    }
 
     /// - Returns: `String` representation of Limit Ad Tracking setting (true if tracking allowed, false if disabled)
-    public lazy var isAdvertisingTrackingEnabled: String = {
+    public var isAdvertisingTrackingEnabled: String {
         if #available(iOS 14, *) {
             return trackingAuthorizationStatus == TrackingAuthorizationDescription.authorized ? "true" : "false"
         }
         return idManager.isAdvertisingTrackingEnabled.description
-    }()
+    }
 
     /// - Returns: `String` representation of ATTrackingManager.trackingAuthorizationStatus
-    public lazy var trackingAuthorizationStatus: String = {
+    public var trackingAuthorizationStatus: String {
         if let attManager = attManager {
             return attManager.trackingAuthorizationStatusDescription
         }
@@ -65,7 +65,7 @@ public class TealiumASIdentifierManager: TealiumASIdentifierManagerProtocol {
             return ATTrackingManager.AuthorizationStatus.string(from: ATTrackingManager.trackingAuthorizationStatus.rawValue)
         }
         return TealiumValue.unknown
-    }()
+    }
 
     /// - Returns: `String` representation of IDFV
     public lazy var identifierForVendor: String = {
