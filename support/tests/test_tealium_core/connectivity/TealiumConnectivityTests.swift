@@ -79,7 +79,7 @@ class TealiumConnectivityTests: XCTestCase {
         let mock = MockConnectivityMonitorIsConnectedWifi(config: defaultTealiumConfig, completion: { _ in })
         let connectivity = nwPathConnectivity(with: mock)
         // need to wait for NWPathMonitor callback to finish first
-        TestTealiumHelper.delay(for: 1.0, on: TealiumQueues.backgroundSerialQueue, qos: .userInitiated) {
+        TestTealiumHelper.delay(for: 1.0, on: TealiumQueues.backgroundSerialQueue) {
             let data = connectivity.data!
 
             XCTAssertEqual(data[ConnectivityKey.connectionType] as! String, ConnectivityKey.connectionTypeWifi)
@@ -93,7 +93,7 @@ class TealiumConnectivityTests: XCTestCase {
         let mock = MockConnectivityMonitorIsConnectedCellular(config: defaultTealiumConfig, completion: { _ in })
         let connectivity = nwPathConnectivity(with: mock)
         // need to wait for NWPathMonitor callback to finish first
-        TestTealiumHelper.delay(for: 1.0, on: TealiumQueues.backgroundSerialQueue, qos: .userInitiated) {
+        TestTealiumHelper.delay(for: 1.0, on: TealiumQueues.backgroundSerialQueue) {
             let data = connectivity.data!
 
             XCTAssertEqual(data[ConnectivityKey.connectionType] as! String, ConnectivityKey.connectionTypeCell)
@@ -107,7 +107,7 @@ class TealiumConnectivityTests: XCTestCase {
         let mock = MockConnectivityMonitorIsConnectedWired(config: defaultTealiumConfig, completion: { _ in })
         let connectivity = nwPathConnectivity(with: mock)
         // need to wait for NWPathMonitor callback to finish first
-        TestTealiumHelper.delay(for: 1.0, on: TealiumQueues.backgroundSerialQueue, qos: .userInitiated) {
+        TestTealiumHelper.delay(for: 1.0, on: TealiumQueues.backgroundSerialQueue) {
             let data = connectivity.data!
 
             XCTAssertEqual(data[ConnectivityKey.connectionType] as! String, ConnectivityKey.connectionTypeWired)
@@ -121,7 +121,7 @@ class TealiumConnectivityTests: XCTestCase {
         let mock = MockConnectivityMonitorNotConnected(config: defaultTealiumConfig, completion: { _ in })
         let connectivity = nwPathConnectivity(with: mock)
         // need to wait for NWPathMonitor callback to finish first
-        TestTealiumHelper.delay(for: 1.0, on: TealiumQueues.backgroundSerialQueue, qos: .userInitiated) {
+        TestTealiumHelper.delay(for: 1.0, on: TealiumQueues.backgroundSerialQueue) {
             let data = connectivity.data!
 
             XCTAssertEqual(data[ConnectivityKey.connectionType] as! String, ConnectivityKey.connectionTypeNone)
