@@ -10,6 +10,7 @@ import XCTest
 
 class TealiumConnectivityTests: XCTestCase {
 
+    let testQueue = DispatchQueue(label: "com.tealium.connectivityTest", qos: .userInitiated)
     var defaultTealiumConfig: TealiumConfig { TealiumConfig(account: "tealiummobile",
                                                             profile: "demo",
                                                             environment: "dev",
@@ -79,7 +80,7 @@ class TealiumConnectivityTests: XCTestCase {
         let mock = MockConnectivityMonitorIsConnectedWifi(config: defaultTealiumConfig, completion: { _ in })
         let connectivity = nwPathConnectivity(with: mock)
         // need to wait for NWPathMonitor callback to finish first
-        TestTealiumHelper.delay(for: 1.0, on: TealiumQueues.backgroundSerialQueue) {
+        TestTealiumHelper.delay(for: 1.0, on: testQueue) {
             let data = connectivity.data!
 
             XCTAssertEqual(data[ConnectivityKey.connectionType] as! String, ConnectivityKey.connectionTypeWifi)
@@ -88,27 +89,26 @@ class TealiumConnectivityTests: XCTestCase {
         self.wait(for: [expectation], timeout: 10.0)
     }
     
-    // TODO: Doesn't work con CICD. Need to find a way to make this work
-//    func testCurrentConnectionTypeCellular() {
-//        let expectation = self.expectation(description: "connection type")
-//        let mock = MockConnectivityMonitorIsConnectedCellular(config: defaultTealiumConfig, completion: { _ in })
-//        let connectivity = nwPathConnectivity(with: mock)
-//        // need to wait for NWPathMonitor callback to finish first
-//        TestTealiumHelper.delay(for: 1.0, on: TealiumQueues.backgroundSerialQueue) {
-//            let data = connectivity.data!
-//
-//            XCTAssertEqual(data[ConnectivityKey.connectionType] as! String, ConnectivityKey.connectionTypeCell)
-//            expectation.fulfill()
-//        }
-//        self.wait(for: [expectation], timeout: 10.0)
-//    }
+    func testCurrentConnectionTypeCellular() {
+        let expectation = self.expectation(description: "connection type")
+        let mock = MockConnectivityMonitorIsConnectedCellular(config: defaultTealiumConfig, completion: { _ in })
+        let connectivity = nwPathConnectivity(with: mock)
+        // need to wait for NWPathMonitor callback to finish first
+        TestTealiumHelper.delay(for: 1.0, on: testQueue) {
+            let data = connectivity.data!
+
+            XCTAssertEqual(data[ConnectivityKey.connectionType] as! String, ConnectivityKey.connectionTypeCell)
+            expectation.fulfill()
+        }
+        self.wait(for: [expectation], timeout: 10.0)
+    }
     
     func testCurrentConnectionTypeWired() {
         let expectation = self.expectation(description: "connection type")
         let mock = MockConnectivityMonitorIsConnectedWired(config: defaultTealiumConfig, completion: { _ in })
         let connectivity = nwPathConnectivity(with: mock)
         // need to wait for NWPathMonitor callback to finish first
-        TestTealiumHelper.delay(for: 1.0, on: TealiumQueues.backgroundSerialQueue) {
+        TestTealiumHelper.delay(for: 1.0, on: testQueue) {
             let data = connectivity.data!
 
             XCTAssertEqual(data[ConnectivityKey.connectionType] as! String, ConnectivityKey.connectionTypeWired)
@@ -122,7 +122,7 @@ class TealiumConnectivityTests: XCTestCase {
         let mock = MockConnectivityMonitorNotConnected(config: defaultTealiumConfig, completion: { _ in })
         let connectivity = nwPathConnectivity(with: mock)
         // need to wait for NWPathMonitor callback to finish first
-        TestTealiumHelper.delay(for: 1.0, on: TealiumQueues.backgroundSerialQueue) {
+        TestTealiumHelper.delay(for: 1.0, on: testQueue) {
             let data = connectivity.data!
 
             XCTAssertEqual(data[ConnectivityKey.connectionType] as! String, ConnectivityKey.connectionTypeNone)
