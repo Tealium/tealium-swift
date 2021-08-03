@@ -76,13 +76,11 @@ class TestTealiumHelper {
             self.delay = delay
         }
         
-        func submit(completion: @escaping () -> Void) {
+        func submit(qos: DispatchQoS = .unspecified, completion: @escaping () -> Void) {
             if let delay = delay {
-                queue.asyncAfter(deadline: .now() + delay, execute: completion)
+                queue.asyncAfter(deadline: .now() + delay, qos: qos, flags: [.enforceQoS], execute: completion)
            } else {
-                queue.async {
-                    completion()
-                }
+                queue.async(group: nil, qos: qos, flags: [.enforceQoS], execute: completion)
            }
         }
     }
@@ -101,11 +99,10 @@ class TestTealiumHelper {
     
     class func delay(for delay: TimeInterval? = nil,
                      on queue: DispatchQueue = DispatchQueue(label: "test"),
+                     qos: DispatchQoS = .unspecified,
                      _ completion: @escaping () -> Void) {
         let retry = TestRetryManager(queue: queue, delay: delay ?? 1.0)
-        retry.submit {
-            completion()
-        }
+        retry.submit(qos: qos, completion: completion)
     }
 
     class func allTealiumModuleNames() -> [String] {
