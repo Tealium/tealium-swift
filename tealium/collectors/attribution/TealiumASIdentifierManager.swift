@@ -19,7 +19,7 @@ import AppTrackingTransparency
 /// Testable replacement for Apple's ASIdentifierManager.
 public protocol TealiumASIdentifierManagerProtocol {
     static var shared: TealiumASIdentifierManagerProtocol { get }
-    var attManager: TealiumATTrackingManagerProtocol? { get set }
+    var attManager: TealiumATTrackingManagerProtocol { get set }
     var advertisingIdentifier: String { get }
     var isAdvertisingTrackingEnabled: String { get }
     var identifierForVendor: String { get }
@@ -32,10 +32,27 @@ public protocol TealiumATTrackingManagerProtocol {
     var trackingAuthorizationStatusDescription: String { get }
 }
 
+class TealiumATTrackingManager: TealiumATTrackingManagerProtocol {
+    static var trackingAuthorizationStatus: UInt {
+        if #available(iOS 14, *) {
+            return ATTrackingManager.trackingAuthorizationStatus.rawValue
+        } else {
+            return 0
+        }
+    }
+    
+    var trackingAuthorizationStatusDescription: String {
+        if #available(iOS 14, *) {
+            return ATTrackingManager.AuthorizationStatus.string(from: ATTrackingManager.trackingAuthorizationStatus.rawValue)
+        }
+        return TealiumValue.unknown
+    }
+}
+
 /// Implements Apple's ASIdenfifierManager to advertising identifiers.
 public class TealiumASIdentifierManager: TealiumASIdentifierManagerProtocol {
     var idManager = ASIdentifierManager.shared()
-    public var attManager: TealiumATTrackingManagerProtocol?
+    public var attManager: TealiumATTrackingManagerProtocol = TealiumATTrackingManager()
 
     public static var shared: TealiumASIdentifierManagerProtocol = TealiumASIdentifierManager()
 
@@ -44,28 +61,22 @@ public class TealiumASIdentifierManager: TealiumASIdentifierManagerProtocol {
     }
 
     /// - Returns: `String` representation of IDFA
-    public lazy var advertisingIdentifier: String = {
+    public var advertisingIdentifier: String {
         return idManager.advertisingIdentifier.uuidString
-    }()
+    }
 
     /// - Returns: `String` representation of Limit Ad Tracking setting (true if tracking allowed, false if disabled)
-    public lazy var isAdvertisingTrackingEnabled: String = {
+    public var isAdvertisingTrackingEnabled: String {
         if #available(iOS 14, *) {
             return trackingAuthorizationStatus == TrackingAuthorizationDescription.authorized ? "true" : "false"
         }
         return idManager.isAdvertisingTrackingEnabled.description
-    }()
+    }
 
     /// - Returns: `String` representation of ATTrackingManager.trackingAuthorizationStatus
-    public lazy var trackingAuthorizationStatus: String = {
-        if let attManager = attManager {
-            return attManager.trackingAuthorizationStatusDescription
-        }
-        if #available(iOS 14, *) {
-            return ATTrackingManager.AuthorizationStatus.string(from: ATTrackingManager.trackingAuthorizationStatus.rawValue)
-        }
-        return TealiumValue.unknown
-    }()
+    public var trackingAuthorizationStatus: String {
+        return attManager.trackingAuthorizationStatusDescription
+    }
 
     /// - Returns: `String` representation of IDFV
     public lazy var identifierForVendor: String = {
