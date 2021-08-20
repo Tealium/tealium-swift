@@ -44,9 +44,50 @@ public struct AnyCodable: Codable {
 
 extension AnyCodable: _AnyEncodable, _AnyDecodable {}
 
-extension AnyCodable: Equatable {
+extension AnyCodable: Equatable, EqualValues {
     public static func == (lhs: AnyCodable, rhs: AnyCodable) -> Bool {
-        switch (lhs.value, rhs.value) {
+        return areEquals(lhs: lhs.value, rhs: rhs.value)
+    }
+}
+
+extension AnyCodable: CustomStringConvertible {
+    public var description: String {
+        switch value {
+        case is Void:
+            return String(describing: nil as Any?)
+        case let value as CustomStringConvertible:
+            return value.description
+        default:
+            return String(describing: value)
+        }
+    }
+}
+
+extension AnyCodable: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        switch value {
+        case let value as CustomDebugStringConvertible:
+            return "AnyCodable(\(value.debugDescription))"
+        default:
+            return "AnyCodable(\(description))"
+        }
+    }
+}
+
+extension AnyCodable: ExpressibleByNilLiteral {}
+extension AnyCodable: ExpressibleByBooleanLiteral {}
+extension AnyCodable: ExpressibleByIntegerLiteral {}
+extension AnyCodable: ExpressibleByFloatLiteral {}
+extension AnyCodable: ExpressibleByArrayLiteral {}
+extension AnyCodable: ExpressibleByDictionaryLiteral {}
+
+
+protocol EqualValues {
+}
+
+extension EqualValues {
+    static func areEquals(lhs: Any, rhs: Any) -> Bool {
+        switch (lhs, rhs) {
         case is (Void, Void),
              is (Void, NSNull),
              is (NSNull, NSNull),
@@ -82,41 +123,19 @@ extension AnyCodable: Equatable {
             return lhs == rhs
         case let (lhs as [String: AnyCodable], rhs as [String: AnyCodable]):
             return lhs == rhs
+        case let (lhs as [String: AnyEncodable], rhs as [String: AnyEncodable]):
+            return lhs == rhs
+        case let (lhs as [String: AnyDecodable], rhs as [String: AnyDecodable]):
+            return lhs == rhs
         case let (lhs as [AnyCodable], rhs as [AnyCodable]):
+            return lhs == rhs
+        case let (lhs as [AnyEncodable], rhs as [AnyEncodable]):
+            return lhs == rhs
+        case let (lhs as [AnyDecodable], rhs as [AnyDecodable]):
             return lhs == rhs
         default:
             return false
         }
     }
-}
 
-extension AnyCodable: CustomStringConvertible {
-    public var description: String {
-        switch value {
-        case is Void:
-            return String(describing: nil as Any?)
-        case let value as CustomStringConvertible:
-            return value.description
-        default:
-            return String(describing: value)
-        }
-    }
 }
-
-extension AnyCodable: CustomDebugStringConvertible {
-    public var debugDescription: String {
-        switch value {
-        case let value as CustomDebugStringConvertible:
-            return "AnyCodable(\(value.debugDescription))"
-        default:
-            return "AnyCodable(\(description))"
-        }
-    }
-}
-
-extension AnyCodable: ExpressibleByNilLiteral {}
-extension AnyCodable: ExpressibleByBooleanLiteral {}
-extension AnyCodable: ExpressibleByIntegerLiteral {}
-extension AnyCodable: ExpressibleByFloatLiteral {}
-extension AnyCodable: ExpressibleByArrayLiteral {}
-extension AnyCodable: ExpressibleByDictionaryLiteral {}
