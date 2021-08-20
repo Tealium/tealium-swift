@@ -48,7 +48,7 @@ class AnyCodableTests: XCTestCase {
         
     }
     
-    func testNan() throws {
+    func testDoubleNan() throws {
         let nanData = try encode(Double.nan)
         let nanRes: Double = try decode(nanData)
         XCTAssertTrue(nanRes.isNaN)
@@ -62,12 +62,35 @@ class AnyCodableTests: XCTestCase {
         try encodeTest(value: Float.greatestFiniteMagnitude)
     }
     
-    func testNSNumber() throws {
+    func testFloatNan() throws {
+        let nanData = try encode(Float.nan)
+        let nanRes: Float = try decode(nanData)
+        XCTAssertTrue(nanRes.isNaN)
+    }
+    
+    func testNSNumberBool() throws {
         let data = try encode(NSNumber(true))
         let res: Bool = try decode(data)
         let text = String(data: data, encoding: .utf8)
         XCTAssertTrue(res)
         XCTAssertEqual(text, String(describing: true))
+    }
+    
+    func testNSNumber() throws {
+        try nsNumberTest(value: true)
+        try nsNumberTest(value: false)
+        try nsNumberTest(value: 4)
+        try nsNumberTest(value: Double(2.2))
+        try nsNumberTest(value: Float(4.5))
+        try nsNumberTest(value: Double.greatestFiniteMagnitude)
+        try nsNumberTest(value: Double.infinity)
+        try nsNumberTest(value: Float.greatestFiniteMagnitude)
+        try nsNumberTest(value: Float.infinity)
+        try nsNumberTest(value: UInt(32))
+        try nsNumberTest(value: UInt32(2))
+        try nsNumberTest(value: Int8(3))
+        try nsNumberTest(value: UInt16(17))
+        try nsNumberTest(value: Int16(6))
     }
     
     func testDate() throws {
@@ -81,7 +104,6 @@ class AnyCodableTests: XCTestCase {
         try encodeTest(value: [Date()])
     }
     
-    
     func testVoid() throws {
         // ???
     }
@@ -90,7 +112,16 @@ class AnyCodableTests: XCTestCase {
         // ???
     }
     
-    func encodeTest<T: Decodable & Equatable>(value: T) throws {
+    private func nsNumberTest<T: Decodable & Equatable>(value: T) throws {
+        guard let number = value as? NSNumber else {
+            throw NSError(domain: "Invalid Argument", code: 1, userInfo: nil)
+        }
+        let data = try encode(number)
+        let res: T = try decode(data)
+        XCTAssertEqual(value, res)
+    }
+    
+    private func encodeTest<T: Decodable & Equatable>(value: T) throws {
         let data = try encode(value)
         let res: T = try decode(data)
         XCTAssertEqual(value, res)
