@@ -100,11 +100,59 @@ class AnyCodableTests: XCTestCase {
         try encodeTest(value: [Date()])
     }
     
+    func testAnyArray() throws {
+        let anyArray: [Any] = [1, "2", Double.infinity]
+        let data = try encode(anyArray)
+        let codable: AnyCodable = try decode(data)
+        let resArray = codable.value as! [Any]
+        XCTAssertEqual(anyArray[0] as! Int, resArray[0] as! Int)
+        XCTAssertEqual(anyArray[1] as! String, resArray[1] as! String)
+        XCTAssertEqual(anyArray[2] as! Double, resArray[2] as! Double)
+    }
+    
     func testNSNumberArray() throws {
         let numbers = [NSNumber(1), NSNumber(value: Double(0.4))]
         let data = try encode(numbers)
         let codable: AnyCodable = try decode(data)
         XCTAssertEqual(numbers, codable.value as! [NSNumber])
+    }
+    
+    func testNonCodableArray() throws {
+        let nulls = [NSNull(), NSNull(), NSNull()]
+        let data = try encode(nulls)
+        let codable: AnyCodable = try decode(data)
+        XCTAssertEqual(nulls, codable.value as! [NSNull])
+    }
+    
+    func testDictionary() throws {
+        try encodeTest(value: [String:Int]())
+        try encodeTest(value: ["1":1,"2":2,"3":3])
+        try encodeTest(value: ["1":"1","2":"2","3":"3"])
+        try encodeTest(value: ["d":Date()])
+    }
+    
+    func testAnyDictionary() throws {
+        let anyArray: [String:Any] = ["1":1, "2":"2", "3":Double.infinity]
+        let data = try encode(anyArray)
+        let codable: AnyCodable = try decode(data)
+        let resArray = codable.value as! [String:Any]
+        XCTAssertEqual(anyArray["1"] as! Int, resArray["1"] as! Int)
+        XCTAssertEqual(anyArray["2"] as! String, resArray["2"] as! String)
+        XCTAssertEqual(anyArray["3"] as! Double, resArray["3"] as! Double)
+    }
+    
+    func testNSNumberDictionary() throws {
+        let numbers = ["1": NSNumber(1), "2": NSNumber(value: Double(0.4))]
+        let data = try encode(numbers)
+        let codable: AnyCodable = try decode(data)
+        XCTAssertEqual(numbers, codable.value as! [String:NSNumber])
+    }
+    
+    func testNonCodableDictionary() throws {
+        let nulls = ["1":NSNull(), "2":NSNull(), "3":NSNull()]
+        let data = try encode(nulls)
+        let codable: AnyCodable = try decode(data)
+        XCTAssertEqual(nulls, codable.value as! [String:NSNull])
     }
     
     func testNil() throws {
