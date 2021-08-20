@@ -45,7 +45,6 @@ class AnyCodableTests: XCTestCase {
         try encodeTest(value: Double(-23.5))
         try encodeTest(value: Double.infinity)
         try encodeTest(value: Double.greatestFiniteMagnitude)
-        
     }
     
     func testDoubleNan() throws {
@@ -66,14 +65,6 @@ class AnyCodableTests: XCTestCase {
         let nanData = try encode(Float.nan)
         let nanRes: Float = try decode(nanData)
         XCTAssertTrue(nanRes.isNaN)
-    }
-    
-    func testNSNumberBool() throws {
-        let data = try encode(NSNumber(true))
-        let res: Bool = try decode(data)
-        let text = String(data: data, encoding: .utf8)
-        XCTAssertTrue(res)
-        XCTAssertEqual(text, String(describing: true))
     }
     
     func testNSNumber() throws {
@@ -104,12 +95,19 @@ class AnyCodableTests: XCTestCase {
         try encodeTest(value: [Date()])
     }
     
+    func testNil() throws {
+        let codable = AnyCodable(nil)
+        try encodeAnyCodableTest(codable)
+    }
+    
     func testVoid() throws {
-        // ???
+        let codable = AnyCodable(())
+        try encodeAnyCodableTest(codable)
     }
     
     func testNSNull() throws {
-        // ???
+        let codable = AnyCodable(NSNull())
+        try encodeAnyCodableTest(codable)
     }
     
     private func nsNumberTest<T: Decodable & Equatable>(value: T) throws {
@@ -125,14 +123,29 @@ class AnyCodableTests: XCTestCase {
         let data = try encode(value)
         let res: T = try decode(data)
         XCTAssertEqual(value, res)
+        try encodeAnyCodableTest(AnyCodable(value))
+    }
+    
+    private func encodeAnyCodableTest(_ codable: AnyCodable) throws {
+        let data = try encodeAnyCodable(codable)
+        let anyCodableRes = try decodeAnyCodable(data)
+        XCTAssertEqual(codable, anyCodableRes)
     }
     
     private func encode(_ value: Any) throws -> Data {
-        return try Tealium.jsonEncoder.encode(AnyCodable(value))
+        return try encodeAnyCodable(AnyCodable(value))
     }
     
     private func decode<T: Decodable>(_ data: Data) throws -> T {
         return try Tealium.jsonDecoder.decode(T.self, from: data)
+    }
+    
+    private func encodeAnyCodable(_ codable: AnyCodable) throws -> Data {
+        return try Tealium.jsonEncoder.encode(codable)
+    }
+    
+    private func decodeAnyCodable(_ data: Data) throws -> AnyCodable {
+        return try Tealium.jsonDecoder.decode(AnyCodable.self, from: data)
     }
 
 }

@@ -47,7 +47,10 @@ extension AnyCodable: _AnyEncodable, _AnyDecodable {}
 extension AnyCodable: Equatable {
     public static func == (lhs: AnyCodable, rhs: AnyCodable) -> Bool {
         switch (lhs.value, rhs.value) {
-        case is (Void, Void):
+        case is (Void, Void),
+             is (Void, NSNull),
+             is (NSNull, NSNull),
+             is (NSNull, Void):
             return true
         case let (lhs as Bool, rhs as Bool):
             return lhs == rhs
