@@ -18,6 +18,11 @@ class AnyCodableTests: XCTestCase {
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
+    
+    func testNilAnyCodable() {
+        let codable = AnyCodable(nil)
+        XCTAssertTrue(codable.value is Void)
+    }
 
     func testBool() throws {
         try encodeTest(value: true)
@@ -95,6 +100,13 @@ class AnyCodableTests: XCTestCase {
         try encodeTest(value: [Date()])
     }
     
+    func testNSNumberArray() throws {
+        let numbers = [NSNumber(1), NSNumber(value: Double(0.4))]
+        let data = try encode(numbers)
+        let codable: AnyCodable = try decode(data)
+        XCTAssertEqual(numbers, codable.value as! [NSNumber])
+    }
+    
     func testNil() throws {
         let codable = AnyCodable(nil)
         try encodeAnyCodableTest(codable)
@@ -123,7 +135,6 @@ class AnyCodableTests: XCTestCase {
         let data = try encode(value)
         let res: T = try decode(data)
         XCTAssertEqual(value, res)
-        try encodeAnyCodableTest(AnyCodable(value))
     }
     
     private func encodeAnyCodableTest(_ codable: AnyCodable) throws {
