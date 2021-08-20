@@ -44,6 +44,8 @@ class AnyCodableTests: XCTestCase {
         try encodeTest(value: Double(3.4))
         try encodeTest(value: Double(-23.5))
         try encodeTest(value: Double.infinity)
+        try encodeTest(value: Double.greatestFiniteMagnitude)
+        
     }
     
     func testNan() throws {
@@ -57,6 +59,7 @@ class AnyCodableTests: XCTestCase {
         try encodeTest(value: Float(3.4))
         try encodeTest(value: Float(-23.5))
         try encodeTest(value: Float.infinity)
+        try encodeTest(value: Float.greatestFiniteMagnitude)
     }
     
     func testNSNumber() throws {
