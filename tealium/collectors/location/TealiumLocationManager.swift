@@ -235,7 +235,7 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
             return
         }
         
-//        // Check we are actively monitoring for this geofence and it didn't come from another SDK
+        // Check we are actively monitoring for this geofence and it didn't come from another SDK
         guard geofences.contains(where: {
             $0.name  == region.identifier
         }) else {
