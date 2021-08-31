@@ -1483,6 +1483,16 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D7A8EFA326D3C38C00C26587 /* Embed App Clips */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/AppClips";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			name = "Embed App Clips";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -3230,6 +3240,7 @@
 				CF8805712554B74B0020E1B2 /* Frameworks */,
 				CF8805722554B74B0020E1B2 /* Resources */,
 				CF8807C52554BB3B0020E1B2 /* Embed Frameworks */,
+				D7A8EFA326D3C38C00C26587 /* Embed App Clips */,
 			);
 			buildRules = (
 			);
@@ -3922,7 +3933,7 @@
 		7182DD011D77492D0001A95B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1240;
+				LastSwiftUpdateCheck = 1300;
 				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = "Tealium, Inc";
 				TargetAttributes = {

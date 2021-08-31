@@ -37,6 +37,20 @@ public extension DeviceData {
         return stringRes
         #endif
     }
+    
+    class var logicalResolution: String {
+        #if os(OSX)
+        return TealiumValue.unknown
+        #elseif os(watchOS)
+        let res = WKInterfaceDevice.current().screenBounds
+        let stringRes = String(format: "%.0fx%.0f", res.height, res.width)
+        return stringRes
+        #else
+        let res = UIScreen.main.bounds
+        let stringRes = String(format: "%.0fx%.0f", res.height, res.width)
+        return stringRes
+        #endif
+    }
 
     /// - Returns: `[String: Stirng]` containing the device's physical and UI orientation
     var orientation: [String: String] {

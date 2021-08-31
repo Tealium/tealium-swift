@@ -95,7 +95,16 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
             locationManager.requestAlwaysAuthorization()
         }
 
-        if  authorizationStatus != .authorizedWhenInUse {
+        if authorizationStatus != .authorizedWhenInUse {
+            locationManager.requestWhenInUseAuthorization()
+        }
+    }
+    
+    /// Prompts the user to enable permission for location servies
+    public func requestWhenInUseAuthorization() {
+        let authorizationStatus = type(of: locationManager).self.authorizationStatus()
+
+        if authorizationStatus != .authorizedWhenInUse {
             locationManager.requestWhenInUseAuthorization()
         }
     }
@@ -226,7 +235,7 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
             return
         }
         
-        // Check we are actively monitoring for this geofence and it didn't come from another SDK
+//        // Check we are actively monitoring for this geofence and it didn't come from another SDK
         guard geofences.contains(where: {
             $0.name  == region.identifier
         }) else {

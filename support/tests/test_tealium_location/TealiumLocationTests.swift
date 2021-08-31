@@ -348,7 +348,20 @@ class TealiumLocationTests: XCTestCase {
                                                      locationManager: locationManager)
 
         locationManager.delegate = tealiumLocation
-
+        let json = """
+        {
+        "name": "testRegion",
+        "latitude": 37.3317,
+        "longitude": -122.0325086,
+        "radius": 100,
+        "trigger_on_enter": true,
+        "trigger_on_exit": true
+        }
+        """
+        let data = json.data(using: .utf8)
+        let geofence = try! JSONDecoder().decode(Geofence.self, from: data!)
+        tealiumLocation.geofences = [geofence]
+        
         let coordinate = CLLocationCoordinate2D(latitude: 37.3317, longitude: -122.032_508_6)
 
         let formatter = DateFormatter()
@@ -402,6 +415,19 @@ class TealiumLocationTests: XCTestCase {
                                                      locationManager: locationManager)
 
         locationManager.delegate = tealiumLocation
+        let json = """
+        {
+        "name": "testRegion",
+        "latitude": 37.3317,
+        "longitude": -122.0325086,
+        "radius": 100,
+        "trigger_on_enter": true,
+        "trigger_on_exit": true
+        }
+        """
+        let data = json.data(using: .utf8)
+        let geofence = try! JSONDecoder().decode(Geofence.self, from: data!)
+        tealiumLocation.geofences = [geofence]
 
         let coordinate = CLLocationCoordinate2D(latitude: 37.3317, longitude: -122.032_508_6)
 
@@ -470,6 +496,47 @@ class TealiumLocationTests: XCTestCase {
             }
 
             XCTAssertNotNil(result)
+        }
+    }
+    
+    func testOnlyMonitoredGeofenceTriggersEnterEvent() {
+        let expect = expectation(description: "testOnlyMonitoredGeofenceTriggersEnterEvent")
+        expect.isInverted = true
+        TealiumLocationTests.expectations.append(expect)
+
+        let mockModuleDelegate = MockLocationModuleDelegate()
+        mockModuleDelegate.asyncExpectation = expect
+
+        config = TealiumConfig(account: "tealiummobile", profile: "location", environment: "dev")
+        let locationModule = createModule(with: config,
+                                            delegate: mockModuleDelegate)
+
+        guard let locationManager = MockLocationManager(config: config, enableServices: true, delegateClass: nil) else {
+            XCTFail("MockLocationManager did not init properly - shouldn't happen")
+            return
+        }
+        self.locationManager = locationManager
+
+        let tealiumLocation = TealiumLocationManager(config: config, locationDelegate: locationModule,
+                                                     locationManager: locationManager)
+
+        locationManager.delegate = tealiumLocation
+
+        let region = CLCircularRegion(center: CLLocationCoordinate2DMake(51.4610304, -0.9707625), radius: CLLocationDistance(100), identifier: "test_region")
+        region.notifyOnEntry = true
+        region.notifyOnExit = true
+        
+        tealiumLocation.sendGeofenceTrackingEvent(region: region, triggeredTransition: "geofence_entered")
+        
+        waitForExpectations(timeout: 2) { error in
+            if let error = error {
+                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
+            }
+
+            guard mockModuleDelegate.trackRequest == nil else {
+                XCTFail("Should not have triggered a track call; region wasn't being monitored")
+                return
+            }
         }
     }
 
