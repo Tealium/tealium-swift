@@ -267,6 +267,9 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     ///
     /// - parameter geofences: `[CLCircularRegion]` Geofences to be added
     public func startMonitoring(_ geofences: [CLCircularRegion]) {
+        guard config.geofenceTrackingEnabled else {
+            return
+        }
         if geofences.capacity == 0 {
             return
         }
