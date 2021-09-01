@@ -15,7 +15,7 @@ public enum Dispatchers {}
 
 public enum TealiumValue {
     public static let libraryName = "swift"
-    public static let libraryVersion = "2.4.2"
+    public static let libraryVersion = "2.4.3"
     // This is the current limit for performance reasons. May be increased in future
     public static let maxEventBatchSize = 10
     public static let defaultMinimumDiskSpace: Int32 = 20_000_000
@@ -85,6 +85,7 @@ public enum TealiumKey {
     public static let osName = "os_name"
     public static let platform = "platform"
     public static let resolution = "device_resolution"
+    public static let logicalResolution = "device_logical_resolution"
     public static let minimumFreeDiskSpace = "min_free_disk_space"
     public static let diskStorageEnabled = "disk_storage"
     public static let logLevelConfig = "com.tealium.logger.loglevel"

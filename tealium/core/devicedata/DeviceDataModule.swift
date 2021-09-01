@@ -65,6 +65,7 @@ public class DeviceDataModule: Collector {
         result[TealiumKey.osName] = DeviceData.oSName
         result[TealiumKey.platform] = (result[TealiumKey.osName] as? String ?? "").lowercased()
         result[TealiumKey.resolution] = DeviceData.resolution
+        result[TealiumKey.logicalResolution] = DeviceData.logicalResolution
         return result
     }
 
