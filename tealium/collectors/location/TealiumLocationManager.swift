@@ -18,6 +18,11 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     var logger: TealiumLoggerProtocol? {
         config.logger
     }
+    
+    var geofenceTrackingEnabled: Bool {
+        config.geofenceTrackingEnabled && !geofences.isEmpty
+    }
+    
     var locationManager: LocationManagerProtocol
     var geofences = [Geofence]()
     weak var locationDelegate: LocationDelegate?
@@ -231,14 +236,12 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     /// - parameter region: `CLRegion` that was entered
     /// - parameter triggeredTransition: `String` Type of transition that occured
     public func sendGeofenceTrackingEvent(region: CLRegion, triggeredTransition: String) {
-        guard config.geofenceTrackingEnabled else {
+        guard geofenceTrackingEnabled else {
             return
         }
         
         // Check we are actively monitoring for this geofence and it didn't come from another SDK
-        guard geofences.contains(where: {
-            $0.name  == region.identifier
-        }) else {
+        guard isMonitoredByModule(region: region) else {
             return
         }
         
@@ -267,9 +270,6 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     ///
     /// - parameter geofences: `[CLCircularRegion]` Geofences to be added
     public func startMonitoring(_ geofences: [CLCircularRegion]) {
-        guard config.geofenceTrackingEnabled else {
-            return
-        }
         if geofences.capacity == 0 {
             return
         }
@@ -283,6 +283,9 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     ///
     /// - parameter geofence: `CLCircularRegion` Geofence to be added
     public func startMonitoring(geofence: CLCircularRegion) {
+        guard geofenceTrackingEnabled else {
+            return
+        }
         if !locationManager.monitoredRegions.contains(geofence) {
             locationManager.startMonitoring(for: geofence)
             logInfo(message: "🌎🌎 \(geofence.identifier) Added to monitored client 🌎🌎")
@@ -334,9 +337,23 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
 
     /// Removes all geofences that are currently being monitored from the Location Client
     public func clearMonitoredGeofences() {
-        locationManager.monitoredRegions.forEach {
-            locationManager.stopMonitoring(for: $0)
+        
+        locationManager.monitoredRegions.forEach { region in
+            // Check we are actively monitoring for this geofence and it didn't come from another SDK
+            guard isMonitoredByModule(region: region) else {
+                return
+            }
+            
+            locationManager.stopMonitoring(for: region)
         }
+    }
+    
+    /// Checks if a region is currently being monitored
+    func isMonitoredByModule(region: CLRegion) -> Bool {
+        guard let createdGeofences = createdGeofences else {
+            return false
+        }
+        return createdGeofences.contains(where: {$0 == region.identifier})
     }
 
     /// Stops location updates, Removes all active geofences from being monitored,
