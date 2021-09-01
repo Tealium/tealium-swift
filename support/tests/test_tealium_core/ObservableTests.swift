@@ -31,31 +31,25 @@ class ObservableTests: XCTestCase {
             
         }
     }
-    
-    func testOnReady() {
-        
-        let readyNotifiedBefore = XCTestExpectation()
-        let readyNotifiedAfter = XCTestExpectation()
-        onReady.subscribe { _ in
-            readyNotifiedBefore.fulfill()
-        }
-        
-        _onReady.publish(()) // Improve this with Void extension
-        
-        
-        onReady.subscribe { _ in
-            readyNotifiedAfter.fulfill()
-        }
-        
-        wait(for: [readyNotifiedBefore,readyNotifiedAfter], timeout: 0)
-        
-    }
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
     
     // PropertyWrappers
+    
+    func testOnReady() {
+        let readyNotifiedBefore = XCTestExpectation()
+        let readyNotifiedAfter = XCTestExpectation()
+        onReady.subscribe { _ in
+            readyNotifiedBefore.fulfill()
+        }
+        _onReady.publish()
+        onReady.subscribe { _ in
+            readyNotifiedAfter.fulfill()
+        }
+        wait(for: [readyNotifiedBefore,readyNotifiedAfter], timeout: 0)
+    }
 
     func testPublisherPropertyWrapper() {
         let eventNotified = XCTestExpectation()

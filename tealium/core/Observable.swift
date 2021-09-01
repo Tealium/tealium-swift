@@ -14,6 +14,43 @@ public protocol AnyPublisher {
     func toAnyObservable() -> Observable<Element>
 }
 
+public extension AnyPublisher where Element == Void {
+    func publish() {
+        self.publish(())
+    }
+}
+
+class BehaviorObservable<Element>: Observable<Element> {
+    let cacheSize: Int?
+    var cache = [Element]()
+    public init(cacheSize: Int? = 1) {
+        self.cacheSize = cacheSize
+    }
+    
+    @discardableResult
+    override func subscribe(_ observer: @escaping Observer) -> Subscription<Element> {
+        let cache = cache
+        for element in cache {
+            observer(element)
+        }
+        return super.subscribe(observer)
+    }
+    
+    override fileprivate func publish(_ element: Element) {
+        while let size = cacheSize, cache.count >= size && cache.count > 0 {
+            cache.remove(at: 0)
+        }
+        if cacheSize == nil || cacheSize! > 0 {
+            cache.append(element)
+        }
+        super.publish(element)
+    }
+    
+    func last() -> Element? {
+        return cache.last
+    }
+}
+
 public class Observable<Element> {
     public typealias Observer = (Element) -> ()
     private let uuid = UUID().uuidString
@@ -51,9 +88,15 @@ public class Observable<Element> {
 
 public class Publisher<Element>: AnyPublisher {
     
-    fileprivate let observable = Observable<Element>()
+    fileprivate let observable: Observable<Element>
     
-    public init() {}
+    fileprivate init(_ obs: Observable<Element>) {
+        self.observable = obs
+    }
+    
+    convenience public init() {
+        self.init(Observable<Element>())
+    }
     
     public func publish(_ element: Element) {
         observable.publish(element)
@@ -81,37 +124,14 @@ public class Subject<Element>: Publisher<Element> {
 }
 
 public class BehaviorSubject<Element>: Subject<Element> {
-    let cacheSize: Int?
-    var cache = [Element]()
+    
+    
     public init(cacheSize: Int? = 1) {
-        self.cacheSize = cacheSize
-    }
-    
-    @discardableResult
-    public override func subscribe(_ observer: @escaping Subject<Element>.Observer) -> Subscription<Element> {
-        let cache = cache
-        for element in cache {
-            observer(element)
-        }
-        return super.subscribe(observer)
-    }
-    
-    override public func publish(_ element: Element) {
-        while let size = cacheSize, cache.count >= size && cache.count > 0 {
-            cache.remove(at: 0)
-        }
-        if cacheSize == nil || cacheSize! > 0 {
-            cache.append(element)
-        }
-        super.publish(element)
+        super.init(BehaviorObservable<Element>(cacheSize: cacheSize))
     }
     
     public func last() -> Element? {
-        return cache.last
-    }
-    
-    public override func toAnyObservable() -> Observable<Element> {
-        super.toAnyObservable() // FIX THIS to reflect the subscribe method here
+        (self.observable as? BehaviorObservable<Element>)?.last()
     }
     
 }
@@ -162,7 +182,7 @@ public class Subscription<T>: AnyDisposable {
 }
 
 @propertyWrapper
-public final class ToAnyObservable<P: AnyPublisher> {
+public final class ToAnyObservable<P: AnyPublisher>: AnyPublisher {
     
     private let publisher: P
     public init(_ anyPublisher: P) {
@@ -174,7 +194,10 @@ public final class ToAnyObservable<P: AnyPublisher> {
     }
     
     public var wrappedValue: Observable<P.Element> {
-        return publisher.toAnyObservable()
+        return toAnyObservable()
     }
     
+    public func toAnyObservable() -> Observable<P.Element> {
+        return publisher.toAnyObservable()
+    }
 }
