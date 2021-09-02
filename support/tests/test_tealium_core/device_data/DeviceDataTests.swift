@@ -101,6 +101,19 @@ class TealiumDeviceDataTests: XCTestCase {
         #endif
     }
     
+    func testLogicalResolution() {
+        let resolution = DeviceData.logicalResolution
+        #if os(OSX)
+        XCTAssertEqual(resolution, TealiumValue.unknown)
+        #else
+        let res = UIScreen.main.bounds
+        let width = res.width
+        let height = res.height
+        let stringRes = String(format: "%.0fx%.0f", height, width)
+        XCTAssertEqual(stringRes, resolution)
+        #endif
+    }
+    
     func testOrientation() {
         let orientation = deviceData.orientation
         #if os(iOS)
@@ -257,6 +270,7 @@ class TealiumDeviceDataTests: XCTestCase {
         XCTAssertNotEqual(data["os_name"]!, "")
         XCTAssertNotEqual(data["platform"]!, "")
         XCTAssertNotEqual(data["device_resolution"]!, "")
+        XCTAssertNotEqual(data["device_logical_resolution"]!, "")
         XCTAssertNotEqual(data["device_battery_percent"]!, "")
         XCTAssertNotEqual(data["device_language"]!, "")
         XCTAssertNotEqual(data["device_orientation"]!, "")

@@ -55,4 +55,12 @@ class TealiumDiskTests: XCTestCase {
         }
     }
 
+    func testSaveBigDouble() {
+        let diskstorage = TealiumDiskStorage(config: config, forModule: "Tests")
+        let value: Double = Double.greatestFiniteMagnitude
+        diskstorage.save(TealiumTrackRequest(data: ["double": value]), completion: nil)
+        let data = diskstorage.retrieve(as: TealiumTrackRequest.self)
+        XCTAssertNotNil(data?.trackDictionary["double"], "data unexpectedly missing")
+        XCTAssertEqual(data?.trackDictionary["double"] as! Double, value, "unexpected data retrieved")
+    }
 }

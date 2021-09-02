@@ -23,6 +23,7 @@ public extension TealiumConfig {
 
         set {
             options[TealiumKey.loggerType] = newValue
+            logger = getNewLogger()
         }
     }
 
