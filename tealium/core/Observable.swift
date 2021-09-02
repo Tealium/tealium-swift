@@ -20,10 +20,41 @@ public extension AnyPublisher where Element == Void {
     }
 }
 
+class BufferedObservable<Element>: Observable<Element> {
+    let bufferSize: Int?
+    var buffer = [Element]()
+    init(bufferSize: Int? = 1) {
+        self.bufferSize = bufferSize
+    }
+    
+    @discardableResult
+    override func subscribe(_ observer: @escaping Observer) -> Subscription<Element> {
+        let buffer = buffer
+        self.buffer = []
+        for element in buffer {
+            observer(element)
+        }
+        return super.subscribe(observer)
+    }
+    
+    override fileprivate func publish(_ element: Element) {
+        if self.observers.isEmpty {
+            while let size = bufferSize, buffer.count >= size && buffer.count > 0 {
+                buffer.remove(at: 0)
+            }
+            if bufferSize == nil || bufferSize! > 0 {
+                buffer.append(element)
+            }
+        }
+        super.publish(element)
+    }
+    
+}
+
 class BehaviorObservable<Element>: Observable<Element> {
     let cacheSize: Int?
     var cache = [Element]()
-    public init(cacheSize: Int? = 1) {
+    init(cacheSize: Int? = 1) {
         self.cacheSize = cacheSize
     }
     
@@ -55,7 +86,7 @@ public class Observable<Element> {
     public typealias Observer = (Element) -> ()
     private let uuid = UUID().uuidString
     private var count = 0
-    private var observers = [String:Observer]()
+    fileprivate var observers = [String:Observer]()
     
     fileprivate init() {}
     
@@ -134,6 +165,13 @@ public class BehaviorSubject<Element>: Subject<Element> {
         (self.observable as? BehaviorObservable<Element>)?.last()
     }
     
+}
+
+public class BufferedSubject<Element>: Subject<Element> {
+    
+    public init(bufferSize: Int? = 1) {
+        super.init(BufferedObservable<Element>(bufferSize: bufferSize))
+    }
 }
 
 public class DisposeBag: AnyDisposable {
