@@ -18,95 +18,18 @@ import UIKit
 import TealiumCore
 #endif
 
-enum TealiumAutotrackingKey {
-    static let moduleName = "autotracking"
-    static let eventNotificationName = "com.tealium.autotracking.event"
-    static let viewNotificationName = "com.tealium.autotracking.view"
-    static let autotracked = "autotracked"
-}
-
-public extension Tealium {
-
-    var autotracking: TealiumAutotrackingManager? {
-        (zz_internal_modulesManager?.modules.first {
-            type(of: $0) == AutotrackingModule.self
-        } as? AutotrackingModule)?.autotracking
-    }
-
-}
-
-var tealiumAssociatedObjectHandle: UInt8 = 0
-
-public class TealiumAutotrackingManager {
-
-    /// Add custom data to an object, to be included with an autotracked event.
-    ///￼
-    /// - Parameter data: `[String:Any]` dictionary. Values should be String or [String]￼
-    /// - Parameter toObject: `NSObject` to add data for.
-    public class func addCustom(data: [String: Any], toObject: NSObject) {
-        // Overwrites existing?
-        objc_setAssociatedObject(toObject,
-                                 &tealiumAssociatedObjectHandle,
-                                 data,
-                                 objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-
-    }
-
-    /// Retrieve any custom data previously associated with object.
-    ///￼
-    /// - Parameter forObject: `NSObject` to retrieve data for.
-    /// - Returns: `[String:Any]?` dictionary
-    public class func customData(forObject: NSObject) -> [String: Any]? {
-        guard let associatedData = objc_getAssociatedObject(forObject, &tealiumAssociatedObjectHandle) as? [String: Any] else {
-            return nil
-        }
-
-        return associatedData
-    }
-
-    /// Remove all custom Tealium data associated to an object.
-    ///￼
-    /// - Parameter fromObject: `NSObject` to disassociate data from.
-    public class func removeCustomData(fromObject: NSObject) {
-        objc_setAssociatedObject(fromObject,
-                                 &tealiumAssociatedObjectHandle,
-                                 nil,
-                                 objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-    }
-
-    /// Instance level addCustom data function - convenience for framework APIs.
-    ///￼
-    /// - Parameter data: `[String:Any]`. Values should be `String` or `[String]￼`.
-    /// - Parameter toObject: `NSObject` to add data for.
-    public func addCustom(data: [String: Any],
-                          toObject: NSObject) {
-        TealiumAutotrackingManager.addCustom(data: data,
-                                             toObject: toObject)
-    }
-
-    /// Instance level customData function - convenience for framework APIs.
-    ///￼
-    /// - Parameter forObject: `NSObject` to retrieve data for.
-    /// - Returns: `[String:Any]?`
-    public func customData(forObject: NSObject) -> [String: Any]? {
-        return TealiumAutotrackingManager.customData(forObject: forObject)
-    }
-
-    /// Instance level removeCustomData function - convenience for framework APIs.
-    ///￼
-    /// - Parameter fromObject: NSObject to disassociate data from.
-    public func removeCustomData(fromObject: NSObject) {
-        TealiumAutotrackingManager.removeCustomData(fromObject: fromObject)
-    }
-}
-
 public class AutotrackingModule: Collector {
 
     public let id: String = TealiumAutotrackingKey.moduleName
     public var data: [String: Any]?
     weak var delegate: ModuleDelegate?
     public var config: TealiumConfig
-
+    var context: TealiumContext
+    weak var autotrackingDelegate: AutoTrackingDelegate?
+    var lastEvent: String?
+    var token: NotificationToken?
+    var blockList: [String]?
+    
     /// Initializes the module
     ///
     /// - Parameter context: `TealiumContext` instance
@@ -118,85 +41,75 @@ public class AutotrackingModule: Collector {
                          diskStorage: TealiumDiskStorageProtocol?,
                          completion: ModuleCompletion) {
         self.delegate = delegate
+        self.context = context
         self.config = context.config
-        let eventName = NSNotification.Name(TealiumAutotrackingKey.eventNotificationName)
-        NotificationCenter.default.addObserver(self, selector: #selector(requestEventTrack(sender:)), name: eventName, object: nil)
-
-        let viewName = NSNotification.Name(TealiumAutotrackingKey.viewNotificationName)
-        NotificationCenter.default.addObserver(self, selector: #selector(requestViewTrack(sender:)), name: viewName, object: nil)
-
-        notificationsEnabled = true
+        loadBlocklist()
+        enableNotifications()
+        self.autotrackingDelegate = config.autoTrackingCollectorDelegate
         completion((.success(true), nil))
     }
 
-    var notificationsEnabled = false
-    let autotracking = TealiumAutotrackingManager()
+    func enableNotifications() {
+        let viewName = Notification.Name(rawValue: TealiumAutotrackingKey.viewNotificationName)
+        let token = NotificationCenter.default.addObserver(forName: viewName, object: nil, queue: nil) { [weak self] notification in
+            guard let viewName = notification.userInfo?["view_name"] as? String, let self = self else {
+                return
+            }
+            self.requestViewTrack(viewName: viewName)
+        }
+        self.token = NotificationToken(token: token)
+    }
 
-    // MARK: 
-    // MARK: INTERNAL
-
-    @objc
-    func requestEventTrack(sender: Notification) {
-
-        if notificationsEnabled == false {
+    func requestViewTrack(viewName: String) {
+        guard lastEvent != viewName else {
+            let logRequest = TealiumLogRequest(message: "Suppressing duplicate screen view: \(viewName)")
+            context.log(logRequest)
             return
         }
-
-        guard let object = sender.object as? NSObject else {
-            return
+        
+        guard shouldBlock(viewName) == false else {
+        return
         }
 
-        let title = String(describing: type(of: object))
-
-        var data: [String: Any] = [TealiumKey.event: title ,
+        var data: [String: Any] = [TealiumKey.event: viewName,
                                    TealiumAutotrackingKey.autotracked: "true"]
-
-        if let customData = TealiumAutotrackingManager.customData(forObject: object) {
-            data += customData
+        
+        if let autotrackingDelegate = self.autotrackingDelegate {
+            data += autotrackingDelegate.onCollectScreenView(screenName: viewName)
         }
 
-        requestTrack(data: data)
+        let view = TealiumView(viewName, dataLayer: data)
+        
+        context.track(view)
+        self.lastEvent = viewName
+    }
+    
+    func shouldBlock(_ eventName: String) -> Bool {
+        guard let blockList = blockList else {
+            return false
+        }
+        return blockList.contains(eventName)
     }
 
-    @objc
-    func requestViewTrack(sender: Notification) {
-        if notificationsEnabled == false {
-            return
+    func loadBlocklist() {
+        do {
+            if let file = config.autoTrackingBlocklistFilename,
+               let blockList: [String]? = try JSONLoader.fromFile(file, bundle: .main, logger: nil) {
+                self.blockList = blockList
+            } else if let url = config.autoTrackingBlocklistURL,
+                      let blockList: [String]? = try JSONLoader.fromURL(url: url, logger: nil) {
+                self.blockList = blockList
+            } else {
+                self.blockList = nil
+            }
+        } catch let error {
+            if let error = error as? LocalizedError {
+                let logRequest = TealiumLogRequest(title: "Auto Tracking", message: "BlockList could not be loaded. Error: \(error.localizedDescription)", info: nil, logLevel: .error, category: .general)
+                context.log(logRequest)
+            }
+            
         }
-
-        #if TEST
-        #else
-        guard let viewController = sender.object as? UIViewController else {
-            return
-        }
-
-        let title = viewController.title ?? String(describing: type(of: viewController))
-        var data: [String: Any] = [TealiumKey.event: title ,
-                                   TealiumAutotrackingKey.autotracked: "true"
-        ]
-
-        if let customData = TealiumAutotrackingManager.customData(forObject: viewController) {
-            data += customData
-        }
-
-        requestTrack(data: data)
-        #endif
+        
     }
-
-    /// Make track requests to core library - called from the event & viewDidAppear listeners
-    ///￼
-    /// - Parameter data: `[String:Any]` additional variable data.
-    func requestTrack(data: [String: Any]) {
-        let track = TealiumTrackRequest(data: data)
-
-        delegate?.requestTrack(track)
-    }
-
-    deinit {
-        if notificationsEnabled == true {
-            NotificationCenter.default.removeObserver(self)
-            notificationsEnabled = false
-        }
-    }
-
+    
 }

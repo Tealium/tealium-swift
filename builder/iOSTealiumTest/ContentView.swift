@@ -6,10 +6,12 @@
 //
 import SwiftUI
 import AppTrackingTransparency
+import TealiumAutotracking
 
 struct ContentView: View {
     @State private var traceId: String = ""
     @State private var showAlert = false
+    @AutoTracked var name = ("Main Screen", true)
     // Timed event start
     var playButton: some View {
         TealiumIconButton(iconName: "play.fill") {
@@ -25,8 +27,9 @@ struct ContentView: View {
                                        data: ["order_id": "ord123"])
         }
     }
-    
+
     var body: some View {
+        TealiumViewTrackable(viewName: (name.name)) {
         NavigationView {
             ScrollView {
                 VStack(spacing: 16) {
@@ -82,7 +85,11 @@ struct ContentView: View {
                 })
             }
         }
+    }
         .navigationViewStyle(StackNavigationViewStyle())
+        .onAppear {
+            print("onappear from app")
+        }
     }
     
 }

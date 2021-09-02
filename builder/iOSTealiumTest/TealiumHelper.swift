@@ -6,10 +6,12 @@
 //
 
 import Foundation
+
 import TealiumCollect
 import TealiumCore
 import TealiumLifecycle
 import TealiumVisitorService
+import TealiumAutotracking
 #if os(iOS)
 import TealiumAttribution
 import TealiumLocation
@@ -18,13 +20,13 @@ import TealiumTagManagement
 #endif
 
 
-class TealiumHelper: NSObject {
+class TealiumHelper  {
 
     static let shared = TealiumHelper()
     var tealium: Tealium?
     var enableHelperLogs = true
 
-    override init() { }
+    private init() { }
 
     func start() {
         let config = TealiumConfig(account: "tealiummobile",
@@ -32,20 +34,24 @@ class TealiumHelper: NSObject {
                                    environment: "dev",
                                    dataSource: "test12",
                                    options: nil)
+
         config.connectivityRefreshInterval = 5
         config.loggerType = .os
         config.logLevel = .info
-        config.consentPolicy = .gdpr
+//        config.consentPolicy = .gdpr
         config.consentLoggingEnabled = true
+//        config.remoteHTTPCommandDisabled = false
         config.dispatchListeners = [self]
         config.dispatchValidators = [self]
         config.shouldUseRemotePublishSettings = false
+        config.autoTrackingBlocklistFilename = "blocklist"
         // config.batchingEnabled = true
         // config.batchSize = 5
         config.memoryReportingEnabled = true
         config.diskStorageEnabled = true
         config.visitorServiceDelegate = self
         config.memoryReportingEnabled = true
+        config.autoTrackingCollectorDelegate = self
         config.batterySaverEnabled = true
         config.hostedDataLayerKeys = ["hdl-test": "product_id"]
         config.timedEventTriggers = [TimedEventTrigger(start: "product_view", end: "order_complete"),
@@ -62,20 +68,21 @@ class TealiumHelper: NSObject {
                 Collectors.AppData,
                 Collectors.Connectivity,
                 Collectors.Device,
-                Collectors.Location,
-                Collectors.VisitorService
+//                Collectors.Location,
+                Collectors.VisitorService,
+                Collectors.AutoTracking
+                
             ]
         
             config.dispatchers = [
                 Dispatchers.Collect,
-                Dispatchers.TagManagement,
+//                Dispatchers.TagManagement,
                 Dispatchers.RemoteCommands
             ]
             
             // config.appDelegateProxyEnabled = false
-            config.searchAdsEnabled = true
             config.remoteAPIEnabled = true
-            config.remoteCommandConfigRefresh = .every(24, .hours)
+//            config.remoteCommandConfigRefresh = .every(24, .hours)
             config.searchAdsEnabled = true
             config.skAdAttributionEnabled = true
             config.skAdConversionKeys = ["conversion_event": "conversion_value"]
@@ -88,7 +95,8 @@ class TealiumHelper: NSObject {
                 Collectors.AppData,
                 Collectors.Connectivity,
                 Collectors.Device,
-                Collectors.VisitorService
+                Collectors.VisitorService,
+                
             ]
             config.dispatchers = [
                 Dispatchers.Collect,
@@ -101,31 +109,38 @@ class TealiumHelper: NSObject {
                 return
 
             }
-            
+
             let dataLayer = teal.dataLayer
             teal.consentManager?.userConsentStatus = .consented
-            dataLayer.add(key: "myvarforever", value: 123_456, expiry: .forever)
-            dataLayer.add(data: ["some_key1": "some_val1"], expiry: .session)
-            dataLayer.add(data: ["custom": "expire in 3 min"], expiry: .afterCustom((.minutes, 3)))
+//            dataLayer.add(key: "myvarforever", value: 123_456, expiry: .forever)
+//            dataLayer.add(data: ["some_key1": "some_val1"], expiry: .session)
+//            dataLayer.add(data: ["some_key_forever": "some_val_forever"], expiry: .forever) // forever
+//            dataLayer.add(data: ["until": "restart"], expiry: .untilRestart)
+//            dataLayer.add(data: ["custom": "expire in 3 min"], expiry: .afterCustom((.minutes, 3)))
+//            dataLayer.delete(for: ["myvarforever"])
+//            dataLayer.add(data: ["hello": "world"], expiry: .untilRestart)
+//            dataLayer.add(key: "test", value: 123, expiry: .session)
+//            dataLayer.delete(for: ["hello", "test"])
+//            dataLayer.add(key: "hello", value: "itsme", expiry: .afterCustom((.months, 1)))
+
             #if os(iOS)
-            teal.location?.requestAuthorization()
-
-            guard let remoteCommands = self.tealium?.remoteCommands else {
-                return
-            }
-
-            let display = RemoteCommand(commandId: "display", description: "Test") { response in
-                guard let payload = response.payload,
-                      let hello = payload["hello"] as? String,
-                      let key = payload["key"] as? String,
-                      let tealium = payload["tealium"] as? String else {
-                    return
-                }
-                print("Remote Command data: hello = \(hello), key = \(key), tealium = \(tealium) 🎉🎊")
-            }
-            remoteCommands.add(display)
+//            teal.location?.requestAuthorization()
+//
+//            guard let remoteCommands = self.tealium?.remoteCommands else {
+//                return
+//            }
+//
+//            let display = RemoteCommand(commandId: "display", description: "Test") { response in
+//                guard let payload = response.payload,
+//                      let hello = payload["hello"] as? String,
+//                      let key = payload["key"] as? String,
+//                      let tealium = payload["tealium"] as? String else {
+//                    return
+//                }
+//                print("Remote Command data: hello = \(hello), key = \(key), tealium = \(tealium) 🎉🎊")
+//            }
+//            remoteCommands.add(display)
             #endif
-            
         }
 
     }
@@ -138,11 +153,9 @@ class TealiumHelper: NSObject {
         if let consentStatus = tealium?.consentManager?.userConsentStatus {
             switch consentStatus {
             case .notConsented:
-                TealiumHelper.shared.tealium?.consentManager?.userConsentCategories = [.affiliates, .analytics, .bigData]
-            case .unknown:
-                TealiumHelper.shared.tealium?.consentManager?.userConsentStatus = .consented
-            default:
                 TealiumHelper.shared.tealium?.consentManager?.userConsentStatus = .notConsented
+            default:
+                TealiumHelper.shared.tealium?.consentManager?.userConsentStatus = .consented
             }
         }
     }
@@ -207,6 +220,12 @@ extension TealiumHelper: DispatchValidator {
 
     func shouldPurge(request: TealiumRequest) -> Bool {
         false
+    }
+}
+
+extension TealiumHelper: AutoTrackingDelegate {
+    func onCollectScreenView(screenName: String) -> [String : Any] {
+        return ["from_delegate": "true"]
     }
 }
 
