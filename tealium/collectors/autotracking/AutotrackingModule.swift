@@ -27,7 +27,7 @@ public class AutotrackingModule: Collector {
     var context: TealiumContext
     weak var autotrackingDelegate: AutoTrackingDelegate?
     var lastEvent: String?
-    var token: NotificationToken?
+    var disposeBag = DisposeBag()
     var blockList: [String]?
     
     /// Initializes the module
@@ -44,20 +44,14 @@ public class AutotrackingModule: Collector {
         self.context = context
         self.config = context.config
         loadBlocklist()
-        enableNotifications()
         self.autotrackingDelegate = config.autoTrackingCollectorDelegate
-        completion((.success(true), nil))
-    }
-
-    func enableNotifications() {
-        let viewName = Notification.Name(rawValue: TealiumAutotrackingKey.viewNotificationName)
-        let token = NotificationCenter.default.addObserver(forName: viewName, object: nil, queue: nil) { [weak self] notification in
-            guard let viewName = notification.userInfo?["view_name"] as? String, let self = self else {
-                return
-            }
-            self.requestViewTrack(viewName: viewName)
+        
+        DispatchQueue.main.async {
+            TealiumInstanceManager.shared.onAutoTrackView.subscribe { [weak self] viewName in
+                self?.requestViewTrack(viewName: viewName)
+            }.toDisposeBag(self.disposeBag)
         }
-        self.token = NotificationToken(token: token)
+        completion((.success(true), nil))
     }
 
     func requestViewTrack(viewName: String) {

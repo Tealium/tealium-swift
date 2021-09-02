@@ -17,7 +17,7 @@ public class Tealium {
     public var zz_internal_modulesManager: ModulesManager?
     // swiftlint:enable identifier_name
     public var migrator: Migratable
-    private var token: NotificationToken?
+    private var disposeBag = DisposeBag()
 
     /// Initializer.
     ///
@@ -45,12 +45,17 @@ public class Tealium {
             TealiumDelegateProxy.setup(context: context)
         }
         #endif
-        enableNotifications()
         TealiumQueues.backgroundSerialQueue.async { [weak self] in
             guard let self = self else {
                 return
             }
             self.zz_internal_modulesManager = modulesManager ?? ModulesManager(context)
+        }
+        
+        DispatchQueue.main.async {
+            TealiumInstanceManager.shared.onOpenUrl.subscribe { [weak self] url in
+                self?.handleDeepLink(url)
+            }.toDisposeBag(self.disposeBag)
         }
 
         TealiumInstanceManager.shared.addInstance(self, config: config)
@@ -92,17 +97,6 @@ public class Tealium {
             self.zz_internal_modulesManager?.sendTrack(dispatch.trackRequest)
 
         }
-    }
-    
-    func enableNotifications() {
-        let viewName = Notification.Name(rawValue: TealiumValue.deepLinkNotificationName)
-        let token = NotificationCenter.default.addObserver(forName: viewName, object: nil, queue: nil) { [weak self] notification in
-            guard let deepLink = notification.userInfo?[TealiumKey.deepLinkURL] as? URL, let self = self else {
-                return
-            }
-            self.handleDeepLink(deepLink)
-        }
-        self.token = NotificationToken(token: token)
     }
 
     deinit {

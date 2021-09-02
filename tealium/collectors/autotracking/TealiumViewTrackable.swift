@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import TealiumCore
 #if canImport(SwiftUI)
 import SwiftUI
 #endif
@@ -27,8 +28,7 @@ public struct TealiumViewTrackable<Content: View>: View {
     public var body: some View {
         content
         .onAppear {
-            let notification = ViewNotification.forView(viewName)
-            NotificationCenter.default.post(notification)
+            TealiumInstanceManager.shared.autoTrackView(viewName: viewName)
         }
     }
 }

@@ -10,7 +10,11 @@ import UIKit
 import TealiumCore
 
 @objc extension UIViewController {
-
+    
+    var viewTitle: String {
+        return self.title ?? String(describing: type(of: self)).replacingOccurrences(of: "ViewController", with: "")
+    }
+    
     private typealias ViewDidAppear = @convention(c) (Bool) -> Void
 
     private static let cls: AnyClass = UIViewController.self
@@ -63,8 +67,7 @@ import TealiumCore
             if getSuperclasses(cls: self) == "" {
                 break
             }
-            let notification = ViewNotification.forView(viewTitle)
-            NotificationCenter.default.post(notification)
+            TealiumInstanceManager.shared.autoTrackView(viewName: viewTitle)
         }
     }
     

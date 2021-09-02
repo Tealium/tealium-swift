@@ -22,10 +22,7 @@ public extension Collectors {
     
     public var wrappedValue: (name: String, track: Bool) {
         get {
-            let notification = ViewNotification.forView(_wrapped.name)
-            TealiumQueues.backgroundSerialQueue.asyncAfter(deadline: .now() + 0.1) {
-                NotificationCenter.default.post(notification)
-            }
+            TealiumInstanceManager.shared.autoTrackView(viewName: _wrapped.name)
             return _wrapped
         }
         
@@ -115,7 +112,7 @@ enum TealiumAutotrackingKey {
     
 }
 
-public protocol AutoTrackingDelegate: class {
+public protocol AutoTrackingDelegate: AnyObject {
     
     func onCollectScreenView(screenName: String) -> [String: Any]
     

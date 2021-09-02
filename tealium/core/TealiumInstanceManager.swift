@@ -12,6 +12,12 @@ public class TealiumInstanceManager {
     public lazy var tealiumInstances = [String: Tealium]()
 
     public static var shared = TealiumInstanceManager()
+    
+    @ToAnyObservable(BehaviorSubject(cacheSize: 10))
+    var onOpenUrl: Observable<URL>
+    
+    @ToAnyObservable(BufferedSubject(bufferSize: 10))
+    public var onAutoTrackView: Observable<String>
 
     private init() {
 
@@ -53,6 +59,14 @@ public class TealiumInstanceManager {
 
     func generateInstanceKey(for config: TealiumConfig) -> String {
         return "\(config.account).\(config.profile).\(config.environment)"
+    }
+    
+    func didOpenUrl(_ url: URL) {
+        _onOpenUrl.publish(url)
+    }
+    
+    public func autoTrackView(viewName: String) {
+        _onAutoTrackView.publish(viewName)
     }
 
 }

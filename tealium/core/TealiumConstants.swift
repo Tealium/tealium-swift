@@ -31,7 +31,6 @@ public enum TealiumValue {
     static let mobile = "mobile"
     public static let unknown = "unknown"
     public static let timedEvent = "timed_event"
-    static let deepLinkNotificationName = "com.tealium.deeplink"
 }
 
 public enum ModuleNames {
