@@ -25,6 +25,10 @@ class ObservableTests: XCTestCase {
     @ToAnyObservable(BehaviorSubject<Int>())
     var behaviorObservable: Observable<Int>
     
+    @ToAnyObservable(BufferedSubject<Int>())
+    var bufferedObservable: Observable<Int>
+    
+    
 
     override func setUpWithError() throws {
         helper = RetaiCycleHelper(publisher: Publisher<Int>()) {
@@ -83,6 +87,18 @@ class ObservableTests: XCTestCase {
             eventNotified.fulfill()
         }
         _behaviorObservable.publish(value)
+        
+        wait(for: [eventNotified], timeout: 0)
+    }
+    
+    func testBufferedSubjectPropertyWrapper() {
+        let eventNotified = XCTestExpectation()
+        let value = 2
+        bufferedObservable.subscribe { val in
+            XCTAssertEqual(val, value)
+            eventNotified.fulfill()
+        }
+        _bufferedObservable.publish(value)
         
         wait(for: [eventNotified], timeout: 0)
     }
@@ -149,6 +165,41 @@ class ObservableTests: XCTestCase {
             
         }
         wait(for: [eventNotified, pastEventNotified, expiredEventNotified], timeout: 0)
+    }
+    
+    func testBufferedSubject() {
+        let eventNotified = XCTestExpectation()
+        let newEventsNotifiedOnOldSubscription = XCTestExpectation(description: "New events get notified on new subscriptions")
+        let newEventsNotified = XCTestExpectation(description: "New events get notified on new subscriptions")
+        let expiredEventNotified = XCTestExpectation(description: "Older events should be removed from cache when the cache is full and new events come in")
+        expiredEventNotified.isInverted = true
+        let value = 2
+        let newValue = 3
+        let subject = BufferedSubject<Int>()
+        
+        subject.publish(value)
+        
+        // First subscription receives all events
+        subject.subscribe { val in
+            if (val == value) {
+                eventNotified.fulfill()
+            }
+            if (val == newValue) {
+                newEventsNotifiedOnOldSubscription.fulfill()
+            }
+        }
+        
+        // Later subscription DONT receive past events, only new ones
+        subject.subscribe { val in
+            if (val == value) {
+                expiredEventNotified.fulfill()
+            }
+            if (val == newValue) {
+                newEventsNotified.fulfill()
+            }
+        }
+        subject.publish(newValue)
+        wait(for: [eventNotified, newEventsNotified, expiredEventNotified, newEventsNotifiedOnOldSubscription], timeout: 0)
     }
     
     // Dispose
