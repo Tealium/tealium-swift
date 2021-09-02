@@ -9,11 +9,16 @@
 @testable import TealiumCore
 import XCTest
 
+// Only for iOS versions below 13.0, the tests will not execute otherwise
 class AppDelegateProxyTests: XCTestCase {
 
     let mockDataLayer = DummyDataManagerAppDelegate()
     var semaphore: DispatchSemaphore!
     static var testNumber = 0
+    
+    var shouldRunTest: Bool {
+        ProcessInfo().operatingSystemVersion.majorVersion < 13
+    }
 
     var testTealium: Tealium {
         let config = TealiumConfig(account: "tealiummobile", profile: "\(AppDelegateProxyTests.testNumber))", environment: "dev")
@@ -55,6 +60,9 @@ class AppDelegateProxyTests: XCTestCase {
     }
 
     func testOpenURL() throws {
+        guard shouldRunTest else {
+            return
+        }
         let teal = tealium!
         let appDelegate = UIApplication.shared.delegate!
         _ = appDelegate.application?(UIApplication.shared, open: URL(string: "https://my-test-app.com/?test_param=true")!, options: [:])
@@ -63,6 +71,9 @@ class AppDelegateProxyTests: XCTestCase {
     }
 
     func testOpenURLWithTraceId() throws {
+        guard shouldRunTest else {
+            return
+        }
         let teal = tealium!
         let appDelegate = UIApplication.shared.delegate!
         _ = appDelegate.application?(UIApplication.shared, open: URL(string: "https://my-test-app.com/?test_param=true&tealium_trace_id=23456")!, options: [:])
@@ -72,6 +83,9 @@ class AppDelegateProxyTests: XCTestCase {
     }
 
     func testUniversalLink() throws {
+        guard shouldRunTest else {
+            return
+        }
         let teal = tealium!
         let appDelegate = UIApplication.shared.delegate!
         let activity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
@@ -82,6 +96,9 @@ class AppDelegateProxyTests: XCTestCase {
     }
 
     func testUniversalLinkWithTraceId() throws {
+        guard shouldRunTest else {
+            return
+        }
         let teal = tealium!
         let appDelegate = UIApplication.shared.delegate!
         let activity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
@@ -98,6 +115,10 @@ class AppDelegateProxyTestsWithoutProxy: XCTestCase {
     let mockDataLayer = DummyDataManagerAppDelegate()
     var semaphore: DispatchSemaphore!
     static var testNumber = 0
+    
+    var shouldRunTest: Bool {
+        ProcessInfo().operatingSystemVersion.majorVersion < 13
+    }
 
     var testTealiumWithoutProxy: Tealium {
         let config = TealiumConfig(account: "tealiummobile", profile: "\(AppDelegateProxyTestsWithoutProxy.testNumber))", environment: "dev")
@@ -127,6 +148,9 @@ class AppDelegateProxyTestsWithoutProxy: XCTestCase {
     }
 
     func testUniversalLinkNotCalledIfAppDelegateProxyDisabled() throws {
+        guard shouldRunTest else {
+            return
+        }
         let teal = tealium!
         let appDelegate = UIApplication.shared.delegate!
         let activity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
@@ -137,6 +161,9 @@ class AppDelegateProxyTestsWithoutProxy: XCTestCase {
     }
 
     func testOpenURLWithTraceIdNotCalledIfAppDelegateProxyDisabled() throws {
+        guard shouldRunTest else {
+            return
+        }
         let teal = tealium!
         let appDelegate = UIApplication.shared.delegate!
         _ = appDelegate.application?(UIApplication.shared, open: URL(string: "https://my-test-app.com/?test_param=true&tealium_trace_id=23456")!, options: [:])

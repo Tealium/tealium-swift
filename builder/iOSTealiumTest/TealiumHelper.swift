@@ -18,13 +18,13 @@ import TealiumTagManagement
 #endif
 
 
-class TealiumHelper {
+class TealiumHelper: NSObject {
 
     static let shared = TealiumHelper()
     var tealium: Tealium?
     var enableHelperLogs = true
 
-    private init() { }
+    override init() { }
 
     func start() {
         let config = TealiumConfig(account: "tealiummobile",
@@ -107,7 +107,6 @@ class TealiumHelper {
             dataLayer.add(key: "myvarforever", value: 123_456, expiry: .forever)
             dataLayer.add(data: ["some_key1": "some_val1"], expiry: .session)
             dataLayer.add(data: ["custom": "expire in 3 min"], expiry: .afterCustom((.minutes, 3)))
-
             #if os(iOS)
             teal.location?.requestAuthorization()
 

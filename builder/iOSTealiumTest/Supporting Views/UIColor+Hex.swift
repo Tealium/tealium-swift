@@ -8,7 +8,7 @@
 import UIKit
 
 public extension UIColor {
-    convenience init(hex: String, alpha: CGFloat = 1) {
+    public convenience init(hex: String, alpha: CGFloat = 1) {
         let chars = Array(hex.dropFirst())
         self.init(red:   .init(strtoul(String(chars[0...1]),nil,16))/255,
                   green: .init(strtoul(String(chars[2...3]),nil,16))/255,

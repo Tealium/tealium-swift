@@ -72,7 +72,6 @@ struct ContentView: View {
                             }
                         }
                     }
-                    Spacer()
                 }
                 .navigationTitle("iOSTealiumTest")
                 .navigationBarTitleDisplayMode(.inline)
@@ -85,6 +84,7 @@ struct ContentView: View {
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
