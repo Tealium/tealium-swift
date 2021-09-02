@@ -46,5 +46,26 @@ class TealiumConfigTests: XCTestCase {
         print("testSetOptionalData: retrievedValue: \(String(describing: config.options[key]))")
         XCTFail("test failed")
     }
+    
+    func testLogger() {
+        let dummyLogger = DummyLogger(config: config)
+        config.loggerType = .custom(dummyLogger)
+        XCTAssertTrue(config.logger is DummyLogger)
+//        XCTAssertIdentical(config.logger as? DummyLogger, dummyLogger) // Only for xcode 12.5+, CICD has older version 
+    }
 
+}
+
+class DummyLogger: TealiumLoggerProtocol {
+    var config: TealiumConfig?
+    
+    required init(config: TealiumConfig) {
+        self.config = config
+    }
+    
+    func log(_ request: TealiumLogRequest) {
+        
+    }
+    
+    
 }

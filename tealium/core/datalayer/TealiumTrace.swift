@@ -50,32 +50,34 @@ public extension Tealium {
     ///
     /// - Parameter link: `URL`
     func handleDeepLink(_ link: URL) {
-        let queryItems = URLComponents(string: link.absoluteString)?.queryItems
+        TealiumQueues.backgroundSerialQueue.async {
+            let queryItems = URLComponents(string: link.absoluteString)?.queryItems
 
-        if let queryItems = queryItems,
-           let traceId = extractTraceId(from: queryItems),
-           zz_internal_modulesManager?.config.qrTraceEnabled == true {
-            // Kill visitor session to trigger session end events
-            // Session can be killed without needing to leave the trace
-            if link.query?.contains(TealiumKey.killVisitorSession) == true {
-                killTraceVisitorSession()
-            }
-            // Leave the trace and return - do not rejoin trace
-            if link.query?.contains(TealiumKey.leaveTraceQueryParam) == true {
-                leaveTrace()
-                return
-            }
-            // Call join trace so long as this wasn't a leave trace request.
-            joinTrace(id: traceId)
-        }
-
-        if zz_internal_modulesManager?.config.deepLinkTrackingEnabled == true {
-            self.dataLayer.add(key: TealiumKey.deepLinkURL, value: link.absoluteString, expiry: .session)
-            queryItems?.forEach {
-                guard let value = $0.value else {
+            if let queryItems = queryItems,
+               let traceId = self.extractTraceId(from: queryItems),
+               self.zz_internal_modulesManager?.config.qrTraceEnabled == true {
+                // Kill visitor session to trigger session end events
+                // Session can be killed without needing to leave the trace
+                if link.query?.contains(TealiumKey.killVisitorSession) == true {
+                    self.killTraceVisitorSession()
+                }
+                // Leave the trace and return - do not rejoin trace
+                if link.query?.contains(TealiumKey.leaveTraceQueryParam) == true {
+                    self.leaveTrace()
                     return
                 }
-                self.dataLayer.add(key: "\(TealiumKey.deepLinkQueryPrefix)_\($0.name)", value: value, expiry: .session)
+                // Call join trace so long as this wasn't a leave trace request.
+                self.joinTrace(id: traceId)
+            }
+
+            if self.zz_internal_modulesManager?.config.deepLinkTrackingEnabled == true {
+                self.dataLayer.add(key: TealiumKey.deepLinkURL, value: link.absoluteString, expiry: .session)
+                queryItems?.forEach {
+                    guard let value = $0.value else {
+                        return
+                    }
+                    self.dataLayer.add(key: "\(TealiumKey.deepLinkQueryPrefix)_\($0.name)", value: value, expiry: .session)
+                }
             }
         }
     }
