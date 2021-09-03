@@ -11,7 +11,7 @@ import TealiumAutotracking
 struct ContentView: View {
     @State private var traceId: String = ""
     @State private var showAlert = false
-    @AutoTracked var name = ("Main Screen", true)
+    @AutoTracked var name = "Main Screen"
     // Timed event start
     var playButton: some View {
         TealiumIconButton(iconName: "play.fill") {
@@ -29,7 +29,7 @@ struct ContentView: View {
     }
 
     var body: some View {
-        TealiumViewTrackable(viewName: (name.name)) {
+        TealiumViewTrackable(viewName: name) {
         NavigationView {
             ScrollView {
                 VStack(spacing: 16) {

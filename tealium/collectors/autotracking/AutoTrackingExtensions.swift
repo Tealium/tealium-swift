@@ -18,11 +18,11 @@ public extension Collectors {
 
 @propertyWrapper public class AutoTracked {
 
-    private var _wrapped: (name: String, track: Bool) = ("", false)
+    private var _wrapped: String = ""
     
-    public var wrappedValue: (name: String, track: Bool) {
+    public var wrappedValue: String {
         get {
-            TealiumInstanceManager.shared.autoTrackView(viewName: _wrapped.name)
+            TealiumInstanceManager.shared.autoTrackView(viewName: _wrapped)
             return _wrapped
         }
         
@@ -32,7 +32,7 @@ public extension Collectors {
         
     }
 
-    public init(wrappedValue: (name: String, track: Bool)) {
+    public init(wrappedValue: String) {
         self.wrappedValue = wrappedValue
     }
 }

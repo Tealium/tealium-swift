@@ -10,7 +10,7 @@ import TealiumAutotracking
 
 
 struct ContentView: View {
-    @AutoTracked var name = ((name: "hello", track: false))
+    @AutoTracked var name = "hello"
     var body: some View {
         VStack {
             NavigationView {
