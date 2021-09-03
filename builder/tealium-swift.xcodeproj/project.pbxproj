@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1519DFF526E23389000C71B4 /* TagManagementWKWebViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1519DFF426E23389000C71B4 /* TagManagementWKWebViewTests.swift */; };
 		1563CEC526DF8E8E00A1DAD1 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1563CEC426DF8E8E00A1DAD1 /* Observable.swift */; };
 		1563CEC926DFAA3300A1DAD1 /* ObservableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1563CEC826DFAA3300A1DAD1 /* ObservableTests.swift */; };
 		1563CECA26DFAA3300A1DAD1 /* ObservableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1563CEC826DFAA3300A1DAD1 /* ObservableTests.swift */; };
@@ -1531,6 +1532,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1519DFF426E23389000C71B4 /* TagManagementWKWebViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagManagementWKWebViewTests.swift; sourceTree = "<group>"; };
 		1563CEC426DF8E8E00A1DAD1 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		1563CEC826DFAA3300A1DAD1 /* ObservableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableTests.swift; sourceTree = "<group>"; };
 		156CB50B26CD4ACB005EFEDB /* AnyCodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCodableTests.swift; sourceTree = "<group>"; };
@@ -2304,6 +2306,7 @@
 				7166E7F71E6007B000FCA9EE /* TagManagementModuleTests.swift */,
 				7166E7F81E6007B000FCA9EE /* TagManagementUtilsTests.swift */,
 				CF7F94782464A03200399774 /* MockTagManagementWebView.swift */,
+				1519DFF426E23389000C71B4 /* TagManagementWKWebViewTests.swift */,
 			);
 			path = test_tealium_tagmanagement;
 			sourceTree = "<group>";
@@ -4993,6 +4996,7 @@
 				CFD803F1267021A800299D64 /* TagManagementModuleTests.swift in Sources */,
 				CFD803F2267021AA00299D64 /* TagManagementUtilsTests.swift in Sources */,
 				CFD803F3267021AC00299D64 /* CoreMocks.swift in Sources */,
+				1519DFF526E23389000C71B4 /* TagManagementWKWebViewTests.swift in Sources */,
 				CFA55A4224E5903A00BFBED8 /* TestTealiumHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

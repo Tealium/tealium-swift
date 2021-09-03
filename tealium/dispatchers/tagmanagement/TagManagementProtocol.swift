@@ -77,9 +77,8 @@ protocol TagManagementProtocol {
     ///￼
     /// - Parameters:
     ///     - view: `UIView` instance for WKWebView to be attached to
-    ///     - completion: Completion block to be run when the operation has completed
-    func setRootView(_ view: UIView,
-                     completion: ((_ success: Bool) -> Void)?)
+    /// - returns: a success `Bool`, true if the webview was successfully attached
+    func setRootView(_ view: UIView) -> Bool
 
 }
 #endif
