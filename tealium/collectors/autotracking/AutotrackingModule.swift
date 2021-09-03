@@ -46,7 +46,7 @@ public class AutotrackingModule: Collector {
         loadBlocklist()
         self.autotrackingDelegate = config.autoTrackingCollectorDelegate
         
-        DispatchQueue.main.async {
+        TealiumQueues.secureMainThreadExecution {
             TealiumInstanceManager.shared.onAutoTrackView.subscribe { [weak self] viewName in
                 self?.requestViewTrack(viewName: viewName)
             }.toDisposeBag(self.disposeBag)

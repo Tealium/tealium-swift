@@ -37,6 +37,7 @@ class AutotrackingModuleTests: XCTestCase {
         expectationDidComplete = nil
         expectationShouldTrack = nil
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+        TealiumInstanceManager.shared.disable()
         super.tearDown()
     }
 
@@ -68,6 +69,36 @@ class AutotrackingModuleTests: XCTestCase {
     // Cannot unit test swizzling/SwiftUI
     
     // TODO: Add tests for tealiumInstance autotracking events called
+    
+    func testRequestEventTrackToInstanceManager() {
+        let config = testTealiumConfig.copy
+        config.collectors = [Collectors.AutoTracking]
+        config.autoTrackingCollectorDelegate = self
+        let _ = Tealium(config: config)
+        expectationRequest = expectation(description: "emptyEventDetected")
+
+        let viewName = "someView"
+        TealiumInstanceManager.shared.autoTrackView(viewName: viewName)
+        
+        waitForExpectations(timeout: 4.0, handler: nil)
+
+        XCTAssertEqual(viewName, currentViewName)
+    }
+    
+    func testAddCustomDataToInstanceManager() {
+        expectationRequest = expectation(description: "customDataRequest")
+
+        let config = testTealiumConfig.copy
+        config.collectors = [Collectors.AutoTracking]
+        config.autoTrackingCollectorDelegate = self
+        let _ = Tealium(config: config)
+        TealiumInstanceManager.shared.autoTrackView(viewName: self.addDataViewName)
+        
+
+        waitForExpectations(timeout: 4.0, handler: nil)
+
+        XCTAssertEqual(addDataViewName, currentViewName)
+    }
 
 }
 
