@@ -10,8 +10,6 @@
 import XCTest
 
 class AutotrackingModuleTests: XCTestCase {
-    
-    
 
     var module: AutotrackingModule {
         let config = testTealiumConfig.copy
@@ -68,8 +66,6 @@ class AutotrackingModuleTests: XCTestCase {
 
     // Cannot unit test swizzling/SwiftUI
     
-    // TODO: Add tests for tealiumInstance autotracking events called
-    
     func testRequestEventTrackToInstanceManager() {
         let config = testTealiumConfig.copy
         config.collectors = [Collectors.AutoTracking]
@@ -100,6 +96,19 @@ class AutotrackingModuleTests: XCTestCase {
         XCTAssertEqual(addDataViewName, currentViewName)
     }
 
+    func testDidOpenUrlToInstanceManager() {
+        let config = testTealiumConfig.copy
+        let tealium = Tealium(config: config)
+        expectationRequest = expectation(description: "emptyEventDetected")
+        let url = URL(string: "https://www.google.it")!
+        TealiumInstanceManager.shared.didOpenUrl(url)
+        
+        TealiumQueues.backgroundSerialQueue.async {
+            XCTAssertEqual(url.absoluteString, tealium.dataLayer.all[TealiumKey.deepLinkURL] as? String)
+            self.expectationRequest?.fulfill()
+        }
+        waitForExpectations(timeout: 4.0, handler: nil)
+    }
 }
 
 extension AutotrackingModuleTests: ModuleDelegate {
