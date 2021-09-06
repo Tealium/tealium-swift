@@ -11,27 +11,23 @@ import XCTest
 
 class ObservableTests: XCTestCase {
     
+    @ToAnyObservable(TealiumReplaySubject<Void>())
+    var onReady: TealiumObservable<Void>
     
-    @ToAnyObservable(BehaviorSubject<Void>())
-    var onReady: Observable<Void>
+    @ToAnyObservable(TealiumPublisher<Int>())
+    public var pubObservable: TealiumObservable<Int>
     
+    @ToAnyObservable(TealiumPublishSubject<Int>())
+    var subObservable: TealiumObservable<Int>
     
-    @ToAnyObservable(Publisher<Int>())
-    public var pubObservable: Observable<Int>
+    @ToAnyObservable(TealiumReplaySubject<Int>())
+    var behaviorObservable: TealiumObservable<Int>
     
-    @ToAnyObservable(Subject<Int>())
-    var subObservable: Observable<Int>
+    @ToAnyObservable(TealiumBufferedSubject<Int>())
+    var bufferedObservable: TealiumObservable<Int>
     
-    @ToAnyObservable(BehaviorSubject<Int>())
-    var behaviorObservable: Observable<Int>
-    
-    @ToAnyObservable(BufferedSubject<Int>())
-    var bufferedObservable: Observable<Int>
-    
-    
-
     override func setUpWithError() throws {
-        helper = RetaiCycleHelper(publisher: Publisher<Int>()) {
+        helper = RetaiCycleHelper(publisher: TealiumPublisher<Int>()) {
             
         }
     }
@@ -108,8 +104,8 @@ class ObservableTests: XCTestCase {
     func testPublisher() {
         let eventNotified = XCTestExpectation()
         let value = 2
-        let publisher = Publisher<Int>()
-        let observable = publisher.toAnyObservable()
+        let publisher = TealiumPublisher<Int>()
+        let observable = publisher.asObservable()
         observable.subscribe { val in
             XCTAssertEqual(val, value)
             eventNotified.fulfill()
@@ -119,10 +115,10 @@ class ObservableTests: XCTestCase {
         wait(for: [eventNotified], timeout: 0)
     }
     
-    func testSubject() {
+    func testPublishSubject() {
         let eventNotified = XCTestExpectation()
         let value = 2
-        let subject = Subject<Int>()
+        let subject = TealiumPublishSubject<Int>()
         subject.subscribe { val in
             XCTAssertEqual(val, value)
             eventNotified.fulfill()
@@ -131,13 +127,13 @@ class ObservableTests: XCTestCase {
         wait(for: [eventNotified], timeout: 0)
     }
     
-    func testBehaviorSubject() {
+    func testReplaySubject() {
         let eventNotified = XCTestExpectation()
         let pastEventNotified = XCTestExpectation(description: "Past events get notified on new subscriptions")
         let expiredEventNotified = XCTestExpectation(description: "Older events should be removed from cache when the cache is full and new events come in")
         expiredEventNotified.isInverted = true
         let value = 2
-        let subject = BehaviorSubject<Int>()
+        let subject = TealiumReplaySubject<Int>()
         subject.subscribe { val in
             if (val == value) {
                 eventNotified.fulfill()
@@ -175,7 +171,7 @@ class ObservableTests: XCTestCase {
         expiredEventNotified.isInverted = true
         let value = 2
         let newValue = 3
-        let subject = BufferedSubject<Int>()
+        let subject = TealiumBufferedSubject<Int>()
         
         subject.publish(value)
         
@@ -248,7 +244,7 @@ class ObservableTests: XCTestCase {
         let eventNotified = XCTestExpectation()
         let eventNotNotified = XCTestExpectation()
         eventNotNotified.isInverted = true
-        var disposeBag = DisposeBag()
+        var disposeBag = TealiumDisposeBag()
         pubObservable.subscribe { val in
             if (val == 1) {
                 eventNotified.fulfill()
@@ -259,7 +255,7 @@ class ObservableTests: XCTestCase {
         }.toDisposeBag(disposeBag)
         
         _pubObservable.publish(1)
-        disposeBag = DisposeBag()
+        disposeBag = TealiumDisposeBag()
         _pubObservable.publish(2)
         
         wait(for: [eventNotified, eventNotNotified], timeout: 0)
@@ -270,7 +266,7 @@ class ObservableTests: XCTestCase {
         let eventNotified = XCTestExpectation()
         let eventNotNotified = XCTestExpectation()
         eventNotNotified.isInverted = true
-        let disposeBag = DisposeBag()
+        let disposeBag = TealiumDisposeBag()
         pubObservable.subscribe { val in
             if (val == 1) {
                 eventNotified.fulfill()
@@ -288,7 +284,7 @@ class ObservableTests: XCTestCase {
     }
     
     // Deinit
-    var helper: RetaiCycleHelper<Publisher<Int>>?
+    var helper: RetaiCycleHelper<TealiumPublisher<Int>>?
     
     func testRetainCycle() {
         let neverDeinit = XCTestExpectation()
@@ -313,22 +309,21 @@ class ObservableTests: XCTestCase {
 }
 
 
-class RetaiCycleHelper<P: AnyPublisher> {
+class RetaiCycleHelper<P: TealiumPublisherProtocol> {
     
     
     let anyPublisher: P
     var onDeinit: (() -> ())
-    var subscription: Subscription<P.Element>?
+    var subscription: TealiumSubscription<P.Element>?
     
     init(publisher: P, onDeinit: @escaping () -> ()) {
         self.anyPublisher = publisher
         self.onDeinit = onDeinit
         
-        self.subscription = publisher.toAnyObservable().subscribe { elem in
+        self.subscription = publisher.asObservable().subscribe { elem in
             print(self)
         }
     }
-    
     
     deinit {
         onDeinit()

@@ -27,7 +27,7 @@ public class AutotrackingModule: Collector {
     var context: TealiumContext
     weak var autotrackingDelegate: AutoTrackingDelegate?
     var lastEvent: String?
-    var disposeBag = DisposeBag()
+    var disposeBag = TealiumDisposeBag()
     var blockList: [String]?
     
     /// Initializes the module

@@ -13,11 +13,11 @@ public class TealiumInstanceManager {
 
     public static var shared = TealiumInstanceManager()
     
-    @ToAnyObservable(BehaviorSubject(cacheSize: 10))
-    var onOpenUrl: Observable<URL>
+    @ToAnyObservable(TealiumReplaySubject(cacheSize: 10))
+    var onOpenUrl: TealiumObservable<URL>
     
-    @ToAnyObservable(BufferedSubject(bufferSize: 10))
-    public var onAutoTrackView: Observable<String>
+    @ToAnyObservable(TealiumBufferedSubject(bufferSize: 10))
+    public var onAutoTrackView: TealiumObservable<String>
 
     private init() {
 

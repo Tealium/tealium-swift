@@ -17,7 +17,7 @@ public class Tealium {
     public var zz_internal_modulesManager: ModulesManager?
     // swiftlint:enable identifier_name
     public var migrator: Migratable
-    private var disposeBag = DisposeBag()
+    private var disposeBag = TealiumDisposeBag()
 
     /// Initializer.
     ///
