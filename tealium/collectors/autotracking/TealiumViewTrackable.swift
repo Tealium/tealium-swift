@@ -12,7 +12,7 @@ import SwiftUI
 #endif
 
 
-@available(iOS 13.0, *)
+@available (iOS 14.0, tvOS 14.0, macOS 15.0, watchOS 7.0, *)
 public struct TealiumViewTrackable<Content: View>: View {
 
     public var viewName: String

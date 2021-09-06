@@ -5,9 +5,10 @@
 //  Copyright © 2021 Tealium, Inc. All rights reserved.
 //
 
+#if os(iOS)
 import Foundation
-import UIKit
 import TealiumCore
+import UIKit
 
 @objc extension UIViewController {
     
@@ -85,3 +86,4 @@ import TealiumCore
 
 
 }
+#endif

@@ -5,13 +5,9 @@
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
 
-#if TEST
 import Foundation
-#else
-#if os(macOS)
-#else
+#if os(iOS)
 import UIKit
-#endif
 #endif
 
 #if autotracking

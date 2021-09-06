@@ -5,7 +5,6 @@
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
 //
 
-#if os(iOS)
 import Foundation
 #if autotracking
 import TealiumCore
@@ -14,7 +13,6 @@ import TealiumCore
 public extension Collectors {
     static let AutoTracking = AutotrackingModule.self
 }
-#endif
 
 @propertyWrapper public class AutoTracked {
 
