@@ -80,10 +80,28 @@ class TealiumTraceTests: XCTestCase {
     }
 
     func testHandleDeepLink_joinTrace() {
+        let someTraceId = "someTraceId"
+        let link = URL(string: "https://tealium.com?tealium_trace_id=\(someTraceId)")!
+        tealium.handleDeepLink(link)
+        let expectBackgroundQueueBlock = XCTestExpectation()
+        TealiumQueues.backgroundSerialQueue.async {
+            XCTAssertEqual(self.mockDataLayer.traceId!, someTraceId)
+            expectBackgroundQueueBlock.fulfill()
+        }
+        wait(for: [expectBackgroundQueueBlock], timeout: 2)
+    }
+    
+    func testHandleDeepLinkJoinTrace_RightAfterInit() {
         let testTraceId = self.testTraceId
         let link = URL(string: "https://tealium.com?tealium_trace_id=\(testTraceId)")!
-        tealium.handleDeepLink(link)
-        XCTAssertEqual(mockDataLayer.traceId!, testTraceId)
+        let localTealium = testTealium
+        localTealium.handleDeepLink(link)
+        let expectBackgroundQueueBlock = XCTestExpectation()
+        TealiumQueues.backgroundSerialQueue.async {
+            XCTAssertEqual(self.mockDataLayer.traceId!, testTraceId)
+            expectBackgroundQueueBlock.fulfill()
+        }
+        wait(for: [expectBackgroundQueueBlock], timeout: 2)
     }
 
     func testHandleDeepLink_joinTraceDoesNotRunIfQRTraceDisabled() {
@@ -96,8 +114,10 @@ class TealiumTraceTests: XCTestCase {
             let testTraceId = self.testTraceId
             let link = URL(string: "https://tealium.com?tealium_trace_id=\(testTraceId)")!
             tealium.handleDeepLink(link)
-            XCTAssertNil(mockDataLayer.traceId)
-            TealiumTraceTests.expectation.fulfill()
+            TealiumQueues.backgroundSerialQueue.async {
+                XCTAssertNil(self.mockDataLayer.traceId)
+                TealiumTraceTests.expectation.fulfill()
+            }
         }
 
         wait(for: [TealiumTraceTests.expectation], timeout: 3.0)
@@ -109,18 +129,26 @@ class TealiumTraceTests: XCTestCase {
         XCTAssertEqual(mockDataLayer.traceId, testTraceId)
         let link = URL(string: "https://tealium.com?tealium_trace_id=\(testTraceId)&leave_trace")!
         tealium.handleDeepLink(link)
-        XCTAssertNil(mockDataLayer.traceId)
+        let expectBackgroundQueueBlock = XCTestExpectation()
+        TealiumQueues.backgroundSerialQueue.async {
+            XCTAssertNil(self.mockDataLayer.traceId)
+            expectBackgroundQueueBlock.fulfill()
+        }
+        wait(for: [expectBackgroundQueueBlock], timeout: 2)
     }
 
     func testHandleDeepLink_leaveTraceWithKillVisitorSession() {
         TealiumTraceTests.expectation = self.expectation(description: "testHandleDeepLink_leaveTraceWithKillVisitorSession")
+        let expectBackgroundQueueBlock = XCTestExpectation()
         let testTraceId = self.testTraceId
         tealium.joinTrace(id: testTraceId)
         let link = URL(string: "https://tealium.com?tealium_trace_id=\(testTraceId)&kill_visitor_session&leave_trace")!
         tealium.handleDeepLink(link)
-        waitForExpectations(timeout: 3.0) { _ in
+        TealiumQueues.backgroundSerialQueue.async {
             XCTAssertNil(self.mockDataLayer.traceId)
+            expectBackgroundQueueBlock.fulfill()
         }
+        wait(for: [TealiumTraceTests.expectation, expectBackgroundQueueBlock], timeout: 3)
     }
 
     func testHandleDeepLink_killVisitorSessionOnly() {
@@ -135,9 +163,28 @@ class TealiumTraceTests: XCTestCase {
     func testHandleDeepLink() {
         let link = URL(string: "https://tealium.com?tealium_trace_id=abc123&utm_param_1=hello&utm_param_2=test")!
         tealium.handleDeepLink(link)
-        XCTAssertEqual(mockDataLayer.all[TealiumKey.deepLinkURL] as! String, link.absoluteString)
-        XCTAssertEqual(mockDataLayer.all["deep_link_param_utm_param_1"] as! String, "hello")
-        XCTAssertEqual(mockDataLayer.all["deep_link_param_utm_param_2"] as! String, "test")
+        let expectBackgroundQueueBlock = XCTestExpectation()
+        TealiumQueues.backgroundSerialQueue.async {
+            XCTAssertEqual(self.mockDataLayer.all[TealiumKey.deepLinkURL] as! String, link.absoluteString)
+            XCTAssertEqual(self.mockDataLayer.all["deep_link_param_utm_param_1"] as! String, "hello")
+            XCTAssertEqual(self.mockDataLayer.all["deep_link_param_utm_param_2"] as! String, "test")
+            expectBackgroundQueueBlock.fulfill()
+        }
+        wait(for: [expectBackgroundQueueBlock], timeout: 2)
+    }
+    
+    func testHandleDeepLink_RightAfterInit() {
+        let link = URL(string: "https://tealium.com?tealium_trace_id=abc123&utm_param_1=hello&utm_param_2=test")!
+        let localTealium = testTealium
+        localTealium.handleDeepLink(link)
+        let expectBackgroundQueueBlock = XCTestExpectation()
+        TealiumQueues.backgroundSerialQueue.async {
+            XCTAssertEqual(self.mockDataLayer.all[TealiumKey.deepLinkURL] as! String, link.absoluteString)
+            XCTAssertEqual(self.mockDataLayer.all["deep_link_param_utm_param_1"] as! String, "hello")
+            XCTAssertEqual(self.mockDataLayer.all["deep_link_param_utm_param_2"] as! String, "test")
+            expectBackgroundQueueBlock.fulfill()
+        }
+        wait(for: [expectBackgroundQueueBlock], timeout: 2)
     }
 
     func testHandleDeepLinkDoesNotAddDataIfDisabled() {
@@ -149,10 +196,12 @@ class TealiumTraceTests: XCTestCase {
         tealiumForConfig(config: config) { tealium in
             let link = URL(string: "https://tealium.com?tealium_trace_id=\(testTraceId)&utm_param_1=hello&utm_param_2=test")!
             tealium.handleDeepLink(link)
-            XCTAssertNil(mockDataLayer.all[TealiumKey.deepLinkURL])
-            XCTAssertNil(mockDataLayer.all["deep_link_param_utm_param_1"])
-            XCTAssertNil(mockDataLayer.all["deep_link_param_utm_param_2"])
-            TealiumTraceTests.expectation.fulfill()
+            TealiumQueues.backgroundSerialQueue.async {
+                XCTAssertNil(self.mockDataLayer.all[TealiumKey.deepLinkURL])
+                XCTAssertNil(self.mockDataLayer.all["deep_link_param_utm_param_1"])
+                XCTAssertNil(self.mockDataLayer.all["deep_link_param_utm_param_2"])
+                TealiumTraceTests.expectation.fulfill()
+            }
         }
 
         wait(for: [TealiumTraceTests.expectation], timeout: 3.0)
