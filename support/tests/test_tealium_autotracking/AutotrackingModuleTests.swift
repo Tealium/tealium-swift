@@ -98,14 +98,16 @@ class AutotrackingModuleTests: XCTestCase {
 
     func testDidOpenUrlToInstanceManager() {
         let config = testTealiumConfig.copy
-        let tealium = Tealium(config: config)
+        let tealium = Tealium(config: config, dataLayer: MockInMemoryDataLayer(), modulesManager: nil, migrator: nil, enableCompletion: nil)
+        
         expectationRequest = expectation(description: "emptyEventDetected")
         let url = URL(string: "https://www.google.it")!
         TealiumInstanceManager.shared.didOpenUrl(url)
         
         TealiumQueues.backgroundSerialQueue.async {
-            XCTAssertEqual(url.absoluteString, tealium.dataLayer.all[TealiumKey.deepLinkURL] as? String)
+            let dataLayerUrl = tealium.dataLayer.all[TealiumKey.deepLinkURL] as? String
             self.expectationRequest?.fulfill()
+            XCTAssertEqual(url.absoluteString, dataLayerUrl)
         }
         waitForExpectations(timeout: 4.0, handler: nil)
     }

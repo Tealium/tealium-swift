@@ -52,7 +52,7 @@ public class Tealium {
             self.zz_internal_modulesManager = modulesManager ?? ModulesManager(context)
         }
         
-        DispatchQueue.main.async {
+        TealiumQueues.secureMainThreadExecution {
             TealiumInstanceManager.shared.onOpenUrl.subscribe { [weak self] url in
                 self?.handleDeepLink(url)
             }.toDisposeBag(self.disposeBag)

@@ -26,7 +26,7 @@ import UIKit
     }
     
     @objc static func setUp() {
-        TealiumQueues.mainQueue.async {
+        TealiumQueues.secureMainThreadExecution {
             _ = runOnce
         }
     }
