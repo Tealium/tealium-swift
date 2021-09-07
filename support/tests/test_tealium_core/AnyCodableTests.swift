@@ -96,6 +96,11 @@ class AnyCodableTests: XCTestCase {
         try encodeAnyCodableTest(AnyCodable(NSString("")))
     }
     
+    func testNSDate() throws {
+        try nsDateTest(value: Date())
+        try nsDateTest(value: Date.init(timeIntervalSince1970: 0))
+    }
+    
     func testDate() throws {
         try encodeTest(value: Date())
     }
@@ -122,6 +127,13 @@ class AnyCodableTests: XCTestCase {
         let data = try encode(numbers)
         let codable: AnyCodable = try decode(data)
         XCTAssertEqual(numbers, codable.value as! [NSNumber])
+    }
+    
+    func testNSStringArray() throws {
+        let numbers = [NSString("1"), NSString("")]
+        let data = try encode(numbers)
+        let codable: AnyCodable = try decode(data)
+        XCTAssertEqual(numbers, codable.value as! [NSString])
     }
     
     func testNonCodableArray() throws {
@@ -177,6 +189,21 @@ class AnyCodableTests: XCTestCase {
         try encodeAnyCodableTest(codable)
     }
     
+    func testCodableObjectToDict() throws {
+        let obj = CodableObject(s: "someValue")
+        let obj2 = CodableObject(s: "someValueWithAVeryLongString")
+        let dict = obj.encoded!
+        let dict2 = obj2.encoded!
+        XCTAssertEqual(String(describing: type(of: dict["someString"]!)), "NSTaggedPointerString")
+        XCTAssertEqual(String(describing: type(of: dict2["someString"]!)), "__NSCFString")
+        let data = try encodeAnyCodable(AnyCodable(dict))
+        let res: [String: AnyCodable] = try decode(data)
+        XCTAssertEqual(String(describing: type(of: res["someString"]!.value)), String(describing: String.self))
+        let data2 = try encodeAnyCodable(AnyCodable(dict2))
+        let res2: [String: AnyCodable] = try decode(data2)
+        XCTAssertEqual(String(describing: type(of: res2["someString"]!.value)), String(describing: String.self))
+    }
+    
     private func nsNumberTest<T: Decodable & Equatable>(value: T) throws {
         guard let number = value as? NSNumber else {
             throw NSError(domain: "Invalid Argument", code: 1, userInfo: nil)
@@ -188,6 +215,15 @@ class AnyCodableTests: XCTestCase {
     
     private func nsStringTest<T: Decodable & Equatable>(value: T) throws {
         guard let string = value as? NSString else {
+            throw NSError(domain: "Invalid Argument", code: 1, userInfo: nil)
+        }
+        let data = try encode(string)
+        let res: T = try decode(data)
+        XCTAssertEqual(value, res)
+    }
+    
+    private func nsDateTest<T: Decodable & Equatable>(value: T) throws {
+        guard let string = value as? NSDate else {
             throw NSError(domain: "Invalid Argument", code: 1, userInfo: nil)
         }
         let data = try encode(string)
@@ -223,4 +259,14 @@ class AnyCodableTests: XCTestCase {
         return try Tealium.jsonDecoder.decode(AnyCodable.self, from: data)
     }
 
+}
+
+class CodableObject: Codable {
+    let someString: String
+    init(s: String) {
+        someString = s
+    }
+    enum CodingKeys: String, CodingKey {
+        case someString
+    }
 }

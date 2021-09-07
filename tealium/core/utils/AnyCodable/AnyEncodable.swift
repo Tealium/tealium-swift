@@ -88,6 +88,8 @@ extension _AnyEncodable {
             try container.encodeNil()
         case let string as String: // Converts NSString which are not encodable
             try string.encode(to: &container)
+        case let date as Date: // Converts NSDate which are not encodable
+            try date.encode(to: &container)
         case let array as [Any?]:
             try container.encode(array.map {
                 $0 as? AnyCodable ?? AnyCodable($0)
