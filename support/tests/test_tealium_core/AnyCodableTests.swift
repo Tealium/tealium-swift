@@ -89,6 +89,13 @@ class AnyCodableTests: XCTestCase {
         try nsNumberTest(value: Int16(6))
     }
     
+    func testNSString() throws {
+        try nsStringTest(value: "text")
+        try nsStringTest(value: "")
+        try encodeAnyCodableTest(AnyCodable(NSString("some")))
+        try encodeAnyCodableTest(AnyCodable(NSString("")))
+    }
+    
     func testDate() throws {
         try encodeTest(value: Date())
     }
@@ -175,6 +182,15 @@ class AnyCodableTests: XCTestCase {
             throw NSError(domain: "Invalid Argument", code: 1, userInfo: nil)
         }
         let data = try encode(number)
+        let res: T = try decode(data)
+        XCTAssertEqual(value, res)
+    }
+    
+    private func nsStringTest<T: Decodable & Equatable>(value: T) throws {
+        guard let string = value as? NSString else {
+            throw NSError(domain: "Invalid Argument", code: 1, userInfo: nil)
+        }
+        let data = try encode(string)
         let res: T = try decode(data)
         XCTAssertEqual(value, res)
     }

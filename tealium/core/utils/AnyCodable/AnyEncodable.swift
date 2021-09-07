@@ -86,6 +86,8 @@ extension _AnyEncodable {
             try encode(nsnumber: number, into: &container)
         case is NSNull, is Void:
             try container.encodeNil()
+        case let string as String: // Converts NSString which are not encodable
+            try string.encode(to: &container)
         case let array as [Any?]:
             try container.encode(array.map {
                 $0 as? AnyCodable ?? AnyCodable($0)
@@ -95,7 +97,7 @@ extension _AnyEncodable {
                 $0 as? AnyCodable ?? AnyCodable($0)
             })
         default:
-            let context = EncodingError.Context(codingPath: container.codingPath, debugDescription: "AnyCodable value cannot be encoded")
+            let context = EncodingError.Context(codingPath: container.codingPath, debugDescription: "AnyCodable value \(type(of:value)) cannot be encoded")
             throw EncodingError.invalidValue(value, context)
         }
     }
