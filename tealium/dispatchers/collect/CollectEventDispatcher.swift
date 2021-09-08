@@ -10,10 +10,11 @@ import Foundation
 import TealiumCore
 #endif
 
-class CollectEventDispatcher: CollectProtocol {
+class CollectEventDispatcher: CollectProtocol, LoggingDataToStringConverter {
 
     var urlSession: URLSessionProtocol?
     var urlSessionConfiguration: URLSessionConfiguration?
+    var logger: TealiumLoggerProtocol?
     static var defaultDispatchBaseURL = "https://collect.tealiumiq.com"
     static var singleEventPath = "/event/"
     static var batchEventPath = "/bulk-event/"
@@ -32,6 +33,7 @@ class CollectEventDispatcher: CollectProtocol {
          urlSession: URLSessionProtocol = CollectEventDispatcher.urlSession,
          completion: ModuleCompletion? = nil) {
         self.urlSession = urlSession
+        self.logger = config.logger
         setUpUrls(config: config)
         completion?((.success(true), nil))
     }
@@ -80,7 +82,7 @@ class CollectEventDispatcher: CollectProtocol {
     func dispatch(data: [String: Any],
                   url: String? = nil,
                   completion: ModuleCompletion?) {
-        if let jsonString = data.toJSONString,
+        if let jsonString = convertData(data, toStringWith: { try $0.toJSONString()}),
            let url = url ?? singleEventDispatchURL,
            let urlRequest = NetworkUtils.urlPOSTRequestWithJSONString(jsonString, dispatchURL: url) {
             sendURLRequest(urlRequest, completion)

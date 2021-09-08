@@ -20,7 +20,7 @@ enum InternalWebViewState: Int {
     case notYetLoaded = 3
 }
 
-class TagManagementWKWebView: NSObject, TagManagementProtocol {
+class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStringConverter {
 
     var webview: WKWebView?
     var tealConfig: TealiumConfig
@@ -34,7 +34,9 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol {
     weak var moduleDelegate: ModuleDelegate?
 
     var delegates: TealiumMulticastDelegate<WKNavigationDelegate>? = TealiumMulticastDelegate<WKNavigationDelegate>()
-
+    var logger: TealiumLoggerProtocol? {
+        return tealConfig.logger
+    }
     init(config: TealiumConfig, delegate: ModuleDelegate?) {
         moduleDelegate = delegate
         tealConfig = config
@@ -165,7 +167,7 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol {
     ///     - completion: Optional completion handler to call when call completes.
     func track(_ data: [String: Any],
                completion: ((Bool, [String: Any], Error?) -> Void)?) {
-        guard let javascriptString = data.tealiumJavaScriptTrackCall else {
+        guard let javascriptString = convertData(data, toStringWith: { try $0.tealiumJavaScriptTrackCall() }) else {
             completion?(false,
                         ["original_payload": data, "sanitized_payload": data],
                         TagManagementError.couldNotJSONEncodeData)
