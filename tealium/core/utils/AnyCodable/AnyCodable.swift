@@ -121,6 +121,8 @@ extension EqualValues {
             return lhs == rhs
         case let (lhs as String, rhs as String):
             return lhs == rhs
+        case let (lhs as Date, rhs as Date):
+            return lhs == rhs
         case let (lhs as [String: AnyCodable], rhs as [String: AnyCodable]):
             return lhs == rhs
         case let (lhs as [String: AnyEncodable], rhs as [String: AnyEncodable]):
