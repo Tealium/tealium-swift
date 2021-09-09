@@ -11,7 +11,6 @@ import TealiumCore
 import SwiftUI
 
 @available (iOS 14.0, tvOS 14.0, macOS 15.0, watchOS 7.0, *)
-public struct TealiumViewTrackable<Content: View>: View {
 public extension View {
     
     func autoTracking<Target: View>(viewSelf: Target) -> some View {
@@ -26,6 +25,7 @@ public extension View {
 }
 
 @available (iOS 14.0, tvOS 14.0, macOS 15.0, watchOS 7.0, *)
+public struct TealiumViewTrackable<Content: View>: View {
 
     public var viewName: String
 
