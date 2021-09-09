@@ -14,28 +14,6 @@ public extension Collectors {
     static let AutoTracking = AutotrackingModule.self
 }
 
-@propertyWrapper public class AutoTracked {
-
-    private var _wrapped: String = ""
-    
-    public var wrappedValue: String {
-        get {
-            TealiumInstanceManager.shared.autoTrackView(viewName: _wrapped)
-            return _wrapped
-        }
-        
-        set {
-            _wrapped = newValue
-        }
-        
-    }
-
-    public init(wrappedValue: String) {
-        self.wrappedValue = wrappedValue
-    }
-}
-
-
 public extension TealiumConfig {
     
     var autoTrackingCollectorDelegate: AutoTrackingDelegate? {

@@ -11,7 +11,7 @@ import TealiumAutotracking
 struct ContentView: View {
     @State private var traceId: String = ""
     @State private var showAlert = false
-    @AutoTracked var name = "Main Screen"
+    let name = "Main Screen"
     // Timed event start
     var playButton: some View {
         TealiumIconButton(iconName: "play.fill") {

@@ -12,6 +12,20 @@ import SwiftUI
 
 @available (iOS 14.0, tvOS 14.0, macOS 15.0, watchOS 7.0, *)
 public struct TealiumViewTrackable<Content: View>: View {
+public extension View {
+    
+    func autoTracking<Target: View>(viewSelf: Target) -> some View {
+        return autoTracked(name: String(describing: type(of:viewSelf)))
+    }
+    
+    func autoTracked(name: String) -> some View {
+        return self.onAppear {
+            TealiumInstanceManager.shared.autoTrackView(viewName: name)
+        }
+    }
+}
+
+@available (iOS 14.0, tvOS 14.0, macOS 15.0, watchOS 7.0, *)
 
     public var viewName: String
 
@@ -24,10 +38,7 @@ public struct TealiumViewTrackable<Content: View>: View {
     let content: Content
 
     public var body: some View {
-        content
-        .onAppear {
-            TealiumInstanceManager.shared.autoTrackView(viewName: viewName)
-        }
+        content.autoTracked(name: viewName)
     }
 }
 #endif

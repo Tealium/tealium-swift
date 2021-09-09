@@ -8,18 +8,14 @@
 import SwiftUI
 import TealiumAutotracking
 
-
 struct ContentView: View {
-    @AutoTracked var name = "hello"
     var body: some View {
         VStack {
             NavigationView {
                 NavigationLink("Launch ViewController", destination: ViewControllerWrapper())
             }
-        }.onAppear {
-            _ = name
         }
-        
+        .autoTracking(viewSelf: self)
     }
 }
 
