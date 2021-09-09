@@ -25,6 +25,7 @@ class AutotrackingModuleTests: XCTestCase {
     
     var currentViewName = ""
 
+    var disposeBag = TealiumDisposeBag()
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -36,6 +37,7 @@ class AutotrackingModuleTests: XCTestCase {
         expectationShouldTrack = nil
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         TealiumInstanceManager.shared.disable()
+        disposeBag = TealiumDisposeBag()
         super.tearDown()
     }
 
@@ -44,7 +46,7 @@ class AutotrackingModuleTests: XCTestCase {
 
         expectationRequest = expectation(description: "emptyEventDetected")
 
-        let viewName = "someView"
+        let viewName = "RequestEventTrackView"
         module.requestViewTrack(viewName: viewName)
 
         waitForExpectations(timeout: 1.0, handler: nil)
@@ -55,13 +57,13 @@ class AutotrackingModuleTests: XCTestCase {
     func testAddCustomData() {
         let module = self.module
 
-        expectationRequest = expectation(description: "customDataRequest")
+        expectationRequest = expectation(description: "customDataRequest1")
+        let name = addDataViewName+"1"
+        module.requestViewTrack(viewName: name)
 
-        module.requestViewTrack(viewName: addDataViewName)
+        waitForExpectations(timeout: 4.0, handler: nil)
 
-        waitForExpectations(timeout: 1.0, handler: nil)
-
-        XCTAssertEqual(addDataViewName, currentViewName)
+        XCTAssertEqual(name, currentViewName)
     }
 
     // Cannot unit test swizzling/SwiftUI
@@ -70,46 +72,52 @@ class AutotrackingModuleTests: XCTestCase {
         let config = testTealiumConfig.copy
         config.collectors = [Collectors.AutoTracking]
         config.autoTrackingCollectorDelegate = self
-        let _ = Tealium(config: config)
-        expectationRequest = expectation(description: "emptyEventDetected")
+        let teal = Tealium(config: config)
+        expectationRequest = expectation(description: "emptyEventToManagerDetected")
 
-        let viewName = "someView"
-        TealiumInstanceManager.shared.autoTrackView(viewName: viewName)
+        let viewName = "RequestEventTrackToInstanceManagerView"
+        AutotrackingModule.autoTrackView(viewName: viewName)
         
         waitForExpectations(timeout: 4.0, handler: nil)
 
         XCTAssertEqual(viewName, currentViewName)
+        teal.zz_internal_modulesManager?.collectors = []
     }
     
     func testAddCustomDataToInstanceManager() {
-        expectationRequest = expectation(description: "customDataRequest")
+        expectationRequest = expectation(description: "customDataRequest2")
 
         let config = testTealiumConfig.copy
         config.collectors = [Collectors.AutoTracking]
         config.autoTrackingCollectorDelegate = self
-        let _ = Tealium(config: config)
-        TealiumInstanceManager.shared.autoTrackView(viewName: self.addDataViewName)
+        let teal = Tealium(config: config)
+        let name = self.addDataViewName+"2"
+        AutotrackingModule.autoTrackView(viewName: name)
         
 
         waitForExpectations(timeout: 4.0, handler: nil)
 
-        XCTAssertEqual(addDataViewName, currentViewName)
+        XCTAssertEqual(name, currentViewName)
+        teal.zz_internal_modulesManager?.collectors = []
     }
-
-    func testDidOpenUrlToInstanceManager() {
-        let config = testTealiumConfig.copy
-        let tealium = Tealium(config: config, dataLayer: MockInMemoryDataLayer(), modulesManager: nil, migrator: nil, enableCompletion: nil)
+    
+    func testView() {
+        let viewName = "testView"
         
-        expectationRequest = expectation(description: "emptyEventDetected")
-        let url = URL(string: "https://www.google.it")!
-        TealiumInstanceManager.shared.didOpenUrl(url)
+        let firstReceiveExp = expectation(description: "Will receive view")
+        let secondReceiveExp = expectation(description: "Will NOT receive view")
+        secondReceiveExp.isInverted = true
+        AutotrackingModule.autoTrackView(viewName: viewName)
+        AutotrackingModule.onAutoTrackView.subscribe { name in
+            if name == viewName {
+                firstReceiveExp.fulfill()
+            }
+        }.toDisposeBag(disposeBag)
         
-        TealiumQueues.backgroundSerialQueue.async {
-            let dataLayerUrl = tealium.dataLayer.all[TealiumKey.deepLinkURL] as? String
-            self.expectationRequest?.fulfill()
-            XCTAssertEqual(url.absoluteString, dataLayerUrl)
-        }
-        waitForExpectations(timeout: 4.0, handler: nil)
+        AutotrackingModule.onAutoTrackView.subscribe { name in
+            secondReceiveExp.fulfill()
+        }.toDisposeBag(disposeBag)
+        wait(for: [firstReceiveExp, secondReceiveExp], timeout: 0)
     }
 }
 
@@ -136,7 +144,7 @@ extension AutotrackingModuleTests: AutoTrackingDelegate {
     func onCollectScreenView(screenName: String) -> [String : Any] {
         self.currentViewName = screenName
         expectationRequest?.fulfill()
-        if screenName == addDataViewName {
+        if screenName.starts(with: addDataViewName) {
             return addDataDictionary
         }
         return [:]

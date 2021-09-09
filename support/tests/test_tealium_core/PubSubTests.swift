@@ -1,5 +1,5 @@
 //
-//  ObservableTests.swift
+//  PubSubTests.swift
 //  tealium-swift
 //
 //  Created by Enrico Zannini on 01/09/21.
@@ -9,7 +9,7 @@
 import XCTest
 @testable import TealiumCore
 
-class ObservableTests: XCTestCase {
+class PubSubTests: XCTestCase {
     
     @ToAnyObservable(TealiumReplaySubject<Void>())
     var onReady: TealiumObservable<Void>

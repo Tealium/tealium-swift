@@ -51,23 +51,21 @@ class TealiumInstanceManagerTests: XCTestCase {
         wait(for: [firstReceiveExp, secondReceiveExp, thirdReceiveExp], timeout: 0)
     }
     
-    func testView() {
-        let viewName = "someView"
+    
+    func testDidOpenUrlToDataLayer() {
+        let config = testTealiumConfig.copy
+        let tealium = Tealium(config: config, dataLayer: MockInMemoryDataLayer(), modulesManager: nil, migrator: nil, enableCompletion: nil)
         
+        let expectationRequest = expectation(description: "emptyEventDetected")
+        let url = URL(string: "https://www.google.it")!
+        TealiumInstanceManager.shared.didOpenUrl(url)
         
-        let firstReceiveExp = expectation(description: "Will receive view")
-        let secondReceiveExp = expectation(description: "Will NOT receive view")
-        secondReceiveExp.isInverted = true
-        manager.autoTrackView(viewName: viewName)
-        manager.onAutoTrackView.subscribe { url in
-            firstReceiveExp.fulfill()
+        TealiumQueues.backgroundSerialQueue.async {
+            let dataLayerUrl = tealium.dataLayer.all[TealiumKey.deepLinkURL] as? String
+            expectationRequest.fulfill()
+            XCTAssertEqual(url.absoluteString, dataLayerUrl)
         }
-        
-        manager.onAutoTrackView.subscribe { url in
-            secondReceiveExp.fulfill()
-        }
-        wait(for: [firstReceiveExp, secondReceiveExp], timeout: 0)
+        waitForExpectations(timeout: 4.0, handler: nil)
     }
-
 
 }
