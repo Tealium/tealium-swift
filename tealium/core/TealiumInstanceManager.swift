@@ -15,9 +15,6 @@ public class TealiumInstanceManager {
     
     @ToAnyObservable(TealiumReplaySubject(cacheSize: 10))
     var onOpenUrl: TealiumObservable<URL>
-    
-    @ToAnyObservable(TealiumBufferedSubject(bufferSize: 10))
-    public var onAutoTrackView: TealiumObservable<String>
 
     private init() {
 
@@ -63,10 +60,6 @@ public class TealiumInstanceManager {
     
     func didOpenUrl(_ url: URL) {
         _onOpenUrl.publish(url)
-    }
-    
-    public func autoTrackView(viewName: String) {
-        _onAutoTrackView.publish(viewName)
     }
 
 }

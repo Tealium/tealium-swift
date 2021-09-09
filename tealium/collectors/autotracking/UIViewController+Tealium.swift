@@ -68,7 +68,7 @@ import UIKit
             if getSuperclasses(cls: self) == "" {
                 break
             }
-            TealiumInstanceManager.shared.autoTrackView(viewName: viewTitle)
+            AutotrackingModule.autoTrackView(viewName: viewTitle)
         }
     }
     

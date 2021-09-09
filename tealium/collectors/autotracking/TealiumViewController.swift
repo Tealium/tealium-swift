@@ -14,7 +14,7 @@ open class TealiumViewController: UIViewController {
     @objc
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        TealiumInstanceManager.shared.autoTrackView(viewName: self.viewTitle)
+        AutotrackingModule.autoTrackView(viewName: self.viewTitle)
     }
 }
 #endif

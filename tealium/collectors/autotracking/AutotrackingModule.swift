@@ -16,6 +16,9 @@ import TealiumCore
 
 public class AutotrackingModule: Collector {
 
+    @ToAnyObservable(TealiumBufferedSubject(bufferSize: 10))
+    static var onAutoTrackView: TealiumObservable<String>
+    
     public let id: String = TealiumAutotrackingKey.moduleName
     public var data: [String: Any]?
     weak var delegate: ModuleDelegate?
@@ -43,7 +46,7 @@ public class AutotrackingModule: Collector {
         self.autotrackingDelegate = config.autoTrackingCollectorDelegate
         
         TealiumQueues.secureMainThreadExecution {
-            TealiumInstanceManager.shared.onAutoTrackView.subscribe { [weak self] viewName in
+            AutotrackingModule.onAutoTrackView.subscribe { [weak self] viewName in
                 self?.requestViewTrack(viewName: viewName)
             }.toDisposeBag(self.disposeBag)
         }
@@ -99,7 +102,10 @@ public class AutotrackingModule: Collector {
             }
             
         }
-        
+    }
+    
+    static func autoTrackView(viewName: String) {
+        _onAutoTrackView.publish(viewName)
     }
     
 }

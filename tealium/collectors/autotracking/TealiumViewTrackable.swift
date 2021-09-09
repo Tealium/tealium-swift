@@ -20,7 +20,7 @@ public extension View {
     
     func autoTracked(name: String) -> some View {
         return self.onAppear {
-            TealiumInstanceManager.shared.autoTrackView(viewName: name)
+            AutotrackingModule.autoTrackView(viewName: name)
         }
     }
 }
