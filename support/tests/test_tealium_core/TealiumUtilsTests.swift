@@ -24,13 +24,14 @@ class TealiumUtilsTests: XCTestCase {
         super.tearDown()
     }
 
-    func testJSONStringWithDictionary() {
+    func testJSONStringWithDictionary() throws {
         let dictionary: [String: Any] = ["tealium_account": "hello",
                                          "tealium_environment": "dev",
                                          "tealium_profile": "tester"
         ]
 
-        XCTAssertTrue(testJSONString == dictionary.toJSONString)
+        let stringResult = try dictionary.toJSONString()
+        XCTAssertTrue(testJSONString == stringResult)
     }
 
     func testURLRequest() {
@@ -44,7 +45,7 @@ class TealiumUtilsTests: XCTestCase {
         let testDictionaries = [generateTestDict(), generateTestDict(), generateTestDict(), generateTestDict()]
 
         measure {
-            let jsonString = testDictionaries[(Int.random(in: 0..<4))].toJSONString
+            let jsonString = try? testDictionaries[(Int.random(in: 0..<4))].toJSONString()
             _ = NetworkUtils.urlPOSTRequestWithJSONString(jsonString!, dispatchURL: "https://collect.tealiumiq.com/event")
             _ = NetworkUtils.urlPOSTRequestWithJSONString(jsonString!, dispatchURL: "https://collect.tealiumiq.com/event")
             _ = NetworkUtils.urlPOSTRequestWithJSONString(jsonString!, dispatchURL: "https://collect.tealiumiq.com/event")

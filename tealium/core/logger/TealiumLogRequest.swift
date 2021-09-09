@@ -52,7 +52,7 @@ public struct TealiumLogRequest: LogRequest {
             }
         }
 
-        if let info = info?.toJSONString {
+        if let info = try? info?.toJSONString() {
             message += "\nAdditional Info:\n"
             message += "\(info)\n"
         }

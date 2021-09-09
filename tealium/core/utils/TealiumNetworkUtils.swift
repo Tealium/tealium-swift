@@ -8,8 +8,8 @@
 import Foundation
 
 public extension Dictionary where Key == String, Value == Any {
-    var toJSONString: String? {
-        return TealiumQueues.backgroundConcurrentQueue.read { () -> String? in
+    func toJSONString() throws -> String? {
+        return try TealiumQueues.backgroundConcurrentQueue.read { () throws -> String? in
             var writingOptions: JSONEncoder.OutputFormatting
 
             if #available(iOS 11.0, tvOS 11.0, watchOS 4.0, OSX 10.13, *) {
@@ -21,13 +21,8 @@ public extension Dictionary where Key == String, Value == Any {
             let encoder = Tealium.jsonEncoder
             encoder.outputFormatting = writingOptions
             let encodable = self.encodable
-            do {
-                let jsonData = try encoder.encode(encodable)
-                return String(data: jsonData, encoding: .utf8)
-            } catch {
-                return nil
-            }
-
+            let jsonData = try encoder.encode(encodable)
+            return String(data: jsonData, encoding: .utf8)
         }
     }
 }
