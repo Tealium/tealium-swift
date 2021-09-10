@@ -29,7 +29,7 @@ struct ContentView: View {
     }
 
     var body: some View {
-        TealiumViewTrackable(viewName: name) {
+        TealiumViewTrackable(constantName: name) {
         NavigationView {
             ScrollView {
                 VStack(spacing: 16) {

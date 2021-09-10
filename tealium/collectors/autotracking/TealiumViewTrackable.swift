@@ -10,7 +10,7 @@ import TealiumCore
 #if canImport(SwiftUI)
 import SwiftUI
 
-@available (iOS 14.0, tvOS 14.0, macOS 15.0, watchOS 7.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension View {
     
     /**
@@ -29,15 +29,30 @@ extension View {
      * (mainly if you don't have access to the object instance)
      */
     public func autoTracking<Target: View>(viewClass: Target.Type) -> some View {
-        return autoTracked(name: String(describing: viewClass))
+        return autoTracked(constantName: String(describing: viewClass))
     }
     
     /**
      * Use this View modifier to autotrack a View appearence with a custom name.
+     *
+     * WARNING:
+     * Do NOT pass a State variable here as it may go in conflict with onDisappear calls. https://developer.apple.com/forums/thread/655338
+     * If you want to pass a State variable, pass the binding value instead, using the overloaded method.
      */
-    public func autoTracked(name: String) -> some View {
+    public func autoTracked(constantName name: String) -> some View {
+        return autoTracked(name: name.toGetterBinding())
+    }
+    
+    /**
+     * Use this View modifier to autotrack a View appearence with a custom State name.
+     *
+     * We won't change the Binding value.
+     * This method just solves the issue of onAppear being called after onDisappear for state changes.
+     * https://developer.apple.com/forums/thread/655338
+     */
+    public func autoTracked(name: Binding<String>) -> some View {
         return self.onAppear {
-            AutotrackingModule.autoTrackView(viewName: name)
+            AutotrackingModule.autoTrackView(viewName: name.wrappedValue)
         }
     }
 }
@@ -50,13 +65,24 @@ extension View {
  *
  * If you don't pass a viewName, the class name of the Content will be used as a viewName.
  */
-@available (iOS 14.0, tvOS 14.0, macOS 15.0, watchOS 7.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 public struct TealiumViewTrackable<Content: View>: View {
 
-    let viewName: String?
+    
+    let viewName: Binding<String>?
     let content: Content
     
-    public init(viewName: String? = nil,
+    /**
+     * WARNING:
+     * Do NOT call this method with a name coming from a State object as it may go in conflict with onDisappear calls. https://developer.apple.com/forums/thread/655338
+     * If you want to pass a State variable, pass the binding value instead, using the overloaded method.
+     */
+    public init(constantName: String,
+                @ViewBuilder content: () -> Content) {
+        self.init(viewName: constantName.toGetterBinding(), content: content)
+    }
+    
+    public init(viewName: Binding<String>? = nil,
                 @ViewBuilder content: () -> Content) {
         self.content = content()
         self.viewName = viewName
@@ -68,6 +94,13 @@ public struct TealiumViewTrackable<Content: View>: View {
         } else {
             content.autoTracking(viewSelf: content)
         }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+extension String {
+    func toGetterBinding() -> Binding<String> {
+        Binding<String>(get: { self }, set: { _ in })
     }
 }
 #endif

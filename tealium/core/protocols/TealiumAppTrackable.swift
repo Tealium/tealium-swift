@@ -9,7 +9,7 @@ import Foundation
 #if canImport(SwiftUI)
 import SwiftUI
 
-@available (iOS 14.0, tvOS 14.0, macOS 15.0, watchOS 7.0, *)
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 public extension View {
     func trackingAppOpenUrl() -> some View {
         return self
@@ -30,7 +30,7 @@ public extension View {
     }
 }
 
-@available (iOS 14.0, tvOS 14.0, macOS 15.0, watchOS 7.0, *)
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 public struct TealiumAppTrackable<Content: View>: View {
 
     public init(@ViewBuilder content: () -> Content) {
