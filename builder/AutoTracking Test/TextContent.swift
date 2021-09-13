@@ -27,7 +27,7 @@ struct TextContent: View {
     @ObservedObject var model: TrackViewModel
     
     var body: some View {
-        VStack {
+        Group {
             Spacer()
             Text("AutoTracked Views:").bold()
             Text(model.text)
