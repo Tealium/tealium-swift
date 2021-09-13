@@ -22,6 +22,9 @@ import TealiumTagManagement
 
 class TealiumHelper  {
 
+    @ToAnyObservable(TealiumBufferedSubject(bufferSize: 10))
+    var onWillTrack: TealiumObservable<[String:Any]>
+    
     static let shared = TealiumHelper()
     var tealium: Tealium?
     var enableHelperLogs = true
@@ -198,6 +201,7 @@ extension TealiumHelper: VisitorServiceDelegate {
 
 extension TealiumHelper: DispatchListener {
     public func willTrack(request: TealiumRequest) {
+        _onWillTrack.publish((request as! TealiumTrackRequest).trackDictionary)
         if self.enableHelperLogs {
             print("helper - willtrack")
         }

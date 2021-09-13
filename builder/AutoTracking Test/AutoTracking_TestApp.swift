@@ -14,7 +14,10 @@ struct AutoTracking_TestApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            Group {
+                ContentView()
+                TextContent(model: TrackViewModel())
+            }
         }
     }
 }

@@ -35,6 +35,16 @@
                ReferencedContainer = "container:tealium-swift.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "1516A2DD26EF7F26003DF8F2"
+               BuildableName = "TealiumAutotrackingUITests-iOS.xctest"
+               BlueprintName = "TealiumAutotrackingUITests-iOS"
+               ReferencedContainer = "container:tealium-swift.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -64,6 +74,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "CF8805732554B74B0020E1B2"
+            BuildableName = "iOSTealiumTest.app"
+            BlueprintName = "iOSTealiumTest"
+            ReferencedContainer = "container:tealium-swift.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
