@@ -6,8 +6,11 @@
 //
 
 #if os(iOS)
-import Foundation
+#if autotracking
 import TealiumCore
+#endif
+
+import Foundation
 import UIKit
 
 @objc extension UIViewController {

@@ -5,8 +5,11 @@
 //  Copyright © 2021 Tealium, Inc. All rights reserved.
 //
 
-import Foundation
+#if autotracking
 import TealiumCore
+#endif
+
+import Foundation
 #if canImport(SwiftUI)
 import SwiftUI
 

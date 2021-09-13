@@ -10,6 +10,8 @@
 		1516A2E926EF7FF0003DF8F2 /* AutoTrackingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D4AFD926EB9CE6004316D0 /* AutoTrackingUITests.swift */; };
 		1516A2ED26EF8193003DF8F2 /* TextContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1516A2EC26EF8193003DF8F2 /* TextContent.swift */; };
 		1516A2EE26EF87B6003DF8F2 /* TealiumRemoteCommands.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7B04D17219994D400C87E22 /* TealiumRemoteCommands.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1516A31226EFB492003DF8F2 /* UIApplication+TealiumTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = 1516A31026EFB492003DF8F2 /* UIApplication+TealiumTracker.h */; };
+		1516A31326EFB492003DF8F2 /* UIApplication+TealiumTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 1516A31126EFB492003DF8F2 /* UIApplication+TealiumTracker.m */; };
 		1519DFF526E23389000C71B4 /* TagManagementWKWebViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1519DFF426E23389000C71B4 /* TagManagementWKWebViewTests.swift */; };
 		1519DFF826E26764000C71B4 /* PubSubProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1519DFF726E26764000C71B4 /* PubSubProtocols.swift */; };
 		1519E00426E26886000C71B4 /* TealiumDisposeBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1519E00326E26886000C71B4 /* TealiumDisposeBag.swift */; };
@@ -1711,6 +1713,8 @@
 /* Begin PBXFileReference section */
 		1516A2DE26EF7F26003DF8F2 /* TealiumAutotrackingUITests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TealiumAutotrackingUITests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1516A2EC26EF8193003DF8F2 /* TextContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextContent.swift; sourceTree = "<group>"; };
+		1516A31026EFB492003DF8F2 /* UIApplication+TealiumTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+TealiumTracker.h"; sourceTree = "<group>"; };
+		1516A31126EFB492003DF8F2 /* UIApplication+TealiumTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+TealiumTracker.m"; sourceTree = "<group>"; };
 		1519DFF426E23389000C71B4 /* TagManagementWKWebViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagManagementWKWebViewTests.swift; sourceTree = "<group>"; };
 		1519DFF726E26764000C71B4 /* PubSubProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PubSubProtocols.swift; sourceTree = "<group>"; };
 		1519E00326E26886000C71B4 /* TealiumDisposeBag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TealiumDisposeBag.swift; sourceTree = "<group>"; };
@@ -2709,6 +2713,8 @@
 				43DE5575164A11F5497A9EF7 /* TealiumViewController.swift */,
 				D7A2704425DBCD61009D8340 /* UIViewController+Tealium.swift */,
 				D7A2706725DBCD8E009D8340 /* TealiumViewTrackable.swift */,
+				1516A31026EFB492003DF8F2 /* UIApplication+TealiumTracker.h */,
+				1516A31126EFB492003DF8F2 /* UIApplication+TealiumTracker.m */,
 			);
 			path = autotracking;
 			sourceTree = "<group>";
@@ -3484,6 +3490,7 @@
 			files = (
 				D7CED26D21932E3900ACD291 /* AutotrackingModule.swift in Headers */,
 				D7CED26A21932E2B00ACD291 /* Tealium-Autotracking-Bridging-Header.h in Headers */,
+				1516A31226EFB492003DF8F2 /* UIApplication+TealiumTracker.h in Headers */,
 				D7CED26C21932E2B00ACD291 /* UIViewController+TealiumTracker.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5556,6 +5563,7 @@
 			files = (
 				D7CED26721932DF200ACD291 /* AutotrackingModule.swift in Sources */,
 				D7A2704525DBCD61009D8340 /* UIViewController+Tealium.swift in Sources */,
+				1516A31326EFB492003DF8F2 /* UIApplication+TealiumTracker.m in Sources */,
 				D7ECB90B25E6B6E10043BA83 /* AutoTrackingExtensions.swift in Sources */,
 				D7CED26921932DF200ACD291 /* UIViewController+TealiumTracker.m in Sources */,
 				D7A2706825DBCD8E009D8340 /* TealiumViewTrackable.swift in Sources */,
@@ -6552,7 +6560,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 7.4;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Debug;
 		};
@@ -6580,7 +6588,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				VALIDATE_PRODUCT = YES;
-				WATCHOS_DEPLOYMENT_TARGET = 7.4;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Release;
 		};

@@ -23,6 +23,7 @@ static id     _lastEvent;
 static NSDate *_lastEventTS;
 static int _maxScans = 6;
 
+
 static void TealiumSendEvent(UIApplication *self, SEL _cmd, UIEvent *e) {
     
     // Extract target touch object
