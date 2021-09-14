@@ -1,6 +1,6 @@
 //
-//  AutoTrackingUITests.swift
-//  AutoTrackingUITests
+//  AutoTrackingIOSUITests.swift
+//  AutoTrackingIOSUITests
 //
 //  Created by Enrico Zannini on 10/09/21.
 //  Copyright © 2021 Tealium, Inc. All rights reserved.
@@ -8,7 +8,7 @@
 
 import XCTest
 
-class AutoTrackingUITests: XCTestCase {
+class AutoTrackingIOSUITests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

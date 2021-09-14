@@ -17,7 +17,11 @@ struct ContentView: View {
                 NavigationView {
                     NavigationLink("Launch ViewController", destination:
                                     TealiumViewTrackable {
+                                        #if os(iOS)
                                         ViewControllerWrapper()
+                                        #else
+                                        SomeView()
+                                        #endif
                                     }
                                    )
                     .autoTracked(name: $name)
@@ -34,5 +38,15 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+    }
+}
+
+struct SomeView: View {
+    var body: some View {
+        Group {
+            Spacer()
+            Text("Some Text")
+            Spacer()
+        }
     }
 }

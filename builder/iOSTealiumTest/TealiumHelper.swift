@@ -99,7 +99,7 @@ class TealiumHelper  {
                 Collectors.Connectivity,
                 Collectors.Device,
                 Collectors.VisitorService,
-                
+                Collectors.AutoTracking
             ]
             config.dispatchers = [
                 Dispatchers.Collect,
