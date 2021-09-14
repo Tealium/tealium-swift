@@ -33,13 +33,19 @@ class AutoTrackingIOSUITests: XCTestCase {
             
             """
         XCTAssertTrue(app.staticTexts[text].exists)
-        app.buttons.firstMatch.tap()
+        app.buttons["Launch ViewController"].tap()
         text += "ViewControllerWrapper\n"
         XCTAssertTrue(app.staticTexts[text].exists)
         text += "RealViewController\n" // Did appear happens late
         XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 1))
         app.navigationBars.firstMatch.buttons.firstMatch.tap()
         text += "Root View 1\n"
+        XCTAssertTrue(app.staticTexts[text].exists)
+        app.buttons["Launch Second View"].tap()
+        text += "Second View\n"
+        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 1))
+        app.navigationBars.firstMatch.buttons.firstMatch.tap()
+        text += "Root View 2\n"
         XCTAssertTrue(app.staticTexts[text].exists)
     }
 }

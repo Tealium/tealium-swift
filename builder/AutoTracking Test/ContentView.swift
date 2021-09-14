@@ -13,8 +13,9 @@ struct ContentView: View {
     @State var name: String = "Root View 0"
     
     var body: some View {
-            VStack {
-                NavigationView {
+        VStack {
+            NavigationView {
+                List {
                     NavigationLink("Launch ViewController", destination:
                                     TealiumViewTrackable {
                                         #if os(iOS)
@@ -23,15 +24,21 @@ struct ContentView: View {
                                         SomeView()
                                         #endif
                                     }
-                                   )
+                    )
                     .autoTracked(name: $name)
                     .onDisappear {
                         self.count += 1
                         self.name = "Root View \(count)"
                     }
+                    NavigationLink("Launch Second View", destination:
+                                    TealiumViewTrackable(constantName: "Second View") {
+                                        SomeView()
+                                    }
+                    )
                 }
             }
-            .autoTracking(viewSelf: self)
+        }
+        .autoTracking(viewSelf: self)
     }
 }
 

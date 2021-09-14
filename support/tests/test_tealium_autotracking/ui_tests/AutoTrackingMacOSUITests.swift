@@ -35,6 +35,13 @@ class AutoTrackingMacOSUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 2))
         text += "SomeView\n"
         app.buttons["Launch ViewController"].click()
-        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 4))
+        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 2))
+        app.buttons["Launch Second View"].click()
+        text += "Second View\n"
+        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 2))
+        text += "SomeView\n"
+        app.buttons["Launch ViewController"].click()
+        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 2))
+        
     }
 }
