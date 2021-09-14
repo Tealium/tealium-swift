@@ -8,7 +8,7 @@
 
 import XCTest
 
-class AutoTrackingIOSUITests: XCTestCase {
+class AutoTrackingMacOSUITests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -32,14 +32,9 @@ class AutoTrackingIOSUITests: XCTestCase {
             Root View 0
             
             """
-        XCTAssertTrue(app.staticTexts[text].exists)
-        app.buttons.firstMatch.tap()
-        text += "ViewControllerWrapper\n"
-        XCTAssertTrue(app.staticTexts[text].exists)
-        text += "RealViewController\n" // Did appear happens late
-        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 1))
-        app.navigationBars.firstMatch.buttons.firstMatch.tap()
-        text += "Root View 1\n"
-        XCTAssertTrue(app.staticTexts[text].exists)
+        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 2))
+        text += "SomeView\n"
+        app.buttons["Launch ViewController"].click()
+        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 4))
     }
 }

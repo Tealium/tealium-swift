@@ -3,7 +3,7 @@
 //
 //  Copyright (c) 2013 Tealium. All rights reserved.
 //
-
+#if TARGET_OS_PHONE
 #import "UIApplication+TealiumTracker.h"
 
 @implementation UIApplication (TealiumTracker)
@@ -82,3 +82,4 @@ static void TealiumSendEvent(UIApplication *self, SEL _cmd, UIEvent *e) {
 }
 
 @end
+#endif
