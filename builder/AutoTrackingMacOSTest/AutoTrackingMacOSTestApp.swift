@@ -10,7 +10,7 @@ import SwiftUI
 
 
 @main
-struct AutoTracking_TestApp: App {
+struct AutoTrackingMacOSTestApp: App {
     
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
