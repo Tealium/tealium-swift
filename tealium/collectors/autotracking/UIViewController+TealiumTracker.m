@@ -4,7 +4,7 @@
 //  Copyright (c) 2013 Tealium. All rights reserved.
 //
 
-#if TARGET_OS_PHONE
+#if TARGET_OS_IPHONE
 #import <TealiumAutotracking/TealiumAutotracking-Swift.h>
 #import "UIViewController+TealiumTracker.h"
 

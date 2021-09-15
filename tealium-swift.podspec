@@ -62,10 +62,6 @@ Pod::Spec.new do |s|
   #  the deployment target. You can optionally include the target after the platform.
   #
   s.swift_version = "5.0"
-  s.platform     = :ios, "9.0"
-  s.platform     = :osx, "10.11"
-  s.platform     = :watchos, "3.0"
-  s.platform     = :tvos, "9.0"
 
   #  When using multiple platforms
   s.ios.deployment_target = "11.0"
@@ -95,9 +91,9 @@ Pod::Spec.new do |s|
   s.subspec "TealiumFull" do |full|
     full.source_files  = "tealium/core/**/*.swift","tealium/collectors/**/*","tealium/dispatchers/**/*","tealium/scripts/*"
     full.ios.exclude_files = "tealium/scripts/*", "tealium/collectors/crash/*"
-    full.tvos.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*" 
-    full.watchos.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*"
-    full.osx.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*"
+    full.tvos.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*","tealium/collectors/autotracking/*.{h,m}"
+    full.watchos.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*","tealium/collectors/autotracking/*.{h,m}"
+    full.osx.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*","tealium/collectors/autotracking/*.{h,m}"
   end
 
   s.subspec "Core" do |core|
@@ -111,6 +107,9 @@ Pod::Spec.new do |s|
 
   s.subspec "Autotracking" do |autotracking|
     autotracking.source_files = "tealium/collectors/autotracking/*"
+    autotracking.tvos.exclude_files = "tealium/collectors/autotracking/*.{h,m}"
+    autotracking.watchos.exclude_files = "tealium/collectors/autotracking/*.{h,m}"
+    autotracking.osx.exclude_files = "tealium/collectors/autotracking/*.{h,m}"
     autotracking.dependency "tealium-swift/Core"
   end
 
