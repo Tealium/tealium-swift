@@ -206,6 +206,32 @@ class TealiumTraceTests: XCTestCase {
 
         wait(for: [TealiumTraceTests.expectation], timeout: 3.0)
     }
+    
+    func testHandleDeepLinkWithReferrerUrl() {
+        let link = URL(string: "https://tealium.com")!
+        let referrer = "https://google.com"
+        tealium.handleDeepLink(link, referrer: Tealium.DeepLinkReferrer.fromUrl(URL(string: referrer)))
+        let expectBackgroundQueueBlock = XCTestExpectation()
+        TealiumQueues.backgroundSerialQueue.async {
+            XCTAssertEqual(self.mockDataLayer.all[TealiumKey.deepLinkURL] as! String, link.absoluteString)
+            XCTAssertEqual(self.mockDataLayer.all[TealiumKey.deepLinkReferrerUrl] as! String, referrer)
+            expectBackgroundQueueBlock.fulfill()
+        }
+        wait(for: [expectBackgroundQueueBlock], timeout: 2)
+    }
+    
+    func testHandleDeepLinkWithReferrerApp() {
+        let link = URL(string: "https://tealium.com")!
+        let referrer = "com.tealium.someApp"
+        tealium.handleDeepLink(link, referrer: Tealium.DeepLinkReferrer.fromAppId(referrer))
+        let expectBackgroundQueueBlock = XCTestExpectation()
+        TealiumQueues.backgroundSerialQueue.async {
+            XCTAssertEqual(self.mockDataLayer.all[TealiumKey.deepLinkURL] as! String, link.absoluteString)
+            XCTAssertEqual(self.mockDataLayer.all[TealiumKey.deepLinkReferrerApp] as! String, referrer)
+            expectBackgroundQueueBlock.fulfill()
+        }
+        wait(for: [expectBackgroundQueueBlock], timeout: 2)
+    }
 }
 
 extension TealiumTraceTests: DispatchListener {

@@ -22,6 +22,21 @@ public extension DataLayer {
 }
 
 public extension Tealium {
+    
+    enum DeepLinkReferrer {
+        case url(_ url: URL)
+        case app(_ identifier: String)
+        
+        public static func fromUrl(_ url: URL?) -> Self? {
+            guard let url = url else { return nil }
+            return .url(url)
+        }
+        
+        public static func fromAppId(_ identifier: String?) -> Self? {
+            guard let id = identifier else { return nil }
+            return .app(id)
+        }
+    }
 
     /// Sends a request to modules to initiate a trace with a specific Trace ID￼.
     ///
@@ -49,7 +64,7 @@ public extension Tealium {
     /// Handles deep links either for attribution purposes or joining/leaving a trace
     ///
     /// - Parameter link: `URL`
-    func handleDeepLink(_ link: URL) {
+    func handleDeepLink(_ link: URL, referrer: DeepLinkReferrer? = nil) {
         TealiumQueues.backgroundSerialQueue.async {
             let queryItems = URLComponents(string: link.absoluteString)?.queryItems
 
@@ -71,6 +86,15 @@ public extension Tealium {
             }
 
             if self.zz_internal_modulesManager?.config.deepLinkTrackingEnabled == true {
+                self.dataLayer.delete(for: [TealiumKey.deepLinkReferrerUrl, TealiumKey.deepLinkReferrerApp])
+                switch referrer {
+                case .url(let url):
+                    self.dataLayer.add(key: TealiumKey.deepLinkReferrerUrl, value: url.absoluteString, expiry: .session)
+                case .app(let identifier):
+                    self.dataLayer.add(key: TealiumKey.deepLinkReferrerApp, value: identifier, expiry: .session)
+                default:
+                    break
+                }
                 self.dataLayer.add(key: TealiumKey.deepLinkURL, value: link.absoluteString, expiry: .session)
                 queryItems?.forEach {
                     guard let value = $0.value else {
