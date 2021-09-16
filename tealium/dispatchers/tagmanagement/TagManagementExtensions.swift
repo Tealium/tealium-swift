@@ -18,11 +18,11 @@ public extension TealiumConfig {
     /// Adds optional delegates to the WebView instance.
     var webViewDelegates: [WKNavigationDelegate]? {
         get {
-            options[TagManagementConfigKey.delegate] as? [WKNavigationDelegate]
+            let weakDelegates = options[TagManagementConfigKey.delegate] as? [Weak<WKNavigationDelegate>]
+            return weakDelegates?.compactMap { $0.value }
         }
-
         set {
-            options[TagManagementConfigKey.delegate] = newValue
+            options[TagManagementConfigKey.delegate] = newValue?.map{ Weak(value: $0)}
         }
     }
     

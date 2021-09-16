@@ -22,9 +22,9 @@ extension RangeReplaceableCollection where Iterator.Element: Equatable {
 // Example Set: playerViewPointers[someKey] = Weak(value: playerView)
 // Example Get: let x = playerViewPointers[user.uniqueId]?.value
 public class Weak<T: AnyObject>: Equatable {
-    weak var value: T?
+    weak public var value: T?
 
-    init(value: T) {
+    public init(value: T) {
         self.value = value
     }
 }
