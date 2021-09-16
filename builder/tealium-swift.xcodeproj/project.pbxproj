@@ -578,7 +578,6 @@
 		D7B464022316AD42006390B8 /* TealiumLifecycleListeners.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B463FD2316AD42006390B8 /* TealiumLifecycleListeners.swift */; };
 		D7B464082316AD8A006390B8 /* TealiumLifecycleEventsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B464032316AD8A006390B8 /* TealiumLifecycleEventsDelegate.swift */; };
 		D7B4640F2316C85C006390B8 /* LifecycleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B464092316C85C006390B8 /* LifecycleExtensions.swift */; };
-		D7B464152316C894006390B8 /* LifecycleConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B464102316C894006390B8 /* LifecycleConstants.swift */; };
 		D7B464162316C894006390B8 /* LifecycleConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B464102316C894006390B8 /* LifecycleConstants.swift */; };
 		D7B7AD6A24753282004D0D9F /* NWPathMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B7AD6924753282004D0D9F /* NWPathMonitor.swift */; };
 		D7B7AD6C24756863004D0D9F /* LegacyConnectivityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B7AD6B24756863004D0D9F /* LegacyConnectivityMonitor.swift */; };
@@ -4593,7 +4592,6 @@
 				D79A1CA4244A0FF500BBA8B3 /* DeviceDataModuleExtensions.swift in Sources */,
 				4BD9037224F5CED40041EFA0 /* Double+Tealium.swift in Sources */,
 				D719956322B8E97E005BE543 /* TealiumDiskStorage.swift in Sources */,
-				D7B464152316C894006390B8 /* LifecycleConstants.swift in Sources */,
 				D7AA280822D780CB00254ADB /* AtomicInteger.swift in Sources */,
 				D719955322B7F190005BE543 /* Disk+Codable.swift in Sources */,
 				D77E0B1C24521F0200A3E0C1 /* TealiumRequests.swift in Sources */,

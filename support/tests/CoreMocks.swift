@@ -7,6 +7,7 @@
 
 import Foundation
 @testable import TealiumCore
+@testable import TealiumLifecycle
 import XCTest
 
 class TealiumExpectations {
