@@ -130,13 +130,13 @@ public struct Lifecycle: Codable {
     /// - Returns: `Bool` `true` if this is the first wake today
     var firstWakeToday: Bool {
         // Wakes array has only 1 date - return true
-        guard sessions.count >= 2 else {
+        guard sessions.count >= 2,
+              let earlierWake = sessions.beforeLast?.wakeDate,
+              let laterWake = sessions.last?.wakeDate else {
             return true
         }
 
         // Two wake dates on record, if different - return true
-        let earlierWake = (sessions.beforeLast?.wakeDate)!
-        let laterWake = (sessions.last?.wakeDate)!
         let earlierDay = Calendar.autoupdatingCurrent.component(.day, from: earlierWake)
         let laterDay = Calendar.autoupdatingCurrent.component(.day, from: laterWake)
 
@@ -253,8 +253,7 @@ public struct Lifecycle: Codable {
     /// - Returns: `String?` of days since last awake
     func daysSinceLastWake(type: String?,
                            toDate date: Date) -> String? {
-        if type == "sleep" {
-            let earlierDate = sessions.last!.wakeDate
+        if type == "sleep", let earlierDate = sessions.last?.wakeDate {
             return daysFrom(earlierDate: earlierDate, laterDate: date)
         }
         guard let targetSession = sessions.beforeLast else {
