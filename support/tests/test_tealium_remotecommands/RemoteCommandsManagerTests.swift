@@ -156,10 +156,22 @@ class RemoteCommandsManagerTests: XCTestCase {
         XCTAssertEqual(1, tealiumRemoteCommandsManager.jsonCommands.count)
     }
 
+    // TODO: DOESN'T WORK, don't know why and what this test should do.
     func testAddRemoteCommandCallsGetCachedConfig() {
         tealiumRemoteCommandsManager.add(tealiumRemoteJSONCommand)
         XCTAssertEqual(2, mockDiskStorage.retrieveCount)
         XCTAssertEqual(1, mockDiskStorage.saveCount)
+    }
+    
+    func testAddCommandsWithSameIdDoesNothing() {
+        let currentJSONCommandCount = tealiumRemoteCommandsManager.jsonCommands.count
+        let webviewCommandId = tealiumRemoteCommandsManager.webviewCommands.first!.commandId
+        let jsonCommandId = tealiumRemoteCommandsManager.jsonCommands.first!.commandId
+        tealiumRemoteCommandsManager.add(RemoteCommand(commandId: webviewCommandId, description: nil, completion: { _ in }))
+        tealiumRemoteCommandsManager.add(RemoteCommand(commandId: webviewCommandId, description: nil, type: .remote(url: "www.google.com"), completion: { _ in }))
+        tealiumRemoteCommandsManager.add(RemoteCommand(commandId: jsonCommandId, description: nil, type: .remote(url: "www.google.com"), completion: { _ in }))
+        tealiumRemoteCommandsManager.add(RemoteCommand(commandId: jsonCommandId, description: nil, type: .local(file: "somePath", bundle: .main), completion: { _ in }))
+        XCTAssertEqual(tealiumRemoteCommandsManager.jsonCommands.count, currentJSONCommandCount)
     }
 
     func testRemoveJsonCommandRemovesCommandFromArray() {
