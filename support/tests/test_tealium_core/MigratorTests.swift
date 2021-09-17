@@ -6,6 +6,7 @@
 //
 
 @testable import TealiumCore
+@testable import TealiumLifecycle
 import XCTest
 
 class MigratorTests: XCTestCase {
