@@ -156,9 +156,9 @@ class RemoteCommandsManagerTests: XCTestCase {
         XCTAssertEqual(1, tealiumRemoteCommandsManager.jsonCommands.count)
     }
 
-    // TODO: DOESN'T WORK, don't know why and what this test should do.
     func testAddRemoteCommandCallsGetCachedConfig() {
-        tealiumRemoteCommandsManager.add(tealiumRemoteJSONCommand)
+        let cmd = RemoteCommand(commandId: "newId", description: tealiumRemoteJSONCommand.description, type: tealiumRemoteJSONCommand.type, completion: tealiumRemoteJSONCommand.completion)
+        tealiumRemoteCommandsManager.add(cmd)
         XCTAssertEqual(2, mockDiskStorage.retrieveCount)
         XCTAssertEqual(1, mockDiskStorage.saveCount)
     }
