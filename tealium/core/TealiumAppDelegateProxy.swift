@@ -13,7 +13,7 @@ import UIKit
 class TealiumAppDelegateProxy: NSProxy {
 
     private typealias ApplicationOpenURL = @convention(c) (Any, Selector, UIApplication, URL, [UIApplication.OpenURLOptionsKey: Any]) -> Bool
-    private typealias ApplicationContinueUserActivity = @convention(c) (Any, Selector, UIApplication, NSUserActivity) -> Void
+    private typealias ApplicationContinueUserActivity = @convention(c) (Any, Selector, UIApplication, NSUserActivity, @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool
 
     private static var contexts: Set<TealiumContext>?
 
@@ -116,7 +116,7 @@ class TealiumAppDelegateProxy: NSProxy {
             withOriginalClass: originalClass,
             storeOriginalImplementationInto: &originalImplementationsStore)
 
-        let applicationWillContinueUserActivity = #selector(application(_:didUpdateUserActivity:))
+        let applicationWillContinueUserActivity = #selector(application(_:continueUserActivity:restorationHandler:))
         self.proxyInstanceMethod(
             toClass: subClass,
             withSelector: applicationWillContinueUserActivity,
@@ -235,20 +235,23 @@ class TealiumAppDelegateProxy: NSProxy {
     }
 
     @objc
-    private func application(_ application: UIApplication, didUpdateUserActivity userActivity: NSUserActivity) {
+    private func application(_ application: UIApplication,
+                             continueUserActivity userActivity: NSUserActivity,
+                             restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb, let url = userActivity.webpageURL {
             TealiumAppDelegateProxy.log("Received Deep Link: \(url.absoluteString)")
             TealiumAppDelegateProxy.handleDeepLink(url)
         }
-
-        let methodSelector = #selector(application(_:didUpdateUserActivity:))
+        
+        let methodSelector = #selector(application(_:continueUserActivity:restorationHandler:))
         guard let pointer = TealiumAppDelegateProxy.originalMethodImplementation(for: methodSelector, object: self),
               let pointerValue = pointer.pointerValue else {
-            return
+            return true
         }
 
         let originalImplementation = unsafeBitCast(pointerValue, to: ApplicationContinueUserActivity.self)
-        _ = originalImplementation(self, methodSelector, application, userActivity)
+        _ = originalImplementation(self, methodSelector, application, userActivity, restorationHandler)
+        return false
     }
 }
 #endif
