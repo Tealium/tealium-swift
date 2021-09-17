@@ -629,6 +629,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		15D3D1EA26F4F169004D9BFC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D755DC9821945E41003C6BA1;
+			remoteInfo = TealiumCore;
+		};
 		CF13D80F24FD5FE30024E79A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
@@ -1160,13 +1167,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = D755DD1121945F99003C6BA1;
 			remoteInfo = TealiumTagManagement;
-		};
-		D780583C233A672800DAD90E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D7805825233A65FB00DAD90E;
-			remoteInfo = TealiumVisitorService;
 		};
 		D78147C12684837B00AD3676 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -3593,8 +3593,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				15D3D1EB26F4F169004D9BFC /* PBXTargetDependency */,
 				D780584C233A674200DAD90E /* PBXTargetDependency */,
-				D780583B233A672800DAD90E /* PBXTargetDependency */,
 			);
 			name = "TealiumVisitorServiceTests-iOS";
 			packageProductDependencies = (
@@ -5086,6 +5086,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		15D3D1EB26F4F169004D9BFC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D755DC9821945E41003C6BA1 /* TealiumCore */;
+			targetProxy = 15D3D1EA26F4F169004D9BFC /* PBXContainerItemProxy */;
+		};
 		CF13D80E24FD5FE30024E79A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = CFF242A023CE774C0091B7BF /* TealiumLocation */;
@@ -5461,11 +5466,6 @@
 			isa = PBXTargetDependency;
 			target = D755DD1121945F99003C6BA1 /* TealiumTagManagement */;
 			targetProxy = D762FC34232F97EF00CBC4D0 /* PBXContainerItemProxy */;
-		};
-		D780583B233A672800DAD90E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D7805825233A65FB00DAD90E /* TealiumVisitorService */;
-			targetProxy = D780583C233A672800DAD90E /* PBXContainerItemProxy */;
 		};
 		D780584C233A674200DAD90E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
