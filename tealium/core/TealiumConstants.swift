@@ -128,6 +128,8 @@ public enum TealiumKey {
     static let qrTraceEnabled = "qr_trace_enabled"
     static let deepLinkURL = "deep_link_url"
     static let deepLinkQueryPrefix = "deep_link_param"
+    static let deepLinkReferrerUrl = "deep_link_referrer_url"
+    static let deepLinkReferrerApp = "deep_link_referrer_app"
     static let killVisitorSession = "kill_visitor_session"
     static let killVisitorSessionEvent = "event"
     static let leaveTraceQueryParam = "leave_trace"

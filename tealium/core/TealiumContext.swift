@@ -37,8 +37,8 @@ public struct TealiumContext: Hashable, TealiumContextProtocol {
         self.tealium?.track(dispatch)
     }
 
-    public func handleDeepLink(_ url: URL) {
-        self.tealium?.handleDeepLink(url)
+    public func handleDeepLink(_ url: URL, referrer: Tealium.DeepLinkReferrer? = nil) {
+        self.tealium?.handleDeepLink(url, referrer: referrer)
     }
 
 }
