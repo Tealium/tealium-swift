@@ -39,7 +39,10 @@ let package = Package(
     targets: [
         .target(
             name: "TealiumCore",
-            path: "tealium/core/"
+            path: "tealium/core/",
+            resources: [
+                .process("tealium/core/devicedata/device-names.json")
+            ]
         ),
         .target(
             name: "TealiumAttribution",

@@ -1777,7 +1777,6 @@
 		D75209B4230BFB0A0037711D /* DeviceDataScreenInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDataScreenInfo.swift; sourceTree = "<group>"; };
 		D75209BA230BFBCB0037711D /* DeviceDataOSInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDataOSInfo.swift; sourceTree = "<group>"; };
 		D75209C0230BFCAD0037711D /* DeviceDataCarrierInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDataCarrierInfo.swift; sourceTree = "<group>"; };
-		D752999123CDFDA800B445AA /* DeviceNamesLookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceNamesLookup.swift; sourceTree = "<group>"; };
 		D755DD0D21945E41003C6BA1 /* TealiumCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TealiumCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D755DD8621945F99003C6BA1 /* TealiumTagManagement.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TealiumTagManagement.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7596C892451A886003AB939 /* Dispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dispatcher.swift; sourceTree = "<group>"; };
@@ -2415,7 +2414,6 @@
 			isa = PBXGroup;
 			children = (
 				D7AD88FA218896120018E2FA /* device-names.json */,
-				D752999123CDFDA800B445AA /* DeviceNamesLookup.swift */,
 				71E4CEC51F39244100F9267C /* DeviceDataModule.swift */,
 				D7229CEA230BEBD2002E9F60 /* DeviceDataModuleExtensions.swift */,
 				4B7444A82006BA9500616F95 /* DeviceData.swift */,
