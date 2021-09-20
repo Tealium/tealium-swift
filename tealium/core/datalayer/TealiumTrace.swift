@@ -86,7 +86,8 @@ public extension Tealium {
             }
 
             if self.zz_internal_modulesManager?.config.deepLinkTrackingEnabled == true {
-                self.dataLayer.delete(for: [TealiumKey.deepLinkReferrerUrl, TealiumKey.deepLinkReferrerApp])
+                let oldQueryParamKeys: [String] = self.dataLayer.all.keys.filter { $0.starts(with: TealiumKey.deepLinkQueryPrefix) }
+                self.dataLayer.delete(for: oldQueryParamKeys + [TealiumKey.deepLinkReferrerUrl, TealiumKey.deepLinkReferrerApp])
                 switch referrer {
                 case .url(let url):
                     self.dataLayer.add(key: TealiumKey.deepLinkReferrerUrl, value: url.absoluteString, expiry: .session)
@@ -96,8 +97,6 @@ public extension Tealium {
                     break
                 }
                 self.dataLayer.add(key: TealiumKey.deepLinkURL, value: link.absoluteString, expiry: .session)
-                let oldQueryParamKeys = self.dataLayer.all.keys.filter { $0.starts(with: TealiumKey.deepLinkQueryPrefix) }
-                self.dataLayer.delete(for: oldQueryParamKeys)
                 queryItems?.forEach {
                     guard let value = $0.value else {
                         return
