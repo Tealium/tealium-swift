@@ -583,7 +583,6 @@
 		D7B464022316AD42006390B8 /* TealiumLifecycleListeners.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B463FD2316AD42006390B8 /* TealiumLifecycleListeners.swift */; };
 		D7B464082316AD8A006390B8 /* TealiumLifecycleEventsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B464032316AD8A006390B8 /* TealiumLifecycleEventsDelegate.swift */; };
 		D7B4640F2316C85C006390B8 /* LifecycleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B464092316C85C006390B8 /* LifecycleExtensions.swift */; };
-		D7B464152316C894006390B8 /* LifecycleConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B464102316C894006390B8 /* LifecycleConstants.swift */; };
 		D7B464162316C894006390B8 /* LifecycleConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B464102316C894006390B8 /* LifecycleConstants.swift */; };
 		D7B7AD6A24753282004D0D9F /* NWPathMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B7AD6924753282004D0D9F /* NWPathMonitor.swift */; };
 		D7B7AD6C24756863004D0D9F /* LegacyConnectivityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B7AD6B24756863004D0D9F /* LegacyConnectivityMonitor.swift */; };
@@ -635,6 +634,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		15D3D1EA26F4F169004D9BFC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D755DC9821945E41003C6BA1;
+			remoteInfo = TealiumCore;
+		};
 		CF13D80F24FD5FE30024E79A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
@@ -1166,13 +1172,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = D755DD1121945F99003C6BA1;
 			remoteInfo = TealiumTagManagement;
-		};
-		D780583C233A672800DAD90E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D7805825233A65FB00DAD90E;
-			remoteInfo = TealiumVisitorService;
 		};
 		D78147C12684837B00AD3676 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -3603,8 +3602,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				15D3D1EB26F4F169004D9BFC /* PBXTargetDependency */,
 				D780584C233A674200DAD90E /* PBXTargetDependency */,
-				D780583B233A672800DAD90E /* PBXTargetDependency */,
 			);
 			name = "TealiumVisitorServiceTests-iOS";
 			packageProductDependencies = (
@@ -4603,7 +4602,6 @@
 				D79A1CA4244A0FF500BBA8B3 /* DeviceDataModuleExtensions.swift in Sources */,
 				4BD9037224F5CED40041EFA0 /* Double+Tealium.swift in Sources */,
 				D719956322B8E97E005BE543 /* TealiumDiskStorage.swift in Sources */,
-				D7B464152316C894006390B8 /* LifecycleConstants.swift in Sources */,
 				D7AA280822D780CB00254ADB /* AtomicInteger.swift in Sources */,
 				D719955322B7F190005BE543 /* Disk+Codable.swift in Sources */,
 				D77E0B1C24521F0200A3E0C1 /* TealiumRequests.swift in Sources */,
@@ -5102,6 +5100,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		15D3D1EB26F4F169004D9BFC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D755DC9821945E41003C6BA1 /* TealiumCore */;
+			targetProxy = 15D3D1EA26F4F169004D9BFC /* PBXContainerItemProxy */;
+		};
 		CF13D80E24FD5FE30024E79A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = CFF242A023CE774C0091B7BF /* TealiumLocation */;
@@ -5477,11 +5480,6 @@
 			isa = PBXTargetDependency;
 			target = D755DD1121945F99003C6BA1 /* TealiumTagManagement */;
 			targetProxy = D762FC34232F97EF00CBC4D0 /* PBXContainerItemProxy */;
-		};
-		D780583B233A672800DAD90E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D7805825233A65FB00DAD90E /* TealiumVisitorService */;
-			targetProxy = D780583C233A672800DAD90E /* PBXContainerItemProxy */;
 		};
 		D780584C233A674200DAD90E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

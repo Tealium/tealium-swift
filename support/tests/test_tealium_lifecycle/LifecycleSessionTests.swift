@@ -42,5 +42,19 @@ class LifecycleSessionTests: XCTestCase {
         XCTAssertTrue(session.secondsElapsed == 3600, "Unexpected seconds elapsed returned: \(session.secondsElapsed))")
         XCTAssertTrue(session.wasLaunch == true, "wasLaunch flag was not flipped by init(withLaunchDate:) command")
     }
+    
+    func testSessionNilFromEmptyDictionary() {
+        let session = LifecycleSession(from: [String:Any]())
+        XCTAssertNil(session)
+    }
+    
+    func testSessionFromDictionary() {
+        let date = Date(timeIntervalSinceReferenceDate: 0)
+        let dateString = date.iso8601String
+        let dict = [LifecycleKey.lastWakeDate: dateString]
+        let session = LifecycleSession(from: dict)
+        XCTAssertNotNil(session)
+        XCTAssertEqual(session?.wakeDate, date)
+    }
 
 }
