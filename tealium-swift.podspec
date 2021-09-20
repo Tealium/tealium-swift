@@ -98,10 +98,12 @@ Pod::Spec.new do |s|
     full.tvos.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*" 
     full.watchos.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/collectors/autotracking/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*"
     full.osx.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/collectors/autotracking/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*"
+    full.resources = "tealium/core/devicedata/device-names.json"
   end
 
   s.subspec "Core" do |core|
     core.source_files  = "tealium/core/**/*.swift"
+    core.resources = "tealium/core/devicedata/device-names.json"
   end
 
   s.subspec "Attribution" do |attribution|

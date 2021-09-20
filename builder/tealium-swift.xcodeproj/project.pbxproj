@@ -423,6 +423,9 @@
 		D7215F0E22BCEA0F00DC5EA9 /* TealiumDiskStorageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7215F0922BCEA0F00DC5EA9 /* TealiumDiskStorageProtocol.swift */; };
 		D724971024B35112006AD829 /* AppDataModuleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724970F24B35112006AD829 /* AppDataModuleExtensions.swift */; };
 		D7261BA726F8D96400ED53D2 /* device-names.json in Resources */ = {isa = PBXBuildFile; fileRef = D7AD88FA218896120018E2FA /* device-names.json */; };
+		D7261BAB26F8E41200ED53D2 /* device-names.json in Resources */ = {isa = PBXBuildFile; fileRef = D7AD88FA218896120018E2FA /* device-names.json */; };
+		D7261BAC26F8E41800ED53D2 /* device-names.json in Resources */ = {isa = PBXBuildFile; fileRef = D7AD88FA218896120018E2FA /* device-names.json */; };
+		D7261BAD26F8E41D00ED53D2 /* device-names.json in Resources */ = {isa = PBXBuildFile; fileRef = D7AD88FA218896120018E2FA /* device-names.json */; };
 		D73F91522684D3C60029F64E /* CoreMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA558BF24E4E6B200BFBED8 /* CoreMocks.swift */; };
 		D73F91532684D3DB0029F64E /* MockSessionStarter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7187F1A24768F5000CF0AB0 /* MockSessionStarter.swift */; };
 		D73F91542684D3DC0029F64E /* MockSessionStarter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7187F1A24768F5000CF0AB0 /* MockSessionStarter.swift */; };
@@ -4175,6 +4178,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7261BAB26F8E41200ED53D2 /* device-names.json in Resources */,
 				CF880CB72554C96F0020E1B2 /* large-event-data.json in Resources */,
 				CF880D2A2554C9830020E1B2 /* big-visitor.json in Resources */,
 			);
@@ -4360,6 +4364,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7261BAC26F8E41800ED53D2 /* device-names.json in Resources */,
 				CF13D8F724FDB66E0024E79A /* large-event-data.json in Resources */,
 				CF9F424624F4191F009B93C2 /* big-visitor.json in Resources */,
 			);
@@ -4369,6 +4374,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7261BAD26F8E41D00ED53D2 /* device-names.json in Resources */,
 				CF13D8FD24FDB66E0024E79A /* large-event-data.json in Resources */,
 				CF9F424724F4191F009B93C2 /* big-visitor.json in Resources */,
 			);
