@@ -96,6 +96,8 @@ public extension Tealium {
                     break
                 }
                 self.dataLayer.add(key: TealiumKey.deepLinkURL, value: link.absoluteString, expiry: .session)
+                let oldQueryParamKeys = self.dataLayer.all.keys.filter { $0.starts(with: TealiumKey.deepLinkQueryPrefix) }
+                self.dataLayer.delete(for: oldQueryParamKeys)
                 queryItems?.forEach {
                     guard let value = $0.value else {
                         return

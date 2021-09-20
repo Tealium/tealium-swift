@@ -232,6 +232,22 @@ class TealiumTraceTests: XCTestCase {
         }
         wait(for: [expectBackgroundQueueBlock], timeout: 2)
     }
+    
+    func testHandleToDeepLinksWithDifferentQueryParams() {
+        let link = URL(string: "https://tealium.com?queryParam1=value1")!
+        let link2 = URL(string: "https://tealium.com?queryParam2=value2")!
+        let localTealium = testTealium
+        localTealium.handleDeepLink(link)
+        localTealium.handleDeepLink(link2)
+        let expectBackgroundQueueBlock = XCTestExpectation()
+        TealiumQueues.backgroundSerialQueue.async {
+            XCTAssertEqual(self.mockDataLayer.all[TealiumKey.deepLinkURL] as! String, link2.absoluteString)
+            XCTAssertEqual(self.mockDataLayer.all["deep_link_param_queryParam2"] as! String, "value2")
+            XCTAssertNil(self.mockDataLayer.all["deep_link_param_queryParam1"])
+            expectBackgroundQueueBlock.fulfill()
+        }
+        wait(for: [expectBackgroundQueueBlock], timeout: 2)
+    }
 }
 
 extension TealiumTraceTests: DispatchListener {
@@ -289,11 +305,13 @@ class DummyDataManagerTrace: DataLayerManagerProtocol {
     }
 
     func delete(for Keys: [String]) {
-
+        for key in Keys {
+            delete(for: key)
+        }
     }
 
     func delete(for key: String) {
-
+        all.removeValue(forKey: key)
     }
 
     func deleteAll() {
