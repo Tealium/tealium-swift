@@ -41,7 +41,7 @@ let package = Package(
             name: "TealiumCore",
             path: "tealium/core/",
             resources: [
-                .process("tealium/core/devicedata/device-names.json")
+                .process("devicedata/device-names.json")
             ]
         ),
         .target(
