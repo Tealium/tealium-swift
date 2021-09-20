@@ -41,7 +41,7 @@ public class Tealium {
         let context = TealiumContext(config: config, dataLayer: self.dataLayer, tealium: self)
         #if os(iOS)
         if config.appDelegateProxyEnabled {
-            TealiumAppDelegateProxy.setup(context: context)
+            TealiumDelegateProxy.setup(context: context)
         }
         #endif
         TealiumQueues.backgroundSerialQueue.async { [weak self] in
@@ -94,7 +94,7 @@ public class Tealium {
 
     deinit {
         #if os(iOS)
-        TealiumAppDelegateProxy.tearDown()
+        TealiumDelegateProxy.tearDown()
         #endif
     }
 
