@@ -130,6 +130,23 @@ class MigratorTests: XCTestCase {
         let actual = migrator.extractLifecycleData(from: [String: Any]())
         XCTAssertTrue(actual.equal(to: [String: Any]()))
     }
+    
+    func testExtractLifecycleData_returnsSameDictionaryWithoutLifecycle() {
+        migrator = Migrator(config: config, userDefaults: mockLegacyUserDefaults, unarchiver: mockUnarchiverConsent)
+        let dict: [String: Any] = ["someKey": "someValue"]
+        let actual = migrator.extractLifecycleData(from: dict)
+        XCTAssertTrue(actual.equal(to: dict))
+    }
+    
+    func testExtractLifecycleData_returnsMigratedDictionary() {
+        migrator = Migrator(config: config, userDefaults: mockLegacyUserDefaults, unarchiver: mockUnarchiverConsent)
+        let lifecycleKey = "lifecycleKey"
+        let dict: [String: Any] = ["someKey": "someValue", lifecycleKey: "lifecycleValue"]
+        let actual = migrator.extractLifecycleData(from: dict)
+        XCTAssertNotNil(actual[LifecycleKey.migratedLifecycle])
+        XCTAssertNil(actual[lifecycleKey])
+    }
+
 
     func testExtractUserDefaults_userDefaults_objectMethodRun() {
         migrator = Migrator(config: config, userDefaults: mockLegacyUserDefaults, unarchiver: mockUnarchiverConsent)

@@ -302,5 +302,20 @@ class LifecycleTests: XCTestCase {
         hour = lifecycle.hourOfDayLocal(for: date)
         XCTAssertTrue(hour == expectedHour)
     }
+    
+    func testCreateLifecycleFromEmptyDictionary() {
+        let dict: [String : Any] = [:]
+        let lifecycle = Lifecycle(from: dict)
+        XCTAssertEqual(lifecycle.sessions.count, 0)
+    }
+    
+    func testCreateLifecycleFromDictionary() {
+        let date = Date(timeIntervalSinceReferenceDate: 0)
+        let dateString = date.iso8601String
+        let dict = [LifecycleKey.lastWakeDate: dateString]
+        let lifecycle = Lifecycle(from: dict)
+        XCTAssertEqual(lifecycle.sessions.count, 1)
+    }
+    
 
 }

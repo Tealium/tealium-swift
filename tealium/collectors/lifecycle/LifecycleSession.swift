@@ -12,16 +12,13 @@ public struct LifecycleSession: Codable, Equatable {
 
     var appVersion: String = LifecycleSession.currentAppVersion
     var firstLaunchDate: Date?
-    var wakeDate: Date?
+    let wakeDate: Date
     var sleepDate: Date? {
         didSet {
-            guard let wake = wakeDate else {
-                return
-            }
             guard let sleep = sleepDate else {
                 return
             }
-            let milliseconds = sleep.timeIntervalSince(wake)
+            let milliseconds = sleep.timeIntervalSince(wakeDate)
             secondsElapsed = Int(milliseconds)
         }
     }
@@ -37,14 +34,15 @@ public struct LifecycleSession: Codable, Equatable {
         self.wakeDate = wakeDate
     }
 
-    init(from dictionary: [String: Any]) {
+    init?(from dictionary: [String: Any]) {
+        guard let stringWake = dictionary[LifecycleKey.lastWakeDate] as? String,
+              let wakeDate = stringWake.dateFromISOStringShort else {
+            return nil
+        }
+        self.wakeDate = wakeDate
         if let stringFirstLaunch = dictionary[LifecycleKey.firstLaunchDate] as? String,
            let firstLaunchDate = stringFirstLaunch.dateFromISOStringShort {
             self.firstLaunchDate = firstLaunchDate
-        }
-        if let stringWake = dictionary[LifecycleKey.lastWakeDate] as? String,
-           let wakeDate = stringWake.dateFromISOStringShort {
-            self.wakeDate = wakeDate
         }
         if let stringSleep = dictionary[LifecycleKey.lastSleepDate] as? String,
            let sleepDate = stringSleep.dateFromISOStringShort {
@@ -54,7 +52,10 @@ public struct LifecycleSession: Codable, Equatable {
     }
 
     public init?(coder aDecoder: NSCoder) {
-        self.wakeDate = aDecoder.decodeObject(forKey: LifecycleKey.Session.wakeDate) as? Date
+        guard let wakeDate = aDecoder.decodeObject(forKey: LifecycleKey.Session.wakeDate) as? Date else {
+            return nil
+        }
+        self.wakeDate = wakeDate
         self.sleepDate = aDecoder.decodeObject(forKey: LifecycleKey.Session.sleepDate) as? Date
         self.secondsElapsed = aDecoder.decodeInteger(forKey: LifecycleKey.Session.secondsElapsed) as Int
         self.wasLaunch = aDecoder.decodeBool(forKey: LifecycleKey.Session.wasLaunch) as Bool

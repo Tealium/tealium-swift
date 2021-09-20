@@ -60,7 +60,9 @@ public struct Migrator: Migratable {
         guard !result.isEmpty else {
             return [String: Any]()
         }
-        result += [MigrationKey.migratedLifecycle: migrated]
+        if !migrated.isEmpty {
+            result += [MigrationKey.migratedLifecycle: migrated]
+        }
         return result
     }
 
