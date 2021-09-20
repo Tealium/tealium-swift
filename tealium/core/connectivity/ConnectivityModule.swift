@@ -75,8 +75,8 @@ public class ConnectivityModule: Collector, ConnectivityDelegate {
                     self.connectionLost()
                 }
             }
+            return
         }
-        return
         #endif
         self.connectivityMonitor = LegacyConnectivityMonitor(config: self.config) { [weak self] result in
             guard let self = self else {
