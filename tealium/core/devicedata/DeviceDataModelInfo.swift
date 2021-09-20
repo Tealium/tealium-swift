@@ -28,7 +28,17 @@ public extension DeviceData {
     ///
     /// - Returns: `[String: Any]` containing the model name information
     internal func retrieveModelNamesFromJSONFile() -> [String: Any]? {
-        DeviceNamesLookup.data
+        let bundle = Bundle(for: type(of: self))
+
+        guard let path = bundle.path(forResource: DeviceDataKey.fileName, ofType: "json") else {
+            return nil
+        }
+        if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe) {
+            if let result = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: [String: String]] {
+                return result
+            }
+        }
+        return nil
     }
 
     /// Retrieves the full consumer device name, e.g. iPhone SE, and other supplementary info.
