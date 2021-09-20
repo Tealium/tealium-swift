@@ -147,11 +147,21 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
         "\(RemoteCommandsKey.dlePrefix)\(config.account)/\(config.profile)/"
     }
 
+    private func isCommandAdded(_ commandId: String) -> Bool {
+        return jsonCommands.contains { $0.commandId == commandId }
+            || webviewCommands.contains { $0.commandId == commandId }
+    }
+    
     /// Adds a remote command for later execution.
+    ///
+    /// If a command with the same commandId has already been added the new one will be ignored.
     ///
     /// - Parameter remoteCommand: `TealiumRemoteCommand` to be added for later execution
     // swiftlint:disable pattern_matching_keywords
     public func add(_ remoteCommand: RemoteCommandProtocol) {
+        guard !isCommandAdded(remoteCommand.commandId) else {
+            return
+        }
         var remoteCommand = remoteCommand
         remoteCommand.delegate = self
         switch remoteCommand.type {
