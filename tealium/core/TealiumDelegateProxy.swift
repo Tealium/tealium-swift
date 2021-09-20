@@ -70,7 +70,6 @@ class TealiumDelegateProxy: NSProxy {
             return
         }
         if #available(iOS 13.0, *) {
-//            TealiumQueues.mainQueue.asyncAfter(deadline: .now() + 1.0) {
             var observer: NSObjectProtocol?
             observer = NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: nil) { _ in
                 weak var sceneDelegate = TealiumDelegateProxy.sharedApplication?.connectedScenes.first?.delegate
@@ -82,8 +81,6 @@ class TealiumDelegateProxy: NSProxy {
                 }
                 NotificationCenter.default.removeObserver(observer, name: UIApplication.didBecomeActiveNotification, object: nil)
             }
-                
-//            }
         }
     }()
 
