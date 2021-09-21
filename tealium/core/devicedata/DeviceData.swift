@@ -21,8 +21,14 @@ public class DeviceData: DeviceDataCollection {
     ///
     /// - Returns: `[String: Any]` containing the model name information
     lazy var allModelNames: [String: Any]? = {
+        #if SWIFT_PACKAGE
+        // spm
+        let bundle = Bundle.module
+        #else
+        // cocoapods/carthage
         let bundle = Bundle(for: type(of: self))
-
+        #endif
+        
         guard let path = bundle.path(forResource: DeviceDataKey.fileName, ofType: "json") else {
             return nil
         }
