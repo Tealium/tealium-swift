@@ -9,7 +9,7 @@
 @testable import TealiumCore
 import XCTest
 
-class AppDelegateProxyTests: XCTestCase {
+class AppDelegateProxyTests: BaseTestCase {
 
     let mockDataLayer = DummyDataManagerAppDelegate()
     var semaphore: DispatchSemaphore!
@@ -58,42 +58,48 @@ class AppDelegateProxyTests: XCTestCase {
         let teal = tealium!
         let appDelegate = UIApplication.shared.delegate!
         _ = appDelegate.application?(UIApplication.shared, open: URL(string: "https://my-test-app.com/?test_param=true")!, options: [:])
-        XCTAssertEqual(teal.dataLayer.all["deep_link_param_test_param"] as! String, "true")
-        XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://my-test-app.com/?test_param=true")
+        waitOnTealiumSerialQueue {
+            XCTAssertEqual(teal.dataLayer.all["deep_link_param_test_param"] as! String, "true")
+            XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://my-test-app.com/?test_param=true")
+        }
     }
 
     func testOpenURLWithTraceId() throws {
         let teal = tealium!
         let appDelegate = UIApplication.shared.delegate!
         _ = appDelegate.application?(UIApplication.shared, open: URL(string: "https://my-test-app.com/?test_param=true&tealium_trace_id=23456")!, options: [:])
-        XCTAssertEqual(teal.dataLayer.all["deep_link_param_test_param"] as! String, "true")
-        XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://my-test-app.com/?test_param=true&tealium_trace_id=23456")
-        XCTAssertEqual(teal.dataLayer.all["cp.trace_id"] as! String, "23456")
+        waitOnTealiumSerialQueue {
+            XCTAssertEqual(teal.dataLayer.all["deep_link_param_test_param"] as! String, "true")
+            XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://my-test-app.com/?test_param=true&tealium_trace_id=23456")
+            XCTAssertEqual(teal.dataLayer.all["cp.trace_id"] as! String, "23456")
+        }
     }
 
     func testUniversalLink() throws {
         let teal = tealium!
-        let appDelegate = UIApplication.shared.delegate!
         let activity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
         activity.webpageURL = URL(string: "https://www.tealium.com/universalLink/?universal_link=true")!
-        appDelegate.application?(UIApplication.shared, didUpdate: activity)
-        XCTAssertEqual(teal.dataLayer.all["deep_link_param_universal_link"] as! String, "true")
-        XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://www.tealium.com/universalLink/?universal_link=true")
+        UIApplication.shared.manualContinueUserActivity(activity)
+        waitOnTealiumSerialQueue {
+            XCTAssertEqual(teal.dataLayer.all["deep_link_param_universal_link"] as! String, "true")
+            XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://www.tealium.com/universalLink/?universal_link=true")
+        }
     }
 
     func testUniversalLinkWithTraceId() throws {
         let teal = tealium!
-        let appDelegate = UIApplication.shared.delegate!
         let activity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
         activity.webpageURL = URL(string: "https://www.tealium.com/universalLink/?universal_link=true&tealium_trace_id=12345")!
-        appDelegate.application?(UIApplication.shared, didUpdate: activity)
-        XCTAssertEqual(teal.dataLayer.all["cp.trace_id"] as! String, "12345")
-        XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://www.tealium.com/universalLink/?universal_link=true&tealium_trace_id=12345")
+        UIApplication.shared.manualContinueUserActivity(activity)
+        waitOnTealiumSerialQueue {
+            XCTAssertEqual(teal.dataLayer.all["cp.trace_id"] as! String, "12345")
+            XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://www.tealium.com/universalLink/?universal_link=true&tealium_trace_id=12345")
+        }
     }
 }
 
 // Needs to be separate test class, since there's no easy way to undo the proxy in between tests
-class AppDelegateProxyTestsWithoutProxy: XCTestCase {
+class AppDelegateProxyTestsWithoutProxy: BaseTestCase {
 
     let mockDataLayer = DummyDataManagerAppDelegate()
     var semaphore: DispatchSemaphore!
@@ -128,20 +134,23 @@ class AppDelegateProxyTestsWithoutProxy: XCTestCase {
 
     func testUniversalLinkNotCalledIfAppDelegateProxyDisabled() throws {
         let teal = tealium!
-        let appDelegate = UIApplication.shared.delegate!
         let activity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
         activity.webpageURL = URL(string: "https://www.tealium.com/universalLink/?universal_link=true&tealium_trace_id=12345")!
-        appDelegate.application?(UIApplication.shared, didUpdate: activity)
-        XCTAssertNil(teal.dataLayer.all["cp.trace_id"])
-        XCTAssertNil(teal.dataLayer.all["deep_link_url"])
+        UIApplication.shared.manualContinueUserActivity(activity)
+        waitOnTealiumSerialQueue {
+            XCTAssertNil(teal.dataLayer.all["cp.trace_id"])
+            XCTAssertNil(teal.dataLayer.all["deep_link_url"])
+        }
     }
 
     func testOpenURLWithTraceIdNotCalledIfAppDelegateProxyDisabled() throws {
         let teal = tealium!
         let appDelegate = UIApplication.shared.delegate!
         _ = appDelegate.application?(UIApplication.shared, open: URL(string: "https://my-test-app.com/?test_param=true&tealium_trace_id=23456")!, options: [:])
-        XCTAssertNil(teal.dataLayer.all["cp.trace_id"])
-        XCTAssertNil(teal.dataLayer.all["deep_link_url"])
+        waitOnTealiumSerialQueue {
+            XCTAssertNil(teal.dataLayer.all["cp.trace_id"])
+            XCTAssertNil(teal.dataLayer.all["deep_link_url"])
+        }
     }
 }
 
@@ -215,3 +224,15 @@ class DummyDataManagerAppDelegate: DataLayerManagerProtocol {
     }
 
 }
+
+class BaseTestCase: XCTestCase {
+    func waitOnTealiumSerialQueue(_ block: @escaping () -> ()) {
+        let exp = expectation(description: "dispatch")
+        TealiumQueues.backgroundSerialQueue.async {
+            block()
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: 2, handler: nil)
+    }
+}
+
