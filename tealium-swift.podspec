@@ -52,8 +52,7 @@ Pod::Spec.new do |s|
   #
 
   s.authors            = { "Tealium Inc." => "tealium@tealium.com",
-                           "craigrouse"   => "craig.rouse@tealium.com",
-                           "christinasund"   => "christina.sund@tealium.com" }
+                           "craigrouse"   => "craig.rouse@tealium.com" }
   s.social_media_url   = "http://twitter.com/tealium"
 
   # ――― Platform Specifics ――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -62,13 +61,13 @@ Pod::Spec.new do |s|
   #  the deployment target. You can optionally include the target after the platform.
   #
   s.swift_version = "5.0"
-  s.platform     = :ios, "9.0"
+  s.platform     = :ios, "11.0"
   s.platform     = :osx, "10.11"
   s.platform     = :watchos, "3.0"
   s.platform     = :tvos, "9.0"
 
   #  When using multiple platforms
-  s.ios.deployment_target = "9.0"
+  s.ios.deployment_target = "11.0"
   s.osx.deployment_target = "10.11"
   s.watchos.deployment_target = "3.0"
   s.tvos.deployment_target = "9.0"
@@ -107,13 +106,13 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "Attribution" do |attribution|
-    attribution.platform = :ios, "9.0"
+    attribution.platform = :ios, "11.0"
     attribution.source_files = "tealium/collectors/attribution/*"
     attribution.dependency "tealium-swift/Core"
   end
 
   s.subspec "Autotracking" do |autotracking|
-    autotracking.ios.deployment_target = "9.0"
+    autotracking.ios.deployment_target = "11.0"
     autotracking.tvos.deployment_target = "9.0"
     autotracking.source_files = "tealium/collectors/autotracking/*"
     autotracking.dependency "tealium-swift/Core"
@@ -130,7 +129,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "Location" do |location|
-    location.platform = :ios, "9.0"
+    location.platform = :ios, "11.0"
     location.source_files = "tealium/collectors/location/*"
     location.dependency "tealium-swift/Core"
   end
@@ -141,13 +140,13 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "RemoteCommands" do |remotecommands|
-    remotecommands.platform = :ios, "9.0"
+    remotecommands.platform = :ios, "11.0"
     remotecommands.source_files = "tealium/dispatchers/remotecommands/*"
     remotecommands.dependency "tealium-swift/Core"
   end
 
   s.subspec "TagManagement" do |tagmanagement|
-    tagmanagement.platform = :ios, "9.0"
+    tagmanagement.platform = :ios, "11.0"
     tagmanagement.source_files = "tealium/dispatchers/tagmanagement/*"
     tagmanagement.dependency "tealium-swift/Core"
   end
