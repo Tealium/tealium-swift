@@ -66,7 +66,7 @@ class DataLayerManagerTests: XCTestCase {
 
     func testAddSessionData() {
         let sessionData: [String: Any] = ["hello": "session"]
-        let eventDataItem = DataLayerItem(key: "hello", value: "session", expires: .distantFuture)
+        let eventDataItem = DataLayerItem(key: "hello", value: "session", expiry: .forever)
         eventDataManager.add(data: sessionData, expiry: .session)
         XCTAssertNotNil(eventDataManager.all["hello"])
         XCTAssertEqual(eventDataManager.all["hello"] as! String, "session")
@@ -76,17 +76,17 @@ class DataLayerManagerTests: XCTestCase {
 
     func testAddRestartData() {
         let restartData: [String: Any] = ["hello": "restart"]
-        let eventDataItem = DataLayerItem(key: "hello", value: "restart", expires: .init(timeIntervalSinceNow: 60 * 60 * 12))
+        let eventDataItem = DataLayerItem(key: "hello", value: "restart", expiry: .afterCustom((.hours, 12)))
         eventDataManager.add(data: restartData, expiry: .untilRestart)
         XCTAssertNotNil(eventDataManager.all["hello"])
         XCTAssertEqual(eventDataManager.all["hello"] as! String, "restart")
-        let retrieved = mockDiskStorage.retrieve(as: Set<DataLayerItem>.self)
+        let retrieved = self.mockDiskStorage.retrieve(as: Set<DataLayerItem>.self)
         XCTAssertTrue(((retrieved?.contains(eventDataItem)) != nil))
     }
 
     func testAddForeverData() {
         let foreverData: [String: Any] = ["hello": "forever"]
-        let eventDataItem = DataLayerItem(key: "hello", value: "forever", expires: .distantFuture)
+        let eventDataItem = DataLayerItem(key: "hello", value: "forever", expiry: .forever)
         eventDataManager.add(data: foreverData, expiry: .forever)
         XCTAssertNotNil(eventDataManager.all["hello"])
         XCTAssertEqual(eventDataManager.all["hello"] as! String, "forever")
