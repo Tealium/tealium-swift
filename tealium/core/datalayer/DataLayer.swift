@@ -46,8 +46,10 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
     public var all: [String: Any] {
         get {
             var allData = [String: Any]()
-            allData += self.restartData
-            allData += self.allSessionData
+            TealiumQueues.backgroundConcurrentQueue.read {
+                allData += self.restartData
+                allData += self.allSessionData
+            }
             return allData
         }
         set {
