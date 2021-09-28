@@ -33,6 +33,20 @@ class DataLayerTests: XCTestCase {
         let eventDataExpired = eventData.removeExpired()
         XCTAssertEqual(eventDataExpired.count, 0)
     }
+    
+    func testInsertSingleExpiresAfterASecond() {
+        eventData = Set<DataLayerItem>()
+        eventData.insert(key: "itemOne", value: "test1", expiry: .after(Date().addSeconds(1)!))
+        var eventDataExpired = eventData.removeExpired()
+        XCTAssertEqual(eventDataExpired.count, 1)
+        let exp = expectation(description: "waiting")
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+            eventDataExpired = eventDataExpired.removeExpired()
+            XCTAssertEqual(eventDataExpired.count, 0)
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: 2, handler: nil)
+    }
 
     func testInsertMulti() {
         let multi = ["itemTwo": "test2", "itemThree": "test3"]
