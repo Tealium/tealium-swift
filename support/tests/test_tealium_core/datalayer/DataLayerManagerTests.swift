@@ -66,12 +66,24 @@ class DataLayerManagerTests: XCTestCase {
 
     func testAddSessionData() {
         let sessionData: [String: Any] = ["hello": "session"]
-        let eventDataItem = DataLayerItem(key: "hello", value: "session", expiry: .forever)
+        let eventDataItem = DataLayerItem(key: "hello", value: "session", expiry: .session)
         eventDataManager.add(data: sessionData, expiry: .session)
         XCTAssertNotNil(eventDataManager.all["hello"])
         XCTAssertEqual(eventDataManager.all["hello"] as! String, "session")
         let retrieved = mockDiskStorage.retrieve(as: Set<DataLayerItem>.self)
-        XCTAssertTrue(((retrieved?.contains(eventDataItem)) != nil))
+        XCTAssertNotNil(retrieved)
+        XCTAssertTrue(retrieved!.contains(eventDataItem))
+    }
+    
+    func testResetSessionData() {
+        let sessionData: [String: Any] = ["hello": "session"]
+        eventDataManager.add(data: sessionData, expiry: .session)
+        XCTAssertNotNil(eventDataManager.all["hello"])
+        let id = eventDataManager.sessionId
+        XCTAssertNotNil(eventDataManager.sessionId)
+        eventDataManager.refreshSessionData()
+        XCTAssertNotEqual(id, eventDataManager.sessionId)
+        XCTAssertNil(eventDataManager.all["hello"])
     }
 
     func testAddRestartData() {
