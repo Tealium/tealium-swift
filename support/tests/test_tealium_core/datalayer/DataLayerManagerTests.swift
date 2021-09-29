@@ -81,9 +81,14 @@ class DataLayerManagerTests: XCTestCase {
         XCTAssertNotNil(eventDataManager.all["hello"])
         let id = eventDataManager.sessionId
         XCTAssertNotNil(eventDataManager.sessionId)
-        eventDataManager.refreshSessionData()
-        XCTAssertNotEqual(id, eventDataManager.sessionId)
-        XCTAssertNil(eventDataManager.all["hello"])
+        let exp = expectation(description: "wait")
+        DispatchQueue.main.async { // Required a little delay otherwise sessions may have the same id due to the same millisecond
+            self.eventDataManager.refreshSessionData()
+            XCTAssertNotEqual(id, self.eventDataManager.sessionId)
+            XCTAssertNil(self.eventDataManager.all["hello"])
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: 1, handler: nil)
     }
 
     func testAddRestartData() {

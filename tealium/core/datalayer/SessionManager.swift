@@ -53,7 +53,6 @@ public extension DataLayer {
                date > current {
                 startNewSession(with: sessionStarter)
             } else {
-                self.lastTrackDate = Date()
                 numberOfTrackRequests = 0
             }
         }
