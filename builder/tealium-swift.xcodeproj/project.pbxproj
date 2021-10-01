@@ -52,16 +52,6 @@
 		156CB50C26CD4ACB005EFEDB /* AnyCodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156CB50B26CD4ACB005EFEDB /* AnyCodableTests.swift */; };
 		156CB50D26CD4ACB005EFEDB /* AnyCodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156CB50B26CD4ACB005EFEDB /* AnyCodableTests.swift */; };
 		156CB50E26CD4ACB005EFEDB /* AnyCodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156CB50B26CD4ACB005EFEDB /* AnyCodableTests.swift */; };
-		156ECAAE26F2285D00E2835E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 156ECAAD26F2285D00E2835E /* Assets.xcassets */; };
-		156ECAB526F2285D00E2835E /* AutoTrackingWatchOSTest Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 156ECAB426F2285D00E2835E /* AutoTrackingWatchOSTest Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		156ECAC026F2285E00E2835E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 156ECABF26F2285E00E2835E /* Assets.xcassets */; };
-		156ECAC326F2285E00E2835E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 156ECAC226F2285E00E2835E /* Preview Assets.xcassets */; };
-		156ECAC726F2285E00E2835E /* AutoTrackingWatchOSTest.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 156ECAAB26F2285C00E2835E /* AutoTrackingWatchOSTest.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		156ECAD326F2288000E2835E /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156ECAD026F2288000E2835E /* ComplicationController.swift */; };
-		156ECAD426F2288000E2835E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156ECAD126F2288000E2835E /* ContentView.swift */; };
-		156ECAD526F2288000E2835E /* tealium_swiftApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156ECAD226F2288000E2835E /* tealium_swiftApp.swift */; };
-		156ECAD626F228B400E2835E /* TealiumCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D755DD0D21945E41003C6BA1 /* TealiumCore.framework */; };
-		156ECAD726F228B400E2835E /* TealiumCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D755DD0D21945E41003C6BA1 /* TealiumCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		158CA93726B9478100748A80 /* TealiumASIdentifierManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158CA93626B9478100748A80 /* TealiumASIdentifierManagerTests.swift */; };
 		1591EC5F26EA553100C45781 /* MockInMemoryDataLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1555F5CE26E6769E00AFDC3D /* MockInMemoryDataLayer.swift */; };
 		1591EC6026EA553100C45781 /* MockInMemoryDataLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1555F5CE26E6769E00AFDC3D /* MockInMemoryDataLayer.swift */; };
@@ -822,27 +812,6 @@
 			remoteInfo = TealiumAutotracking;
 		};
 		1555F5D526E6786100AFDC3D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D755DC9821945E41003C6BA1;
-			remoteInfo = TealiumCore;
-		};
-		156ECAB626F2285D00E2835E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 156ECAB326F2285D00E2835E;
-			remoteInfo = "AutoTrackingWatchOSTest Extension";
-		};
-		156ECAC526F2285E00E2835E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 156ECAAA26F2285C00E2835E;
-			remoteInfo = AutoTrackingWatchOSTest;
-		};
-		156ECAD826F228B400E2835E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
 			proxyType = 1;
@@ -1802,39 +1771,6 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		156ECAC826F2285E00E2835E /* Embed Watch Content */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
-			dstSubfolderSpec = 16;
-			files = (
-				156ECAC726F2285E00E2835E /* AutoTrackingWatchOSTest.app in Embed Watch Content */,
-			);
-			name = "Embed Watch Content";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		156ECACB26F2285E00E2835E /* Embed App Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				156ECAB526F2285D00E2835E /* AutoTrackingWatchOSTest Extension.appex in Embed App Extensions */,
-			);
-			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		156ECADA26F228B400E2835E /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				156ECAD726F228B400E2835E /* TealiumCore.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		15D43D5426F20869004E52FE /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1946,16 +1882,6 @@
 		1555F5E126E6786100AFDC3D /* TealiumAutotrackingTests-tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TealiumAutotrackingTests-tvOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1563CEC826DFAA3300A1DAD1 /* PubSubTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PubSubTests.swift; sourceTree = "<group>"; };
 		156CB50B26CD4ACB005EFEDB /* AnyCodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCodableTests.swift; sourceTree = "<group>"; };
-		156ECAAB26F2285C00E2835E /* AutoTrackingWatchOSTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AutoTrackingWatchOSTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		156ECAAD26F2285D00E2835E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		156ECAAF26F2285D00E2835E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		156ECAB426F2285D00E2835E /* AutoTrackingWatchOSTest Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "AutoTrackingWatchOSTest Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		156ECABF26F2285E00E2835E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		156ECAC226F2285E00E2835E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		156ECAC426F2285E00E2835E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		156ECAD026F2288000E2835E /* ComplicationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
-		156ECAD126F2288000E2835E /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		156ECAD226F2288000E2835E /* tealium_swiftApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = tealium_swiftApp.swift; sourceTree = "<group>"; };
 		158CA93626B9478100748A80 /* TealiumASIdentifierManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TealiumASIdentifierManagerTests.swift; sourceTree = "<group>"; };
 		15B84D7526F206950094DC05 /* AutoTrackingTvOSTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AutoTrackingTvOSTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		15B84D7726F206950094DC05 /* AutoTrackingTvOSTestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoTrackingTvOSTestApp.swift; sourceTree = "<group>"; };
@@ -2368,14 +2294,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		156ECAB126F2285D00E2835E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				156ECAD626F228B400E2835E /* TealiumCore.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		15B84D7226F206950094DC05 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -2767,36 +2685,6 @@
 			path = pubsub;
 			sourceTree = "<group>";
 		};
-		156ECAAC26F2285C00E2835E /* AutoTrackingWatchOSTest */ = {
-			isa = PBXGroup;
-			children = (
-				156ECAAD26F2285D00E2835E /* Assets.xcassets */,
-				156ECAAF26F2285D00E2835E /* Info.plist */,
-			);
-			path = AutoTrackingWatchOSTest;
-			sourceTree = "<group>";
-		};
-		156ECAB826F2285D00E2835E /* AutoTrackingWatchOSTest Extension */ = {
-			isa = PBXGroup;
-			children = (
-				156ECAD026F2288000E2835E /* ComplicationController.swift */,
-				156ECAD126F2288000E2835E /* ContentView.swift */,
-				156ECAD226F2288000E2835E /* tealium_swiftApp.swift */,
-				156ECABF26F2285E00E2835E /* Assets.xcassets */,
-				156ECAC426F2285E00E2835E /* Info.plist */,
-				156ECAC126F2285E00E2835E /* Preview Content */,
-			);
-			path = "AutoTrackingWatchOSTest Extension";
-			sourceTree = "<group>";
-		};
-		156ECAC126F2285E00E2835E /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				156ECAC226F2285E00E2835E /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
-			sourceTree = "<group>";
-		};
 		15B84D7626F206950094DC05 /* AutoTrackingTvOSTest */ = {
 			isa = PBXGroup;
 			children = (
@@ -3014,8 +2902,6 @@
 				D7BF512325DAC80E00AD3A0D /* AutoTracking Test */,
 				15F8E22526F0AF5900C4F6A1 /* AutoTrackingMacOSTest */,
 				15B84D7626F206950094DC05 /* AutoTrackingTvOSTest */,
-				156ECAAC26F2285C00E2835E /* AutoTrackingWatchOSTest */,
-				156ECAB826F2285D00E2835E /* AutoTrackingWatchOSTest Extension */,
 				7182DD0A1D77492D0001A95B /* Products */,
 				D79876C11FACE5B100FFA96B /* Frameworks */,
 			);
@@ -3070,8 +2956,6 @@
 				15F8E23B26F0B0FF00C4F6A1 /* TealiumAutotrackingUITests-macOS.xctest */,
 				15B84D7526F206950094DC05 /* AutoTrackingTvOSTest.app */,
 				15D43D5926F20A68004E52FE /* TealiumAutotrackingUITests-tvOS.xctest */,
-				156ECAAB26F2285C00E2835E /* AutoTrackingWatchOSTest.app */,
-				156ECAB426F2285D00E2835E /* AutoTrackingWatchOSTest Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3926,42 +3810,6 @@
 			productReference = 1555F5E126E6786100AFDC3D /* TealiumAutotrackingTests-tvOS.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		156ECAAA26F2285C00E2835E /* AutoTrackingWatchOSTest */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 156ECACF26F2285E00E2835E /* Build configuration list for PBXNativeTarget "AutoTrackingWatchOSTest" */;
-			buildPhases = (
-				156ECAA926F2285C00E2835E /* Resources */,
-				156ECACB26F2285E00E2835E /* Embed App Extensions */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				156ECAB726F2285D00E2835E /* PBXTargetDependency */,
-			);
-			name = AutoTrackingWatchOSTest;
-			productName = AutoTrackingWatchOSTest;
-			productReference = 156ECAAB26F2285C00E2835E /* AutoTrackingWatchOSTest.app */;
-			productType = "com.apple.product-type.application.watchapp2";
-		};
-		156ECAB326F2285D00E2835E /* AutoTrackingWatchOSTest Extension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 156ECACE26F2285E00E2835E /* Build configuration list for PBXNativeTarget "AutoTrackingWatchOSTest Extension" */;
-			buildPhases = (
-				156ECAB026F2285D00E2835E /* Sources */,
-				156ECAB126F2285D00E2835E /* Frameworks */,
-				156ECAB226F2285D00E2835E /* Resources */,
-				156ECADA26F228B400E2835E /* Embed Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				156ECAD926F228B400E2835E /* PBXTargetDependency */,
-			);
-			name = "AutoTrackingWatchOSTest Extension";
-			productName = "AutoTrackingWatchOSTest Extension";
-			productReference = 156ECAB426F2285D00E2835E /* AutoTrackingWatchOSTest Extension.appex */;
-			productType = "com.apple.product-type.watchkit2-extension";
-		};
 		15B84D7426F206950094DC05 /* AutoTrackingTvOSTest */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 15B84D8326F206960094DC05 /* Build configuration list for PBXNativeTarget "AutoTrackingTvOSTest" */;
@@ -4789,7 +4637,6 @@
 				D7BF511F25DAC80E00AD3A0D /* Frameworks */,
 				D7BF512025DAC80E00AD3A0D /* Resources */,
 				1555F59E26E658D000AFDC3D /* Embed Frameworks */,
-				156ECAC826F2285E00E2835E /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
@@ -4803,7 +4650,6 @@
 				1555F5B226E658F900AFDC3D /* PBXTargetDependency */,
 				1555F5B626E6590800AFDC3D /* PBXTargetDependency */,
 				1555F5BA26E6591300AFDC3D /* PBXTargetDependency */,
-				156ECAC626F2285E00E2835E /* PBXTargetDependency */,
 			);
 			name = "AutoTracking Test";
 			productName = "AutoTracking Test";
@@ -4885,12 +4731,6 @@
 					1516A2DD26EF7F26003DF8F2 = {
 						CreatedOnToolsVersion = 12.5.1;
 						TestTargetID = D7BF512125DAC80E00AD3A0D;
-					};
-					156ECAAA26F2285C00E2835E = {
-						CreatedOnToolsVersion = 12.5.1;
-					};
-					156ECAB326F2285D00E2835E = {
-						CreatedOnToolsVersion = 12.5.1;
 					};
 					15B84D7426F206950094DC05 = {
 						CreatedOnToolsVersion = 12.5.1;
@@ -5093,8 +4933,6 @@
 				D7BF512125DAC80E00AD3A0D /* AutoTracking Test */,
 				15F8E22326F0AF5900C4F6A1 /* AutoTrackingMacOSTest */,
 				15B84D7426F206950094DC05 /* AutoTrackingTvOSTest */,
-				156ECAAA26F2285C00E2835E /* AutoTrackingWatchOSTest */,
-				156ECAB326F2285D00E2835E /* AutoTrackingWatchOSTest Extension */,
 			);
 		};
 /* End PBXProject section */
@@ -5118,23 +4956,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		156ECAA926F2285C00E2835E /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				156ECAAE26F2285D00E2835E /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		156ECAB226F2285D00E2835E /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				156ECAC326F2285E00E2835E /* Preview Assets.xcassets in Resources */,
-				156ECAC026F2285E00E2835E /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5457,16 +5278,6 @@
 				1555F5D826E6786100AFDC3D /* TestTealiumHelper.swift in Sources */,
 				1555F5DA26E6786100AFDC3D /* MockSessionStarter.swift in Sources */,
 				1555F5DB26E6786100AFDC3D /* CoreMocks.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		156ECAB026F2285D00E2835E /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				156ECAD426F2288000E2835E /* ContentView.swift in Sources */,
-				156ECAD326F2288000E2835E /* ComplicationController.swift in Sources */,
-				156ECAD526F2288000E2835E /* tealium_swiftApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6345,21 +6156,6 @@
 			isa = PBXTargetDependency;
 			target = D755DC9821945E41003C6BA1 /* TealiumCore */;
 			targetProxy = 1555F5D526E6786100AFDC3D /* PBXContainerItemProxy */;
-		};
-		156ECAB726F2285D00E2835E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 156ECAB326F2285D00E2835E /* AutoTrackingWatchOSTest Extension */;
-			targetProxy = 156ECAB626F2285D00E2835E /* PBXContainerItemProxy */;
-		};
-		156ECAC626F2285E00E2835E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 156ECAAA26F2285C00E2835E /* AutoTrackingWatchOSTest */;
-			targetProxy = 156ECAC526F2285E00E2835E /* PBXContainerItemProxy */;
-		};
-		156ECAD926F228B400E2835E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D755DC9821945E41003C6BA1 /* TealiumCore */;
-			targetProxy = 156ECAD826F228B400E2835E /* PBXContainerItemProxy */;
 		};
 		15D43D1D26F207C5004E52FE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -7243,132 +7039,6 @@
 				SWIFT_VERSION = 5.0;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
-			};
-			name = Release;
-		};
-		156ECAC926F2285E00E2835E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = XC939GDC9P;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				IBSC_MODULE = AutoTrackingWatchOSTest_Extension;
-				INFOPLIST_FILE = AutoTrackingWatchOSTest/Info.plist;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.tealium.AutoTracking-Test.watchkitapp";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 7.4;
-			};
-			name = Debug;
-		};
-		156ECACA26F2285E00E2835E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = XC939GDC9P;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				IBSC_MODULE = AutoTrackingWatchOSTest_Extension;
-				INFOPLIST_FILE = AutoTrackingWatchOSTest/Info.plist;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.tealium.AutoTracking-Test.watchkitapp";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				VALIDATE_PRODUCT = YES;
-				WATCHOS_DEPLOYMENT_TARGET = 7.4;
-			};
-			name = Release;
-		};
-		156ECACC26F2285E00E2835E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"AutoTrackingWatchOSTest Extension/Preview Content\"";
-				ENABLE_PREVIEWS = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = "AutoTrackingWatchOSTest Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.tealium.AutoTracking-Test.watchkitapp.watchkitextension";
-				PRODUCT_NAME = "${TARGET_NAME}";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 7.4;
-			};
-			name = Debug;
-		};
-		156ECACD26F2285E00E2835E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"AutoTrackingWatchOSTest Extension/Preview Content\"";
-				ENABLE_PREVIEWS = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = "AutoTrackingWatchOSTest Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.tealium.AutoTracking-Test.watchkitapp.watchkitextension";
-				PRODUCT_NAME = "${TARGET_NAME}";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				VALIDATE_PRODUCT = YES;
-				WATCHOS_DEPLOYMENT_TARGET = 7.4;
 			};
 			name = Release;
 		};
@@ -10970,24 +10640,6 @@
 			buildConfigurations = (
 				1555F5DF26E6786100AFDC3D /* Debug */,
 				1555F5E026E6786100AFDC3D /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
-		156ECACE26F2285E00E2835E /* Build configuration list for PBXNativeTarget "AutoTrackingWatchOSTest Extension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				156ECACC26F2285E00E2835E /* Debug */,
-				156ECACD26F2285E00E2835E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
-		156ECACF26F2285E00E2835E /* Build configuration list for PBXNativeTarget "AutoTrackingWatchOSTest" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				156ECAC926F2285E00E2835E /* Debug */,
-				156ECACA26F2285E00E2835E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
