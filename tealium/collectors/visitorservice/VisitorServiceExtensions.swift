@@ -42,11 +42,16 @@ public extension TealiumConfig {
     /// Note: if no delegates are registered, no requests will be made to fetch the visitor profile from the server.
     var visitorServiceDelegate: VisitorServiceDelegate? {
         get {
-            options[VisitorServiceConstants.visitorServiceDelegate] as? VisitorServiceDelegate
+            let weakDelegate = options[VisitorServiceConstants.visitorServiceDelegate] as? Weak<AnyObject>
+            return weakDelegate?.value as? VisitorServiceDelegate
         }
 
         set {
-            options[VisitorServiceConstants.visitorServiceDelegate] = newValue
+            var weakDelegate: Weak<AnyObject>?
+            if let newValue = newValue {
+                weakDelegate = Weak<AnyObject>(value: newValue)
+            }
+            options[VisitorServiceConstants.visitorServiceDelegate] = weakDelegate
         }
     }
 

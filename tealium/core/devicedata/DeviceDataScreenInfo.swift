@@ -26,14 +26,14 @@ public extension DeviceData {
         let scale = WKInterfaceDevice.current().screenScale
         let width = res.width * scale
         let height = res.height * scale
-        let stringRes = String(format: "%.0fx%.0f", height, width)
+        let stringRes = String(format: "%.0fx%.0f", width, height)
         return stringRes
         #else
         let res = UIScreen.main.bounds
         let scale = UIScreen.main.scale
         let width = res.width * scale
         let height = res.height * scale
-        let stringRes = String(format: "%.0fx%.0f", height, width)
+        let stringRes = String(format: "%.0fx%.0f", width, height)
         return stringRes
         #endif
     }
@@ -43,11 +43,11 @@ public extension DeviceData {
         return TealiumValue.unknown
         #elseif os(watchOS)
         let res = WKInterfaceDevice.current().screenBounds
-        let stringRes = String(format: "%.0fx%.0f", res.height, res.width)
+        let stringRes = String(format: "%.0fx%.0f", res.width, res.height)
         return stringRes
         #else
         let res = UIScreen.main.bounds
-        let stringRes = String(format: "%.0fx%.0f", res.height, res.width)
+        let stringRes = String(format: "%.0fx%.0f", res.width, res.height)
         return stringRes
         #endif
     }

@@ -15,7 +15,7 @@ public enum Dispatchers {}
 
 public enum TealiumValue {
     public static let libraryName = "swift"
-    public static let libraryVersion = "2.4.3"
+    public static let libraryVersion = "2.4.5"
     // This is the current limit for performance reasons. May be increased in future
     public static let maxEventBatchSize = 10
     public static let defaultMinimumDiskSpace: Int32 = 20_000_000
@@ -128,6 +128,8 @@ public enum TealiumKey {
     static let qrTraceEnabled = "qr_trace_enabled"
     static let deepLinkURL = "deep_link_url"
     static let deepLinkQueryPrefix = "deep_link_param"
+    static let deepLinkReferrerUrl = "deep_link_referrer_url"
+    static let deepLinkReferrerApp = "deep_link_referrer_app"
     static let killVisitorSession = "kill_visitor_session"
     static let killVisitorSessionEvent = "event"
     static let leaveTraceQueryParam = "leave_trace"

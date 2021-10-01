@@ -96,7 +96,7 @@ class TealiumDeviceDataTests: XCTestCase {
         let scale = UIScreen.main.scale
         let width = res.width * scale
         let height = res.height * scale
-        let stringRes = String(format: "%.0fx%.0f", height, width)
+        let stringRes = String(format: "%.0fx%.0f", width, height)
         XCTAssertEqual(stringRes, resolution)
         #endif
     }
@@ -109,7 +109,7 @@ class TealiumDeviceDataTests: XCTestCase {
         let res = UIScreen.main.bounds
         let width = res.width
         let height = res.height
-        let stringRes = String(format: "%.0fx%.0f", height, width)
+        let stringRes = String(format: "%.0fx%.0f", width, height)
         XCTAssertEqual(stringRes, resolution)
         #endif
     }

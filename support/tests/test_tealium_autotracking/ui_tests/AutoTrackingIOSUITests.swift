@@ -40,7 +40,7 @@ class AutoTrackingIOSUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 1))
         app.navigationBars.firstMatch.buttons.firstMatch.tap()
         text += "Root View 1\n"
-        XCTAssertTrue(app.staticTexts[text].exists)
+        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 1))
         app.buttons["Launch Second View"].tap()
         text += "Second View\n"
         XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 1))

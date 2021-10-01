@@ -149,13 +149,13 @@ class WKWebViewIntegrationTests: XCTestCase {
         self.wait(for: [expectation], timeout: 5.0)
     }
 
-    func testJavaScriptTrackCall() {
+    func testJavaScriptTrackCall() throws {
         let data: [String: Any] = ["test_track": "track me"]
         let dataString = """
                         {\n  "test_track" : "track me"\n}
                         """
         let expectedJS = "utag.track(\'link\',\(dataString))"
-        if let actualJS = data.tealiumJavaScriptTrackCall {
+        if let actualJS = try data.tealiumJavaScriptTrackCall() {
             XCTAssertEqual(expectedJS, actualJS, "")
         }
     }

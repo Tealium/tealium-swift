@@ -24,13 +24,6 @@ public extension DeviceData {
         return model.trimmingCharacters(in: .controlCharacters)
     }
 
-    /// Retrieves device name mapping from JSON file in app bundle.
-    ///
-    /// - Returns: `[String: Any]` containing the model name information
-    internal func retrieveModelNamesFromJSONFile() -> [String: Any]? {
-        DeviceNamesLookup.data
-    }
-
     /// Retrieves the full consumer device name, e.g. iPhone SE, and other supplementary info.
     ///
     /// - Returns: `[String: String]` of model information
@@ -43,7 +36,7 @@ public extension DeviceData {
                 TealiumKey.fullModel: "mac"
         ]
         #else
-        if let deviceInfo = retrieveModelNamesFromJSONFile() {
+        if let deviceInfo = allModelNames {
             if let currentModel = deviceInfo[model] as? [String: String],
                let simpleModel = currentModel[TealiumKey.simpleModel],
                let fullModel = currentModel[TealiumKey.fullModel] {

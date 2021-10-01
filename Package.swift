@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.3
 
 import PackageDescription
 
@@ -39,7 +39,10 @@ let package = Package(
     targets: [
         .target(
             name: "TealiumCore",
-            path: "tealium/core/"
+            path: "tealium/core/",
+            resources: [
+                .process("devicedata/device-names.json")
+            ]
         ),
         .target(
             name: "TealiumAttribution",

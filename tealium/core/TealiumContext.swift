@@ -41,8 +41,8 @@ public struct TealiumContext: Hashable, TealiumContextProtocol {
         self.config.logger?.log(logRequest)
     }
 
-    public func handleDeepLink(_ url: URL) {
-        self.tealium?.handleDeepLink(url)
+    public func handleDeepLink(_ url: URL, referrer: Tealium.DeepLinkReferrer? = nil) {
+        self.tealium?.handleDeepLink(url, referrer: referrer)
     }
 
 }

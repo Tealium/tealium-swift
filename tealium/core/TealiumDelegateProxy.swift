@@ -13,7 +13,7 @@ import UIKit
 class TealiumDelegateProxy: NSProxy {
 
     private typealias ApplicationOpenURL = @convention(c) (Any, Selector, UIApplication, URL, [UIApplication.OpenURLOptionsKey: Any]) -> Bool
-    private typealias ApplicationContinueUserActivity = @convention(c) (Any, Selector, UIResponder, NSUserActivity) -> Void
+    private typealias ApplicationContinueUserActivity = @convention(c) (Any, Selector, UIApplication, NSUserActivity, @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool
 
     private static var contexts: Set<TealiumContext>?
 
@@ -118,7 +118,7 @@ class TealiumDelegateProxy: NSProxy {
             withOriginalClass: originalClass,
             storeOriginalImplementationInto: &originalImplementationsStore)
 
-        let applicationWillContinueUserActivity = #selector(application(_:didUpdateUserActivity:))
+        let applicationWillContinueUserActivity = #selector(application(_:continueUserActivity:restorationHandler:))
         self.proxyInstanceMethod(
             toClass: subClass,
             withSelector: applicationWillContinueUserActivity,
@@ -203,9 +203,9 @@ class TealiumDelegateProxy: NSProxy {
 
     /// Forwards deep link to each registered Tealium instance
     /// - Parameter url: `URL` of the deep link to be handled
-    private static func handleDeepLink(_ url: URL) {
+    private static func handleDeepLink(_ url: URL, referrer: Tealium.DeepLinkReferrer? = nil) {
         contexts?.forEach {
-            $0.handleDeepLink(url)
+            $0.handleDeepLink(url, referrer: referrer)
 
         }
     }
@@ -224,7 +224,7 @@ class TealiumDelegateProxy: NSProxy {
     @objc
     private func application(_ app: UIApplication, openURL url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         TealiumDelegateProxy.log("Received Deep Link: \(url.absoluteString)")
-        TealiumDelegateProxy.handleDeepLink(url)
+        TealiumDelegateProxy.handleDeepLink(url, referrer: .fromAppId(options[.sourceApplication] as? String))
         let methodSelector = #selector(application(_:openURL:options:))
         guard let pointer = TealiumDelegateProxy.originalMethodImplementation(for: methodSelector, object: self),
               let pointerValue = pointer.pointerValue else {
@@ -237,20 +237,27 @@ class TealiumDelegateProxy: NSProxy {
     }
 
     @objc
-    private func application(_ application: UIApplication, didUpdateUserActivity userActivity: NSUserActivity) {
+    private func application(_ application: UIApplication,
+                             continueUserActivity userActivity: NSUserActivity,
+                             restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb, let url = userActivity.webpageURL {
             TealiumDelegateProxy.log("Received Deep Link: \(url.absoluteString)")
-            TealiumDelegateProxy.handleDeepLink(url)
+            var referrer: Tealium.DeepLinkReferrer?
+            if #available(iOS 11.0, *) {
+                referrer = .fromUrl(userActivity.referrerURL)
+            }
+            TealiumDelegateProxy.handleDeepLink(url, referrer: referrer)
         }
-
-        let methodSelector = #selector(application(_:didUpdateUserActivity:))
+        
+        let methodSelector = #selector(application(_:continueUserActivity:restorationHandler:))
         guard let pointer = TealiumDelegateProxy.originalMethodImplementation(for: methodSelector, object: self),
               let pointerValue = pointer.pointerValue else {
-            return
+            return true
         }
 
         let originalImplementation = unsafeBitCast(pointerValue, to: ApplicationContinueUserActivity.self)
-        _ = originalImplementation(self, methodSelector, application, userActivity)
+        _ = originalImplementation(self, methodSelector, application, userActivity, restorationHandler)
+        return false
     }
 
 }
