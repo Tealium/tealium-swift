@@ -5,7 +5,7 @@ on: [pull_request]
 jobs:
   install:
     name: Setup Fastlane
-    runs-on: macos-latest
+    runs-on: macos-11
     steps:
       - uses: actions/checkout@v2
       - uses: ruby/setup-ruby@v1
@@ -17,7 +17,7 @@ jobs:
   test_iOS:
     needs: install 
     name: iOS Tests
-    runs-on: macos-latest
+    runs-on: macos-11
     timeout-minutes: 60
     env: 
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -71,7 +71,7 @@ jobs:
   test_macOS:
     needs: install
     name: macOS Tests
-    runs-on: macos-latest
+    runs-on: macos-11
     timeout-minutes: 60
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -118,7 +118,7 @@ jobs:
   test_tvOS:
     needs: install
     name: tvOS Tests
-    runs-on: macos-latest
+    runs-on: macos-11
     timeout-minutes: 60
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -164,7 +164,7 @@ jobs:
       #   working-directory: ${{env.working-directory}}
   test_VisitorServiceDemo_uiTests:
     name: Test TealiumVisitorProfileDemo UI Tests
-    runs-on: macos-latest
+    runs-on: macos-11
     timeout-minutes: 60
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
