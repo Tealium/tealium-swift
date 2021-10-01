@@ -34,7 +34,7 @@ class TealiumInstanceManagerTests: XCTestCase {
 
     func testOpenUrl() {
         let url = URL(string: "www.google.it")!
-        
+        let manager = TealiumInstanceManager()
         let firstReceiveExp = expectation(description: "Will receive url")
         let secondReceiveExp = expectation(description: "Will receive url too")
         let thirdReceiveExp = expectation(description: "Will receive url too")

@@ -5,7 +5,7 @@ on: [pull_request]
 jobs:
   install:
     name: Setup Fastlane
-    runs-on: macos-11
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
       - uses: ruby/setup-ruby@v1
@@ -17,7 +17,7 @@ jobs:
   test_iOS:
     needs: install 
     name: iOS Tests
-    runs-on: macos-11
+    runs-on: macos-latest
     timeout-minutes: 60
     env: 
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -37,6 +37,10 @@ jobs:
             - TealiumTagManagementTests-iOS
             - TealiumVisitorServiceTests-iOS
     steps:
+      - name: Setup Xcode version
+        uses: maxim-lobanov/setup-xcode@v1.3.0
+        with:
+          xcode-version: latest-stable
       - uses: actions/checkout@v2 
       - name: Test - "${{ matrix.scheme }}"
         run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
@@ -71,7 +75,7 @@ jobs:
   test_macOS:
     needs: install
     name: macOS Tests
-    runs-on: macos-11
+    runs-on: macos-latest
     timeout-minutes: 60
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -86,6 +90,10 @@ jobs:
           - TealiumMediaTests-macOS
           - TealiumVisitorServiceTests-macOS
     steps:
+      - name: Setup Xcode version
+        uses: maxim-lobanov/setup-xcode@v1.3.0
+        with:
+          xcode-version: latest-stable
       - uses: actions/checkout@v2
       - name: Test - "${{ matrix.scheme }}"
         run: rm -rf output && fastlane scan --scheme "${{ matrix.scheme }}" --derived_data_path ./output --code_coverage true --skip_build true
@@ -118,7 +126,7 @@ jobs:
   test_tvOS:
     needs: install
     name: tvOS Tests
-    runs-on: macos-11
+    runs-on: macos-latest
     timeout-minutes: 60
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -164,12 +172,16 @@ jobs:
       #   working-directory: ${{env.working-directory}}
   test_VisitorServiceDemo_uiTests:
     name: Test TealiumVisitorProfileDemo UI Tests
-    runs-on: macos-11
+    runs-on: macos-latest
     timeout-minutes: 60
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
       working-directory: ./samples/VisitorServiceDemo
     steps:
+      - name: Setup Xcode version
+        uses: maxim-lobanov/setup-xcode@v1.3.0
+        with:
+          xcode-version: latest-stable
       - uses: actions/checkout@v2
       - name: Test TealiumVisitorProfileDemo UI Tests iOS
         run: rm -rf output && pod install && fastlane scan --scheme "TealiumVisitorProfileDemoUITests" --derived_data_path ./output --code_coverage false --skip_build true

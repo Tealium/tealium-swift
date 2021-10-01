@@ -16,7 +16,7 @@ public class TealiumInstanceManager {
     @ToAnyObservable(TealiumReplaySubject(cacheSize: 10))
     var onOpenUrl: TealiumObservable<URL>
 
-    private init() {
+    init() {
 
     }
 
