@@ -24,8 +24,8 @@ import UIKit
     private static let cls: AnyClass = UIViewController.self
 
     
-    fileprivate static var isTrackingEnabled: Bool {
-        return Bundle.main.object(forInfoDictionaryKey: "TealiumAutoTrackingEnabled") as? Bool ?? true
+    fileprivate static var isAutotrackingEnabled: Bool {
+        return Bundle.main.object(forInfoDictionaryKey: "TealiumAutotrackingViewControllersEnabled") as? Bool ?? true
     }
     
     @objc static func setUp() {
@@ -35,7 +35,7 @@ import UIKit
     }
 
     @nonobjc private static let runOnce: () = {
-        guard isTrackingEnabled else {
+        guard isAutotrackingEnabled else {
             return
         }
         let originalMethodSelector = #selector(viewDidAppear(_:))
