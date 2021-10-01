@@ -25,6 +25,10 @@ jobs:
           - TealiumAttribution
           - TealiumAutotracking
     steps:
+      - name: Setup Xcode version
+        uses: maxim-lobanov/setup-xcode@v1.3.0
+        with:
+          xcode-version: latest-stable
       - uses: actions/checkout@v2
       - name: Build iOS - ${{ matrix.scheme }}
         run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project tealium-swift.xcodeproj -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" clean build | xcpretty
@@ -46,6 +50,10 @@ jobs:
           - TealiumMedia
           - TealiumVisitorService
     steps:
+      - name: Setup Xcode version
+        uses: maxim-lobanov/setup-xcode@v1.3.0
+        with:
+          xcode-version: latest-stable
       - uses: actions/checkout@v2
       - name: Build macOS - ${{ matrix.scheme }}
         run: set -o pipefail && env NSUnbufferedIO=YES xcodebuild -project tealium-swift.xcodeproj -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" clean build | xcpretty
@@ -79,6 +87,10 @@ jobs:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
       working-directory: ./samples/TealiumSwiftExample
     steps:
+      - name: Setup Xcode version
+        uses: maxim-lobanov/setup-xcode@v1.3.0
+        with:
+          xcode-version: latest-stable
       - uses: actions/checkout@v2
       - name: Build TealiumSwiftExample iOS
         run: set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumSwiftExample.xcworkspace -scheme "TealiumSwiftExample" -destination "platform=iOS Simulator,name=iPhone 12" clean build | xcpretty
@@ -91,6 +103,10 @@ jobs:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
       working-directory: ./samples/TealiumSwiftExample
     steps:
+      - name: Setup Xcode version
+        uses: maxim-lobanov/setup-xcode@v1.3.0
+        with:
+          xcode-version: latest-stable
       - uses: actions/checkout@v2
       - name: Build TealiumSwiftExample tvOS
         run: set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumSwiftExample.xcworkspace -scheme "TealiumSwiftTVExample" -destination "platform=tvOS Simulator,name=Apple TV" clean build | xcpretty
@@ -103,6 +119,10 @@ jobs:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
       working-directory: ./samples/ConsentManagerDemo
     steps:
+      - name: Setup Xcode version
+        uses: maxim-lobanov/setup-xcode@v1.3.0
+        with:
+          xcode-version: latest-stable
       - uses: actions/checkout@v2
       - name: Build ConsentManagerDemo iOS
         run: set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace ConsentManagerDemo.xcworkspace -scheme "ConsentManagerDemo" -destination "platform=iOS Simulator,name=iPhone 12" clean build | xcpretty
@@ -115,6 +135,10 @@ jobs:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
       working-directory: ./samples/VisitorServiceDemo
     steps:
+      - name: Setup Xcode version
+        uses: maxim-lobanov/setup-xcode@v1.3.0
+        with:
+          xcode-version: latest-stable
       - uses: actions/checkout@v2
       - name: Build TealiumVisitorProfileDemo iOS
         run: set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumVisitorProfileDemo.xcworkspace -scheme "TealiumVisitorProfileDemo" -destination "platform=iOS Simulator,name=iPhone 12" clean build | xcpretty
