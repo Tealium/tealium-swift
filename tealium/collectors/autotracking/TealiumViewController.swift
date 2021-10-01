@@ -12,11 +12,30 @@ import SwiftUI
 import TealiumCore
 #endif
 
-open class TealiumViewController: UIViewController { 
+/**
+ * Adds a `trackViewControllerAppearence` method that you can call from viewDidAppear to automatically track view appearence.
+ */
+public protocol TealiumViewControllerTrackable: UIViewController {
+}
+
+public extension TealiumViewControllerTrackable {
+
+    /**
+     * Call this method on the viewDidAppear method of a viewController if you can't subclass from our TealiumViewController.
+     */
+    func trackViewControllerAppearence() {
+        AutotrackingModule.autoTrackView(viewName: self.viewTitle)
+    }
+}
+
+/**
+ * Subclass this class to allow automatic tracking of viewDidAppear for your ViewController subclass.
+ */
+open class TealiumViewController: UIViewController, TealiumViewControllerTrackable {
     @objc
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        AutotrackingModule.autoTrackView(viewName: self.viewTitle)
+        trackViewControllerAppearence()
     }
 }
 #endif
