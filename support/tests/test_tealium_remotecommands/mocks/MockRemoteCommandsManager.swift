@@ -10,7 +10,7 @@ import Foundation
 @testable import TealiumRemoteCommands
 
 class MockRemoteCommandsManager: RemoteCommandsManagerProtocol {
-
+    var urlSession: URLSessionProtocol = URLSession(configuration: .ephemeral)
     var jsonCommands = [RemoteCommandProtocol]()
     var mockJSONCommand = MockJSONRemoteCommand()
     var webviewCommands = [RemoteCommandProtocol]()

@@ -18,7 +18,7 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
     public var webviewCommands = [RemoteCommandProtocol]()
     weak public var moduleDelegate: ModuleDelegate?
     static var pendingResponses = Atomic<[String: Bool]>(value: [String: Bool]())
-    var urlSession: URLSessionProtocol?
+    public var urlSession: URLSessionProtocol
     var diskStorage: TealiumDiskStorageProtocol?
     var config: TealiumConfig
     var hasFetched = false
@@ -74,7 +74,7 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
             request.setValue(lastFetch.httpIfModifiedHeader, forHTTPHeaderField: "If-Modified-Since")
         }
         request.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
-        self.urlSession?.tealiumDataTask(with: request) { data, response, _ in
+        self.urlSession.tealiumDataTask(with: request) { data, response, _ in
             guard let response = response as? HTTPURLResponse else {
                 completion(.failure(TealiumRemoteCommandsError.noResponse))
                 return
@@ -277,7 +277,7 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
     }
     
     deinit {
-        urlSession?.finishTealiumTasksAndInvalidate()
+        urlSession.finishTealiumTasksAndInvalidate()
     }
 }
 
