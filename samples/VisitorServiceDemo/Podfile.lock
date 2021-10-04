@@ -1,16 +1,16 @@
 PODS:
   - SCLAlertView (0.8)
   - SwiftConfettiView (0.1.0)
-  - tealium-swift/Collect (2.4.4):
+  - tealium-swift/Collect (2.4.6):
     - tealium-swift/Core
-  - tealium-swift/Core (2.4.4)
-  - tealium-swift/Lifecycle (2.4.4):
+  - tealium-swift/Core (2.4.6)
+  - tealium-swift/Lifecycle (2.4.6):
     - tealium-swift/Core
-  - tealium-swift/Location (2.4.4):
+  - tealium-swift/Location (2.4.6):
     - tealium-swift/Core
-  - tealium-swift/TagManagement (2.4.4):
+  - tealium-swift/TagManagement (2.4.6):
     - tealium-swift/Core
-  - tealium-swift/VisitorService (2.4.4):
+  - tealium-swift/VisitorService (2.4.6):
     - tealium-swift/Core
 
 DEPENDENCIES:
@@ -35,7 +35,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   SCLAlertView: 6a77bb2edfc65e04dbe57725546cb4107a506b85
   SwiftConfettiView: 1bdbc2e6913b6b1c76d8070802b212508ad5c352
-  tealium-swift: 85b906105d981738b7132554bd2d031223b18d1f
+  tealium-swift: 4e3d50e04e79eabd84b272d066659f5234d74b55
 
 PODFILE CHECKSUM: 90caa9f73ff21f41966a1c7699ab1b38ce3ee0b0
 
