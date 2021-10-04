@@ -35,7 +35,6 @@ class AutoTrackingIOSUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts[text].exists)
         app.buttons["Launch ViewController"].tap()
         text += "ViewControllerWrapper\n"
-        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 1))
         text += "RealViewController\n" // Did appear happens late
         XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 1))
         app.navigationBars.firstMatch.buttons.firstMatch.tap()
