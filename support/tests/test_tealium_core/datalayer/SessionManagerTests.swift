@@ -30,8 +30,8 @@ class SessionManagerTests: XCTestCase {
 
     func testLastTrackDateNilIncrementsNumberOfTracksBackingAndSetsLastTrackDate() {
         eventDataManager.lastTrackDate = nil
-        eventDataManager.numberOfTracks = 0
-        XCTAssertEqual(eventDataManager.numberOfTrackRequests, 2)
+        eventDataManager.newTrackRequest()
+        XCTAssertEqual(eventDataManager.numberOfTrackRequests, 1)
         XCTAssertNotNil(eventDataManager.lastTrackDate)
     }
 
@@ -39,7 +39,7 @@ class SessionManagerTests: XCTestCase {
         eventDataManager.isTagManagementEnabled = true
         eventDataManager.shouldTriggerSessionRequest = true
         eventDataManager.lastTrackDate = timeTraveler.travel(by: 20)
-        eventDataManager.numberOfTracks = 0
+        eventDataManager.newTrackRequest()
         XCTAssertEqual(mockSessionStarter.sessionRequestCount, 1)
         XCTAssertFalse(eventDataManager.shouldTriggerSessionRequest)
     }
@@ -51,7 +51,7 @@ class SessionManagerTests: XCTestCase {
 
     func testSessionIdSavesToPersistentStorage() {
         eventDataManager.sessionId = "test123abc"
-        let eventDataItem = DataLayerItem(key: "tealium_session_id", value: "test123abc", expires: .distantFuture)
+        let eventDataItem = DataLayerItem(key: "tealium_session_id", value: "test123abc", expiry: .forever)
         let retrieved = mockDiskStorage.retrieve(as: Set<DataLayerItem>.self)
         XCTAssertTrue(((retrieved?.contains(eventDataItem)) != nil))
     }
@@ -65,7 +65,6 @@ class SessionManagerTests: XCTestCase {
     func testSessionRefreshWhenSessionIdNil() {
         eventDataManager.sessionId = nil
         eventDataManager.lastTrackDate = nil
-        XCTAssertEqual(eventDataManager.numberOfTrackRequests, 1)
         XCTAssertTrue(eventDataManager.shouldTriggerSessionRequest)
     }
 
