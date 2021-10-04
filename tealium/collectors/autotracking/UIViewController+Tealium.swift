@@ -28,7 +28,7 @@ import UIKit
         return Bundle.main.object(forInfoDictionaryKey: "TealiumAutotrackingViewControllersEnabled") as? Bool ?? true
     }
     
-    @objc static func setUp() {
+    @objc public static func setUp() {
         TealiumQueues.secureMainThreadExecution {
             _ = runOnce
         }
