@@ -6,7 +6,7 @@
 //
 
 @testable import TealiumCore
-import TealiumRemoteCommands
+@testable import TealiumRemoteCommands
 import XCTest
 
 class RemoteHTTPCommandTests: XCTestCase {
@@ -99,8 +99,17 @@ class RemoteHTTPCommandTests: XCTestCase {
         let expected = RemoteCommand(commandId: "_http", description: "For processing tag-triggered HTTP requests") { _ in
             // ....
         }
-        let actual = RemoteHTTPCommand.create(with: nil)
+        let actual = RemoteHTTPCommand.create(with: nil, urlSession: URLSession(configuration: .ephemeral))
         XCTAssertEqual(expected.description, actual.description)
+    }
+    
+    func testDeinitRemoteCommandDoesntInvalidateTheSession() {
+        let mockURLSession = MockURLSession()
+        var command: RemoteCommandProtocol? = RemoteHTTPCommand.create(with: nil, urlSession: mockURLSession)
+        XCTAssertNotNil(command)
+        command = nil
+        XCTAssertFalse(mockURLSession.isInvalidated)
+        
     }
 
 }

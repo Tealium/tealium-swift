@@ -15,9 +15,8 @@ public protocol DataLayerManagerProtocol: AnyObject {
     var all: [String: Any] { get set }
     var allSessionData: [String: Any] { get }
     var sessionId: String? { get set }
-    var sessionData: [String: Any] { get set }
-    func add(data: [String: Any], expiry: Expiry?)
-    func add(key: String, value: Any, expiry: Expiry?)
+    func add(data: [String: Any], expiry: Expiry)
+    func add(key: String, value: Any, expiry: Expiry)
     func joinTrace(id: String)
     func leaveTrace()
     func delete(for keys: [String])
@@ -37,11 +36,11 @@ protocol SessionManagerProtocol {
 
 extension DataLayerManagerProtocol {
 
-    func add(data: [String: Any], expiry: Expiry? = .session) {
+    func add(data: [String: Any], expiry: Expiry = .session) {
         add(data: data, expiry: expiry)
     }
 
-    func add(key: String, value: Any, expiry: Expiry? = .session) {
+    func add(key: String, value: Any, expiry: Expiry = .session) {
         add(key: key, value: value, expiry: expiry)
     }
 

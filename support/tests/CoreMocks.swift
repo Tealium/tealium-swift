@@ -69,11 +69,11 @@ class DummyDataManager: DataLayerManagerProtocol {
 
     var isTagManagementEnabled: Bool = true
 
-    func add(data: [String: Any], expiry: Expiry?) {
+    func add(data: [String: Any], expiry: Expiry) {
         addCount += 1
     }
 
-    func add(key: String, value: Any, expiry: Expiry?) {
+    func add(key: String, value: Any, expiry: Expiry) {
 
     }
 
@@ -413,6 +413,7 @@ class MockTEALConsentConfiguration: NSObject, NSSecureCoding {
 }
 
 class MockMigratedDataLayer: DataLayerManagerProtocol {
+    
 
     var deleteCount = 0
 

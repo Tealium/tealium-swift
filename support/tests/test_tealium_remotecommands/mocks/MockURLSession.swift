@@ -9,6 +9,7 @@ import Foundation
 @testable import TealiumCore
 
 class MockURLSession: URLSessionProtocol {
+    var isInvalidated = false
     func tealiumDataTask(with url: URL, completionHandler: @escaping (DataTaskResult) -> Void) -> URLSessionDataTaskProtocol {
         return DataTask(completionHandler: { data, response, error in
             if let error = error {
@@ -27,7 +28,9 @@ class MockURLSession: URLSessionProtocol {
         return DataTask(completionHandler: completionHandler, url: with.url!)
     }
 
-    func finishTealiumTasksAndInvalidate() { }
+    func finishTealiumTasksAndInvalidate() {
+        isInvalidated = true
+    }
 }
 
 class MockURLSession304: URLSessionProtocol {

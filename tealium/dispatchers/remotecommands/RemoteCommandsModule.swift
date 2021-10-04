@@ -16,7 +16,7 @@ public class RemoteCommandsModule: Dispatcher {
     public var id: String = ModuleNames.remotecommands
     public var config: TealiumConfig
     public var isReady: Bool = false
-    public var remoteCommands: RemoteCommandsManagerProtocol?
+    public var remoteCommands: RemoteCommandsManagerProtocol
     var reservedCommandsAdded = false
 
     /// Provided for unit testing￼.
@@ -26,7 +26,7 @@ public class RemoteCommandsModule: Dispatcher {
                       delegate: ModuleDelegate,
                       remoteCommands: RemoteCommandsManagerProtocol? = nil) {
         self.init(config: config, delegate: delegate) { _ in }
-        self.remoteCommands = remoteCommands
+        self.remoteCommands = remoteCommands ?? self.remoteCommands
     }
 
     /// Initializes the module
@@ -36,7 +36,7 @@ public class RemoteCommandsModule: Dispatcher {
     /// - Parameter completion: `ModuleCompletion` block to be called when init is finished
     public required init(config: TealiumConfig, delegate: ModuleDelegate, completion: ModuleCompletion?) {
         self.config = config
-        remoteCommands = remoteCommands ?? RemoteCommandsManager(config: config, delegate: delegate)
+        remoteCommands = RemoteCommandsManager(config: config, delegate: delegate)
         updateReservedCommands(config: config)
         addCommands(from: config)
     }
@@ -45,15 +45,15 @@ public class RemoteCommandsModule: Dispatcher {
         let newConfig = request.config.copy
         if newConfig != self.config {
             self.config = newConfig
-            let existingWebViewCommands = self.remoteCommands?.webviewCommands
-            let existingJSONCommands = self.remoteCommands?.jsonCommands
+            let existingWebViewCommands = self.remoteCommands.webviewCommands
+            let existingJSONCommands = self.remoteCommands.jsonCommands
             if let newWebViewCommands = newConfig.remoteCommands, newWebViewCommands.count > 0 {
-                existingWebViewCommands?.forEach {
+                existingWebViewCommands.forEach {
                     newConfig.addRemoteCommand($0)
                 }
             }
             if let newJSONCommands = newConfig.remoteCommands, newJSONCommands.count > 0 {
-                existingJSONCommands?.forEach {
+                existingJSONCommands.forEach {
                     newConfig.addRemoteCommand($0)
                 }
             }
@@ -65,7 +65,7 @@ public class RemoteCommandsModule: Dispatcher {
     private func addCommands(from config: TealiumConfig) {
         if let commands = config.remoteCommands {
             for command in commands {
-                self.remoteCommands?.add(command)
+                self.remoteCommands.add(command)
             }
         }
     }
@@ -82,10 +82,10 @@ public class RemoteCommandsModule: Dispatcher {
             shouldDisable = shouldDisableSetting
         }
         if shouldDisable == true {
-            remoteCommands?.remove(commandWithId: RemoteCommandsKey.commandId)
-        } else if remoteCommands?.webviewCommands[RemoteCommandsKey.commandId] == nil {
-            let httpCommand = RemoteHTTPCommand.create(with: remoteCommands?.moduleDelegate)
-            remoteCommands?.add(httpCommand)
+            remoteCommands.remove(commandWithId: RemoteCommandsKey.commandId)
+        } else if remoteCommands.webviewCommands[RemoteCommandsKey.commandId] == nil {
+            let httpCommand = RemoteHTTPCommand.create(with: remoteCommands.moduleDelegate, urlSession: remoteCommands.urlSession )
+            remoteCommands.add(httpCommand)
         }
         reservedCommandsAdded = true
     }
@@ -94,21 +94,18 @@ public class RemoteCommandsModule: Dispatcher {
                              completion: ModuleCompletion?) {
         switch request {
         case let request as TealiumRemoteCommandRequest:
-            self.remoteCommands?.trigger(command: .webview, with: request.data, completion: completion)
+            self.remoteCommands.trigger(command: .webview, with: request.data, completion: completion)
         case let request as TealiumRemoteAPIRequest:
-            guard let commands = self.remoteCommands else {
-                return
-            }
-            commands.jsonCommands.forEach { command in
+            self.remoteCommands.jsonCommands.forEach { command in
                 guard let config = command.config,
                       let url = config.commandURL,
                       let name = config.fileName
                 else {
                     return
                 }
-                commands.refresh(command, url: url, file: name)
+                self.remoteCommands.refresh(command, url: url, file: name)
             }
-            commands.trigger(command: .JSON, with: request.trackRequest.trackDictionary, completion: completion)
+            self.remoteCommands.trigger(command: .JSON, with: request.trackRequest.trackDictionary, completion: completion)
         default:
             break
         }

@@ -17,7 +17,6 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
     public var minutesBetweenSessionIdentifier: TimeInterval
     public var numberOfTrackRequests = 0
     public var secondsBetweenTrackEvents: TimeInterval = TealiumValue.defaultsSecondsBetweenTrackEvents
-    public var sessionData = [String: Any]()
     var sessionStarter: SessionStarterProtocol
     public var shouldTriggerSessionRequest = false
     public var isTagManagementEnabled = false
@@ -47,11 +46,10 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
     public var all: [String: Any] {
         get {
             var allData = [String: Any]()
-            if let persistentData = self.persistentDataStorage {
-                allData += persistentData.all
+            TealiumQueues.backgroundConcurrentQueue.read {
+                allData += self.restartData
+                allData += self.allSessionData
             }
-            allData += self.restartData
-            allData += self.allSessionData
             return allData
         }
         set {
@@ -118,7 +116,7 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
     ///   - expiration: `Expiry` level.
     public func add(key: String,
                     value: Any,
-                    expiry: Expiry? = .session) {
+                    expiry: Expiry = .session) {
         self.add(data: [key: value], expiry: expiry)
     }
 
@@ -127,20 +125,17 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
     ///   - data: `[String: Any]` to be stored.
     ///   - expiration: `Expiry` level.
     public func add(data: [String: Any],
-                    expiry: Expiry? = .session) {
-        guard let expiry = expiry else {
-            return
-        }
+                    expiry: Expiry = .session) {
         TealiumQueues.backgroundConcurrentQueue.write {
+            let dataToInsert: [String:Any]
             switch expiry {
-            case .session:
-                self.persistentDataStorage?.insert(from: data, expires: expiry.date)
             case .untilRestart:
                 self.restartData += data
-                self.persistentDataStorage?.insert(from: self.restartData, expires: expiry.date)
+                dataToInsert = self.restartData // Adding this to the persistent storage will trigger a new clean of expired entries and save, and eventually remove entries with the same id but higher expiry date
             default:
-                self.persistentDataStorage?.insert(from: data, expires: expiry.date)
+                dataToInsert = data
             }
+            self.persistentDataStorage?.insert(from: dataToInsert, expiry: expiry)
         }
     }
 

@@ -15,23 +15,36 @@ public enum Expiry {
     case afterCustom((TimeUnit, Int))
 
     public var date: Date {
-        var components = DateComponents()
-        components.calendar = Calendar.autoupdatingCurrent
-        let currentDate = Date()
         switch self {
         case .after(let date):
             return date
-        case .session:
-            components.setValue(TealiumValue.defaultMinutesBetweenSession, for: .minute)
-            return Calendar(identifier: .gregorian).date(byAdding: components, to: currentDate)!
+        case .session, .forever:
+            return distantDate()
         case .untilRestart:
-            return currentDate
-        case .forever:
-            components.setValue(100, for: .year)
-            return Calendar(identifier: .gregorian).date(byAdding: components, to: currentDate)!
+            return Date()
         case .afterCustom(let (unit, value)):
-            components.setValue(value, for: unit.component)
-            return Calendar(identifier: .gregorian).date(byAdding: components, to: currentDate)!
+            return dateWith(unit: unit, value: value)
+        }
+    }
+    
+    private func dateWith(unit: TimeUnit, value: Int) -> Date {
+        var components = DateComponents()
+        components.calendar = Calendar.autoupdatingCurrent
+        let currentDate = Date()
+        components.setValue(value, for: unit.component)
+        return Calendar(identifier: .gregorian).date(byAdding: components, to: currentDate)!
+    }
+    
+    private func distantDate() -> Date {
+        dateWith(unit: .years, value: 100)
+    }
+    
+    func isSession() -> Bool {
+        switch self {
+        case .session:
+            return true
+        default:
+            return false
         }
     }
 
