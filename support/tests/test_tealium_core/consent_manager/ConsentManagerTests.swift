@@ -89,6 +89,24 @@ class ConsentManagerTests: XCTestCase {
         XCTAssertEqual(custom.name, "custom")
     }
     
+    func testConsentGrantedTriggersDequeueRequest() {
+        let config = testTealiumConfig
+        config.consentPolicy = .gdpr
+        let mockConsentDelegate = MockConsentDelegate()
+        let consentManager = ConsentManager(config: config, delegate: mockConsentDelegate, diskStorage: ConsentMockDiskStorage(), dataLayer: DummyDataManager())
+        let expect = expectation(description: "testConsentGrantedTriggersDequeueRequest")
+        mockConsentDelegate.asyncExpectation = expect
+
+        consentManager.userConsentStatus = .consented
+
+        waitForExpectations(timeout: 2) { error in
+            if let error = error {
+                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
+            }
+
+        }
+    }
+    
     func testCustomConsentPolicyStatusInfo_SentInTrack() {
         let config = testTealiumConfig
         config.consentPolicy = .custom(MockCustomConsentPolicy.self)
