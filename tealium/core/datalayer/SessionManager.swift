@@ -9,31 +9,6 @@ import Foundation
 
 public extension DataLayer {
 
-    /// Calculates the number of track calls within the specified `secondsBetweenTrackEvents`
-    /// property that will then determine if a new session shall be generated.
-    // swiftlint:disable unused_setter_value
-    var numberOfTracks: Int {
-        get {
-            numberOfTrackRequests
-        }
-        set {
-            let current = Date()
-            if let lastTrackDate = lastTrackDate {
-                if let date = lastTrackDate.addSeconds(secondsBetweenTrackEvents),
-                   date > current {
-                    let tracks = numberOfTrackRequests + 1
-                    if tracks == 2 {
-                        startNewSession(with: sessionStarter)
-                    }
-                } else {
-                    self.lastTrackDate = Date()
-                    numberOfTrackRequests = 0
-                }
-            }
-            self.lastTrackDate = Date()
-            numberOfTrackRequests += 1
-        }
-    }
     // swiftlint:enable unused_setter_value
 
     /// - Returns: `String?` session id for the active session.
@@ -43,28 +18,46 @@ public extension DataLayer {
         }
         set {
             if let newValue = newValue {
-                add(data: [TealiumKey.sessionId: newValue], expiry: .session)
+                // SessionId is formally part of the session data. It should have a session expiry,
+                // But we need a way to know when this actually expires, so we need to change it to a custom date
+                // And make it expire after the default time, while also refreshing its duration on each track call.
+                add(data: [TealiumKey.sessionId: newValue], expiry: .afterCustom((.minutes, TealiumValue.defaultMinutesBetweenSession)))
             }
         }
     }
 
     /// Removes session data, generates a new session id, and sets the trigger session request flag.
     func refreshSessionData() {
-        sessionData = [String: Any]()
+        persistentDataStorage?.removeSessionData()
         sessionId = Date().unixTimeMilliseconds
         shouldTriggerSessionRequest = true
-        add(key: TealiumKey.sessionId, value: sessionId ?? Date().unixTimeMilliseconds, expiry: .session)
     }
 
     /// Checks if the session has expired in storage, if so, refreshes the session and saves the new data.
     func refreshSession() {
         guard let existingSessionId = sessionId else {
-            numberOfTracks = 0
+            if numberOfTrackRequests != 0 { // It is only 0 at initialization
+                newTrackRequest() // Only track new request on actual track request, not on initialization
+            }
             refreshSessionData()
             return
         }
-        numberOfTracks += 1
-        add(key: TealiumKey.sessionId, value: existingSessionId, expiry: .session)
+        newTrackRequest()
+        sessionId = existingSessionId
+    }
+    
+    func newTrackRequest() {
+        let current = Date()
+        if let lastTrackDate = lastTrackDate {
+            if let date = lastTrackDate.addSeconds(secondsBetweenTrackEvents),
+               date > current {
+                startNewSession(with: sessionStarter)
+            } else {
+                numberOfTrackRequests = 0
+            }
+        }
+        self.lastTrackDate = Date()
+        numberOfTrackRequests += 1
     }
 
     /// If the tag management module is enabled and multiple tracks have been sent in given time, a new session is started.

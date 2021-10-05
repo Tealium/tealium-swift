@@ -14,9 +14,9 @@ import TealiumCore
 public class RemoteHTTPCommand: RemoteCommand {
 
     /// - Returns:`RemoteHTTPCommand`
-    public class func create(with delegate: ModuleDelegate?) -> RemoteCommandProtocol {
+    class func create(with delegate: ModuleDelegate?, urlSession: URLSessionProtocol) -> RemoteCommandProtocol {
         weak var delegate = delegate
-        return RemoteCommand(commandId: RemoteCommandsKey.commandId,
+        return RemoteHTTPCommand(commandId: RemoteCommandsKey.commandId,
                              description: "For processing tag-triggered HTTP requests") { response in
             guard let response = response as? RemoteCommandResponse else {
                 return
@@ -26,26 +26,26 @@ public class RemoteHTTPCommand: RemoteCommand {
             guard let request = requestInfo.request else {
                 return
             }
-            RemoteCommand.urlSession.tealiumDataTask(with: request,
-                                                     completionHandler: { data, urlResponse, error in
-                                                        if let error = error {
-                                                            response.error = error
-                                                            response.status = RemoteCommandStatusCode.failure.rawValue
-                                                        } else {
-                                                            response.status = RemoteCommandStatusCode.success.rawValue
-                                                        }
-                                                        if data == nil {
-                                                            response.status = RemoteCommandStatusCode.noContent.rawValue
-                                                        }
-                                                        if urlResponse == nil {
-                                                            response.status = RemoteCommandStatusCode.failure.rawValue
-                                                        }
-                                                        response.urlResponse = urlResponse
-                                                        response.data = data
-                                                        RemoteCommand.sendRemoteCommandResponse(for: RemoteCommandsKey.commandId,
-                                                                                                response: response,
-                                                                                                delegate: delegate)
-                                                     }).resume()
+            urlSession.tealiumDataTask(with: request,
+                                       completionHandler: { data, urlResponse, error in
+                                        if let error = error {
+                                            response.error = error
+                                            response.status = RemoteCommandStatusCode.failure.rawValue
+                                        } else {
+                                            response.status = RemoteCommandStatusCode.success.rawValue
+                                        }
+                                        if data == nil {
+                                            response.status = RemoteCommandStatusCode.noContent.rawValue
+                                        }
+                                        if urlResponse == nil {
+                                            response.status = RemoteCommandStatusCode.failure.rawValue
+                                        }
+                                        response.urlResponse = urlResponse
+                                        response.data = data
+                                        RemoteCommand.sendRemoteCommandResponse(for: RemoteCommandsKey.commandId,
+                                                                                response: response,
+                                                                                delegate: delegate)
+                                       }).resume()
         }
     }
 
@@ -53,7 +53,7 @@ public class RemoteHTTPCommand: RemoteCommand {
     ///￼
     /// - Parameter payload: [String: Any] payload representing a set of key-value pairs to be sent with the URLRequest
     /// - Returns: `(URLRequest?, Error?)`
-    public class func httpRequest(from payload: [String: Any]) -> (request: URLRequest?, error: Error?) {
+    class func httpRequest(from payload: [String: Any]) -> (request: URLRequest?, error: Error?) {
         guard let urlStringValue = payload[RemoteCommandsKey.url] as? String else {
             return (nil, TealiumRemoteCommandResponseError.missingURLTarget)
         }
@@ -87,7 +87,7 @@ public class RemoteHTTPCommand: RemoteCommand {
     ///￼
     /// - Parameter dictionary: `[String:Any]`
     /// - Returns: Sorted `[URLQueryItem]` array by dictionary keys
-    public class func queryItems(from dictionary: [String: Any]) -> [URLQueryItem] {
+    class func queryItems(from dictionary: [String: Any]) -> [URLQueryItem] {
         var queryItems = [URLQueryItem]()
         dictionary.keys.sorted().forEach {
             let value = String(describing: dictionary[$0]!)
