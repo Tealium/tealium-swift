@@ -208,9 +208,3 @@ jobs:
       - name: Test TealiumAutotracking iOS UI Tests
         run: rm -rf output && fastlane scan --scheme "TealiumAutotrackingUITests-iOS" --derived_data_path ./output --code_coverage false --skip_build true
         working-directory: ${{ env.working-directory }}
-      - name: Test TealiumAutotracking macOS UI Tests
-        run: rm -rf output && fastlane scan --scheme "TealiumAutotrackingUITests-macOS" --derived_data_path ./output --code_coverage false --skip_build true
-        working-directory: ${{ env.working-directory }}
-      - name: Test TealiumAutotracking tvOS UI Tests
-        run: rm -rf output && fastlane scan --scheme "TealiumAutotrackingUITests-tvOS" --derived_data_path ./output --code_coverage false --skip_build true
-        working-directory: ${{ env.working-directory }}
