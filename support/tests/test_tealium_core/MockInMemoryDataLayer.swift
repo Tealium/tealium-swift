@@ -11,6 +11,7 @@ import TealiumCore
 
 
 class MockInMemoryDataLayer: DataLayerManagerProtocol {
+    
     var all: [String : Any] = [:] {
         didSet {
             print("a")
@@ -37,12 +38,12 @@ class MockInMemoryDataLayer: DataLayerManagerProtocol {
         }
     }
     
-    func add(data: [String : Any], expiry: Expiry?) {
+    func add(data: [String : Any], expiry: Expiry) {
         all += data
     }
     
-    func add(key: String, value: Any, expiry: Expiry?) {
-        add(data: [key: value], expiry: nil)
+    func add(key: String, value: Any, expiry: Expiry) {
+        add(data: [key: value], expiry: expiry)
     }
     
     func joinTrace(id: String) {
