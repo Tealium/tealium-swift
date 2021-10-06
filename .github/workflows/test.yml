@@ -192,13 +192,16 @@ jobs:
       - name: Test TealiumVisitorProfileDemo UI Tests iOS
         run: rm -rf output && pod install && fastlane scan --scheme "TealiumVisitorProfileDemoUITests" --derived_data_path ./output --code_coverage false --skip_build true
         working-directory: ${{ env.working-directory }}
-  test_Autotracking_uiTests:
+  test_Autotracking_iOS_uiTests:
     name: Test TealiumAutotracking iOS UI Tests
     runs-on: macos-11
     timeout-minutes: 60
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
       working-directory: ./builder
+    strategy:
+      matrix:
+        destination: ["platform=iOS Simulator,OS=14.5,name=iPhone 12"]
     steps:
       - name: Setup Xcode version
         uses: maxim-lobanov/setup-xcode@v1.3.0
@@ -208,9 +211,43 @@ jobs:
       - name: Test TealiumAutotracking iOS UI Tests
         run: rm -rf output && fastlane scan --scheme "TealiumAutotrackingUITests-iOS" --derived_data_path ./output --code_coverage false --skip_build true
         working-directory: ${{ env.working-directory }}
+  test_Autotracking_macOS_uiTests:
+    needs: install
+    name: Test TealiumAutotracking macOS UI Tests
+    runs-on: macos-11
+    timeout-minutes: 60
+    env:
+      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+      working-directory: ./builder
+    strategy:
+      matrix:
+        destination: ["platform=macOS,arch=x86_64"]
+    steps:
+      - name: Setup Xcode version
+        uses: maxim-lobanov/setup-xcode@v1.3.0
+        with:
+          xcode-version: latest-stable
+      - uses: actions/checkout@v2
       - name: Test TealiumAutotracking macOS UI Tests
         run: rm -rf output && fastlane scan --scheme "TealiumAutotrackingUITests-macOS" --derived_data_path ./output --code_coverage false --skip_build true
         working-directory: ${{ env.working-directory }}
+  test_Autotracking_tvOS_uiTests:
+    needs: install
+    name: Test TealiumAutotracking tvOS UI Tests
+    runs-on: macos-11
+    timeout-minutes: 60
+    env:
+      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+      working-directory: ./builder
+    strategy:
+      matrix:
+        destination: ["platform=tvOS Simulator,name=Apple TV"]
+    steps:
+      - name: Setup Xcode version
+        uses: maxim-lobanov/setup-xcode@v1.3.0
+        with:
+          xcode-version: latest-stable
+      - uses: actions/checkout@v2
       - name: Test TealiumAutotracking tvOS UI Tests
         run: rm -rf output && fastlane scan --scheme "TealiumAutotrackingUITests-tvOS" --derived_data_path ./output --code_coverage false --skip_build true
         working-directory: ${{ env.working-directory }}
