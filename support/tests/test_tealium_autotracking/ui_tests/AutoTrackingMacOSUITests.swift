@@ -32,16 +32,17 @@ class AutoTrackingMacOSUITests: XCTestCase {
             Root View 0
             
             """
-        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 2))
+        let exists = app.staticTexts[text].waitForExistence(timeout: 3)
+        XCTAssertTrue(exists, "Can not find \(text)")
         text += "SomeView\n"
         app.buttons["Launch ViewController"].click()
-        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 3), "Can not find \(text)")
         app.buttons["Launch Second View"].click()
         text += "Second View\n"
-        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 3), "Can not find \(text)")
         text += "SomeView\n"
         app.buttons["Launch ViewController"].click()
-        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 3), "Can not find \(text)")
         
     }
 }

@@ -36,15 +36,15 @@ class AutoTrackingIOSUITests: XCTestCase {
         app.buttons["Launch ViewController"].tap()
         text += "ViewControllerWrapper\n"
         text += "RealViewController\n" // Did appear happens late
-        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 1))
+        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 3), "Can not find \(text)")
         app.navigationBars.firstMatch.buttons.firstMatch.tap()
         text += "Root View 1\n"
-        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 1))
+        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 3), "Can not find \(text)")
         app.buttons["Launch Second View"].tap()
         text += "Second View\n"
-        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 1))
+        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 3), "Can not find \(text)")
         app.navigationBars.firstMatch.buttons.firstMatch.tap()
         text += "Root View 2\n"
-        XCTAssertTrue(app.staticTexts[text].exists)
+        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 3), "Can not find \(text)")
     }
 }

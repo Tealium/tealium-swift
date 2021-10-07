@@ -33,20 +33,20 @@ class AutoTrackingTvOSUITests: XCTestCase {
             Root View 0
             
             """
-        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 3), "Can not find \(text)")
         remote.press(.select)
         text += "SomeView\n"
-        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 3), "Can not find \(text)")
         remote.press(.menu)
         text += "Root View 1\n"
-        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 3), "Can not find \(text)")
         remote.press(.down)
         remote.press(.select)
         text += "Second View\n"
-        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 3), "Can not find \(text)")
         remote.press(.menu)
         text += "Root View 2\n"
-        let exists = app.staticTexts[text].waitForExistence(timeout: 2)
-        XCTAssertTrue(exists)
+        let exists = app.staticTexts[text].waitForExistence(timeout: 3)
+        XCTAssertTrue(exists, "Can not find \(text)")
     }
 }
