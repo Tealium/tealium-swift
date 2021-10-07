@@ -32,7 +32,7 @@ class AutoTrackingIOSUITests: XCTestCase {
             Root View 0
             
             """
-        XCTAssertTrue(app.staticTexts[text].exists)
+        assertStaticTextExists(app: app, text: text)
         app.buttons["Launch ViewController"].tap()
         text += "ViewControllerWrapper\n"
         text += "RealViewController\n" // Did appear happens late
