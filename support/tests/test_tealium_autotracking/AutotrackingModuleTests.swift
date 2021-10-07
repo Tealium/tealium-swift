@@ -111,6 +111,8 @@ class AutotrackingModuleTests: XCTestCase {
         AutotrackingModule.onAutoTrackView.subscribe { name in
             if name == viewName {
                 firstReceiveExp.fulfill()
+            } else {
+                secondReceiveExp.fulfill()
             }
         }.toDisposeBag(disposeBag)
         
