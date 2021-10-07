@@ -40,27 +40,13 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
 
         super.init()
 
-        if let locationConfig = config.initializeGeofenceDataFrom {
-            switch locationConfig {
-            case .localFile(let file):
-                geofences = GeofenceData(file: file, bundle: bundle, logger: config.logger)?.geofences ?? [Geofence]()
-            case .customUrl(let url):
-                geofences = GeofenceData(url: url, logger: config.logger)?.geofences ?? [Geofence]()
-            default:
-                geofences = GeofenceData(url: geofencesUrl, logger: config.logger)?.geofences ?? [Geofence]()
-            }
-        }
+        geofences = GeofenceProvider(config: config, bundle: bundle)?.getGeofences() ?? []
 
         self.locationManager.distanceFilter = config.updateDistance
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = CLLocationAccuracy(config.desiredAccuracy)
 
         clearMonitoredGeofences()
-    }
-
-    /// Builds a URL from a Tealium config pointing to a hosted JSON file on the Tealium DLE
-    var geofencesUrl: String {
-        return "\(LocationKey.dleBaseUrl)\(config.account)/\(config.profile)/\(LocationKey.fileName).json"
     }
 
     /// - Returns: `Bool` Whether or not the user has authorized location tracking/updates

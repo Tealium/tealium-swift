@@ -46,70 +46,51 @@ public extension Array where Element == Geofence {
     }
 }
 
-public struct GeofenceData: Codable {
-
-    var geofences: [Geofence]?
-    var logger: TealiumLoggerProtocol?
-
-    enum CodingKeys: String, CodingKey {
-        case geofences
+class GeofenceProvider {
+    var logger: TealiumLoggerProtocol? {
+        config.logger
     }
-
-    init?(file: String, bundle: Bundle, logger: TealiumLoggerProtocol? = nil) {
-
-        guard let path = bundle.path(forResource: file.replacingOccurrences(of: ".json", with: ""),
-                                     ofType: "json") else {
-            logError(message: LocationErrors.noFile)
+    let bundle: Bundle
+    let config: TealiumConfig
+    init?(config: TealiumConfig, bundle: Bundle) {
+        guard config.initializeGeofenceDataFrom != nil else {
             return nil
         }
-        guard let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe) else {
-            logError(message: LocationErrors.couldNotRetrieve)
-            return nil
-        }
-        guard let geofenceData = try? Tealium.jsonDecoder.decode([Geofence].self, from: jsonData) else {
-            logError(message: LocationErrors.couldNotDecode)
-            return nil
-        }
-        geofences = filter(geofences: geofenceData)
-        logInfo(message: "🌎🌎 \(String(describing: geofences?.count)) Geofences Created 🌎🌎")
+        self.config = config
+        self.bundle = bundle
     }
-
-    init?(url: String, logger: TealiumLoggerProtocol? = nil) {
-        guard !url.isEmpty else {
-            logError(message: LocationErrors.noUrl)
-            return
-        }
-        guard let geofenceUrl = URL(string: url) else {
-            logError(message: LocationErrors.invalidUrl)
-            return
-        }
+    
+    func getGeofences() -> [Geofence]? {
         do {
-            let jsonString = try String(contentsOf: geofenceUrl)
-            guard let data = jsonString.data(using: .utf8),
-                  let geofenceData = try? Tealium.jsonDecoder.decode([Geofence].self, from: data) else {
-                return
-            }
-            geofences = filter(geofences: geofenceData)
-            logInfo(message: "🌎🌎 \(String(describing: geofences?.count)) Geofences Created 🌎🌎")
-        } catch let error {
-            logError(message: "Error \(error.localizedDescription)")
+            let geofenceData = try fetchGeofences()
+            let geofences = filter(geofences: geofenceData)
+            logInfo(message: "🌎🌎 \(String(describing: geofences.count)) Geofences Created 🌎🌎")
+            return geofences
+        } catch {
+            logError(message: error.localizedDescription)
+            return nil
         }
     }
-
-    init?(json: String, logger: TealiumLoggerProtocol? = nil) {
-        guard !json.isEmpty else {
-            logError(message: LocationErrors.noJson)
-            return
+    
+    private func fetchGeofences() throws -> [Geofence] {
+        guard let locationConfig = config.initializeGeofenceDataFrom else {
+            return []
         }
-        guard let data = json.data(using: .utf8),
-              let geofenceData = try? Tealium.jsonDecoder.decode([Geofence].self, from: data) else {
-            logError(message: LocationErrors.couldNotDecode)
-            return
+        switch locationConfig {
+        case .localFile(let file):
+            return try JSONLoader.fromFile(file, bundle: bundle)
+        case .customUrl(let url):
+            return try JSONLoader.fromURL(url: url)
+        default:
+            return try JSONLoader.fromURL(url: self.url(from: config))
         }
-        geofences = filter(geofences: geofenceData)
-        logInfo(message: "🌎🌎 \(String(describing: geofences?.count)) Geofences Created 🌎🌎")
     }
-
+    
+    /// Builds a URL from a Tealium config pointing to a hosted JSON file on the Tealium DLE
+    private func url(from config: TealiumConfig) -> String {
+        return "\(LocationKey.dleBaseUrl)\(config.account)/\(config.profile)/\(LocationKey.fileName).json"
+    }
+    
     func filter(geofences: [Geofence]) -> [Geofence] {
         return geofences.filter {
             $0.name.count > 0
@@ -118,7 +99,7 @@ public struct GeofenceData: Codable {
                 && $0.radius > 0
         }
     }
-
+    
     /// Logs verbose information about events occuring in the `TealiumLocation` module
     /// - Parameter message: `String` message to log to the console
     func logError(message: String) {
@@ -136,7 +117,7 @@ public struct GeofenceData: Codable {
                                            logLevel: .debug, category: .general)
         logger?.log(logRequest)
     }
-
+    
 }
 #else
 #endif
