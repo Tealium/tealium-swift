@@ -113,7 +113,7 @@ class TealiumHelper  {
 
             }
 
-            let dataLayer = teal.dataLayer
+//            let dataLayer = teal.dataLayer
             teal.consentManager?.userConsentStatus = .consented
 //            dataLayer.add(key: "myvarforever", value: 123_456, expiry: .forever)
 //            dataLayer.add(data: ["some_key1": "some_val1"], expiry: .session)

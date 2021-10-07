@@ -24,6 +24,27 @@ public protocol TealiumObservableProtocol: TealiumObservableConvertibleProtocol 
     func unsubscribe(_ subscription: TealiumSubscription<Element>) -> Bool
 }
 
+public extension TealiumObservableProtocol {
+    func subscribeOnce(_ observer: @escaping Observer) {
+        var subscription: TealiumSubscription<Element>?
+        var shouldDispose = false
+        subscription = subscribe({ element in
+            guard !shouldDispose else {
+                return
+            }
+            observer(element)
+            if let sub = subscription {
+                sub.dispose()
+            } else {
+                shouldDispose = true
+            }
+        })
+        if shouldDispose {
+            subscription?.dispose()
+        }
+    }
+}
+
 public protocol TealiumPublisherProtocol: TealiumObservableConvertibleProtocol {
     func publish(_ element: Element)
 }

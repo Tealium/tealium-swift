@@ -104,8 +104,10 @@ public class TealiumReplayObservable<Element>: TealiumObservable<Element> {
     @discardableResult
     public override func subscribe(_ observer: @escaping Observer) -> TealiumSubscription<Element> {
         let cache = cache
-        for element in cache {
-            observer(element)
+        defer {
+            for element in cache {
+                observer(element)
+            }
         }
         return super.subscribe(observer)
     }
@@ -150,8 +152,10 @@ public class TealiumBufferedObservable<Element>: TealiumObservable<Element> {
     override public func subscribe(_ observer: @escaping Observer) -> TealiumSubscription<Element> {
         let buffer = buffer
         self.buffer = []
-        for element in buffer {
-            observer(element)
+        defer {
+            for element in buffer {
+                observer(element)
+            }
         }
         return super.subscribe(observer)
     }

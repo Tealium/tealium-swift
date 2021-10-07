@@ -283,6 +283,43 @@ class PubSubTests: XCTestCase {
         wait(for: [eventNotified, eventNotNotified], timeout: 0)
     }
     
+    func testSubscribeOnceTealiumPublisher() {
+        let publisher = TealiumPublisher<Int>()
+        subscribeOnceTest(publisher)
+    }
+    
+    func testSubscribeOnceBufferedSubject() {
+        let publisher = TealiumBufferedSubject<Int>(bufferSize: 2)
+        subscribeOnceTest(publisher)
+    }
+    
+    func testSubscribeOnceReplaySubject() {
+        let publisher = TealiumReplaySubject<Int>(cacheSize: 2)
+        subscribeOnceTest(publisher)
+    }
+    
+    func subscribeOnceTest(_ publisher: TealiumPublisher<Int>) {
+        let eventNotified = XCTestExpectation()
+        eventNotified.assertForOverFulfill = true
+        let eventNotNotified = XCTestExpectation()
+        eventNotNotified.isInverted = true
+        publisher.publish(1)
+        publisher.publish(1)
+        publisher.asObservable().subscribeOnce { val in
+            if (val == 1) {
+                eventNotified.fulfill()
+            }
+            if (val == 2) {
+                eventNotNotified.fulfill()
+            }
+        }
+        
+        publisher.publish(1)
+        publisher.publish(2)
+        
+        wait(for: [eventNotified, eventNotNotified], timeout: 0)
+    }
+    
     // Deinit
     var helper: RetaiCycleHelper<TealiumPublisher<Int>>?
     
