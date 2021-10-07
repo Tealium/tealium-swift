@@ -47,20 +47,31 @@ public extension Array where Element == Geofence {
 }
 
 class GeofenceProvider {
-    var logger: TealiumLoggerProtocol? {
+    private var logger: TealiumLoggerProtocol? {
         config.logger
     }
-    let bundle: Bundle
-    let config: TealiumConfig
-    init?(config: TealiumConfig, bundle: Bundle) {
-        guard config.initializeGeofenceDataFrom != nil else {
-            return nil
-        }
+    private let bundle: Bundle
+    private let config: TealiumConfig
+    
+    init(config: TealiumConfig, bundle: Bundle) {
         self.config = config
         self.bundle = bundle
     }
     
-    func getGeofences() -> [Geofence]? {
+    func getGeofencesAsync(completion: @escaping ([Geofence]) -> ()) {
+        guard config.initializeGeofenceDataFrom != nil else {
+            completion([])
+            return
+        }
+        TealiumQueues.backgroundSerialQueue.async {
+            let geofences = self.getGeofences()
+            TealiumQueues.mainQueue.async {
+                completion(geofences)
+            }
+        }
+    }
+    
+    private func getGeofences() -> [Geofence] {
         do {
             let geofenceData = try fetchGeofences()
             let geofences = filter(geofences: geofenceData)
@@ -68,7 +79,7 @@ class GeofenceProvider {
             return geofences
         } catch {
             logError(message: error.localizedDescription)
-            return nil
+            return []
         }
     }
     

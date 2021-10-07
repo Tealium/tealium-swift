@@ -28,6 +28,9 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     weak var locationDelegate: LocationDelegate?
     public var locationAccuracy: String = LocationKey.highAccuracy
     private var _lastLocation: CLLocation?
+    
+    @ToAnyObservable(TealiumReplaySubject())
+    var onReady: TealiumObservable<Void>
 
     init(config: TealiumConfig,
          bundle: Bundle = Bundle.main,
@@ -40,7 +43,11 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
 
         super.init()
 
-        geofences = GeofenceProvider(config: config, bundle: bundle)?.getGeofences() ?? []
+        let provider = GeofenceProvider(config: config, bundle: bundle)
+        provider.getGeofencesAsync { [weak self] geofences in
+            self?.geofences = geofences
+            self?._onReady.publish()
+        }
 
         self.locationManager.distanceFilter = config.updateDistance
         self.locationManager.delegate = self
@@ -124,18 +131,23 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     /// Enables regular updates of location data through the location client
     /// Update frequency is dependant on config.useHighAccuracy, a parameter passed on initialization of this class.
     public func startLocationUpdates() {
-        guard isAuthorized else {
-            logInfo(message: "🌎🌎 Location Updates Service Not Enabled 🌎🌎")
-            return
+        onReady.subscribeOnce { [weak self] in
+            guard let self = self else {
+                return
+            }
+            guard self.isAuthorized else {
+                self.logInfo(message: "🌎🌎 Location Updates Service Not Enabled 🌎🌎")
+                return
+            }
+            guard !self.config.useHighAccuracy,
+                  CLLocationManager.significantLocationChangeMonitoringAvailable() else {
+                self.locationManager.startUpdatingLocation()
+                self.logInfo(message: "🌎🌎 Starting Location Updates With Frequent Monitoring 🌎🌎")
+                return
+            }
+            self.locationManager.startMonitoringSignificantLocationChanges()
+            self.logInfo(message: "🌎🌎 Starting Location Updates With Significant Location Changes Only 🌎🌎")
         }
-        guard !config.useHighAccuracy,
-              CLLocationManager.significantLocationChangeMonitoringAvailable() else {
-            locationManager.startUpdatingLocation()
-            logInfo(message: "🌎🌎 Starting Location Updates With Frequent Monitoring 🌎🌎")
-            return
-        }
-        locationManager.startMonitoringSignificantLocationChanges()
-        logInfo(message: "🌎🌎 Starting Location Updates With Significant Location Changes Only 🌎🌎")
     }
 
     /// Stops the updating of location data through the location client.
