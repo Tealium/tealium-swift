@@ -95,10 +95,10 @@ public class AutotrackingModule: Collector {
             }
             do {
                 if let file = self.config.autoTrackingBlocklistFilename,
-                   let blockList: [String]? = try JSONLoader.fromFile(file, bundle: .main, logger: nil) {
+                   let blockList: [String] = try JSONLoader.fromFile(file, bundle: .main, logger: nil) {
                     self.blockList = blockList
                 } else if let url = self.config.autoTrackingBlocklistURL,
-                          let blockList: [String]? = try JSONLoader.fromURL(url: url, logger: nil) {
+                          let blockList: [String] = try JSONLoader.fromURL(url: url, logger: nil) {
                     self.blockList = blockList
                 } else {
                     self.blockList = nil
