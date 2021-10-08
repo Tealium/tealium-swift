@@ -28,7 +28,6 @@ class AutoTrackingMacOSUITests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
         var text = """
-            ContentView
             Root View 0
             
             """
@@ -42,7 +41,9 @@ class AutoTrackingMacOSUITests: XCTestCase {
         text += "SomeView\n"
         app.buttons["Launch ViewController"].click()
         assertStaticTextExists(app: app, text: text)
-        
+        app.buttons["Launch Third View"].click()
+        text += "AutotrackingView\n"
+        assertStaticTextExists(app: app, text: text)        
     }
     
     func assertStaticTextExists(app: XCUIApplication, text: String) {

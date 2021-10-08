@@ -8,6 +8,14 @@
 import SwiftUI
 import TealiumAutotracking
 
+struct AutotrackingView: View {
+    
+    var body: some View {
+        Text("Autotracked view")
+            .autoTracking(viewSelf: self)
+    }
+}
+
 struct ContentView: View {
     @State var count = 0
     @State var name: String = "Root View 0"
@@ -35,10 +43,12 @@ struct ContentView: View {
                                         SomeView()
                                     }
                     )
+                    NavigationLink("Launch Third View", destination:
+                                    AutotrackingView()
+                    )
                 }
             }
         }
-        .autoTracking(viewSelf: self)
     }
 }
 

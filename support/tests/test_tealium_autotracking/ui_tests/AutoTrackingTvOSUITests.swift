@@ -29,7 +29,6 @@ class AutoTrackingTvOSUITests: XCTestCase {
         app.launch()
         let remote = XCUIRemote.shared
         var text = """
-            ContentView
             Root View 0
             
             """
@@ -46,6 +45,13 @@ class AutoTrackingTvOSUITests: XCTestCase {
         assertStaticTextExists(app: app, text: text)
         remote.press(.menu)
         text += "Root View 2\n"
+        assertStaticTextExists(app: app, text: text)
+        remote.press(.down)
+        remote.press(.select)
+        text += "AutotrackingView\n"
+        assertStaticTextExists(app: app, text: text)
+        remote.press(.menu)
+        text += "Root View 3\n"
         assertStaticTextExists(app: app, text: text)
     }
     
