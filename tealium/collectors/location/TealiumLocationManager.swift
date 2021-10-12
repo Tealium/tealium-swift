@@ -45,8 +45,9 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
 
         let provider = GeofenceProvider(config: config, bundle: bundle)
         provider.getGeofencesAsync { [weak self] geofences in
-            self?.geofences = geofences
-            self?._onReady.publish()
+            guard let self = self else { return }
+            self.geofences = geofences
+            self._onReady.publish()
         }
 
         self.locationManager.distanceFilter = config.updateDistance
@@ -168,8 +169,8 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let lastLocation = locations.last {
             self.lastLocation = lastLocation
+            logInfo(message: "🌎🌎 Location updated: \(String(describing: lastLocation.coordinate)) 🌎🌎")
         }
-        logInfo(message: "🌎🌎 Location updated: \(String(describing: lastLocation?.coordinate)) 🌎🌎")
         geofences.regions.forEach {
             let geofenceLocation = CLLocation(latitude: $0.center.latitude, longitude: $0.center.longitude)
 
