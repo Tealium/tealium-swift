@@ -273,7 +273,6 @@ class TealiumDelegateProxy: NSProxy {
     private static func handleDeepLink(_ url: URL, referrer: Tealium.DeepLinkReferrer? = nil) {
         contexts?.forEach {
             $0.handleDeepLink(url, referrer: referrer)
-
         }
     }
 
@@ -331,10 +330,8 @@ class TealiumDelegateProxy: NSProxy {
     @objc
     private func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         URLContexts.forEach { urlContext in
-            TealiumDelegateProxy.contexts?.forEach {
-                TealiumDelegateProxy.log("Received Deep Link: \(urlContext.url.absoluteString)")
-                $0.handleDeepLink(urlContext.url)
-            }
+            TealiumDelegateProxy.log("Received Deep Link: \(urlContext.url.absoluteString)")
+            TealiumDelegateProxy.handleDeepLink(urlContext.url, referrer: .fromAppId(urlContext.options.sourceApplication))
         }
         let methodSelector = #selector(scene(_:openURLContexts:))
         guard let pointer = TealiumDelegateProxy.originalMethodImplementation(for: methodSelector, object: self),
@@ -354,9 +351,7 @@ class TealiumDelegateProxy: NSProxy {
               return
           }
         TealiumDelegateProxy.log("Received Deep Link: \(urlToOpen.absoluteString)")
-        TealiumDelegateProxy.contexts?.forEach {
-            $0.handleDeepLink(urlToOpen)
-        }
+        TealiumDelegateProxy.handleDeepLink(urlToOpen, referrer: .fromUrl(continueUserActivity.referrerURL))
         let methodSelector = #selector(scene(_:continueUserActivity:))
         guard let pointer = TealiumDelegateProxy.originalMethodImplementation(for: methodSelector, object: self),
               let pointerValue = pointer.pointerValue else {
