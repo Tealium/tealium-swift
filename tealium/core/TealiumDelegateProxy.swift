@@ -70,19 +70,28 @@ class TealiumDelegateProxy: NSProxy {
             return
         }
         if #available(iOS 13.0, *) {
-            var observer: NSObjectProtocol?
-            observer = NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: nil) { _ in
-                weak var sceneDelegate = TealiumDelegateProxy.sharedApplication?.connectedScenes.first?.delegate
-                TealiumQueues.mainQueue.async {
-                    proxyUIDelegate(sceneDelegate)
-                }
-                guard let observer = observer else {
-                    return
-                }
-                NotificationCenter.default.removeObserver(observer, name: UIApplication.didBecomeActiveNotification, object: nil)
+            getSceneDelegate { sceneDelegate in
+                proxyUIDelegate(sceneDelegate)
             }
         }
     }()
+    
+    @available(iOS 13.0, *)
+    static private func getSceneDelegate(completion: @escaping (UISceneDelegate?) -> ()) {
+        if let delegate = TealiumDelegateProxy.sharedApplication?.connectedScenes.first?.delegate {
+            completion(delegate)
+            return
+        }
+        var observer: NSObjectProtocol?
+        observer = NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: nil) { _ in
+            weak var sceneDelegate = TealiumDelegateProxy.sharedApplication?.connectedScenes.first?.delegate
+            completion(sceneDelegate)
+            guard let observer = observer else {
+                return
+            }
+            NotificationCenter.default.removeObserver(observer, name: UIApplication.didBecomeActiveNotification, object: nil)
+        }
+    }
 
     private static func proxyUIDelegate(_ uiDelegate: NSObjectProtocol?) {
         guard let uiDelegate = uiDelegate else {
