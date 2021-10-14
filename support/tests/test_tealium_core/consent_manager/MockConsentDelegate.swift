@@ -16,7 +16,10 @@ class MockConsentDelegate: ModuleDelegate {
 
     func requestTrack(_ track: TealiumTrackRequest) {
         guard let expectation = asyncExpectation else {
-            XCTFail("MockLocationDelegate was not setup correctly. Missing XCTExpectation reference")
+            XCTFail("MockConsentDelegate was not setup correctly. Missing XCTExpectation reference")
+            return
+        }
+        if asyncExpectation?.description == "testConsentGrantedTriggersDequeueRequest" {
             return
         }
         trackInfo = track.trackDictionary
@@ -24,7 +27,16 @@ class MockConsentDelegate: ModuleDelegate {
         asyncExpectation = XCTestExpectation(description: "\(expectation.description)1")
     }
 
-    func requestDequeue(reason: String) { }
+    func requestDequeue(reason: String) {
+        guard asyncExpectation?.description == "testConsentGrantedTriggersDequeueRequest" else {
+            return
+        }
+        guard reason == "Consent Granted" else {
+            XCTFail()
+            return
+        }
+        asyncExpectation?.fulfill()
+    }
 
     func processRemoteCommandRequest(_ request: TealiumRequest) { }
 

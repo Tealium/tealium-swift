@@ -13,8 +13,8 @@ class MockDataLayerDiskStorage: TealiumDiskStorageProtocol {
     var mockEventData: Set<DataLayerItem>?
 
     init() {
-        let dataItem1 = DataLayerItem(key: "singleDataItemKey1", value: "singleDataItemValue1", expires: .distantFuture)
-        let dataItem2 = DataLayerItem(key: "singleDataItemKey2", value: "singleDataItemValue2", expires: .distantFuture)
+        let dataItem1 = DataLayerItem(key: "singleDataItemKey1", value: "singleDataItemValue1", expiry: .forever)
+        let dataItem2 = DataLayerItem(key: "singleDataItemKey2", value: "singleDataItemValue2", expiry: .forever)
         mockEventData = Set<DataLayerItem>(arrayLiteral: dataItem1, dataItem2)
     }
 

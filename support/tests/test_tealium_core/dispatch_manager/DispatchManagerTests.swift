@@ -147,7 +147,31 @@ class DispatchQueueModuleTests: XCTestCase {
         dispatchManager.config = config
         XCTAssertFalse(dispatchManager.canQueueRequest(TealiumTrackRequest(data: ["tealium_event": "view"])))
     }
+    
+    func testRegisterForPowerNotificationsEnabled() {
+        
+        let config = TestTealiumHelper().getConfig()
+        config.batterySaverEnabled = true
+        config.logLevel = .silent
+        dispatchManager = DispatchManager(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: DispatchQueueModuleTests.connectivity, config: config, diskStorage: DispatchQueueMockDiskStorage())
+        
+        dispatchManager.registerForPowerNotifications()
+        #if os(iOS)
+        XCTAssertNotNil(dispatchManager.lowPowerNotificationObserver)
+        #else
+        XCTAssertNil(dispatchManager.lowPowerNotificationObserver) // Every other platform doesn't register
+        #endif
+    }
 
+    func testRegisterForPowerNotificationsDisabled() {
+        let config = TestTealiumHelper().getConfig()
+        config.batterySaverEnabled = false
+        config.logLevel = .silent
+        dispatchManager = DispatchManager(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: DispatchQueueModuleTests.connectivity, config: config, diskStorage: DispatchQueueMockDiskStorage())
+        
+        dispatchManager.registerForPowerNotifications()
+        XCTAssertNil(dispatchManager.lowPowerNotificationObserver)
+    }
 }
 
 class MockPersistentQueue: TealiumPersistentDispatchQueue {

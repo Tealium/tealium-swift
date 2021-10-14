@@ -127,9 +127,12 @@ private func convertFromUIBackgroundTaskIdentifier(_ input: UIBackgroundTaskIden
 extension DispatchManager {
 
     func registerForPowerNotifications() {
-        #if os(macOS)
+        #if !os(iOS)
         self.lowPowerModeEnabled = false
         #else
+        guard config.batterySaverEnabled == true else {
+            return
+        }
         lowPowerNotificationObserver = NotificationCenter.default.addObserver(forName: .NSProcessInfoPowerStateDidChange, object: nil, queue: nil) { [weak self] _ in
             guard let self = self else {
                 return

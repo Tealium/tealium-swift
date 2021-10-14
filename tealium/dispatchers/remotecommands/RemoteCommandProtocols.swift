@@ -15,6 +15,7 @@ public protocol RemoteCommandsManagerProtocol {
     var jsonCommands: [RemoteCommandProtocol] { get set }
     var webviewCommands: [RemoteCommandProtocol] { get set }
     var moduleDelegate: ModuleDelegate? { get set }
+    var urlSession: URLSessionProtocol { get }
     func add(_ remoteCommand: RemoteCommandProtocol)
     func refresh(_ command: RemoteCommandProtocol, url: URL, file: String)
     func remove(commandWithId: String)

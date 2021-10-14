@@ -153,6 +153,11 @@ public class ConsentManager {
         if let categories = categories {
             currentPolicy.preferences.setConsentCategories(categories)
         }
+        
+        if status == .consented {
+            delegate?.requestDequeue(reason: "Consent Granted")
+        }
+        
         lastConsentUpdate = Date()
         storeUserConsentPreferences(currentPolicy.preferences)
         trackUserConsentPreferences(currentPolicy.preferences)

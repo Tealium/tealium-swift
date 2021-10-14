@@ -17,6 +17,29 @@ public class DeviceData: DeviceDataCollection {
     public init() {
     }
 
+    /// Retrieves device name mapping from JSON file in app bundle.
+    ///
+    /// - Returns: `[String: Any]` containing the model name information
+    lazy var allModelNames: [String: Any]? = {
+        #if SWIFT_PACKAGE
+        // spm
+        let bundle = Bundle.module
+        #else
+        // cocoapods/carthage
+        let bundle = Bundle(for: type(of: self))
+        #endif
+        
+        guard let path = bundle.path(forResource: DeviceDataKey.fileName, ofType: "json") else {
+            return nil
+        }
+        if let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe) {
+            if let result = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: [String: String]] {
+                return result
+            }
+        }
+        return nil
+    }()
+
     // MARK: Battery
     /// - Returns: `String` battery percentage
     class var batteryPercent: String {

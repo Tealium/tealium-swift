@@ -18,7 +18,7 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
     public var webviewCommands = [RemoteCommandProtocol]()
     weak public var moduleDelegate: ModuleDelegate?
     static var pendingResponses = Atomic<[String: Bool]>(value: [String: Bool]())
-    var urlSession: URLSessionProtocol?
+    public var urlSession: URLSessionProtocol
     var diskStorage: TealiumDiskStorageProtocol?
     var config: TealiumConfig
     var hasFetched = false
@@ -74,7 +74,7 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
             request.setValue(lastFetch.httpIfModifiedHeader, forHTTPHeaderField: "If-Modified-Since")
         }
         request.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
-        self.urlSession?.tealiumDataTask(with: request) { data, response, _ in
+        self.urlSession.tealiumDataTask(with: request) { data, response, _ in
             guard let response = response as? HTTPURLResponse else {
                 completion(.failure(TealiumRemoteCommandsError.noResponse))
                 return
@@ -147,11 +147,21 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
         "\(RemoteCommandsKey.dlePrefix)\(config.account)/\(config.profile)/"
     }
 
+    private func isCommandAdded(_ commandId: String) -> Bool {
+        return jsonCommands.contains { $0.commandId == commandId }
+            || webviewCommands.contains { $0.commandId == commandId }
+    }
+    
     /// Adds a remote command for later execution.
+    ///
+    /// If a command with the same commandId has already been added the new one will be ignored.
     ///
     /// - Parameter remoteCommand: `TealiumRemoteCommand` to be added for later execution
     // swiftlint:disable pattern_matching_keywords
     public func add(_ remoteCommand: RemoteCommandProtocol) {
+        guard !isCommandAdded(remoteCommand.commandId) else {
+            return
+        }
         var remoteCommand = remoteCommand
         remoteCommand.delegate = self
         switch remoteCommand.type {
@@ -267,7 +277,7 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
     }
     
     deinit {
-        urlSession?.finishTealiumTasksAndInvalidate()
+        urlSession.finishTealiumTasksAndInvalidate()
     }
 }
 
