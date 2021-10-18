@@ -10,7 +10,7 @@
 import Foundation
 import UIKit
 
-class TealiumDelegateProxy: NSProxy {
+@objc public class TealiumDelegateProxy: NSProxy {
 
     private typealias ApplicationOpenURL = @convention(c) (Any, Selector, UIApplication, URL, [UIApplication.OpenURLOptionsKey: Any]) -> Bool
     private typealias ApplicationContinueUserActivity = @convention(c) (Any, Selector, UIApplication, NSUserActivity, @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool
@@ -36,6 +36,10 @@ class TealiumDelegateProxy: NSProxy {
         return UIApplication.perform(selector)?.takeUnretainedValue() as? UIApplication
     }
 
+    @objc public static func setup() {
+        setup(context: nil)
+    }
+    
     public static func setup(context: TealiumContext?) {
         if let context = context {
             contexts = contexts ?? Set<TealiumContext>()
