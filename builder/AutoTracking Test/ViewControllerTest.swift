@@ -11,6 +11,19 @@ import SwiftUI
 import TealiumCore
 import TealiumAutotracking
 
+struct BaseUIViewControllerWrapper: View, UIViewControllerRepresentable {
+    typealias UIViewControllerType = UIViewController
+    
+    func makeUIViewController(context: Context) -> UIViewController {
+        let controller = UIViewController()
+        return controller
+    }
+    
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+        
+    }
+}
+
 struct ViewControllerWrapper: View, UIViewControllerRepresentable {
     typealias UIViewControllerType = ViewControllerTest
     
@@ -37,7 +50,7 @@ class ViewControllerTest: TealiumViewController {
     
     var headerView: UIView!
     var titleLabel: UILabel!
-    var _title: String? = "RealViewController"
+    var _title: String? = "RealVC"
     override var title: String? {
         get {
             _title

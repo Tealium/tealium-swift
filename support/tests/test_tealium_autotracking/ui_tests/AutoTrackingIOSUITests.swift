@@ -28,28 +28,34 @@ class AutoTrackingIOSUITests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
         var text = """
-            Root View 0
+            RootView0
             
             """
         assertStaticTextExists(app: app, text: text)
         app.buttons["Launch ViewController"].tap()
         text += "ViewControllerWrapper\n"
-        text += "RealViewController\n" // Did appear happens late
+        text += "RealVC\n" // Did appear happens late
         assertStaticTextExists(app: app, text: text)
         app.navigationBars.firstMatch.buttons.firstMatch.tap()
-        text += "Root View 1\n"
+        text += "RootView1\n"
         assertStaticTextExists(app: app, text: text)
         app.buttons["Launch Second View"].tap()
-        text += "Second View\n"
+        text += "SecondView\n"
         assertStaticTextExists(app: app, text: text)
         app.navigationBars.firstMatch.buttons.firstMatch.tap()
-        text += "Root View 2\n"
+        text += "RootView2\n"
         assertStaticTextExists(app: app, text: text)
         app.buttons["Launch Third View"].tap()
         text += "AutotrackingView\n"
         assertStaticTextExists(app: app, text: text)
         app.navigationBars.firstMatch.buttons.firstMatch.tap()
-        text += "Root View 3\n"
+        text += "RootView3\n"
+        assertStaticTextExists(app: app, text: text)
+        app.buttons["Launch Default UIViewController"].tap()
+        text += "UI\n"
+        assertStaticTextExists(app: app, text: text)
+        app.navigationBars.firstMatch.buttons.firstMatch.tap()
+        text += "RootView4\n"
         assertStaticTextExists(app: app, text: text)
     }
     

@@ -28,7 +28,7 @@ class AutoTrackingMacOSUITests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
         var text = """
-            Root View 0
+            RootView0
             
             """
         assertStaticTextExists(app: app, text: text)
@@ -36,7 +36,7 @@ class AutoTrackingMacOSUITests: XCTestCase {
         app.buttons["Launch ViewController"].click()
         assertStaticTextExists(app: app, text: text)
         app.buttons["Launch Second View"].click()
-        text += "Second View\n"
+        text += "SecondView\n"
         assertStaticTextExists(app: app, text: text)
         text += "SomeView\n"
         app.buttons["Launch ViewController"].click()

@@ -18,34 +18,39 @@ struct AutotrackingView: View {
 
 struct ContentView: View {
     @State var count = 0
-    @State var name: String = "Root View 0"
+    @State var name: String = "RootView0"
     
     var body: some View {
         VStack {
             NavigationView {
                 List {
                     NavigationLink("Launch ViewController", destination:
-                                    TealiumViewTrackable {
-                                        #if os(iOS)
-                                        ViewControllerWrapper()
-                                        #else
-                                        SomeView()
-                                        #endif
-                                    }
+                        TealiumViewTrackable {
+                            #if os(iOS)
+                            ViewControllerWrapper()
+                            #else
+                            SomeView()
+                            #endif
+                        }
                     )
                     .autoTracked(name: $name)
                     .onDisappear {
                         self.count += 1
-                        self.name = "Root View \(count)"
+                        self.name = "RootView\(count)"
                     }
                     NavigationLink("Launch Second View", destination:
-                                    TealiumViewTrackable(constantName: "Second View") {
-                                        SomeView()
-                                    }
+                        TealiumViewTrackable(constantName: "SecondView") {
+                            SomeView()
+                        }
                     )
                     NavigationLink("Launch Third View", destination:
-                                    AutotrackingView()
+                        AutotrackingView()
                     )
+                    #if os(iOS)
+                    NavigationLink("Launch Default UIViewController", destination:
+                        BaseUIViewControllerWrapper()
+                    )
+                    #endif
                 }
             }
         }
