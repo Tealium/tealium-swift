@@ -26,7 +26,7 @@ class TealiumDelegateProxy: NSProxy {
         static var originalImplementations = "Tealium_OriginalImplementations"
     }
 
-    private static var sceneEnabled = true
+    private static var sceneEnabled = false
     private static var name = "AppDelegate"
     private static var gOriginalDelegate: NSObjectProtocol?
     private static var gDelegateSubClass: AnyClass?
@@ -38,48 +38,51 @@ class TealiumDelegateProxy: NSProxy {
 
     public static func setup(context: TealiumContext?) {
         if let context = context {
-//            if context.config.sceneDelegateProxyEnabled {
-                TealiumDelegateProxy.name = "SceneDelegate"
-                sceneEnabled = true
-//            }
             contexts = contexts ?? Set<TealiumContext>()
             TealiumDelegateProxy.contexts?.insert(context)
         }
-        // Let the property be initialized and run its block.
-        if !Thread.isMainThread {
-            TealiumQueues.mainQueue.async {
-                _ = runOnce
-            }
-        } else {
+        TealiumQueues.secureMainThreadExecution {
             _ = runOnce
         }
-        
     }
 
     public static func tearDown() {
         contexts?.removeAll()
         contexts = nil
     }
+    
+    fileprivate static var isAutotrackingDeepLinkEnabled: Bool {
+        return Bundle.main.object(forInfoDictionaryKey: "TealiumAutotrackingDeepLinkEnabled") as? Bool ?? true
+    }
 
     /// Using Swift's lazy evaluation of a static property we get the same
     /// thread-safety and called-once guarantees as dispatch_once provided.
     private static let runOnce: () = {
-        guard sceneEnabled else {
-            weak var appDelegate = TealiumDelegateProxy.sharedApplication?.delegate
-            proxyUIDelegate(appDelegate)
+        guard isAutotrackingDeepLinkEnabled else {
             return
         }
         if #available(iOS 13.0, *) {
             getSceneDelegate { sceneDelegate in
-                proxyUIDelegate(sceneDelegate)
+                let delegate: NSObjectProtocol?
+                if let sceneDelegate = sceneDelegate {
+                    TealiumDelegateProxy.name = "SceneDelegate"
+                    sceneEnabled = true
+                    delegate = sceneDelegate
+                } else {
+                    delegate = TealiumDelegateProxy.sharedApplication?.delegate
+                }
+                proxyUIDelegate(delegate)
             }
+        } else {
+            let appDelegate = TealiumDelegateProxy.sharedApplication?.delegate
+            proxyUIDelegate(appDelegate)
         }
     }()
     
     @available(iOS 13.0, *)
     static private func getSceneDelegate(completion: @escaping (UISceneDelegate?) -> ()) {
-        if let delegate = TealiumDelegateProxy.sharedApplication?.connectedScenes.first?.delegate {
-            completion(delegate)
+        if TealiumDelegateProxy.sharedApplication?.applicationState == .active {
+            completion(TealiumDelegateProxy.sharedApplication?.connectedScenes.first?.delegate)
             return
         }
         var observer: NSObjectProtocol?
@@ -156,48 +159,49 @@ class TealiumDelegateProxy: NSProxy {
         let originalClass = type(of: originalDelegate)
         var originalImplementationsStore: [String: NSValue] = [:]
         
-        if sceneEnabled {
-            if #available(iOS 13.0, *) {
-                let sceneOpenURLContexts = #selector(scene(_:openURLContexts:))
-                self.proxyInstanceMethod(toClass: subClass,
-                    withSelector: sceneOpenURLContexts,
-                    fromClass: TealiumDelegateProxy.self,
-                    fromSelector: sceneOpenURLContexts,
-                    withOriginalClass: originalClass,
-                    storeOriginalImplementationInto: &originalImplementationsStore)
-  
-                let sceneContinueUserActivity = #selector(scene(_:continueUserActivity:))
-                self.proxyInstanceMethod(toClass: subClass,
-                    withSelector: sceneContinueUserActivity,
-                    fromClass: TealiumDelegateProxy.self,
-                    fromSelector: sceneContinueUserActivity,
-                    withOriginalClass: originalClass,
-                    storeOriginalImplementationInto: &originalImplementationsStore)
-            }
+        if #available(iOS 13.0, *), sceneEnabled {
+            let sceneOpenURLContexts = #selector(scene(_:openURLContexts:))
+            self.proxyInstanceMethod(
+                toClass: subClass,
+                withSelector: sceneOpenURLContexts,
+                fromClass: TealiumDelegateProxy.self,
+                fromSelector: sceneOpenURLContexts,
+                withOriginalClass: originalClass,
+                storeOriginalImplementationInto: &originalImplementationsStore)
+            
+            let sceneContinueUserActivity = #selector(scene(_:continueUserActivity:))
+            self.proxyInstanceMethod(
+                toClass: subClass,
+                withSelector: sceneContinueUserActivity,
+                fromClass: TealiumDelegateProxy.self,
+                fromSelector: sceneContinueUserActivity,
+                withOriginalClass: originalClass,
+                storeOriginalImplementationInto: &originalImplementationsStore)
+        } else {
+            let applicationWillOpenURL = #selector(application(_:openURL:options:))
+            self.proxyInstanceMethod(
+                toClass: subClass,
+                withSelector: applicationWillOpenURL,
+                fromClass: TealiumDelegateProxy.self,
+                fromSelector: applicationWillOpenURL,
+                withOriginalClass: originalClass,
+                storeOriginalImplementationInto: &originalImplementationsStore)
+            
+            let applicationWillContinueUserActivity = #selector(application(_:continueUserActivity:restorationHandler:))
+            self.proxyInstanceMethod(
+                toClass: subClass,
+                withSelector: applicationWillContinueUserActivity,
+                fromClass: TealiumDelegateProxy.self,
+                fromSelector: applicationWillContinueUserActivity,
+                withOriginalClass: originalClass,
+                storeOriginalImplementationInto: &originalImplementationsStore)
         }
-
-        let applicationWillOpenURL = #selector(application(_:openURL:options:))
-        self.proxyInstanceMethod(
-            toClass: subClass,
-            withSelector: applicationWillOpenURL,
-            fromClass: TealiumDelegateProxy.self,
-            fromSelector: applicationWillOpenURL,
-            withOriginalClass: originalClass,
-            storeOriginalImplementationInto: &originalImplementationsStore)
-
-        let applicationWillContinueUserActivity = #selector(application(_:continueUserActivity:restorationHandler:))
-        self.proxyInstanceMethod(
-            toClass: subClass,
-            withSelector: applicationWillContinueUserActivity,
-            fromClass: TealiumDelegateProxy.self,
-            fromSelector: applicationWillContinueUserActivity,
-            withOriginalClass: originalClass,
-            storeOriginalImplementationInto: &originalImplementationsStore)
-
+        
+        
         // Store original implementations
         objc_setAssociatedObject(originalDelegate, &AssociatedObjectKeys.originalImplementations, originalImplementationsStore, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
-
+    
     private static func overrideDescription(in subClass: AnyClass) {
         // Override the description so the custom class name will not show up.
         self.addInstanceMethod(
