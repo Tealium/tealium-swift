@@ -9,6 +9,12 @@
 #import "TealiumDelegateProxy+Swizzle.h"
 #if TARGET_OS_IOS
 
+#if COCOAPODS
+#import <TealiumSwift/TealiumSwift-Swift.h>
+#else
+#import <TealiumCore/TealiumCore-Swift.h>
+#endif
+
 @implementation TealiumDelegateProxy (Swizzle)
 
 + (void)load {

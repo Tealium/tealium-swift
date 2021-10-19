@@ -8,17 +8,13 @@
 
 #import <Foundation/Foundation.h>
 #if TARGET_OS_IOS
-#if COCOAPODS
-#import <TealiumSwift/TealiumSwift-Swift.h>
-#else
-#import <TealiumCore/TealiumCore-Swift.h>
-#endif
 
-NS_ASSUME_NONNULL_BEGIN
+//NS_ASSUME_NONNULL_BEGIN
 
-@interface TealiumDelegateProxy (Swizzle)
+//@interface TealiumDelegateProxy (Swizzle)
+//
+//@end
 
-@end
+//NS_ASSUME_NONNULL_END
 
-NS_ASSUME_NONNULL_END
 #endif
