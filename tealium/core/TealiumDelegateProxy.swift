@@ -22,27 +22,35 @@ private let swizzling: (AnyClass, Selector, Selector) -> () = { forClass, origin
 @available(iOS 13.0, *)
 extension UIScene {
     
-    static let classInit: Void = {
-        swizzleDelegateGetter()
+    fileprivate static let tealSwizzleDelegateGetterOnce: Void = {
+        let originalSelector = #selector(getter: delegate)
+        let swizzledSelector = #selector(getter: teal_swizzled_delegate)
+        swizzling(UIScene.self, originalSelector, swizzledSelector)
+    }()
+    private static var tealSwizzlingBlock: ((UISceneDelegate?) -> ())? = { delegate in
+        tealSwizzlingBlock = nil
+        tealSharedDelegate = delegate
+        tealSwizzleDelegateInstanceOnce
+        tealSharedDelegate = nil
+    }
+    static private weak var tealSharedDelegate: UISceneDelegate?
+    static private let tealSwizzleDelegateInstanceOnce: Void = {
+        if let delegate = tealSharedDelegate {
+            TealiumDelegateProxy.proxySceneDelegate(delegate)
+        } else {
+            TealiumDelegateProxy.proxyAppDelegate()
+        }
     }()
     
-    @objc private var swizzled_delegate: UISceneDelegate? {
+    @objc private var teal_swizzled_delegate: UISceneDelegate? {
         get {
-            if let delegate = self.swizzled_delegate {
-                TealiumDelegateProxy.sceneEnabled = true
-                TealiumDelegateProxy.name = "SceneDelegate"
-                TealiumDelegateProxy.proxyUIDelegate(delegate)
-            } else {
-                TealiumDelegateProxy.proxyUIDelegate(TealiumDelegateProxy.sharedApplication?.delegate)
+            // self.teal_swizzled_delegate would actually be the original implementation (self.delegate) after swizzling
+            let delegate = self.teal_swizzled_delegate
+            TealiumQueues.secureMainThreadExecution {
+                UIScene.tealSwizzlingBlock?(delegate)
             }
-            return self.swizzled_delegate
+            return delegate
         }
-    }
-    
-    private static func swizzleDelegateGetter() {
-        let originalSelector = #selector(getter: delegate)
-        let swizzledSelector = #selector(getter: swizzled_delegate)
-        swizzling(UIScene.self, originalSelector, swizzledSelector)
     }
 }
 
@@ -66,8 +74,8 @@ extension UIScene {
         static var originalImplementations = "Tealium_OriginalImplementations"
     }
 
-    fileprivate static var sceneEnabled = false
-    fileprivate static var name = "AppDelegate"
+    private static var sceneEnabled = false
+    private static var name = "AppDelegate"
     private static var gOriginalDelegate: NSObjectProtocol?
     private static var gDelegateSubClass: AnyClass?
 
@@ -95,7 +103,7 @@ extension UIScene {
         contexts = nil
     }
     
-    fileprivate static var isAutotrackingDeepLinkEnabled: Bool {
+    private static var isAutotrackingDeepLinkEnabled: Bool {
         return Bundle.main.object(forInfoDictionaryKey: "TealiumAutotrackingDeepLinkEnabled") as? Bool ?? true
     }
 
@@ -106,47 +114,25 @@ extension UIScene {
             return
         }
         if #available(iOS 13.0, *) {
-            _ = UIScene.classInit
+            _ = UIScene.tealSwizzleDelegateGetterOnce
         } else {
-            let appDelegate = TealiumDelegateProxy.sharedApplication?.delegate
-            proxyUIDelegate(appDelegate)
+            proxyAppDelegate()
         }
-//        if #available(iOS 13.0, *) {
-//            getSceneDelegate { sceneDelegate in
-//                let delegate: NSObjectProtocol?
-//                if let sceneDelegate = sceneDelegate {
-//                    TealiumDelegateProxy.name = "SceneDelegate"
-//                    sceneEnabled = true
-//                    delegate = sceneDelegate
-//                } else {
-//                    delegate = TealiumDelegateProxy.sharedApplication?.delegate
-//                }
-//                proxyUIDelegate(delegate)
-//            }
-//        } else {
-//            let appDelegate = TealiumDelegateProxy.sharedApplication?.delegate
-//            proxyUIDelegate(appDelegate)
-//        }
     }()
-    
-    @available(iOS 13.0, *)
-    static private func getSceneDelegate(completion: @escaping (UISceneDelegate?) -> ()) {
-        if TealiumDelegateProxy.sharedApplication?.applicationState == .active {
-            completion(TealiumDelegateProxy.sharedApplication?.connectedScenes.first?.delegate)
-            return
-        }
-        var observer: NSObjectProtocol?
-        observer = NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: nil) { _ in
-            weak var sceneDelegate = TealiumDelegateProxy.sharedApplication?.connectedScenes.first?.delegate
-            completion(sceneDelegate)
-            guard let observer = observer else {
-                return
-            }
-            NotificationCenter.default.removeObserver(observer, name: UIApplication.didBecomeActiveNotification, object: nil)
-        }
-    }
 
-    fileprivate static func proxyUIDelegate(_ uiDelegate: NSObjectProtocol?) {
+    @available(iOS 13.0, *)
+    fileprivate static func proxySceneDelegate(_ sceneDelegate: UISceneDelegate) {
+        sceneEnabled = true
+        name = "SceneDelegate"
+        proxyUIDelegate(sceneDelegate)
+    }
+    
+    fileprivate static func proxyAppDelegate() {
+        let appDelegate = TealiumDelegateProxy.sharedApplication?.delegate
+        proxyUIDelegate(appDelegate)
+    }
+    
+    private static func proxyUIDelegate(_ uiDelegate: NSObjectProtocol?) {
         guard let uiDelegate = uiDelegate, gDelegateSubClass == nil else {
             log("Original \(TealiumDelegateProxy.name) instance was nil")
             return
@@ -166,7 +152,6 @@ extension UIScene {
         }
         if #available(iOS 13.0, *) {
             weak var sceneDelegate = TealiumDelegateProxy.sharedApplication?.connectedScenes.first?.delegate
-            TealiumDelegateProxy.sharedApplication?.delegate = nil
             TealiumDelegateProxy.sharedApplication?.connectedScenes.first?.delegate = sceneDelegate
             gOriginalDelegate = sceneDelegate
         }
