@@ -142,18 +142,16 @@ extension UIScene {
         self.reassignDelegate()
     }
 
-    private static func reassignDelegate() { // is this useful?
-        guard sceneEnabled else {
+    private static func reassignDelegate() {
+        if #available(iOS 13.0, *), sceneEnabled {
+            weak var sceneDelegate = TealiumDelegateProxy.sharedApplication?.connectedScenes.first?.delegate
+            TealiumDelegateProxy.sharedApplication?.connectedScenes.first?.delegate = sceneDelegate
+            gOriginalDelegate = sceneDelegate
+        } else {
             weak var appDelegate = TealiumDelegateProxy.sharedApplication?.delegate
             TealiumDelegateProxy.sharedApplication?.delegate = nil
             TealiumDelegateProxy.sharedApplication?.delegate = appDelegate
             gOriginalDelegate = appDelegate
-            return
-        }
-        if #available(iOS 13.0, *) {
-            weak var sceneDelegate = TealiumDelegateProxy.sharedApplication?.connectedScenes.first?.delegate
-            TealiumDelegateProxy.sharedApplication?.connectedScenes.first?.delegate = sceneDelegate
-            gOriginalDelegate = sceneDelegate
         }
     }
 
@@ -417,7 +415,11 @@ extension UIScene {
     @available(iOS 13.0, *)
     @objc
     func scene(_ scene: UIScene, willConnectToSession session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        handleUrlContexts(connectionOptions.urlContexts)
+        if let activity = connectionOptions.userActivities.first(where: { $0.activityType == NSUserActivityTypeBrowsingWeb}) {
+            handleContinueUserActivity(activity)
+        } else {
+            handleUrlContexts(connectionOptions.urlContexts)
+        }
         let methodSelector = #selector(scene(_:willConnectToSession:options:))
         guard let pointer = TealiumDelegateProxy.originalMethodImplementation(for: methodSelector, object: self),
               let pointerValue = pointer.pointerValue else {
