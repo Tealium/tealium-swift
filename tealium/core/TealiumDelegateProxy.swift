@@ -10,6 +10,15 @@
 import Foundation
 import UIKit
 
+private let swizzling: (AnyClass, Selector, Selector) -> () = { forClass, originalSelector, swizzledSelector in
+    guard
+        let originalMethod = class_getInstanceMethod(forClass, originalSelector),
+        let swizzledMethod = class_getInstanceMethod(forClass, swizzledSelector)
+    else { return }
+    method_exchangeImplementations(originalMethod, swizzledMethod)
+}
+
+
 @available(iOS 13.0, *)
 extension UIScene {
     
