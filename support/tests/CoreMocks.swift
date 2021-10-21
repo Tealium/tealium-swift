@@ -412,6 +412,17 @@ class MockTEALConsentConfiguration: NSObject, NSSecureCoding {
 
 }
 
+extension DataLayerManagerProtocol {
+
+    func add(data: [String: Any], expiry: Expiry = .session) {
+    }
+
+    func add(key: String, value: Any, expiry: Expiry = .session) {
+    }
+
+}
+
+
 class MockMigratedDataLayer: DataLayerManagerProtocol {
     
 

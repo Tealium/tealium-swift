@@ -16,4 +16,11 @@
     }];
 }
 
+
+-(void) manualSceneContinueUserActivity:(nonnull NSUserActivity *) activity  API_AVAILABLE(ios(13)) {
+    UIScene * scene = [self connectedScenes].allObjects.firstObject;
+    id<UISceneDelegate> delegate = scene.delegate;
+    [delegate scene:scene continueUserActivity:activity];
+}
+
 @end

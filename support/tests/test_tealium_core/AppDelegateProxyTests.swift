@@ -9,6 +9,17 @@
 @testable import TealiumCore
 import XCTest
 
+@available(iOS 13.0, *)
+class MockOpenUrlContext: UIOpenURLContext {
+    var _url: URL
+    override var url: URL {
+        return _url
+    }
+    init(url: URL) {
+        _url = url
+    }
+}
+
 class AppDelegateProxyTests: BaseTestCase {
 
     let mockDataLayer = DummyDataManagerAppDelegate()
@@ -18,19 +29,6 @@ class AppDelegateProxyTests: BaseTestCase {
     var testTealium: Tealium {
         let config = TealiumConfig(account: "tealiummobile", profile: "\(AppDelegateProxyTests.testNumber))", environment: "dev")
         AppDelegateProxyTests.testNumber += 1
-        config.logLevel = .silent
-        config.dispatchers = [Dispatchers.Collect]
-        config.batchingEnabled = false
-        let tealium = Tealium(config: config, dataLayer: mockDataLayer, modulesManager: nil) { _ in
-            self.semaphore.signal()
-        }
-        return tealium
-    }
-
-    var testTealiumWithoutProxy: Tealium {
-        let config = TealiumConfig(account: "tealiummobile", profile: "\(AppDelegateProxyTests.testNumber))", environment: "dev")
-        AppDelegateProxyTests.testNumber += 1
-        config.appDelegateProxyEnabled = false
         config.logLevel = .silent
         config.dispatchers = [Dispatchers.Collect]
         config.batchingEnabled = false
@@ -53,11 +51,11 @@ class AppDelegateProxyTests: BaseTestCase {
         mockDataLayer.deleteAll()
         tealium = nil
     }
-
+    
     func testOpenURL() throws {
         let teal = tealium!
-        let appDelegate = UIApplication.shared.delegate!
-        _ = appDelegate.application?(UIApplication.shared, open: URL(string: "https://my-test-app.com/?test_param=true")!, options: [:])
+        let url = URL(string: "https://my-test-app.com/?test_param=true")!
+        sendOpenUrlEvent(url: url)
         waitOnTealiumSerialQueue {
             XCTAssertEqual(teal.dataLayer.all["deep_link_param_test_param"] as! String, "true")
             XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://my-test-app.com/?test_param=true")
@@ -66,8 +64,8 @@ class AppDelegateProxyTests: BaseTestCase {
 
     func testOpenURLWithTraceId() throws {
         let teal = tealium!
-        let appDelegate = UIApplication.shared.delegate!
-        _ = appDelegate.application?(UIApplication.shared, open: URL(string: "https://my-test-app.com/?test_param=true&tealium_trace_id=23456")!, options: [:])
+        let url = URL(string: "https://my-test-app.com/?test_param=true&tealium_trace_id=23456")!
+        sendOpenUrlEvent(url: url)
         waitOnTealiumSerialQueue {
             XCTAssertEqual(teal.dataLayer.all["deep_link_param_test_param"] as! String, "true")
             XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://my-test-app.com/?test_param=true&tealium_trace_id=23456")
@@ -77,9 +75,8 @@ class AppDelegateProxyTests: BaseTestCase {
 
     func testUniversalLink() throws {
         let teal = tealium!
-        let activity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
-        activity.webpageURL = URL(string: "https://www.tealium.com/universalLink/?universal_link=true")!
-        UIApplication.shared.manualContinueUserActivity(activity)
+        let url = URL(string: "https://www.tealium.com/universalLink/?universal_link=true")!
+        sendContinueUserActivityEvent(url: url)
         waitOnTealiumSerialQueue {
             XCTAssertEqual(teal.dataLayer.all["deep_link_param_universal_link"] as! String, "true")
             XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://www.tealium.com/universalLink/?universal_link=true")
@@ -88,68 +85,11 @@ class AppDelegateProxyTests: BaseTestCase {
 
     func testUniversalLinkWithTraceId() throws {
         let teal = tealium!
-        let activity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
-        activity.webpageURL = URL(string: "https://www.tealium.com/universalLink/?universal_link=true&tealium_trace_id=12345")!
-        UIApplication.shared.manualContinueUserActivity(activity)
+        let url = URL(string: "https://www.tealium.com/universalLink/?universal_link=true&tealium_trace_id=12345")!
+        sendContinueUserActivityEvent(url: url)
         waitOnTealiumSerialQueue {
             XCTAssertEqual(teal.dataLayer.all["cp.trace_id"] as! String, "12345")
             XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://www.tealium.com/universalLink/?universal_link=true&tealium_trace_id=12345")
-        }
-    }
-}
-
-// Needs to be separate test class, since there's no easy way to undo the proxy in between tests
-class AppDelegateProxyTestsWithoutProxy: BaseTestCase {
-
-    let mockDataLayer = DummyDataManagerAppDelegate()
-    var semaphore: DispatchSemaphore!
-    static var testNumber = 0
-
-    var testTealiumWithoutProxy: Tealium {
-        let config = TealiumConfig(account: "tealiummobile", profile: "\(AppDelegateProxyTestsWithoutProxy.testNumber))", environment: "dev")
-        AppDelegateProxyTestsWithoutProxy.testNumber += 1
-        config.appDelegateProxyEnabled = false
-        config.logLevel = .silent
-        config.dispatchers = [Dispatchers.Collect]
-        config.batchingEnabled = false
-        let tealium = Tealium(config: config, dataLayer: mockDataLayer, modulesManager: nil) { _ in
-            self.semaphore.signal()
-        }
-        return tealium
-    }
-
-    var tealium: Tealium!
-
-    override func setUpWithError() throws {
-        self.semaphore = DispatchSemaphore(value: 0)
-        self.tealium = testTealiumWithoutProxy
-        self.semaphore.wait()
-        continueAfterFailure = true
-    }
-
-    override func tearDownWithError() throws {
-        mockDataLayer.deleteAll()
-        tealium = nil
-    }
-
-    func testUniversalLinkNotCalledIfAppDelegateProxyDisabled() throws {
-        let teal = tealium!
-        let activity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
-        activity.webpageURL = URL(string: "https://www.tealium.com/universalLink/?universal_link=true&tealium_trace_id=12345")!
-        UIApplication.shared.manualContinueUserActivity(activity)
-        waitOnTealiumSerialQueue {
-            XCTAssertNil(teal.dataLayer.all["cp.trace_id"])
-            XCTAssertNil(teal.dataLayer.all["deep_link_url"])
-        }
-    }
-
-    func testOpenURLWithTraceIdNotCalledIfAppDelegateProxyDisabled() throws {
-        let teal = tealium!
-        let appDelegate = UIApplication.shared.delegate!
-        _ = appDelegate.application?(UIApplication.shared, open: URL(string: "https://my-test-app.com/?test_param=true&tealium_trace_id=23456")!, options: [:])
-        waitOnTealiumSerialQueue {
-            XCTAssertNil(teal.dataLayer.all["cp.trace_id"])
-            XCTAssertNil(teal.dataLayer.all["deep_link_url"])
         }
     }
 }
@@ -177,11 +117,13 @@ class DummyDataManagerAppDelegate: DataLayerManagerProtocol {
 
     var isTagManagementEnabled: Bool = true
 
-    func add(data: [String: Any], expiry: Expiry?) {
-
+    func add(data: [String: Any], expiry: Expiry) {
+        for (key,val) in data {
+            add(key: key, value: val, expiry: expiry)
+        }
     }
 
-    func add(key: String, value: Any, expiry: Expiry?) {
+    func add(key: String, value: Any, expiry: Expiry) {
         switch expiry {
         case .session:
             all[key] = value
@@ -233,6 +175,30 @@ class BaseTestCase: XCTestCase {
             exp.fulfill()
         }
         waitForExpectations(timeout: 2, handler: nil)
+    }
+    
+    func sendOpenUrlEvent(url: URL) {
+        if #available(iOS 13.0, *), TealiumDelegateProxy.sceneEnabled {
+            let scene = UIApplication.shared.connectedScenes.first!
+            let sceneDelegate = scene.delegate!
+            
+            sceneDelegate.scene?(scene, openURLContexts: Set<UIOpenURLContext>.init([MockOpenUrlContext(url: url)]))
+            
+        } else {
+            let appDelegate = UIApplication.shared.delegate!
+            _ = appDelegate.application?(UIApplication.shared, open: url, options: [:])
+        }
+    }
+    
+    func sendContinueUserActivityEvent(url: URL) {
+        let activity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
+        activity.webpageURL = url
+        
+        if #available(iOS 13.0, *), TealiumDelegateProxy.sceneEnabled {
+            UIApplication.shared.manualSceneContinueUserActivity(activity)
+        } else {
+            UIApplication.shared.manualContinueUserActivity(activity)
+        }
     }
 }
 

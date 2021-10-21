@@ -19,7 +19,7 @@ import UIKit
         static var originalImplementations = "Tealium_OriginalImplementations"
     }
     
-    private static var sceneEnabled = false
+    static var sceneEnabled = false
     private static var name = "AppDelegate"
     
     @objc public static func setup() {
