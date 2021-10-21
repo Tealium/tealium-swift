@@ -41,7 +41,7 @@ class TealiumDelegateProxyTests: XCTestCase {
         tealium = nil
     }
     
-    func testOpenURL() throws {
+    func testOpenURL() {
         let teal = tealium!
         let url = URL(string: "https://my-test-app.com/?test_param=true")!
         sendOpenUrlEvent(url: url)
@@ -51,7 +51,7 @@ class TealiumDelegateProxyTests: XCTestCase {
         }
     }
 
-    func testOpenURLWithTraceId() throws {
+    func testOpenURLWithTraceId() {
         let teal = tealium!
         let url = URL(string: "https://my-test-app.com/?test_param=true&tealium_trace_id=23456")!
         sendOpenUrlEvent(url: url)
@@ -62,7 +62,7 @@ class TealiumDelegateProxyTests: XCTestCase {
         }
     }
 
-    func testUniversalLink() throws {
+    func testUniversalLink() {
         let teal = tealium!
         let url = URL(string: "https://www.tealium.com/universalLink/?universal_link=true")!
         sendContinueUserActivityEvent(url: url)
@@ -72,7 +72,7 @@ class TealiumDelegateProxyTests: XCTestCase {
         }
     }
 
-    func testUniversalLinkWithTraceId() throws {
+    func testUniversalLinkWithTraceId() {
         let teal = tealium!
         let url = URL(string: "https://www.tealium.com/universalLink/?universal_link=true&tealium_trace_id=12345")!
         sendContinueUserActivityEvent(url: url)

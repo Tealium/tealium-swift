@@ -21,6 +21,11 @@
                BlueprintName = "TealiumSceneDelegateProxyTests-iOS"
                ReferencedContainer = "container:tealium-swift.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "TealiumDelegateProxyTests">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>
