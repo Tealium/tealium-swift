@@ -1,5 +1,5 @@
 //
-//  AppDelegateProxyTests.swift
+//  TealiumDelegateProxyTests.swift
 //  tealium-swift
 //
 //  Copyright © 2020 Tealium, Inc. All rights reserved.
@@ -9,26 +9,15 @@
 @testable import TealiumCore
 import XCTest
 
-@available(iOS 13.0, *)
-class MockOpenUrlContext: UIOpenURLContext {
-    var _url: URL
-    override var url: URL {
-        return _url
-    }
-    init(url: URL) {
-        _url = url
-    }
-}
-
-class AppDelegateProxyTests: BaseTestCase {
+class TealiumDelegateProxyTests: XCTestCase {
 
     let mockDataLayer = DummyDataManagerAppDelegate()
     var semaphore: DispatchSemaphore!
     static var testNumber = 0
 
     var testTealium: Tealium {
-        let config = TealiumConfig(account: "tealiummobile", profile: "\(AppDelegateProxyTests.testNumber))", environment: "dev")
-        AppDelegateProxyTests.testNumber += 1
+        let config = TealiumConfig(account: "tealiummobile", profile: "\(TealiumDelegateProxyTests.testNumber))", environment: "dev")
+        TealiumDelegateProxyTests.testNumber += 1
         config.logLevel = .silent
         config.dispatchers = [Dispatchers.Collect]
         config.batchingEnabled = false
@@ -90,6 +79,39 @@ class AppDelegateProxyTests: BaseTestCase {
         waitOnTealiumSerialQueue {
             XCTAssertEqual(teal.dataLayer.all["cp.trace_id"] as! String, "12345")
             XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://www.tealium.com/universalLink/?universal_link=true&tealium_trace_id=12345")
+        }
+    }
+    
+    func waitOnTealiumSerialQueue(_ block: @escaping () -> ()) {
+        let exp = expectation(description: "dispatch")
+        TealiumQueues.backgroundSerialQueue.async {
+            block()
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: 2, handler: nil)
+    }
+    
+    func sendOpenUrlEvent(url: URL) {
+        if #available(iOS 13.0, *), TealiumDelegateProxy.sceneEnabled {
+            let scene = UIApplication.shared.connectedScenes.first!
+            let sceneDelegate = scene.delegate!
+            
+            sceneDelegate.scene?(scene, openURLContexts: Set<UIOpenURLContext>.init([MockOpenUrlContext(url: url)]))
+            
+        } else {
+            let appDelegate = UIApplication.shared.delegate!
+            _ = appDelegate.application?(UIApplication.shared, open: url, options: [:])
+        }
+    }
+    
+    func sendContinueUserActivityEvent(url: URL) {
+        let activity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
+        activity.webpageURL = url
+        
+        if #available(iOS 13.0, *), TealiumDelegateProxy.sceneEnabled {
+            UIApplication.shared.manualSceneContinueUserActivity(activity)
+        } else {
+            UIApplication.shared.manualContinueUserActivity(activity)
         }
     }
 }
@@ -165,40 +187,5 @@ class DummyDataManagerAppDelegate: DataLayerManagerProtocol {
 
     }
 
-}
-
-class BaseTestCase: XCTestCase {
-    func waitOnTealiumSerialQueue(_ block: @escaping () -> ()) {
-        let exp = expectation(description: "dispatch")
-        TealiumQueues.backgroundSerialQueue.async {
-            block()
-            exp.fulfill()
-        }
-        waitForExpectations(timeout: 2, handler: nil)
-    }
-    
-    func sendOpenUrlEvent(url: URL) {
-        if #available(iOS 13.0, *), TealiumDelegateProxy.sceneEnabled {
-            let scene = UIApplication.shared.connectedScenes.first!
-            let sceneDelegate = scene.delegate!
-            
-            sceneDelegate.scene?(scene, openURLContexts: Set<UIOpenURLContext>.init([MockOpenUrlContext(url: url)]))
-            
-        } else {
-            let appDelegate = UIApplication.shared.delegate!
-            _ = appDelegate.application?(UIApplication.shared, open: url, options: [:])
-        }
-    }
-    
-    func sendContinueUserActivityEvent(url: URL) {
-        let activity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
-        activity.webpageURL = url
-        
-        if #available(iOS 13.0, *), TealiumDelegateProxy.sceneEnabled {
-            UIApplication.shared.manualSceneContinueUserActivity(activity)
-        } else {
-            UIApplication.shared.manualContinueUserActivity(activity)
-        }
-    }
 }
 

@@ -15,4 +15,10 @@ NS_ASSUME_NONNULL_BEGIN
 -(void) manualSceneContinueUserActivity:(nonnull NSUserActivity *) activity  API_AVAILABLE(ios(13));
 @end
 
+API_AVAILABLE(ios(13.0))
+@interface MockOpenUrlContext : UIOpenURLContext
+-(MockOpenUrlContext *)initWithUrl: (nonnull NSURL *) url;
+@end
+
+
 NS_ASSUME_NONNULL_END
