@@ -10,49 +10,6 @@
 import Foundation
 import UIKit
 
-private let swizzling: (AnyClass, Selector, Selector) -> () = { forClass, originalSelector, swizzledSelector in
-    guard
-        let originalMethod = class_getInstanceMethod(forClass, originalSelector),
-        let swizzledMethod = class_getInstanceMethod(forClass, swizzledSelector)
-    else { return }
-    method_exchangeImplementations(originalMethod, swizzledMethod)
-}
-
-@available(iOS 13.0, *)
-extension UIScene {
-    
-    fileprivate static let tealSwizzleDelegateGetterOnce: Void = {
-        let originalSelector = #selector(getter: delegate)
-        let swizzledSelector = #selector(getter: teal_swizzled_delegate)
-        swizzling(UIScene.self, originalSelector, swizzledSelector)
-    }()
-    private static var tealSwizzlingBlock: ((UISceneDelegate?) -> ())? = { delegate in
-        tealSwizzlingBlock = nil
-        tealSharedDelegate = delegate
-        tealSwizzleDelegateInstanceOnce
-        tealSharedDelegate = nil
-    }
-    static private weak var tealSharedDelegate: UISceneDelegate?
-    static private let tealSwizzleDelegateInstanceOnce: Void = {
-        if let delegate = tealSharedDelegate {
-            TealiumDelegateProxy.proxySceneDelegate(delegate)
-        } else {
-            TealiumDelegateProxy.proxyAppDelegate()
-        }
-    }()
-    
-    @objc private var teal_swizzled_delegate: UISceneDelegate? {
-        get {
-            // self.teal_swizzled_delegate would actually be the original implementation (self.delegate) after swizzling
-            let delegate = self.teal_swizzled_delegate
-            TealiumQueues.secureMainThreadExecution {
-                UIScene.tealSwizzlingBlock?(delegate)
-            }
-            return delegate
-        }
-    }
-}
-
 @objc public class TealiumDelegateProxy: NSProxy {
     
     private static var contexts: Set<TealiumContext>?
@@ -95,6 +52,14 @@ extension UIScene {
             return
         }
         if #available(iOS 13.0, *) {
+            UIScene.onDelegateGetterBlock = { delegate in
+                UIScene.onDelegateGetterBlock = nil
+                if let delegate = delegate {
+                    TealiumDelegateProxy.proxySceneDelegate(delegate)
+                } else {
+                    TealiumDelegateProxy.proxyAppDelegate()
+                }
+            }
             _ = UIScene.tealSwizzleDelegateGetterOnce
         } else {
             proxyAppDelegate()
@@ -106,28 +71,28 @@ extension UIScene {
 
 private extension TealiumDelegateProxy {
     
-    private typealias ApplicationOpenURL = @convention(c) (Any, Selector, UIApplication, URL, [UIApplication.OpenURLOptionsKey: Any]) -> Bool
-    private typealias ApplicationContinueUserActivity = @convention(c) (Any, Selector, UIApplication, NSUserActivity, @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool
+    typealias ApplicationOpenURL = @convention(c) (Any, Selector, UIApplication, URL, [UIApplication.OpenURLOptionsKey: Any]) -> Bool
+    typealias ApplicationContinueUserActivity = @convention(c) (Any, Selector, UIApplication, NSUserActivity, @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool
     @available(iOS 13.0, *)
-    private typealias SceneWillConnectTo = @convention(c) (Any, Selector, UIScene, UISceneSession, UIScene.ConnectionOptions) -> Void
+    typealias SceneWillConnectTo = @convention(c) (Any, Selector, UIScene, UISceneSession, UIScene.ConnectionOptions) -> Void
     @available(iOS 13.0, *)
-    private typealias SceneOpenURLContexts = @convention(c) (Any, Selector, UIScene, Set<UIOpenURLContext>) -> Void
+    typealias SceneOpenURLContexts = @convention(c) (Any, Selector, UIScene, Set<UIOpenURLContext>) -> Void
     @available(iOS 13.0, *)
-    private typealias SceneContinueUserActivity = @convention(c) (Any, Selector, UIScene, NSUserActivity) -> Void
+    typealias SceneContinueUserActivity = @convention(c) (Any, Selector, UIScene, NSUserActivity) -> Void
     
-    private static let ApplicationOperUrlSelector = #selector(application(_:openURL:options:))
-    private static let ApplicationContinueUserActivitySelector = #selector(application(_:continueUserActivity:restorationHandler:))
+    static let ApplicationOperUrlSelector = #selector(application(_:openURL:options:))
+    static let ApplicationContinueUserActivitySelector = #selector(application(_:continueUserActivity:restorationHandler:))
     @available(iOS 13.0, *)
-    private static let SceneWillConnectToSelector = #selector(scene(_:willConnectToSession:options:))
+    static let SceneWillConnectToSelector = #selector(scene(_:willConnectToSession:options:))
     @available(iOS 13.0, *)
-    private static let SceneOpenURLContextsSelector = #selector(scene(_:openURLContexts:))
+    static let SceneOpenURLContextsSelector = #selector(scene(_:openURLContexts:))
     @available(iOS 13.0, *)
-    private static let SceneContinueUserActivitySelector = #selector(scene(_:continueUserActivity:))
+    static let SceneContinueUserActivitySelector = #selector(scene(_:continueUserActivity:))
     
-    private static var gOriginalDelegate: NSObjectProtocol?
-    private static var gDelegateSubClass: AnyClass?
+    static var gOriginalDelegate: NSObjectProtocol?
+    static var gDelegateSubClass: AnyClass?
     
-    private class var sharedApplication: UIApplication? {
+    class var sharedApplication: UIApplication? {
         let selector = NSSelectorFromString("sharedApplication")
         return UIApplication.perform(selector)?.takeUnretainedValue() as? UIApplication
     }
@@ -253,7 +218,6 @@ private extension TealiumDelegateProxy {
                 storeOriginalImplementationInto: &originalImplementationsStore)
         }
         
-        
         // Store original implementations
         objc_setAssociatedObject(originalDelegate, &AssociatedObjectKeys.originalImplementations, originalImplementationsStore, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
@@ -309,7 +273,6 @@ private extension TealiumDelegateProxy {
         guard let method = class_getInstanceMethod(fromClass, selector) else {
             return nil
         }
-        
         return method_getImplementation(method)
     }
     
