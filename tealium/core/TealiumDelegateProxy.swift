@@ -12,7 +12,7 @@ import UIKit
 
 @objc public class TealiumDelegateProxy: NSProxy {
     
-    private static var contexts: Set<TealiumContext>?
+    static var contexts: Set<TealiumContext>?
     
     private struct AssociatedObjectKeys {
         static var originalClass = "Tealium_OriginalClass"
@@ -39,9 +39,13 @@ import UIKit
         }
     }
     
-    public static func tearDown() {
-        contexts?.removeAll()
-        contexts = nil
+    public static func removeContext(_ context: TealiumContext?) {
+        guard isAutotrackingDeepLinkEnabled else {
+            return
+        }
+        if let context = context, contexts?.contains(context) == true {
+            contexts?.remove(context)
+        }
     }
     
     private static let isAutotrackingDeepLinkEnabled: Bool = {

@@ -15,14 +15,17 @@ class TealiumDelegateProxyTests: XCTestCase {
     var semaphore: DispatchSemaphore!
     static var testNumber = 0
 
-    var testTealium: Tealium {
+    var config: TealiumConfig {
         let config = TealiumConfig(account: "tealiummobile", profile: "\(TealiumDelegateProxyTests.testNumber))", environment: "dev")
         TealiumDelegateProxyTests.testNumber += 1
         config.logLevel = .silent
         config.dispatchers = [Dispatchers.Collect]
         config.batchingEnabled = false
-        let tealium = Tealium(config: config, dataLayer: mockDataLayer, modulesManager: nil) { _ in
-            self.semaphore.signal()
+        return config
+    }
+    var testTealium: Tealium {
+        let tealium = Tealium(config: config, dataLayer: mockDataLayer, modulesManager: nil) { [weak self] _ in
+            self?.semaphore.signal()
         }
         return tealium
     }
@@ -38,6 +41,7 @@ class TealiumDelegateProxyTests: XCTestCase {
 
     override func tearDownWithError() throws {
         mockDataLayer.deleteAll()
+        TealiumInstanceManager.shared.removeInstance(config: config)
         tealium = nil
     }
     
@@ -79,6 +83,16 @@ class TealiumDelegateProxyTests: XCTestCase {
         waitOnTealiumSerialQueue {
             XCTAssertEqual(teal.dataLayer.all["cp.trace_id"] as! String, "12345")
             XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://www.tealium.com/universalLink/?universal_link=true&tealium_trace_id=12345")
+        }
+    }
+    
+    func testRemovingContext() {
+        let context = tealium.context!
+        XCTAssertTrue(TealiumDelegateProxy.contexts!.contains(context))
+        tealium?.disable()
+        tealium = nil
+        waitOnTealiumSerialQueue {
+            XCTAssertFalse(TealiumDelegateProxy.contexts!.contains(context))
         }
     }
     
