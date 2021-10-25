@@ -27,6 +27,9 @@ import UIKit
     }
     
     public static func setup(context: TealiumContext?) {
+        guard isAutotrackingDeepLinkEnabled else {
+            return
+        }
         if let context = context {
             contexts = contexts ?? Set<TealiumContext>()
             TealiumDelegateProxy.contexts?.insert(context)
@@ -41,9 +44,9 @@ import UIKit
         contexts = nil
     }
     
-    private static var isAutotrackingDeepLinkEnabled: Bool {
+    private static let isAutotrackingDeepLinkEnabled: Bool = {
         return Bundle.main.object(forInfoDictionaryKey: "TealiumAutotrackingDeepLinkEnabled") as? Bool ?? true
-    }
+    }()
     
     /// Using Swift's lazy evaluation of a static property we get the same
     /// thread-safety and called-once guarantees as dispatch_once provided.
