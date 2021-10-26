@@ -9,14 +9,14 @@
          <BuildActionEntry
             buildForTesting = "NO"
             buildForRunning = "YES"
-            buildForProfiling = "NO"
+            buildForProfiling = "YES"
             buildForArchiving = "YES"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D7BF512125DAC80E00AD3A0D"
-               BuildableName = "AutoTracking Test.app"
-               BlueprintName = "AutoTracking Test"
+               BlueprintIdentifier = "15A0077B27284EF9005E1927"
+               BuildableName = "AutoTrackingIOSTest.app"
+               BlueprintName = "AutoTrackingIOSTest"
                ReferencedContainer = "container:tealium-swift.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -69,6 +69,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "15A0077B27284EF9005E1927"
+            BuildableName = "AutoTrackingIOSTest.app"
+            BlueprintName = "AutoTrackingIOSTest"
+            ReferencedContainer = "container:tealium-swift.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
