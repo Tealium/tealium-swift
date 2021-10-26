@@ -62,9 +62,12 @@ public class AutotrackingModule: Collector {
             context.log(logRequest)
             return
         }
-        onReady.subscribeOnce {
+        onReady.subscribeOnce { [weak self] in
+            guard let self = self else {
+                return
+            }
             guard self.shouldBlock(viewName) == false else {
-            return
+                return
             }
 
             var data: [String: Any] = [TealiumKey.event: viewName,

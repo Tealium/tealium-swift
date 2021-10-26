@@ -18,27 +18,16 @@ public extension TealiumConfig {
     
     var autoTrackingCollectorDelegate: AutoTrackingDelegate? {
         get {
-            options[TealiumAutotrackingKey.delegate] as? AutoTrackingDelegate
+            let weakDelegate = options[TealiumAutotrackingKey.delegate] as? Weak<AnyObject>
+            return weakDelegate?.value as? AutoTrackingDelegate
         }
 
         set {
-            guard let newValue = newValue else {
-                return
+            var weakDelegate: Weak<AnyObject>?
+            if let newValue = newValue {
+                weakDelegate = Weak<AnyObject>(value: newValue)
             }
-            options[TealiumAutotrackingKey.delegate] = newValue
-        }
-    }
-    
-    var autoTrackingMode: AutoTrackingMode? {
-        get {
-            options[TealiumAutotrackingKey.mode] as? AutoTrackingMode
-        }
-
-        set {
-            guard let newValue = newValue else {
-                return
-            }
-            options[TealiumAutotrackingKey.mode] = newValue
+            options[TealiumAutotrackingKey.delegate] = weakDelegate
         }
     }
     
@@ -48,9 +37,6 @@ public extension TealiumConfig {
         }
 
         set {
-            guard let newValue = newValue else {
-                return
-            }
             options[TealiumAutotrackingKey.filename] = newValue
         }
     }
@@ -61,28 +47,16 @@ public extension TealiumConfig {
         }
 
         set {
-            guard let newValue = newValue else {
-                return
-            }
             options[TealiumAutotrackingKey.url] = newValue
         }
     }
 }
-
-public enum AutoTrackingMode {
-    case full
-    case annotated
-    case viewWrapper
-    case disabled
-}
-
 
 enum TealiumAutotrackingKey {
     static let moduleName = "autotracking"
     static let viewNotificationName = "com.tealium.autotracking.view"
     static let autotracked = "autotracked"
     static let delegate = "delegate"
-    static let mode = "mode"
     static let filename = "filename"
     static let url = "url"
     
