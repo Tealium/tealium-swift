@@ -1,15 +1,15 @@
-// 
-// AutoTracking_TestApp.swift
-// tealium-swift
 //
+//  AutoTrackingIOSTestApp.swift
+//  AutoTrackingIOSTest
+//
+//  Created by Enrico Zannini on 26/10/21.
 //  Copyright © 2021 Tealium, Inc. All rights reserved.
 //
 
 import SwiftUI
 
 @main
-struct AutoTracking_TestApp: App {
-    
+struct AutoTrackingIOSTestApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     var body: some Scene {
