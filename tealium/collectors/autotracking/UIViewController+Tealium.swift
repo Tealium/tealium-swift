@@ -13,6 +13,14 @@ import TealiumCore
 import Foundation
 import UIKit
 
+private let swizzling: (AnyClass, Selector, Selector) -> () = { forClass, originalSelector, swizzledSelector in
+    guard
+        let originalMethod = class_getInstanceMethod(forClass, originalSelector),
+        let swizzledMethod = class_getInstanceMethod(forClass, swizzledSelector)
+    else { return }
+    method_exchangeImplementations(originalMethod, swizzledMethod)
+}
+
 @objc extension UIViewController {
     
     var viewTitle: String {
@@ -39,22 +47,11 @@ import UIKit
             return
         }
         let originalMethodSelector = #selector(viewDidAppear(_:))
-        let originalMethod = class_getInstanceMethod(cls, originalMethodSelector)
         let newMethodSelector = #selector(tealiumViewDidAppear(_:))
-
-        if let newMethod = class_getInstanceMethod(cls, newMethodSelector) {
-            let imp = method_getImplementation(newMethod)
-            if let originalMethod = originalMethod {
-                if (!class_addMethod(cls, originalMethodSelector, imp, method_getTypeEncoding(originalMethod))) {
-                        method_setImplementation(originalMethod, imp)
-                }
-            } else {
-               _ = class_addMethod(cls, originalMethodSelector, imp, method_getTypeEncoding(newMethod))
-            }
-        }
+        swizzling(cls, originalMethodSelector, newMethodSelector)
     }()
 
-    @objc func tealiumViewDidAppear(_ animated: Bool) {
+    @objc dynamic func tealiumViewDidAppear(_ animated: Bool) {
         // Avoid double-tracking if this is a TealiumViewController already
         if let superclass = self.superclass,
            String(describing: superclass) == "TealiumViewController" {
@@ -73,6 +70,7 @@ import UIKit
             }
             AutotrackingModule.autoTrackView(viewName: viewTitle)
         }
+        self.tealiumViewDidAppear(animated) // calls the basic method
     }
     
     func getSuperclasses(cls: AnyObject) -> String {
