@@ -94,6 +94,14 @@
 		15D4AFD026EB94F4004316D0 /* TestTealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716C7D1B1DDBC3A500512C99 /* TestTealiumHelper.swift */; };
 		15D4AFD126EB94FE004316D0 /* MockSessionStarter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7187F1A24768F5000CF0AB0 /* MockSessionStarter.swift */; };
 		15D4AFD226EB9506004316D0 /* CoreMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA558BF24E4E6B200BFBED8 /* CoreMocks.swift */; };
+		15E601B92728036100CE4FAC /* AutotrackingConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E601B82728036100CE4FAC /* AutotrackingConfigTests.swift */; };
+		15E601BA2728036100CE4FAC /* AutotrackingConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E601B82728036100CE4FAC /* AutotrackingConfigTests.swift */; };
+		15E601BB2728036100CE4FAC /* AutotrackingConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E601B82728036100CE4FAC /* AutotrackingConfigTests.swift */; };
+		15E601BC2728036100CE4FAC /* AutotrackingConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E601B82728036100CE4FAC /* AutotrackingConfigTests.swift */; };
+		15E601BE2728065100CE4FAC /* blocklist.json in Resources */ = {isa = PBXBuildFile; fileRef = 15E601BD2728064500CE4FAC /* blocklist.json */; };
+		15E601BF2728065200CE4FAC /* blocklist.json in Resources */ = {isa = PBXBuildFile; fileRef = 15E601BD2728064500CE4FAC /* blocklist.json */; };
+		15E601C02728065200CE4FAC /* blocklist.json in Resources */ = {isa = PBXBuildFile; fileRef = 15E601BD2728064500CE4FAC /* blocklist.json */; };
+		15E601C12728065300CE4FAC /* blocklist.json in Resources */ = {isa = PBXBuildFile; fileRef = 15E601BD2728064500CE4FAC /* blocklist.json */; };
 		15F8E22726F0AF5900C4F6A1 /* AutoTrackingMacOSTestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F8E22626F0AF5900C4F6A1 /* AutoTrackingMacOSTestApp.swift */; };
 		15F8E22B26F0AF5A00C4F6A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15F8E22A26F0AF5A00C4F6A1 /* Assets.xcassets */; };
 		15F8E22E26F0AF5A00C4F6A1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15F8E22D26F0AF5A00C4F6A1 /* Preview Assets.xcassets */; };
@@ -1909,6 +1917,8 @@
 		15D43D5B26F20A68004E52FE /* AutoTrackingTvOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoTrackingTvOSUITests.swift; sourceTree = "<group>"; };
 		15D4AFC326EB7D4A004316D0 /* TealiumAutotrackingTests-watchOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TealiumAutotrackingTests-watchOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		15D4AFD926EB9CE6004316D0 /* AutoTrackingIOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoTrackingIOSUITests.swift; sourceTree = "<group>"; };
+		15E601B82728036100CE4FAC /* AutotrackingConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutotrackingConfigTests.swift; sourceTree = "<group>"; };
+		15E601BD2728064500CE4FAC /* blocklist.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = blocklist.json; sourceTree = "<group>"; };
 		15F8E22426F0AF5900C4F6A1 /* AutoTrackingMacOSTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AutoTrackingMacOSTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		15F8E22626F0AF5900C4F6A1 /* AutoTrackingMacOSTestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoTrackingMacOSTestApp.swift; sourceTree = "<group>"; };
 		15F8E22A26F0AF5A00C4F6A1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -2768,6 +2778,8 @@
 			children = (
 				1516A2E826EF7F6A003DF8F2 /* ui_tests */,
 				7102BF6F1E0CF05700ED5783 /* AutotrackingModuleTests.swift */,
+				15E601B82728036100CE4FAC /* AutotrackingConfigTests.swift */,
+				15E601BD2728064500CE4FAC /* blocklist.json */,
 			);
 			path = test_tealium_autotracking;
 			sourceTree = "<group>";
@@ -4972,6 +4984,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15E601BF2728065200CE4FAC /* blocklist.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4979,6 +4992,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15E601C02728065200CE4FAC /* blocklist.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5003,6 +5017,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7261BAB26F8E41200ED53D2 /* device-names.json in Resources */,
+				15E601C12728065300CE4FAC /* blocklist.json in Resources */,
 				CF880CB72554C96F0020E1B2 /* large-event-data.json in Resources */,
 				CF880D2A2554C9830020E1B2 /* big-visitor.json in Resources */,
 			);
@@ -5161,6 +5176,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15E601BE2728065100CE4FAC /* blocklist.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5301,6 +5317,7 @@
 			files = (
 				1555F5C126E6692400AFDC3D /* AutotrackingModuleTests.swift in Sources */,
 				1555F5C226E6692400AFDC3D /* TestTealiumHelper.swift in Sources */,
+				15E601BA2728036100CE4FAC /* AutotrackingConfigTests.swift in Sources */,
 				1555F5C326E6692400AFDC3D /* MockSessionStarter.swift in Sources */,
 				1555F5C426E6692400AFDC3D /* CoreMocks.swift in Sources */,
 			);
@@ -5312,6 +5329,7 @@
 			files = (
 				1555F5D726E6786100AFDC3D /* AutotrackingModuleTests.swift in Sources */,
 				1555F5D826E6786100AFDC3D /* TestTealiumHelper.swift in Sources */,
+				15E601BB2728036100CE4FAC /* AutotrackingConfigTests.swift in Sources */,
 				1555F5DA26E6786100AFDC3D /* MockSessionStarter.swift in Sources */,
 				1555F5DB26E6786100AFDC3D /* CoreMocks.swift in Sources */,
 			);
@@ -5342,6 +5360,7 @@
 			files = (
 				15D4AFD226EB9506004316D0 /* CoreMocks.swift in Sources */,
 				15D4AFD126EB94FE004316D0 /* MockSessionStarter.swift in Sources */,
+				15E601BC2728036100CE4FAC /* AutotrackingConfigTests.swift in Sources */,
 				15D4AFD026EB94F4004316D0 /* TestTealiumHelper.swift in Sources */,
 				15D4AFCB26EB7D75004316D0 /* AutotrackingModuleTests.swift in Sources */,
 			);
@@ -5823,6 +5842,7 @@
 			files = (
 				D788A58C23198E8300BC6D60 /* AutotrackingModuleTests.swift in Sources */,
 				CFA55A2C24E5902B00BFBED8 /* TestTealiumHelper.swift in Sources */,
+				15E601B92728036100CE4FAC /* AutotrackingConfigTests.swift in Sources */,
 				CFAD63322541FD88007D4EDB /* MockSessionStarter.swift in Sources */,
 				CFAD62BC2541FCFF007D4EDB /* CoreMocks.swift in Sources */,
 			);

@@ -14,10 +14,13 @@ class AutotrackingModuleTests: XCTestCase {
     var module: AutotrackingModule {
         let config = testTealiumConfig.copy
         config.autoTrackingCollectorDelegate = self
+        config.autoTrackingBlocklistFilename = "blocklist"
         let context = TestTealiumHelper.context(with: config)
-        return AutotrackingModule(context: context, delegate: self, diskStorage: nil) { _ in
+        let module = AutotrackingModule(context: context, delegate: self, diskStorage: nil) { _ in
 
         }
+        module.blockListBundle = Bundle(for: AutotrackingModuleTests.self)
+        return module
     }
     var expectationRequest: XCTestExpectation?
     var expectationShouldTrack: XCTestExpectation?
@@ -120,6 +123,22 @@ class AutotrackingModuleTests: XCTestCase {
             secondReceiveExp.fulfill()
         }.toDisposeBag(disposeBag)
         wait(for: [firstReceiveExp, secondReceiveExp], timeout: 0)
+    }
+    
+    func testBlocked() {
+        let viewName = "testView"
+        let blockedViewName = "blocked"
+        
+        let module = self.module
+
+        expectationRequest = expectation(description: "Only track unblocked views")
+        expectationRequest?.assertForOverFulfill = true
+        module.requestViewTrack(viewName: viewName)
+        module.requestViewTrack(viewName: blockedViewName)
+
+        waitForExpectations(timeout: 4.0, handler: nil)
+
+        XCTAssertEqual(viewName, currentViewName)
     }
 }
 
