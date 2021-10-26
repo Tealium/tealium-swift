@@ -52,10 +52,12 @@ private let swizzling: (AnyClass, Selector, Selector) -> () = { forClass, origin
     }()
 
     @objc dynamic func tealiumViewDidAppear(_ animated: Bool) {
+        defer {
+            self.tealiumViewDidAppear(animated) // calls the basic method
+        }
         // Avoid double-tracking if this is a TealiumViewController already
-        if let superclass = self.superclass,
-           String(describing: superclass) == "TealiumViewController" {
-                return
+        if self is TealiumViewController {
+            return
         }
         
         let cls = String(reflecting: type(of: self))
@@ -70,7 +72,6 @@ private let swizzling: (AnyClass, Selector, Selector) -> () = { forClass, origin
             }
             AutotrackingModule.autoTrackView(viewName: viewTitle)
         }
-        self.tealiumViewDidAppear(animated) // calls the basic method
     }
     
     func getSuperclasses(cls: AnyObject) -> String {
