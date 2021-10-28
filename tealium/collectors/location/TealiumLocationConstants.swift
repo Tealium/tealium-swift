@@ -42,15 +42,6 @@ public enum LocationConfig {
     case customUrl(String)
 }
 
-enum LocationErrors {
-    static let noUrl = "URL is empty."
-    static let noJson = "JSON is empty."
-    static let invalidUrl = "URL is invalid."
-    static let noFile = "File does not exist."
-    static let couldNotRetrieve = "Could not retrieve JSON."
-    static let couldNotDecode = "Could not decode JSON."
-}
-
 public enum LocationAccuracy: String {
     case bestForNavigation = "best_for_navigation"
     case best
