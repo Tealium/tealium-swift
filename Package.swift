@@ -11,7 +11,7 @@ let package = Package(
             targets: ["TealiumAttribution"]),
         .library(
             name: "TealiumCore",
-            targets: ["TealiumCore, TealiumCoreObjC"]),
+            targets: ["TealiumCore", "TealiumCoreObjC"]),
         .library(
             name: "TealiumCollect",
             targets: ["TealiumCollect"]),
@@ -48,7 +48,7 @@ let package = Package(
         .target(
             name: "TealiumCoreObjC",
             path: "tealium/core/objc"
-        )
+        ),
         .target(
             name: "TealiumAttribution",
             dependencies: ["TealiumCore"],
