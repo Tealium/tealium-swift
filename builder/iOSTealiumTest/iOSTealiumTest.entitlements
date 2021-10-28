@@ -4,6 +4,7 @@
 <dict>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
+		<string>webcredentials:universal-links-scene-delegate.herokuapp.com</string>
 		<string>applinks:universal-links-scene-delegate.herokuapp.com</string>
 	</array>
 	<key>com.apple.security.app-sandbox</key>

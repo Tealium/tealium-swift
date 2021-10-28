@@ -89,16 +89,19 @@ Pod::Spec.new do |s|
   s.default_subspec = "TealiumFull"
 
   s.subspec "TealiumFull" do |full|
-    full.source_files  = "tealium/core/**/*.swift","tealium/collectors/**/*","tealium/dispatchers/**/*","tealium/scripts/*"
+    full.source_files  = "tealium/core/**/*.{swift,h,m}","tealium/collectors/**/*","tealium/dispatchers/**/*","tealium/scripts/*"
     full.ios.exclude_files = "tealium/scripts/*", "tealium/collectors/crash/*"
-    full.tvos.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*","tealium/collectors/autotracking/*.{h,m}"
-    full.watchos.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*","tealium/collectors/autotracking/*.{h,m}"
-    full.osx.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*","tealium/collectors/autotracking/*.{h,m}"
+    full.tvos.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*","tealium/collectors/autotracking/*.{h,m}","tealium/core/**/*.{h,m}"
+    full.watchos.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*","tealium/collectors/autotracking/*.{h,m}","tealium/core/**/*.{h,m}"
+    full.osx.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*","tealium/collectors/autotracking/*.{h,m}","tealium/core/**/*.{h,m}"
     full.resources = "tealium/core/devicedata/device-names.json"
   end
 
   s.subspec "Core" do |core|
-    core.source_files  = "tealium/core/**/*.swift"
+    core.source_files  = "tealium/core/**/*.{swift,h,m}"
+    core.tvos.exclude_files = "tealium/core/**/*.{h,m}"
+    core.watchos.exclude_files = "tealium/core/**/*.{h,m}"
+    core.osx.exclude_files = "tealium/core/**/*.{h,m}"
     core.resources = "tealium/core/devicedata/device-names.json"
   end
 

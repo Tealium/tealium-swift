@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1200"
+   LastUpgradeVersion = "1300"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -27,11 +27,16 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CF13D80D24FD5FE30024E79A"
-               BuildableName = "TealiumAppDelegateProxyTests-iOS.xctest"
-               BlueprintName = "TealiumAppDelegateProxyTests-iOS"
+               BlueprintIdentifier = "15F574382721831E00194733"
+               BuildableName = "TealiumSceneDelegateProxyTests-iOS.xctest"
+               BlueprintName = "TealiumSceneDelegateProxyTests-iOS"
                ReferencedContainer = "container:tealium-swift.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "TealiumDelegateProxyTests">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>
@@ -45,16 +50,6 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CF8805732554B74B0020E1B2"
-            BuildableName = "iOSTealiumTest.app"
-            BlueprintName = "iOSTealiumTest"
-            ReferencedContainer = "container:tealium-swift.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
