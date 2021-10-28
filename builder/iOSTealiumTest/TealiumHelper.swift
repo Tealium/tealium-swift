@@ -20,7 +20,7 @@ import TealiumTagManagement
 #endif
 
 
-class TealiumHelper  {
+class TealiumHelper {
 
     @ToAnyObservable(TealiumBufferedSubject(bufferSize: 10))
     var onWillTrack: TealiumObservable<[String:Any]>
