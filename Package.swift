@@ -40,7 +40,7 @@ let package = Package(
         .target(
             name: "TealiumCore",
             path: "tealium/core/",
-            exclude: ["objc"],
+            exclude: ["TealiumDelegateProxy+Swizzle.m"],
             resources: [
                 .process("devicedata/device-names.json")
             ]
@@ -48,6 +48,7 @@ let package = Package(
         .target(
             name: "TealiumCoreObjC",
             path: "tealium/core/objc"
+            sources: ["TealiumDelegateProxy+Swizzle.m"]
         ),
         .target(
             name: "TealiumAttribution",
