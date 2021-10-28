@@ -2755,6 +2755,15 @@
 			path = pubsub;
 			sourceTree = "<group>";
 		};
+		15339329272AE157000C00AE /* objc */ = {
+			isa = PBXGroup;
+			children = (
+				15C0627F271DC32200FB4B08 /* TealiumDelegateProxy+Swizzle.h */,
+				15C0627E271DC32200FB4B08 /* TealiumDelegateProxy+Swizzle.m */,
+			);
+			path = objc;
+			sourceTree = "<group>";
+		};
 		15A0077D27284EF9005E1927 /* AutoTrackingIOSTest */ = {
 			isa = PBXGroup;
 			children = (
@@ -3149,6 +3158,7 @@
 		71F085C41DDE154C008850C8 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				15339329272AE157000C00AE /* objc */,
 				1519DFF626E26732000C71B4 /* pubsub */,
 				D755EDC124A4FE1D00EA7784 /* publishsettings */,
 				D70FC7A1244F2C3D004AD838 /* appdata */,
@@ -3172,8 +3182,6 @@
 				D7157F7F24F51B1400F1F323 /* TealiumContext.swift */,
 				CF8B687A255DC57C0055D72E /* TimedEvent.swift */,
 				CF8B6894255DC5E10055D72E /* TimedEventScheduler.swift */,
-				15C0627F271DC32200FB4B08 /* TealiumDelegateProxy+Swizzle.h */,
-				15C0627E271DC32200FB4B08 /* TealiumDelegateProxy+Swizzle.m */,
 				15F573ED2721827E00194733 /* UIScene+TealiumDelegateGetter.swift */,
 			);
 			path = core;

@@ -11,7 +11,7 @@ let package = Package(
             targets: ["TealiumAttribution"]),
         .library(
             name: "TealiumCore",
-            targets: ["TealiumCore"]),
+            targets: ["TealiumCore, TealiumCoreObjC"]),
         .library(
             name: "TealiumCollect",
             targets: ["TealiumCollect"]),
@@ -40,18 +40,14 @@ let package = Package(
         .target(
             name: "TealiumCore",
             path: "tealium/core/",
-            exclude: ["*.{h|m}"],
+            exclude: ["objc"],
             resources: [
                 .process("devicedata/device-names.json")
             ]
         ),
         .target(
             name: "TealiumCoreObjC",
-            path: "tealium/core/",
-            exclude: ["*.swift"],
-            resources: [
-                .process("devicedata/device-names.json")
-            ]
+            path: "tealium/core/objc"
         )
         .target(
             name: "TealiumAttribution",
