@@ -47,7 +47,7 @@ let package = Package(
         ),
         .target(
             name: "TealiumCoreObjC",
-            path: "tealium/core/objc"
+            path: "tealium/core/",
             sources: ["TealiumDelegateProxy+Swizzle.m"]
         ),
         .target(
