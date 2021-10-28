@@ -17,6 +17,7 @@ public class Tealium {
     public var zz_internal_modulesManager: ModulesManager?
     // swiftlint:enable identifier_name
     public var migrator: Migratable
+    private var disposeBag = TealiumDisposeBag()
     var context: TealiumContext?
     /// Initializer.
     ///
@@ -48,6 +49,12 @@ public class Tealium {
                 return
             }
             self.zz_internal_modulesManager = modulesManager ?? ModulesManager(context)
+        }
+        
+        TealiumQueues.secureMainThreadExecution {
+            TealiumInstanceManager.shared.onOpenUrl.subscribe { [weak self] url in
+                self?.handleDeepLink(url)
+            }.toDisposeBag(self.disposeBag)
         }
 
         TealiumInstanceManager.shared.addInstance(self, config: config)

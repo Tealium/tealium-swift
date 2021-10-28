@@ -62,10 +62,6 @@ Pod::Spec.new do |s|
   #  the deployment target. You can optionally include the target after the platform.
   #
   s.swift_version = "5.0"
-  s.platform     = :ios, "9.0"
-  s.platform     = :osx, "10.11"
-  s.platform     = :watchos, "3.0"
-  s.platform     = :tvos, "9.0"
 
   #  When using multiple platforms
   s.ios.deployment_target = "9.0"
@@ -95,9 +91,9 @@ Pod::Spec.new do |s|
   s.subspec "TealiumFull" do |full|
     full.source_files  = "tealium/core/**/*.{swift,h,m}","tealium/collectors/**/*","tealium/dispatchers/**/*","tealium/scripts/*"
     full.ios.exclude_files = "tealium/scripts/*", "tealium/collectors/crash/*"
-    full.tvos.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*", "tealium/core/**/*.{h,m}"
-    full.watchos.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/collectors/autotracking/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*", "tealium/core/**/*.{h,m}"
-    full.osx.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/collectors/autotracking/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*", "tealium/core/**/*.{h,m}"
+    full.tvos.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*","tealium/collectors/autotracking/*.{h,m}","tealium/core/**/*.{h,m}"
+    full.watchos.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*","tealium/collectors/autotracking/*.{h,m}","tealium/core/**/*.{h,m}"
+    full.osx.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*","tealium/collectors/autotracking/*.{h,m}","tealium/core/**/*.{h,m}"
     full.resources = "tealium/core/devicedata/device-names.json"
   end
 
@@ -110,15 +106,15 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "Attribution" do |attribution|
-    attribution.platform = :ios, "9.0"
     attribution.source_files = "tealium/collectors/attribution/*"
     attribution.dependency "tealium-swift/Core"
   end
 
   s.subspec "Autotracking" do |autotracking|
-    autotracking.ios.deployment_target = "9.0"
-    autotracking.tvos.deployment_target = "9.0"
     autotracking.source_files = "tealium/collectors/autotracking/*"
+    autotracking.tvos.exclude_files = "tealium/collectors/autotracking/*.{h,m}"
+    autotracking.watchos.exclude_files = "tealium/collectors/autotracking/*.{h,m}"
+    autotracking.osx.exclude_files = "tealium/collectors/autotracking/*.{h,m}"
     autotracking.dependency "tealium-swift/Core"
   end
 
@@ -133,7 +129,6 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "Location" do |location|
-    location.platform = :ios, "9.0"
     location.source_files = "tealium/collectors/location/*"
     location.dependency "tealium-swift/Core"
   end
@@ -144,13 +139,11 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "RemoteCommands" do |remotecommands|
-    remotecommands.platform = :ios, "9.0"
     remotecommands.source_files = "tealium/dispatchers/remotecommands/*"
     remotecommands.dependency "tealium-swift/Core"
   end
 
   s.subspec "TagManagement" do |tagmanagement|
-    tagmanagement.platform = :ios, "9.0"
     tagmanagement.source_files = "tealium/dispatchers/tagmanagement/*"
     tagmanagement.dependency "tealium-swift/Core"
   end

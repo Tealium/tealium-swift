@@ -6,10 +6,12 @@
 //
 
 import Foundation
+
 import TealiumCollect
 import TealiumCore
 import TealiumLifecycle
 import TealiumVisitorService
+import TealiumAutotracking
 #if os(iOS)
 import TealiumAttribution
 import TealiumLocation
@@ -20,6 +22,9 @@ import TealiumTagManagement
 
 class TealiumHelper {
 
+    @ToAnyObservable(TealiumBufferedSubject(bufferSize: 10))
+    var onWillTrack: TealiumObservable<[String:Any]>
+    
     static let shared = TealiumHelper()
     var tealium: Tealium?
     var enableHelperLogs = true
@@ -32,20 +37,24 @@ class TealiumHelper {
                                    environment: "dev",
                                    dataSource: "test12",
                                    options: nil)
+
         config.connectivityRefreshInterval = 5
         config.loggerType = .os
         config.logLevel = .info
         config.consentPolicy = .gdpr
         config.consentLoggingEnabled = true
+//        config.remoteHTTPCommandDisabled = false
         config.dispatchListeners = [self]
         config.dispatchValidators = [self]
         config.shouldUseRemotePublishSettings = false
+        config.autoTrackingBlocklistFilename = "blocklist"
         // config.batchingEnabled = true
         // config.batchSize = 5
         config.memoryReportingEnabled = true
         config.diskStorageEnabled = true
         config.visitorServiceDelegate = self
         config.memoryReportingEnabled = true
+        config.autoTrackingCollectorDelegate = self
         config.batterySaverEnabled = true
         config.hostedDataLayerKeys = ["hdl-test": "product_id"]
         config.timedEventTriggers = [TimedEventTrigger(start: "product_view", end: "order_complete"),
@@ -63,16 +72,18 @@ class TealiumHelper {
                 Collectors.Connectivity,
                 Collectors.Device,
                 Collectors.Location,
-                Collectors.VisitorService
+                Collectors.VisitorService,
+                Collectors.AutoTracking
+                
             ]
         
             config.dispatchers = [
                 Dispatchers.Collect,
-                Dispatchers.TagManagement,
+//                Dispatchers.TagManagement,
                 Dispatchers.RemoteCommands
             ]
             
-            config.searchAdsEnabled = true
+            // config.appDelegateProxyEnabled = false
             config.remoteAPIEnabled = true
             config.remoteCommandConfigRefresh = .every(24, .hours)
             config.searchAdsEnabled = true
@@ -87,7 +98,8 @@ class TealiumHelper {
                 Collectors.AppData,
                 Collectors.Connectivity,
                 Collectors.Device,
-                Collectors.VisitorService
+                Collectors.VisitorService,
+                Collectors.AutoTracking
             ]
             config.dispatchers = [
                 Dispatchers.Collect,
@@ -100,11 +112,13 @@ class TealiumHelper {
                 return
 
             }
-            
+
             let dataLayer = teal.dataLayer
             teal.consentManager?.userConsentStatus = .consented
             dataLayer.add(key: "myvarforever", value: 123_456, expiry: .forever)
             dataLayer.add(data: ["some_key1": "some_val1"], expiry: .session)
+            dataLayer.add(data: ["some_key_forever": "some_val_forever"], expiry: .forever) // forever
+            dataLayer.add(data: ["until": "restart"], expiry: .untilRestart)
             dataLayer.add(data: ["custom": "expire in 3 min"], expiry: .afterCustom((.minutes, 3)))
 
             #if os(iOS)
@@ -125,7 +139,6 @@ class TealiumHelper {
             }
             remoteCommands.add(display)
             #endif
-            
         }
 
     }
@@ -185,6 +198,7 @@ extension TealiumHelper: VisitorServiceDelegate {
 
 extension TealiumHelper: DispatchListener {
     public func willTrack(request: TealiumRequest) {
+        _onWillTrack.publish((request as! TealiumTrackRequest).trackDictionary)
         if self.enableHelperLogs {
             print("helper - willtrack")
         }
@@ -207,6 +221,12 @@ extension TealiumHelper: DispatchValidator {
 
     func shouldPurge(request: TealiumRequest) -> Bool {
         false
+    }
+}
+
+extension TealiumHelper: AutoTrackingDelegate {
+    func onCollectScreenView(screenName: String) -> [String : Any] {
+        return ["from_delegate": "true"]
     }
 }
 
