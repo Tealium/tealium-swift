@@ -235,7 +235,10 @@ public struct Lifecycle: Codable {
         // NOTE: This is not entirely accurate as it does not adjust for Daylight Savings -
         //  however this matches up with implementation in Android, and is off by one day after about 172
         //  days have elapsed
-        let days = components.second! / (60 * 60 * 24)
+        guard let seconds = components.second else {
+            return nil
+        }
+        let days = seconds / (60 * 60 * 24)
         return String(days)
     }
 

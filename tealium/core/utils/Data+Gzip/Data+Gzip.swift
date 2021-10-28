@@ -179,11 +179,15 @@ extension Data {
             let outputCount = data.count
 
             self.withUnsafeBytes { (inputPointer: UnsafeRawBufferPointer) in
-                stream.next_in = UnsafeMutablePointer<Bytef>(mutating: inputPointer.bindMemory(to: Bytef.self).baseAddress!).advanced(by: Int(stream.total_in))
+                if let nextIn = UnsafeMutablePointer<Bytef>(mutating: inputPointer.bindMemory(to: Bytef.self).baseAddress)?.advanced(by: Int(stream.total_in)) {
+                    stream.next_in = nextIn
+                }
                 stream.avail_in = uint(inputCount) - uInt(stream.total_in)
 
                 data.withUnsafeMutableBytes { (outputPointer: UnsafeMutableRawBufferPointer) in
-                    stream.next_out = outputPointer.bindMemory(to: Bytef.self).baseAddress!.advanced(by: Int(stream.total_out))
+                    if let nextOut = outputPointer.bindMemory(to: Bytef.self).baseAddress?.advanced(by: Int(stream.total_out)) {
+                        stream.next_out = nextOut
+                    }
                     stream.avail_out = uInt(outputCount) - uInt(stream.total_out)
 
                     status = deflate(&stream, Z_FINISH)
@@ -240,11 +244,15 @@ extension Data {
             let outputCount = data.count
 
             self.withUnsafeBytes { (inputPointer: UnsafeRawBufferPointer) in
-                stream.next_in = UnsafeMutablePointer<Bytef>(mutating: inputPointer.bindMemory(to: Bytef.self).baseAddress!).advanced(by: Int(stream.total_in))
+                if let nextIn = UnsafeMutablePointer<Bytef>(mutating: inputPointer.bindMemory(to: Bytef.self).baseAddress)?.advanced(by: Int(stream.total_in)) {
+                    stream.next_in = nextIn
+                }
                 stream.avail_in = uint(inputCount) - uInt(stream.total_in)
 
                 data.withUnsafeMutableBytes { (outputPointer: UnsafeMutableRawBufferPointer) in
-                    stream.next_out = outputPointer.bindMemory(to: Bytef.self).baseAddress!.advanced(by: Int(stream.total_out))
+                    if let nextOut = outputPointer.bindMemory(to: Bytef.self).baseAddress?.advanced(by: Int(stream.total_out)) {
+                        stream.next_out = nextOut
+                    }
                     stream.avail_out = uInt(outputCount) - uInt(stream.total_out)
 
                     status = inflate(&stream, Z_SYNC_FLUSH)
