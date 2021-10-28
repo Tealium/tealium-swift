@@ -72,7 +72,6 @@ class TealiumHelper {
                 Dispatchers.RemoteCommands
             ]
             
-            // config.appDelegateProxyEnabled = false
             config.searchAdsEnabled = true
             config.remoteAPIEnabled = true
             config.remoteCommandConfigRefresh = .every(24, .hours)

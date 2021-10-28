@@ -17,7 +17,7 @@ public class Tealium {
     public var zz_internal_modulesManager: ModulesManager?
     // swiftlint:enable identifier_name
     public var migrator: Migratable
-
+    var context: TealiumContext?
     /// Initializer.
     ///
     /// - Parameter config: `TealiumConfig` Object created with Tealium account, profile, environment, optional loglevel)
@@ -39,10 +39,9 @@ public class Tealium {
             self.migrator.migratePersistent(dataLayer: self.dataLayer)
         }
         let context = TealiumContext(config: config, dataLayer: self.dataLayer, tealium: self)
+        self.context = context
         #if os(iOS)
-        if config.appDelegateProxyEnabled {
-            TealiumAppDelegateProxy.setup(context: context)
-        }
+        TealiumDelegateProxy.setup(context: context)
         #endif
         TealiumQueues.backgroundSerialQueue.async { [weak self] in
             guard let self = self else {
@@ -94,7 +93,7 @@ public class Tealium {
 
     deinit {
         #if os(iOS)
-        TealiumAppDelegateProxy.tearDown()
+        TealiumDelegateProxy.removeContext(self.context)
         #endif
     }
 
