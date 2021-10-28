@@ -40,10 +40,19 @@ let package = Package(
         .target(
             name: "TealiumCore",
             path: "tealium/core/",
+            exclude: ["*.{h|m}"],
             resources: [
                 .process("devicedata/device-names.json")
             ]
         ),
+        .target(
+            name: "TealiumCoreObjC",
+            path: "tealium/core/",
+            exclude: ["*.swift"],
+            resources: [
+                .process("devicedata/device-names.json")
+            ]
+        )
         .target(
             name: "TealiumAttribution",
             dependencies: ["TealiumCore"],
