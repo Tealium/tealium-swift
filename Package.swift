@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.5
 
 import PackageDescription
 
@@ -11,7 +11,7 @@ let package = Package(
             targets: ["TealiumAttribution"]),
         .library(
             name: "TealiumCore",
-            targets: ["TealiumCore", "TealiumCoreObjC"]),
+            targets: ["TealiumCore"]),
         .library(
             name: "TealiumCollect",
             targets: ["TealiumCollect"]),
@@ -33,6 +33,13 @@ let package = Package(
         .library(
             name: "TealiumVisitorService",
             targets: ["TealiumVisitorService"]),
+        .library(
+            name: "TestLib",
+            targets: ["TestLib", "TestLibObjc"]),
+//        .library(
+//            name: "TestLibObjc",
+//            targets: ["TestLibObjc"]),
+                
     ],
     dependencies: [
     ],
@@ -46,10 +53,22 @@ let package = Package(
             ]
         ),
         .target(
-            name: "TealiumCoreObjC",
-            path: "tealium/core/",
-            sources: ["TealiumDelegateProxy+Swizzle.m"]
+            name: "TestLib",
+            path: "tealium/testLib/"
         ),
+        .target(
+            name: "TestLibObjc",
+            dependencies: ["TestLib"],
+            path: "tealium/testLibObjc/"
+//            cSettings: [
+//                  .headerSearchPath("headers/"), // 5
+//               ]
+        ),
+//        .target(
+//            name: "TealiumCoreObjC",
+//            path: "tealium/core/",
+//            sources: ["TealiumDelegateProxy+Swizzle.m"]
+//        ),
         .target(
             name: "TealiumAttribution",
             dependencies: ["TealiumCore"],

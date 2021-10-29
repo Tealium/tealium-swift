@@ -13,6 +13,7 @@
 #import <TealiumSwift/TealiumSwift-Swift.h>
 #else
 #import <TealiumCore/TealiumCore-Swift.h>
+//@import TealiumCore;
 #endif
 
 @implementation TealiumDelegateProxy (Swizzle)
