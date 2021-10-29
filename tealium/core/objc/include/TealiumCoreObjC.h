@@ -9,7 +9,4 @@
 #ifndef TealiumCoreObjC_h
 #define TealiumCoreObjC_h
 
-//#import "../TealiumDelegateProxy+Swizzle.h"
-
-
 #endif /* TealiumCoreObjC_h */
