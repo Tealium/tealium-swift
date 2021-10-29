@@ -12,8 +12,11 @@
 #if COCOAPODS
 #import <TealiumSwift/TealiumSwift-Swift.h>
 #else
+#ifdef SWIFT_PACKAGE
+@import TealiumCore;
+#else
 #import <TealiumCore/TealiumCore-Swift.h>
-//@import TealiumCore;
+#endif
 #endif
 
 @implementation TealiumDelegateProxy (Swizzle)

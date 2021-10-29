@@ -11,7 +11,7 @@ let package = Package(
             targets: ["TealiumAttribution"]),
         .library(
             name: "TealiumCore",
-            targets: ["TealiumCore"]),
+            targets: ["TealiumCore", "TealiumCoreObjC"]),
         .library(
             name: "TealiumCollect",
             targets: ["TealiumCollect"]),
@@ -32,13 +32,7 @@ let package = Package(
             targets: ["TealiumTagManagement"]),
         .library(
             name: "TealiumVisitorService",
-            targets: ["TealiumVisitorService"]),
-        .library(
-            name: "TestLib",
-            targets: ["TestLib", "TestLibObjc"]),
-//        .library(
-//            name: "TestLibObjc",
-//            targets: ["TestLibObjc"]),
+            targets: ["TealiumVisitorService"])
                 
     ],
     dependencies: [
@@ -47,28 +41,16 @@ let package = Package(
         .target(
             name: "TealiumCore",
             path: "tealium/core/",
-            exclude: ["TealiumDelegateProxy+Swizzle.m"],
+            exclude: ["objc"],
             resources: [
                 .process("devicedata/device-names.json")
             ]
         ),
         .target(
-            name: "TestLib",
-            path: "tealium/testLib/"
+            name: "TealiumCoreObjC",
+            dependencies: ["TealiumCore"],
+            path: "tealium/core/objc/"
         ),
-        .target(
-            name: "TestLibObjc",
-            dependencies: ["TestLib"],
-            path: "tealium/testLibObjc/"
-//            cSettings: [
-//                  .headerSearchPath("headers/"), // 5
-//               ]
-        ),
-//        .target(
-//            name: "TealiumCoreObjC",
-//            path: "tealium/core/",
-//            sources: ["TealiumDelegateProxy+Swizzle.m"]
-//        ),
         .target(
             name: "TealiumAttribution",
             dependencies: ["TealiumCore"],
