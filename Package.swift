@@ -10,6 +10,9 @@ let package = Package(
             name: "TealiumAttribution",
             targets: ["TealiumAttribution"]),
         .library(
+            name: "TealiumAutotracking",
+            targets: ["TealiumAutotracking", "TealiumAutotrackingObjC"]),
+        .library(
             name: "TealiumCore",
             targets: ["TealiumCore", "TealiumCoreObjC"]),
         .library(
@@ -56,6 +59,18 @@ let package = Package(
             dependencies: ["TealiumCore"],
             path: "tealium/collectors/attribution/",
             swiftSettings: [.define("attribution")]
+        ),
+        .target(
+            name: "TealiumAutotracking",
+            dependencies: ["TealiumCore"],
+            path: "tealium/collectors/autotracking",
+            exclude: ["objc"],
+            swiftSettings: [.define("autotracking")]
+        ),
+        .target(
+            name: "TealiumAutotrackingObjC",
+            dependencies: ["TealiumAutotracking"],
+            path: "tealium/collectors/autotracking/objc/"
         ),
         .target(
             name: "TealiumCollect",

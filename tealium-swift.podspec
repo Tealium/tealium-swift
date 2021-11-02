@@ -113,9 +113,10 @@ Pod::Spec.new do |s|
 
   s.subspec "Autotracking" do |autotracking|
     autotracking.source_files = "tealium/collectors/autotracking/*"
-    autotracking.tvos.exclude_files = "tealium/collectors/autotracking/*.{h,m}"
-    autotracking.watchos.exclude_files = "tealium/collectors/autotracking/*.{h,m}"
-    autotracking.osx.exclude_files = "tealium/collectors/autotracking/*.{h,m}"
+    autotracking.ios.exclude_files = "tealium/collectors/autotracking/objc/include/*"
+    autotracking.tvos.exclude_files = "tealium/collectors/autotracking/objc/*"
+    autotracking.watchos.exclude_files = "tealium/collectors/autotracking/objc/*"
+    autotracking.osx.exclude_files = "tealium/collectors/autotracking/objc/*"
     autotracking.dependency "tealium-swift/Core"
   end
 

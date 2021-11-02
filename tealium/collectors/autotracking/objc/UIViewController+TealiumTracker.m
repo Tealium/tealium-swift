@@ -10,7 +10,11 @@
 #if COCOAPODS
 #import <TealiumSwift/TealiumSwift-Swift.h>
 #else
+#ifdef SWIFT_PACKAGE
+@import TealiumAutotracking;
+#else
 #import <TealiumAutotracking/TealiumAutotracking-Swift.h>
+#endif
 #endif
 
 @implementation UIViewController (TealiumTracker)

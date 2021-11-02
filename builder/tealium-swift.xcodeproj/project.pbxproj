@@ -36,7 +36,6 @@
 		1563CECB26DFAA3300A1DAD1 /* PubSubTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1563CEC826DFAA3300A1DAD1 /* PubSubTests.swift */; };
 		1566C23F272C460800FE9A5A /* TealiumDelegateProxy+Swizzle.h in Headers */ = {isa = PBXBuildFile; fileRef = 1566C23B272C460800FE9A5A /* TealiumDelegateProxy+Swizzle.h */; };
 		1566C241272C460800FE9A5A /* TealiumDelegateProxy+Swizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1566C23E272C460800FE9A5A /* TealiumDelegateProxy+Swizzle.m */; };
-		1566C245272C4E7400FE9A5A /* TealiumAutotrackingObjC.h in Headers */ = {isa = PBXBuildFile; fileRef = 1566C244272C4E5B00FE9A5A /* TealiumAutotrackingObjC.h */; };
 		156CB50C26CD4ACB005EFEDB /* AnyCodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156CB50B26CD4ACB005EFEDB /* AnyCodableTests.swift */; };
 		156CB50D26CD4ACB005EFEDB /* AnyCodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156CB50B26CD4ACB005EFEDB /* AnyCodableTests.swift */; };
 		156CB50E26CD4ACB005EFEDB /* AnyCodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156CB50B26CD4ACB005EFEDB /* AnyCodableTests.swift */; };
@@ -1944,7 +1943,6 @@
 		1563CEC826DFAA3300A1DAD1 /* PubSubTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PubSubTests.swift; sourceTree = "<group>"; };
 		1566C23B272C460800FE9A5A /* TealiumDelegateProxy+Swizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TealiumDelegateProxy+Swizzle.h"; sourceTree = "<group>"; };
 		1566C23E272C460800FE9A5A /* TealiumDelegateProxy+Swizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TealiumDelegateProxy+Swizzle.m"; sourceTree = "<group>"; };
-		1566C244272C4E5B00FE9A5A /* TealiumAutotrackingObjC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TealiumAutotrackingObjC.h; sourceTree = "<group>"; };
 		156CB50B26CD4ACB005EFEDB /* AnyCodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCodableTests.swift; sourceTree = "<group>"; };
 		158CA93626B9478100748A80 /* TealiumASIdentifierManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TealiumASIdentifierManagerTests.swift; sourceTree = "<group>"; };
 		1593AC5026E8E129005B42E3 /* LoggingDataToStringConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingDataToStringConverter.swift; sourceTree = "<group>"; };
@@ -2767,17 +2765,10 @@
 		1566C242272C4E2800FE9A5A /* objc */ = {
 			isa = PBXGroup;
 			children = (
-				1566C243272C4E3A00FE9A5A /* include */,
+				71D2B3511E2FE3670049BCF3 /* UIViewController+TealiumTracker.h */,
+				71D2B3521E2FE3670049BCF3 /* UIViewController+TealiumTracker.m */,
 			);
 			path = objc;
-			sourceTree = "<group>";
-		};
-		1566C243272C4E3A00FE9A5A /* include */ = {
-			isa = PBXGroup;
-			children = (
-				1566C244272C4E5B00FE9A5A /* TealiumAutotrackingObjC.h */,
-			);
-			path = include;
 			sourceTree = "<group>";
 		};
 		15A0077D27284EF9005E1927 /* AutoTrackingIOSTest */ = {
@@ -3090,8 +3081,6 @@
 				1566C242272C4E2800FE9A5A /* objc */,
 				D7FF987B24ACBD1300E87A80 /* AutoTrackingExtensions.swift */,
 				71D2B34E1E2FE3670049BCF3 /* AutotrackingModule.swift */,
-				71D2B3511E2FE3670049BCF3 /* UIViewController+TealiumTracker.h */,
-				71D2B3521E2FE3670049BCF3 /* UIViewController+TealiumTracker.m */,
 				43DE5575164A11F5497A9EF7 /* TealiumViewController.swift */,
 				D7A2704425DBCD61009D8340 /* UIViewController+Tealium.swift */,
 				D7A2706725DBCD8E009D8340 /* TealiumViewTrackable.swift */,
@@ -3850,7 +3839,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7CED26D21932E3900ACD291 /* AutotrackingModule.swift in Headers */,
-				1566C245272C4E7400FE9A5A /* TealiumAutotrackingObjC.h in Headers */,
 				D7CED26C21932E2B00ACD291 /* UIViewController+TealiumTracker.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
