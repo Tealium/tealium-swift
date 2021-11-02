@@ -698,7 +698,6 @@
 		D7CCB57522C65B0600FF1103 /* TealiumDiskStorageConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CCB57322C65B0500FF1103 /* TealiumDiskStorageConfig.swift */; };
 		D7CED26721932DF200ACD291 /* AutotrackingModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D2B34E1E2FE3670049BCF3 /* AutotrackingModule.swift */; };
 		D7CED26921932DF200ACD291 /* UIViewController+TealiumTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D2B3521E2FE3670049BCF3 /* UIViewController+TealiumTracker.m */; };
-		D7CED26A21932E2B00ACD291 /* Tealium-Autotracking-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = 71D2B34D1E2FE3670049BCF3 /* Tealium-Autotracking-Bridging-Header.h */; };
 		D7CED26C21932E2B00ACD291 /* UIViewController+TealiumTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = 71D2B3511E2FE3670049BCF3 /* UIViewController+TealiumTracker.h */; };
 		D7CED26D21932E3900ACD291 /* AutotrackingModule.swift in Headers */ = {isa = PBXBuildFile; fileRef = 71D2B34E1E2FE3670049BCF3 /* AutotrackingModule.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		D7D5C1AD23D74B44002DB7C6 /* PublishSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D5C1AB23D74B44002DB7C6 /* PublishSettingsTests.swift */; };
@@ -2025,7 +2024,6 @@
 		7171AB081F017AF2004F59D1 /* TealiumUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumUtils.swift; sourceTree = "<group>"; };
 		7171AB291F01B949004F59D1 /* ConnectivityModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectivityModule.swift; sourceTree = "<group>"; };
 		71BAF2C91E8DA56D00071239 /* RemoteHTTPCommandTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteHTTPCommandTests.swift; sourceTree = "<group>"; };
-		71D2B34D1E2FE3670049BCF3 /* Tealium-Autotracking-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tealium-Autotracking-Bridging-Header.h"; sourceTree = "<group>"; };
 		71D2B34E1E2FE3670049BCF3 /* AutotrackingModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutotrackingModule.swift; sourceTree = "<group>"; };
 		71D2B3511E2FE3670049BCF3 /* UIViewController+TealiumTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+TealiumTracker.h"; sourceTree = "<group>"; };
 		71D2B3521E2FE3670049BCF3 /* UIViewController+TealiumTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+TealiumTracker.m"; sourceTree = "<group>"; };
@@ -3091,7 +3089,6 @@
 			children = (
 				1566C242272C4E2800FE9A5A /* objc */,
 				D7FF987B24ACBD1300E87A80 /* AutoTrackingExtensions.swift */,
-				71D2B34D1E2FE3670049BCF3 /* Tealium-Autotracking-Bridging-Header.h */,
 				71D2B34E1E2FE3670049BCF3 /* AutotrackingModule.swift */,
 				71D2B3511E2FE3670049BCF3 /* UIViewController+TealiumTracker.h */,
 				71D2B3521E2FE3670049BCF3 /* UIViewController+TealiumTracker.m */,
@@ -3853,7 +3850,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7CED26D21932E3900ACD291 /* AutotrackingModule.swift in Headers */,
-				D7CED26A21932E2B00ACD291 /* Tealium-Autotracking-Bridging-Header.h in Headers */,
 				1566C245272C4E7400FE9A5A /* TealiumAutotrackingObjC.h in Headers */,
 				D7CED26C21932E2B00ACD291 /* UIViewController+TealiumTracker.h in Headers */,
 			);
