@@ -86,6 +86,8 @@ extension _AnyEncodable {
             try encode(nsnumber: number, into: &container)
         case is NSNull, is Void:
             try container.encodeNil()
+        case let subString as Substring:
+            try String(subString).encode(to: &container)
         case let string as String: // Converts NSString which are not encodable
             try string.encode(to: &container)
         case let date as Date: // Converts NSDate which are not encodable
