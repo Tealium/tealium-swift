@@ -101,8 +101,12 @@ extension _AnyEncodable {
                 $0 as? AnyCodable ?? AnyCodable($0)
             })
         default:
-            let context = EncodingError.Context(codingPath: container.codingPath, debugDescription: "AnyCodable value \(type(of:value)) cannot be encoded")
-            throw EncodingError.invalidValue(value, context)
+            try container.encodeNil()
+            let codingPath = container.codingPath
+            let debugFail = { // Need to call this in a block so LLDB doesn't crash trying to access the container and we lose the debuggable state.
+                assertionFailure("AnyCodable value \(type(of:value)) cannot be encoded, codingPath: \(codingPath)")
+            }
+            debugFail()
         }
     }
 
