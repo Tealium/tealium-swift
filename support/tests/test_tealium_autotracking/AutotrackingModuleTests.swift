@@ -13,16 +13,22 @@ class AutotrackingModuleTests: XCTestCase {
 
     var module: AutotrackingModule {
         let config = testTealiumConfig.copy
+        config.autoTrackingCollectorDelegate = self
+        config.autoTrackingBlocklistFilename = "blocklist"
         let context = TestTealiumHelper.context(with: config)
-        return AutotrackingModule(context: context, delegate: self, diskStorage: nil) { _ in
+        let module = AutotrackingModule(context: context, delegate: self, diskStorage: nil) { _ in
 
         }
+        module.blockListBundle = Bundle(for: AutotrackingModuleTests.self)
+        return module
     }
     var expectationRequest: XCTestExpectation?
     var expectationShouldTrack: XCTestExpectation?
     var expectationDidComplete: XCTestExpectation?
-    var requestProcess: TealiumRequest?
+    
+    var currentViewName = ""
 
+    var disposeBag = TealiumDisposeBag()
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -32,158 +38,108 @@ class AutotrackingModuleTests: XCTestCase {
         expectationRequest = nil
         expectationDidComplete = nil
         expectationShouldTrack = nil
-        requestProcess = nil
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+        TealiumInstanceManager.shared.disable()
+        disposeBag = TealiumDisposeBag()
         super.tearDown()
-    }
-
-    func testRequestEmptyEventTrack() {
-        let module = self.module
-        let testObject = TestObject()
-
-        let notification = Notification(name: Notification.Name(rawValue: "com.tealium.autotracking.event"),
-                                        object: testObject,
-                                        userInfo: nil)
-
-        expectationRequest = expectation(description: "emptyEventDetected")
-
-        module.requestEventTrack(sender: notification)
-
-        waitForExpectations(timeout: 1.0, handler: nil)
-
-        XCTAssertTrue(requestProcess != nil, "Request process missing.")
-
-        let data: [String: Any] = ["tealium_event": "TestObject",
-                                   "autotracked": "true"
-        ]
-
-        guard let process = requestProcess as? TealiumTrackRequest else {
-            XCTFail("Process was unavailable or of wrong type: \(String(describing: requestProcess))")
-            return
-        }
-        var receivedData = process.trackDictionary
-
-        receivedData["request_uuid"] = nil
-
-        XCTAssertTrue(receivedData == data, "Mismatch between data expected: \n \(data as AnyObject) and data received post processing: \n \(receivedData as AnyObject)")
     }
 
     func testRequestEventTrack() {
         let module = self.module
-        let testObject = TestObject()
 
-        let notification = Notification(name: Notification.Name(rawValue: "com.tealium.autotracking.event"),
-                                        object: testObject,
-                                        userInfo: nil)
+        expectationRequest = expectation(description: "emptyEventDetected")
 
-        expectationRequest = expectation(description: "eventDetected")
-
-        module.requestEventTrack(sender: notification)
+        let viewName = "RequestEventTrackView"
+        module.requestViewTrack(viewName: viewName)
 
         waitForExpectations(timeout: 1.0, handler: nil)
 
-        // The request process should have been populated by the requestEventTrack call
-
-        XCTAssertTrue(requestProcess != nil)
-
-        let data: [String: Any] = ["tealium_event": "TestObject",
-                                   "autotracked": "true"
-        ]
-
-        guard let request = requestProcess as? TealiumTrackRequest else {
-            XCTFail("Process not of track type.")
-            return
-        }
-
-        var receivedData = request.trackDictionary
-
-        receivedData["request_uuid"] = nil
-
-        XCTAssertTrue(receivedData == data, "Mismatch between data expected: \n \(data as AnyObject) and data received post processing: \n \(receivedData as AnyObject)")
-    }
-
-    func testRequestEventTrackDelegate() {
-        let module = self.module
-        module.delegate = self
-
-        let testObject = TestObject()
-
-        let notification = Notification(name: Notification.Name(rawValue: "com.tealium.autotracking.event"),
-                                        object: testObject,
-                                        userInfo: nil)
-
-        expectationRequest = expectation(description: "NotificationBasedTrack")
-
-        module.requestEventTrack(sender: notification)
-
-        waitForExpectations(timeout: 1.0, handler: nil)
+        XCTAssertEqual(viewName, currentViewName)
     }
 
     func testAddCustomData() {
         let module = self.module
-        let testObject = TestObject()
 
-        let customData = ["a": "b",
-                          "c": "d"]
+        expectationRequest = expectation(description: "customDataRequest1")
+        let name = addDataViewName+"1"
+        module.requestViewTrack(viewName: name)
 
-        TealiumAutotrackingManager.addCustom(data: customData,
-                                             toObject: testObject)
+        waitForExpectations(timeout: 4.0, handler: nil)
 
-        let notification = Notification(name: Notification.Name(rawValue: "com.tealium.autotracking.event"),
-                                        object: testObject,
-                                        userInfo: nil)
-
-        expectationRequest = expectation(description: "customDataRequest")
-
-        module.requestEventTrack(sender: notification)
-
-        waitForExpectations(timeout: 1.0, handler: nil)
-
-        guard let request = requestProcess as? TealiumTrackRequest else {
-            XCTFail("Request not a track type.")
-            return
-        }
-
-        let receivedData = request.trackDictionary
-
-        XCTAssertTrue(customData.contains(otherDictionary: receivedData), "Custom data: \(customData) missing from track payload: \(receivedData)")
+        XCTAssertEqual(name, currentViewName)
     }
 
-    func testRemoveCustomData() {
+    // Cannot unit test swizzling/SwiftUI
+    
+    func testRequestEventTrackToInstanceManager() {
+        let config = testTealiumConfig.copy
+        config.collectors = [Collectors.AutoTracking]
+        config.autoTrackingCollectorDelegate = self
+        let teal = Tealium(config: config)
+        expectationRequest = expectation(description: "emptyEventToManagerDetected")
+
+        let viewName = "RequestEventTrackToInstanceManagerView"
+        AutotrackingModule.autoTrackView(viewName: viewName)
+        
+        waitForExpectations(timeout: 4.0, handler: nil)
+
+        XCTAssertEqual(viewName, currentViewName)
+        teal.zz_internal_modulesManager?.collectors = []
+    }
+    
+    func testAddCustomDataToInstanceManager() {
+        expectationRequest = expectation(description: "customDataRequest2")
+
+        let config = testTealiumConfig.copy
+        config.collectors = [Collectors.AutoTracking]
+        config.autoTrackingCollectorDelegate = self
+        let teal = Tealium(config: config)
+        let name = self.addDataViewName+"2"
+        AutotrackingModule.autoTrackView(viewName: name)
+        
+
+        waitForExpectations(timeout: 4.0, handler: nil)
+
+        XCTAssertEqual(name, currentViewName)
+        teal.zz_internal_modulesManager?.collectors = []
+    }
+    
+    func testView() {
+        let viewName = "testView"
+        
+        let firstReceiveExp = expectation(description: "Will receive view")
+        let secondReceiveExp = expectation(description: "Will NOT receive view")
+        secondReceiveExp.isInverted = true
+        AutotrackingModule.autoTrackView(viewName: viewName)
+        AutotrackingModule.onAutoTrackView.subscribe { name in
+            if name == viewName {
+                firstReceiveExp.fulfill()
+            } else {
+                secondReceiveExp.fulfill()
+            }
+        }.toDisposeBag(disposeBag)
+        
+        AutotrackingModule.onAutoTrackView.subscribe { name in
+            secondReceiveExp.fulfill()
+        }.toDisposeBag(disposeBag)
+        wait(for: [firstReceiveExp, secondReceiveExp], timeout: 0)
+    }
+    
+    func testBlocked() {
+        let viewName = "testView"
+        let blockedViewName = "blocked"
+        
         let module = self.module
-        let testObject = TestObject()
 
-        let customData = ["a": "b",
-                          "c": "d"]
+        expectationRequest = expectation(description: "Only track unblocked views")
+        expectationRequest?.assertForOverFulfill = true
+        module.requestViewTrack(viewName: viewName)
+        module.requestViewTrack(viewName: blockedViewName)
 
-        TealiumAutotrackingManager.addCustom(data: customData,
-                                             toObject: testObject)
+        waitForExpectations(timeout: 4.0, handler: nil)
 
-        TealiumAutotrackingManager.removeCustomData(fromObject: testObject)
-
-        let notification = Notification(name: Notification.Name(rawValue: "com.tealium.autotracking.event"),
-                                        object: testObject,
-                                        userInfo: nil)
-
-        expectationRequest = expectation(description: "customDataRequest")
-
-        module.requestEventTrack(sender: notification)
-
-        waitForExpectations(timeout: 1.0, handler: nil)
-
-        guard let request = requestProcess as? TealiumTrackRequest else {
-            XCTFail("Request of incorrect type.")
-            return
-        }
-        let receivedData = request.trackDictionary
-
-        XCTAssertFalse(receivedData.contains(otherDictionary: customData), "Custom data: \(customData) was unexpectedly found in track payload: \(receivedData)")
+        XCTAssertEqual(viewName, currentViewName)
     }
-
-    // Cannot unit test requestViewTrack
-
-    // Cannot unit test swizzling
-
 }
 
 extension AutotrackingModuleTests: ModuleDelegate {
@@ -192,13 +148,27 @@ extension AutotrackingModuleTests: ModuleDelegate {
     }
 
     func requestTrack(_ track: TealiumTrackRequest) {
-        // TODO: Info and error callback handling
-        requestProcess = track
-        expectationRequest?.fulfill()
     }
 
     func requestDequeue(reason: String) {
 
+    }
+}
+
+extension AutotrackingModuleTests: AutoTrackingDelegate {
+    var addDataViewName: String {
+        "addData"
+    }
+    var addDataDictionary: [String: Any] {
+        ["someKey":"someValue"]
+    }
+    func onCollectScreenView(screenName: String) -> [String : Any] {
+        self.currentViewName = screenName
+        expectationRequest?.fulfill()
+        if screenName.starts(with: addDataViewName) {
+            return addDataDictionary
+        }
+        return [:]
     }
 }
 

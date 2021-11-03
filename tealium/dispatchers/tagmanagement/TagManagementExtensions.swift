@@ -101,7 +101,7 @@ public extension Tealium {
     ///￼
     /// - Parameter view: `UIView` instance for `WKWebView` to be attached to
     func updateRootView(_ view: UIView) {
-        self.tagManagement?.setRootView(view, completion: nil)
+        self.tagManagement?.setRootView(view)
     }
 }
 

@@ -17,7 +17,8 @@ public class Tealium {
     public var zz_internal_modulesManager: ModulesManager?
     // swiftlint:enable identifier_name
     public var migrator: Migratable
-
+    private var disposeBag = TealiumDisposeBag()
+    var context: TealiumContext?
     /// Initializer.
     ///
     /// - Parameter config: `TealiumConfig` Object created with Tealium account, profile, environment, optional loglevel)
@@ -39,16 +40,21 @@ public class Tealium {
             self.migrator.migratePersistent(dataLayer: self.dataLayer)
         }
         let context = TealiumContext(config: config, dataLayer: self.dataLayer, tealium: self)
+        self.context = context
         #if os(iOS)
-        if config.appDelegateProxyEnabled {
-            TealiumAppDelegateProxy.setup(context: context)
-        }
+        TealiumDelegateProxy.setup(context: context)
         #endif
         TealiumQueues.backgroundSerialQueue.async { [weak self] in
             guard let self = self else {
                 return
             }
             self.zz_internal_modulesManager = modulesManager ?? ModulesManager(context)
+        }
+        
+        TealiumQueues.secureMainThreadExecution {
+            TealiumInstanceManager.shared.onOpenUrl.subscribe { [weak self] url in
+                self?.handleDeepLink(url)
+            }.toDisposeBag(self.disposeBag)
         }
 
         TealiumInstanceManager.shared.addInstance(self, config: config)
@@ -94,7 +100,7 @@ public class Tealium {
 
     deinit {
         #if os(iOS)
-        TealiumAppDelegateProxy.tearDown()
+        TealiumDelegateProxy.removeContext(self.context)
         #endif
     }
 
