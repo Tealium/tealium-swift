@@ -332,6 +332,18 @@ class ConsentManagerModuleTests: XCTestCase {
         XCTAssertEqual(module.consentManager?.userConsentCategories?.count, 0)
         XCTAssertEqual(module.consentManager?.consentPreferencesStorage?.preferences?.consentStatus, .unknown)
     }
+    
+    func testCustomConsentPolicyStatusInfo_AddedInShouldQueue() {
+        let config = testTealiumConfig
+        config.consentPolicy = .custom(MockCustomConsentPolicy.self)
+        let context = TestTealiumHelper.context(with: config)
+        let consentManagerModule = ConsentManagerModule(context: context, delegate: nil, diskStorage: DispatchQueueMockDiskStorage(), completion: { _ in })
+        let request = TealiumTrackRequest(data: [TealiumKey.event: "testEvent"])
+        let res = consentManagerModule.shouldQueue(request: request)
+        let trackInfo = res.1!
+        XCTAssertNotNil(trackInfo["customConsentCategories"] as? [TealiumConsentCategories])
+        XCTAssertNotNil(trackInfo["custom_consent_key"] as? String)
+    }
 
 }
 
