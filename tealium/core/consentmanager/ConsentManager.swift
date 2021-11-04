@@ -97,14 +97,14 @@ public class ConsentManager {
 
         if preferences.consentStatus != .unknown {
             // always need to update the consent cookie in TiQ, so this will trigger update_consent_cookie
-            trackUserConsentPreferences(preferences)
+            trackUserConsentPreferences()
         }
     }
 
     /// Sends a track call containing the consent settings if consent logging is enabled￼.
     ///
     /// - Parameter preferences: `UserConsentPreferences?`
-    func trackUserConsentPreferences(_ preferences: UserConsentPreferences?) {
+    func trackUserConsentPreferences() {
         if var consentData = currentPolicy.consentPolicyStatusInfo {
             consentData[TealiumKey.event] = currentPolicy.consentTrackingEventName
             // this track call must only be sent if "Log Consent Changes" is enabled and user has consented
@@ -160,7 +160,7 @@ public class ConsentManager {
         
         lastConsentUpdate = Date()
         storeUserConsentPreferences(currentPolicy.preferences)
-        trackUserConsentPreferences(currentPolicy.preferences)
+        trackUserConsentPreferences()
     }
 
 }
@@ -173,6 +173,6 @@ public extension ConsentManager {
         consentPreferencesStorage?.preferences = nil
         currentPolicy.preferences.resetConsentCategories()
         currentPolicy.preferences.setConsentStatus(.unknown)
-        trackUserConsentPreferences(currentPolicy.preferences)
+        trackUserConsentPreferences()
     }
 }

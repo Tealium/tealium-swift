@@ -116,7 +116,7 @@ class ConsentManagerTests: XCTestCase {
         mockConsentDelegate.asyncExpectation = expect
 
         let consentPreferences = UserConsentPreferences(consentStatus: .consented, consentCategories: [.cdp])
-        consentManager.trackUserConsentPreferences(consentPreferences)
+        consentManager.trackUserConsentPreferences()
 
         waitForExpectations(timeout: 2) { error in
             if let error = error {
@@ -180,7 +180,7 @@ class ConsentManagerTests: XCTestCase {
         mockConsentDelegate.asyncExpectation = expect
 
         let consentPreferences = UserConsentPreferences(consentStatus: .consented, consentCategories: [.cdp])
-        consentManager.trackUserConsentPreferences(consentPreferences)
+        consentManager.trackUserConsentPreferences()
 
         waitForExpectations(timeout: 2) { error in
             if let error = error {

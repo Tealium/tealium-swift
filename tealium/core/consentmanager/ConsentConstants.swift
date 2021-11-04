@@ -17,6 +17,7 @@ public enum ConsentKey {
     static let moduleName = "consentmanager"
     static let consentLoggingEnabled = "consent_logging_enabled"
     static let policyKey = "policy"
+    static let consentLastUpdated = "consent_last_updated"
     static let defaultPolicy = "gdpr"
     static let consentManagerDelegate = "consent_manager_delegate"
     static let gdprConsentCookieEventName = "update_consent_cookie"
