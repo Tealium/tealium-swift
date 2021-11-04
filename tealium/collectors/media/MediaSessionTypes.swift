@@ -240,7 +240,7 @@ class MilestoneMediaSession: MediaSession {
             }
             timer.resume()
         case .notPlaying:
-            _totalContentPlayed = _totalContentPlayed + Date().timeIntervalSince(playbackStart ?? Date())
+            _totalContentPlayed += _totalContentPlayed + Date().timeIntervalSince(playbackStart ?? Date())
             playbackStart = nil
             timer.suspend()
         }
@@ -421,7 +421,7 @@ class SummaryMediaSession: MediaSession {
         return
     }
     
-    private func divide(_ a: Int, by b: Int) -> Double {
+    private func divide(_ lhs: Int, rhs: Int) -> Double {
         return Double(a) / Double(b)
     }
 

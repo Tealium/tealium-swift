@@ -1,15 +1,20 @@
 included:
-  - ../tealium
+  - ./tealium
 excluded:
-  - Tests/SwiftLintFrameworkTests/Resources
-  - ../tealium/core/DiskStorage/Disk/
-  - ../tealium/core/AnyCodable/
-  - ../tealium/core/CoreUtils/Data+Gzip.swift
+  - ./builder/Tests/SwiftLintFrameworkTests/Resources
+  - ./tealium/core/DiskStorage/Disk/
+  - ./tealium/core/utils/AnyCodable/
+  - ./tealium/core/utils/Data+Gzip/
+  - ./builer/iOSTealiumMediaTest/
+  - ./builer/iOSTealiumTest/
+  - ./builder/macOSTealiumTest/
+  - ./builder/tvOSTealiumTest/
 disabled_rules:
   - trailing_comma
   - unused_optional_binding
   - file_header
 opt_in_rules:
+  - force_unwraping
   - explicit_init
   - closure_spacing
   - overridden_super_call
