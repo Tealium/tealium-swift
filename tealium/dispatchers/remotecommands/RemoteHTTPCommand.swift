@@ -90,9 +90,11 @@ public class RemoteHTTPCommand: RemoteCommand {
     class func queryItems(from dictionary: [String: Any]) -> [URLQueryItem] {
         var queryItems = [URLQueryItem]()
         dictionary.keys.sorted().forEach {
-            let value = String(describing: dictionary[$0]!)
-            let queryItem = URLQueryItem(name: $0, value: value)
-            queryItems.append(queryItem)
+            if let dictionaryValue = dictionary[$0] {
+                let value = String(describing: dictionaryValue)
+                let queryItem = URLQueryItem(name: $0, value: value)
+                queryItems.append(queryItem)
+            }
         }
         return queryItems
     }

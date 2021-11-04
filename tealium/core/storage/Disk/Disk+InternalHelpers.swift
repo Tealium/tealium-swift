@@ -48,7 +48,10 @@ extension Disk {
                 }
                 if url.absoluteString.lowercased().prefix(filePrefix.count) != filePrefix {
                     let fixedUrl = filePrefix + url.absoluteString
-                    url = URL(string: fixedUrl)!
+                    guard let castUrl = URL(string: fixedUrl) else {
+                        throw createError(.couldNotAccessSharedContainer, description: "Could not cast to URL.", failureReason: "Could not cast the path to a URL.", recoverySuggestion: "Make sure the path is valid.")
+                    }
+                    url = castUrl
                 }
                 return url
             } else {
@@ -71,7 +74,10 @@ extension Disk {
                 }
                 if url.absoluteString.lowercased().prefix(filePrefix.count) != filePrefix {
                     let fixedUrlString = filePrefix + url.absoluteString
-                    url = URL(string: fixedUrlString)!
+                    guard let castUrl = URL(string: fixedUrlString) else {
+                        throw createError(.couldNotAccessSharedContainer, description: "Could not cast to URL.", failureReason: "Could not cast the path to a URL.", recoverySuggestion: "Make sure the path is valid.")
+                    }
+                    url = castUrl
                 }
                 return url
             } else {
@@ -89,7 +95,10 @@ extension Disk {
             }
             if url.absoluteString.lowercased().prefix(filePrefix.count) != filePrefix {
                 let fixedUrlString = filePrefix + url.absoluteString
-                url = URL(string: fixedUrlString)!
+                guard let castUrl = URL(string: fixedUrlString) else {
+                    throw createError(.couldNotAccessSharedContainer, description: "Could not cast to URL.", failureReason: "Could not cast the path to a URL.", recoverySuggestion: "Make sure the path is valid.")
+                }
+                url = castUrl
             }
             return url
         } else {

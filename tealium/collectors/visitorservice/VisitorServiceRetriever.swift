@@ -142,7 +142,11 @@ public class VisitorServiceRetriever {
             completion(.success(nil))
             return
         }
-        let request = URLRequest(url: URL(string: visitorServiceURL)!)
+        guard let url = URL(string: visitorServiceURL) else {
+            completion(.success(nil))
+            return
+        }
+        let request = URLRequest(url: url)
         sendURLRequest(request) { [weak self] result in
             switch result {
             case .success(let data):

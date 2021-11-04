@@ -267,7 +267,10 @@ private extension TealiumDelegateProxy {
         fromClass sourceClass: AnyClass,
         fromSelector sourceSelector: Selector
     ) {
-        let method = class_getInstanceMethod(sourceClass, sourceSelector)!
+        guard let method = class_getInstanceMethod(sourceClass, sourceSelector) else {
+            log("Cannot get instance method")
+            return
+        }
         let methodImplementation = method_getImplementation(method)
         let methodTypeEncoding = method_getTypeEncoding(method)
         
