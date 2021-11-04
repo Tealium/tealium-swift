@@ -105,17 +105,17 @@ public class ConsentManager {
     ///
     /// - Parameter preferences: `UserConsentPreferences?`
     func trackUserConsentPreferences() {
-        if var consentData = currentPolicy.consentPolicyStatusInfo {
-            consentData[TealiumKey.event] = currentPolicy.consentTrackingEventName
-            // this track call must only be sent if "Log Consent Changes" is enabled and user has consented
-            if consentLoggingEnabled, currentPolicy.shouldLogConsentStatus {
-                // call type must be set to override "link" or "view"
-                consentData[TealiumKey.eventType] = consentData[TealiumKey.event]
-                delegate?.requestTrack(TealiumTrackRequest(data: consentData))
-            }
-            // in all cases, update the cookie data in TiQ/webview
-            updateTIQCookie()
+        // this track call must only be sent if "Log Consent Changes" is enabled and user has consented
+        if consentLoggingEnabled, currentPolicy.shouldLogConsentStatus {
+            // call type must be set to override "link" or "view"
+            let trackData = [
+                TealiumKey.event: currentPolicy.consentTrackingEventName,
+                TealiumKey.eventType: currentPolicy.consentTrackingEventName
+            ]
+            delegate?.requestTrack(TealiumTrackRequest(data: trackData))
         }
+        // in all cases, update the cookie data in TiQ/webview
+        updateTIQCookie()
     }
 
     /// Sends the track call to update TiQ cookie info. Ignored by Collect module.￼
@@ -123,14 +123,12 @@ public class ConsentManager {
     /// - Parameter consentData: `[String: Any]` containing the consent preferences
     func updateTIQCookie() {
         if currentPolicy.shouldUpdateConsentCookie {
-            var consentData = [String: Any]()
-            if let extraData = currentPolicy.consentPolicyStatusInfo {
-                consentData += extraData
-            }
             // collect module ignores this hit
-            consentData[TealiumKey.event] = currentPolicy.updateConsentCookieEventName
-            consentData[TealiumKey.eventType] = currentPolicy.updateConsentCookieEventName
-            delegate?.requestTrack(TealiumTrackRequest(data: consentData))
+            let trackData = [
+                TealiumKey.event: currentPolicy.updateConsentCookieEventName,
+                TealiumKey.eventType: currentPolicy.updateConsentCookieEventName
+            ]
+            delegate?.requestTrack(TealiumTrackRequest(data: trackData))
         }
     }
 

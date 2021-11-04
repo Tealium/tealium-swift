@@ -105,11 +105,8 @@ class ConsentManagerModule: DispatchValidator {
     /// - Parameter track: `TealiumTrackRequest` to be modified
     func addConsentDataToTrack(_ track: TealiumTrackRequest) -> TealiumTrackRequest {
         var newTrack = track.trackDictionary
-        if let consentDictionary = consentManager?.currentPolicy.consentPolicyStatusInfo {
+        if let consentDictionary = consentManager?.currentPolicy.policyTrackingData {
             newTrack += consentDictionary
-        }
-        if let lastUpdate = consentManager?.currentPolicy.preferences.lastUpdate {
-            newTrack[ConsentKey.consentLastUpdated] = lastUpdate.unixTimeMilliseconds
         }
         return TealiumTrackRequest(data: newTrack)
     }
