@@ -391,11 +391,11 @@ class SummaryMediaSession: MediaSession {
         mediaService?.media.summary?.sessionEndTime = summary.sessionEnd?.iso8601String
         if summary.chapterStarts > 0 {
             mediaService?.media.summary?.percentageChapterComplete = divide(summary.chapterEnds,
-                                                                            by: summary.chapterStarts) * 100
+                                                                            rhs: summary.chapterStarts) * 100
         }
         if summary.ads > 0 {
             mediaService?.media.summary?.percentageAdComplete = divide(summary.adEnds,
-                                                                       by: summary.ads) * 100
+                                                                       rhs: summary.ads) * 100
         }
         if summary.totalAdTime > 0 {
             mediaService?.media.summary?.percentageAdTime = (summary.totalAdTime / summary.totalPlayTime) * 100
@@ -422,7 +422,7 @@ class SummaryMediaSession: MediaSession {
     }
     
     private func divide(_ lhs: Int, rhs: Int) -> Double {
-        return Double(a) / Double(b)
+        return Double(lhs) / Double(rhs)
     }
 
 }
