@@ -172,6 +172,21 @@ class DispatchQueueModuleTests: XCTestCase {
         dispatchManager.registerForPowerNotifications()
         XCTAssertNil(dispatchManager.lowPowerNotificationObserver)
     }
+    
+    func testCustomConsentPolicyStatusInfo_AddedInShouldQueue() {
+        let config = testTealiumConfig
+        config.consentPolicy = .custom(MockCustomConsentPolicy.self)
+        let context = TestTealiumHelper.context(with: config)
+        let dispatchValidators: [DispatchValidator] = [
+            ConsentManagerModule(context: context, delegate: nil, diskStorage: DispatchQueueMockDiskStorage(), completion: { _ in })
+            ]
+        let dispatchManager = DispatchManager(dispatchers: nil, dispatchValidators: dispatchValidators, dispatchListeners: nil, connectivityManager: DispatchQueueModuleTests.connectivity, config: config)
+        var request = TealiumTrackRequest(data: [TealiumKey.event: "testEvent"])
+        _ = dispatchManager.checkShouldQueue(request: &request)
+        let trackInfo = request.trackDictionary
+        XCTAssertNotNil(trackInfo["customConsentCategories"] as? [TealiumConsentCategories])
+        XCTAssertNotNil(trackInfo["custom_consent_key"] as? String)
+    }
 }
 
 class MockPersistentQueue: TealiumPersistentDispatchQueue {
