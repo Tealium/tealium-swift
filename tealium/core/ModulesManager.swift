@@ -98,7 +98,7 @@ public class ModulesManager {
             }
         }
     }
-    private var cachedTrackData: [String:Any]?
+
     var context: TealiumContext
 
     init (_ context: TealiumContext,
@@ -290,18 +290,6 @@ public class ModulesManager {
         let requestData = gatherTrackData(for: request.trackDictionary)
         let newRequest = TealiumTrackRequest(data: requestData)
         dispatchManager?.processTrack(newRequest)
-        cachedTrackData = newRequest.trackDictionary
-    }
-    
-    func allTrackData(retreiveCachedData: Bool) -> [String:Any] {
-        if retreiveCachedData, let cachedData = self.cachedTrackData {
-            return cachedData
-        }
-        let data = gatherTrackData(for: TealiumTrackRequest(data: [:]).trackDictionary)
-        var request = TealiumTrackRequest(data: data)
-        _ = dispatchManager?.checkShouldQueue(request: &request)
-        cachedTrackData = request.trackDictionary
-        return request.trackDictionary
     }
 
     func gatherTrackData(for data: [String: Any]?) -> [String: Any] {

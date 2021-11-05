@@ -26,7 +26,6 @@ protocol DispatchManagerProtocol {
 
     func processTrack(_ request: TealiumTrackRequest)
     func handleDequeueRequest(reason: String)
-    func checkShouldQueue(request: inout TealiumTrackRequest) -> Bool
 
 }
 

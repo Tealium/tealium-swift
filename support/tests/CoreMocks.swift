@@ -18,7 +18,7 @@ class DummyCollector: Collector, DispatchListener, DispatchValidator {
     var id: String
 
     func shouldQueue(request: TealiumRequest) -> (Bool, [String: Any]?) {
-        return (false, ["dummyQueue": "dummyQueueValue"])
+        return (false, nil)
     }
 
     func shouldDrop(request: TealiumRequest) -> Bool {
@@ -112,10 +112,6 @@ class DummyDataManager: DataLayerManagerProtocol {
 }
 
 class DummyDispatchManagerConfigUpdate: DispatchManagerProtocol {
-    func checkShouldQueue(request: inout TealiumTrackRequest) -> Bool {
-        return true
-    }
-    
     var dispatchers: [Dispatcher]?
 
     var dispatchListeners: [DispatchListener]?
@@ -186,11 +182,7 @@ class DummyDispatchManagerdequeue: DispatchManagerProtocol {
         expectation.fulfill()
         asyncExpectation = XCTestExpectation(description: "\(expectation.description)1")
     }
-    
-    func checkShouldQueue(request: inout TealiumTrackRequest) -> Bool {
-        return true
-    }
-    
+
 }
 
 class DummyDataManagerNoData: DataLayerManagerProtocol {
@@ -248,10 +240,6 @@ class DummyDataManagerNoData: DataLayerManagerProtocol {
 
     func startNewSession(with sessionStarter: SessionStarterProtocol) {
 
-    }
-    
-    func checkShouldQueue(request: inout TealiumTrackRequest) -> Bool {
-        return true
     }
 
 }

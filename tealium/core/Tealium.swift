@@ -97,20 +97,6 @@ public class Tealium {
 
         }
     }
-    
-    /// Gathers all the data from the DataLayer and the collectors
-    ///
-    /// - parameter tereiveCachedData: If true we don't gather new data but we return the last cached track or gather data
-    /// - parameter completion: The block called with the gathered data
-    public func gatherTrackData(retreiveCachedData: Bool = false, completion: @escaping ([String: Any]) -> ()) {
-        TealiumQueues.backgroundSerialQueue.async { [weak self] in
-            guard let self = self, let modulesManager = self.zz_internal_modulesManager else {
-                completion([:])
-                return
-            }
-            completion(modulesManager.allTrackData(retreiveCachedData: retreiveCachedData))
-        }
-    }
 
     deinit {
         #if os(iOS)
