@@ -67,7 +67,7 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
         allSessionData[TealiumDataKey.random] = random
         if !currentTimestampsExist(allSessionData) {
             allSessionData.merge(currentTimeStamps) { _, new in new }
-            allSessionData[TealiumKey.timestampOffset] = timeZoneOffset
+            allSessionData[TealiumDataKey.timestampOffset] = timeZoneOffset
         }
         return allSessionData
     }
@@ -76,11 +76,11 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
     public var currentTimeStamps: [String: Any] {
         let date = Date()
         return [
-            TealiumKey.timestampEpoch: date.timestampInSeconds,
-            TealiumKey.timestamp: date.iso8601String,
-            TealiumKey.timestampLocal: date.iso8601LocalString,
-            TealiumKey.timestampUnixMilliseconds: date.unixTimeMilliseconds,
-            TealiumKey.timestampUnix: date.unixTimeSeconds
+            TealiumDataKey.timestampEpoch: date.timestampInSeconds,
+            TealiumDataKey.timestamp: date.iso8601String,
+            TealiumDataKey.timestampLocal: date.iso8601LocalString,
+            TealiumDataKey.timestampUnixMilliseconds: date.unixTimeMilliseconds,
+            TealiumDataKey.timestampUnix: date.unixTimeSeconds
         ]
     }
 
@@ -144,11 +144,11 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
     /// - Parameter currentData: `[String: Any]` containing existing session data.
     /// - Returns: `Bool` `true` if current timestamps exist in active session data.
     func currentTimestampsExist(_ currentData: [String: Any]) -> Bool {
-        currentData[TealiumKey.timestampEpoch] != nil &&
-            currentData[TealiumKey.timestamp] != nil &&
-            currentData[TealiumKey.timestampLocal] != nil &&
-            currentData[TealiumKey.timestampOffset] != nil &&
-            currentData[TealiumKey.timestampUnix] != nil
+        currentData[TealiumDataKey.timestampEpoch] != nil &&
+            currentData[TealiumDataKey.timestamp] != nil &&
+            currentData[TealiumDataKey.timestampLocal] != nil &&
+            currentData[TealiumDataKey.timestampOffset] != nil &&
+            currentData[TealiumDataKey.timestampUnix] != nil
     }
 
     /// Deletes specified values from storage.

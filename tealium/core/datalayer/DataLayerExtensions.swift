@@ -60,7 +60,7 @@ public extension TealiumValue {
     static let sessionBaseURL = "https://tags.tiqcdn.com/utag/tiqapp/utag.v.js?a="
 }
 
-public extension TealiumKey {
+public extension TealiumDataKey {
     static let timestampEpoch = "tealium_timestamp_epoch"
     static let timestamp = "timestamp"
     static let timestampLocal = "timestamp_local"

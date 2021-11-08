@@ -101,6 +101,10 @@ public extension TealiumDataKey {
     static let eventStart = "timed_event_start"
     static let eventStop = "timed_event_end"
     static let eventDuration = "timed_event_duration"
+    
+    static let timestampUnix = "timestamp_unix"
+    static let timestampUnixMilliseconds = "timestamp_unix_milliseconds"
+    static let tagmanagementNotification = "com.tealium.tagmanagement.urlrequest"
 }
 
 public enum TealiumConfigKey {
@@ -153,15 +157,12 @@ public enum TealiumKey {
 
     public static let updateConsentCookieEventNames = ["update_consent_cookie", "set_dns_state"]
     public static let jsNotificationName = "com.tealium.tagmanagement.jscommand"
-    public static let tagmanagementNotification = "com.tealium.tagmanagement.urlrequest"
     public static let jsCommand = "js"
     // used for remote commands
     public static let persistentData = "persistentData"
     public static let persistentVisitorId = "visitorId"
 
     public static let logLevelConfig = "com.tealium.logger.loglevel"
-    public static let timestampUnix = "timestamp_unix"
-    public static let timestampUnixMilliseconds = "timestamp_unix_milliseconds"
     public static let prod = "prod"
     public static let dev = "dev"
     // swiftlint:disable identifier_name

@@ -60,7 +60,7 @@ class RemoteCommandsModuleTests: XCTestCase {
             return
         }
         let urlRequest = URLRequest(url: url)
-        let request = TealiumRemoteCommandRequest(data: [TealiumKey.tagmanagementNotification: urlRequest])
+        let request = TealiumRemoteCommandRequest(data: [TealiumDataKey.tagmanagementNotification: urlRequest])
         module.remoteCommands.moduleDelegate?.processRemoteCommandRequest(request)
 
         waitForExpectations(timeout: 5.0, handler: nil)

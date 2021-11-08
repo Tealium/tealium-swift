@@ -347,7 +347,7 @@ extension DispatchManager {
             return (false, nil)
         }
         #if os (watchOS)
-        return (true, [TealiumKey.queueReason: TealiumKey.batchingEnabled])
+        return (true, [TealiumDataKey.queueReason: TealiumConfigKey.batchingEnabled])
         #else
 
         guard hasSufficientBattery(track: request) else {
