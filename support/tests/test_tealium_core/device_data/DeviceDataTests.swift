@@ -127,8 +127,8 @@ class TealiumDeviceDataTests: XCTestCase {
         ], orientation)
         #endif
         #else
-        XCTAssertEqual([DeviceDataKey.orientation: TealiumValue.unknown,
-                DeviceDataKey.fullOrientation: TealiumValue.unknown
+        XCTAssertEqual([TealiumDataKey.orientation: TealiumValue.unknown,
+                        TealiumDataKey.fullOrientation: TealiumValue.unknown
         ], orientation)
         #endif
     }

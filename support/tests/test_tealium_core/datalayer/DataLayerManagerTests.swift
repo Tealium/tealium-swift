@@ -59,7 +59,7 @@ class DataLayerManagerTests: XCTestCase {
     func testCurrentTimeStamps() {
         let timeStamps = eventDataManager.currentTimeStamps
         XCTAssertEqual(timeStamps.count, 5)
-        let expectedKeys = [TealiumKey.timestampEpoch, TealiumKey.timestamp, TealiumKey.timestampLocal, TealiumKey.timestampUnixMilliseconds, TealiumKey.timestampUnix]
+        let expectedKeys = [TealiumDataKey.timestampEpoch, TealiumDataKey.timestamp, TealiumDataKey.timestampLocal, TealiumDataKey.timestampUnixMilliseconds, TealiumDataKey.timestampUnix]
         let keys = timeStamps.map { $0.key }
         XCTAssertEqual(keys.sorted(), expectedKeys.sorted())
     }
@@ -113,7 +113,7 @@ class DataLayerManagerTests: XCTestCase {
 
     func testCurrentTimeStampsExist() {
         var timeStamps = eventDataManager.currentTimeStamps
-        timeStamps[TealiumKey.timestampOffset] = Date().timestampInSeconds
+        timeStamps[TealiumDataKey.timestampOffset] = Date().timestampInSeconds
         XCTAssertTrue(eventDataManager.currentTimestampsExist(timeStamps))
     }
 
