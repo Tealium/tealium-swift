@@ -97,42 +97,27 @@ public extension TealiumDataKey {
     static let killVisitorSessionEvent = "event"
     static let traceId = "cp.trace_id"
 
-    static let timedEventTriggers = "timed_event_triggers"
     static let timedEventName = "timed_event_name"
     static let eventStart = "timed_event_start"
     static let eventStop = "timed_event_end"
     static let eventDuration = "timed_event_duration"
 }
 
-public enum TealiumKey {
-
-    public static let updateConsentCookieEventNames = ["update_consent_cookie", "set_dns_state"]
-    public static let jsNotificationName = "com.tealium.tagmanagement.jscommand"
-    public static let tagmanagementNotification = "com.tealium.tagmanagement.urlrequest"
-    public static let jsCommand = "js"
-    // used for remote commands
-    public static let persistentData = "persistentData"
-    public static let persistentVisitorId = "visitorId"
-    static let visitorId = "tealium_visitor_id"
-    public static let logLevelConfig = "com.tealium.logger.loglevel"
-    public static let timestampUnix = "timestamp_unix"
-    public static let timestampUnixMilliseconds = "timestamp_unix_milliseconds"
-    public static let prod = "prod"
-    public static let dev = "dev"
-    // swiftlint:disable identifier_name
-    public static let qa = "qa"
-    // swiftlint:enable identifier_name
-    public static let errorHeaderKey = "X-Error"
-    public static let diskStorageDirectory = "disk_storage_directory"
-    public static let remoteAPIEventType = "remote_api"
+public enum TealiumConfigKey {
     public static let publishSettings = "remote_publish_settings"
     public static let publishSettingsURL = "publish_settings_url"
     public static let publishSettingsProfile = "publish_settings_profile"
-    
-    public static let tealiumURLScheme = "tealium"
+    static let visitorId = "tealium_visitor_id"
     public static let libraryEnabled = "library_is_enabled"
     public static let batterySaver = "battery_saver"
     public static let queueSizeKey = "queue_size"
+    static let appDelegateProxy = "app_delegate_proxy"
+    static let skAdConversionKeys = "attribution_conversion_keys"
+    static let hostedDataLayerKeys = "hosted_data_layer_keys"
+    static let hostedDataLayerExpiry = "hosted_data_layer_expiry"
+    static let consentExpiry = "consent_expiry"
+    static let consentExpiryCallback = "consent_expiry_callback"
+    static let timedEventTriggers = "timed_event_triggers"
     // number of events in a batch, max 10
     public static let batchSizeKey = "batch_size"
     // max stored events (e.g. if offline) to limit disk space consumed
@@ -154,15 +139,6 @@ public enum TealiumKey {
     static let deepLinkTrackingEnabled = "deep_link_tracking_enabled"
     static let qrTraceEnabled = "qr_trace_enabled"
     
-    static let killVisitorSession = "kill_visitor_session"
-    static let leaveTraceQueryParam = "leave_trace"
-    static let traceIdQueryParam = "tealium_trace_id"
-    static let appDelegateProxy = "app_delegate_proxy"
-    static let skAdConversionKeys = "attribution_conversion_keys"
-    static let hostedDataLayerKeys = "hosted_data_layer_keys"
-    static let hostedDataLayerExpiry = "hosted_data_layer_expiry"
-    static let consentExpiry = "consent_expiry"
-    static let consentExpiryCallback = "consent_expiry_callback"
     
     static let shouldMigrate = "should_migrate_data"
 
@@ -170,6 +146,38 @@ public enum TealiumKey {
     public static let autoEndSesssionTime = "media_auto_end_session_time"
     static let minimumFreeDiskSpace = "min_free_disk_space"
     static let diskStorageEnabled = "disk_storage"
+    public static let diskStorageDirectory = "disk_storage_directory"
+}
+
+public enum TealiumKey {
+
+    public static let updateConsentCookieEventNames = ["update_consent_cookie", "set_dns_state"]
+    public static let jsNotificationName = "com.tealium.tagmanagement.jscommand"
+    public static let tagmanagementNotification = "com.tealium.tagmanagement.urlrequest"
+    public static let jsCommand = "js"
+    // used for remote commands
+    public static let persistentData = "persistentData"
+    public static let persistentVisitorId = "visitorId"
+
+    public static let logLevelConfig = "com.tealium.logger.loglevel"
+    public static let timestampUnix = "timestamp_unix"
+    public static let timestampUnixMilliseconds = "timestamp_unix_milliseconds"
+    public static let prod = "prod"
+    public static let dev = "dev"
+    // swiftlint:disable identifier_name
+    public static let qa = "qa"
+    // swiftlint:enable identifier_name
+    public static let errorHeaderKey = "X-Error"
+    public static let remoteAPIEventType = "remote_api"
+
+    
+    public static let tealiumURLScheme = "tealium"
+
+    
+    
+    static let killVisitorSession = "kill_visitor_session"
+    static let leaveTraceQueryParam = "leave_trace"
+    static let traceIdQueryParam = "tealium_trace_id"
 }
 
 public enum TealiumTrackType {

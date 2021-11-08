@@ -64,7 +64,7 @@ class AppDataModuleTests: XCTestCase {
     func testInitSetsExistingAppData() {
         let module = createModule()
         XCTAssertEqual(mockDiskStorage.retrieveCount, 1)
-        guard let data = module.data, let visId = data[TealiumKey.visitorId] as? String else {
+        guard let data = module.data, let visId = data[TealiumDataKey.visitorId] as? String else {
             XCTFail("Nothing in persistent app data and there should be a test visitor id.")
             return
         }
@@ -77,7 +77,7 @@ class AppDataModuleTests: XCTestCase {
     }
 
     func testIsMissingPersistentKeys() {
-        let missingUUID = [TealiumKey.visitorId: "someVisitorId"]
+        let missingUUID = [TealiumDataKey.visitorId: "someVisitorId"]
         XCTAssertTrue(AppDataModule.isMissingPersistentKeys(data: missingUUID))
         let missingVisitorID = [TealiumDataKey.uuid: "someUUID"]
         XCTAssertTrue(AppDataModule.isMissingPersistentKeys(data: missingVisitorID))

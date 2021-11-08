@@ -51,7 +51,7 @@ class ConsentManagerModule: DispatchValidator {
     /// - Returns: `(Bool, [String: Any]?)` true/false if should be queued, then the resulting dictionary of consent data.
     func shouldQueue(request: TealiumRequest) -> (Bool, [String: Any]?) {
         guard let request = request as? TealiumTrackRequest else {
-            return (true, [TealiumDataKey.queueReason: TealiumKey.batchingEnabled])
+            return (true, [TealiumDataKey.queueReason: TealiumConfigKey.batchingEnabled])
         }
         expireConsent()
         

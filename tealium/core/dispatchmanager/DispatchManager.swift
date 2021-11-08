@@ -163,7 +163,7 @@ class DispatchManager: DispatchManagerProtocol {
             case .success:
                 let shouldQueue = self.shouldQueue(request: newRequest)
                 if shouldQueue.0 == true {
-                    let batchingReason = shouldQueue.1? [TealiumDataKey.queueReason] as? String ?? TealiumKey.batchingEnabled
+                    let batchingReason = shouldQueue.1? [TealiumDataKey.queueReason] as? String ?? TealiumConfigKey.batchingEnabled
 
                     self.enqueue(newRequest, reason: batchingReason)
                     // batch request and release if necessary
@@ -243,7 +243,7 @@ class DispatchManager: DispatchManagerProtocol {
         // no conditions preventing queueing, so queue request
         var requestData = request.trackDictionary
         if requestData[TealiumDataKey.queueReason] == nil {
-            requestData[TealiumDataKey.queueReason] = reason ?? TealiumKey.batchingEnabled
+            requestData[TealiumDataKey.queueReason] = reason ?? TealiumConfigKey.batchingEnabled
         }
         requestData[TealiumDataKey.wasQueued] = "true"
         var newRequest = TealiumTrackRequest(data: requestData)
@@ -379,7 +379,7 @@ extension DispatchManager {
             return (false, nil)
         }
 
-        return (true, [TealiumDataKey.queueReason: TealiumKey.batchingEnabled])
+        return (true, [TealiumDataKey.queueReason: TealiumConfigKey.batchingEnabled])
         #endif
     }
 

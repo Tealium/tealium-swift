@@ -30,10 +30,10 @@ public extension TealiumConfig {
     /// - Returns: `Bool` Default is `false`
     var enableBackgroundMediaTracking: Bool {
         get {
-            options[TealiumKey.enableBackgroundMedia] as? Bool ?? false
+            options[TealiumConfigKey.enableBackgroundMedia] as? Bool ?? false
         }
         set {
-            options[TealiumKey.enableBackgroundMedia] = newValue
+            options[TealiumConfigKey.enableBackgroundMedia] = newValue
         }
     }
     
@@ -41,10 +41,10 @@ public extension TealiumConfig {
     /// - Returns: `Double` Default is `60.0` seconds
     var backgroundMediaAutoEndSessionTime: Double {
         get {
-            options[TealiumKey.autoEndSesssionTime] as? Double ?? 60.0
+            options[TealiumConfigKey.autoEndSesssionTime] as? Double ?? 60.0
         }
         set {
-            options[TealiumKey.autoEndSesssionTime] = newValue
+            options[TealiumConfigKey.autoEndSesssionTime] = newValue
         }
     }
 
