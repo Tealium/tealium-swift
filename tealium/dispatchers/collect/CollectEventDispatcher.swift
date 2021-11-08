@@ -37,7 +37,7 @@ class CollectEventDispatcher: CollectProtocol, LoggingDataToStringConverter {
         setUpUrls(config: config)
         completion?((.success(true), nil))
     }
-    
+
     func setUpUrls(config: TealiumConfig) {
         if let overrideUrl = config.overrideCollectURL,
            overrideUrl.isValidUrl {
@@ -49,7 +49,7 @@ class CollectEventDispatcher: CollectProtocol, LoggingDataToStringConverter {
                 singleEventDispatchURL = "\(CollectEventDispatcher.defaultDispatchBaseURL)\(CollectEventDispatcher.singleEventPath)"
             }
         }
-        
+
         if let overrideBatchUrl = config.overrideCollectBatchURL,
            overrideBatchUrl.isValidUrl {
             self.batchEventDispatchURL = overrideBatchUrl
@@ -82,7 +82,7 @@ class CollectEventDispatcher: CollectProtocol, LoggingDataToStringConverter {
     func dispatch(data: [String: Any],
                   url: String? = nil,
                   completion: ModuleCompletion?) {
-        if let jsonString = convertData(data, toStringWith: { try $0.toJSONString()}),
+        if let jsonString = convertData(data, toStringWith: { try $0.toJSONString() }),
            let url = url ?? singleEventDispatchURL,
            let urlRequest = NetworkUtils.urlPOSTRequestWithJSONString(jsonString, dispatchURL: url) {
             sendURLRequest(urlRequest, completion)

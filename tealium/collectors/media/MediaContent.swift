@@ -49,7 +49,7 @@ public class MediaContent: Codable {
         case milestone = "media_milestone"
         case summary = "media_summary"
     }
-    
+
     public init(
         name: String,
         streamType: StreamType,
@@ -82,7 +82,7 @@ public class MediaContent: Codable {
 }
 
 extension MediaContent {
-    
+
     /// Adds to an array for a given segment
     /// - Parameter segment: `Segment`
     func add(_ segment: Segment) {
@@ -95,5 +95,5 @@ extension MediaContent {
             chapters.append(chapter)
         }
     }
-    
+
 }

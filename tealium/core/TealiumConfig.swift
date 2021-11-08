@@ -15,7 +15,7 @@ open class TealiumConfig {
     public let environment: String
     public let dataSource: String?
     public lazy var options = [String: Any]()
-    
+
     /// The start and stop timed events to be tracked automatically.
     /// Optionally provide a name for the timed event. Default  timed event name will be `start_event_name::end_event_name`
     /// - Usage: `config.timedEventTriggers = [TimedEventTrigger(start: "product_view", stop: "order_complete")]`
@@ -402,7 +402,7 @@ public extension TealiumConfig {
             options[TealiumKey.minutesBetweenRefresh] = newValue
         }
     }
-    
+
     /// Sets the expiry for the Consent Manager preferences.
     var consentExpiry: (time: Int, unit: TimeUnit)? {
         get {
@@ -413,7 +413,7 @@ public extension TealiumConfig {
             options[TealiumKey.consentExpiry] = newValue
         }
     }
-    
+
     /// Defines the consent expiration callback
     var onConsentExpiration: (() -> Void)? {
         get {

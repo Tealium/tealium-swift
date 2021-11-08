@@ -40,7 +40,7 @@ var tealiumAssociatedObjectHandle: UInt8 = 0
 public class TealiumAutotrackingManager {
 
     /// Add custom data to an object, to be included with an autotracked event.
-    ///￼
+    /// ￼
     /// - Parameter data: `[String:Any]` dictionary. Values should be String or [String]￼
     /// - Parameter toObject: `NSObject` to add data for.
     public class func addCustom(data: [String: Any], toObject: NSObject) {
@@ -53,7 +53,7 @@ public class TealiumAutotrackingManager {
     }
 
     /// Retrieve any custom data previously associated with object.
-    ///￼
+    /// ￼
     /// - Parameter forObject: `NSObject` to retrieve data for.
     /// - Returns: `[String:Any]?` dictionary
     public class func customData(forObject: NSObject) -> [String: Any]? {
@@ -65,7 +65,7 @@ public class TealiumAutotrackingManager {
     }
 
     /// Remove all custom Tealium data associated to an object.
-    ///￼
+    /// ￼
     /// - Parameter fromObject: `NSObject` to disassociate data from.
     public class func removeCustomData(fromObject: NSObject) {
         objc_setAssociatedObject(fromObject,
@@ -75,7 +75,7 @@ public class TealiumAutotrackingManager {
     }
 
     /// Instance level addCustom data function - convenience for framework APIs.
-    ///￼
+    /// ￼
     /// - Parameter data: `[String:Any]`. Values should be `String` or `[String]￼`.
     /// - Parameter toObject: `NSObject` to add data for.
     public func addCustom(data: [String: Any],
@@ -85,7 +85,7 @@ public class TealiumAutotrackingManager {
     }
 
     /// Instance level customData function - convenience for framework APIs.
-    ///￼
+    /// ￼
     /// - Parameter forObject: `NSObject` to retrieve data for.
     /// - Returns: `[String:Any]?`
     public func customData(forObject: NSObject) -> [String: Any]? {
@@ -93,7 +93,7 @@ public class TealiumAutotrackingManager {
     }
 
     /// Instance level removeCustomData function - convenience for framework APIs.
-    ///￼
+    /// ￼
     /// - Parameter fromObject: NSObject to disassociate data from.
     public func removeCustomData(fromObject: NSObject) {
         TealiumAutotrackingManager.removeCustomData(fromObject: fromObject)
@@ -184,7 +184,7 @@ public class AutotrackingModule: Collector {
     }
 
     /// Make track requests to core library - called from the event & viewDidAppear listeners
-    ///￼
+    /// ￼
     /// - Parameter data: `[String:Any]` additional variable data.
     func requestTrack(data: [String: Any]) {
         let track = TealiumTrackRequest(data: data)

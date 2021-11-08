@@ -246,7 +246,7 @@ class TealiumAppDelegateProxy: NSProxy {
             }
             TealiumAppDelegateProxy.handleDeepLink(url, referrer: referrer)
         }
-        
+
         let methodSelector = #selector(application(_:continueUserActivity:restorationHandler:))
         guard let pointer = TealiumAppDelegateProxy.originalMethodImplementation(for: methodSelector, object: self),
               let pointerValue = pointer.pointerValue else {

@@ -13,25 +13,25 @@ import TealiumCore
 class FullPlaybackMediaSession: MediaSession { }
 
 class IntervalMediaSession: MediaSession {
-    
+
     private var timer: Repeater
-    
+
     init(with mediaService: MediaEventDispatcher,
          _ timer: Repeater? = nil) {
         self.timer = timer ?? TealiumRepeatingTimer(timeInterval: 10.0)
         super.init(with: mediaService)
     }
-    
+
     /// Sends a interval event
     override func ping() {
         mediaService?.track(.event(.interval))
     }
-    
+
     /// Cancels the interval timer
     override func stopPing() {
         timer.suspend()
     }
-    
+
     /// Sends a `play` event and defines the timer event handler to be triggered every
     /// 10 seconds
     override func play() {
@@ -41,23 +41,23 @@ class IntervalMediaSession: MediaSession {
         }
         timer.resume()
     }
-    
+
     override func pause() {
         super.pause()
         timer.suspend()
     }
-    
+
     override func endContent() {
         super.endContent()
         timer.suspend()
     }
-    
+
     /// Sends an `endSession` event and cancel the timer
     override func endSession() {
         super.endSession()
         timer.suspend()
     }
-    
+
     deinit {
         timer.suspend()
     }
@@ -65,19 +65,19 @@ class IntervalMediaSession: MediaSession {
 }
 
 class IntervalMilestoneMediaSession: MilestoneMediaSession {
-    
+
     /// Adds a interval ping every 10 seconds to the milestone tracking type
     override func ping() {
-        if Int(totalContentPlayed) % 10 == 0  {
+        if Int(totalContentPlayed) % 10 == 0 {
             mediaService?.track(.event(.interval))
         }
         super.ping()
     }
-    
+
 }
 
 class MilestoneMediaSession: MediaSession {
-    
+
     private var timer: Repeater
     private var duration: Int?
     private var playbackStart: Date?
@@ -85,8 +85,7 @@ class MilestoneMediaSession: MediaSession {
     private var startSeek: Double?
     private var triggered = [Milestone]()
     private var _totalContentPlayed: Double = 0.0
-    
-    
+
     init(with mediaService: MediaEventDispatcher,
          interval: Double,
          _ timer: Repeater? = nil) {
@@ -96,17 +95,15 @@ class MilestoneMediaSession: MediaSession {
         self.timer = timer ?? TealiumRepeatingTimer(timeInterval: interval)
         super.init(with: mediaService)
     }
-    
+
     /// The total amount of content played, in seconds
     var totalContentPlayed: Double {
-        get {
-            guard let playbackStart = playbackStart else {
-                return _totalContentPlayed
-            }
-            return _totalContentPlayed + Date().timeIntervalSince(playbackStart)
+        guard let playbackStart = playbackStart else {
+            return _totalContentPlayed
         }
+        return _totalContentPlayed + Date().timeIntervalSince(playbackStart)
     }
-    
+
     /// Percentage of content played
     private var percentageContentPlayed: Double {
         guard let duration = duration else {
@@ -114,7 +111,7 @@ class MilestoneMediaSession: MediaSession {
         }
         return totalContentPlayed / Double(duration) * 100
     }
-    
+
     /// Should send end content event automatically, based on an optional configuration setting
     /// on the `MediaContent` object
     private var shouldSendEndContent: Bool {
@@ -123,7 +120,7 @@ class MilestoneMediaSession: MediaSession {
         }
         return percentageContentPlayed >= contentCompletePercentage
     }
-    
+
     /// Checks the current playback against the provided duration for the percentage played
     /// If within range of a milestone, set the `media_milestone` and send an event
     override func ping() {
@@ -152,7 +149,7 @@ class MilestoneMediaSession: MediaSession {
         }
         sendMilestone(current)
     }
-    
+
     /// Sends a `play` event and define timer event handler to be triggered for given interval
     override func play() {
         triggered = [Milestone]()
@@ -162,25 +159,25 @@ class MilestoneMediaSession: MediaSession {
         setContentState(to: .playing)
         super.play()
     }
-    
+
     /// Sends a `pause` event and records the time elapsed thus far
     override func pause() {
         setContentState(to: .notPlaying)
         super.pause()
     }
-    
+
     /// Sets current playing state to `notPlaying`
     override func startAdBreak(_ adBreak: AdBreak) {
         setContentState(to: .notPlaying)
         super.startAdBreak(adBreak)
     }
-    
+
     /// Sets current playing state to `playing`
     override func endAdBreak() {
         setContentState(to: .playing)
         super.endAdBreak()
     }
-    
+
     /// Calls the `startSeek` event and records the seek start time for milestone tracking
     /// Playhead is required for this implementation
     /// - Parameter position: `Double` the playback position, in seconds, since the start of the content
@@ -191,7 +188,7 @@ class MilestoneMediaSession: MediaSession {
         startSeek = position
         super.startSeek()
     }
-    
+
     /// Calls the `endSeek` event and records the seek start time for milestone tracking
     /// Playhead is required for this implementation
     /// - Parameter position: `Double` the playback position, in seconds, since the start of the content
@@ -210,12 +207,12 @@ class MilestoneMediaSession: MediaSession {
         timer.suspend()
         super.endContent()
     }
-    
+
     /// Cancels the milestone timer
     override func stopPing() {
         timer.suspend()
     }
-    
+
     /// Sends an `endSession` event and cancel the milestone timer
     override func endSession() {
         _totalContentPlayed = 0.0
@@ -229,7 +226,7 @@ class MilestoneMediaSession: MediaSession {
         mediaService?.media.milestone = milestone.rawValue
         mediaService?.track(.event(.milestone))
     }
-    
+
     /// Toggles the content state in order to accurately keep track of content played and
     /// suspend/resume milestone timer
     private func setContentState(to state: MediaContentState) {
@@ -245,7 +242,7 @@ class MilestoneMediaSession: MediaSession {
             timer.suspend()
         }
     }
-    
+
     private func setMilestoneOnce(_ milestone: Milestone) -> Milestone? {
         guard !triggered.contains(milestone) else {
             return nil
@@ -253,15 +250,15 @@ class MilestoneMediaSession: MediaSession {
         triggered.append(milestone)
         return milestone
     }
-    
+
     deinit {
         timer.suspend()
     }
-    
+
 }
 
 class SummaryMediaSession: MediaSession {
-    
+
     override var bitrate: Int? {
         get { mediaService?.media.qoe.bitrate }
         set {
@@ -270,43 +267,43 @@ class SummaryMediaSession: MediaSession {
             }
         }
     }
-    
+
     override var playerState: PlayerState? {
         get { mediaService?.media.state }
         set { mediaService?.media.state = newValue }
     }
-    
+
     /// Instantiates the `Summary` upon the start of the session
     override func startSession() {
         mediaService?.media.summary = Summary()
     }
-    
+
     /// Increments the playcount and sets the latetest play start time
     override func play() {
         mediaService?.media.summary?.plays.increment()
         mediaService?.media.summary?.playStartTime = Date()
     }
-    
+
     /// Increments chapter start
     override func startChapter(_ chapter: Chapter) {
         mediaService?.media.summary?.chapterStarts.increment()
     }
-    
+
     /// Increments chapter skip
     override func skipChapter() {
         mediaService?.media.summary?.chapterSkips.increment()
     }
-    
+
     /// Increments chapter end
     override func endChapter() {
         mediaService?.media.summary?.chapterEnds.increment()
     }
-    
+
     /// Sets latest buffer start time
     override func startBuffer() {
         mediaService?.media.summary?.bufferStartTime = Date()
     }
-    
+
     /// Increments total buffer time
     override func endBuffer() {
         guard let startTime = mediaService?.media.summary?.bufferStartTime,
@@ -315,14 +312,14 @@ class SummaryMediaSession: MediaSession {
         }
         mediaService?.media.summary?.totalBufferTime.increment(by: bufferDuration)
     }
-    
+
     /// Calls the `startSeek` event and records the seek start time for milestone tracking
     /// Playhead is required for this implementation
     /// - Parameter position: `Int` the playback position, in seconds, since the start of the content
     override func startSeek(at position: Double?) {
         mediaService?.media.summary?.seekStartPosition = position
     }
-    
+
     /// Calls the `endSeek` event and records the seek start time for milestone tracking
     /// Playhead is required for this implementation
     /// - Parameter position: `Int` the playback position, in seconds, since the start of the content
@@ -333,14 +330,14 @@ class SummaryMediaSession: MediaSession {
         }
         mediaService?.media.summary?.totalSeekTime.increment(by: (endPosition - startPosition))
     }
-    
+
     /// Increments ad count, adds uuid to adUUIDs, sets the latest ad start time
     override func startAd(_ ad: Ad) {
         mediaService?.media.summary?.ads.increment()
         mediaService?.media.summary?.adUUIDs.append(ad.uuid)
         mediaService?.media.summary?.adStartTime = Date()
     }
-    
+
     /// Increments total ad play time and ad skips
     override func skipAd() {
         guard let startTime = mediaService?.media.summary?.adStartTime,
@@ -350,7 +347,7 @@ class SummaryMediaSession: MediaSession {
         mediaService?.media.summary?.adSkips.increment()
         mediaService?.media.summary?.totalAdTime.increment(by: adPlayDuration)
     }
-    
+
     /// Increments total ad play time and ad ends
     override func endAd() {
         guard let startTime = mediaService?.media.summary?.adStartTime,
@@ -360,7 +357,7 @@ class SummaryMediaSession: MediaSession {
         mediaService?.media.summary?.adEnds.increment()
         mediaService?.media.summary?.totalAdTime.increment(by: adPlayDuration)
     }
-    
+
     /// Increments pause count and total play time
     override func pause() {
         guard let startTime = mediaService?.media.summary?.playStartTime,
@@ -370,7 +367,7 @@ class SummaryMediaSession: MediaSession {
         mediaService?.media.summary?.pauses.increment()
         mediaService?.media.summary?.totalPlayTime.increment(by: playDuration)
     }
-    
+
     /// Increments stop count and total play time
     override func endContent() {
         guard let startTime = mediaService?.media.summary?.playStartTime,
@@ -380,7 +377,7 @@ class SummaryMediaSession: MediaSession {
         mediaService?.media.summary?.playToEnd = true
         mediaService?.media.summary?.totalPlayTime.increment(by: playDuration)
     }
-    
+
     /// Calculates `Summary` properties based on session counters
     override func setSummaryInfo() {
         guard let summary = mediaService?.media.summary else {
@@ -401,29 +398,28 @@ class SummaryMediaSession: MediaSession {
             mediaService?.media.summary?.percentageAdTime = (summary.totalAdTime / summary.totalPlayTime) * 100
         }
     }
-    
+
     /// Sets session end time, sets summary variables, and ends session
     override func endSession() {
         mediaService?.media.summary?.sessionEnd = Date()
         setSummaryInfo()
         super.endSession()
     }
-    
+
     override func startAdBreak(_ adBreak: AdBreak) {
         return
     }
-    
+
     override func endAdBreak() {
         return
     }
-    
+
     override func clickAd() {
         return
     }
-    
+
     private func divide(_ lhs: Int, rhs: Int) -> Double {
         return Double(lhs) / Double(rhs)
     }
 
 }
-

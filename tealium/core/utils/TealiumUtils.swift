@@ -32,5 +32,3 @@ public class Weak<T: AnyObject>: Equatable {
 public func ==<T>(lhs: Weak<T>, rhs: Weak<T>) -> Bool {
     return lhs.value === rhs.value
 }
-
-

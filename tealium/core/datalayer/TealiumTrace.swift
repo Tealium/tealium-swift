@@ -22,16 +22,16 @@ public extension DataLayer {
 }
 
 public extension Tealium {
-    
+
     enum DeepLinkReferrer {
         case url(_ url: URL)
         case app(_ identifier: String)
-        
+
         public static func fromUrl(_ url: URL?) -> Self? {
             guard let url = url else { return nil }
             return .url(url)
         }
-        
+
         public static func fromAppId(_ identifier: String?) -> Self? {
             guard let id = identifier else { return nil }
             return .app(id)

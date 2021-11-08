@@ -101,5 +101,5 @@ public struct UserConsentPreferences: Equatable, Codable {
     public mutating func resetConsentCategories() {
         self.consentCategories = nil
     }
-    
+
 }

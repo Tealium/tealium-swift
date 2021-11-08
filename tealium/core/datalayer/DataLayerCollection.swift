@@ -57,7 +57,7 @@ public extension Set where Element == DataLayerItem {
         }
         return newDataLayer
     }
-    
+
     mutating func removeSessionData() {
         let sessionData = self.filter { $0.isSession }
         for key in sessionData.map({ $0.key }) {

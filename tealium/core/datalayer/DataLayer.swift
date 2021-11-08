@@ -127,7 +127,7 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
     public func add(data: [String: Any],
                     expiry: Expiry = .session) {
         TealiumQueues.backgroundConcurrentQueue.write {
-            let dataToInsert: [String:Any]
+            let dataToInsert: [String: Any]
             switch expiry {
             case .untilRestart:
                 self.restartData += data
@@ -178,5 +178,5 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
     deinit {
         sessionStarter.urlSession.finishTealiumTasksAndInvalidate()
     }
-    
+
 }

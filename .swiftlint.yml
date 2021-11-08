@@ -5,8 +5,8 @@ excluded:
   - ./tealium/core/DiskStorage/Disk/
   - ./tealium/core/utils/AnyCodable/
   - ./tealium/core/utils/Data+Gzip/
-  - ./builer/iOSTealiumMediaTest/
-  - ./builer/iOSTealiumTest/
+  - ./builder/iOSTealiumMediaTest/
+  - ./builder/iOSTealiumTest/
   - ./builder/macOSTealiumTest/
   - ./builder/tvOSTealiumTest/
 disabled_rules:
@@ -14,7 +14,7 @@ disabled_rules:
   - unused_optional_binding
   - file_header
 opt_in_rules:
-  - force_unwraping
+  - force_unwrapping
   - explicit_init
   - closure_spacing
   - overridden_super_call
@@ -37,15 +37,6 @@ opt_in_rules:
   - literal_expression_end_indentation
   - number_separator
 
-file_header:
-  required_pattern: |
-                    \/\/
-                    \/\/  SWIFTLINT_CURRENT_FILENAME
-                    \/\/  tealium-swift
-                    \/\/
-                    \/\/  Created by .*? on \d{1,2}\/\d{1,2}\/\d{2}\.
-                    \/\/  Copyright © \d{4} Tealium\, Inc\. All rights reserved\.
-                    \/\/
 identifier_name:
   excluded:
     - id

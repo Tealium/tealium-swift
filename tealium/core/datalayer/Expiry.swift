@@ -26,7 +26,7 @@ public enum Expiry {
             return dateWith(unit: unit, value: value)
         }
     }
-    
+
     private func dateWith(unit: TimeUnit, value: Int) -> Date {
         var components = DateComponents()
         components.calendar = Calendar.autoupdatingCurrent
@@ -34,11 +34,11 @@ public enum Expiry {
         components.setValue(value, for: unit.component)
         return Calendar(identifier: .gregorian).date(byAdding: components, to: currentDate)!
     }
-    
+
     private func distantDate() -> Date {
         dateWith(unit: .years, value: 100)
     }
-    
+
     func isSession() -> Bool {
         switch self {
         case .session:

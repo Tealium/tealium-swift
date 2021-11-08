@@ -40,7 +40,7 @@ class TealiumATTrackingManager: TealiumATTrackingManagerProtocol {
             return 0
         }
     }
-    
+
     var trackingAuthorizationStatusDescription: String {
         if #available(iOS 14, *) {
             return ATTrackingManager.AuthorizationStatus.string(from: ATTrackingManager.trackingAuthorizationStatus.rawValue)

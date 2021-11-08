@@ -44,7 +44,7 @@ public class ConnectivityModule: Collector, ConnectivityDelegate {
 
     var connectivityMonitor: ConnectivityMonitorProtocol?
     var connectivityDelegates = TealiumMulticastDelegate<ConnectivityDelegate>()
-    
+
     /// Provided for unit testing￼.
     ///
     /// - Parameter connectivityMonitor: Class instance conforming to `ConnectivityMonitorProtocol`

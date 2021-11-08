@@ -151,7 +151,7 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
         return jsonCommands.contains { $0.commandId == commandId }
             || webviewCommands.contains { $0.commandId == commandId }
     }
-    
+
     /// Adds a remote command for later execution.
     ///
     /// If a command with the same commandId has already been added the new one will be ignored.
@@ -237,7 +237,7 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
     }
 
     /// Trigger an associated remote command from a url request.
-    ///￼
+    /// ￼
     /// - Parameter request: `URLRequest` to check for a remote command.
     /// - Returns: `TealiumRemoteCommandsError` if unable to trigger a remote command. If nil is returned,
     ///     then call was a successfully triggered remote command.
@@ -275,7 +275,7 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
                                         category: .general)
         logger?.log(request)
     }
-    
+
     deinit {
         urlSession.finishTealiumTasksAndInvalidate()
     }

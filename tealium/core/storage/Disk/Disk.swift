@@ -67,16 +67,16 @@ public class Disk {
             #if os(tvOS)
             case .applicationSupport:
                 let appSupportDir = FileManager.default.urls(for: .applicationSupportDirectory,
-                                                                   in: .userDomainMask).map(\.path).last ?? ""
-                
+                                                             in: .userDomainMask).map(\.path).last ?? ""
+
                 // Create app support directory for tvOS
                 if !FileManager.default.fileExists(atPath: appSupportDir,
-                                isDirectory: nil) {
+                                                   isDirectory: nil) {
                     try? FileManager.default.createDirectory(atPath: appSupportDir,
-                                                                     withIntermediateDirectories: true,
-                                                                     attributes: nil)
+                                                             withIntermediateDirectories: true,
+                                                             attributes: nil)
                 }
-    
+
                 return appSupportDir
             #else
             case .applicationSupport: return "<Application_Home>/Library/Application"
@@ -94,7 +94,7 @@ public class Disk {
             #else
             case (.documents, .documents), (.applicationSupport, .applicationSupport):
                 return true
-            case (let .sharedContainer(appGroupName: name1), let .sharedContainer(appGroupName: name2)):
+            case let (.sharedContainer(appGroupName: name1), .sharedContainer(appGroupName: name2)):
                 return name1 == name2
             #endif
             case (.caches, .caches), (.temporary, .temporary):

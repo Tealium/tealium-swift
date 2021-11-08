@@ -37,7 +37,7 @@ public extension DeviceData {
         return stringRes
         #endif
     }
-    
+
     class var logicalResolution: String {
         #if os(OSX)
         return TealiumValue.unknown

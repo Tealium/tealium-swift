@@ -118,7 +118,7 @@ public struct Lifecycle: Codable {
               let laterWake = sessions.last?.wakeDate else {
             return true
         }
-        
+
         // Two wake dates on record, if different - return true
         let earlier = Calendar.autoupdatingCurrent.component(.month, from: earlierWake)
         let later = Calendar.autoupdatingCurrent.component(.month, from: laterWake)

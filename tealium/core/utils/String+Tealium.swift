@@ -26,4 +26,3 @@ public extension String {
         return validURLRegex.rangeOfFirstMatch(in: self, options: [], range: NSRange(self.startIndex..., in: self)).location != NSNotFound
     }
 }
-

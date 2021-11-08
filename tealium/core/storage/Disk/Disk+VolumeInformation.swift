@@ -37,25 +37,21 @@ public extension Disk {
 
     /// Volume's total capacity in bytes.
     static var totalCapacity: Int? {
-        get {
-            let resourceValues = getVolumeResourceValues(for: .volumeTotalCapacityKey)
-            return resourceValues?.volumeTotalCapacity
-        }
+        let resourceValues = getVolumeResourceValues(for: .volumeTotalCapacityKey)
+        return resourceValues?.volumeTotalCapacity
     }
 
     /// Volume's available capacity in bytes.
     static var availableCapacity: Int64? {
-        get {
-            guard let resourceValues = getVolumeResourceValues(for: .volumeAvailableCapacityKey) else {
-                return 0
-            }
-
-            guard let available = resourceValues.volumeAvailableCapacity, available >= 0 else {
-                return resourceValues.allValues[URLResourceKey.volumeAvailableCapacityKey] as? Int64 ?? 0
-            }
-
-            return Int64(available)
+        guard let resourceValues = getVolumeResourceValues(for: .volumeAvailableCapacityKey) else {
+            return 0
         }
+
+        guard let available = resourceValues.volumeAvailableCapacity, available >= 0 else {
+            return resourceValues.allValues[URLResourceKey.volumeAvailableCapacityKey] as? Int64 ?? 0
+        }
+
+        return Int64(available)
     }
 
     /// Volume's available capacity in bytes for storing important resources.
@@ -65,13 +61,11 @@ public extension Disk {
     #if os(iOS)
     @available(iOS 11.0, *)
     static var availableCapacityForImportantUsage: Int? {
-        get {
-            let resourceValues = getVolumeResourceValues(for: .volumeAvailableCapacityForImportantUsageKey)
-            if let result = resourceValues?.volumeAvailableCapacityForImportantUsage {
-                return Int(exactly: result)
-            } else {
-                return nil
-            }
+        let resourceValues = getVolumeResourceValues(for: .volumeAvailableCapacityForImportantUsageKey)
+        if let result = resourceValues?.volumeAvailableCapacityForImportantUsage {
+            return Int(exactly: result)
+        } else {
+            return nil
         }
     }
 
@@ -81,13 +75,11 @@ public extension Disk {
     /// For these types of files you might store them initially in the caches directory until they are actually used, at which point you can move them in app support or documents directory.
     @available(iOS 11.0, *)
     static var availableCapacityForOpportunisticUsage: Int? {
-        get {
-            let resourceValues = getVolumeResourceValues(for: .volumeAvailableCapacityForOpportunisticUsageKey)
-            if let result = resourceValues?.volumeAvailableCapacityForOpportunisticUsage {
-                return Int(exactly: result)
-            } else {
-                return nil
-            }
+        let resourceValues = getVolumeResourceValues(for: .volumeAvailableCapacityForOpportunisticUsageKey)
+        if let result = resourceValues?.volumeAvailableCapacityForOpportunisticUsage {
+            return Int(exactly: result)
+        } else {
+            return nil
         }
     }
     #endif

@@ -52,7 +52,7 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
             self.defaultsStorage = UserDefaults(suiteName: filePath)
         }
     }
-    
+
     /// - Parameters:
     ///     - from: `Disk.Directory` to migrate data from
     ///     - to: `Disk.Directory` to migrate data from
