@@ -132,7 +132,7 @@ class ConsentManagerTests: XCTestCase {
     func testConsentStoreConfigFromDictionary() {
         let categories = ["cdp", "analytics"]
         let status = "consented"
-        let consentDictionary: [String: Any] = [ConsentKey.consentCategoriesKey: categories, ConsentKey.consentStatus: status]
+        let consentDictionary: [String: Any] = [TealiumDataKey.consentCategoriesKey: categories, TealiumDataKey.consentStatus: status]
         var userConsentPreferences = UserConsentPreferences(consentStatus: .unknown, consentCategories: nil)
         userConsentPreferences.initWithDictionary(preferencesDictionary: consentDictionary)
         XCTAssertNotNil(userConsentPreferences, "Consent Manager Test: \(#function) - Consent Preferences could not be initialized from dictionary")
@@ -147,8 +147,6 @@ class ConsentManagerTests: XCTestCase {
         let consentManager = ConsentManager(config: config, delegate: mockConsentDelegate, diskStorage: ConsentMockDiskStorage(), dataLayer: DummyDataManager())
         let expect = expectation(description: "testTrackUserConsentPreferences")
         mockConsentDelegate.asyncExpectation = expect
-
-        let consentPreferences = UserConsentPreferences(consentStatus: .consented, consentCategories: [.cdp])
         consentManager.trackUserConsentPreferences()
 
         waitForExpectations(timeout: 2) { error in

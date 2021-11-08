@@ -457,9 +457,9 @@ class MockMigratedDataLayer: DataLayerManagerProtocol {
                                           TealiumDataKey.visitorId: "205CA6D0FE3A4242A3522DBE7F5B75DE",
                                           TealiumDataKey.uuid: "205CA6D0-FE3A-4242-A352-2DBE7F5B75DE",
                                           "custom_persistent_key": "customValue",
-                                          ConsentKey.consentStatus: 1,
-                                          ConsentKey.consentLoggingEnabled: true,
-                                          ConsentKey.consentCategoriesKey: [TealiumConsentCategories.affiliates.rawValue,
+                                          TealiumDataKey.consentStatus: 1,
+                                          TealiumDataKey.consentLoggingEnabled: true,
+                                          TealiumDataKey.consentCategoriesKey: [TealiumConsentCategories.affiliates.rawValue,
                                                                             TealiumConsentCategories.bigData.rawValue,
                                                                             TealiumConsentCategories.crm.rawValue,
                                                                             TealiumConsentCategories.engagement.rawValue]]

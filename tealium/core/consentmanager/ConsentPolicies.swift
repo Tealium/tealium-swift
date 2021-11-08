@@ -48,9 +48,9 @@ extension ConsentPolicy {
     var policyTrackingData: [String: Any] {
         var data = consentPolicyStatusInfo ?? [:]
         if let lastUpdate = preferences.lastUpdate {
-            data[ConsentKey.consentLastUpdated] = lastUpdate.unixTimeMilliseconds
+            data[TealiumDataKey.consentLastUpdated] = lastUpdate.unixTimeMilliseconds
         }
-        data[ConsentKey.policyKey] = name
+        data[TealiumDataKey.policyKey] = name
         return data
     }
 }
@@ -96,7 +96,7 @@ public extension CCPAConsentPolicyCreatable {
 
     var consentPolicyStatusInfo: [String: Any]? {
         let doNotSell = currentStatus == .notConsented ? true : false
-        return [ConsentKey.doNotSellKey: doNotSell]
+        return [TealiumDataKey.doNotSellKey: doNotSell]
     }
 }
 

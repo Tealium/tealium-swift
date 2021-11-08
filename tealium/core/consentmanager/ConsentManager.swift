@@ -82,13 +82,13 @@ public class ConsentManager {
         
         // try to load config from persistent storage first
         if let dataLayer = dataLayer,
-           let migratedConsentStatus = dataLayer.all[ConsentKey.consentStatus] as? Int,
-           let migratedConsentCategories = dataLayer.all[ConsentKey.consentCategoriesKey] as? [String] {
+           let migratedConsentStatus = dataLayer.all[TealiumDataKey.consentStatus] as? Int,
+           let migratedConsentCategories = dataLayer.all[TealiumDataKey.consentCategoriesKey] as? [String] {
             config.consentPolicy = .gdpr
             consentPreferencesStorage?.preferences = UserConsentPreferences(consentStatus: TealiumConsentStatus(integer: migratedConsentStatus),
                                                                             consentCategories: TealiumConsentCategories.consentCategoriesStringArrayToEnum(migratedConsentCategories))
             config.consentLoggingEnabled = dataLayer.all[ConsentKey.consentLoggingEnabled] as? Bool ?? false
-            dataLayer.delete(for: [ConsentKey.consentStatus, ConsentKey.consentCategoriesKey, ConsentKey.consentLoggingEnabled])
+            dataLayer.delete(for: [TealiumDataKey.consentStatus, TealiumDataKey.consentCategoriesKey, ConsentKey.consentLoggingEnabled])
         }
 
         let preferences = consentPreferencesStorage?.preferences ?? UserConsentPreferences(consentStatus: .unknown, consentCategories: nil)

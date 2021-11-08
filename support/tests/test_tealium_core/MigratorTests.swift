@@ -80,8 +80,8 @@ class MigratorTests: XCTestCase {
 
     func testExtractConsentPreferences_returnsDataFromLegacyStorage() {
         migrator = Migrator(config: config, userDefaults: mockUserDefaultsConsent, unarchiver: mockUnarchiverConsent)
-        let expected: [String: Any] = [ConsentKey.consentStatus: 1,
-                                       ConsentKey.consentCategoriesKey: [TealiumConsentCategories.affiliates.rawValue,
+        let expected: [String: Any] = [TealiumDataKey.consentStatus: 1,
+                                       TealiumDataKey.consentCategoriesKey: [TealiumConsentCategories.affiliates.rawValue,
                                                                          TealiumConsentCategories.bigData.rawValue,
                                                                          TealiumConsentCategories.crm.rawValue,
                                                                          TealiumConsentCategories.engagement.rawValue],
