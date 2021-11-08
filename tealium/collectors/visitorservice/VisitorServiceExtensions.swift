@@ -26,7 +26,7 @@ public extension Collectors {
 
 
 extension TealiumConfigKey {
-    static let refreshInterval = "visitor_service_refresh"
+    static let visitorServiceRefreshInterval = "visitor_service_refresh"
     static let enableVisitorService = "enable_visitor_service"
     static let visitorServiceDelegate = "visitor_service_delegate"
     static let visitorServiceOverrideProfile = "visitor_service_override_profile"
@@ -39,11 +39,11 @@ public extension TealiumConfig {
     /// Set to `.every(0, .seconds)` if the profile should always be fetched following a track request.
     var visitorServiceRefresh: TealiumRefreshInterval? {
         get {
-            options[TealiumConfigKey.refreshInterval] as? TealiumRefreshInterval ?? .every(5, .minutes)
+            options[TealiumConfigKey.visitorServiceRefreshInterval] as? TealiumRefreshInterval ?? .every(5, .minutes)
         }
 
         set {
-            options[TealiumConfigKey.refreshInterval] = newValue
+            options[TealiumConfigKey.visitorServiceRefreshInterval] = newValue
         }
     }
 
