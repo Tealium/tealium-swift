@@ -51,7 +51,7 @@ class ConsentManagerModule: DispatchValidator {
     /// - Returns: `(Bool, [String: Any]?)` true/false if should be queued, then the resulting dictionary of consent data.
     func shouldQueue(request: TealiumRequest) -> (Bool, [String: Any]?) {
         guard let request = request as? TealiumTrackRequest else {
-            return (true, [TealiumKey.queueReason: TealiumKey.batchingEnabled])
+            return (true, [TealiumDataKey.queueReason: TealiumKey.batchingEnabled])
         }
         expireConsent()
         
@@ -62,7 +62,7 @@ class ConsentManagerModule: DispatchValidator {
         switch consentManager?.trackingStatus {
         case .trackingQueued:
             var newData = request.trackDictionary
-            newData[TealiumKey.queueReason] = ConsentKey.moduleName
+            newData[TealiumDataKey.queueReason] = ConsentKey.moduleName
             let newTrack = TealiumTrackRequest(data: newData)
             return (true, addConsentDataToTrack(newTrack).trackDictionary)
         case .trackingAllowed:
@@ -138,7 +138,7 @@ class ConsentManagerModule: DispatchValidator {
 fileprivate extension TealiumTrackRequest {
     // allow tracking calls to continue if they are for auditing purposes
     var containsAuditEvent: Bool {
-        if let event = self.trackDictionary[TealiumKey.event] as? String,
+        if let event = self.trackDictionary[TealiumDataKey.event] as? String,
            (event == ConsentKey.consentPartialEventName ||
                 event == ConsentKey.consentGrantedEventName ||
                 event == ConsentKey.consentDeclinedEventName ||

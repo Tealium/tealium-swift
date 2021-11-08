@@ -109,8 +109,8 @@ public class ConsentManager {
         if consentLoggingEnabled, currentPolicy.shouldLogConsentStatus {
             // call type must be set to override "link" or "view"
             let trackData = [
-                TealiumKey.event: currentPolicy.consentTrackingEventName,
-                TealiumKey.eventType: currentPolicy.consentTrackingEventName
+                TealiumDataKey.event: currentPolicy.consentTrackingEventName,
+                TealiumDataKey.eventType: currentPolicy.consentTrackingEventName
             ]
             delegate?.requestTrack(TealiumTrackRequest(data: trackData))
         }
@@ -125,8 +125,8 @@ public class ConsentManager {
         if currentPolicy.shouldUpdateConsentCookie {
             // collect module ignores this hit
             let trackData = [
-                TealiumKey.event: currentPolicy.updateConsentCookieEventName,
-                TealiumKey.eventType: currentPolicy.updateConsentCookieEventName
+                TealiumDataKey.event: currentPolicy.updateConsentCookieEventName,
+                TealiumDataKey.eventType: currentPolicy.updateConsentCookieEventName
             ]
             delegate?.requestTrack(TealiumTrackRequest(data: trackData))
         }

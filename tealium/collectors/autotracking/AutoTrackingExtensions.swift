@@ -52,10 +52,13 @@ public extension TealiumConfig {
     }
 }
 
+public extension TealiumDataKey {
+    static let autotracked = "autotracked"
+}
+
 enum TealiumAutotrackingKey {
     static let moduleName = "autotracking"
     static let viewNotificationName = "com.tealium.autotracking.view"
-    static let autotracked = "autotracked"
     static let delegate = "delegate"
     static let filename = "filename"
     static let url = "url"

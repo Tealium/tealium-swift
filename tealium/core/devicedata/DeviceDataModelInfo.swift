@@ -38,20 +38,20 @@ public extension DeviceData {
         #else
         if let deviceInfo = allModelNames {
             if let currentModel = deviceInfo[model] as? [String: String],
-               let simpleModel = currentModel[TealiumKey.simpleModel],
-               let fullModel = currentModel[TealiumKey.fullModel] {
-                return [TealiumKey.deviceType: model,
-                        TealiumKey.simpleModel: simpleModel,
-                        TealiumKey.device: simpleModel,
-                        TealiumKey.fullModel: fullModel
+               let simpleModel = currentModel[TealiumDataKey.simpleModel],
+               let fullModel = currentModel[TealiumDataKey.fullModel] {
+                return [TealiumDataKey.deviceType: model,
+                        TealiumDataKey.simpleModel: simpleModel,
+                        TealiumDataKey.device: simpleModel,
+                        TealiumDataKey.fullModel: fullModel
                 ]
             }
         }
 
-        return [TealiumKey.deviceType: model,
-                TealiumKey.simpleModel: model,
-                TealiumKey.device: model,
-                TealiumKey.fullModel: ""
+        return [TealiumDataKey.deviceType: model,
+                TealiumDataKey.simpleModel: model,
+                TealiumDataKey.device: model,
+                TealiumDataKey.fullModel: ""
         ]
         #endif
     }

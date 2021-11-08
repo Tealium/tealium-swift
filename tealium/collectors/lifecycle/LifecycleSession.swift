@@ -7,6 +7,10 @@
 
 import Foundation
 
+#if lifecycle
+import TealiumCore
+#endif
+
 // Represents a serializable block of time between a given wake and a sleep
 public struct LifecycleSession: Codable, Equatable {
 
@@ -35,16 +39,16 @@ public struct LifecycleSession: Codable, Equatable {
     }
 
     init?(from dictionary: [String: Any]) {
-        guard let stringWake = dictionary[LifecycleKey.lastWakeDate] as? String,
+        guard let stringWake = dictionary[TealiumDataKey.lastWakeDate] as? String,
               let wakeDate = stringWake.dateFromISOStringShort else {
             return nil
         }
         self.wakeDate = wakeDate
-        if let stringFirstLaunch = dictionary[LifecycleKey.firstLaunchDate] as? String,
+        if let stringFirstLaunch = dictionary[TealiumDataKey.firstLaunchDate] as? String,
            let firstLaunchDate = stringFirstLaunch.dateFromISOStringShort {
             self.firstLaunchDate = firstLaunchDate
         }
-        if let stringSleep = dictionary[LifecycleKey.lastSleepDate] as? String,
+        if let stringSleep = dictionary[TealiumDataKey.lastSleepDate] as? String,
            let sleepDate = stringSleep.dateFromISOStringShort {
             self.sleepDate = sleepDate
         }

@@ -8,13 +8,20 @@
 #if os(iOS)
 import Foundation
 
-enum TagManagementKey {
+#if tagmanagement
+import TealiumCore
+#endif
+
+public extension TealiumDataKey {
     static let jsCommand = "js_command"
     static let jsResult = "js_result"
     static let jsError = "js_error"
-    static let moduleName = "tagmanagement"
     static let responseHeader = "response_headers"
     static let payload = "payload"
+}
+
+enum TagManagementKey {
+    static let moduleName = "tagmanagement"
     static let defaultUrlStringPrefix = "https://tags.tiqcdn.com/utag"
 }
 

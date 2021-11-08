@@ -245,17 +245,17 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
         }
         
         var data = [String: Any]()
-        data[LocationKey.geofenceName] = "\(region.identifier)"
-        data[LocationKey.geofenceTransition] = "\(triggeredTransition)"
-        data[TealiumKey.event] = triggeredTransition
+        data[TealiumDataKey.geofenceName] = "\(region.identifier)"
+        data[TealiumDataKey.geofenceTransition] = "\(triggeredTransition)"
+        data[TealiumDataKey.event] = triggeredTransition
 
         if let lastLocation = lastLocation {
-            data[LocationKey.deviceLatitude] = "\(lastLocation.coordinate.latitude)"
-            data[LocationKey.deviceLongitude] = "\(lastLocation.coordinate.longitude)"
-            data[LocationKey.timestamp] = "\(lastLocation.timestamp)"
-            data[LocationKey.speed] = "\(lastLocation.speed)"
-            data[LocationKey.accuracy] = locationAccuracy
-            data[LocationKey.accuracyExtended] = config.desiredAccuracy.rawValue
+            data[TealiumDataKey.deviceLatitude] = "\(lastLocation.coordinate.latitude)"
+            data[TealiumDataKey.deviceLongitude] = "\(lastLocation.coordinate.longitude)"
+            data[TealiumDataKey.timestamp] = "\(lastLocation.timestamp)"
+            data[TealiumDataKey.speed] = "\(lastLocation.speed)"
+            data[TealiumDataKey.accuracy] = locationAccuracy
+            data[TealiumDataKey.accuracyExtended] = config.desiredAccuracy.rawValue
         }
 
         if triggeredTransition == LocationKey.exited {

@@ -56,16 +56,16 @@ public class DeviceDataModule: Collector {
     var enableTimeData: [String: Any] {
         var result = [String: Any]()
 
-        result[TealiumKey.architecture] = deviceDataCollection.architecture()
-        result[DeviceDataKey.osBuild] = DeviceData.oSBuild
-        result[TealiumKey.cpuType] = deviceDataCollection.cpuType
+        result[TealiumDataKey.architecture] = deviceDataCollection.architecture()
+        result[TealiumDataKey.osBuild] = DeviceData.oSBuild
+        result[TealiumDataKey.cpuType] = deviceDataCollection.cpuType
         result += deviceDataCollection.model
-        result[DeviceDataKey.manufacturer] = DeviceDataValue.manufacturer
-        result[DeviceDataKey.osVersion] = DeviceData.oSVersion
-        result[TealiumKey.osName] = DeviceData.oSName
-        result[TealiumKey.platform] = (result[TealiumKey.osName] as? String ?? "").lowercased()
-        result[TealiumKey.resolution] = DeviceData.resolution
-        result[TealiumKey.logicalResolution] = DeviceData.logicalResolution
+        result[TealiumDataKey.manufacturer] = DeviceDataValue.manufacturer
+        result[TealiumDataKey.osVersion] = DeviceData.oSVersion
+        result[TealiumDataKey.osName] = DeviceData.oSName
+        result[TealiumDataKey.platform] = (result[TealiumDataKey.osName] as? String ?? "").lowercased()
+        result[TealiumDataKey.resolution] = DeviceData.resolution
+        result[TealiumDataKey.logicalResolution] = DeviceData.logicalResolution
         return result
     }
 
@@ -75,9 +75,9 @@ public class DeviceDataModule: Collector {
     var trackTimeData: [String: Any] {
         var result = [String: Any]()
 
-        result[DeviceDataKey.batteryPercent] = DeviceData.batteryPercent
-        result[DeviceDataKey.isCharging] = DeviceData.isCharging
-        result[TealiumKey.language] = DeviceData.iso639Language
+        result[TealiumDataKey.batteryPercent] = DeviceData.batteryPercent
+        result[TealiumDataKey.isCharging] = DeviceData.isCharging
+        result[TealiumDataKey.language] = DeviceData.iso639Language
         if isMemoryReportingEnabled {
             result += deviceDataCollection.memoryUsage
         }

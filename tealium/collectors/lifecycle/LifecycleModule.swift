@@ -52,9 +52,9 @@ public class LifecycleModule: Collector {
                                                              forModule: ModuleNames.lifecycle.lowercased(),
                                                              isCritical: true)
         if let dataLayer = context.dataLayer,
-           let migratedLifecycle = dataLayer.all[LifecycleKey.migratedLifecycle] as? [String: Any] {
+           let migratedLifecycle = dataLayer.all[TealiumDataKey.migratedLifecycle] as? [String: Any] {
             lifecycle = Lifecycle(from: migratedLifecycle)
-            dataLayer.delete(for: LifecycleKey.migratedLifecycle)
+            dataLayer.delete(for: TealiumDataKey.migratedLifecycle)
         }
         migrated = true
         enabledPrior = false
@@ -91,7 +91,7 @@ public class LifecycleModule: Collector {
             return
         }
         if type != .launch {
-            lifecycleData[LifecycleKey.didDetectCrash] = nil
+            lifecycleData[TealiumDataKey.didDetectCrash] = nil
         }
         switch type {
         case .launch:
@@ -107,7 +107,7 @@ public class LifecycleModule: Collector {
         }
         self.lifecycle = lifecycle
 
-        lifecycleData[LifecycleKey.autotracked] = autotracked
+        lifecycleData[TealiumDataKey.lifecycleAutotracked] = autotracked
         if migrated {
             requestTrack(data: lifecycleData)
         }
@@ -152,7 +152,7 @@ public class LifecycleModule: Collector {
     ///
     /// - Parameter data: `[String: Any]` containing the lifecycle data to track
     public func requestTrack(data: [String: Any]) {
-        guard let title = data[LifecycleKey.type] as? String else {
+        guard let title = data[TealiumDataKey.type] as? String else {
             return
         }
         let dispatch = TealiumEvent(title, dataLayer: data)

@@ -22,11 +22,11 @@ open class TealiumConfig {
     /// - Optional usage: `config.timedEventTriggers = [TimedEventTrigger(start: "product_view", stop: "order_complete", name: "time_to_purchase")]`
     public var timedEventTriggers: [TimedEventTrigger]? {
         get {
-            options[TealiumKey.timedEventTriggers] as? [TimedEventTrigger]
+            options[TealiumDataKey.timedEventTriggers] as? [TimedEventTrigger]
         }
 
         set {
-            options[TealiumKey.timedEventTriggers] = newValue
+            options[TealiumDataKey.timedEventTriggers] = newValue
         }
     }
 

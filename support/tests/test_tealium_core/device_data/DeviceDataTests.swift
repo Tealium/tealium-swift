@@ -118,8 +118,8 @@ class TealiumDeviceDataTests: XCTestCase {
         let orientation = deviceData.orientation
         #if os(iOS)
         #if targetEnvironment(simulator)
-        XCTAssertEqual([DeviceDataKey.orientation: "Portrait",
-                        DeviceDataKey.fullOrientation: "unknown"
+        XCTAssertEqual([TealiumDataKey.orientation: "Portrait",
+                        TealiumDataKey.fullOrientation: "unknown"
         ], orientation)
         #else
         XCTAssertEqual([TealiumDeviceDataKey.orientation: "Portrait",
@@ -180,10 +180,10 @@ class TealiumDeviceDataTests: XCTestCase {
         #if os(iOS)
         #if targetEnvironment(simulator)
         let simulatorCarrierInfo = [
-            DeviceDataKey.carrierMNC: "00",
-            DeviceDataKey.carrierMCC: "000",
-            DeviceDataKey.carrierISO: "us",
-            DeviceDataKey.carrier: "simulator",
+            TealiumDataKey.carrierMNC: "00",
+            TealiumDataKey.carrierMCC: "000",
+            TealiumDataKey.carrierISO: "us",
+            TealiumDataKey.carrier: "simulator",
         ]
         
         let retrievedCarrierInfo = DeviceData.carrierInfo

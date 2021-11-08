@@ -68,7 +68,7 @@ class ConsentManagerModuleTests: XCTestCase {
             ConsentKey.gdprConsentCookieEventName
         ]
         auditingEvents.forEach {
-            track = TealiumTrackRequest(data: [TealiumKey.event: $0])
+            track = TealiumTrackRequest(data: [TealiumDataKey.event: $0])
             let queue = module.shouldQueue(request: track)
             XCTAssertFalse(queue.0)
             XCTAssertNil(queue.1)
@@ -216,8 +216,8 @@ class ConsentManagerModuleTests: XCTestCase {
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
         var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
-        XCTAssertNotNil(trackWithConsentData[TealiumKey.requestUUID])
-        trackWithConsentData[TealiumKey.requestUUID] = nil
+        XCTAssertNotNil(trackWithConsentData[TealiumDataKey.requestUUID])
+        trackWithConsentData[TealiumDataKey.requestUUID] = nil
         XCTAssertTrue(NSDictionary(dictionary: expected).isEqual(to: trackWithConsentData))
     }
 
@@ -235,8 +235,8 @@ class ConsentManagerModuleTests: XCTestCase {
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
         var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
-        XCTAssertNotNil(trackWithConsentData[TealiumKey.requestUUID])
-        trackWithConsentData[TealiumKey.requestUUID] = nil
+        XCTAssertNotNil(trackWithConsentData[TealiumDataKey.requestUUID])
+        trackWithConsentData[TealiumDataKey.requestUUID] = nil
         XCTAssertTrue(NSDictionary(dictionary: expected).isEqual(to: trackWithConsentData))
     }
 
@@ -255,8 +255,8 @@ class ConsentManagerModuleTests: XCTestCase {
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
         var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
-        XCTAssertNotNil(trackWithConsentData[TealiumKey.requestUUID])
-        trackWithConsentData[TealiumKey.requestUUID] = nil
+        XCTAssertNotNil(trackWithConsentData[TealiumDataKey.requestUUID])
+        trackWithConsentData[TealiumDataKey.requestUUID] = nil
         XCTAssertTrue(NSDictionary(dictionary: expected).isEqual(to: trackWithConsentData))
     }
     
@@ -273,8 +273,8 @@ class ConsentManagerModuleTests: XCTestCase {
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
         var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
-        XCTAssertNotNil(trackWithConsentData[TealiumKey.requestUUID])
-        trackWithConsentData[TealiumKey.requestUUID] = nil
+        XCTAssertNotNil(trackWithConsentData[TealiumDataKey.requestUUID])
+        trackWithConsentData[TealiumDataKey.requestUUID] = nil
         XCTAssertTrue(NSDictionary(dictionary: expected).isEqual(to: trackWithConsentData))
     }
     
@@ -288,8 +288,8 @@ class ConsentManagerModuleTests: XCTestCase {
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
         var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
-        XCTAssertNotNil(trackWithConsentData[TealiumKey.requestUUID])
-        trackWithConsentData[TealiumKey.requestUUID] = nil
+        XCTAssertNotNil(trackWithConsentData[TealiumDataKey.requestUUID])
+        trackWithConsentData[TealiumDataKey.requestUUID] = nil
         XCTAssertTrue(NSDictionary(dictionary: expected).isEqual(to: trackWithConsentData))
     }
     
@@ -338,7 +338,7 @@ class ConsentManagerModuleTests: XCTestCase {
         config.consentPolicy = .custom(MockCustomConsentPolicy.self)
         let context = TestTealiumHelper.context(with: config)
         let consentManagerModule = ConsentManagerModule(context: context, delegate: nil, diskStorage: DispatchQueueMockDiskStorage(), completion: { _ in })
-        let request = TealiumTrackRequest(data: [TealiumKey.event: "testEvent"])
+        let request = TealiumTrackRequest(data: [TealiumDataKey.event: "testEvent"])
         let res = consentManagerModule.shouldQueue(request: request)
         let trackInfo = res.1!
         XCTAssertNotNil(trackInfo["customConsentCategories"] as? [TealiumConsentCategories])

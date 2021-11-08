@@ -71,8 +71,8 @@ public class AutotrackingModule: Collector {
                 return
             }
 
-            var data: [String: Any] = [TealiumKey.event: viewName,
-                                       TealiumAutotrackingKey.autotracked: "true"]
+            var data: [String: Any] = [TealiumDataKey.event: viewName,
+                                       TealiumDataKey.autotracked: "true"]
             
             if let autotrackingDelegate = self.autotrackingDelegate {
                 data += autotrackingDelegate.onCollectScreenView(screenName: viewName)

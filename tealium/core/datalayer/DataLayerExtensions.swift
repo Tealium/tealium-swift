@@ -11,7 +11,7 @@ public extension Tealium {
 
     /// - Returns: `String` The Tealium Visitor Id
     var visitorId: String? {
-        appDataModule?.data?[TealiumKey.visitorId] as? String
+        appDataModule?.data?[TealiumDataKey.visitorId] as? String
     }
     
     /// Resets the Tealium Visitor Id

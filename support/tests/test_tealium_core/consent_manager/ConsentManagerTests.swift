@@ -166,7 +166,7 @@ class ConsentManagerTests: XCTestCase {
             }
             
             XCTAssertNil(trackInfo["call_type"])
-            XCTAssertNotNil(trackInfo[TealiumKey.eventType])
+            XCTAssertNotNil(trackInfo[TealiumDataKey.eventType])
             
             if let categories = trackInfo["consent_categories"] as? [String], categories.count > 0 {
                 let catEnum = TealiumConsentCategories.consentCategoriesStringArrayToEnum(categories)

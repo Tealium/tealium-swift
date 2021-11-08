@@ -30,17 +30,17 @@ extension DeviceData {
         // this is a workaround
         #if targetEnvironment(simulator)
         carrierInfo = [
-            DeviceDataKey.carrierMNC: "00",
-            DeviceDataKey.carrierMCC: "000",
-            DeviceDataKey.carrierISO: "us",
-            DeviceDataKey.carrier: "simulator"
+            TealiumDataKey.carrierMNC: "00",
+            TealiumDataKey.carrierMCC: "000",
+            TealiumDataKey.carrierISO: "us",
+            TealiumDataKey.carrier: "simulator"
         ]
         #elseif targetEnvironment(macCatalyst)
         carrierInfo = [
-            DeviceDataKey.carrierMNC: "00",
-            DeviceDataKey.carrierMCC: "000",
-            DeviceDataKey.carrierISO: "us",
-            DeviceDataKey.carrier: "macCatalyst"
+            TealiumDataKey.carrierMNC: "00",
+            TealiumDataKey.carrierMCC: "000",
+            TealiumDataKey.carrierISO: "us",
+            TealiumDataKey.carrier: "macCatalyst"
         ]
         #else
         var carrier: CTCarrier?

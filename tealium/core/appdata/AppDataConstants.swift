@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension TealiumKey {
+public extension TealiumDataKey {
     static let appBuild = "app_build"
     static let appName = "app_name"
     static let appRDNS = "app_rdns"

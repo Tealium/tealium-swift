@@ -313,7 +313,7 @@ public class ModulesManager {
             allData.value += data
         }
 
-        allData.value[TealiumKey.enabledModules] = modules.sorted { $0.id < $1.id }.map { $0.id }
+        allData.value[TealiumDataKey.enabledModules] = modules.sorted { $0.id < $1.id }.map { $0.id }
 
         sessionManager?.refreshSession()
         if let dataLayer = dataLayerManager?.all {

@@ -331,8 +331,8 @@ class MockLegacyUserDefaults: Storable {
                            LifecycleKey.totalSleepCount: "8",
                            LifecycleKey.totalWakeCount: "7",
                            LifecycleKey.wakeCount: "7",
-                           TealiumKey.visitorId: "205CA6D0FE3A4242A3522DBE7F5B75DE",
-                           TealiumKey.uuid: "205CA6D0-FE3A-4242-A352-2DBE7F5B75DE",
+                           TealiumDataKey.visitorId: "205CA6D0FE3A4242A3522DBE7F5B75DE",
+                           TealiumDataKey.uuid: "205CA6D0-FE3A-4242-A352-2DBE7F5B75DE",
                            "custom_persistent_key": "customValue"]
 
     func object(forKey defaultName: String) -> Any? {
@@ -454,8 +454,8 @@ class MockMigratedDataLayer: DataLayerManagerProtocol {
                                              LifecycleKey.totalSleepCount: 8,
                                              LifecycleKey.totalWakeCount: 7,
                                              LifecycleKey.wakeCount: 7],
-                                          TealiumKey.visitorId: "205CA6D0FE3A4242A3522DBE7F5B75DE",
-                                          TealiumKey.uuid: "205CA6D0-FE3A-4242-A352-2DBE7F5B75DE",
+                                          TealiumDataKey.visitorId: "205CA6D0FE3A4242A3522DBE7F5B75DE",
+                                          TealiumDataKey.uuid: "205CA6D0-FE3A-4242-A352-2DBE7F5B75DE",
                                           "custom_persistent_key": "customValue",
                                           ConsentKey.consentStatus: 1,
                                           ConsentKey.consentLoggingEnabled: true,

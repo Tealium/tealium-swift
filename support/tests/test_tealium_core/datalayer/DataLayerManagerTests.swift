@@ -47,12 +47,12 @@ class DataLayerManagerTests: XCTestCase {
         let actual = eventDataManager.all
         XCTAssertEqual(actual.count, expected.count)
         XCTAssertEqual(actual.keys.sorted(), expected.keys.sorted())
-        XCTAssertNotNil(actual[TealiumKey.sessionId])
-        XCTAssertEqual(actual[TealiumKey.account] as! String, "testAccount")
-        XCTAssertEqual(actual[TealiumKey.profile] as! String, "testProfile")
-        XCTAssertEqual(actual[TealiumKey.environment] as! String, "testEnvironment")
-        XCTAssertEqual(actual[TealiumKey.dataSource] as! String, "testDatasource")
-        XCTAssertEqual(actual[TealiumKey.libraryName] as! String, "swift")
+        XCTAssertNotNil(actual[TealiumDataKey.sessionId])
+        XCTAssertEqual(actual[TealiumDataKey.account] as! String, "testAccount")
+        XCTAssertEqual(actual[TealiumDataKey.profile] as! String, "testProfile")
+        XCTAssertEqual(actual[TealiumDataKey.environment] as! String, "testEnvironment")
+        XCTAssertEqual(actual[TealiumDataKey.dataSource] as! String, "testDatasource")
+        XCTAssertEqual(actual[TealiumDataKey.libraryName] as! String, "swift")
 
     }
 

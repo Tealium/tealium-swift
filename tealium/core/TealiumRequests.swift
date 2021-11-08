@@ -48,7 +48,7 @@ public struct TealiumEnqueueRequest: TealiumRequest {
             }
             self.data = data.map {
                 var data = $0.trackDictionary
-                data[TealiumKey.queueReason] = newValue
+                data[TealiumDataKey.queueReason] = newValue
                 return TealiumTrackRequest(data: data)
             }
         }
@@ -78,7 +78,7 @@ public struct TealiumRemoteAPIRequest: TealiumRequest {
 
     public init(trackRequest: TealiumTrackRequest) {
         var trackRequestData = trackRequest.trackDictionary
-        trackRequestData[TealiumKey.eventType] = TealiumKey.remoteAPIEventType
+        trackRequestData[TealiumDataKey.eventType] = TealiumKey.remoteAPIEventType
         self.trackRequest = TealiumTrackRequest(data: trackRequestData)
     }
 
@@ -140,7 +140,7 @@ public struct TealiumTrackRequest: TealiumRequest, Codable, Comparable {
     public var uuid: String {
         willSet {
             var data = self.trackDictionary
-            data[TealiumKey.requestUUID] = newValue
+            data[TealiumDataKey.requestUUID] = newValue
             self.data = data.encodable
         }
     }
@@ -161,9 +161,9 @@ public struct TealiumTrackRequest: TealiumRequest, Codable, Comparable {
     }
 
     public init(data: [String: Any]) {
-        self.uuid = data[TealiumKey.requestUUID] as? String ?? UUID().uuidString
+        self.uuid = data[TealiumDataKey.requestUUID] as? String ?? UUID().uuidString
         var data = data
-        data[TealiumKey.requestUUID] = uuid
+        data[TealiumDataKey.requestUUID] = uuid
         self.data = data.encodable
     }
 
@@ -178,18 +178,18 @@ public struct TealiumTrackRequest: TealiumRequest, Codable, Comparable {
     }
 
     public var visitorId: String? {
-        return self.trackDictionary[TealiumKey.visitorId] as? String
+        return self.trackDictionary[TealiumDataKey.visitorId] as? String
     }
 
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         let decoded = try values.decode(AnyDecodable.self, forKey: .data)
         var trackData = decoded.value as? [String: Any]
-        if let uuid = trackData?[TealiumKey.requestUUID] as? String {
+        if let uuid = trackData?[TealiumDataKey.requestUUID] as? String {
             self.uuid = uuid
         } else {
             self.uuid = UUID().uuidString
-            trackData?[TealiumKey.requestUUID] = self.uuid
+            trackData?[TealiumDataKey.requestUUID] = self.uuid
         }
         data = AnyEncodable(trackData)
         typeId = try values.decode(String.self, forKey: .typeId)
@@ -202,7 +202,7 @@ public struct TealiumTrackRequest: TealiumRequest, Codable, Comparable {
     }
 
     public var event: String? {
-        self.trackDictionary[TealiumKey.event] as? String
+        self.trackDictionary[TealiumDataKey.event] as? String
     }
 
 }
@@ -211,22 +211,22 @@ public struct TealiumTrackRequest: TealiumRequest, Codable, Comparable {
 public struct TealiumBatchTrackRequest: TealiumRequest, Codable {
     public var typeId = TealiumTrackRequest.instanceTypeId()
     public var uuid: String
-    let sharedKeys = [TealiumKey.account,
-                      TealiumKey.profile,
-                      TealiumKey.dataSource,
-                      TealiumKey.libraryName,
-                      TealiumKey.libraryVersion,
-                      TealiumKey.uuid,
-                      TealiumKey.device,
-                      TealiumKey.simpleModel,
-                      TealiumKey.architecture,
-                      TealiumKey.cpuType,
-                      TealiumKey.language,
-                      TealiumKey.resolution,
-                      TealiumKey.platform,
-                      TealiumKey.osName,
-                      TealiumKey.fullModel,
-                      TealiumKey.visitorId
+    let sharedKeys = [TealiumDataKey.account,
+                      TealiumDataKey.profile,
+                      TealiumDataKey.dataSource,
+                      TealiumDataKey.libraryName,
+                      TealiumDataKey.libraryVersion,
+                      TealiumDataKey.uuid,
+                      TealiumDataKey.device,
+                      TealiumDataKey.simpleModel,
+                      TealiumDataKey.architecture,
+                      TealiumDataKey.cpuType,
+                      TealiumDataKey.language,
+                      TealiumDataKey.resolution,
+                      TealiumDataKey.platform,
+                      TealiumDataKey.osName,
+                      TealiumDataKey.fullModel,
+                      TealiumDataKey.visitorId
     ]
     public var trackRequests: [TealiumTrackRequest]
 
@@ -299,8 +299,8 @@ public struct TealiumEvent: TealiumDispatch {
 
     public var trackRequest: TealiumTrackRequest {
         var data = dataLayer ?? [String: Any]()
-        data[TealiumKey.event] = eventName
-        data[TealiumKey.eventType] = TealiumTrackType.event.description
+        data[TealiumDataKey.event] = eventName
+        data[TealiumDataKey.eventType] = TealiumTrackType.event.description
         return TealiumTrackRequest(data: data)
     }
 }
@@ -317,9 +317,9 @@ public struct TealiumView: TealiumDispatch {
 
     public var trackRequest: TealiumTrackRequest {
         var data = dataLayer ?? [String: Any]()
-        data[TealiumKey.event] = viewName
-        data[TealiumKey.eventType] = TealiumTrackType.view.description
-        data[TealiumKey.screenTitle] = viewName
+        data[TealiumDataKey.event] = viewName
+        data[TealiumDataKey.eventType] = TealiumTrackType.view.description
+        data[TealiumDataKey.screenTitle] = viewName
         return TealiumTrackRequest(data: data)
     }
 }

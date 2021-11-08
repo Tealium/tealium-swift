@@ -28,15 +28,15 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
         self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config, forModule: "eventdata")
         self.sessionStarter = sessionStarter ?? SessionStarter(config: config)
         self.minutesBetweenSessionIdentifier = TimeInterval(TealiumValue.defaultMinutesBetweenSession)
-        var currentStaticData = [TealiumKey.account: config.account,
-                                 TealiumKey.profile: config.profile,
-                                 TealiumKey.environment: config.environment,
-                                 TealiumKey.libraryName: TealiumValue.libraryName,
-                                 TealiumKey.libraryVersion: TealiumValue.libraryVersion,
-                                 TealiumKey.origin: TealiumValue.mobile]
+        var currentStaticData = [TealiumDataKey.account: config.account,
+                                 TealiumDataKey.profile: config.profile,
+                                 TealiumDataKey.environment: config.environment,
+                                 TealiumDataKey.libraryName: TealiumValue.libraryName,
+                                 TealiumDataKey.libraryVersion: TealiumValue.libraryVersion,
+                                 TealiumDataKey.origin: TealiumValue.mobile]
 
         if let dataSource = config.dataSource {
-            currentStaticData[TealiumKey.dataSource] = dataSource
+            currentStaticData[TealiumDataKey.dataSource] = dataSource
         }
         add(data: currentStaticData, expiry: .untilRestart)
         refreshSession()
@@ -64,7 +64,7 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
             allSessionData += persistentData.all
         }
 
-        allSessionData[TealiumKey.random] = random
+        allSessionData[TealiumDataKey.random] = random
         if !currentTimestampsExist(allSessionData) {
             allSessionData.merge(currentTimeStamps) { _, new in new }
             allSessionData[TealiumKey.timestampOffset] = timeZoneOffset
