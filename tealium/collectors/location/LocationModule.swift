@@ -29,8 +29,8 @@ public class LocationModule: Collector {
            location.coordinate.latitude != 0.0 && location.coordinate.longitude != 0.0 {
             newData = [TealiumDataKey.deviceLatitude: "\(location.coordinate.latitude)",
                        TealiumDataKey.deviceLongitude: "\(location.coordinate.longitude)",
-                       TealiumDataKey.accuracy: tealiumLocationManager.locationAccuracy,
-                       TealiumDataKey.accuracyExtended: config.desiredAccuracy.rawValue]
+                       TealiumDataKey.locationAccuracy: tealiumLocationManager.locationAccuracy,
+                       TealiumDataKey.locationAccuracyExtended: config.desiredAccuracy.rawValue]
         }
         return newData
     }

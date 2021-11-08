@@ -252,10 +252,10 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
         if let lastLocation = lastLocation {
             data[TealiumDataKey.deviceLatitude] = "\(lastLocation.coordinate.latitude)"
             data[TealiumDataKey.deviceLongitude] = "\(lastLocation.coordinate.longitude)"
-            data[TealiumDataKey.timestamp] = "\(lastLocation.timestamp)"
-            data[TealiumDataKey.speed] = "\(lastLocation.speed)"
-            data[TealiumDataKey.accuracy] = locationAccuracy
-            data[TealiumDataKey.accuracyExtended] = config.desiredAccuracy.rawValue
+            data[TealiumDataKey.locationTimestamp] = "\(lastLocation.timestamp)"
+            data[TealiumDataKey.locationSpeed] = "\(lastLocation.speed)"
+            data[TealiumDataKey.locationAccuracy] = locationAccuracy
+            data[TealiumDataKey.locationAccuracyExtended] = config.desiredAccuracy.rawValue
         }
 
         if triggeredTransition == LocationKey.exited {

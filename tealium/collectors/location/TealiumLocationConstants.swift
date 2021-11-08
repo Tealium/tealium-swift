@@ -15,13 +15,13 @@ import TealiumCore
 public extension TealiumDataKey {
     static let deviceLatitude = "latitude"
     static let deviceLongitude = "longitude"
-    static let accuracy = "location_accuracy"
-    static let accuracyExtended = "location_accuracy_extended"
+    static let locationAccuracy = "location_accuracy"
+    static let locationAccuracyExtended = "location_accuracy_extended"
     static let geofenceName = "geofence_name"
     static let geofenceTransition = "geofence_transition_type"
 
-    static let timestamp = "location_timestamp"
-    static let speed = "movement_speed"
+    static let locationTimestamp = "location_timestamp"
+    static let locationSpeed = "movement_speed"
 }
 
 public enum LocationKey {

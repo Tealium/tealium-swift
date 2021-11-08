@@ -152,7 +152,7 @@ public class LifecycleModule: Collector {
     ///
     /// - Parameter data: `[String: Any]` containing the lifecycle data to track
     public func requestTrack(data: [String: Any]) {
-        guard let title = data[TealiumDataKey.type] as? String else {
+        guard let title = data[TealiumDataKey.lifecycleType] as? String else {
             return
         }
         let dispatch = TealiumEvent(title, dataLayer: data)

@@ -209,7 +209,7 @@ public struct Lifecycle: Codable {
         dict[TealiumDataKey.priorSecondsAwake] = priorSecondsAwake
         dict[TealiumDataKey.secondsAwake] = secondsAwake(to: date)
         dict[TealiumDataKey.sleepCount] = String(countSleep)
-        dict[TealiumDataKey.type] = type
+        dict[TealiumDataKey.lifecycleType] = type
         dict[TealiumDataKey.totalCrashCount] = String(countCrashTotal)
         dict[TealiumDataKey.totalLaunchCount] = String(countLaunchTotal)
         dict[TealiumDataKey.totalSleepCount] = String(countSleepTotal)

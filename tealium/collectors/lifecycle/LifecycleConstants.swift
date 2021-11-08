@@ -34,7 +34,7 @@ public extension TealiumDataKey {
     static let priorSecondsAwake = "lifecycle_priorsecondsawake"
     static let secondsAwake = "lifecycle_secondsawake"
     static let sleepCount = "lifecycle_sleepcount"
-    static let type = "lifecycle_type"
+    static let lifecycleType = "lifecycle_type"
     static let totalCrashCount = "lifecycle_totalcrashcount"
     static let totalLaunchCount = "lifecycle_totallaunchcount"
     static let totalWakeCount = "lifecycle_totalwakecount"
