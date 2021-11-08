@@ -66,10 +66,8 @@ public extension TealiumDataKey {
     static let queueReason = "queue_reason"
     static let wasQueued = "was_queued"
     static let dispatchService = "dispatch_service"
-    
     static let dataSource = "tealium_datasource"
     static let sessionId = "tealium_session_id"
-    
     static let random = "tealium_random"
     static let uuid = "app_uuid"
     static let requestUUID = "request_uuid"
@@ -84,24 +82,17 @@ public extension TealiumDataKey {
     static let platform = "platform"
     static let resolution = "device_resolution"
     static let logicalResolution = "device_logical_resolution"
-
- 
     static let enabledModules = "enabled_modules"
-    
     static let deepLinkURL = "deep_link_url"
     static let deepLinkQueryPrefix = "deep_link_param"
     static let deepLinkReferrerUrl = "deep_link_referrer_url"
     static let deepLinkReferrerApp = "deep_link_referrer_app"
-    
-    
     static let killVisitorSessionEvent = "event"
     static let traceId = "cp.trace_id"
-
     static let timedEventName = "timed_event_name"
     static let eventStart = "timed_event_start"
     static let eventStop = "timed_event_end"
     static let eventDuration = "timed_event_duration"
-    
     static let timestampUnix = "timestamp_unix"
     static let timestampUnixMilliseconds = "timestamp_unix_milliseconds"
     static let tagmanagementNotification = "com.tealium.tagmanagement.urlrequest"
@@ -142,10 +133,7 @@ public enum TealiumConfigKey {
     static let lifecycleAutotrackingEnabled = "enable_lifecycle_autotracking"
     static let deepLinkTrackingEnabled = "deep_link_tracking_enabled"
     static let qrTraceEnabled = "qr_trace_enabled"
-    
-    
     static let shouldMigrate = "should_migrate_data"
-
     public static let enableBackgroundMedia = "enable_background_media_tracking"
     public static let autoEndSesssionTime = "media_auto_end_session_time"
     static let minimumFreeDiskSpace = "min_free_disk_space"
@@ -161,7 +149,6 @@ public enum TealiumKey {
     // used for remote commands
     public static let persistentData = "persistentData"
     public static let persistentVisitorId = "visitorId"
-
     public static let logLevelConfig = "com.tealium.logger.loglevel"
     public static let prod = "prod"
     public static let dev = "dev"
@@ -170,12 +157,7 @@ public enum TealiumKey {
     // swiftlint:enable identifier_name
     public static let errorHeaderKey = "X-Error"
     public static let remoteAPIEventType = "remote_api"
-
-    
     public static let tealiumURLScheme = "tealium"
-
-    
-    
     static let killVisitorSession = "kill_visitor_session"
     static let leaveTraceQueryParam = "leave_trace"
     static let traceIdQueryParam = "tealium_trace_id"
