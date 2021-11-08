@@ -38,7 +38,6 @@ public extension TealiumDataKey {
 
 enum DeviceDataModuleKey {
     static let moduleName = "devicedata"
-    static let isMemoryReportingEnabled = "com.tealium.devicedata.memory.enable"
 }
 
 public enum DeviceDataValue {

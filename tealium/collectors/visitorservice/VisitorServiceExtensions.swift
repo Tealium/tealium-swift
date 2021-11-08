@@ -24,17 +24,26 @@ public extension Collectors {
     static let VisitorService = VisitorServiceModule.self
 }
 
+
+extension TealiumConfigKey {
+    static let refreshInterval = "visitor_service_refresh"
+    static let enableVisitorService = "enable_visitor_service"
+    static let visitorServiceDelegate = "visitor_service_delegate"
+    static let visitorServiceOverrideProfile = "visitor_service_override_profile"
+    static let visitorServiceOverrideURL = "visitor_service_override_url"
+}
+
 public extension TealiumConfig {
 
     /// Sets the default refresh interval for visitor profile retrieval. Default is `.every(5, .minutes)`
     /// Set to `.every(0, .seconds)` if the profile should always be fetched following a track request.
     var visitorServiceRefresh: TealiumRefreshInterval? {
         get {
-            options[VisitorServiceConstants.refreshInterval] as? TealiumRefreshInterval ?? .every(5, .minutes)
+            options[TealiumConfigKey.refreshInterval] as? TealiumRefreshInterval ?? .every(5, .minutes)
         }
 
         set {
-            options[VisitorServiceConstants.refreshInterval] = newValue
+            options[TealiumConfigKey.refreshInterval] = newValue
         }
     }
 
@@ -42,7 +51,7 @@ public extension TealiumConfig {
     /// Note: if no delegates are registered, no requests will be made to fetch the visitor profile from the server.
     var visitorServiceDelegate: VisitorServiceDelegate? {
         get {
-            let weakDelegate = options[VisitorServiceConstants.visitorServiceDelegate] as? Weak<AnyObject>
+            let weakDelegate = options[TealiumConfigKey.visitorServiceDelegate] as? Weak<AnyObject>
             return weakDelegate?.value as? VisitorServiceDelegate
         }
 
@@ -51,7 +60,7 @@ public extension TealiumConfig {
             if let newValue = newValue {
                 weakDelegate = Weak<AnyObject>(value: newValue)
             }
-            options[VisitorServiceConstants.visitorServiceDelegate] = weakDelegate
+            options[TealiumConfigKey.visitorServiceDelegate] = weakDelegate
         }
     }
 
@@ -59,22 +68,22 @@ public extension TealiumConfig {
     /// Format: https://overridden-subdomain.yourdomain.com/
     var visitorServiceOverrideURL: String? {
         get {
-            options[VisitorServiceConstants.visitorServiceOverrideURL] as? String
+            options[TealiumConfigKey.visitorServiceOverrideURL] as? String
         }
 
         set {
-            options[VisitorServiceConstants.visitorServiceOverrideURL] = newValue
+            options[TealiumConfigKey.visitorServiceOverrideURL] = newValue
         }
     }
 
     /// Sets a specific overridden profile from which to fetch the visitor profile.
     var visitorServiceOverrideProfile: String? {
         get {
-            options[VisitorServiceConstants.visitorServiceOverrideProfile] as? String
+            options[TealiumConfigKey.visitorServiceOverrideProfile] as? String
         }
 
         set {
-            options[VisitorServiceConstants.visitorServiceOverrideProfile] = newValue
+            options[TealiumConfigKey.visitorServiceOverrideProfile] = newValue
         }
     }
 }

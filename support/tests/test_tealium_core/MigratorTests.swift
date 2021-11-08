@@ -85,7 +85,7 @@ class MigratorTests: XCTestCase {
                                                                          TealiumConsentCategories.bigData.rawValue,
                                                                          TealiumConsentCategories.crm.rawValue,
                                                                          TealiumConsentCategories.engagement.rawValue],
-                                       ConsentKey.consentLoggingEnabled: true]
+                                       TealiumDataKey.consentLoggingEnabled: true]
         let actual = migrator.extractConsentPreferences()
         XCTAssertTrue(actual.equal(to: expected))
     }

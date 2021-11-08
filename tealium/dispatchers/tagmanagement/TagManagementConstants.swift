@@ -25,16 +25,6 @@ enum TagManagementKey {
     static let defaultUrlStringPrefix = "https://tags.tiqcdn.com/utag"
 }
 
-enum TagManagementConfigKey {
-    static let disable = "disable_tag_management"
-    static let maxQueueSize = "tagmanagement_queue_size"
-    static let overrideURL = "tagmanagement_override_url"
-    static let delegate = "delegate"
-    static let uiview = "ui_view"
-    static let processPool = "wk_process_pool"
-    static let wkConfig = "wk_config"
-}
-
 enum TagManagementError: String, LocalizedError {
     case couldNotCreateURL
     case couldNotLoadURL

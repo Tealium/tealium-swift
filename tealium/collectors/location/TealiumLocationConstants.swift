@@ -35,15 +35,6 @@ public enum LocationKey {
     static let lowAccuracy = "low"
 }
 
-public enum LocationConfigKey {
-    static let desiredAccuracy = "desired_accuracy"
-    static let updateDistance = "update_distance"
-    static let useHighAccuracy = "is_high_accuracy"
-    static let geofenceAssetName = "geofence_asset_name"
-    static let geofenceJsonUrl = "geofence_json_url"
-    static let geofenceTrackingEnabled = "geofence_tracking_enabled"
-}
-
 public enum LocationConfig {
     case tealium
     case localFile(String)

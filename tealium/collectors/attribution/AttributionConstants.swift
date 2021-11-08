@@ -34,8 +34,6 @@ public struct AttributionKey {
 
     // Internal module keys
     static let moduleName = "attribution"
-    static let isSearchAdsEnabled = "com.tealium.attribution.searchads.enable"
-    static let isSKAdAttributionEnabled = "com.tealium.attribution.skadattribution.enable"
     // Advertising IDs
     static let idfa = "device_advertising_id"
     static let idfv = "device_advertising_vendor_id"
