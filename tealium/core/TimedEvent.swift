@@ -58,7 +58,7 @@ public struct TimedEvent: Hashable {
         return data
     }
 
-    public static func ==(lhs: TimedEvent, rhs: TimedEvent) -> Bool {
+    public static func == (lhs: TimedEvent, rhs: TimedEvent) -> Bool {
         lhs.name == rhs.name
     }
 

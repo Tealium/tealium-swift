@@ -97,7 +97,7 @@ class CollectEventDispatcher: CollectProtocol, LoggingDataToStringConverter {
     ///     - data: `[String:Any]` containing the nested data structure for a batch dispatch
     ///     - completion: `ModuleCompletion?` Optional completion block to be called when operation complete
     func dispatchBatch(data: [String: Any],
-                      completion: ModuleCompletion?) {
+                       completion: ModuleCompletion?) {
         dispatch(data: data, url: batchEventDispatchURL, completion: completion)
     }
 

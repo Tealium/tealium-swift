@@ -4,7 +4,6 @@
 //
 
 import Foundation
-// swiftlint:disable file_length
 // swiftlint:disable type_body_length
 public class TealiumDiskStorage: TealiumDiskStorageProtocol {
 
@@ -57,6 +56,7 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
     ///     - from: `Disk.Directory` to migrate data from
     ///     - to: `Disk.Directory` to migrate data from
     ///     - moduleName: `String` name of the module for which to migrate the data
+    // swiftlint:disable identifier_name
     func migrateFrom(_ from: Disk.Directory,
                      to: Disk.Directory,
                      moduleName: String) {
@@ -81,6 +81,7 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
             }
         }
     }
+    // swiftlint:enable identifier_name
 
     /// Generates a file path for the data to be saved.
     ///
@@ -477,4 +478,3 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
 
 }
 // swiftlint:enable type_body_length
-// swiftlint:enable file_length

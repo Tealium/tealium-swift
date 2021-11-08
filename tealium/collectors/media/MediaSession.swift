@@ -154,7 +154,7 @@ public class MediaSession: MediaSessionProtocol {
             .adBreak(adBreak)
         )
     }
-
+    // swiftlint:disable identifier_name
     public func startAd(_ ad: Ad) {
         mediaService?.media.add(.ad(ad))
         mediaService?.track(
@@ -196,6 +196,7 @@ public class MediaSession: MediaSessionProtocol {
             .ad(ad)
         )
     }
+    // swiftlint:enable identifier_name
 
     /// Sends a custom media event
     public func custom(_ event: String) {

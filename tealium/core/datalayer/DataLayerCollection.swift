@@ -53,7 +53,10 @@ public extension Set where Element == DataLayerItem {
     func removeExpired() -> Set<DataLayerItem> {
         let currentDate = Date()
         let newDataLayer = self.filter {
-            $0.expires > currentDate || $0.isSession
+            guard let expires = $0.expires else {
+                return false
+            }
+            return expires > currentDate || $0.isSession
         }
         return newDataLayer
     }
@@ -87,7 +90,7 @@ public struct DataLayerItem: Codable, Hashable {
 
     var key: String
     var value: Any
-    var expires: Date
+    var expires: Date?
     var isSession: Bool
 
     enum CodingKeys: String, CodingKey {
@@ -111,7 +114,8 @@ public struct DataLayerItem: Codable, Hashable {
         value = decoded.value
         expires = try values.decode(Date.self, forKey: .expires)
         key = try values.decode(String.self, forKey: .key)
-        isSession = try values.decodeIfPresent(Bool.self, forKey: .isSession) ?? false // values added by previous version may not have isSession in the storage the first time they launched after the update from version <= 2.4.5
+        // values added by previous version may not have isSession in the storage the first time they launched after the update from version <= 2.4.5
+        isSession = try values.decodeIfPresent(Bool.self, forKey: .isSession) ?? false
     }
 
     public init(key: String,

@@ -98,11 +98,10 @@ class TealiumPublishSettingsRetriever {
 
             switch HttpStatusCodes(rawValue: response.statusCode) {
             case .ok:
-                guard let publishSettings = self.getPublishSettings(from: data!) else {
+                guard let data = data, let publishSettings = self.getPublishSettings(from: data) else {
                     completion(nil)
                     return
                 }
-
                 completion(publishSettings)
             default:
                 completion(nil)

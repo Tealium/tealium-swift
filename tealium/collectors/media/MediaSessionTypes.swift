@@ -330,13 +330,14 @@ class SummaryMediaSession: MediaSession {
         }
         mediaService?.media.summary?.totalSeekTime.increment(by: (endPosition - startPosition))
     }
-
+    // swiftlint:disable identifier_name
     /// Increments ad count, adds uuid to adUUIDs, sets the latest ad start time
     override func startAd(_ ad: Ad) {
         mediaService?.media.summary?.ads.increment()
         mediaService?.media.summary?.adUUIDs.append(ad.uuid)
         mediaService?.media.summary?.adStartTime = Date()
     }
+    // swiftlint:enable identifier_name
 
     /// Increments total ad play time and ad skips
     override func skipAd() {

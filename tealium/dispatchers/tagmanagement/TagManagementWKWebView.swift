@@ -69,14 +69,12 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
     /// ￼
     /// - Parameters:
     ///     - view: `UIView` instance for WKWebView to be attached to
-    ///     - completion: Completion block to be run when the operation has completed
-    func setRootView(_ view: UIView,
-                     completion: ((_ success: Bool) -> Void)?) {
+    /// - returns: a success `Bool`, true if the webview was successfully attached
+    @discardableResult
+    func setRootView(_ view: UIView) -> Bool {
         self.view = view
         // forward success/failure to optional completion
-        self.attachToUIView(specificView: view) { success in
-            completion?(success)
-        }
+        return self.attachToUIView(specificView: view)
     }
 
     /// Adds optional delegates to the WebView instance.
@@ -104,7 +102,7 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
     ///    - specificView: `UIView?` to attach to
     func setupWebview(forURL url: URL?,
                       withSpecificView specificView: UIView?) {
-        TealiumQueues.mainQueue.async { [weak self] in
+        TealiumQueues.secureMainThreadExecution { [weak self] in
             guard let self = self else {
                 return
             }
@@ -119,15 +117,14 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
                 return
             }
             // attach the webview to the view before continuing
-            self.attachToUIView(specificView: specificView) { _ in
-                guard let url = url else {
-                    self.enableCompletion?(false, WebviewError.webviewURLMissing)
-                    return
-                }
-                let request = URLRequest(url: url)
-                TealiumQueues.mainQueue.async {
-                    webview.load(request)
-                }
+            self.attachToUIView(specificView: specificView)
+            guard let url = url else {
+                self.enableCompletion?(false, WebviewError.webviewURLMissing)
+                return
+            }
+            let request = URLRequest(url: url)
+            TealiumQueues.mainQueue.async {
+                webview.load(request)
             }
         }
     }
@@ -179,7 +176,7 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
             }
             // always re-attach to UIView. If specific view has been previously passed in, this will be used.
             // nil is passed to force attachToUIView to auto-detect and check for a valid view, since this track call could be happening after the view was dismissed
-            self.attachToUIView(specificView: nil) { _ in }
+            self.attachToUIView(specificView: nil)
         }
 
         var info = [String: Any]()
@@ -225,7 +222,7 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
                 return
             }
             if self.webview?.superview == nil {
-                self.attachToUIView(specificView: nil) { _ in }
+                self.attachToUIView(specificView: nil)
             }
             self.webview?.evaluateJavaScript(jsString) { result, error in
                 let info = Atomic(value: [String: Any]())
@@ -284,19 +281,15 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
     /// Called when the module needs to disable the webview.
     func disable() {
         self.delegates = nil
-        // these methods MUST be called on the main thread. Cannot be async, or self will be deallocated before these run
-        if !Thread.isMainThread {
-            TealiumQueues.mainQueue.sync {
-                self.webview?.navigationDelegate = nil
-                // if this isn't run, the webview will remain attached in a kind of zombie state
-                self.webview?.removeFromSuperview()
-                self.webview?.stopLoading()
-            }
-        } else {
-            self.webview?.navigationDelegate = nil
+        // these method MUST be called on the main thread. If async, self will be deallocated before this runs, so we capture the webview instead
+        guard let webview = self.webview else {
+            return
+        }
+        TealiumQueues.secureMainThreadExecution {
+            webview.navigationDelegate = nil
             // if this isn't run, the webview will remain attached in a kind of zombie state
-            self.webview?.removeFromSuperview()
-            self.webview?.stopLoading()
+            webview.removeFromSuperview()
+            webview.stopLoading()
         }
         self.webview = nil
     }

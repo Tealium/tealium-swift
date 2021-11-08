@@ -43,6 +43,10 @@ open class TealiumConfig {
 
     /// Set to `false` to disable the Tealium AppDelegate proxy for deep link handling.
     /// Default `true`.
+    ///
+    /// WARNING:
+    /// No longer used. To disable this behavior use the info.plist flag `TealiumAutotrackingDeepLinkEnabled` with the boolean value of `false`
+    @available(*, deprecated, message: "Add an info.plist flag `TealiumAutotrackingDeepLinkEnabled` with the boolean value of `false` to disable this behavior")
     public var appDelegateProxyEnabled: Bool {
         get {
             options[TealiumKey.appDelegateProxy] as? Bool ?? true

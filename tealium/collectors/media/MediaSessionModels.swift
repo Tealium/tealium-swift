@@ -55,6 +55,7 @@ public enum Milestone: String, CaseIterable {
     case oneHundred = "100%"
 }
 
+// swiftlint:disable identifier_name
 public enum Segment {
     case chapter(Chapter)
     case adBreak(AdBreak)
@@ -71,6 +72,7 @@ public enum Segment {
         }
     }
 }
+// swiftlint:enable identifier_name
 
 public enum StandardMediaEvent: String {
     case adBreakEnd = "media_adbreak_end"
@@ -172,6 +174,7 @@ public struct Chapter: Codable {
     }
 }
 
+// swiftlint:disable type_name
 public struct Ad: Codable {
     var uuid = UUID().uuidString
     var name: String?
@@ -235,6 +238,7 @@ public struct Ad: Codable {
     }
 
 }
+// swiftlint:enable type_name
 
 public struct AdBreak: Codable {
     var uuid = UUID().uuidString

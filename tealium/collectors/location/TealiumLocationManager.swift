@@ -29,6 +29,9 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     public var locationAccuracy: String = LocationKey.highAccuracy
     private var _lastLocation: CLLocation?
 
+    @ToAnyObservable(TealiumReplaySubject())
+    var onReady: TealiumObservable<Void>
+
     init(config: TealiumConfig,
          bundle: Bundle = Bundle.main,
          locationDelegate: LocationDelegate? = nil,
@@ -40,15 +43,11 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
 
         super.init()
 
-        if let locationConfig = config.initializeGeofenceDataFrom {
-            switch locationConfig {
-            case .localFile(let file):
-                geofences = GeofenceData(file: file, bundle: bundle, logger: config.logger)?.geofences ?? [Geofence]()
-            case .customUrl(let url):
-                geofences = GeofenceData(url: url, logger: config.logger)?.geofences ?? [Geofence]()
-            default:
-                geofences = GeofenceData(url: geofencesUrl, logger: config.logger)?.geofences ?? [Geofence]()
-            }
+        let provider = GeofenceProvider(config: config, bundle: bundle)
+        provider.getGeofencesAsync { [weak self] geofences in
+            guard let self = self else { return }
+            self.geofences = geofences
+            self._onReady.publish()
         }
 
         self.locationManager.distanceFilter = config.updateDistance
@@ -56,11 +55,6 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
         self.locationManager.desiredAccuracy = CLLocationAccuracy(config.desiredAccuracy)
 
         clearMonitoredGeofences()
-    }
-
-    /// Builds a URL from a Tealium config pointing to a hosted JSON file on the Tealium DLE
-    var geofencesUrl: String {
-        return "\(LocationKey.dleBaseUrl)\(config.account)/\(config.profile)/\(LocationKey.fileName).json"
     }
 
     /// - Returns: `Bool` Whether or not the user has authorized location tracking/updates
@@ -138,18 +132,23 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     /// Enables regular updates of location data through the location client
     /// Update frequency is dependant on config.useHighAccuracy, a parameter passed on initialization of this class.
     public func startLocationUpdates() {
-        guard isAuthorized else {
-            logInfo(message: "🌎🌎 Location Updates Service Not Enabled 🌎🌎")
-            return
+        onReady.subscribeOnce { [weak self] in
+            guard let self = self else {
+                return
+            }
+            guard self.isAuthorized else {
+                self.logInfo(message: "🌎🌎 Location Updates Service Not Enabled 🌎🌎")
+                return
+            }
+            guard !self.config.useHighAccuracy,
+                  CLLocationManager.significantLocationChangeMonitoringAvailable() else {
+                self.locationManager.startUpdatingLocation()
+                self.logInfo(message: "🌎🌎 Starting Location Updates With Frequent Monitoring 🌎🌎")
+                return
+            }
+            self.locationManager.startMonitoringSignificantLocationChanges()
+            self.logInfo(message: "🌎🌎 Starting Location Updates With Significant Location Changes Only 🌎🌎")
         }
-        guard !config.useHighAccuracy,
-              CLLocationManager.significantLocationChangeMonitoringAvailable() else {
-            locationManager.startUpdatingLocation()
-            logInfo(message: "🌎🌎 Starting Location Updates With Frequent Monitoring 🌎🌎")
-            return
-        }
-        locationManager.startMonitoringSignificantLocationChanges()
-        logInfo(message: "🌎🌎 Starting Location Updates With Significant Location Changes Only 🌎🌎")
     }
 
     /// Stops the updating of location data through the location client.
@@ -170,8 +169,8 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let lastLocation = locations.last {
             self.lastLocation = lastLocation
+            logInfo(message: "🌎🌎 Location updated: \(String(describing: lastLocation.coordinate)) 🌎🌎")
         }
-        logInfo(message: "🌎🌎 Location updated: \(String(describing: lastLocation?.coordinate)) 🌎🌎")
         geofences.regions.forEach {
             let geofenceLocation = CLLocation(latitude: $0.center.latitude, longitude: $0.center.longitude)
 

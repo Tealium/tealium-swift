@@ -14,6 +14,7 @@ disabled_rules:
   - unused_optional_binding
   - file_header
 opt_in_rules:
+  - file_length
   - force_unwrapping
   - explicit_init
   - closure_spacing
@@ -37,11 +38,16 @@ opt_in_rules:
   - literal_expression_end_indentation
   - number_separator
 
+file_length:
+  warning: 500
 identifier_name:
   excluded:
     - id
   severity: warning
-line_length: 200
+line_length: 
+    warning: 200
+    error: 500
+    ignores_comments: true
 number_separator:
   minimum_length: 5
 large_tuple: 4

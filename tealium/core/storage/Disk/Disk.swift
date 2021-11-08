@@ -88,7 +88,7 @@ public class Disk {
             }
         }
 
-        static public func ==(lhs: Directory, rhs: Directory) -> Bool {
+        static public func == (lhs: Directory, rhs: Directory) -> Bool {
             switch (lhs, rhs) {
             #if os(tvOS)
             #else

@@ -131,7 +131,11 @@ class LegacyConnectivityMonitor: ConnectivityMonitorProtocol {
         }
 
         var flags: SCNetworkReachabilityFlags = SCNetworkReachabilityFlags()
-        SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags)
+        guard let defaultRouteReachability = defaultRouteReachability else {
+            return false
+        }
+
+        SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags)
         #if os(OSX)
         connectionType = ConnectivityKey.connectionTypeWifi
         #else
@@ -142,7 +146,7 @@ class LegacyConnectivityMonitor: ConnectivityMonitorProtocol {
         }
         #endif
 
-        if SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) == false {
+        if SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags) == false {
             return false
         }
 

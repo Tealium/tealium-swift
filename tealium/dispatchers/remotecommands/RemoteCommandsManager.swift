@@ -82,7 +82,11 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
             self.isFirstFetch = false
             switch HttpStatusCodes(rawValue: response.statusCode) {
             case .ok:
-                guard let commandConfig = self.config(from: data!) else {
+                guard let data = data else {
+                    completion(.failure(TealiumRemoteCommandsError.couldNotConvertData))
+                    return
+                }
+                guard let commandConfig = self.config(from: data) else {
                     completion(.failure(TealiumRemoteCommandsError.couldNotDecodeJSON))
                     return
                 }

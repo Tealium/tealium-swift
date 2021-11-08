@@ -22,9 +22,9 @@ extension TagManagementWKWebView {
     ///
     /// - Parameters:
     ///     - specificView: `UIView?` instance to use
-    ///     - completion: Completion block to be called when webview was successfully attached to the UIView
-    func attachToUIView(specificView: UIView?,
-                        withCompletion completion: (_ success: Bool) -> Void) {
+    /// - returns: a success `Bool`, true if the webview was successfully attached
+    @discardableResult
+    func attachToUIView(specificView: UIView?) -> Bool {
         // attach to specific view passed from config override
         if specificView != nil {
             view = specificView
@@ -40,12 +40,11 @@ extension TagManagementWKWebView {
         // add webview as subview to whichever view is currently in the view hierarchy
         guard let view = view, let webview = self.webview else {
             // something went wrong; module should error
-            completion(false)
-            return
+            return false
         }
 
         view.addSubview(webview)
-        completion(true)
+        return true
     }
 }
 #endif

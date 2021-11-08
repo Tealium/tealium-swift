@@ -221,25 +221,6 @@ class TealiumExtensionTests: XCTestCase {
         wait(for: [expect], timeout: 2.0)
     }
 
-    func testAutotrackingNotNil() {
-        let expect = expectation(description: "Autotracking not nil")
-        defaultTealiumConfig.collectors = [Collectors.AutoTracking]
-        tealium = Tealium(config: defaultTealiumConfig) { _ in
-            XCTAssertNotNil(self.tealium.autotracking)
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 2.0)
-    }
-
-    func testAutotrackingNilWhenNotSetAsCollector() {
-        let expect = expectation(description: "Autotracking nil")
-        tealium = Tealium(config: defaultTealiumConfig) { _ in
-            XCTAssertNil(self.tealium.autotracking)
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 2.0)
-    }
-
     func testRemoteCommandsNotNil() {
         let expect = expectation(description: "Remote Commands not nil")
         defaultTealiumConfig.dispatchers = [Dispatchers.RemoteCommands]

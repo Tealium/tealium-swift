@@ -87,7 +87,9 @@ extension MediaContent {
     /// - Parameter segment: `Segment`
     func add(_ segment: Segment) {
         switch segment {
+        // swiftlint:disable identifier_name
         case .ad(let ad):
+        // swiftlint:enable identifier_name
             ads.append(ad)
         case .adBreak(let adBreak):
             adBreaks.append(adBreak)
