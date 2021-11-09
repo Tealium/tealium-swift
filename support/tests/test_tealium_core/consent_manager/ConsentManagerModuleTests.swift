@@ -65,13 +65,32 @@ class ConsentManagerModuleTests: XCTestCase {
             ConsentKey.consentPartialEventName,
             ConsentKey.consentGrantedEventName,
             ConsentKey.consentDeclinedEventName,
-            ConsentKey.gdprConsentCookieEventName
+            ConsentKey.gdprConsentCookieEventName,
+            ConsentKey.ccpaCookieEventName
         ]
         auditingEvents.forEach {
             track = TealiumTrackRequest(data: [TealiumDataKey.event: $0])
             let queue = module.shouldQueue(request: track)
             XCTAssertFalse(queue.0)
             XCTAssertNotNil(queue.1)
+        }
+    }
+    
+    func testShouldQueueAddsConsentStatusAndCategory() {
+        let auditingEvents = [
+            ConsentKey.consentPartialEventName,
+            ConsentKey.consentGrantedEventName,
+            ConsentKey.consentDeclinedEventName,
+            ConsentKey.gdprConsentCookieEventName,
+            ConsentKey.ccpaCookieEventName,
+            "someEvent",
+            "someOtherEvent"
+        ]
+        auditingEvents.forEach {
+            track = TealiumTrackRequest(data: [TealiumDataKey.event: $0])
+            let queue = module.shouldQueue(request: track)
+            XCTAssertNotNil(queue.1?[TealiumDataKey.consentStatus])
+            XCTAssertNotNil(queue.1?[TealiumDataKey.consentCategoriesKey])
         }
     }
 
