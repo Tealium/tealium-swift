@@ -50,25 +50,26 @@ class ConsentManagerModule: DispatchValidator {
     /// - Parameter request: incoming `TealiumRequest`
     /// - Returns: `(Bool, [String: Any]?)` true/false if should be queued, then the resulting dictionary of consent data.
     func shouldQueue(request: TealiumRequest) -> (Bool, [String: Any]?) {
-        guard let request = request as? TealiumTrackRequest else {
+        if let _ = request as? TealiumBatchTrackRequest {
             return (true, [TealiumDataKey.queueReason: TealiumConfigKey.batchingEnabled])
         }
+        guard let request = request as? TealiumTrackRequest else {
+            return (false, nil) // Should never happen
+        }
         expireConsent()
-        
+        var consentData = getConsentData()
         if request.containsAuditEvent {
-            return (false, nil)
+            return (false, consentData)
         }
         
         switch consentManager?.trackingStatus {
         case .trackingQueued:
-            var newData = request.trackDictionary
-            newData[TealiumDataKey.queueReason] = ConsentKey.moduleName
-            let newTrack = TealiumTrackRequest(data: newData)
-            return (true, addConsentDataToTrack(newTrack).trackDictionary)
+            consentData[TealiumDataKey.queueReason] = ConsentKey.moduleName
+            return (true, consentData)
         case .trackingAllowed:
-            return (false, addConsentDataToTrack(request).trackDictionary)
+            return (false, consentData)
         case .trackingForbidden:
-            return (false, addConsentDataToTrack(request).trackDictionary)
+            return (false, consentData)
         case .none:
             return (false, nil)
         }
@@ -100,15 +101,11 @@ class ConsentManagerModule: DispatchValidator {
         return consentManager?.trackingStatus == .trackingForbidden
     }
 
-    /// Adds consent categories and status to the tracking request.￼
-    ///
-    /// - Parameter track: `TealiumTrackRequest` to be modified
-    func addConsentDataToTrack(_ track: TealiumTrackRequest) -> TealiumTrackRequest {
-        var newTrack = track.trackDictionary
+    func getConsentData() -> [String:Any] {
         if let consentDictionary = consentManager?.currentPolicy.policyTrackingData {
-            newTrack += consentDictionary
+            return consentDictionary
         }
-        return TealiumTrackRequest(data: newTrack)
+        return [:]
     }
     
     /// Checks if the consent selections are expired

@@ -71,7 +71,7 @@ class ConsentManagerModuleTests: XCTestCase {
             track = TealiumTrackRequest(data: [TealiumDataKey.event: $0])
             let queue = module.shouldQueue(request: track)
             XCTAssertFalse(queue.0)
-            XCTAssertNil(queue.1)
+            XCTAssertNotNil(queue.1)
         }
     }
 
@@ -215,7 +215,8 @@ class ConsentManagerModuleTests: XCTestCase {
             TealiumDataKey.consentLastUpdated: lastUpdate!
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
-        var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
+        var trackWithConsentData = track.trackDictionary
+        trackWithConsentData += module.getConsentData()
         XCTAssertNotNil(trackWithConsentData[TealiumDataKey.requestUUID])
         trackWithConsentData[TealiumDataKey.requestUUID] = nil
         XCTAssertTrue(NSDictionary(dictionary: expected).isEqual(to: trackWithConsentData))
@@ -234,7 +235,8 @@ class ConsentManagerModuleTests: XCTestCase {
             TealiumDataKey.consentLastUpdated: lastUpdate!
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
-        var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
+        var trackWithConsentData = track.trackDictionary
+        trackWithConsentData += module.getConsentData()
         XCTAssertNotNil(trackWithConsentData[TealiumDataKey.requestUUID])
         trackWithConsentData[TealiumDataKey.requestUUID] = nil
         XCTAssertTrue(NSDictionary(dictionary: expected).isEqual(to: trackWithConsentData))
@@ -254,7 +256,8 @@ class ConsentManagerModuleTests: XCTestCase {
             TealiumDataKey.consentLastUpdated: lastUpdate!
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
-        var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
+        var trackWithConsentData = track.trackDictionary
+        trackWithConsentData += module.getConsentData()
         XCTAssertNotNil(trackWithConsentData[TealiumDataKey.requestUUID])
         trackWithConsentData[TealiumDataKey.requestUUID] = nil
         XCTAssertTrue(NSDictionary(dictionary: expected).isEqual(to: trackWithConsentData))
@@ -272,7 +275,8 @@ class ConsentManagerModuleTests: XCTestCase {
             "policy": "gdpr"
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
-        var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
+        var trackWithConsentData = track.trackDictionary
+        trackWithConsentData += module.getConsentData()
         XCTAssertNotNil(trackWithConsentData[TealiumDataKey.requestUUID])
         trackWithConsentData[TealiumDataKey.requestUUID] = nil
         XCTAssertTrue(NSDictionary(dictionary: expected).isEqual(to: trackWithConsentData))
@@ -287,7 +291,8 @@ class ConsentManagerModuleTests: XCTestCase {
             "do_not_sell": false
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
-        var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
+        var trackWithConsentData = track.trackDictionary
+        trackWithConsentData += module.getConsentData()
         XCTAssertNotNil(trackWithConsentData[TealiumDataKey.requestUUID])
         trackWithConsentData[TealiumDataKey.requestUUID] = nil
         XCTAssertTrue(NSDictionary(dictionary: expected).isEqual(to: trackWithConsentData))
