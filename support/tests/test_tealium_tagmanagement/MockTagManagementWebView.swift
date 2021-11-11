@@ -67,8 +67,8 @@ class MockTagManagementWebView: TagManagementProtocol {
 
     }
 
-    func setRootView(_ view: UIView, completion: ((Bool) -> Void)?) {
-
+    func setRootView(_ view: UIView) -> Bool {
+        return true
     }
 
 }

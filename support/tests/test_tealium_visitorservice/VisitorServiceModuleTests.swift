@@ -72,8 +72,10 @@ class VisitorServiceModuleTests: XCTestCase {
         let trackRequest = TealiumTrackRequest(data: ["hello": "world", "tealium_visitor_id": "test"])
         module.willTrack(request: trackRequest)
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-            XCTAssertEqual(1, self.mockVisitorServiceManager.requestVisitorProfileCount)
-            expect.fulfill()
+            TealiumQueues.backgroundConcurrentQueue.read {
+                XCTAssertEqual(1, self.mockVisitorServiceManager.requestVisitorProfileCount)
+                expect.fulfill()
+            }
         }
         wait(for: [expect], timeout: 5)
     }

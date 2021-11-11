@@ -14,7 +14,7 @@ public enum Expiry {
     case after(Date)
     case afterCustom((TimeUnit, Int))
 
-    public var date: Date {
+    public var date: Date? {
         switch self {
         case .after(let date):
             return date
@@ -26,19 +26,19 @@ public enum Expiry {
             return dateWith(unit: unit, value: value)
         }
     }
-    
-    private func dateWith(unit: TimeUnit, value: Int) -> Date {
+
+    private func dateWith(unit: TimeUnit, value: Int) -> Date? {
         var components = DateComponents()
         components.calendar = Calendar.autoupdatingCurrent
         let currentDate = Date()
         components.setValue(value, for: unit.component)
-        return Calendar(identifier: .gregorian).date(byAdding: components, to: currentDate)!
+        return Calendar(identifier: .gregorian).date(byAdding: components, to: currentDate)
     }
-    
-    private func distantDate() -> Date {
+
+    private func distantDate() -> Date? {
         dateWith(unit: .years, value: 100)
     }
-    
+
     func isSession() -> Bool {
         switch self {
         case .session:

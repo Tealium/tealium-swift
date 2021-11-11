@@ -133,7 +133,7 @@ class DispatchManager: DispatchManagerProtocol {
 
     func processTrack(_ request: TealiumTrackRequest) {
         var newRequest = request
-        
+
         // first release the queue if the dispatch limit has been reached
         if shouldDequeue {
             handleDequeueRequest(reason: "Processing track request")

@@ -33,15 +33,3 @@ protocol SessionManagerProtocol {
     func refreshSession()
     func startNewSession(with sessionStarter: SessionStarterProtocol)
 }
-
-extension DataLayerManagerProtocol {
-
-    func add(data: [String: Any], expiry: Expiry = .session) {
-        add(data: data, expiry: expiry)
-    }
-
-    func add(key: String, value: Any, expiry: Expiry = .session) {
-        add(key: key, value: value, expiry: expiry)
-    }
-
-}

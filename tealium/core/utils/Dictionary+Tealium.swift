@@ -22,7 +22,7 @@ public func +=<K, V>(left: inout [K: V], right: [K: V]) {
 }
 
 /// Extend use of == to dictionaries.
-public func ==(lhs: [String: Any], rhs: [String: Any] ) -> Bool {
+public func == (lhs: [String: Any], rhs: [String: Any] ) -> Bool {
     NSDictionary(dictionary: lhs).isEqual(to: rhs)
 }
 
@@ -35,7 +35,7 @@ public extension Dictionary where Key == String, Value == Any {
     var encodable: AnyEncodable {
         AnyEncodable(self)
     }
-    
+
     var flattened: [String: Any] {
         self.reduce(into: [String: Any](), { result, item in
             guard let dictionary = item.value as? [String: Any] else {
@@ -45,7 +45,5 @@ public extension Dictionary where Key == String, Value == Any {
             result.merge(dictionary) { _, new  in new }
         })
     }
-    
+
 }
-
-

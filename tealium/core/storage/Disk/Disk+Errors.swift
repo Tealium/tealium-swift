@@ -29,8 +29,6 @@ extension Disk {
         let errorInfo: [String: Any] = [NSLocalizedDescriptionKey: description ?? "",
                                         NSLocalizedRecoverySuggestionErrorKey: recoverySuggestion ?? "",
                                         NSLocalizedFailureReasonErrorKey: failureReason ?? ""]
-        // swiftlint:disable force_cast
         return DiskError(kind: errorCode, errorInfo: errorInfo)
-        // swiftlint:enable force_cast
     }
 }

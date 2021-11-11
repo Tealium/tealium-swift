@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.5
 
 import PackageDescription
 
@@ -10,8 +10,11 @@ let package = Package(
             name: "TealiumAttribution",
             targets: ["TealiumAttribution"]),
         .library(
+            name: "TealiumAutotracking",
+            targets: ["TealiumAutotracking", "TealiumAutotrackingObjC"]),
+        .library(
             name: "TealiumCore",
-            targets: ["TealiumCore"]),
+            targets: ["TealiumCore", "TealiumCoreObjC"]),
         .library(
             name: "TealiumCollect",
             targets: ["TealiumCollect"]),
@@ -32,7 +35,8 @@ let package = Package(
             targets: ["TealiumTagManagement"]),
         .library(
             name: "TealiumVisitorService",
-            targets: ["TealiumVisitorService"]),
+            targets: ["TealiumVisitorService"])
+                
     ],
     dependencies: [
     ],
@@ -40,15 +44,33 @@ let package = Package(
         .target(
             name: "TealiumCore",
             path: "tealium/core/",
+            exclude: ["objc"],
             resources: [
                 .process("devicedata/device-names.json")
             ]
+        ),
+        .target(
+            name: "TealiumCoreObjC",
+            dependencies: ["TealiumCore"],
+            path: "tealium/core/objc/"
         ),
         .target(
             name: "TealiumAttribution",
             dependencies: ["TealiumCore"],
             path: "tealium/collectors/attribution/",
             swiftSettings: [.define("attribution")]
+        ),
+        .target(
+            name: "TealiumAutotracking",
+            dependencies: ["TealiumCore"],
+            path: "tealium/collectors/autotracking",
+            exclude: ["objc"],
+            swiftSettings: [.define("autotracking")]
+        ),
+        .target(
+            name: "TealiumAutotrackingObjC",
+            dependencies: ["TealiumAutotracking"],
+            path: "tealium/collectors/autotracking/objc/"
         ),
         .target(
             name: "TealiumCollect",

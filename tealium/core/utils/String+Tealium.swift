@@ -19,11 +19,12 @@ public extension String {
     ///
     /// - Returns: `Bool` `true` if URL is a valid web address
     var isValidUrl: Bool {
+        // swiftlint:disable line_length
         let urlRegexPattern = "^(https?://)?((www\\.)?([-a-zA-Z0-9]{1,63}\\.)*?[a-zA-Z0-9][-a-zA-Z0-9]{0,61}[a-zA-Z0-9]\\.[a-z]{2,6}|(([0-9]{1,3}\\.){3}[0-9]{1,3}))(:[0-9]{1,5})?(/[-\\w@\\+\\.~#\\?&/=%]*)?$"
+        // swiftlint:enable line_length
         guard let validURLRegex = try? NSRegularExpression(pattern: urlRegexPattern, options: []) else {
             return false
         }
         return validURLRegex.rangeOfFirstMatch(in: self, options: [], range: NSRange(self.startIndex..., in: self)).location != NSNotFound
     }
 }
-

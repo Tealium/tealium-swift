@@ -60,7 +60,7 @@ public class RemoteCommandsModule: Dispatcher {
         }
     }
     /// Allows Remote Commands to be added from the TealiumConfig object.
-    ///￼
+    /// ￼
     /// - Parameter config: `TealiumConfig` object containing Remote Commands
     private func addCommands(from config: TealiumConfig) {
         if let commands = config.remoteCommands {
@@ -71,7 +71,7 @@ public class RemoteCommandsModule: Dispatcher {
     }
 
     /// Identifies if any built-in Remote Commands should be disabled.
-    ///￼
+    /// ￼
     /// - Parameter config: `TealiumConfig` object containing flags indicating which built-in commands should be disabled.
     func updateReservedCommands(config: TealiumConfig) {
         guard reservedCommandsAdded == false else {

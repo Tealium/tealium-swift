@@ -17,7 +17,7 @@ public class RemoteHTTPCommand: RemoteCommand {
     class func create(with delegate: ModuleDelegate?, urlSession: URLSessionProtocol) -> RemoteCommandProtocol {
         weak var delegate = delegate
         return RemoteHTTPCommand(commandId: RemoteCommandsKey.commandId,
-                             description: "For processing tag-triggered HTTP requests") { response in
+                                 description: "For processing tag-triggered HTTP requests") { response in
             guard let response = response as? RemoteCommandResponse else {
                 return
             }
@@ -50,7 +50,7 @@ public class RemoteHTTPCommand: RemoteCommand {
     }
 
     /// Forms a URLRequest from a dictionary payload containing predetermined config keys
-    ///￼
+    /// ￼
     /// - Parameter payload: [String: Any] payload representing a set of key-value pairs to be sent with the URLRequest
     /// - Returns: `(URLRequest?, Error?)`
     class func httpRequest(from payload: [String: Any]) -> (request: URLRequest?, error: Error?) {
@@ -84,15 +84,17 @@ public class RemoteHTTPCommand: RemoteCommand {
     }
 
     /// Returns sorted queryItems from a dictionary.
-    ///￼
+    /// ￼
     /// - Parameter dictionary: `[String:Any]`
     /// - Returns: Sorted `[URLQueryItem]` array by dictionary keys
     class func queryItems(from dictionary: [String: Any]) -> [URLQueryItem] {
         var queryItems = [URLQueryItem]()
         dictionary.keys.sorted().forEach {
-            let value = String(describing: dictionary[$0]!)
-            let queryItem = URLQueryItem(name: $0, value: value)
-            queryItems.append(queryItem)
+            if let dictionaryValue = dictionary[$0] {
+                let value = String(describing: dictionaryValue)
+                let queryItem = URLQueryItem(name: $0, value: value)
+                queryItems.append(queryItem)
+            }
         }
         return queryItems
     }

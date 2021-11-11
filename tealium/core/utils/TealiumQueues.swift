@@ -20,4 +20,12 @@ public class TealiumQueues {
                                                             attributes: [],
                                                             autoreleaseFrequency: .inherit,
                                                             target: .global(qos: .utility))
+
+    public static func secureMainThreadExecution(of work: @escaping () -> Void) {
+        if Thread.isMainThread {
+            work()
+        } else {
+            TealiumQueues.mainQueue.async(execute: work)
+        }
+    }
 }

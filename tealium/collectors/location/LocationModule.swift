@@ -48,17 +48,12 @@ public class LocationModule: Collector {
         self.config = context.config
         self.delegate = delegate
 
-        if Thread.isMainThread {
-            tealiumLocationManager = TealiumLocationManager(config: self.config, locationDelegate: self)
-        } else {
-            TealiumQueues.mainQueue.async { [weak self] in
-                guard let self = self else {
-                    return
-                }
-                self.tealiumLocationManager = TealiumLocationManager(config: self.config, locationDelegate: self)
+        TealiumQueues.secureMainThreadExecution { [weak self] in
+            guard let self = self else {
+                return
             }
+            self.tealiumLocationManager = TealiumLocationManager(config: self.config, locationDelegate: self)
         }
-
     }
 
     /// Removes all geofences that are currently being monitored from the Location Client

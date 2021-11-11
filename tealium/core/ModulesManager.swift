@@ -267,7 +267,7 @@ public class ModulesManager {
             addDispatchValidator(hostedDataLayer)
         }
     }
-    
+
     func setupTimedEventScheduler() {
         let timedEventScheduler = TimedEventScheduler(context: self.context)
         self.addDispatchValidator(timedEventScheduler)

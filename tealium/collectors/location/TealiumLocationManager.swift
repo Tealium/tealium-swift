@@ -18,16 +18,19 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     var logger: TealiumLoggerProtocol? {
         config.logger
     }
-    
+
     var geofenceTrackingEnabled: Bool {
         config.geofenceTrackingEnabled && !geofences.isEmpty
     }
-    
+
     var locationManager: LocationManagerProtocol
     var geofences = [Geofence]()
     weak var locationDelegate: LocationDelegate?
     public var locationAccuracy: String = LocationKey.highAccuracy
     private var _lastLocation: CLLocation?
+
+    @ToAnyObservable(TealiumReplaySubject())
+    var onReady: TealiumObservable<Void>
 
     init(config: TealiumConfig,
          bundle: Bundle = Bundle.main,
@@ -40,15 +43,11 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
 
         super.init()
 
-        if let locationConfig = config.initializeGeofenceDataFrom {
-            switch locationConfig {
-            case .localFile(let file):
-                geofences = GeofenceData(file: file, bundle: bundle, logger: config.logger)?.geofences ?? [Geofence]()
-            case .customUrl(let url):
-                geofences = GeofenceData(url: url, logger: config.logger)?.geofences ?? [Geofence]()
-            default:
-                geofences = GeofenceData(url: geofencesUrl, logger: config.logger)?.geofences ?? [Geofence]()
-            }
+        let provider = GeofenceProvider(config: config, bundle: bundle)
+        provider.getGeofencesAsync { [weak self] geofences in
+            guard let self = self else { return }
+            self.geofences = geofences
+            self._onReady.publish()
         }
 
         self.locationManager.distanceFilter = config.updateDistance
@@ -56,11 +55,6 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
         self.locationManager.desiredAccuracy = CLLocationAccuracy(config.desiredAccuracy)
 
         clearMonitoredGeofences()
-    }
-
-    /// Builds a URL from a Tealium config pointing to a hosted JSON file on the Tealium DLE
-    var geofencesUrl: String {
-        return "\(LocationKey.dleBaseUrl)\(config.account)/\(config.profile)/\(LocationKey.fileName).json"
     }
 
     /// - Returns: `Bool` Whether or not the user has authorized location tracking/updates
@@ -104,7 +98,7 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
             locationManager.requestWhenInUseAuthorization()
         }
     }
-    
+
     /// Prompts the user to enable permission for location servies
     public func requestWhenInUseAuthorization() {
         let authorizationStatus = type(of: locationManager).self.authorizationStatus()
@@ -138,18 +132,23 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     /// Enables regular updates of location data through the location client
     /// Update frequency is dependant on config.useHighAccuracy, a parameter passed on initialization of this class.
     public func startLocationUpdates() {
-        guard isAuthorized else {
-            logInfo(message: "🌎🌎 Location Updates Service Not Enabled 🌎🌎")
-            return
+        onReady.subscribeOnce { [weak self] in
+            guard let self = self else {
+                return
+            }
+            guard self.isAuthorized else {
+                self.logInfo(message: "🌎🌎 Location Updates Service Not Enabled 🌎🌎")
+                return
+            }
+            guard !self.config.useHighAccuracy,
+                  CLLocationManager.significantLocationChangeMonitoringAvailable() else {
+                self.locationManager.startUpdatingLocation()
+                self.logInfo(message: "🌎🌎 Starting Location Updates With Frequent Monitoring 🌎🌎")
+                return
+            }
+            self.locationManager.startMonitoringSignificantLocationChanges()
+            self.logInfo(message: "🌎🌎 Starting Location Updates With Significant Location Changes Only 🌎🌎")
         }
-        guard !config.useHighAccuracy,
-              CLLocationManager.significantLocationChangeMonitoringAvailable() else {
-            locationManager.startUpdatingLocation()
-            logInfo(message: "🌎🌎 Starting Location Updates With Frequent Monitoring 🌎🌎")
-            return
-        }
-        locationManager.startMonitoringSignificantLocationChanges()
-        logInfo(message: "🌎🌎 Starting Location Updates With Significant Location Changes Only 🌎🌎")
     }
 
     /// Stops the updating of location data through the location client.
@@ -170,8 +169,8 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let lastLocation = locations.last {
             self.lastLocation = lastLocation
+            logInfo(message: "🌎🌎 Location updated: \(String(describing: lastLocation.coordinate)) 🌎🌎")
         }
-        logInfo(message: "🌎🌎 Location updated: \(String(describing: lastLocation?.coordinate)) 🌎🌎")
         geofences.regions.forEach {
             let geofenceLocation = CLLocation(latitude: $0.center.latitude, longitude: $0.center.longitude)
 
@@ -239,12 +238,12 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
         guard geofenceTrackingEnabled else {
             return
         }
-        
+
         // Check we are actively monitoring for this geofence and it didn't come from another SDK
         guard isMonitoredByModule(region: region) else {
             return
         }
-        
+
         var data = [String: Any]()
         data[LocationKey.geofenceName] = "\(region.identifier)"
         data[LocationKey.geofenceTransition] = "\(triggeredTransition)"
@@ -337,23 +336,23 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
 
     /// Removes all geofences that are currently being monitored from the Location Client
     public func clearMonitoredGeofences() {
-        
+
         locationManager.monitoredRegions.forEach { region in
             // Check we are actively monitoring for this geofence and it didn't come from another SDK
             guard isMonitoredByModule(region: region) else {
                 return
             }
-            
+
             locationManager.stopMonitoring(for: region)
         }
     }
-    
+
     /// Checks if a region is currently being monitored
     func isMonitoredByModule(region: CLRegion) -> Bool {
         guard let createdGeofences = createdGeofences else {
             return false
         }
-        return createdGeofences.contains(where: {$0 == region.identifier})
+        return createdGeofences.contains(where: { $0 == region.identifier })
     }
 
     /// Stops location updates, Removes all active geofences from being monitored,

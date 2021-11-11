@@ -21,14 +21,14 @@ public protocol MediaSessionProtocol: MediaSessionEvents {
 }
 
 public class MediaSession: MediaSessionProtocol {
-    
+
     public var mediaService: MediaEventDispatcher?
     public var backgroundStatusResumed = false
-    
+
     public init(with mediaService: MediaEventDispatcher?) {
         self.mediaService = mediaService
     }
-    
+
     /// QoE bitrate
     /// Sends a `bitrateChange` event when updated
     public var bitrate: Int? {
@@ -40,19 +40,19 @@ public class MediaSession: MediaSessionProtocol {
             }
         }
     }
-    
+
     /// QoE droppedFrames
     public var droppedFrames: Int {
         get { mediaService?.media.qoe.droppedFrames ?? 0 }
         set { mediaService?.media.qoe.droppedFrames = newValue }
     }
-    
+
     /// QoE playbackSpeed
     public var playbackSpeed: Double {
         get { mediaService?.media.qoe.playbackSpeed ?? 1.0 }
         set { mediaService?.media.qoe.playbackSpeed = newValue }
     }
-    
+
     /// QoE playerState
     /// Sends a `playerStateStart` and `playerStateEnd` event when updated
     public var playerState: PlayerState? {
@@ -68,12 +68,12 @@ public class MediaSession: MediaSessionProtocol {
             }
         }
     }
-    
+
     public func resumeSession() {
         backgroundStatusResumed = true
         mediaService?.track(.event(.sessionResume))
     }
-    
+
     public func startSession() {
         guard !backgroundStatusResumed else {
             resumeSession()
@@ -81,11 +81,11 @@ public class MediaSession: MediaSessionProtocol {
         }
         mediaService?.track(.event(.sessionStart))
     }
-    
+
     public func play() {
         mediaService?.track(.event(.play))
     }
-    
+
     public func startChapter(_ chapter: Chapter) {
         mediaService?.media.add(.chapter(chapter))
         mediaService?.track(
@@ -93,7 +93,7 @@ public class MediaSession: MediaSessionProtocol {
             .chapter(chapter)
         )
     }
-    
+
     public func skipChapter() {
         guard let chapter = mediaService?.media.chapters.last else {
             return
@@ -103,7 +103,7 @@ public class MediaSession: MediaSessionProtocol {
             .chapter(chapter)
         )
     }
-    
+
     public func endChapter() {
         guard var chapter = mediaService?.media.chapters.last else {
             return
@@ -116,23 +116,23 @@ public class MediaSession: MediaSessionProtocol {
             .chapter(chapter)
         )
     }
-    
+
     public func startBuffer() {
         mediaService?.track(.event(.bufferStart))
     }
-    
+
     public func endBuffer() {
         mediaService?.track(.event(.bufferEnd))
     }
-    
+
     public func startSeek(at position: Double? = nil) {
         mediaService?.track(.event(.seekStart))
     }
-    
+
     public func endSeek(at position: Double? = nil) {
         mediaService?.track(.event(.seekEnd))
     }
-    
+
     public func startAdBreak(_ adBreak: AdBreak) {
         mediaService?.media.add(.adBreak(adBreak))
         mediaService?.track(
@@ -140,7 +140,7 @@ public class MediaSession: MediaSessionProtocol {
             .adBreak(adBreak)
         )
     }
-    
+
     /// Sends `adBreakEnd` event and calculates duration of the adBreak
     public func endAdBreak() {
         guard var adBreak = mediaService?.media.adBreaks.last else {
@@ -154,7 +154,7 @@ public class MediaSession: MediaSessionProtocol {
             .adBreak(adBreak)
         )
     }
-    
+    // swiftlint:disable identifier_name
     public func startAd(_ ad: Ad) {
         mediaService?.media.add(.ad(ad))
         mediaService?.track(
@@ -162,7 +162,7 @@ public class MediaSession: MediaSessionProtocol {
             .ad(ad)
         )
     }
-    
+
     public func clickAd() {
         guard let ad = mediaService?.media.ads.last else {
             return
@@ -172,7 +172,7 @@ public class MediaSession: MediaSessionProtocol {
             .ad(ad)
         )
     }
-    
+
     public func skipAd() {
         guard let ad = mediaService?.media.ads.last else {
             return
@@ -182,7 +182,7 @@ public class MediaSession: MediaSessionProtocol {
             .ad(ad)
         )
     }
-    
+
     /// Sends `adEnd` event and calculates duration of the ad
     public func endAd() {
         guard var ad = mediaService?.media.ads.last else {
@@ -196,25 +196,26 @@ public class MediaSession: MediaSessionProtocol {
             .ad(ad)
         )
     }
-    
+    // swiftlint:enable identifier_name
+
     /// Sends a custom media event
     public func custom(_ event: String) {
         mediaService?.track(.custom(event))
     }
-    
+
     public func pause() {
         mediaService?.track(.event(.pause))
     }
-    
+
     /// Sends an event signaling that the content has played until the end
     public func endContent() {
         mediaService?.track(.event(.contentEnd))
     }
-    
+
     public func endSession() {
         mediaService?.track(.event(.sessionEnd))
     }
-    
+
     /// Calculates the duration of the content, in seconds
     public func calculate(duration: Date?) -> Double? {
         guard let duration = duration else {
@@ -225,25 +226,24 @@ public class MediaSession: MediaSessionProtocol {
                                                          to: Date())
         return Double(calculated.second ?? 0)
     }
-    
+
     public func sendMilestone(_ milestone: Milestone) {
         fatal(from: "\(#function)")
     }
-    
+
     public func ping() {
         fatal(from: "\(#function)")
     }
-    
+
     public func stopPing() {
         fatal(from: "\(#function)")
     }
-    
+
     public func setSummaryInfo() {
         fatal(from: "\(#function)")
     }
-    
+
     private func fatal(from function: String) {
         fatalError("\(function) must be overriden in order to use")
     }
 }
-

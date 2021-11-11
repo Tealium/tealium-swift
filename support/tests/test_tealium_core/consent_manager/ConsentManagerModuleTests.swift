@@ -26,7 +26,6 @@ class ConsentManagerModuleTests: XCTestCase {
 
     override func setUp() {
         config = TealiumConfig(account: "testAccount", profile: "testProfile", environment: "testEnvironment")
-        config.appDelegateProxyEnabled = false
         config.consentPolicy = .gdpr
     }
 
