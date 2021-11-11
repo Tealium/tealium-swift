@@ -25,6 +25,15 @@ public extension Collectors {
     static let Location = LocationModule.self
 }
 
+extension TealiumConfigKey {
+    static let desiredAccuracy = "desired_accuracy"
+    static let updateDistance = "update_distance"
+    static let useHighAccuracy = "is_high_accuracy"
+    static let geofenceAssetName = "geofence_asset_name"
+    static let geofenceJsonUrl = "geofence_json_url"
+    static let geofenceTrackingEnabled = "geofence_tracking_enabled"
+}
+
 public extension TealiumConfig {
 
     /// The desired accuracy of the user's location collection
@@ -33,11 +42,11 @@ public extension TealiumConfig {
     /// Usage: `config.desiredAccuracy = .high`
     var desiredAccuracy: LocationAccuracy {
         get {
-            options[LocationConfigKey.desiredAccuracy] as? LocationAccuracy ?? .reduced
+            options[TealiumConfigKey.desiredAccuracy] as? LocationAccuracy ?? .reduced
         }
 
         set {
-            options[LocationConfigKey.desiredAccuracy] = newValue
+            options[TealiumConfigKey.desiredAccuracy] = newValue
         }
     }
 
@@ -47,11 +56,11 @@ public extension TealiumConfig {
     /// Usage: `config.updateDistance = 100.0`
     var updateDistance: Double {
         get {
-            options[LocationConfigKey.updateDistance] as? Double ?? 500.0
+            options[TealiumConfigKey.updateDistance] as? Double ?? 500.0
         }
 
         set {
-            options[LocationConfigKey.updateDistance] = newValue
+            options[TealiumConfigKey.updateDistance] = newValue
         }
     }
 
@@ -61,11 +70,11 @@ public extension TealiumConfig {
     /// Usage: `config.geofenceFileName = "geofences"`
     var geofenceFileName: String? {
         get {
-            options[LocationConfigKey.geofenceAssetName] as? String
+            options[TealiumConfigKey.geofenceAssetName] as? String
         }
 
         set {
-            options[LocationConfigKey.geofenceAssetName] = newValue
+            options[TealiumConfigKey.geofenceAssetName] = newValue
         }
     }
 
@@ -75,11 +84,11 @@ public extension TealiumConfig {
     /// Usage: `config.geofenceUrl = "https://yourserver.com/location/geofences.json"`
     var geofenceUrl: String? {
         get {
-            options[LocationConfigKey.geofenceJsonUrl] as? String
+            options[TealiumConfigKey.geofenceJsonUrl] as? String
         }
 
         set {
-            options[LocationConfigKey.geofenceJsonUrl] = newValue
+            options[TealiumConfigKey.geofenceJsonUrl] = newValue
         }
     }
 
@@ -89,10 +98,10 @@ public extension TealiumConfig {
     /// Usage: `config.geofenceTrackingEnabled = false`
     var geofenceTrackingEnabled: Bool {
         get {
-            options[LocationConfigKey.geofenceTrackingEnabled] as? Bool ?? true
+            options[TealiumConfigKey.geofenceTrackingEnabled] as? Bool ?? true
         }
         set {
-            options[LocationConfigKey.geofenceTrackingEnabled] = newValue
+            options[TealiumConfigKey.geofenceTrackingEnabled] = newValue
         }
     }
 
@@ -116,10 +125,10 @@ public extension TealiumConfig {
     /// Usage: `config.useHighAccuracy = true`
     var useHighAccuracy: Bool {
         get {
-            options[LocationConfigKey.useHighAccuracy] as? Bool ?? geofenceTrackingEnabled
+            options[TealiumConfigKey.useHighAccuracy] as? Bool ?? geofenceTrackingEnabled
         }
         set {
-            options[LocationConfigKey.useHighAccuracy] = newValue
+            options[TealiumConfigKey.useHighAccuracy] = newValue
         }
     }
 

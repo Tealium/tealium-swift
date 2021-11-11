@@ -18,11 +18,11 @@ public extension TealiumConfig {
     /// Sets the logger type. Defaults to os_log on iOS 10+
     var loggerType: TealiumLoggerType {
         get {
-            options[TealiumKey.loggerType] as? TealiumLoggerType ?? TealiumValue.defaultLoggerType
+            options[TealiumConfigKey.loggerType] as? TealiumLoggerType ?? TealiumValue.defaultLoggerType
         }
 
         set {
-            options[TealiumKey.loggerType] = newValue
+            options[TealiumConfigKey.loggerType] = newValue
             logger = getNewLogger()
         }
     }
@@ -30,11 +30,11 @@ public extension TealiumConfig {
     /// Sets the log level
     var logLevel: TealiumLogLevel? {
         get {
-            options[TealiumKey.logLevel] as? TealiumLogLevel
+            options[TealiumConfigKey.logLevel] as? TealiumLogLevel
         }
 
         set {
-            options[TealiumKey.logLevel] = newValue
+            options[TealiumConfigKey.logLevel] = newValue
         }
     }
 

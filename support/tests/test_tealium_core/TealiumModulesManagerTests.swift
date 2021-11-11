@@ -332,6 +332,28 @@ class TealiumModulesManagerTests: XCTestCase {
         XCTAssertNotNil(data["migrated_lifecycle"] as! [String: Any])
         XCTAssertEqual(data["consent_status"] as! Int, 1)
     }
+    
+    func testAllTrackData() {
+        let modulesManager = self.modulesManager
+        modulesManager.collectors = []
+        modulesManager.dataLayerManager = DummyDataManager()
+        let collector = DummyCollector(context: modulesManager.context, delegate: self, diskStorage: nil) { _, _  in
+        }
+        modulesManager.addCollector(collector)
+        let data = modulesManager.allTrackData(retreiveCachedData: false)
+        XCTAssertNotNil(data["enabled_modules"]!)
+        XCTAssertNotNil(data["dummy"])
+        XCTAssertNotNil(data["dummyQueue"])
+        XCTAssertNotNil(data["sessionData"])
+        
+        let cachedData = modulesManager.allTrackData(retreiveCachedData: true)
+        XCTAssertTrue(data.equal(to: cachedData))
+        
+        modulesManager.sendTrack(TealiumTrackRequest(data: ["tealium_event": "someValue"]))
+        
+        let newCachedData = modulesManager.allTrackData(retreiveCachedData: true)
+        XCTAssertEqual(newCachedData["tealium_event"] as? String, "someValue")
+    }
 
 }
 
@@ -351,6 +373,7 @@ extension TealiumModulesManagerTests: ModuleDelegate {
 }
 
 class DummyDispatchManagerRequestTrack: DispatchManagerProtocol {
+    
     var dispatchers: [Dispatcher]?
 
     var dispatchListeners: [DispatchListener]?
@@ -379,6 +402,9 @@ class DummyDispatchManagerRequestTrack: DispatchManagerProtocol {
     }
 
     func handleDequeueRequest(reason: String) {
+    }
+    func checkShouldQueue(request: inout TealiumTrackRequest) -> Bool {
+        return true
     }
 
 }
@@ -413,6 +439,9 @@ class DummyDispatchManagerSendTrack: DispatchManagerProtocol {
 
     func handleDequeueRequest(reason: String) {
 
+    }
+    func checkShouldQueue(request: inout TealiumTrackRequest) -> Bool {
+        return true
     }
 
 }

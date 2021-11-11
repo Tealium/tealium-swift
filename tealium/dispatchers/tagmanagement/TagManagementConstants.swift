@@ -8,24 +8,21 @@
 #if os(iOS)
 import Foundation
 
-enum TagManagementKey {
+#if tagmanagement
+import TealiumCore
+#endif
+
+public extension TealiumDataKey {
     static let jsCommand = "js_command"
     static let jsResult = "js_result"
     static let jsError = "js_error"
-    static let moduleName = "tagmanagement"
     static let responseHeader = "response_headers"
     static let payload = "payload"
-    static let defaultUrlStringPrefix = "https://tags.tiqcdn.com/utag"
 }
 
-enum TagManagementConfigKey {
-    static let disable = "disable_tag_management"
-    static let maxQueueSize = "tagmanagement_queue_size"
-    static let overrideURL = "tagmanagement_override_url"
-    static let delegate = "delegate"
-    static let uiview = "ui_view"
-    static let processPool = "wk_process_pool"
-    static let wkConfig = "wk_config"
+enum TagManagementKey {
+    static let moduleName = "tagmanagement"
+    static let defaultUrlStringPrefix = "https://tags.tiqcdn.com/utag"
 }
 
 enum TagManagementError: String, LocalizedError {

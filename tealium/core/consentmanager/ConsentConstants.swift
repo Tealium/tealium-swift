@@ -7,17 +7,20 @@
 
 import Foundation
 
-public enum ConsentKey {
+extension TealiumDataKey {
     static let consentCategoriesKey = "consent_categories"
     static let doNotSellKey = "do_not_sell"
     static let consentStatus = "consent_status"
+    static let consentLastUpdated = "consent_last_updated"
+    static let policyKey = "policy"
+    static let consentLoggingEnabled = "consent_logging_enabled"
+}
+
+public enum ConsentKey {
     static let consentGrantedEventName = "grant_full_consent"
     static let consentDeclinedEventName = "decline_consent"
     static let consentPartialEventName = "grant_partial_consent"
     static let moduleName = "consentmanager"
-    static let consentLoggingEnabled = "consent_logging_enabled"
-    static let policyKey = "policy"
-    static let consentLastUpdated = "consent_last_updated"
     static let defaultPolicy = "gdpr"
     static let consentManagerDelegate = "consent_manager_delegate"
     static let gdprConsentCookieEventName = "update_consent_cookie"

@@ -39,9 +39,9 @@ public struct Migrator: Migratable {
             return [String: Any]()
         }
         remove(for: MigrationKey.consentConfiguration)
-        return [ConsentKey.consentStatus: unarchivedConsentConfiguration.consentStatus,
-                ConsentKey.consentCategoriesKey: unarchivedConsentConfiguration.consentCategories,
-                ConsentKey.consentLoggingEnabled: unarchivedConsentConfiguration.enableConsentLogging]
+        return [TealiumDataKey.consentStatus: unarchivedConsentConfiguration.consentStatus,
+                TealiumDataKey.consentCategoriesKey: unarchivedConsentConfiguration.consentCategories,
+                TealiumDataKey.consentLoggingEnabled: unarchivedConsentConfiguration.enableConsentLogging]
     }
 
     func extractLifecycleData(from dictionary: [String: Any]) -> [String: Any] {

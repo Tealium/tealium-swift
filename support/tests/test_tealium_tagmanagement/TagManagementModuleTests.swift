@@ -125,7 +125,7 @@ class TagManagementModuleTests: XCTestCase {
         let incomingTrack = TealiumTrackRequest(data: ["incoming": "track"])
         module = TagManagementModule(config: config, delegate: self, completion: nil)
         let result = module.prepareForDispatch(incomingTrack).trackDictionary
-        XCTAssertEqual(result[TealiumKey.dispatchService] as! String, TagManagementKey.moduleName)
+        XCTAssertEqual(result[TealiumDataKey.dispatchService] as! String, TagManagementKey.moduleName)
     }
 
 }

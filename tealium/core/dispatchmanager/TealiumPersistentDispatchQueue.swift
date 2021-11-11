@@ -74,7 +74,7 @@ class TealiumPersistentDispatchQueue {
 
         if let sinceDate = since {
             newData = newData.filter {
-                guard let timestamp = $0.trackDictionary[TealiumKey.timestampUnix] as? String else {
+                guard let timestamp = $0.trackDictionary[TealiumDataKey.timestampUnix] as? String else {
                     return true
                 }
 

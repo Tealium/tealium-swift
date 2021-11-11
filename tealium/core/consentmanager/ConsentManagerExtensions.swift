@@ -20,27 +20,32 @@ public extension Tealium {
 
 }
 
+extension TealiumConfigKey {
+    static let consentLoggingEnabled = "consent_logging_enabled"
+    static let policyKey = "policy"
+}
+
 public extension TealiumConfig {
 
     /// Determines whether consent logging events should be sent to Tealium UDH￼.
     var consentLoggingEnabled: Bool {
         get {
-            options[ConsentKey.consentLoggingEnabled] as? Bool ?? false
+            options[TealiumConfigKey.consentLoggingEnabled] as? Bool ?? false
         }
 
         set {
-            options[ConsentKey.consentLoggingEnabled] = newValue
+            options[TealiumConfigKey.consentLoggingEnabled] = newValue
         }
     }
 
     /// Sets the consent policy (defaults to GDPR)￼. e.g. CCPA
     var consentPolicy: TealiumConsentPolicy? {
         get {
-            options[ConsentKey.policyKey] as? TealiumConsentPolicy
+            options[TealiumConfigKey.policyKey] as? TealiumConsentPolicy
         }
 
         set {
-            options[ConsentKey.policyKey] = newValue
+            options[TealiumConfigKey.policyKey] = newValue
         }
     }
 

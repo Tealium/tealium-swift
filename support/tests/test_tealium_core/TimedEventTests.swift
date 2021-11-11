@@ -29,9 +29,9 @@ class TimedEventTests: XCTestCase {
         expectedKeys.forEach {
             XCTAssertNotNil(actual[$0])
         }
-        XCTAssertEqual(actual[TealiumKey.timedEventName] as! String, "mockTimedEvent")
-        XCTAssertEqual(actual[TealiumKey.eventStart] as! Int64, mockStartTime.milliseconds)
-        let duration = actual[TealiumKey.eventDuration] as! Int64
+        XCTAssertEqual(actual[TealiumDataKey.timedEventName] as! String, "mockTimedEvent")
+        XCTAssertEqual(actual[TealiumDataKey.eventStart] as! Int64, mockStartTime.milliseconds)
+        let duration = actual[TealiumDataKey.eventDuration] as! Int64
         XCTAssert(duration >= 60000)
     }
 

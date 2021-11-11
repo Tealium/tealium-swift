@@ -14,14 +14,14 @@ public extension DataLayer {
     /// - Returns: `String?` session id for the active session.
     var sessionId: String? {
         get {
-            persistentDataStorage?.removeExpired().all[TealiumKey.sessionId] as? String
+            persistentDataStorage?.removeExpired().all[TealiumDataKey.sessionId] as? String
         }
         set {
             if let newValue = newValue {
                 // SessionId is formally part of the session data. It should have a session expiry,
                 // But we need a way to know when this actually expires, so we need to change it to a custom date
                 // And make it expire after the default time, while also refreshing its duration on each track call.
-                add(data: [TealiumKey.sessionId: newValue], expiry: .afterCustom((.minutes, TealiumValue.defaultMinutesBetweenSession)))
+                add(data: [TealiumDataKey.sessionId: newValue], expiry: .afterCustom((.minutes, TealiumValue.defaultMinutesBetweenSession)))
             }
         }
     }

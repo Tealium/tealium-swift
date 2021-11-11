@@ -16,22 +16,22 @@ let attributionValues = Dictionary(uniqueKeysWithValues: AppleInternalKeys.allCa
 private let mockAppleAttributionData: [String: NSObject] = ["Version3.1": attributionValues]
 
 let keyTranslation = [
-    AppleInternalKeys.attribution: AttributionKey.clickedWithin30D,
-    AppleInternalKeys.orgName: AttributionKey.orgName,
-    AppleInternalKeys.orgId: AttributionKey.orgId,
-    AppleInternalKeys.campaignId: AttributionKey.campaignId,
-    AppleInternalKeys.campaignName: AttributionKey.campaignName,
-    AppleInternalKeys.clickDate: AttributionKey.clickedDate,
-    AppleInternalKeys.purchaseDate: AttributionKey.purchaseDate,
-    AppleInternalKeys.conversionDate: AttributionKey.conversionDate,
-    AppleInternalKeys.conversionType: AttributionKey.conversionType,
-    AppleInternalKeys.adGroupId: AttributionKey.adGroupId,
-    AppleInternalKeys.adGroupName: AttributionKey.adGroupName,
-    AppleInternalKeys.keyword: AttributionKey.adKeyword,
-    AppleInternalKeys.keywordMatchType: AttributionKey.adKeywordMatchType,
-    AppleInternalKeys.creativeSetId: AttributionKey.creativeSetId,
-    AppleInternalKeys.creativeSetName: AttributionKey.creativeSetName,
-    AppleInternalKeys.region: AttributionKey.region
+    AppleInternalKeys.attribution: TealiumDataKey.adClickedWithin30D,
+    AppleInternalKeys.orgName: TealiumDataKey.adOrgName,
+    AppleInternalKeys.orgId: TealiumDataKey.adOrgId,
+    AppleInternalKeys.campaignId: TealiumDataKey.adCampaignId,
+    AppleInternalKeys.campaignName: TealiumDataKey.adCampaignName,
+    AppleInternalKeys.clickDate: TealiumDataKey.adClickedDate,
+    AppleInternalKeys.purchaseDate: TealiumDataKey.adPurchaseDate,
+    AppleInternalKeys.conversionDate: TealiumDataKey.adConversionDate,
+    AppleInternalKeys.conversionType: TealiumDataKey.adConversionType,
+    AppleInternalKeys.adGroupId: TealiumDataKey.adGroupId,
+    AppleInternalKeys.adGroupName: TealiumDataKey.adGroupName,
+    AppleInternalKeys.keyword: TealiumDataKey.adKeyword,
+    AppleInternalKeys.keywordMatchType: TealiumDataKey.adKeywordMatchType,
+    AppleInternalKeys.creativeSetId: TealiumDataKey.adCreativeSetId,
+    AppleInternalKeys.creativeSetName: TealiumDataKey.adCreativeSetName,
+    AppleInternalKeys.region: TealiumDataKey.adRegion
 ]
 
 class TealiumAttributionDataTests: XCTestCase {
@@ -51,24 +51,24 @@ class TealiumAttributionDataTests: XCTestCase {
     func testVolatileData() {
         let attributionData = createAttributionData()
         let volatile = attributionData.volatileData
-        XCTAssertEqual(volatile[AttributionKey.idfa] as! String, TealiumTestValue.testIDFAString, "IDFA values were unexpectedly different")
-        XCTAssertEqual(volatile[AttributionKey.idfv] as! String, TealiumTestValue.testIDFVString, "IDFV values were unexpectedly different")
-        XCTAssertEqual(volatile[AttributionKey.isTrackingAllowed] as! String, "true", "isTrackingAllowed values were unexpectedly different")
+        XCTAssertEqual(volatile[TealiumDataKey.idfa] as! String, TealiumTestValue.testIDFAString, "IDFA values were unexpectedly different")
+        XCTAssertEqual(volatile[TealiumDataKey.idfv] as! String, TealiumTestValue.testIDFVString, "IDFV values were unexpectedly different")
+        XCTAssertEqual(volatile[TealiumDataKey.isTrackingAllowed] as! String, "true", "isTrackingAllowed values were unexpectedly different")
 
-        XCTAssertEqual(volatile[AttributionKey.trackingAuthorization] as! String, "authorized", "trackingAuthorization values were unexpectedly different")
+        XCTAssertEqual(volatile[TealiumDataKey.trackingAuthorization] as! String, "authorized", "trackingAuthorization values were unexpectedly different")
     }
 
     func testAllAttributionData() {
         defaultConfig.searchAdsEnabled = true
         let attributionData = createAttributionData(from: defaultConfig)
         let allData = attributionData.allAttributionData
-        XCTAssertNotNil(allData[AttributionKey.clickedDate])
-        XCTAssertNotNil(allData[AttributionKey.idfa])
-        XCTAssertNotNil(allData[AttributionKey.idfv])
-        XCTAssertNotNil(allData[AttributionKey.orgName])
-        XCTAssertNotNil(allData[AttributionKey.trackingAuthorization])
-        XCTAssertNotNil(allData[AttributionKey.campaignName])
-        XCTAssertNotNil(allData[AttributionKey.creativeSetName])
+        XCTAssertNotNil(allData[TealiumDataKey.adClickedDate])
+        XCTAssertNotNil(allData[TealiumDataKey.idfa])
+        XCTAssertNotNil(allData[TealiumDataKey.idfv])
+        XCTAssertNotNil(allData[TealiumDataKey.adOrgName])
+        XCTAssertNotNil(allData[TealiumDataKey.trackingAuthorization])
+        XCTAssertNotNil(allData[TealiumDataKey.adCampaignName])
+        XCTAssertNotNil(allData[TealiumDataKey.adCreativeSetName])
     }
 
     func testSetPersistentAppDataWhenSearchAdsEnalbed() {
@@ -95,9 +95,9 @@ class TealiumAttributionDataTests: XCTestCase {
     func testIDFAAdTrackingReset() {
         let identifierManager = TealiumASIdentifierManagerAdTrackingEnabled()
         let attributionData = createAttributionData(from: defaultConfig, idManager: identifierManager)
-        XCTAssertEqual(attributionData.allAttributionData[AttributionKey.idfa] as! String, TealiumTestValue.testIDFAString, "IDFA values were unexpectedly different")
+        XCTAssertEqual(attributionData.allAttributionData[TealiumDataKey.idfa] as! String, TealiumTestValue.testIDFAString, "IDFA values were unexpectedly different")
         identifierManager.advertisingIdentifier = TealiumTestValue.testIDFAResetString
-        XCTAssertEqual(attributionData.allAttributionData[AttributionKey.idfa] as! String, TealiumTestValue.testIDFAResetString, "IDFA values were unexpectedly different")
+        XCTAssertEqual(attributionData.allAttributionData[TealiumDataKey.idfa] as! String, TealiumTestValue.testIDFAResetString, "IDFA values were unexpectedly different")
     }
 
     func testIDFAAdTrackingDisabled() {
@@ -208,9 +208,9 @@ class TealiumAttributionDataTests: XCTestCase {
     func testTrackingAuthorizationStatusChanged() {
         let identifierManager = TealiumASIdentifierManagerAdTrackingChangable(enabled: false)
         let attributionData = createAttributionData(from: defaultConfig, idManager: identifierManager)
-        XCTAssertEqual("denied", attributionData.allAttributionData[AttributionKey.trackingAuthorization] as! String, "Tracking Authorization Status was an unexpected value")
+        XCTAssertEqual("denied", attributionData.allAttributionData[TealiumDataKey.trackingAuthorization] as! String, "Tracking Authorization Status was an unexpected value")
         identifierManager.select(enabled: true)
-        XCTAssertEqual("authorized", attributionData.allAttributionData[AttributionKey.trackingAuthorization] as! String, "Tracking Authorization Status was an unexpected value")
+        XCTAssertEqual("authorized", attributionData.allAttributionData[TealiumDataKey.trackingAuthorization] as! String, "Tracking Authorization Status was an unexpected value")
     }
 
 }

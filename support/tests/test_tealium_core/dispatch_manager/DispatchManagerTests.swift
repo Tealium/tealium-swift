@@ -181,7 +181,7 @@ class DispatchQueueModuleTests: XCTestCase {
             ConsentManagerModule(context: context, delegate: nil, diskStorage: DispatchQueueMockDiskStorage(), completion: { _ in })
             ]
         let dispatchManager = DispatchManager(dispatchers: nil, dispatchValidators: dispatchValidators, dispatchListeners: nil, connectivityManager: DispatchQueueModuleTests.connectivity, config: config)
-        var request = TealiumTrackRequest(data: [TealiumKey.event: "testEvent"])
+        var request = TealiumTrackRequest(data: [TealiumDataKey.event: "testEvent"])
         _ = dispatchManager.checkShouldQueue(request: &request)
         let trackInfo = request.trackDictionary
         XCTAssertNotNil(trackInfo["customConsentCategories"] as? [TealiumConsentCategories])

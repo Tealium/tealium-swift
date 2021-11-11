@@ -13,13 +13,13 @@ public struct PersistentAppData: Codable {
     public var uuid: String
 
     public var dictionary: [String: Any] {
-        [TealiumKey.uuid: uuid,
-         TealiumKey.visitorId: visitorId]
+        [TealiumDataKey.uuid: uuid,
+         TealiumDataKey.visitorId: visitorId]
     }
 
     public static func new(from existingData: [String: Any]) -> PersistentAppData? {
-        guard let uuid = existingData[TealiumKey.uuid] as? String,
-              let visitorId = existingData[TealiumKey.visitorId] as? String else {
+        guard let uuid = existingData[TealiumDataKey.uuid] as? String,
+              let visitorId = existingData[TealiumDataKey.visitorId] as? String else {
             return nil
         }
         return PersistentAppData(visitorId: visitorId, uuid: uuid)

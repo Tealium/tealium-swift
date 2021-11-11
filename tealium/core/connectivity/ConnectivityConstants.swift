@@ -19,6 +19,4 @@ enum ConnectivityKey {
     static let connectionTypeWired = "wired"
     static let connectionTypeCell = "cellular"
     static let connectionTypeNone = "none"
-    static let refreshIntervalKey = "refresh_interval"
-    static let refreshEnabledKey = "refresh_enabled"
 }

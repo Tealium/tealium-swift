@@ -10,12 +10,10 @@ import Foundation
 import TealiumCore
 #endif
 
-public enum LifecycleKey {
 
-    static let moduleName = "lifecycle"
+public extension TealiumDataKey {
     static let migratedLifecycle = "migrated_lifecycle"
-    static let defaultSessionsSize = 20
-    static let autotracked = "autotracked"
+    static let lifecycleAutotracked = "autotracked"
     static let dayOfWeek = "lifecycle_dayofweek_local"
     static let daysSinceFirstLaunch = "lifecycle_dayssincelaunch"
     static let daysSinceLastUpdate = "lifecycle_dayssinceupdate"
@@ -36,7 +34,7 @@ public enum LifecycleKey {
     static let priorSecondsAwake = "lifecycle_priorsecondsawake"
     static let secondsAwake = "lifecycle_secondsawake"
     static let sleepCount = "lifecycle_sleepcount"
-    static let type = "lifecycle_type"
+    static let lifecycleType = "lifecycle_type"
     static let totalCrashCount = "lifecycle_totalcrashcount"
     static let totalLaunchCount = "lifecycle_totallaunchcount"
     static let totalWakeCount = "lifecycle_totalwakecount"
@@ -45,6 +43,13 @@ public enum LifecycleKey {
     static let updateLaunchDate = "lifecycle_updatelaunchdate"
     static let wakeCount = "lifecycle_wakecount"
 
+}
+
+public enum LifecycleKey {
+
+    static let moduleName = "lifecycle"
+    static let defaultSessionsSize = 20
+    
     enum Session {
         static let wakeDate = "wake"
         static let sleepDate = "sleep"

@@ -65,13 +65,32 @@ class ConsentManagerModuleTests: XCTestCase {
             ConsentKey.consentPartialEventName,
             ConsentKey.consentGrantedEventName,
             ConsentKey.consentDeclinedEventName,
-            ConsentKey.gdprConsentCookieEventName
+            ConsentKey.gdprConsentCookieEventName,
+            ConsentKey.ccpaCookieEventName
         ]
         auditingEvents.forEach {
-            track = TealiumTrackRequest(data: [TealiumKey.event: $0])
+            track = TealiumTrackRequest(data: [TealiumDataKey.event: $0])
             let queue = module.shouldQueue(request: track)
             XCTAssertFalse(queue.0)
-            XCTAssertNil(queue.1)
+            XCTAssertNotNil(queue.1)
+        }
+    }
+    
+    func testShouldQueueAddsConsentStatusAndCategory() {
+        let auditingEvents = [
+            ConsentKey.consentPartialEventName,
+            ConsentKey.consentGrantedEventName,
+            ConsentKey.consentDeclinedEventName,
+            ConsentKey.gdprConsentCookieEventName,
+            ConsentKey.ccpaCookieEventName,
+            "someEvent",
+            "someOtherEvent"
+        ]
+        auditingEvents.forEach {
+            track = TealiumTrackRequest(data: [TealiumDataKey.event: $0])
+            let queue = module.shouldQueue(request: track)
+            XCTAssertNotNil(queue.1?[TealiumDataKey.consentStatus])
+            XCTAssertNotNil(queue.1?[TealiumDataKey.consentCategoriesKey])
         }
     }
 
@@ -194,8 +213,8 @@ class ConsentManagerModuleTests: XCTestCase {
         module.consentManager?.userConsentStatus = .consented
         let lastUpdate = module.consentManager?.lastConsentUpdate?.unixTimeMilliseconds
         let expected: [String: Any] = [
-            ConsentKey.consentStatus: "consented",
-            ConsentKey.consentCategoriesKey: ["analytics",
+            TealiumDataKey.consentStatus: "consented",
+            TealiumDataKey.consentCategoriesKey: ["analytics",
                                               "affiliates",
                                               "display_ads",
                                               "email",
@@ -211,13 +230,14 @@ class ConsentManagerModuleTests: XCTestCase {
                                               "cookiematch",
                                               "misc"],
             "test": "track",
-            ConsentKey.policyKey: "gdpr",
-            ConsentKey.consentLastUpdated: lastUpdate!
+            TealiumDataKey.policyKey: "gdpr",
+            TealiumDataKey.consentLastUpdated: lastUpdate!
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
-        var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
-        XCTAssertNotNil(trackWithConsentData[TealiumKey.requestUUID])
-        trackWithConsentData[TealiumKey.requestUUID] = nil
+        var trackWithConsentData = track.trackDictionary
+        trackWithConsentData += module.getConsentData()
+        XCTAssertNotNil(trackWithConsentData[TealiumDataKey.requestUUID])
+        trackWithConsentData[TealiumDataKey.requestUUID] = nil
         XCTAssertTrue(NSDictionary(dictionary: expected).isEqual(to: trackWithConsentData))
     }
 
@@ -227,16 +247,17 @@ class ConsentManagerModuleTests: XCTestCase {
         module.consentManager?.userConsentStatus = .notConsented
         let lastUpdate = module.consentManager?.lastConsentUpdate?.unixTimeMilliseconds
         let expected: [String: Any] = [
-            ConsentKey.consentStatus: "notConsented",
-            ConsentKey.consentCategoriesKey: [],
+            TealiumDataKey.consentStatus: "notConsented",
+            TealiumDataKey.consentCategoriesKey: [],
             "test": "track",
-            ConsentKey.policyKey: "gdpr",
-            ConsentKey.consentLastUpdated: lastUpdate!
+            TealiumDataKey.policyKey: "gdpr",
+            TealiumDataKey.consentLastUpdated: lastUpdate!
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
-        var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
-        XCTAssertNotNil(trackWithConsentData[TealiumKey.requestUUID])
-        trackWithConsentData[TealiumKey.requestUUID] = nil
+        var trackWithConsentData = track.trackDictionary
+        trackWithConsentData += module.getConsentData()
+        XCTAssertNotNil(trackWithConsentData[TealiumDataKey.requestUUID])
+        trackWithConsentData[TealiumDataKey.requestUUID] = nil
         XCTAssertTrue(NSDictionary(dictionary: expected).isEqual(to: trackWithConsentData))
     }
 
@@ -247,24 +268,25 @@ class ConsentManagerModuleTests: XCTestCase {
         module.consentManager?.resetUserConsentPreferences()
         let lastUpdate = module.consentManager?.lastConsentUpdate?.unixTimeMilliseconds
         let expected: [String: Any] = [
-            ConsentKey.consentStatus: TealiumValue.unknown,
-            ConsentKey.consentCategoriesKey: [],
+            TealiumDataKey.consentStatus: TealiumValue.unknown,
+            TealiumDataKey.consentCategoriesKey: [],
             "test": "track",
-            ConsentKey.policyKey: "gdpr",
-            ConsentKey.consentLastUpdated: lastUpdate!
+            TealiumDataKey.policyKey: "gdpr",
+            TealiumDataKey.consentLastUpdated: lastUpdate!
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
-        var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
-        XCTAssertNotNil(trackWithConsentData[TealiumKey.requestUUID])
-        trackWithConsentData[TealiumKey.requestUUID] = nil
+        var trackWithConsentData = track.trackDictionary
+        trackWithConsentData += module.getConsentData()
+        XCTAssertNotNil(trackWithConsentData[TealiumDataKey.requestUUID])
+        trackWithConsentData[TealiumDataKey.requestUUID] = nil
         XCTAssertTrue(NSDictionary(dictionary: expected).isEqual(to: trackWithConsentData))
     }
     
     func testAddConsentDataToTrackWhenMigratedFromLegacyStorage() {
         let module = createModule(dataLayer: MockMigratedDataLayer())
         let expected: [String: Any] = [
-            ConsentKey.consentStatus: "consented",
-            ConsentKey.consentCategoriesKey: [TealiumConsentCategories.affiliates.rawValue,
+            TealiumDataKey.consentStatus: "consented",
+            TealiumDataKey.consentCategoriesKey: [TealiumConsentCategories.affiliates.rawValue,
                                               TealiumConsentCategories.bigData.rawValue,
                                               TealiumConsentCategories.crm.rawValue,
                                               TealiumConsentCategories.engagement.rawValue],
@@ -272,9 +294,10 @@ class ConsentManagerModuleTests: XCTestCase {
             "policy": "gdpr"
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
-        var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
-        XCTAssertNotNil(trackWithConsentData[TealiumKey.requestUUID])
-        trackWithConsentData[TealiumKey.requestUUID] = nil
+        var trackWithConsentData = track.trackDictionary
+        trackWithConsentData += module.getConsentData()
+        XCTAssertNotNil(trackWithConsentData[TealiumDataKey.requestUUID])
+        trackWithConsentData[TealiumDataKey.requestUUID] = nil
         XCTAssertTrue(NSDictionary(dictionary: expected).isEqual(to: trackWithConsentData))
     }
     
@@ -287,9 +310,10 @@ class ConsentManagerModuleTests: XCTestCase {
             "do_not_sell": false
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
-        var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
-        XCTAssertNotNil(trackWithConsentData[TealiumKey.requestUUID])
-        trackWithConsentData[TealiumKey.requestUUID] = nil
+        var trackWithConsentData = track.trackDictionary
+        trackWithConsentData += module.getConsentData()
+        XCTAssertNotNil(trackWithConsentData[TealiumDataKey.requestUUID])
+        trackWithConsentData[TealiumDataKey.requestUUID] = nil
         XCTAssertTrue(NSDictionary(dictionary: expected).isEqual(to: trackWithConsentData))
     }
     
@@ -338,7 +362,7 @@ class ConsentManagerModuleTests: XCTestCase {
         config.consentPolicy = .custom(MockCustomConsentPolicy.self)
         let context = TestTealiumHelper.context(with: config)
         let consentManagerModule = ConsentManagerModule(context: context, delegate: nil, diskStorage: DispatchQueueMockDiskStorage(), completion: { _ in })
-        let request = TealiumTrackRequest(data: [TealiumKey.event: "testEvent"])
+        let request = TealiumTrackRequest(data: [TealiumDataKey.event: "testEvent"])
         let res = consentManagerModule.shouldQueue(request: request)
         let trackInfo = res.1!
         XCTAssertNotNil(trackInfo["customConsentCategories"] as? [TealiumConsentCategories])

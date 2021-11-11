@@ -78,7 +78,7 @@ public class RemoteCommandsModule: Dispatcher {
             return
         }
         var shouldDisable = false
-        if let shouldDisableSetting = config.options[RemoteCommandsKey.disableHTTP] as? Bool {
+        if let shouldDisableSetting = config.options[TealiumConfigKey.disableHTTP] as? Bool {
             shouldDisable = shouldDisableSetting
         }
         if shouldDisable == true {

@@ -1484,7 +1484,7 @@ class TealiumMediaTests: XCTestCase {
                                    profile: "profile",
                                    environment: "env")
         config.enableBackgroundMediaTracking = true
-        XCTAssertTrue(config.options[TealiumKey.enableBackgroundMedia] as! Bool)
+        XCTAssertTrue(config.options[TealiumConfigKey.enableBackgroundMedia] as! Bool)
     }
     
     func testAutoEndSessionTime_IsDefault_WhenNotSet() {

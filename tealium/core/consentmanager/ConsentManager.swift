@@ -82,13 +82,13 @@ public class ConsentManager {
         
         // try to load config from persistent storage first
         if let dataLayer = dataLayer,
-           let migratedConsentStatus = dataLayer.all[ConsentKey.consentStatus] as? Int,
-           let migratedConsentCategories = dataLayer.all[ConsentKey.consentCategoriesKey] as? [String] {
+           let migratedConsentStatus = dataLayer.all[TealiumDataKey.consentStatus] as? Int,
+           let migratedConsentCategories = dataLayer.all[TealiumDataKey.consentCategoriesKey] as? [String] {
             config.consentPolicy = .gdpr
             consentPreferencesStorage?.preferences = UserConsentPreferences(consentStatus: TealiumConsentStatus(integer: migratedConsentStatus),
                                                                             consentCategories: TealiumConsentCategories.consentCategoriesStringArrayToEnum(migratedConsentCategories))
-            config.consentLoggingEnabled = dataLayer.all[ConsentKey.consentLoggingEnabled] as? Bool ?? false
-            dataLayer.delete(for: [ConsentKey.consentStatus, ConsentKey.consentCategoriesKey, ConsentKey.consentLoggingEnabled])
+            config.consentLoggingEnabled = dataLayer.all[TealiumDataKey.consentLoggingEnabled] as? Bool ?? false
+            dataLayer.delete(for: [TealiumDataKey.consentStatus, TealiumDataKey.consentCategoriesKey, TealiumDataKey.consentLoggingEnabled])
         }
 
         let preferences = consentPreferencesStorage?.preferences ?? UserConsentPreferences(consentStatus: .unknown, consentCategories: nil)
@@ -109,8 +109,8 @@ public class ConsentManager {
         if consentLoggingEnabled, currentPolicy.shouldLogConsentStatus {
             // call type must be set to override "link" or "view"
             let trackData = [
-                TealiumKey.event: currentPolicy.consentTrackingEventName,
-                TealiumKey.eventType: currentPolicy.consentTrackingEventName
+                TealiumDataKey.event: currentPolicy.consentTrackingEventName,
+                TealiumDataKey.eventType: currentPolicy.consentTrackingEventName
             ]
             delegate?.requestTrack(TealiumTrackRequest(data: trackData))
         }
@@ -125,8 +125,8 @@ public class ConsentManager {
         if currentPolicy.shouldUpdateConsentCookie {
             // collect module ignores this hit
             let trackData = [
-                TealiumKey.event: currentPolicy.updateConsentCookieEventName,
-                TealiumKey.eventType: currentPolicy.updateConsentCookieEventName
+                TealiumDataKey.event: currentPolicy.updateConsentCookieEventName,
+                TealiumDataKey.eventType: currentPolicy.updateConsentCookieEventName
             ]
             delegate?.requestTrack(TealiumTrackRequest(data: trackData))
         }

@@ -180,9 +180,9 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
         }
 
         var info = [String: Any]()
-        info[TealiumKey.dispatchService] = TagManagementKey.moduleName
-        info[TagManagementKey.jsCommand] = javascriptString
-        info += [TagManagementKey.payload: data]
+        info[TealiumDataKey.dispatchService] = TagManagementKey.moduleName
+        info[TealiumDataKey.jsCommand] = javascriptString
+        info += [TealiumDataKey.payload: data]
         self.evaluateJavascript(javascriptString) { result in
             info += result
             completion?(true, info, nil)
@@ -227,11 +227,11 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
             self.webview?.evaluateJavaScript(jsString) { result, error in
                 let info = Atomic(value: [String: Any]())
                 if let result = result {
-                    info.value += [TagManagementKey.jsResult: result]
+                    info.value += [TealiumDataKey.jsResult: result]
                 }
 
                 if let error = error {
-                    info.value += [TagManagementKey.jsError: error]
+                    info.value += [TealiumDataKey.jsError: error]
                 }
                 TealiumQueues.backgroundConcurrentQueue.write {
                     completion?(info.value)

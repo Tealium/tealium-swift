@@ -165,7 +165,7 @@ class TealiumTraceTests: XCTestCase {
         tealium.handleDeepLink(link)
         let expectBackgroundQueueBlock = XCTestExpectation()
         TealiumQueues.backgroundSerialQueue.async {
-            XCTAssertEqual(self.mockDataLayer.all[TealiumKey.deepLinkURL] as! String, link.absoluteString)
+            XCTAssertEqual(self.mockDataLayer.all[TealiumDataKey.deepLinkURL] as! String, link.absoluteString)
             XCTAssertEqual(self.mockDataLayer.all["deep_link_param_utm_param_1"] as! String, "hello")
             XCTAssertEqual(self.mockDataLayer.all["deep_link_param_utm_param_2"] as! String, "test")
             expectBackgroundQueueBlock.fulfill()
@@ -179,7 +179,7 @@ class TealiumTraceTests: XCTestCase {
         localTealium.handleDeepLink(link)
         let expectBackgroundQueueBlock = XCTestExpectation()
         TealiumQueues.backgroundSerialQueue.async {
-            XCTAssertEqual(self.mockDataLayer.all[TealiumKey.deepLinkURL] as! String, link.absoluteString)
+            XCTAssertEqual(self.mockDataLayer.all[TealiumDataKey.deepLinkURL] as! String, link.absoluteString)
             XCTAssertEqual(self.mockDataLayer.all["deep_link_param_utm_param_1"] as! String, "hello")
             XCTAssertEqual(self.mockDataLayer.all["deep_link_param_utm_param_2"] as! String, "test")
             expectBackgroundQueueBlock.fulfill()
@@ -197,7 +197,7 @@ class TealiumTraceTests: XCTestCase {
             let link = URL(string: "https://tealium.com?tealium_trace_id=\(testTraceId)&utm_param_1=hello&utm_param_2=test")!
             tealium.handleDeepLink(link)
             TealiumQueues.backgroundSerialQueue.async {
-                XCTAssertNil(self.mockDataLayer.all[TealiumKey.deepLinkURL])
+                XCTAssertNil(self.mockDataLayer.all[TealiumDataKey.deepLinkURL])
                 XCTAssertNil(self.mockDataLayer.all["deep_link_param_utm_param_1"])
                 XCTAssertNil(self.mockDataLayer.all["deep_link_param_utm_param_2"])
                 TealiumTraceTests.expectation.fulfill()
@@ -213,8 +213,8 @@ class TealiumTraceTests: XCTestCase {
         tealium.handleDeepLink(link, referrer: Tealium.DeepLinkReferrer.fromUrl(URL(string: referrer)))
         let expectBackgroundQueueBlock = XCTestExpectation()
         TealiumQueues.backgroundSerialQueue.async {
-            XCTAssertEqual(self.mockDataLayer.all[TealiumKey.deepLinkURL] as! String, link.absoluteString)
-            XCTAssertEqual(self.mockDataLayer.all[TealiumKey.deepLinkReferrerUrl] as! String, referrer)
+            XCTAssertEqual(self.mockDataLayer.all[TealiumDataKey.deepLinkURL] as! String, link.absoluteString)
+            XCTAssertEqual(self.mockDataLayer.all[TealiumDataKey.deepLinkReferrerUrl] as! String, referrer)
             expectBackgroundQueueBlock.fulfill()
         }
         wait(for: [expectBackgroundQueueBlock], timeout: 2)
@@ -226,8 +226,8 @@ class TealiumTraceTests: XCTestCase {
         tealium.handleDeepLink(link, referrer: Tealium.DeepLinkReferrer.fromAppId(referrer))
         let expectBackgroundQueueBlock = XCTestExpectation()
         TealiumQueues.backgroundSerialQueue.async {
-            XCTAssertEqual(self.mockDataLayer.all[TealiumKey.deepLinkURL] as! String, link.absoluteString)
-            XCTAssertEqual(self.mockDataLayer.all[TealiumKey.deepLinkReferrerApp] as! String, referrer)
+            XCTAssertEqual(self.mockDataLayer.all[TealiumDataKey.deepLinkURL] as! String, link.absoluteString)
+            XCTAssertEqual(self.mockDataLayer.all[TealiumDataKey.deepLinkReferrerApp] as! String, referrer)
             expectBackgroundQueueBlock.fulfill()
         }
         wait(for: [expectBackgroundQueueBlock], timeout: 2)
@@ -241,7 +241,7 @@ class TealiumTraceTests: XCTestCase {
         localTealium.handleDeepLink(link2)
         let expectBackgroundQueueBlock = XCTestExpectation()
         TealiumQueues.backgroundSerialQueue.async {
-            XCTAssertEqual(self.mockDataLayer.all[TealiumKey.deepLinkURL] as! String, link2.absoluteString)
+            XCTAssertEqual(self.mockDataLayer.all[TealiumDataKey.deepLinkURL] as! String, link2.absoluteString)
             XCTAssertEqual(self.mockDataLayer.all["deep_link_param_queryParam2"] as! String, "value2")
             XCTAssertNil(self.mockDataLayer.all["deep_link_param_queryParam1"])
             expectBackgroundQueueBlock.fulfill()
@@ -286,11 +286,11 @@ class DummyDataManagerTrace: DataLayerManagerProtocol {
 
     var isTagManagementEnabled: Bool = true
 
-    func add(data: [String: Any], expiry: Expiry?) {
+    func add(data: [String: Any], expiry: Expiry) {
 
     }
 
-    func add(key: String, value: Any, expiry: Expiry?) {
+    func add(key: String, value: Any, expiry: Expiry) {
         all[key] = value
         switch expiry {
         case .session:

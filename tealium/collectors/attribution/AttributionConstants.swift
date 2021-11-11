@@ -8,34 +8,11 @@
 #if os(iOS)
 import Foundation
 
-public struct AttributionKey {
-    public static let allCases = [
-        AttributionKey.idfa,
-        AttributionKey.idfv,
-        AttributionKey.isTrackingAllowed,
-        AttributionKey.trackingAuthorization,
-        AttributionKey.clickedWithin30D,
-        AttributionKey.clickedDate,
-        AttributionKey.conversionDate,
-        AttributionKey.conversionType,
-        AttributionKey.orgName,
-        AttributionKey.orgId,
-        AttributionKey.purchaseDate,
-        AttributionKey.campaignId,
-        AttributionKey.campaignName,
-        AttributionKey.adGroupId,
-        AttributionKey.adGroupName,
-        AttributionKey.adKeyword,
-        AttributionKey.adKeywordMatchType,
-        AttributionKey.creativeSetId,
-        AttributionKey.creativeSetName,
-        AttributionKey.region
-    ]
+#if attribution
+import TealiumCore
+#endif
 
-    // Internal module keys
-    static let moduleName = "attribution"
-    static let isSearchAdsEnabled = "com.tealium.attribution.searchads.enable"
-    static let isSKAdAttributionEnabled = "com.tealium.attribution.skadattribution.enable"
+extension TealiumDataKey {
     // Advertising IDs
     static let idfa = "device_advertising_id"
     static let idfv = "device_advertising_vendor_id"
@@ -43,22 +20,50 @@ public struct AttributionKey {
     // ATTrackingManager
     static let trackingAuthorization = "device_tracking_authorization"
     // iAd Attribution keys
-    static let clickedWithin30D = "ad_user_clicked_last_30_days"
-    static let clickedDate = "ad_user_date_clicked"
-    static let conversionDate = "ad_user_date_converted"
-    static let conversionType = "ad_user_conversion_type"
-    static let orgName = "ad_org_name"
-    static let orgId = "ad_org_id"
-    static let purchaseDate = "ad_purchase_date"
-    static let campaignId = "ad_campaign_id"
-    static let campaignName = "ad_campaign_name"
+    static let adClickedWithin30D = "ad_user_clicked_last_30_days"
+    static let adClickedDate = "ad_user_date_clicked"
+    static let adConversionDate = "ad_user_date_converted"
+    static let adConversionType = "ad_user_conversion_type"
+    static let adOrgName = "ad_org_name"
+    static let adOrgId = "ad_org_id"
+    static let adPurchaseDate = "ad_purchase_date"
+    static let adCampaignId = "ad_campaign_id"
+    static let adCampaignName = "ad_campaign_name"
     static let adGroupId = "ad_group_id"
     static let adGroupName = "ad_group_name"
     static let adKeyword = "ad_keyword"
     static let adKeywordMatchType = "ad_keyword_matchtype"
-    static let creativeSetId = "ad_creativeset_id"
-    static let creativeSetName = "ad_creativeset_name"
-    static let region = "ad_region"
+    static let adCreativeSetId = "ad_creativeset_id"
+    static let adCreativeSetName = "ad_creativeset_name"
+    static let adRegion = "ad_region"
+}
+
+public struct AttributionKey {
+    public static let allCases = [
+        TealiumDataKey.idfa,
+        TealiumDataKey.idfv,
+        TealiumDataKey.isTrackingAllowed,
+        TealiumDataKey.trackingAuthorization,
+        TealiumDataKey.adClickedWithin30D,
+        TealiumDataKey.adClickedDate,
+        TealiumDataKey.adConversionDate,
+        TealiumDataKey.adConversionType,
+        TealiumDataKey.adOrgName,
+        TealiumDataKey.adOrgId,
+        TealiumDataKey.adPurchaseDate,
+        TealiumDataKey.adCampaignId,
+        TealiumDataKey.adCampaignName,
+        TealiumDataKey.adGroupId,
+        TealiumDataKey.adGroupName,
+        TealiumDataKey.adKeyword,
+        TealiumDataKey.adKeywordMatchType,
+        TealiumDataKey.adCreativeSetId,
+        TealiumDataKey.adCreativeSetName,
+        TealiumDataKey.adRegion
+    ]
+
+    // Internal module keys
+    static let moduleName = "attribution"
 }
 
 public struct AppleInternalKeys {

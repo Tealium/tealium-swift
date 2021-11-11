@@ -49,7 +49,7 @@ class TimedEventSchedulerTests: XCTestCase {
         _ = timedEventScheduler?.shouldQueue(request: request)
         request = TealiumTrackRequest(data: ["tealium_event": "stop_event"])
         let _ = timedEventScheduler?.shouldQueue(request: request)
-        XCTAssertNotNil(context.dispatchDictionaries[0][TealiumKey.eventStop])
+        XCTAssertNotNil(context.dispatchDictionaries[0][TealiumDataKey.eventStop])
     }
     
     func testShouldQueueChecksTriggersAndStopsMultipleTimedEvent() {
@@ -66,9 +66,9 @@ class TimedEventSchedulerTests: XCTestCase {
         XCTAssertEqual(context.trackCallCount, 2)
         XCTAssertEqual(context.dispatchDictionaries.count, 2)
         let timedEvent1 = context.dispatchDictionaries
-            .filter { $0[TealiumKey.timedEventName] as! String == "start_event::stop_event" }
+            .filter { $0[TealiumDataKey.timedEventName] as! String == "start_event::stop_event" }
         let timedEvent2 = context.dispatchDictionaries
-            .filter { $0[TealiumKey.timedEventName] as! String == "different_start_event::stop_event" }
+            .filter { $0[TealiumDataKey.timedEventName] as! String == "different_start_event::stop_event" }
         XCTAssertEqual(timedEvent1.count, 1)
         XCTAssertEqual(timedEvent2.count, 1)
     }

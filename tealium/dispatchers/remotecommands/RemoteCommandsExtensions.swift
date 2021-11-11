@@ -25,16 +25,23 @@ public extension Dispatchers {
     static let RemoteCommands = RemoteCommandsModule.self
 }
 
+extension TealiumConfigKey {
+    static let disable = "disable_remote_commands"
+    static let disableHTTP = "disable_remote_command_http"
+    static let allCommands = "remote_commands"
+    static let refreshInterval = "remote_config_refresh"
+}
+
 public extension TealiumConfig {
 
     /// Enables or disables the built-in HTTP command. Default `false` (command is ENABLED). Set to `true` to disable
     var remoteHTTPCommandDisabled: Bool {
         get {
-            options[RemoteCommandsKey.disableHTTP] as? Bool ?? false
+            options[TealiumConfigKey.disableHTTP] as? Bool ?? false
         }
 
         set {
-            options[RemoteCommandsKey.disableHTTP] = newValue
+            options[TealiumConfigKey.disableHTTP] = newValue
         }
     }
 
@@ -49,11 +56,11 @@ public extension TealiumConfig {
 
     var remoteCommands: [RemoteCommandProtocol]? {
         get {
-            options[RemoteCommandsKey.allCommands] as? [RemoteCommandProtocol]
+            options[TealiumConfigKey.allCommands] as? [RemoteCommandProtocol]
         }
 
         set {
-            options[RemoteCommandsKey.allCommands]  = newValue
+            options[TealiumConfigKey.allCommands]  = newValue
         }
     }
 
@@ -61,10 +68,10 @@ public extension TealiumConfig {
     /// - Returns: `TealiumRefreshInterval` default is `.every(1, .hours)`
     var remoteCommandConfigRefresh: TealiumRefreshInterval {
         get {
-            return options[RemoteCommandsKey.refreshInterval] as? TealiumRefreshInterval ?? .every(1, .hours)
+            return options[TealiumConfigKey.refreshInterval] as? TealiumRefreshInterval ?? .every(1, .hours)
         }
         set {
-            options[RemoteCommandsKey.refreshInterval] = newValue
+            options[TealiumConfigKey.refreshInterval] = newValue
         }
     }
 

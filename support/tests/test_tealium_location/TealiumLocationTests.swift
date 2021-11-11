@@ -407,15 +407,15 @@ class TealiumLocationTests: XCTestCase {
                 return
             }
 
-            let expected: [String: Any] = [TealiumKey.event: LocationKey.entered,
-                                           LocationKey.accuracy: "high",
-                                           LocationKey.geofenceName: "testRegion",
-                                           LocationKey.geofenceTransition: LocationKey.entered,
-                                           LocationKey.deviceLatitude: "37.3317",
-                                           LocationKey.deviceLongitude: "-122.0325086",
-                                           LocationKey.timestamp: "2020-01-15 06:31:00 +0000",
-                                           LocationKey.speed: "40.0",
-                                           LocationKey.accuracyExtended: "reduced"]
+            let expected: [String: Any] = [TealiumDataKey.event: LocationKey.entered,
+                                           TealiumDataKey.locationAccuracy: "high",
+                                           TealiumDataKey.geofenceName: "testRegion",
+                                           TealiumDataKey.geofenceTransition: LocationKey.entered,
+                                           TealiumDataKey.deviceLatitude: "37.3317",
+                                           TealiumDataKey.deviceLongitude: "-122.0325086",
+                                           TealiumDataKey.locationTimestamp: "2020-01-15 06:31:00 +0000",
+                                           TealiumDataKey.locationSpeed: "40.0",
+                                           TealiumDataKey.locationAccuracyExtended: "reduced"]
             XCTAssertEqual(expected.keys.sorted(), result.keys.sorted())
             result.forEach {
                 guard let value = $0.value as? String,
@@ -466,9 +466,9 @@ class TealiumLocationTests: XCTestCase {
                 return
             }
 
-            let expected: [String: Any] = [TealiumKey.event: LocationKey.exited,
-                                           LocationKey.geofenceName: "testRegion",
-                                           LocationKey.geofenceTransition: LocationKey.exited]
+            let expected: [String: Any] = [TealiumDataKey.event: LocationKey.exited,
+                                           TealiumDataKey.geofenceName: "testRegion",
+                                           TealiumDataKey.geofenceTransition: LocationKey.exited]
             XCTAssertEqual(expected.keys, result.keys)
             result.forEach {
                 guard let value = $0.value as? String,
@@ -495,9 +495,9 @@ class TealiumLocationTests: XCTestCase {
         }
         self.locationManager = locationManager
 
-        let data: [String: Any] = [LocationKey.geofenceName: "Tealium_San_Diego",
-                                   LocationKey.geofenceTransition: LocationKey.entered,
-                                   TealiumKey.event: LocationKey.entered]
+        let data: [String: Any] = [TealiumDataKey.geofenceName: "Tealium_San_Diego",
+                                   TealiumDataKey.geofenceTransition: LocationKey.entered,
+                                   TealiumDataKey.event: LocationKey.entered]
 
         let tealiumLocation = TealiumLocationManager(config: config, locationDelegate: locationModule,
                                                      locationManager: locationManager)
@@ -578,9 +578,9 @@ class TealiumLocationTests: XCTestCase {
         }
         self.locationManager = locationManager
 
-        let data: [String: Any] = [LocationKey.geofenceName: "Tealium_San_Diego",
-                                   LocationKey.geofenceTransition: LocationKey.exited,
-                                   TealiumKey.event: LocationKey.exited]
+        let data: [String: Any] = [TealiumDataKey.geofenceName: "Tealium_San_Diego",
+                                   TealiumDataKey.geofenceTransition: LocationKey.exited,
+                                   TealiumDataKey.event: LocationKey.exited]
 
         let tealiumLocation = TealiumLocationManager(config: config, locationDelegate: locationModule,
                                                      locationManager: locationManager)
@@ -991,14 +991,14 @@ extension TealiumLocationTests: LocationDelegate {
         } else {
             timestamp = "2020-01-15 06:31:00 +0000"
         }
-        let expected: [String: Any] = [TealiumKey.event: LocationKey.entered,
-                                       LocationKey.accuracy: "reduced",
-                                       LocationKey.geofenceName: "testRegion",
-                                       LocationKey.geofenceTransition: LocationKey.entered,
-                                       LocationKey.deviceLatitude: "37.3317",
-                                       LocationKey.deviceLongitude: "-122.0325086",
-                                       LocationKey.timestamp: timestamp,
-                                       LocationKey.speed: "40.0"]
+        let expected: [String: Any] = [TealiumDataKey.event: LocationKey.entered,
+                                       TealiumDataKey.locationAccuracy: "reduced",
+                                       TealiumDataKey.geofenceName: "testRegion",
+                                       TealiumDataKey.geofenceTransition: LocationKey.entered,
+                                       TealiumDataKey.deviceLatitude: "37.3317",
+                                       TealiumDataKey.deviceLongitude: "-122.0325086",
+                                       TealiumDataKey.locationTimestamp: timestamp,
+                                       TealiumDataKey.locationSpeed: "40.0"]
         XCTAssertEqual(expected.keys.sorted(), data.keys.sorted())
         data.forEach {
             guard let value = $0.value as? String,
@@ -1011,9 +1011,9 @@ extension TealiumLocationTests: LocationDelegate {
     }
 
     func didExitGeofence(_ data: [String: Any]) {
-        let expected: [String: Any] = [TealiumKey.event: LocationKey.exited,
-                                       LocationKey.geofenceName: "testRegion",
-                                       LocationKey.geofenceTransition: LocationKey.exited]
+        let expected: [String: Any] = [TealiumDataKey.event: LocationKey.exited,
+                                       TealiumDataKey.geofenceName: "testRegion",
+                                       TealiumDataKey.geofenceTransition: LocationKey.exited]
         XCTAssertEqual(expected.keys, data.keys)
         data.forEach {
             guard let value = $0.value as? String,

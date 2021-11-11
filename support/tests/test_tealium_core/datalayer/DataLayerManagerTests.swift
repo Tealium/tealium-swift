@@ -47,19 +47,19 @@ class DataLayerManagerTests: XCTestCase {
         let actual = eventDataManager.all
         XCTAssertEqual(actual.count, expected.count)
         XCTAssertEqual(actual.keys.sorted(), expected.keys.sorted())
-        XCTAssertNotNil(actual[TealiumKey.sessionId])
-        XCTAssertEqual(actual[TealiumKey.account] as! String, "testAccount")
-        XCTAssertEqual(actual[TealiumKey.profile] as! String, "testProfile")
-        XCTAssertEqual(actual[TealiumKey.environment] as! String, "testEnvironment")
-        XCTAssertEqual(actual[TealiumKey.dataSource] as! String, "testDatasource")
-        XCTAssertEqual(actual[TealiumKey.libraryName] as! String, "swift")
+        XCTAssertNotNil(actual[TealiumDataKey.sessionId])
+        XCTAssertEqual(actual[TealiumDataKey.account] as! String, "testAccount")
+        XCTAssertEqual(actual[TealiumDataKey.profile] as! String, "testProfile")
+        XCTAssertEqual(actual[TealiumDataKey.environment] as! String, "testEnvironment")
+        XCTAssertEqual(actual[TealiumDataKey.dataSource] as! String, "testDatasource")
+        XCTAssertEqual(actual[TealiumDataKey.libraryName] as! String, "swift")
 
     }
 
     func testCurrentTimeStamps() {
         let timeStamps = eventDataManager.currentTimeStamps
         XCTAssertEqual(timeStamps.count, 5)
-        let expectedKeys = [TealiumKey.timestampEpoch, TealiumKey.timestamp, TealiumKey.timestampLocal, TealiumKey.timestampUnixMilliseconds, TealiumKey.timestampUnix]
+        let expectedKeys = [TealiumDataKey.timestampEpoch, TealiumDataKey.timestamp, TealiumDataKey.timestampLocal, TealiumDataKey.timestampUnixMilliseconds, TealiumDataKey.timestampUnix]
         let keys = timeStamps.map { $0.key }
         XCTAssertEqual(keys.sorted(), expectedKeys.sorted())
     }
@@ -113,7 +113,7 @@ class DataLayerManagerTests: XCTestCase {
 
     func testCurrentTimeStampsExist() {
         var timeStamps = eventDataManager.currentTimeStamps
-        timeStamps[TealiumKey.timestampOffset] = Date().timestampInSeconds
+        timeStamps[TealiumDataKey.timestampOffset] = Date().timestampInSeconds
         XCTAssertTrue(eventDataManager.currentTimestampsExist(timeStamps))
     }
 

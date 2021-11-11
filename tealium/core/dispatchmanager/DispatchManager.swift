@@ -26,6 +26,7 @@ protocol DispatchManagerProtocol {
 
     func processTrack(_ request: TealiumTrackRequest)
     func handleDequeueRequest(reason: String)
+    func checkShouldQueue(request: inout TealiumTrackRequest) -> Bool
 
 }
 
@@ -162,7 +163,7 @@ class DispatchManager: DispatchManagerProtocol {
             case .success:
                 let shouldQueue = self.shouldQueue(request: newRequest)
                 if shouldQueue.0 == true {
-                    let batchingReason = shouldQueue.1? [TealiumKey.queueReason] as? String ?? TealiumKey.batchingEnabled
+                    let batchingReason = shouldQueue.1? [TealiumDataKey.queueReason] as? String ?? TealiumConfigKey.batchingEnabled
 
                     self.enqueue(newRequest, reason: batchingReason)
                     // batch request and release if necessary
@@ -241,10 +242,10 @@ class DispatchManager: DispatchManagerProtocol {
         removeOldDispatches()
         // no conditions preventing queueing, so queue request
         var requestData = request.trackDictionary
-        if requestData[TealiumKey.queueReason] == nil {
-            requestData[TealiumKey.queueReason] = reason ?? TealiumKey.batchingEnabled
+        if requestData[TealiumDataKey.queueReason] == nil {
+            requestData[TealiumDataKey.queueReason] = reason ?? TealiumConfigKey.batchingEnabled
         }
-        requestData[TealiumKey.wasQueued] = "true"
+        requestData[TealiumDataKey.wasQueued] = "true"
         var newRequest = TealiumTrackRequest(data: requestData)
         newRequest.uuid = request.uuid
         persistentQueue.appendDispatch(newRequest)
@@ -346,12 +347,12 @@ extension DispatchManager {
             return (false, nil)
         }
         #if os (watchOS)
-        return (true, [TealiumKey.queueReason: TealiumKey.batchingEnabled])
+        return (true, [TealiumDataKey.queueReason: TealiumConfigKey.batchingEnabled])
         #else
 
         guard hasSufficientBattery(track: request) else {
             enqueue(request, reason: TealiumDispatchQueueConstants.insufficientBatteryQueueReason)
-            return (true, [TealiumKey.queueReason: TealiumDispatchQueueConstants.insufficientBatteryQueueReason])
+            return (true, [TealiumDataKey.queueReason: TealiumDispatchQueueConstants.insufficientBatteryQueueReason])
         }
 
         if request.trackDictionary[TealiumDispatchQueueConstants.bypassQueueKey] as? Bool == true {
@@ -378,7 +379,7 @@ extension DispatchManager {
             return (false, nil)
         }
 
-        return (true, [TealiumKey.queueReason: TealiumKey.batchingEnabled])
+        return (true, [TealiumDataKey.queueReason: TealiumConfigKey.batchingEnabled])
         #endif
     }
 
@@ -394,7 +395,7 @@ extension DispatchManager {
             return false
         }
 
-        guard let batteryPercentString = track.trackDictionary[DeviceDataKey.batteryPercent] as? String, let batteryPercent = Double(batteryPercentString) else {
+        guard let batteryPercentString = track.trackDictionary[TealiumDataKey.batteryPercent] as? String, let batteryPercent = Double(batteryPercentString) else {
             return true
         }
 
@@ -554,7 +555,7 @@ extension DispatchManager {
                   reason: String?) {
 
         let message = """
-        Event: \(request.trackDictionary[TealiumKey.event] as? String ?? "") queued for batch dispatch. Track UUID: \(request.uuid)
+        Event: \(request.trackDictionary[TealiumDataKey.event] as? String ?? "") queued for batch dispatch. Track UUID: \(request.uuid)
         """
         var messages = [message]
         if let reason = reason {
