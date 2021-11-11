@@ -53,10 +53,10 @@ extension DeviceData {
             carrier = networkInfo.subscriberCellularProvider
         }
         carrierInfo = [
-            DeviceDataKey.carrierMNC: carrier?.mobileNetworkCode ?? "",
-            DeviceDataKey.carrierMCC: carrier?.mobileCountryCode ?? "",
-            DeviceDataKey.carrierISO: carrier?.isoCountryCode ?? "",
-            DeviceDataKey.carrier: carrier?.carrierName ?? ""
+            TealiumDataKey.carrierMNC: carrier?.mobileNetworkCode ?? "",
+            TealiumDataKey.carrierMCC: carrier?.mobileCountryCode ?? "",
+            TealiumDataKey.carrierISO: carrier?.isoCountryCode ?? "",
+            TealiumDataKey.carrier: carrier?.carrierName ?? ""
         ]
         #endif
         #endif
