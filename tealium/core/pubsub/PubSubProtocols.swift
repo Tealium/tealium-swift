@@ -15,11 +15,11 @@ public protocol TealiumObservableConvertibleProtocol {
 }
 
 public protocol TealiumObservableProtocol: TealiumObservableConvertibleProtocol {
-    typealias Observer = (Element) -> ()
-    
+    typealias Observer = (Element) -> Void
+
     @discardableResult
     func subscribe(_ observer: @escaping Observer) -> TealiumSubscription<Element>
-    
+
     @discardableResult
     func unsubscribe(_ subscription: TealiumSubscription<Element>) -> Bool
 }
@@ -56,18 +56,17 @@ public extension TealiumPublisherProtocol where Element == Void {
 }
 
 public protocol TealiumSubjectProtocol: TealiumObservableProtocol, TealiumPublisherProtocol {
-    
 }
 
-extension TealiumSubjectProtocol {
-    
+public extension TealiumSubjectProtocol {
+
     @discardableResult
-    public func subscribe(_ observer: @escaping Observer) -> TealiumSubscription<Element> {
+    func subscribe(_ observer: @escaping Observer) -> TealiumSubscription<Element> {
         asObservable().subscribe(observer)
     }
-    
+
     @discardableResult
-    public func unsubscribe(_ subscription: TealiumSubscription<Element>) -> Bool {
+    func unsubscribe(_ subscription: TealiumSubscription<Element>) -> Bool {
         asObservable().unsubscribe(subscription)
     }
 }

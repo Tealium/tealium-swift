@@ -9,15 +9,15 @@
 import Foundation
 
 public class TealiumDisposeBag: TealiumDisposableProtocol {
-    
+
     private var disposables = [TealiumDisposableProtocol]()
-    
+
     public init() {}
-    
+
     public func add(_ disposable: TealiumDisposableProtocol) {
         disposables.append(disposable)
     }
-    
+
     public func dispose() {
         let disposables = self.disposables
         self.disposables = []
@@ -25,9 +25,8 @@ public class TealiumDisposeBag: TealiumDisposableProtocol {
             disposable.dispose()
         }
     }
-    
+
     deinit {
         dispose()
     }
 }
-

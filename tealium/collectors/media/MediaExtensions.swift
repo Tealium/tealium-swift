@@ -24,7 +24,7 @@ public extension Tealium {
 }
 
 public extension TealiumConfig {
-    
+
     /// Enables automatic tracking of `endSession` while the media player has been backgrounded longer than
     /// the  `backgroundMediaAutoEndSessionTime` (default `60.0` seconds)
     /// - Returns: `Bool` Default is `false`
@@ -36,7 +36,7 @@ public extension TealiumConfig {
             options[TealiumConfigKey.enableBackgroundMedia] = newValue
         }
     }
-    
+
     /// Specifies the amount of time to wait before sending an `endSession` event once the app has been backgrounded
     /// - Returns: `Double` Default is `60.0` seconds
     var backgroundMediaAutoEndSessionTime: Double {

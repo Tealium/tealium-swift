@@ -4057,6 +4057,223 @@
 			productReference = 15F8E23B26F0B0FF00C4F6A1 /* TealiumAutotrackingUITests-macOS.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		1516A2DD26EF7F26003DF8F2 /* TealiumAutotrackingUITests-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1516A2E526EF7F26003DF8F2 /* Build configuration list for PBXNativeTarget "TealiumAutotrackingUITests-iOS" */;
+			buildPhases = (
+				1516A2DA26EF7F26003DF8F2 /* Sources */,
+				1516A2DB26EF7F26003DF8F2 /* Frameworks */,
+				1516A2DC26EF7F26003DF8F2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1516A2E426EF7F26003DF8F2 /* PBXTargetDependency */,
+				15A0079027284FA7005E1927 /* PBXTargetDependency */,
+			);
+			name = "TealiumAutotrackingUITests-iOS";
+			productName = "TealiumAutotrackingUITests-iOS";
+			productReference = 1516A2DE26EF7F26003DF8F2 /* TealiumAutotrackingUITests-iOS.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		1555F5BB26E6692400AFDC3D /* TealiumAutotrackingTests-macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1555F5C726E6692400AFDC3D /* Build configuration list for PBXNativeTarget "TealiumAutotrackingTests-macOS" */;
+			buildPhases = (
+				1555F5C026E6692400AFDC3D /* Sources */,
+				1555F5C526E6692400AFDC3D /* Frameworks */,
+				1555F5C626E6692400AFDC3D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1555F5BC26E6692400AFDC3D /* PBXTargetDependency */,
+				1555F5BE26E6692400AFDC3D /* PBXTargetDependency */,
+			);
+			name = "TealiumAutotrackingTests-macOS";
+			productName = "tealium-swift-tests";
+			productReference = 1555F5CA26E6692400AFDC3D /* TealiumAutotrackingTests-macOS.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		1555F5D126E6786100AFDC3D /* TealiumAutotrackingTests-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1555F5DE26E6786100AFDC3D /* Build configuration list for PBXNativeTarget "TealiumAutotrackingTests-tvOS" */;
+			buildPhases = (
+				1555F5D626E6786100AFDC3D /* Sources */,
+				1555F5DC26E6786100AFDC3D /* Frameworks */,
+				1555F5DD26E6786100AFDC3D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1555F5D226E6786100AFDC3D /* PBXTargetDependency */,
+				1555F5D426E6786100AFDC3D /* PBXTargetDependency */,
+			);
+			name = "TealiumAutotrackingTests-tvOS";
+			productName = "tealium-swift-tests";
+			productReference = 1555F5E126E6786100AFDC3D /* TealiumAutotrackingTests-tvOS.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		15A0077B27284EF9005E1927 /* AutoTrackingIOSTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 15A0078927284EFA005E1927 /* Build configuration list for PBXNativeTarget "AutoTrackingIOSTest" */;
+			buildPhases = (
+				15A0077827284EF9005E1927 /* Sources */,
+				15A0077927284EF9005E1927 /* Frameworks */,
+				15A0077A27284EF9005E1927 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				15A0079227285028005E1927 /* PBXTargetDependency */,
+				15A0079427285028005E1927 /* PBXTargetDependency */,
+				15A0079627285028005E1927 /* PBXTargetDependency */,
+				15A0079827285028005E1927 /* PBXTargetDependency */,
+				15A0079A27285028005E1927 /* PBXTargetDependency */,
+				15A0079C27285028005E1927 /* PBXTargetDependency */,
+				15A0079E27285028005E1927 /* PBXTargetDependency */,
+				15A007A027285028005E1927 /* PBXTargetDependency */,
+				15A007A227285028005E1927 /* PBXTargetDependency */,
+				15A007A427285028005E1927 /* PBXTargetDependency */,
+			);
+			name = AutoTrackingIOSTest;
+			productName = AutoTrackingIOSTest;
+			productReference = 15A0077C27284EF9005E1927 /* AutoTrackingIOSTest.app */;
+			productType = "com.apple.product-type.application";
+		};
+		15B84D7426F206950094DC05 /* AutoTrackingTvOSTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 15B84D8326F206960094DC05 /* Build configuration list for PBXNativeTarget "AutoTrackingTvOSTest" */;
+			buildPhases = (
+				15B84D7126F206950094DC05 /* Sources */,
+				15B84D7226F206950094DC05 /* Frameworks */,
+				15B84D7326F206950094DC05 /* Resources */,
+				15D43D5426F20869004E52FE /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				15D43D3B26F20869004E52FE /* PBXTargetDependency */,
+				15D43D3F26F20869004E52FE /* PBXTargetDependency */,
+				15D43D4326F20869004E52FE /* PBXTargetDependency */,
+				15D43D4726F20869004E52FE /* PBXTargetDependency */,
+				15D43D4F26F20869004E52FE /* PBXTargetDependency */,
+				15D43D5326F20869004E52FE /* PBXTargetDependency */,
+			);
+			name = AutoTrackingTvOSTest;
+			productName = AutoTrackingTvOSTest;
+			productReference = 15B84D7526F206950094DC05 /* AutoTrackingTvOSTest.app */;
+			productType = "com.apple.product-type.application";
+		};
+		15D43D5826F20A68004E52FE /* TealiumAutotrackingUITests-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 15D43D6026F20A68004E52FE /* Build configuration list for PBXNativeTarget "TealiumAutotrackingUITests-tvOS" */;
+			buildPhases = (
+				15D43D5526F20A68004E52FE /* Sources */,
+				15D43D5626F20A68004E52FE /* Frameworks */,
+				15D43D5726F20A68004E52FE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				15D43D5F26F20A68004E52FE /* PBXTargetDependency */,
+				15D43D6426F20A79004E52FE /* PBXTargetDependency */,
+			);
+			name = "TealiumAutotrackingUITests-tvOS";
+			productName = "TealiumAutotrackingUITests-tvOS";
+			productReference = 15D43D5926F20A68004E52FE /* TealiumAutotrackingUITests-tvOS.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		15D4AFC226EB7D4A004316D0 /* TealiumAutotrackingTests-watchOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 15D4AFCA26EB7D4A004316D0 /* Build configuration list for PBXNativeTarget "TealiumAutotrackingTests-watchOS" */;
+			buildPhases = (
+				15D4AFBF26EB7D4A004316D0 /* Sources */,
+				15D4AFC026EB7D4A004316D0 /* Frameworks */,
+				15D4AFC126EB7D4A004316D0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				15D4AFCF26EB94A2004316D0 /* PBXTargetDependency */,
+				15D4AFCD26EB949B004316D0 /* PBXTargetDependency */,
+			);
+			name = "TealiumAutotrackingTests-watchOS";
+			productName = "TealiumAutotrackingTests-watchOS";
+			productReference = 15D4AFC326EB7D4A004316D0 /* TealiumAutotrackingTests-watchOS.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		15F574382721831E00194733 /* TealiumSceneDelegateProxyTests-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 15F574412721831E00194733 /* Build configuration list for PBXNativeTarget "TealiumSceneDelegateProxyTests-iOS" */;
+			buildPhases = (
+				15F574352721831E00194733 /* Sources */,
+				15F574362721831E00194733 /* Frameworks */,
+				15F574372721831E00194733 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				15F576DA272185E900194733 /* PBXTargetDependency */,
+				15F576DC272185E900194733 /* PBXTargetDependency */,
+				15F576DE272185E900194733 /* PBXTargetDependency */,
+				15F574692721833000194733 /* PBXTargetDependency */,
+				15F576E0272185E900194733 /* PBXTargetDependency */,
+				15F576E2272185E900194733 /* PBXTargetDependency */,
+				15F576E6272185E900194733 /* PBXTargetDependency */,
+				15F576E8272185E900194733 /* PBXTargetDependency */,
+				15F57590272183B400194733 /* PBXTargetDependency */,
+			);
+			name = "TealiumSceneDelegateProxyTests-iOS";
+			productName = TealiumSceneDelegateProxyTests;
+			productReference = 15F574392721831E00194733 /* TealiumSceneDelegateProxyTests-iOS.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		15F8E22326F0AF5900C4F6A1 /* AutoTrackingMacOSTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 15F8E23326F0AF5A00C4F6A1 /* Build configuration list for PBXNativeTarget "AutoTrackingMacOSTest" */;
+			buildPhases = (
+				15F8E22026F0AF5900C4F6A1 /* Sources */,
+				15F8E22126F0AF5900C4F6A1 /* Frameworks */,
+				15F8E22226F0AF5900C4F6A1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				15D43D2326F207EE004E52FE /* PBXTargetDependency */,
+				15D43D2526F207EE004E52FE /* PBXTargetDependency */,
+				15D43D2926F207EE004E52FE /* PBXTargetDependency */,
+				15D43D2F26F207EE004E52FE /* PBXTargetDependency */,
+				15D43D1F26F207CF004E52FE /* PBXTargetDependency */,
+				15D43D1D26F207C5004E52FE /* PBXTargetDependency */,
+			);
+			name = AutoTrackingMacOSTest;
+			productName = AutoTrackingMacOSTest;
+			productReference = 15F8E22426F0AF5900C4F6A1 /* AutoTrackingMacOSTest.app */;
+			productType = "com.apple.product-type.application";
+		};
+		15F8E23A26F0B0FF00C4F6A1 /* TealiumAutotrackingUITests-macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 15F8E24226F0B0FF00C4F6A1 /* Build configuration list for PBXNativeTarget "TealiumAutotrackingUITests-macOS" */;
+			buildPhases = (
+				15F8E23726F0B0FF00C4F6A1 /* Sources */,
+				15F8E23826F0B0FF00C4F6A1 /* Frameworks */,
+				15F8E23926F0B0FF00C4F6A1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				15F8E24126F0B0FF00C4F6A1 /* PBXTargetDependency */,
+				15F8E24B26F0B3BD00C4F6A1 /* PBXTargetDependency */,
+			);
+			name = "TealiumAutotrackingUITests-macOS";
+			productName = "TealiumAutotrackingUITests-macOS";
+			productReference = 15F8E23B26F0B0FF00C4F6A1 /* TealiumAutotrackingUITests-macOS.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		CF13D80D24FD5FE30024E79A /* TealiumAppDelegateProxyTests-iOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CF13D84124FD5FE30024E79A /* Build configuration list for PBXNativeTarget "TealiumAppDelegateProxyTests-iOS" */;
@@ -4398,6 +4615,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D755DD0A21945E41003C6BA1 /* Build configuration list for PBXNativeTarget "TealiumCore" */;
 			buildPhases = (
+				48290E3C273426B4008906AD /* SwiftLint */,
 				D755DC9921945E41003C6BA1 /* Sources */,
 				D755DCCF21945E41003C6BA1 /* Frameworks */,
 				D755DCD021945E41003C6BA1 /* Headers */,
@@ -5506,6 +5724,30 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		48290E3C273426B4008906AD /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint --config \"$PROJECT_DIR\"/../.swiftlint.yml\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
 		CF13D82024FD5FE30024E79A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;

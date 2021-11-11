@@ -24,7 +24,6 @@ public extension Collectors {
     static let VisitorService = VisitorServiceModule.self
 }
 
-
 extension TealiumConfigKey {
     static let visitorServiceRefreshInterval = "visitor_service_refresh"
     static let enableVisitorService = "enable_visitor_service"

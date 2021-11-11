@@ -8,38 +8,38 @@
 import Foundation
 
 public protocol ConsentPolicy {
-    
+
     /// `ConsentPolicy` required initializer
     /// - Parameter preferences: Stored `UserConsentPreferences`
     init(_ preferences: UserConsentPreferences)
-    
+
     /// The name of the `ConsentPolicy`
     var name: String { get }
-    
+
     /// Sets the default expiry time for this `ConsentPolicy`. This is also overridable
     /// from `TealiumConfig.consentExpiry`
     var defaultConsentExpiry: (time: Int, unit: TimeUnit) { get }
-    
+
     /// Sets whether or not to update a cookie in the TagManagement module's webview.
     var shouldUpdateConsentCookie: Bool { get }
-    
+
     /// Sets the event name to use when `shouldUpdateConsentCookie` is set to true.
     var updateConsentCookieEventName: String { get }
-    
+
     /// - Returns:`[String: Any]` of key value data to be added to the payload of each `TealiumDispatch`
     /// `["policy": "ccpa", "consent_status": "consented"]`
     var consentPolicyStatusInfo: [String: Any]? { get }
-    
+
     /// The current `UserConsentPreferences`
     /// This will be automatically updated by the `ConsentManager`when the preferences change.
     var preferences: UserConsentPreferences { get set }
-    
+
     /// The tracking action based on the consent status (allowed, forbidden, queued)
     var trackAction: TealiumConsentTrackAction { get }
-    
+
     /// Sets the event name (key: tealium_event) to use when logging a change in consent.
     var consentTrackingEventName: String { get }
-    
+
     /// Sets whether or not logging of consent changes are required
     var shouldLogConsentStatus: Bool { get }
 }
@@ -57,7 +57,7 @@ extension ConsentPolicy {
 
 public class ConsentPolicyFactory {
     public static func create(_ policy: TealiumConsentPolicy,
-                       preferences: UserConsentPreferences) -> ConsentPolicy {
+                              preferences: UserConsentPreferences) -> ConsentPolicy {
         switch policy {
         case .ccpa:
             return CCPAConsentPolicy(preferences)
@@ -72,9 +72,9 @@ public class ConsentPolicyFactory {
 public protocol CCPAConsentPolicyCreatable: ConsentPolicy {}
 
 public extension CCPAConsentPolicyCreatable {
-    
+
     var name: String { "ccpa" }
-    
+
     var defaultConsentExpiry: (time: Int, unit: TimeUnit) { (395, .days) }
 
     // Currently only supported by TiQ and no way to figure out which tags are in scope for consent logging
@@ -101,7 +101,7 @@ public extension CCPAConsentPolicyCreatable {
 }
 
 private class CCPAConsentPolicy: CCPAConsentPolicyCreatable {
-    
+
     var preferences: UserConsentPreferences
 
     required init(_ preferences: UserConsentPreferences) {
@@ -113,9 +113,9 @@ private class CCPAConsentPolicy: CCPAConsentPolicyCreatable {
 public protocol GDPRConsentPolicyCreatable: ConsentPolicy {}
 
 public extension GDPRConsentPolicyCreatable {
-    
+
     var name: String { "gdpr" }
-    
+
     var defaultConsentExpiry: (time: Int, unit: TimeUnit) { (365, .days) }
 
     var shouldLogConsentStatus: Bool { true }
@@ -153,11 +153,11 @@ public extension GDPRConsentPolicyCreatable {
             return .trackingQueued
         }
     }
-    
+
 }
 
 private class GDPRConsentPolicy: GDPRConsentPolicyCreatable {
-    
+
     public var preferences: UserConsentPreferences
 
     required public init(_ preferences: UserConsentPreferences) {

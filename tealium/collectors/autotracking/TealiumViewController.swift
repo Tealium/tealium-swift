@@ -3,11 +3,10 @@
 // Copyright (c) 2021 Tealium, Inc. All rights reserved.
 //
 
-
 #if os(iOS)
 import Foundation
-import UIKit
 import SwiftUI
+import UIKit
 #if autotracking
 import TealiumCore
 #endif

@@ -13,12 +13,12 @@ public extension Tealium {
     var visitorId: String? {
         appDataModule?.data?[TealiumDataKey.visitorId] as? String
     }
-    
+
     /// Resets the Tealium Visitor Id
     func resetVisitorId() {
         appDataModule?.resetVisitorId()
     }
-    
+
     private var appDataModule: AppDataModule? {
         zz_internal_modulesManager?.collectors.first {
             $0 is AppDataModule
@@ -41,7 +41,7 @@ public extension TealiumConfig {
             options[TealiumConfigKey.hostedDataLayerKeys] = newValue
         }
     }
-    
+
     /// Sets the expiry for the Hosted Data Layer cache.
     var hostedDataLayerExpiry: (Int, unit: TimeUnit) {
         get {

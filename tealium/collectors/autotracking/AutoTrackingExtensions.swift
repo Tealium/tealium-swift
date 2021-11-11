@@ -21,7 +21,7 @@ extension TealiumConfigKey {
 }
 
 public extension TealiumConfig {
-    
+
     var autoTrackingCollectorDelegate: AutoTrackingDelegate? {
         get {
             let weakDelegate = options[TealiumConfigKey.autotrackingDelegate] as? Weak<AnyObject>
@@ -36,7 +36,7 @@ public extension TealiumConfig {
             options[TealiumConfigKey.autotrackingDelegate] = weakDelegate
         }
     }
-    
+
     var autoTrackingBlocklistFilename: String? {
         get {
             options[TealiumConfigKey.autotrackingFilename] as? String
@@ -46,7 +46,7 @@ public extension TealiumConfig {
             options[TealiumConfigKey.autotrackingFilename] = newValue
         }
     }
-    
+
     var autoTrackingBlocklistURL: String? {
         get {
             options[TealiumConfigKey.autotrackingUrl] as? String
@@ -64,11 +64,8 @@ public extension TealiumDataKey {
 
 enum TealiumAutotrackingKey {
     static let moduleName = "autotracking"
-    
 }
 
 public protocol AutoTrackingDelegate: AnyObject {
-    
     func onCollectScreenView(screenName: String) -> [String: Any]
-    
 }

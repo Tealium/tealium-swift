@@ -11,7 +11,7 @@ public struct TimedEventTrigger {
     var start: String
     var end: String
     var name: String?
-    
+
     public init(start: String, end: String, name: String? = nil) {
         self.start = start
         self.end = end
@@ -34,7 +34,7 @@ public struct TimedEvent: Hashable {
         self.data = data ?? [String: Any]()
         self.start = start
     }
-    
+
     public mutating func stopTimer() {
         stop = Date().timeIntervalSince1970
         guard let start = start,
@@ -57,15 +57,15 @@ public struct TimedEvent: Hashable {
         data[TealiumDataKey.eventDuration] = duration
         return data
     }
-    
-    public static func ==(lhs: TimedEvent, rhs: TimedEvent) -> Bool {
+
+    public static func == (lhs: TimedEvent, rhs: TimedEvent) -> Bool {
         lhs.name == rhs.name
     }
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(name)
     }
-    
+
 }
 
 public extension Set where Element == TimedEvent {

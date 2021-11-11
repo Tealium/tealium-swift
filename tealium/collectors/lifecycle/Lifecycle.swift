@@ -12,7 +12,6 @@ import TealiumCore
 #endif
 
 // swiftlint:disable type_body_length
-// swiftlint:disable file_length
 public struct Lifecycle: Codable {
 
     var autotracked: String?
@@ -122,7 +121,7 @@ public struct Lifecycle: Codable {
               let laterWake = sessions.last?.wakeDate else {
             return true
         }
-        
+
         // Two wake dates on record, if different - return true
         let earlier = Calendar.autoupdatingCurrent.component(.month, from: earlierWake)
         let later = Calendar.autoupdatingCurrent.component(.month, from: laterWake)
@@ -450,4 +449,3 @@ public struct Lifecycle: Codable {
     }
 
 }
-// swiftlint:enable file_length

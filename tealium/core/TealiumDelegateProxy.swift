@@ -10,22 +10,24 @@
 import Foundation
 import UIKit
 
-@objc public class TealiumDelegateProxy: NSProxy {
-    
+@objc
+public class TealiumDelegateProxy: NSProxy {
+
     static var contexts: Set<TealiumContext>?
-    
+
     private struct AssociatedObjectKeys {
         static var originalClass = "Tealium_OriginalClass"
         static var originalImplementations = "Tealium_OriginalImplementations"
     }
-    
+
     static private(set) var sceneEnabled = false
     private static var name = "AppDelegate"
-    
-    @objc public static func setup() {
+
+    @objc
+    public static func setup() {
         setup(context: nil)
     }
-    
+
     public static func setup(context: TealiumContext?) {
         guard isAutotrackingDeepLinkEnabled else {
             return
@@ -38,7 +40,7 @@ import UIKit
             _ = runOnce
         }
     }
-    
+
     public static func removeContext(_ context: TealiumContext?) {
         guard isAutotrackingDeepLinkEnabled else {
             return
@@ -47,11 +49,11 @@ import UIKit
             contexts?.remove(context)
         }
     }
-    
+
     private static let isAutotrackingDeepLinkEnabled: Bool = {
         return Bundle.main.object(forInfoDictionaryKey: "TealiumAutotrackingDeepLinkEnabled") as? Bool ?? true
     }()
-    
+
     /// Using Swift's lazy evaluation of a static property we get the same
     /// thread-safety and called-once guarantees as dispatch_once provided.
     private static let runOnce: () = {
@@ -77,16 +79,18 @@ import UIKit
 // MARK: Swizzling
 
 private extension TealiumDelegateProxy {
-    
+
     typealias ApplicationOpenURL = @convention(c) (Any, Selector, UIApplication, URL, [UIApplication.OpenURLOptionsKey: Any]) -> Bool
     typealias ApplicationContinueUserActivity = @convention(c) (Any, Selector, UIApplication, NSUserActivity, @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool
     @available(iOS 13.0, *)
+    // swiftlint:disable attributes
     typealias SceneWillConnectTo = @convention(c) (Any, Selector, UIScene, UISceneSession, UIScene.ConnectionOptions) -> Void
     @available(iOS 13.0, *)
     typealias SceneOpenURLContexts = @convention(c) (Any, Selector, UIScene, Set<UIOpenURLContext>) -> Void
     @available(iOS 13.0, *)
     typealias SceneContinueUserActivity = @convention(c) (Any, Selector, UIScene, NSUserActivity) -> Void
-    
+    // swiftlint:enable attributes
+
     static let ApplicationOperUrlSelector = #selector(application(_:openURL:options:))
     static let ApplicationContinueUserActivitySelector = #selector(application(_:continueUserActivity:restorationHandler:))
     @available(iOS 13.0, *)
@@ -95,37 +99,37 @@ private extension TealiumDelegateProxy {
     static let SceneOpenURLContextsSelector = #selector(scene(_:openURLContexts:))
     @available(iOS 13.0, *)
     static let SceneContinueUserActivitySelector = #selector(scene(_:continueUserActivity:))
-    
+
     static var gOriginalDelegate: NSObjectProtocol?
     static var gDelegateSubClass: AnyClass?
-    
+
     class var sharedApplication: UIApplication? {
         let selector = NSSelectorFromString("sharedApplication")
         return UIApplication.perform(selector)?.takeUnretainedValue() as? UIApplication
     }
-    
+
     @available(iOS 13.0, *)
     static func proxySceneDelegate(_ sceneDelegate: UISceneDelegate) {
         sceneEnabled = true
         name = "SceneDelegate"
         proxyUIDelegate(sceneDelegate)
     }
-    
+
     static func proxyAppDelegate() {
         let appDelegate = TealiumDelegateProxy.sharedApplication?.delegate
         proxyUIDelegate(appDelegate)
     }
-    
+
     static func proxyUIDelegate(_ uiDelegate: NSObjectProtocol?) {
         guard let uiDelegate = uiDelegate, gDelegateSubClass == nil else {
             log("Original \(TealiumDelegateProxy.name) instance was nil")
             return
         }
-        
+
         gDelegateSubClass = createSubClass(from: uiDelegate)
         self.reassignDelegate()
     }
-    
+
     // This is required otherwise if AppDelegate/SceneDelegate don't implement those methods it won't work!
     // Setting the delegate again probably causes the system to check again for the presence of those methods that were missing before.
     static func reassignDelegate() {
@@ -141,44 +145,45 @@ private extension TealiumDelegateProxy {
             gOriginalDelegate = appDelegate
         }
     }
-    
+
     static func createSubClass(from originalDelegate: NSObjectProtocol) -> AnyClass? {
         let originalClass = type(of: originalDelegate)
         let newClassName = "\(originalClass)_\(UUID().uuidString)"
-        
+
         guard NSClassFromString(newClassName) == nil else {
             return nil
         }
-        
+
         guard let subClass = objc_allocateClassPair(originalClass, newClassName, 0) else {
             return nil
         }
-        
+
         self.createMethodImplementations(in: subClass, withOriginalDelegate: originalDelegate)
         self.overrideDescription(in: subClass)
-        
+
         // Store the original class
         objc_setAssociatedObject(originalDelegate, &AssociatedObjectKeys.originalClass, originalClass, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        
+
         guard class_getInstanceSize(originalClass) == class_getInstanceSize(subClass) else {
             return nil
         }
-        
+
         objc_registerClassPair(subClass)
         if object_setClass(originalDelegate, subClass) != nil {
             log("Successfully created \(TealiumDelegateProxy.name) proxy")
         }
-        
+
         return subClass
     }
-    
+
+    // swiftlint:disable function_body_length
     static func createMethodImplementations(
         in subClass: AnyClass,
         withOriginalDelegate originalDelegate: NSObjectProtocol
     ) {
         let originalClass = type(of: originalDelegate)
         var originalImplementationsStore: [String: NSValue] = [:]
-        
+
         if #available(iOS 13.0, *), sceneEnabled {
             let sceneOpenURLContexts = SceneOpenURLContextsSelector
             self.proxyInstanceMethod(
@@ -188,7 +193,7 @@ private extension TealiumDelegateProxy {
                 fromSelector: sceneOpenURLContexts,
                 withOriginalClass: originalClass,
                 storeOriginalImplementationInto: &originalImplementationsStore)
-            
+
             let sceneContinueUserActivity = SceneContinueUserActivitySelector
             self.proxyInstanceMethod(
                 toClass: subClass,
@@ -214,7 +219,7 @@ private extension TealiumDelegateProxy {
                 fromSelector: applicationOpenURL,
                 withOriginalClass: originalClass,
                 storeOriginalImplementationInto: &originalImplementationsStore)
-            
+
             let applicationContinueUserActivity = ApplicationContinueUserActivitySelector
             self.proxyInstanceMethod(
                 toClass: subClass,
@@ -224,11 +229,11 @@ private extension TealiumDelegateProxy {
                 withOriginalClass: originalClass,
                 storeOriginalImplementationInto: &originalImplementationsStore)
         }
-        
+
         // Store original implementations
         objc_setAssociatedObject(originalDelegate, &AssociatedObjectKeys.originalImplementations, originalImplementationsStore, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
-    
+    // swiftlint:enable function_body_length
     static func overrideDescription(in subClass: AnyClass) {
         // Override the description so the custom class name will not show up.
         self.addInstanceMethod(
@@ -237,7 +242,6 @@ private extension TealiumDelegateProxy {
             fromClass: TealiumDelegateProxy.self,
             fromSelector: #selector(originalDescription))
     }
-    
     // swiftlint:disable function_parameter_count
     static func proxyInstanceMethod(
         toClass destinationClass: AnyClass,
@@ -252,15 +256,14 @@ private extension TealiumDelegateProxy {
             toSelector: destinationSelector,
             fromClass: sourceClass,
             fromSelector: sourceSelector)
-        
+
         let sourceImplementation = methodImplementation(for: destinationSelector, from: originalClass)
         let sourceImplementationPointer = NSValue(pointer: UnsafePointer(sourceImplementation))
-        
+
         let destinationSelectorStr = NSStringFromSelector(destinationSelector)
         originalImplementationsStore[destinationSelectorStr] = sourceImplementationPointer
     }
     // swiftlint:enable function_parameter_count
-    
     static func addInstanceMethod(
         toClass destinationClass: AnyClass,
         toSelector destinationSelector: Selector,
@@ -273,19 +276,18 @@ private extension TealiumDelegateProxy {
         }
         let methodImplementation = method_getImplementation(method)
         let methodTypeEncoding = method_getTypeEncoding(method)
-        
         if !class_addMethod(destinationClass, destinationSelector, methodImplementation, methodTypeEncoding) {
             log("Cannot copy method to destination selector '\(destinationSelector)' as it already exists.")
         }
     }
-    
+
     static func methodImplementation(for selector: Selector, from fromClass: AnyClass) -> IMP? {
         guard let method = class_getInstanceMethod(fromClass, selector) else {
             return nil
         }
         return method_getImplementation(method)
     }
-    
+
     static func originalMethodImplementation(for selector: Selector, object: Any) -> NSValue? {
         let originalImplementationsStore = objc_getAssociatedObject(object, &AssociatedObjectKeys.originalImplementations) as? [String: NSValue]
         return originalImplementationsStore?[NSStringFromSelector(selector)]
@@ -295,7 +297,6 @@ private extension TealiumDelegateProxy {
 // MARK: App Delegate
 
 private extension TealiumDelegateProxy {
-    
     @objc
     func application(_ app: UIApplication, openURL url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         TealiumDelegateProxy.log("Received Deep Link: \(url.absoluteString)")
@@ -305,36 +306,33 @@ private extension TealiumDelegateProxy {
               let pointerValue = pointer.pointerValue else {
                   return true
               }
-        
         let originalImplementation = unsafeBitCast(pointerValue, to: ApplicationOpenURL.self)
         _ = originalImplementation(self, methodSelector, app, url, options)
         return false
     }
-    
+
     @objc
     func application(_ application: UIApplication,
                      continueUserActivity userActivity: NSUserActivity,
                      restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        
+
         handleContinueUserActivity(userActivity)
-        
+
         let methodSelector = TealiumDelegateProxy.ApplicationContinueUserActivitySelector
         guard let pointer = TealiumDelegateProxy.originalMethodImplementation(for: methodSelector, object: self),
               let pointerValue = pointer.pointerValue else {
                   return true
               }
-        
         let originalImplementation = unsafeBitCast(pointerValue, to: ApplicationContinueUserActivity.self)
         _ = originalImplementation(self, methodSelector, application, userActivity, restorationHandler)
         return false
     }
-    
+
     @objc
     func originalDescription() -> String {
         if let originalClass = objc_getAssociatedObject(self, &AssociatedObjectKeys.originalClass) as? AnyClass {
             let originalClassName = NSStringFromClass(originalClass)
             let pointerHex = String(format: "%p", unsafeBitCast(self, to: Int.self))
-            
             return "<\(originalClassName): \(pointerHex)>"
         }
         return "AppDelegate"
@@ -345,12 +343,12 @@ private extension TealiumDelegateProxy {
 
 @available(iOS 13.0, *)
 private extension TealiumDelegateProxy {
-    
+
     @objc
     func scene(_ scene: UIScene,
                willConnectToSession session: UISceneSession,
                options connectionOptions: UIScene.ConnectionOptions) {
-        if let activity = connectionOptions.userActivities.first(where: { $0.activityType == NSUserActivityTypeBrowsingWeb}) {
+        if let activity = connectionOptions.userActivities.first(where: { $0.activityType == NSUserActivityTypeBrowsingWeb }) {
             handleContinueUserActivity(activity)
         } else {
             handleUrlContexts(connectionOptions.urlContexts)
@@ -360,11 +358,11 @@ private extension TealiumDelegateProxy {
               let pointerValue = pointer.pointerValue else {
                   return
               }
-        
+
         let originalImplementation = unsafeBitCast(pointerValue, to: SceneWillConnectTo.self)
         _ = originalImplementation(self, methodSelector, scene, session, connectionOptions)
     }
-    
+
     @objc
     func scene(_ scene: UIScene, continueUserActivity: NSUserActivity) {
         handleContinueUserActivity(continueUserActivity)
@@ -373,11 +371,11 @@ private extension TealiumDelegateProxy {
               let pointerValue = pointer.pointerValue else {
                   return
               }
-        
+
         let originalImplementation = unsafeBitCast(pointerValue, to: SceneContinueUserActivity.self)
         _ = originalImplementation(self, methodSelector, scene, continueUserActivity)
     }
-    
+
     @objc
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         handleUrlContexts(URLContexts)
@@ -389,7 +387,7 @@ private extension TealiumDelegateProxy {
         let originalImplementation = unsafeBitCast(pointerValue, to: SceneOpenURLContexts.self)
         _ = originalImplementation(self, methodSelector, scene, URLContexts)
     }
-    
+
     func handleUrlContexts(_ urlContexts: Set<UIOpenURLContext>) {
         urlContexts.forEach { urlContext in
             TealiumDelegateProxy.log("Received Deep Link: \(urlContext.url.absoluteString)")
@@ -401,7 +399,6 @@ private extension TealiumDelegateProxy {
 // MARK: Utils
 
 private extension TealiumDelegateProxy {
-    
     func handleContinueUserActivity(_ userActivity: NSUserActivity) {
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb, let url = userActivity.webpageURL {
             TealiumDelegateProxy.log("Received Deep Link: \(url.absoluteString)")
@@ -412,7 +409,7 @@ private extension TealiumDelegateProxy {
             TealiumDelegateProxy.handleDeepLink(url, referrer: referrer)
         }
     }
-    
+
     /// Handles log messages from the App or SceneDelegate proxy
     /// - Parameter message: `String` containing the message to be logged
     static func log(_ message: String) {
@@ -421,7 +418,7 @@ private extension TealiumDelegateProxy {
             $0.config.logger?.log(logRequest)
         }
     }
-    
+
     /// Forwards deep link to each registered Tealium instance
     /// - Parameter url: `URL` of the deep link to be handled
     static func handleDeepLink(_ url: URL, referrer: Tealium.DeepLinkReferrer? = nil) {
@@ -430,6 +427,5 @@ private extension TealiumDelegateProxy {
         }
     }
 }
-
 
 #endif

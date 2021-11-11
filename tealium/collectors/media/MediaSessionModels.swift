@@ -55,11 +55,12 @@ public enum Milestone: String, CaseIterable {
     case oneHundred = "100%"
 }
 
+// swiftlint:disable identifier_name
 public enum Segment {
     case chapter(Chapter)
     case adBreak(AdBreak)
     case ad(Ad)
-    
+
     var dictionary: [String: Any]? {
         switch self {
         case .chapter(let chapter):
@@ -71,6 +72,7 @@ public enum Segment {
         }
     }
 }
+// swiftlint:enable identifier_name
 
 public enum StandardMediaEvent: String {
     case adBreakEnd = "media_adbreak_end"
@@ -117,7 +119,7 @@ public struct QoE: Codable {
     var droppedFrames: Int?
     var playbackSpeed: Double?
     var metadata: AnyCodable?
-    
+
     enum CodingKeys: String, CodingKey {
         case bitrate = "media_qoe_bitrate"
         case startTime = "media_qoe_startup_time"
@@ -126,7 +128,7 @@ public struct QoE: Codable {
         case playbackSpeed = "media_qoe_playback_speed"
         case metadata = "media_qoe_metadata"
     }
-    
+
     public init(bitrate: Int,
                 startTime: Int? = nil,
                 fps: Int? = nil,
@@ -149,7 +151,7 @@ public struct Chapter: Codable {
     var position: Int?
     var startTime: Date?
     var metadata: AnyCodable?
-    
+
     enum CodingKeys: String, CodingKey {
         case uuid = "media_chapter_uuid"
         case name = "media_chapter_name"
@@ -158,7 +160,7 @@ public struct Chapter: Codable {
         case startTime = "media_chapter_start_time"
         case metadata = "media_chapter_metadata"
     }
-    
+
     public init(name: String,
                 duration: Double? = nil,
                 position: Int? = nil,
@@ -172,6 +174,7 @@ public struct Chapter: Codable {
     }
 }
 
+// swiftlint:disable type_name
 public struct Ad: Codable {
     var uuid = UUID().uuidString
     var name: String?
@@ -188,7 +191,7 @@ public struct Ad: Codable {
     var pod: String?
     var playerName: String?
     var startTime: Date = Date()
-    
+
     enum CodingKeys: String, CodingKey {
         case uuid = "media_ad_uuid"
         case name = "media_ad_name"
@@ -205,7 +208,7 @@ public struct Ad: Codable {
         case pod = "media_ad_pod"
         case playerName = "media_ad_player_name"
     }
-    
+
     public init(name: String? = nil,
                 id: String? = nil,
                 duration: Double? = nil,
@@ -233,8 +236,9 @@ public struct Ad: Codable {
         self.pod = pod
         self.playerName = playerName
     }
-    
+
 }
+// swiftlint:enable type_name
 
 public struct AdBreak: Codable {
     var uuid = UUID().uuidString
@@ -244,7 +248,7 @@ public struct AdBreak: Codable {
     var index: Int?
     var position: Int?
     var startTime: Date = Date()
-    
+
     enum CodingKeys: String, CodingKey {
         case uuid = "media_ad_break_uuid"
         case name = "media_ad_break_name"
@@ -253,7 +257,7 @@ public struct AdBreak: Codable {
         case index = "media_ad_break_index"
         case position = "media_ad_break_position"
     }
-    
+
     public init(name: String? = nil,
                 id: String? = nil,
                 duration: Double? = nil,
@@ -265,7 +269,7 @@ public struct AdBreak: Codable {
         self.index = index
         self.position = position
     }
-    
+
 }
 
 public struct Summary: Codable {
@@ -286,7 +290,7 @@ public struct Summary: Codable {
     var percentageAdComplete: Double?
     var percentageChapterComplete: Double?
     var sessionEndTime: String?
-    
+
     // Timers and tallies for calculations
     var sessionStart = Date()
     var sessionEnd: Date?
@@ -297,8 +301,7 @@ public struct Summary: Codable {
     var chapterStarts = 0
     var chapterEnds = 0
     var adEnds = 0
-    
-    
+
     enum CodingKeys: String, CodingKey {
         case sessionStartTime = "media_session_start_time"
         case plays = "media_total_plays"
@@ -319,7 +322,4 @@ public struct Summary: Codable {
         case sessionEndTime = "media_session_end_time"
     }
 
-    
 }
-
-

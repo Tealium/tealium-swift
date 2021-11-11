@@ -12,24 +12,24 @@ import TealiumCore
 #endif
 
 public class MediaModule: Collector {
-    
+
     public var id: String = "Media"
     public var config: TealiumConfig
-    public var data: [String : Any]?
+    public var data: [String: Any]?
     weak var delegate: ModuleDelegate?
     var activeSessions = [MediaSession]()
-    
+
     public required init(context: TealiumContext,
                          delegate: ModuleDelegate?,
                          diskStorage: TealiumDiskStorageProtocol?,
-                         completion: ((Result<Bool, Error>, [String : Any]?)) -> Void) {
+                         completion: ((Result<Bool, Error>, [String: Any]?)) -> Void) {
         self.config = context.config
         self.delegate = delegate
         #if !os(tvOS) && !os(macOS)
         Tealium.lifecycleListeners.addDelegate(delegate: self)
         #endif
     }
-    
+
     /// Creates a `MediaSession` for a given tracking type
     /// - Parameter media: `MediaCollection` containing meta information
     /// - Returns: `MediaSession` type
@@ -38,18 +38,18 @@ public class MediaModule: Collector {
         activeSessions.append(session)
         return session
     }
-    
+
 }
 #if !os(tvOS) && !os(macOS)
 extension MediaModule: TealiumLifecycleEvents {
-    
+
     #if os(iOS)
     class var sharedApplication: UIApplication? {
         let selector = NSSelectorFromString("sharedApplication")
         return UIApplication.perform(selector)?.takeUnretainedValue() as? UIApplication
     }
     #endif
-    
+
     public func sleep() {
         guard config.enableBackgroundMediaTracking else {
             return
@@ -64,7 +64,7 @@ extension MediaModule: TealiumLifecycleEvents {
                     backgroundTaskId = .invalid
                 }
             }
-                        
+
             TealiumQueues.backgroundSerialQueue.asyncAfter(deadline:
                                                 .now() + config.backgroundMediaAutoEndSessionTime) {
                 self.sendEndSessionInBackground(session)
@@ -91,7 +91,7 @@ extension MediaModule: TealiumLifecycleEvents {
             #endif
         }
     }
-    
+
     public func wake() {
         guard config.enableBackgroundMediaTracking else {
             return
@@ -101,7 +101,7 @@ extension MediaModule: TealiumLifecycleEvents {
         }
     }
     public func launch(at date: Date) { }
-    
+
     func sendEndSessionInBackground(_ session: MediaSession) {
         if !session.backgroundStatusResumed {
             session.endSession()

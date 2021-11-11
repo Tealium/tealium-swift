@@ -24,27 +24,26 @@ public extension Tealium {
 }
 
 public class JSONLoader {
-    
+
     enum JSONLoaderError: String, LocalizedError {
-        
+
         case invalidURL = "URL is invalid."
         case noURL = "URL is empty."
         case noJSON = "JSON is empty."
         case fileNotFound = "File does not exist."
         case couldNotDecode = "Could not decode JSON."
         case couldNotRetrieve = "Could not retrieve JSON."
-        
         public var errorDescription: String? {
             return self.rawValue
         }
     }
-    
+
     fileprivate init() {}
-    
+
     public static func fromFile<T: Codable>(_ file: String,
-                         bundle: Bundle,
-                         logger: TealiumLoggerProtocol? = nil) throws -> T {
-        
+                                            bundle: Bundle,
+                                            logger: TealiumLoggerProtocol? = nil) throws -> T {
+
         guard let path = bundle.path(forResource: file.replacingOccurrences(of: ".json", with: ""),
                                      ofType: "json") else {
             throw JSONLoaderError.fileNotFound
@@ -57,7 +56,7 @@ public class JSONLoader {
         }
         return converted
     }
-    
+
     public static func fromURL<T: Codable>(url: String,
                                            logger: TealiumLoggerProtocol? = nil) throws -> T {
         guard !url.isEmpty else {
@@ -75,10 +74,9 @@ public class JSONLoader {
         }
         return converted
     }
-    
-    
+
     public static func fromString<T: Codable>(json: String,
-                                       logger: TealiumLoggerProtocol? = nil) throws -> T {
+                                              logger: TealiumLoggerProtocol? = nil) throws -> T {
         guard !json.isEmpty else {
             throw JSONLoaderError.noJSON
         }
@@ -88,7 +86,4 @@ public class JSONLoader {
         }
         return converted
     }
-    
-    
-    
 }

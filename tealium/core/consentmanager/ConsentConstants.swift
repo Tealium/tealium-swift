@@ -46,7 +46,7 @@ public enum TealiumConsentCategories: String, Codable {
     case misc = "misc"
 
     /// Converts a string array of consent categories to an array of TealiumConsentCategories.
-    ///￼
+    /// ￼
     /// - Parameter categories: `[String]` of consent categories
     /// - Returns: `[TealiumConsentCategories]`
     public static func consentCategoriesStringArrayToEnum(_ categories: [String]) -> [TealiumConsentCategories] {

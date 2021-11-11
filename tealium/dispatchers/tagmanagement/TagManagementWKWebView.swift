@@ -66,7 +66,7 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
     }
 
     /// Sets a root view for `WKWebView` to be attached to. Only required for complex view hierarchies.
-    ///￼
+    /// ￼
     /// - Parameters:
     ///     - view: `UIView` instance for WKWebView to be attached to
     /// - returns: a success `Bool`, true if the webview was successfully attached
@@ -78,7 +78,7 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
     }
 
     /// Adds optional delegates to the WebView instance.
-    ///￼
+    /// ￼
     /// - Parameter delegates: `[WKNavigationDelegate]` Array of delegates
     func setWebViewDelegates(_ delegates: [WKNavigationDelegate]) {
         delegates.forEach {
@@ -87,7 +87,7 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
     }
 
     /// Removes optional delegates for the WebView instance.
-    ///￼
+    /// ￼
     /// - Parameter delegates: `[WKNavigationDelegate]` Array of delegates
     func removeWebViewDelegates(_ delegates: [WKNavigationDelegate]) {
         delegates.forEach {
@@ -96,7 +96,7 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
     }
 
     /// Configures an instance of WKWebView for later use.
-    ///￼
+    /// ￼
     /// - Parameters:
     ///    - url: `URL` (typically for mobile.html) to load in the webview
     ///    - specificView: `UIView?` to attach to
@@ -241,7 +241,7 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
     }
 
     /// Called by the WKWebView delegate when the page finishes loading.
-    ///￼
+    /// ￼
     /// - Parameters:
     ///     - state: `WebViewState` -  The webview state after the state change
     ///     - error: `Error?`

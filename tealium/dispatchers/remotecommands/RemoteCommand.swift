@@ -41,7 +41,7 @@ open class RemoteCommand: RemoteCommandProtocol {
     }
 
     /// Called when a Remote Command is ready for execution.
-    ///￼
+    /// ￼
     /// - Parameter response: `RemoteCommandResponse` object containing information from the TiQ webview
     public func completeWith(response: RemoteCommandResponseProtocol) {
         TealiumQueues.backgroundSerialQueue.async { [weak self] in
@@ -197,6 +197,6 @@ open class RemoteCommand: RemoteCommandProtocol {
             }
         }
     }
-    
+
 }
 #endif

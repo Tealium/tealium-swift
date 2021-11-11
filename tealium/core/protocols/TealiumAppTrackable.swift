@@ -24,7 +24,7 @@ public extension View {
                 didOpenUrl(url: url)
             }
     }
-    
+
     private func didOpenUrl(url: URL) {
         TealiumInstanceManager.shared.didOpenUrl(url)
     }

@@ -20,8 +20,8 @@ public class TealiumQueues {
                                                             attributes: [],
                                                             autoreleaseFrequency: .inherit,
                                                             target: .global(qos: .utility))
-    
-    public static func secureMainThreadExecution(of work: @escaping () -> ()) {
+
+    public static func secureMainThreadExecution(of work: @escaping () -> Void) {
         if Thread.isMainThread {
             work()
         } else {
@@ -29,5 +29,3 @@ public class TealiumQueues {
         }
     }
 }
-
-

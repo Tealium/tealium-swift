@@ -4,7 +4,6 @@
 //
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
-
 import Foundation
 #if os(iOS)
 import UIKit
@@ -18,7 +17,7 @@ public class AutotrackingModule: Collector {
 
     @ToAnyObservable(TealiumBufferedSubject(bufferSize: 10))
     static var onAutoTrackView: TealiumObservable<String>
-    
+
     public let id: String = TealiumAutotrackingKey.moduleName
     public var data: [String: Any]?
     weak var delegate: ModuleDelegate?
@@ -29,10 +28,10 @@ public class AutotrackingModule: Collector {
     var disposeBag = TealiumDisposeBag()
     var blockList: [String]?
     var blockListBundle = Bundle.main
-    
+
     @ToAnyObservable(TealiumReplaySubject())
     private var onReady: TealiumObservable<Void>
-    
+
     /// Initializes the module
     ///
     /// - Parameter context: `TealiumContext` instance
@@ -48,7 +47,6 @@ public class AutotrackingModule: Collector {
         self.config = context.config
         loadBlocklist()
         self.autotrackingDelegate = config.autoTrackingCollectorDelegate
-        
         TealiumQueues.secureMainThreadExecution {
             AutotrackingModule.onAutoTrackView.subscribe { [weak self] viewName in
                 self?.requestViewTrack(viewName: viewName)
@@ -73,18 +71,18 @@ public class AutotrackingModule: Collector {
 
             var data: [String: Any] = [TealiumDataKey.event: viewName,
                                        TealiumDataKey.autotracked: "true"]
-            
+
             if let autotrackingDelegate = self.autotrackingDelegate {
                 data += autotrackingDelegate.onCollectScreenView(screenName: viewName)
             }
 
             let view = TealiumView(viewName, dataLayer: data)
-            
+
             self.context.track(view)
             self.lastEvent = viewName
         }
     }
-    
+
     func shouldBlock(_ eventName: String) -> Bool {
         guard let blockList = blockList else {
             return false
@@ -109,7 +107,9 @@ public class AutotrackingModule: Collector {
                 }
             } catch let error {
                 if let error = error as? LocalizedError {
-                    let logRequest = TealiumLogRequest(title: "Auto Tracking", message: "BlockList could not be loaded. Error: \(error.localizedDescription)", info: nil, logLevel: .error, category: .general)
+                    let logRequest = TealiumLogRequest(title: "Auto Tracking",
+                                                       message: "BlockList could not be loaded. Error: \(error.localizedDescription)",
+                                                       info: nil, logLevel: .error, category: .general)
                     self.context.log(logRequest)
                 }
             }
@@ -118,9 +118,9 @@ public class AutotrackingModule: Collector {
             }
         }
     }
-    
+
     static func autoTrackView(viewName: String) {
         _onAutoTrackView.publish(viewName)
     }
-    
+
 }

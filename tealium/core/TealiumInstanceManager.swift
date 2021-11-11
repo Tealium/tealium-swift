@@ -12,7 +12,7 @@ public class TealiumInstanceManager {
     public lazy var tealiumInstances = [String: Tealium]()
 
     public static var shared = TealiumInstanceManager()
-    
+
     @ToAnyObservable(TealiumReplaySubject(cacheSize: 10))
     var onOpenUrl: TealiumObservable<URL>
 
@@ -57,7 +57,7 @@ public class TealiumInstanceManager {
     func generateInstanceKey(for config: TealiumConfig) -> String {
         return "\(config.account).\(config.profile).\(config.environment)"
     }
-    
+
     func didOpenUrl(_ url: URL) {
         _onOpenUrl.publish(url)
     }

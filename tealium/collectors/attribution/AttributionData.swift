@@ -104,7 +104,7 @@ public class AttributionData: AttributionDataProtocol {
     // swiftlint:disable cyclomatic_complexity
     func appleSearchAdsData(_ completion: @escaping (PersistentAttributionData) -> Void) {
         var appleAttributionDetails = PersistentAttributionData()
-        let completionHander = { (details: [String: NSObject]?, error: Error?) in
+        let completionHander = { (details: [String: NSObject]?, _: Error?) in
             // closure callback
             if let detailsDict = details?[AppleInternalKeys.objectVersion] as? [String: Any] {
                 if let clickedWithin30D = detailsDict[AppleInternalKeys.attribution] as? String {

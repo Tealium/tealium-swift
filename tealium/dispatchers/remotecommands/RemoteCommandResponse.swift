@@ -33,7 +33,7 @@ public class RemoteCommandResponse: RemoteCommandResponseProtocol, CustomStringC
     }
 
     /// Allows initialization from a String representing a valid URL
-    ///￼
+    /// ￼
     /// - Parameter urlString: `String` representing a valid URL with which to initialize a RemoteCommandResponse
     public convenience init?(urlString: String) {
         guard let url = URL(string: urlString) else {
@@ -45,7 +45,7 @@ public class RemoteCommandResponse: RemoteCommandResponseProtocol, CustomStringC
 
     /// Constructor for a Tealium Remote Command. Fails if the request was not
     /// formatted correctly for remote command use.
-    ///￼
+    /// ￼
     /// - Parameter request: `URLRequest` object with which to initialize a RemoteCommandResponse
     public init?(request: URLRequest) {
         self.urlRequest = request
@@ -58,7 +58,7 @@ public class RemoteCommandResponse: RemoteCommandResponseProtocol, CustomStringC
     }
 
     /// Extracts variables from a URLRequest and returns a dictionary
-    ///￼
+    /// ￼
     /// - Parameter request: `URLRequest` containing valid data with which to form a RemoteCommandResponse
     /// - Returns: `[String: Any]?` containing key-value pairs to add to the RemoteCommandResponse
     func requestData(from request: URLRequest) -> [String: Any]? {
@@ -72,7 +72,7 @@ public class RemoteCommandResponse: RemoteCommandResponseProtocol, CustomStringC
 
     /// Extracts the config data from requestData.
     /// Config usually contains response_id, used to call back to the WebView/Tag Management module.
-    ///￼
+    /// ￼
     /// - Parameter requestData: `[String: Any]` representation of a Remote Command response coming from the WebView/Tag Management module
     /// - Returns: `[String: Any]?` containing config data for this Remote Command
     public func configData(from requestData: [String: Any]) -> [String: Any]? {
@@ -84,7 +84,7 @@ public class RemoteCommandResponse: RemoteCommandResponseProtocol, CustomStringC
 
     /// Extracts the payload data from requestData.
     /// Payload usually contains custom data passed back from the WebView/Tag Management module.
-    ///￼
+    /// ￼
     /// - Parameter requestData: `[String: Any]` representation of a Remote Command response coming from the WebView/Tag Management module
     /// - Returns: `[String: Any]?` containing payload data for this Remote Command
     public func payload(from requestData: [String: Any]) -> [String: Any]? {
@@ -118,7 +118,7 @@ public class RemoteCommandResponse: RemoteCommandResponseProtocol, CustomStringC
     }
 
     /// Converts a JSON string into a dictionary
-    ///￼
+    /// ￼
     /// - Parameter string: `String` representing a JSON object
     /// - Returns: `[String: Any]?`
     func dictionary(from string: String) -> [String: Any]? {
@@ -129,7 +129,7 @@ public class RemoteCommandResponse: RemoteCommandResponseProtocol, CustomStringC
     }
 
     /// Gets the query parameters from a URLRequest
-    ///￼
+    /// ￼
     /// - Parameter request: `URLRequest`
     /// - Returns: `[String: Any]?` containing query parameters, if present.
     func parameters(from request: URLRequest) -> [String: Any]? {

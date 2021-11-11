@@ -158,7 +158,7 @@ public class LifecycleModule: Collector {
         let dispatch = TealiumEvent(title, dataLayer: data)
         delegate?.requestTrack(dispatch.trackRequest)
     }
-    
+
     deinit {
         Tealium.lifecycleListeners.removeAll()
     }

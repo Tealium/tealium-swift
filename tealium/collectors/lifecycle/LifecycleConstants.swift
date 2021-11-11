@@ -10,7 +10,6 @@ import Foundation
 import TealiumCore
 #endif
 
-
 public extension TealiumDataKey {
     static let migratedLifecycle = "migrated_lifecycle"
     static let lifecycleAutotracked = "autotracked"
@@ -49,7 +48,7 @@ public enum LifecycleKey {
 
     static let moduleName = "lifecycle"
     static let defaultSessionsSize = 20
-    
+
     enum Session {
         static let wakeDate = "wake"
         static let sleepDate = "sleep"

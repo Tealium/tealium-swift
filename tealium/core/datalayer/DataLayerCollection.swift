@@ -60,7 +60,7 @@ public extension Set where Element == DataLayerItem {
         }
         return newDataLayer
     }
-    
+
     mutating func removeSessionData() {
         let sessionData = self.filter { $0.isSession }
         for key in sessionData.map({ $0.key }) {
@@ -114,7 +114,8 @@ public struct DataLayerItem: Codable, Hashable {
         value = decoded.value
         expires = try values.decode(Date.self, forKey: .expires)
         key = try values.decode(String.self, forKey: .key)
-        isSession = try values.decodeIfPresent(Bool.self, forKey: .isSession) ?? false // values added by previous version may not have isSession in the storage the first time they launched after the update from version <= 2.4.5
+        // values added by previous version may not have isSession in the storage the first time they launched after the update from version <= 2.4.5
+        isSession = try values.decodeIfPresent(Bool.self, forKey: .isSession) ?? false
     }
 
     public init(key: String,

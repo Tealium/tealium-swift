@@ -60,7 +60,7 @@ public extension TealiumConfig {
         }
 
         set {
-            options[TealiumConfigKey.allCommands]  = newValue
+            options[TealiumConfigKey.allCommands] = newValue
         }
     }
 
@@ -128,7 +128,7 @@ extension URLRequest {
 }
 
 public extension String {
-    
+
     /// Adds the key _cb= to the end of the url with a random number to clear the cached file from the CDN
     var cacheBuster: String {
         return ("\(self)?_cb=\(Int.random(in: 1...10_000))")

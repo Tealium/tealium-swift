@@ -27,24 +27,24 @@ public class TimedEventScheduler: Schedulable {
         self.context = context
         self.events = events
     }
-    
-    public func shouldQueue(request: TealiumRequest) -> (Bool, [String : Any]?) {
-        
+
+    public func shouldQueue(request: TealiumRequest) -> (Bool, [String: Any]?) {
+
         guard let dispatch = request as? TealiumTrackRequest else {
             return(false, nil)
         }
-        
+
         guard let triggers = context.config.timedEventTriggers else {
             return (false, nil)
         }
-        
+
         guard let event = dispatch.event else {
             return (false, nil)
         }
-        
+
         triggers.forEach { trigger in
             let name = "\(trigger.start)::\(trigger.end)"
-            if event == trigger.start  {
+            if event == trigger.start {
                 self.start(event: trigger.name ?? name)
             } else if event == trigger.end {
                 guard let event = self.stop(event: name) else {
@@ -53,18 +53,18 @@ public class TimedEventScheduler: Schedulable {
                 self.sendTimedEvent(event)
             }
         }
-        
+
         return (false, nil)
     }
-    
+
     public func shouldDrop(request: TealiumRequest) -> Bool {
         return false
     }
-    
+
     public func shouldPurge(request: TealiumRequest) -> Bool {
         return false
     }
-    
+
     public func start(event name: String,
                       with data: [String: Any]? = [String: Any]()) {
         let timedEvent = TimedEvent(name: name, data: data)
@@ -74,7 +74,7 @@ public class TimedEventScheduler: Schedulable {
         }
         events[name] = timedEvent
     }
-    
+
     public func stop(event name: String) -> TimedEvent? {
         guard var timedEvent = events[name] else {
             log(message: "Event not found")
@@ -84,22 +84,22 @@ public class TimedEventScheduler: Schedulable {
         events[name] = timedEvent
         return timedEvent
     }
-    
+
     public func sendTimedEvent(_ event: TimedEvent) {
         events[event.name] = nil
         let dispatch = TealiumEvent(TealiumValue.timedEvent,
                                     dataLayer: event.eventInfo)
         context.track(dispatch)
     }
-    
+
     public func cancel(event name: String) {
         events[name] = nil
     }
-    
+
     public func clearAll() {
         events.removeAll()
     }
-    
+
     private func log(message: String,
                      level: TealiumLogLevel = .error) {
         let request = TealiumLogRequest(title: "Timed Events",
@@ -108,5 +108,5 @@ public class TimedEventScheduler: Schedulable {
                                         category: .general)
         context.config.logger?.log(request)
     }
-    
+
 }

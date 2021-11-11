@@ -30,10 +30,10 @@ public extension TealiumConfig {
             return weakDelegates?.compactMap { $0.value }
         }
         set {
-            options[TealiumConfigKey.tagManagementDelegate] = newValue?.map{ Weak(value: $0)}
+            options[TealiumConfigKey.tagManagementDelegate] = newValue?.map { Weak(value: $0) }
         }
     }
-    
+
     /// Optionally sets a `WKProcessPool` for the Tealium WKWebView to use.
     /// Required if multiple webviews are in use; prevents issues with cookie setting.
     /// A singleton WKProcessPool instance should be passed that is used for all `WKWebView`s in your app.
@@ -46,7 +46,7 @@ public extension TealiumConfig {
             options[TealiumConfigKey.processPool] = newValue
         }
     }
-    
+
     /// Optionally sets a `WKWebViewConfiguration` for the Tealium WKWebView to use.
     /// Not normally required, but provides some additional customization options if requred.
     var webviewConfig: WKWebViewConfiguration {
@@ -106,7 +106,7 @@ public extension Tealium {
     }
 
     /// Sets a new root view for `WKWebView` to be attached to. Only required for complex view hierarchies.
-    ///￼
+    /// ￼
     /// - Parameter view: `UIView` instance for `WKWebView` to be attached to
     func updateRootView(_ view: UIView) {
         self.tagManagement?.setRootView(view)

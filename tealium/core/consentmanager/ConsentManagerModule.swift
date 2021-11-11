@@ -61,7 +61,7 @@ class ConsentManagerModule: DispatchValidator {
         if request.containsAuditEvent {
             return (false, consentData)
         }
-        
+
         switch consentManager?.trackingStatus {
         case .trackingQueued:
             consentData[TealiumDataKey.queueReason] = ConsentKey.moduleName
@@ -101,13 +101,13 @@ class ConsentManagerModule: DispatchValidator {
         return consentManager?.trackingStatus == .trackingForbidden
     }
 
-    func getConsentData() -> [String:Any] {
+    func getConsentData() -> [String: Any] {
         if let consentDictionary = consentManager?.currentPolicy.policyTrackingData {
             return consentDictionary
         }
         return [:]
     }
-    
+
     /// Checks if the consent selections are expired
     /// If so, resets consent preferences and triggers optional callback
     public func expireConsent() {

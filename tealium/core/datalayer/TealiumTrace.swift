@@ -22,16 +22,16 @@ public extension DataLayer {
 }
 
 public extension Tealium {
-    
+
     enum DeepLinkReferrer {
         case url(_ url: URL)
         case app(_ identifier: String)
-        
+
         public static func fromUrl(_ url: URL?) -> Self? {
             guard let url = url else { return nil }
             return .url(url)
         }
-        
+
         public static func fromAppId(_ identifier: String?) -> Self? {
             guard let id = identifier else { return nil }
             return .app(id)
@@ -56,8 +56,13 @@ public extension Tealium {
         guard let traceId = dataLayer.all[TealiumDataKey.traceId] as? String else {
             return
         }
+        let dataLayer = [
+            TealiumDataKey.killVisitorSessionEvent: TealiumKey.killVisitorSession,
+            TealiumDataKey.eventType: TealiumKey.killVisitorSession,
+            TealiumDataKey.traceId: traceId
+        ]
         let dispatch = TealiumEvent(TealiumKey.killVisitorSession,
-                                    dataLayer: [TealiumDataKey.killVisitorSessionEvent: TealiumKey.killVisitorSession, TealiumDataKey.eventType: TealiumKey.killVisitorSession, TealiumDataKey.traceId: traceId])
+                                    dataLayer: dataLayer)
         self.track(dispatch)
     }
 

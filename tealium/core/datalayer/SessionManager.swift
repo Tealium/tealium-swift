@@ -45,7 +45,7 @@ public extension DataLayer {
         newTrackRequest()
         sessionId = existingSessionId
     }
-    
+
     func newTrackRequest() {
         let current = Date()
         if let lastTrackDate = lastTrackDate {

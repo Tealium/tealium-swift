@@ -18,17 +18,17 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     var logger: TealiumLoggerProtocol? {
         config.logger
     }
-    
+
     var geofenceTrackingEnabled: Bool {
         config.geofenceTrackingEnabled && !geofences.isEmpty
     }
-    
+
     var locationManager: LocationManagerProtocol
     var geofences = [Geofence]()
     weak var locationDelegate: LocationDelegate?
     public var locationAccuracy: String = LocationKey.highAccuracy
     private var _lastLocation: CLLocation?
-    
+
     @ToAnyObservable(TealiumReplaySubject())
     var onReady: TealiumObservable<Void>
 
@@ -98,7 +98,7 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
             locationManager.requestWhenInUseAuthorization()
         }
     }
-    
+
     /// Prompts the user to enable permission for location servies
     public func requestWhenInUseAuthorization() {
         let authorizationStatus = type(of: locationManager).self.authorizationStatus()
@@ -238,12 +238,12 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
         guard geofenceTrackingEnabled else {
             return
         }
-        
+
         // Check we are actively monitoring for this geofence and it didn't come from another SDK
         guard isMonitoredByModule(region: region) else {
             return
         }
-        
+
         var data = [String: Any]()
         data[TealiumDataKey.geofenceName] = "\(region.identifier)"
         data[TealiumDataKey.geofenceTransition] = "\(triggeredTransition)"
@@ -336,23 +336,23 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
 
     /// Removes all geofences that are currently being monitored from the Location Client
     public func clearMonitoredGeofences() {
-        
+
         locationManager.monitoredRegions.forEach { region in
             // Check we are actively monitoring for this geofence and it didn't come from another SDK
             guard isMonitoredByModule(region: region) else {
                 return
             }
-            
+
             locationManager.stopMonitoring(for: region)
         }
     }
-    
+
     /// Checks if a region is currently being monitored
     func isMonitoredByModule(region: CLRegion) -> Bool {
         guard let createdGeofences = createdGeofences else {
             return false
         }
-        return createdGeofences.contains(where: {$0 == region.identifier})
+        return createdGeofences.contains(where: { $0 == region.identifier })
     }
 
     /// Stops location updates, Removes all active geofences from being monitored,

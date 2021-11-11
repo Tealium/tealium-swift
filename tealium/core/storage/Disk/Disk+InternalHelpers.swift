@@ -25,6 +25,7 @@ import Foundation
 extension Disk {
     /// Create and returns a URL constructed from specified directory/path
     // swiftlint:disable function_body_length
+    // swiftlint:disable cyclomatic_complexity
     static func createURL(for path: String?, in directory: Directory) throws -> URL {
         let filePrefix = "file://"
         var validPath: String?
@@ -49,7 +50,10 @@ extension Disk {
                 if url.absoluteString.lowercased().prefix(filePrefix.count) != filePrefix {
                     let fixedUrl = filePrefix + url.absoluteString
                     guard let castUrl = URL(string: fixedUrl) else {
-                        throw createError(.couldNotAccessSharedContainer, description: "Could not cast to URL.", failureReason: "Could not cast the path to a URL.", recoverySuggestion: "Make sure the path is valid.")
+                        throw createError(.couldNotAccessSharedContainer,
+                                          description: "Could not cast to URL.",
+                                          failureReason: "Could not cast the path to a URL.",
+                                          recoverySuggestion: "Make sure the path is valid.")
                     }
                     url = castUrl
                 }
@@ -75,7 +79,10 @@ extension Disk {
                 if url.absoluteString.lowercased().prefix(filePrefix.count) != filePrefix {
                     let fixedUrlString = filePrefix + url.absoluteString
                     guard let castUrl = URL(string: fixedUrlString) else {
-                        throw createError(.couldNotAccessSharedContainer, description: "Could not cast to URL.", failureReason: "Could not cast the path to a URL.", recoverySuggestion: "Make sure the path is valid.")
+                        throw createError(.couldNotAccessSharedContainer,
+                                          description: "Could not cast to URL.",
+                                          failureReason: "Could not cast the path to a URL.",
+                                          recoverySuggestion: "Make sure the path is valid.")
                     }
                     url = castUrl
                 }
@@ -96,7 +103,10 @@ extension Disk {
             if url.absoluteString.lowercased().prefix(filePrefix.count) != filePrefix {
                 let fixedUrlString = filePrefix + url.absoluteString
                 guard let castUrl = URL(string: fixedUrlString) else {
-                    throw createError(.couldNotAccessSharedContainer, description: "Could not cast to URL.", failureReason: "Could not cast the path to a URL.", recoverySuggestion: "Make sure the path is valid.")
+                    throw createError(.couldNotAccessSharedContainer,
+                                      description: "Could not cast to URL.",
+                                      failureReason: "Could not cast the path to a URL.",
+                                      recoverySuggestion: "Make sure the path is valid.")
                 }
                 url = castUrl
             }
@@ -111,6 +121,7 @@ extension Disk {
         }
     }
     // swiftlint:enable function_body_length
+    // swiftlint:enable cyclomatic_complexity
 
     /// Find an existing file's URL or throw an error if it doesn't exist
     static func getExistingFileURL(for path: String?, in directory: Directory) throws -> URL {

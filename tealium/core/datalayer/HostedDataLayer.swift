@@ -205,7 +205,7 @@ class HostedDataLayerRetriever: HostedDataLayerRetrieverProtocol {
             }
         }.resume()
     }
-    
+
     deinit {
         session.finishTealiumTasksAndInvalidate()
     }

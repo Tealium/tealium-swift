@@ -1,15 +1,21 @@
 included:
-  - ../tealium
+  - ./tealium
 excluded:
-  - Tests/SwiftLintFrameworkTests/Resources
-  - ../tealium/core/DiskStorage/Disk/
-  - ../tealium/core/AnyCodable/
-  - ../tealium/core/CoreUtils/Data+Gzip.swift
+  - ./builder/Tests/SwiftLintFrameworkTests/Resources
+  - ./tealium/core/DiskStorage/Disk/
+  - ./tealium/core/utils/AnyCodable/
+  - ./tealium/core/utils/Data+Gzip/
+  - ./builder/iOSTealiumMediaTest/
+  - ./builder/iOSTealiumTest/
+  - ./builder/macOSTealiumTest/
+  - ./builder/tvOSTealiumTest/
 disabled_rules:
   - trailing_comma
   - unused_optional_binding
   - file_header
 opt_in_rules:
+  - file_length
+  - force_unwrapping
   - explicit_init
   - closure_spacing
   - overridden_super_call
@@ -32,20 +38,16 @@ opt_in_rules:
   - literal_expression_end_indentation
   - number_separator
 
-file_header:
-  required_pattern: |
-                    \/\/
-                    \/\/  SWIFTLINT_CURRENT_FILENAME
-                    \/\/  tealium-swift
-                    \/\/
-                    \/\/  Created by .*? on \d{1,2}\/\d{1,2}\/\d{2}\.
-                    \/\/  Copyright © \d{4} Tealium\, Inc\. All rights reserved\.
-                    \/\/
+file_length:
+  warning: 500
 identifier_name:
   excluded:
     - id
   severity: warning
-line_length: 200
+line_length: 
+    warning: 200
+    error: 500
+    ignores_comments: true
 number_separator:
   minimum_length: 5
 large_tuple: 4

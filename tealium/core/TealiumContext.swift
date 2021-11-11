@@ -36,7 +36,7 @@ public struct TealiumContext: Hashable, TealiumContextProtocol {
     public func track(_ dispatch: TealiumDispatch) {
         self.tealium?.track(dispatch)
     }
-    
+
     public func log(_ logRequest: TealiumLogRequest) {
         self.config.logger?.log(logRequest)
     }

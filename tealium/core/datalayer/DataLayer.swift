@@ -127,11 +127,12 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
     public func add(data: [String: Any],
                     expiry: Expiry = .session) {
         TealiumQueues.backgroundConcurrentQueue.write {
-            let dataToInsert: [String:Any]
+            let dataToInsert: [String: Any]
             switch expiry {
             case .untilRestart:
                 self.restartData += data
-                dataToInsert = self.restartData // Adding this to the persistent storage will trigger a new clean of expired entries and save, and eventually remove entries with the same id but higher expiry date
+                // Adding this to the persistent storage will trigger a new clean of expired entries and save, and eventually remove entries with the same id but higher expiry date
+                dataToInsert = self.restartData
             default:
                 dataToInsert = data
             }
@@ -178,5 +179,5 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
     deinit {
         sessionStarter.urlSession.finishTealiumTasksAndInvalidate()
     }
-    
+
 }

@@ -13,11 +13,11 @@ import CoreTelephony
 import Foundation
 
 extension DeviceData {
-    
+
     #if os(iOS) && !targetEnvironment(macCatalyst)
     private static let networkInfo = CTTelephonyNetworkInfo()
     #endif
-    
+
     /// - Returns: `[String: String]` containing current network carrier info
     class var carrierInfo: [String: String] {
         // only available on iOS

@@ -20,7 +20,9 @@ public protocol MediaSessionEvents {
     func endSeek(at position: Double?)
     func startAdBreak(_ adBreak: AdBreak)
     func endAdBreak()
+    // swiftlint:disable identifier_name
     func startAd(_ ad: Ad)
+    // swiftlint:enable identifier_name
     func clickAd()
     func skipAd()
     func endAd()

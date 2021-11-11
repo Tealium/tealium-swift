@@ -52,13 +52,12 @@ class GeofenceProvider {
     }
     private let bundle: Bundle
     private let config: TealiumConfig
-    
     init(config: TealiumConfig, bundle: Bundle) {
         self.config = config
         self.bundle = bundle
     }
-    
-    func getGeofencesAsync(completion: @escaping ([Geofence]) -> ()) {
+
+    func getGeofencesAsync(completion: @escaping ([Geofence]) -> Void) {
         guard config.initializeGeofenceDataFrom != nil else {
             completion([])
             return
@@ -70,7 +69,7 @@ class GeofenceProvider {
             }
         }
     }
-    
+
     private func getGeofences() -> [Geofence] {
         do {
             let geofenceData = try fetchGeofences()
@@ -82,7 +81,7 @@ class GeofenceProvider {
             return []
         }
     }
-    
+
     private func fetchGeofences() throws -> [Geofence] {
         guard let locationConfig = config.initializeGeofenceDataFrom else {
             return []
@@ -96,12 +95,12 @@ class GeofenceProvider {
             return try JSONLoader.fromURL(url: self.url(from: config))
         }
     }
-    
+
     /// Builds a URL from a Tealium config pointing to a hosted JSON file on the Tealium DLE
     private func url(from config: TealiumConfig) -> String {
         return "\(LocationKey.dleBaseUrl)\(config.account)/\(config.profile)/\(LocationKey.fileName).json"
     }
-    
+
     func filter(geofences: [Geofence]) -> [Geofence] {
         return geofences.filter {
             $0.name.count > 0
@@ -110,7 +109,7 @@ class GeofenceProvider {
                 && $0.radius > 0
         }
     }
-    
+
     /// Logs verbose information about events occuring in the `TealiumLocation` module
     /// - Parameter message: `String` message to log to the console
     func logError(message: String) {
@@ -128,7 +127,7 @@ class GeofenceProvider {
                                            logLevel: .debug, category: .general)
         logger?.log(logRequest)
     }
-    
+
 }
 #else
 #endif

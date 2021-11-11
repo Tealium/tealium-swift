@@ -59,9 +59,7 @@ public class ModulesManager {
             dataLayerManager as? SessionManagerProtocol
         }
         // swiftlint:disable unused_setter_value
-        set {
-
-        }
+        set { }
         // swiftlint:enable unused_setter_value
     }
     var logger: TealiumLoggerProtocol?
@@ -98,7 +96,7 @@ public class ModulesManager {
             }
         }
     }
-    private var cachedTrackData: [String:Any]?
+    private var cachedTrackData: [String: Any]?
     var context: TealiumContext
 
     init (_ context: TealiumContext,
@@ -153,23 +151,6 @@ public class ModulesManager {
         self.setupDispatchers(config: config)
     }
 
-    func addCollector(_ collector: Collector) {
-        if let listener = collector as? DispatchListener {
-            addDispatchListener(listener)
-        }
-
-        if let dispatchValidator = collector as? DispatchValidator {
-            addDispatchValidator(dispatchValidator)
-        }
-
-        guard collectors.first(where: {
-            type(of: $0) == type(of: collector)
-        }) == nil else {
-            return
-        }
-        collectors.append(collector)
-    }
-
     func addDispatchListener(_ listener: DispatchListener) {
         guard dispatchListeners.first(where: {
             type(of: $0) == type(of: listener)
@@ -188,68 +169,6 @@ public class ModulesManager {
         dispatchValidators.append(validator)
     }
 
-    func addDispatcher(_ dispatcher: Dispatcher) {
-        guard dispatchers.first(where: {
-            type(of: $0) == type(of: dispatcher)
-        }) == nil else {
-            return
-        }
-        dispatchers.append(dispatcher)
-    }
-
-    func setupCollectors(config: TealiumConfig) {
-        collectorTypes.forEach { collector in
-            if collector == ConnectivityModule.self {
-                addCollector(connectivityManager)
-                return
-            }
-
-            let collector = collector.init(context: context, delegate: self, diskStorage: nil) { _, _  in
-
-            }
-
-            addCollector(collector)
-        }
-    }
-
-    func setupDispatchers(config: TealiumConfig) {
-        self.config.dispatchers?.forEach { dispatcherType in
-            let dispatcherTypeDescription = String(describing: dispatcherType)
-
-            if dispatcherTypeDescription.contains(ModuleNames.tagmanagement) {
-                if config.isTagManagementEnabled == false {
-                    return
-                }
-                self.sessionManager?.isTagManagementEnabled = true
-            }
-
-            if dispatcherTypeDescription.contains(ModuleNames.collect),
-               config.isCollectEnabled == false {
-                return
-            }
-
-            let dispatcher = dispatcherType.init(config: config, delegate: self) { result, _ in
-                switch result {
-                case .failure:
-                    print("log error")
-                default:
-                    break
-                }
-            }
-
-            self.addDispatcher(dispatcher)
-        }
-        if self.dispatchers.isEmpty {
-            let logRequest = TealiumLogRequest(title: ModulesManagerLogMessages.system,
-                                               message: ModulesManagerLogMessages.noDispatchersEnabled,
-                                               info: nil,
-                                               logLevel: .error,
-                                               category: .`init`)
-            self.logger?.log(logRequest)
-        }
-
-    }
-
     func setupDispatchValidators(config: TealiumConfig) {
         config.dispatchValidators?.forEach {
             self.addDispatchValidator($0)
@@ -263,7 +182,7 @@ public class ModulesManager {
         let hostedDataLayer = HostedDataLayer(config: config, delegate: self, diskStorage: nil) { _, _ in }
         addDispatchValidator(hostedDataLayer)
     }
-    
+
     func setupConsentManagerModule(config: TealiumConfig) {
         guard config.consentPolicy != nil else {
             return
@@ -271,7 +190,7 @@ public class ModulesManager {
         let consentManagerModule = ConsentManagerModule(context: context, delegate: self, diskStorage: nil) { _ in }
         addDispatchValidator(consentManagerModule)
     }
-    
+
     func setupTimedEventScheduler() {
         let timedEventScheduler = TimedEventScheduler(context: self.context)
         self.addDispatchValidator(timedEventScheduler)
@@ -292,8 +211,8 @@ public class ModulesManager {
         dispatchManager?.processTrack(newRequest)
         cachedTrackData = newRequest.trackDictionary
     }
-    
-    func allTrackData(retreiveCachedData: Bool) -> [String:Any] {
+
+    func allTrackData(retreiveCachedData: Bool) -> [String: Any] {
         if retreiveCachedData, let cachedData = self.cachedTrackData {
             return cachedData
         }
@@ -343,6 +262,91 @@ public class ModulesManager {
         connectivityManager.removeAllConnectivityDelegates()
     }
 
+}
+
+// - MARK: Collectors
+extension ModulesManager {
+
+    func addCollector(_ collector: Collector) {
+        if let listener = collector as? DispatchListener {
+            addDispatchListener(listener)
+        }
+
+        if let dispatchValidator = collector as? DispatchValidator {
+            addDispatchValidator(dispatchValidator)
+        }
+
+        guard collectors.first(where: {
+            type(of: $0) == type(of: collector)
+        }) == nil else {
+            return
+        }
+        collectors.append(collector)
+    }
+
+    func setupCollectors(config: TealiumConfig) {
+        collectorTypes.forEach { collector in
+            if collector == ConnectivityModule.self {
+                addCollector(connectivityManager)
+                return
+            }
+
+            let collector = collector.init(context: context, delegate: self, diskStorage: nil) { _, _  in }
+
+            addCollector(collector)
+        }
+    }
+}
+
+// - MARK: Dispatchers
+extension ModulesManager {
+
+    func addDispatcher(_ dispatcher: Dispatcher) {
+        guard dispatchers.first(where: {
+            type(of: $0) == type(of: dispatcher)
+        }) == nil else {
+            return
+        }
+        dispatchers.append(dispatcher)
+    }
+
+    func setupDispatchers(config: TealiumConfig) {
+        self.config.dispatchers?.forEach { dispatcherType in
+            let dispatcherTypeDescription = String(describing: dispatcherType)
+
+            if dispatcherTypeDescription.contains(ModuleNames.tagmanagement) {
+                if config.isTagManagementEnabled == false {
+                    return
+                }
+                self.sessionManager?.isTagManagementEnabled = true
+            }
+
+            if dispatcherTypeDescription.contains(ModuleNames.collect),
+               config.isCollectEnabled == false {
+                return
+            }
+
+            let dispatcher = dispatcherType.init(config: config, delegate: self) { result, _ in
+                switch result {
+                case .failure:
+                    print("log error")
+                default:
+                    break
+                }
+            }
+
+            self.addDispatcher(dispatcher)
+        }
+        if self.dispatchers.isEmpty {
+            let logRequest = TealiumLogRequest(title: ModulesManagerLogMessages.system,
+                                               message: ModulesManagerLogMessages.noDispatchersEnabled,
+                                               info: nil,
+                                               logLevel: .error,
+                                               category: .`init`)
+            self.logger?.log(logRequest)
+        }
+
+    }
 }
 
 extension ModulesManager: ModuleDelegate {
