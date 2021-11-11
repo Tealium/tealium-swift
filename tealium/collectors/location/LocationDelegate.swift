@@ -5,7 +5,7 @@
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 
-#if os(iOS)
+#if os(iOS) && !targetEnvironment(macCatalyst)
 import Foundation
 
 protocol LocationDelegate: AnyObject {
