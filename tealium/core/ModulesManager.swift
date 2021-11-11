@@ -26,13 +26,11 @@ public class ModulesManager {
     var remotePublishSettingsRetriever: TealiumPublishSettingsRetriever?
     var collectorTypes: [Collector.Type] {
         if let optionalCollectors = config.collectors {
-            return [AppDataModule.self,
-                    ConsentManagerModule.self,
+            return [AppDataModule.self
             ] + optionalCollectors
         } else {
             return [AppDataModule.self,
                     DeviceDataModule.self,
-                    ConsentManagerModule.self,
                     ConnectivityModule.self,
             ]
         }
@@ -122,6 +120,7 @@ public class ModulesManager {
         self.logger = self.config.logger
         self.setupDispatchers(config: self.config)
         self.setupHostedDataLayer(config: self.config)
+        self.setupConsentManagerModule(config: self.config)
         self.setupTimedEventScheduler()
         self.setupDispatchValidators(config: self.config)
         self.setupDispatchListeners(config: self.config)
@@ -200,10 +199,6 @@ public class ModulesManager {
 
     func setupCollectors(config: TealiumConfig) {
         collectorTypes.forEach { collector in
-            if collector == ConsentManagerModule.self && config.consentPolicy == nil {
-                return
-            }
-
             if collector == ConnectivityModule.self {
                 addCollector(connectivityManager)
                 return
@@ -262,10 +257,19 @@ public class ModulesManager {
     }
 
     func setupHostedDataLayer(config: TealiumConfig) {
-        if config.hostedDataLayerKeys != nil {
-            let hostedDataLayer = HostedDataLayer(config: config, delegate: self, diskStorage: nil) { _, _ in }
-            addDispatchValidator(hostedDataLayer)
+        guard config.hostedDataLayerKeys != nil else {
+            return
         }
+        let hostedDataLayer = HostedDataLayer(config: config, delegate: self, diskStorage: nil) { _, _ in }
+        addDispatchValidator(hostedDataLayer)
+    }
+    
+    func setupConsentManagerModule(config: TealiumConfig) {
+        guard config.consentPolicy != nil else {
+            return
+        }
+        let consentManagerModule = ConsentManagerModule(context: context, delegate: self, diskStorage: nil) { _ in }
+        addDispatchValidator(consentManagerModule)
     }
     
     func setupTimedEventScheduler() {

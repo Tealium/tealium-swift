@@ -192,6 +192,7 @@ class ConsentManagerModuleTests: XCTestCase {
         config.consentPolicy = .gdpr
         let module = createModule(with: config)
         module.consentManager?.userConsentStatus = .consented
+        let lastUpdate = module.consentManager?.lastConsentUpdate?.unixTimeMilliseconds
         let expected: [String: Any] = [
             ConsentKey.consentStatus: "consented",
             ConsentKey.consentCategoriesKey: ["analytics",
@@ -210,7 +211,8 @@ class ConsentManagerModuleTests: XCTestCase {
                                               "cookiematch",
                                               "misc"],
             "test": "track",
-            "policy": "gdpr"
+            ConsentKey.policyKey: "gdpr",
+            ConsentKey.consentLastUpdated: lastUpdate!
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
         var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
@@ -223,11 +225,13 @@ class ConsentManagerModuleTests: XCTestCase {
         config.consentPolicy = .gdpr
         let module = createModule(with: config)
         module.consentManager?.userConsentStatus = .notConsented
+        let lastUpdate = module.consentManager?.lastConsentUpdate?.unixTimeMilliseconds
         let expected: [String: Any] = [
             ConsentKey.consentStatus: "notConsented",
             ConsentKey.consentCategoriesKey: [],
             "test": "track",
-            "policy": "gdpr"
+            ConsentKey.policyKey: "gdpr",
+            ConsentKey.consentLastUpdated: lastUpdate!
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
         var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
@@ -241,11 +245,13 @@ class ConsentManagerModuleTests: XCTestCase {
         let module = createModule(with: config)
         module.consentManager?.userConsentStatus = .consented
         module.consentManager?.resetUserConsentPreferences()
+        let lastUpdate = module.consentManager?.lastConsentUpdate?.unixTimeMilliseconds
         let expected: [String: Any] = [
             ConsentKey.consentStatus: TealiumValue.unknown,
             ConsentKey.consentCategoriesKey: [],
             "test": "track",
-            "policy": "gdpr"
+            ConsentKey.policyKey: "gdpr",
+            ConsentKey.consentLastUpdated: lastUpdate!
         ]
         track = TealiumTrackRequest(data: ["test": "track"])
         var trackWithConsentData = module.addConsentDataToTrack(track).trackDictionary
@@ -325,6 +331,18 @@ class ConsentManagerModuleTests: XCTestCase {
         module.expireConsent()
         XCTAssertEqual(module.consentManager?.userConsentCategories?.count, 0)
         XCTAssertEqual(module.consentManager?.consentPreferencesStorage?.preferences?.consentStatus, .unknown)
+    }
+    
+    func testCustomConsentPolicyStatusInfo_AddedInShouldQueue() {
+        let config = testTealiumConfig
+        config.consentPolicy = .custom(MockCustomConsentPolicy.self)
+        let context = TestTealiumHelper.context(with: config)
+        let consentManagerModule = ConsentManagerModule(context: context, delegate: nil, diskStorage: DispatchQueueMockDiskStorage(), completion: { _ in })
+        let request = TealiumTrackRequest(data: [TealiumKey.event: "testEvent"])
+        let res = consentManagerModule.shouldQueue(request: request)
+        let trackInfo = res.1!
+        XCTAssertNotNil(trackInfo["customConsentCategories"] as? [TealiumConsentCategories])
+        XCTAssertNotNil(trackInfo["custom_consent_key"] as? String)
     }
 
 }

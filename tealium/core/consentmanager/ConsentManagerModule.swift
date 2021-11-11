@@ -7,18 +7,14 @@
 
 import Foundation
 
-class ConsentManagerModule: Collector, DispatchValidator {
+class ConsentManagerModule: DispatchValidator {
 
     public let id: String = ModuleNames.consentmanager
     var config: TealiumConfig
     var consentManager: ConsentManager?
     weak var delegate: ModuleDelegate?
     var dataLayer: DataLayerManagerProtocol?
-    var diskStorage: TealiumDiskStorageProtocol!
-
-    var data: [String: Any]? {
-        consentManager?.currentPolicy.consentPolicyStatusInfo
-    }
+    var diskStorage: TealiumDiskStorageProtocol
 
     required init(context: TealiumContext,
                   delegate: ModuleDelegate?,
@@ -109,7 +105,7 @@ class ConsentManagerModule: Collector, DispatchValidator {
     /// - Parameter track: `TealiumTrackRequest` to be modified
     func addConsentDataToTrack(_ track: TealiumTrackRequest) -> TealiumTrackRequest {
         var newTrack = track.trackDictionary
-        if let consentDictionary = consentManager?.currentPolicy.consentPolicyStatusInfo {
+        if let consentDictionary = consentManager?.currentPolicy.policyTrackingData {
             newTrack += consentDictionary
         }
         return TealiumTrackRequest(data: newTrack)

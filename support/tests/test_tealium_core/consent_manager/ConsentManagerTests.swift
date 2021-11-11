@@ -107,37 +107,6 @@ class ConsentManagerTests: XCTestCase {
         }
     }
     
-    func testCustomConsentPolicyStatusInfo_SentInTrack() {
-        let config = testTealiumConfig
-        config.consentPolicy = .custom(MockCustomConsentPolicy.self)
-        let mockConsentDelegate = MockConsentDelegate()
-        let consentManager = ConsentManager(config: config, delegate: mockConsentDelegate, diskStorage: ConsentMockDiskStorage(), dataLayer: DummyDataManager())
-        let expect = expectation(description: "testCustomConsentPolicyStatusInfo_SentInTrack")
-        mockConsentDelegate.asyncExpectation = expect
-
-        let consentPreferences = UserConsentPreferences(consentStatus: .consented, consentCategories: [.cdp])
-        consentManager.trackUserConsentPreferences(consentPreferences)
-
-        waitForExpectations(timeout: 2) { error in
-            if let error = error {
-                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
-            }
-
-            guard let trackInfo = mockConsentDelegate.trackInfo else {
-                XCTFail("Expected delegate to be called")
-                return
-            }
-
-            if trackInfo["tealium_event"] as? String == "mockCookieName" {
-                return
-            }
-            
-            XCTAssertNotNil(trackInfo["customConsentCategories"] as? [TealiumConsentCategories])
-            XCTAssertNotNil(trackInfo["custom_consent_key"] as? String)
-
-        }
-    }
-    
     func testDefaultConsentExpirationCCPA() {
         config.consentPolicy = .ccpa
         let module = createModule(with: config)
@@ -180,7 +149,7 @@ class ConsentManagerTests: XCTestCase {
         mockConsentDelegate.asyncExpectation = expect
 
         let consentPreferences = UserConsentPreferences(consentStatus: .consented, consentCategories: [.cdp])
-        consentManager.trackUserConsentPreferences(consentPreferences)
+        consentManager.trackUserConsentPreferences()
 
         waitForExpectations(timeout: 2) { error in
             if let error = error {
