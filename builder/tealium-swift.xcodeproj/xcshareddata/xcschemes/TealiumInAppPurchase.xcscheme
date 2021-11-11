@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "48405B392739B9850094EA18"
+               BlueprintIdentifier = "48B2842A273D674700FE908D"
                BuildableName = "TealiumInAppPurchase.framework"
                BlueprintName = "TealiumInAppPurchase"
                ReferencedContainer = "container:tealium-swift.xcodeproj">
@@ -50,7 +50,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "48405B392739B9850094EA18"
+            BlueprintIdentifier = "48B2842A273D674700FE908D"
             BuildableName = "TealiumInAppPurchase.framework"
             BlueprintName = "TealiumInAppPurchase"
             ReferencedContainer = "container:tealium-swift.xcodeproj">

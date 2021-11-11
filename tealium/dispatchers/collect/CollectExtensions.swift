@@ -29,7 +29,7 @@ public extension TealiumConfig {
             options[CollectKey.overrideCollectUrl] = newValue
         }
     }
-    
+
     /// Overrides the default Collect endpoint URL￼.
     /// The full URL must be provided, including protocol and path.
     /// If using Tealium with a CNAMEd domain, the format would be: https://collect.mydomain.com/bulk-event (the path MUST be `/bulk-event`).
@@ -57,7 +57,7 @@ public extension TealiumConfig {
             options[CollectKey.overrideCollectProfile] = newValue
         }
     }
-    
+
     /// Overrides the default Collect domain only.
     /// Only the hostname should be provided, excluding the protocol, e.g. `my-company.com`
     var overrideCollectDomain: String? {

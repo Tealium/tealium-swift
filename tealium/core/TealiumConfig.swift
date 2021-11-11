@@ -15,7 +15,7 @@ open class TealiumConfig {
     public let environment: String
     public let dataSource: String?
     public lazy var options = [String: Any]()
-    
+
     /// The start and stop timed events to be tracked automatically.
     /// Optionally provide a name for the timed event. Default  timed event name will be `start_event_name::end_event_name`
     /// - Usage: `config.timedEventTriggers = [TimedEventTrigger(start: "product_view", stop: "order_complete")]`
@@ -43,6 +43,10 @@ open class TealiumConfig {
 
     /// Set to `false` to disable the Tealium AppDelegate proxy for deep link handling.
     /// Default `true`.
+    ///
+    /// WARNING:
+    /// No longer used. To disable this behavior use the info.plist flag `TealiumAutotrackingDeepLinkEnabled` with the boolean value of `false`
+    @available(*, deprecated, message: "Add an info.plist flag `TealiumAutotrackingDeepLinkEnabled` with the boolean value of `false` to disable this behavior")
     public var appDelegateProxyEnabled: Bool {
         get {
             options[TealiumKey.appDelegateProxy] as? Bool ?? true
@@ -402,7 +406,7 @@ public extension TealiumConfig {
             options[TealiumKey.minutesBetweenRefresh] = newValue
         }
     }
-    
+
     /// Sets the expiry for the Consent Manager preferences.
     var consentExpiry: (time: Int, unit: TimeUnit)? {
         get {
@@ -413,7 +417,7 @@ public extension TealiumConfig {
             options[TealiumKey.consentExpiry] = newValue
         }
     }
-    
+
     /// Defines the consent expiration callback
     var onConsentExpiration: (() -> Void)? {
         get {

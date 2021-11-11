@@ -41,7 +41,7 @@ open class RemoteCommand: RemoteCommandProtocol {
     }
 
     /// Called when a Remote Command is ready for execution.
-    ///￼
+    /// ￼
     /// - Parameter response: `RemoteCommandResponse` object containing information from the TiQ webview
     public func completeWith(response: RemoteCommandResponseProtocol) {
         TealiumQueues.backgroundSerialQueue.async { [weak self] in
@@ -76,7 +76,11 @@ open class RemoteCommand: RemoteCommandProtocol {
         }
         var responseStr: String
         if let responseData = response.data {
-            responseStr = String(data: responseData, encoding: .utf8)!
+            if let encodedResponse = String(data: responseData, encoding: .utf8) {
+                responseStr = encodedResponse
+            } else {
+                responseStr = "(null)"
+            }
         } else {
             // keep previous behavior from obj-c library
             responseStr = "(null)"
@@ -186,10 +190,13 @@ open class RemoteCommand: RemoteCommandProtocol {
             if result[key] == nil {
                 result[key] = [value: dictionary.value]
             } else {
-                result[key]! += [value: dictionary.value]
+                if var resultValue = result[key] {
+                    resultValue[value] = dictionary.value
+                    result[key] = resultValue
+                }
             }
         }
     }
-    
+
 }
 #endif

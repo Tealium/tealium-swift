@@ -8,6 +8,7 @@ import Combine
 import SwiftUI
 import StoreKit
 import AppTrackingTransparency
+import TealiumAutotracking
 
 class IAPHelper: NSObject, ObservableObject, SKProductsRequestDelegate, SKPaymentTransactionObserver {
     static let shared = IAPHelper()
@@ -74,6 +75,7 @@ struct ContentView: View {
     @ObservedObject var iapHelper = IAPHelper.shared
     @State private var traceId: String = ""
     @State private var showAlert = false
+    let name = "Main Screen"
     // Timed event start
     var playButton: some View {
         TealiumIconButton(iconName: "play.fill") {
@@ -89,8 +91,9 @@ struct ContentView: View {
                                        data: ["order_id": "ord123"])
         }
     }
-    
+
     var body: some View {
+        TealiumViewTrackable(constantName: name) {
         NavigationView {
             ScrollView {
                 VStack(spacing: 16) {
@@ -154,8 +157,13 @@ struct ContentView: View {
                 })
             }
         }
-        .navigationViewStyle(StackNavigationViewStyle())
     }
+        .navigationViewStyle(StackNavigationViewStyle())
+        .onAppear {
+            print("onappear from app")
+        }
+    }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {

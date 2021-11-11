@@ -12,13 +12,13 @@ import TealiumCore
 #endif
 
 class InAppPurchaseManager: NSObject, SKPaymentTransactionObserver {
-    
+
     weak public var delegate: ModuleDelegate?
 
     init(delegate: ModuleDelegate?) {
         self.delegate = delegate
     }
-    
+
     private func trackPurchase(transaction: SKPaymentTransaction) {
         if let event = transaction.toTealiumEvent() {
             delegate?.requestTrack(event.trackRequest)

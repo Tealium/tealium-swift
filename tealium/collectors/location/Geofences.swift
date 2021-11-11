@@ -46,68 +46,60 @@ public extension Array where Element == Geofence {
     }
 }
 
-public struct GeofenceData: Codable {
+class GeofenceProvider {
+    private var logger: TealiumLoggerProtocol? {
+        config.logger
+    }
+    private let bundle: Bundle
+    private let config: TealiumConfig
 
-    var geofences: [Geofence]?
-    var logger: TealiumLoggerProtocol?
-
-    enum CodingKeys: String, CodingKey {
-        case geofences
+    init(config: TealiumConfig, bundle: Bundle) {
+        self.config = config
+        self.bundle = bundle
     }
 
-    init?(file: String, bundle: Bundle, logger: TealiumLoggerProtocol? = nil) {
-
-        guard let path = bundle.path(forResource: file.replacingOccurrences(of: ".json", with: ""),
-                                     ofType: "json") else {
-            logError(message: LocationErrors.noFile)
-            return nil
-        }
-        guard let jsonData = try? Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe) else {
-            logError(message: LocationErrors.couldNotRetrieve)
-            return nil
-        }
-        guard let geofenceData = try? Tealium.jsonDecoder.decode([Geofence].self, from: jsonData) else {
-            logError(message: LocationErrors.couldNotDecode)
-            return nil
-        }
-        geofences = filter(geofences: geofenceData)
-        logInfo(message: "🌎🌎 \(String(describing: geofences?.count)) Geofences Created 🌎🌎")
-    }
-
-    init?(url: String, logger: TealiumLoggerProtocol? = nil) {
-        guard !url.isEmpty else {
-            logError(message: LocationErrors.noUrl)
+    func getGeofencesAsync(completion: @escaping ([Geofence]) -> Void) {
+        guard config.initializeGeofenceDataFrom != nil else {
+            completion([])
             return
         }
-        guard let geofenceUrl = URL(string: url) else {
-            logError(message: LocationErrors.invalidUrl)
-            return
-        }
-        do {
-            let jsonString = try String(contentsOf: geofenceUrl)
-            guard let data = jsonString.data(using: .utf8),
-                  let geofenceData = try? Tealium.jsonDecoder.decode([Geofence].self, from: data) else {
-                return
+        TealiumQueues.backgroundSerialQueue.async {
+            let geofences = self.getGeofences()
+            TealiumQueues.mainQueue.async {
+                completion(geofences)
             }
-            geofences = filter(geofences: geofenceData)
-            logInfo(message: "🌎🌎 \(String(describing: geofences?.count)) Geofences Created 🌎🌎")
-        } catch let error {
-            logError(message: "Error \(error.localizedDescription)")
         }
     }
 
-    init?(json: String, logger: TealiumLoggerProtocol? = nil) {
-        guard !json.isEmpty else {
-            logError(message: LocationErrors.noJson)
-            return
+    private func getGeofences() -> [Geofence] {
+        do {
+            let geofenceData = try fetchGeofences()
+            let geofences = filter(geofences: geofenceData)
+            logInfo(message: "🌎🌎 \(String(describing: geofences.count)) Geofences Created 🌎🌎")
+            return geofences
+        } catch {
+            logError(message: error.localizedDescription)
+            return []
         }
-        guard let data = json.data(using: .utf8),
-              let geofenceData = try? Tealium.jsonDecoder.decode([Geofence].self, from: data) else {
-            logError(message: LocationErrors.couldNotDecode)
-            return
+    }
+
+    private func fetchGeofences() throws -> [Geofence] {
+        guard let locationConfig = config.initializeGeofenceDataFrom else {
+            return []
         }
-        geofences = filter(geofences: geofenceData)
-        logInfo(message: "🌎🌎 \(String(describing: geofences?.count)) Geofences Created 🌎🌎")
+        switch locationConfig {
+        case .localFile(let file):
+            return try JSONLoader.fromFile(file, bundle: bundle)
+        case .customUrl(let url):
+            return try JSONLoader.fromURL(url: url)
+        default:
+            return try JSONLoader.fromURL(url: self.url(from: config))
+        }
+    }
+
+    /// Builds a URL from a Tealium config pointing to a hosted JSON file on the Tealium DLE
+    private func url(from config: TealiumConfig) -> String {
+        return "\(LocationKey.dleBaseUrl)\(config.account)/\(config.profile)/\(LocationKey.fileName).json"
     }
 
     func filter(geofences: [Geofence]) -> [Geofence] {

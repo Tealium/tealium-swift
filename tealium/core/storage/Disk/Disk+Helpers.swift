@@ -41,7 +41,7 @@ public extension Disk {
     }
 
     /// Clear directory by removing all files
-    ///￼
+    /// ￼
     /// - Parameter directory: directory to clear
     /// - Throws: Error if FileManager cannot access a directory
     static func clear(_ directory: Directory) throws {

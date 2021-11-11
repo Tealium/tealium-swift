@@ -147,9 +147,9 @@ public extension Disk {
     }
 }
 
-extension Disk {
+fileprivate extension Disk {
     /// Helper method to create deserialization error for append(:path:directory:) functions
-    fileprivate static func createDeserializationErrorForAppendingStructToInvalidType<T>(url: URL, type: T) -> Error {
+    static func createDeserializationErrorForAppendingStructToInvalidType<T>(url: URL, type: T) -> Error {
         return Disk.createError(
             .deserialization,
             description: "Could not deserialize the existing data at \(url.path) to a valid type to append to.",
@@ -158,10 +158,12 @@ extension Disk {
     }
 
     /// Helper method to create error for when trying to saving Codable structs as multiple files to a folder
-    fileprivate static func createInvalidFileNameForStructsError() -> Error {
+    static func createInvalidFileNameForStructsError() -> Error {
         return Disk.createError(
             .invalidFileName,
+            // swiftlint:disable line_length
             description: "Cannot save/retrieve the Codable struct without a valid file name. Unlike how arrays of UIImages or Data are stored, Codable structs are not saved as multiple files in a folder, but rather as one JSON file. If you already successfully saved Codable struct(s) to your folder name, try retrieving it as a file named 'Folder' instead of as a folder 'Folder/'",
+            // swiftlint:enable line_length
             failureReason: "Disk does not save structs or arrays of structs as multiple files to a folder like it does UIImages or Data.",
             recoverySuggestion: "Save your struct or array of structs as one file that encapsulates all the data (i.e. \"multiple-messages.json\")")
     }

@@ -49,7 +49,7 @@ public class MediaContent: Codable {
         case milestone = "media_milestone"
         case summary = "media_summary"
     }
-    
+
     public init(
         name: String,
         streamType: StreamType,
@@ -82,12 +82,14 @@ public class MediaContent: Codable {
 }
 
 extension MediaContent {
-    
+
     /// Adds to an array for a given segment
     /// - Parameter segment: `Segment`
     func add(_ segment: Segment) {
         switch segment {
+        // swiftlint:disable identifier_name
         case .ad(let ad):
+        // swiftlint:enable identifier_name
             ads.append(ad)
         case .adBreak(let adBreak):
             adBreaks.append(adBreak)
@@ -95,5 +97,5 @@ extension MediaContent {
             chapters.append(chapter)
         }
     }
-    
+
 }

@@ -68,7 +68,7 @@ public class TagManagementModule: Dispatcher {
     }
 
     /// Sends the track request to the webview.
-    ///￼
+    /// ￼
     /// - Parameter track: `TealiumRequest` to be sent to the webview
     /// - Parameter completion: `ModuleCompletion?` block to be called when the request has been processed
     func dispatchTrack(_ request: TealiumRequest,

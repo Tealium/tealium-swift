@@ -58,11 +58,11 @@ class ConsentManagerModule: Collector, DispatchValidator {
             return (true, [TealiumKey.queueReason: TealiumKey.batchingEnabled])
         }
         expireConsent()
-        
+
         if request.containsAuditEvent {
             return (false, nil)
         }
-        
+
         switch consentManager?.trackingStatus {
         case .trackingQueued:
             var newData = request.trackDictionary
@@ -114,7 +114,7 @@ class ConsentManagerModule: Collector, DispatchValidator {
         }
         return TealiumTrackRequest(data: newTrack)
     }
-    
+
     /// Checks if the consent selections are expired
     /// If so, resets consent preferences and triggers optional callback
     public func expireConsent() {

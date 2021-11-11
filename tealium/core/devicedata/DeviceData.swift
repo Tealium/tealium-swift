@@ -28,7 +28,7 @@ public class DeviceData: DeviceDataCollection {
         // cocoapods/carthage
         let bundle = Bundle(for: type(of: self))
         #endif
-        
+
         guard let path = bundle.path(forResource: DeviceDataKey.fileName, ofType: "json") else {
             return nil
         }

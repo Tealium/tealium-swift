@@ -28,6 +28,16 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "15F8E23A26F0B0FF00C4F6A1"
+               BuildableName = "TealiumAutotrackingUITests-macOS.xctest"
+               BlueprintName = "TealiumAutotrackingUITests-macOS"
+               ReferencedContainer = "container:tealium-swift.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
