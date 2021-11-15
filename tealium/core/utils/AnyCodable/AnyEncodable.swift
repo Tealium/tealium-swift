@@ -104,7 +104,9 @@ extension _AnyEncodable {
             try container.encodeNil()
             let codingPath = container.codingPath
             let debugFail = { // Need to call this in a block so LLDB doesn't crash trying to access the container and we lose the debuggable state.
-                assertionFailure("AnyCodable value \(type(of:value)) cannot be encoded, codingPath: \(codingPath)")
+                let message = "EncodingError: AnyCodable value \(type(of:value)) cannot be encoded, codingPath: \(codingPath). You can only add JSON encodable values to the data layer."
+                assertionFailure(message)
+                print(message + " Replacing value with null in this release build.")
             }
             debugFail()
         }
