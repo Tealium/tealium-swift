@@ -40,7 +40,7 @@ public class TealiumObservable<Element>: TealiumObservableProtocol {
     }
 
     fileprivate func publish(_ element: Element) {
-        let observers = observers.values
+        let observers = self.observers.values
         for observer in observers {
             observer(element)
         }
@@ -101,7 +101,7 @@ public class TealiumReplayObservable<Element>: TealiumObservable<Element> {
 
     @discardableResult
     public override func subscribe(_ observer: @escaping Observer) -> TealiumSubscription<Element> {
-        let cache = cache
+        let cache = self.cache
         defer {
             for element in cache {
                 observer(element)
@@ -148,7 +148,7 @@ public class TealiumBufferedObservable<Element>: TealiumObservable<Element> {
 
     @discardableResult
     override public func subscribe(_ observer: @escaping Observer) -> TealiumSubscription<Element> {
-        let buffer = buffer
+        let buffer = self.buffer
         self.buffer = []
         defer {
             for element in buffer {

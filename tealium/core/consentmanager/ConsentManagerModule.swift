@@ -21,7 +21,7 @@ class ConsentManagerModule: DispatchValidator {
                   diskStorage: TealiumDiskStorageProtocol?,
                   completion: ModuleCompletion) {
         self.config = context.config
-        self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config,
+        self.diskStorage = diskStorage ?? TealiumDiskStorage(config: context.config,
                                                              forModule: ConsentKey.moduleName,
                                                              isCritical: true)
         self.dataLayer = context.dataLayer
