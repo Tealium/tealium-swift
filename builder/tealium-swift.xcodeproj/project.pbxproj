@@ -59,6 +59,7 @@
 		156CB50C26CD4ACB005EFEDB /* AnyCodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156CB50B26CD4ACB005EFEDB /* AnyCodableTests.swift */; };
 		156CB50D26CD4ACB005EFEDB /* AnyCodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156CB50B26CD4ACB005EFEDB /* AnyCodableTests.swift */; };
 		156CB50E26CD4ACB005EFEDB /* AnyCodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156CB50B26CD4ACB005EFEDB /* AnyCodableTests.swift */; };
+		15831B652743FB8100C0E8FC /* ViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BF515225DAC89000AD3A0D /* ViewControllerTest.swift */; };
 		158CA93726B9478100748A80 /* TealiumASIdentifierManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158CA93626B9478100748A80 /* TealiumASIdentifierManagerTests.swift */; };
 		1591EC5F26EA553100C45781 /* MockInMemoryDataLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1555F5CE26E6769E00AFDC3D /* MockInMemoryDataLayer.swift */; };
 		1591EC6026EA553100C45781 /* MockInMemoryDataLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1555F5CE26E6769E00AFDC3D /* MockInMemoryDataLayer.swift */; };
@@ -5601,6 +5602,7 @@
 				15B84D7826F206950094DC05 /* AutoTrackingTvOSTestApp.swift in Sources */,
 				15D0C1E32733E13700364B13 /* ContentView.swift in Sources */,
 				15B84D8626F207310094DC05 /* TealiumHelper.swift in Sources */,
+				15831B652743FB8100C0E8FC /* ViewControllerTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8275,7 +8277,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.iOSTealiumTestApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.iOSTealiumTest1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
@@ -8314,7 +8316,7 @@
 					"@executable_path/Frameworks",
 				);
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.iOSTealiumTest3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.iOSTealiumTest1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;

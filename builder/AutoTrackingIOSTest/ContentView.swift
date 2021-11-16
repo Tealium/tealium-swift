@@ -26,7 +26,7 @@ struct ContentView: View {
                 List {
                     NavigationLink("Launch ViewController", destination:
                         TealiumViewTrackable {
-                            #if os(iOS)
+                            #if os(iOS) || os(tvOS)
                             ViewControllerWrapper()
                             #else
                             SomeView()
@@ -46,7 +46,7 @@ struct ContentView: View {
                     NavigationLink("Launch Third View", destination:
                         AutotrackingView()
                     )
-                    #if os(iOS)
+                    #if os(iOS) || os(tvOS)
                     NavigationLink("Launch Default UIViewController", destination:
                         BaseUIViewControllerWrapper()
                     )

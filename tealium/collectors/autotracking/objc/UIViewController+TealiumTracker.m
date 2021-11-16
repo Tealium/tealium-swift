@@ -6,7 +6,7 @@
 
 #import "UIViewController+TealiumTracker.h"
 
-#if TARGET_OS_IOS
+#if TARGET_OS_IOS || TARGET_OS_TV
 #if COCOAPODS
 #import <TealiumSwift/TealiumSwift-Swift.h>
 #else

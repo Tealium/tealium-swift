@@ -5,7 +5,7 @@
 //  Copyright © 2021 Tealium, Inc. All rights reserved.
 //
 
-#if os(iOS)
+#if os(iOS) || os(tvOS)
 #if autotracking
 import TealiumCore
 #endif
