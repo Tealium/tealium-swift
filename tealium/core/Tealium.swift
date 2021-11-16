@@ -11,7 +11,7 @@ import Foundation
 public class Tealium {
 
     var enableCompletion: ((_ result: Result<Bool, Error>) -> Void)?
-    public static var lifecycleListeners = TealiumLifecycleListeners()
+    public static let lifecycleListeners = TealiumLifecycleListeners()
     public var dataLayer: DataLayerManagerProtocol
     // swiftlint:disable identifier_name
     public var zz_internal_modulesManager: ModulesManager?
@@ -106,7 +106,7 @@ public class Tealium {
 
     /// Gathers all the data from the DataLayer and the collectors
     ///
-    /// - parameter tereiveCachedData: If true we don't gather new data but we return the last cached track or gather data
+    /// - parameter retreiveCachedData: If true we don't gather new data but we return the last cached track or gather data
     /// - parameter completion: The block called with the gathered data
     public func gatherTrackData(retreiveCachedData: Bool = false, completion: @escaping ([String: Any]) -> Void) {
         TealiumQueues.backgroundSerialQueue.async { [weak self] in
