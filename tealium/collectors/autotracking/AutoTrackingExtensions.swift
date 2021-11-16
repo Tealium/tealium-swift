@@ -63,7 +63,7 @@ public extension TealiumDataKey {
 }
 
 enum TealiumAutotrackingKey {
-    static let moduleName = "autotracking"
+    static let moduleName = "AutoTracking"
 }
 
 public protocol AutoTrackingDelegate: AnyObject {
