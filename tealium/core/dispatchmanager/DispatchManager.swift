@@ -331,6 +331,12 @@ class DispatchManager: DispatchManagerProtocol {
         runDispatchers(for: request)
     }
 
+    deinit {
+        if let observer = lowPowerNotificationObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
+    }
+
 }
 
 extension DispatchManager {
