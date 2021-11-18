@@ -28,7 +28,7 @@ extension Dictionary where Key == String, Value == Any {
     ///
     /// - Returns: `String` containing the type of event based on the `tealium_event_type` variable in the dictionary.
     var legacyType: String {
-        guard let eventType = self[TealiumKey.eventType] as? String,
+        guard let eventType = self[TealiumDataKey.eventType] as? String,
               eventType != "event" else {
             return "link"
         }

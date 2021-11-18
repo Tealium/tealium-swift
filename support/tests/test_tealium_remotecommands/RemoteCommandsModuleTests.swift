@@ -60,7 +60,7 @@ class RemoteCommandsModuleTests: XCTestCase {
             return
         }
         let urlRequest = URLRequest(url: url)
-        let request = TealiumRemoteCommandRequest(data: [TealiumKey.tagmanagementNotification: urlRequest])
+        let request = TealiumRemoteCommandRequest(data: [TealiumDataKey.tagmanagementNotification: urlRequest])
         module.remoteCommands.moduleDelegate?.processRemoteCommandRequest(request)
 
         waitForExpectations(timeout: 5.0, handler: nil)
@@ -161,7 +161,7 @@ class RemoteCommandsModuleTests: XCTestCase {
     func testTealiumEventType() {
         let request = TealiumRemoteAPIRequest(trackRequest: TealiumTrackRequest(data: ["test": "data"]))
         XCTAssertNil(request.trackRequest.trackDictionary["call_type"])
-        XCTAssertEqual(request.trackRequest.trackDictionary[TealiumKey.eventType] as! String, "remote_api")
+        XCTAssertEqual(request.trackRequest.trackDictionary[TealiumDataKey.eventType] as! String, "remote_api")
     }
 
 }

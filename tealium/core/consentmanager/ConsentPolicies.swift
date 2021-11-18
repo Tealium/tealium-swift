@@ -44,6 +44,17 @@ public protocol ConsentPolicy {
     var shouldLogConsentStatus: Bool { get }
 }
 
+extension ConsentPolicy {
+    var policyTrackingData: [String: Any] {
+        var data = consentPolicyStatusInfo ?? [:]
+        if let lastUpdate = preferences.lastUpdate {
+            data[TealiumDataKey.consentLastUpdated] = lastUpdate.unixTimeMilliseconds
+        }
+        data[TealiumDataKey.policyKey] = name
+        return data
+    }
+}
+
 public class ConsentPolicyFactory {
     public static func create(_ policy: TealiumConsentPolicy,
                               preferences: UserConsentPreferences) -> ConsentPolicy {
@@ -85,8 +96,7 @@ public extension CCPAConsentPolicyCreatable {
 
     var consentPolicyStatusInfo: [String: Any]? {
         let doNotSell = currentStatus == .notConsented ? true : false
-        return [ConsentKey.doNotSellKey: doNotSell,
-                ConsentKey.policyKey: name]
+        return [TealiumDataKey.doNotSellKey: doNotSell]
     }
 }
 
@@ -130,9 +140,7 @@ public extension GDPRConsentPolicyCreatable {
     var currentCategories: [TealiumConsentCategories]? { preferences.consentCategories }
 
     var consentPolicyStatusInfo: [String: Any]? {
-        var params = preferences.dictionary ?? [String: Any]()
-        params[ConsentKey.policyKey] = name
-        return params
+        return preferences.dictionary
     }
 
     var trackAction: TealiumConsentTrackAction {

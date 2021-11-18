@@ -27,11 +27,11 @@ public struct UserConsentPreferences: Equatable, Codable {
     ///
     /// - Parameter preferencesDictionary: `[String: Any]` containing a valid consent preferences dictionary.
     public mutating func initWithDictionary(preferencesDictionary: [String: Any]) {
-        if let categories = preferencesDictionary[ConsentKey.consentCategoriesKey] as? [String] {
+        if let categories = preferencesDictionary[TealiumDataKey.consentCategoriesKey] as? [String] {
             self.consentCategories = consentCategoriesStringToEnum(categories)
         }
 
-        if let consentedStatus = preferencesDictionary[ConsentKey.consentStatus] as? String {
+        if let consentedStatus = preferencesDictionary[TealiumDataKey.consentStatus] as? String {
             switch consentedStatus {
             case TealiumConsentStatus.consented.rawValue:
                 self.consentStatus = TealiumConsentStatus.consented
@@ -73,12 +73,12 @@ public struct UserConsentPreferences: Equatable, Codable {
     public var dictionary: [String: Any]? {
         var preferencesDictionary = [String: Any]()
 
-        preferencesDictionary[ConsentKey.consentStatus] = self.consentStatus.rawValue
+        preferencesDictionary[TealiumDataKey.consentStatus] = self.consentStatus.rawValue
 
         if let categories = self.consentCategories, categories.count > 0 {
-            preferencesDictionary[ConsentKey.consentCategoriesKey] = consentCategoriesEnumToStringArray(categories)
+            preferencesDictionary[TealiumDataKey.consentCategoriesKey] = consentCategoriesEnumToStringArray(categories)
         } else {
-            preferencesDictionary[ConsentKey.consentCategoriesKey] = [String]()
+            preferencesDictionary[TealiumDataKey.consentCategoriesKey] = [String]()
         }
         return preferencesDictionary.count > 0 ? preferencesDictionary : nil
     }

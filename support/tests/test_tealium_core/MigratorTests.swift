@@ -80,12 +80,12 @@ class MigratorTests: XCTestCase {
 
     func testExtractConsentPreferences_returnsDataFromLegacyStorage() {
         migrator = Migrator(config: config, userDefaults: mockUserDefaultsConsent, unarchiver: mockUnarchiverConsent)
-        let expected: [String: Any] = [ConsentKey.consentStatus: 1,
-                                       ConsentKey.consentCategoriesKey: [TealiumConsentCategories.affiliates.rawValue,
+        let expected: [String: Any] = [TealiumDataKey.consentStatus: 1,
+                                       TealiumDataKey.consentCategoriesKey: [TealiumConsentCategories.affiliates.rawValue,
                                                                          TealiumConsentCategories.bigData.rawValue,
                                                                          TealiumConsentCategories.crm.rawValue,
                                                                          TealiumConsentCategories.engagement.rawValue],
-                                       ConsentKey.consentLoggingEnabled: true]
+                                       TealiumDataKey.consentLoggingEnabled: true]
         let actual = migrator.extractConsentPreferences()
         XCTAssertTrue(actual.equal(to: expected))
     }
@@ -118,8 +118,8 @@ class MigratorTests: XCTestCase {
                                          LifecycleKey.totalSleepCount: 8,
                                          LifecycleKey.totalWakeCount: 7,
                                          LifecycleKey.wakeCount: 7],
-                                       TealiumKey.visitorId: "205CA6D0FE3A4242A3522DBE7F5B75DE",
-                                       TealiumKey.uuid: "205CA6D0-FE3A-4242-A352-2DBE7F5B75DE",
+                                       TealiumDataKey.visitorId: "205CA6D0FE3A4242A3522DBE7F5B75DE",
+                                       TealiumDataKey.uuid: "205CA6D0-FE3A-4242-A352-2DBE7F5B75DE",
                                        "custom_persistent_key": "customValue"]
         let actual = migrator.extractLifecycleData(from: MockLegacyUserDefaults.mockData)
         XCTAssertTrue(actual.equal(to: expected))
@@ -175,22 +175,22 @@ class MigratorTests: XCTestCase {
     func testExtractUserDefaults_returnsDataFromLegacyStorage() {
         migrator = Migrator(config: config, userDefaults: mockLegacyUserDefaults, unarchiver: mockUnarchiverConsent)
 
-        let expected: [String: Any] = [LifecycleKey.migratedLifecycle:
-                                        [LifecycleKey.firstLaunchDate: "2020-10-12T18:22:12Z",
-                                         LifecycleKey.firstLaunchDateMMDDYYYY: "10/12/2020",
-                                         LifecycleKey.lastLaunchDate: "2020-10-12T18:22:22Z",
-                                         LifecycleKey.lastWakeDate: "2020-10-12T17:02:04Z",
-                                         LifecycleKey.launchCount: 12,
-                                         LifecycleKey.priorSecondsAwake: 10,
-                                         LifecycleKey.sleepCount: 5,
-                                         LifecycleKey.totalCrashCount: 2,
-                                         LifecycleKey.totalLaunchCount: 12,
-                                         LifecycleKey.totalSecondsAwake: 3000,
-                                         LifecycleKey.totalSleepCount: 8,
-                                         LifecycleKey.totalWakeCount: 7,
-                                         LifecycleKey.wakeCount: 7],
-                                       TealiumKey.visitorId: "205CA6D0FE3A4242A3522DBE7F5B75DE",
-                                       TealiumKey.uuid: "205CA6D0-FE3A-4242-A352-2DBE7F5B75DE",
+        let expected: [String: Any] = [TealiumDataKey.migratedLifecycle:
+                                        [TealiumDataKey.firstLaunchDate: "2020-10-12T18:22:12Z",
+                                         TealiumDataKey.firstLaunchDateMMDDYYYY: "10/12/2020",
+                                         TealiumDataKey.lastLaunchDate: "2020-10-12T18:22:22Z",
+                                         TealiumDataKey.lastWakeDate: "2020-10-12T17:02:04Z",
+                                         TealiumDataKey.launchCount: 12,
+                                         TealiumDataKey.priorSecondsAwake: 10,
+                                         TealiumDataKey.sleepCount: 5,
+                                         TealiumDataKey.totalCrashCount: 2,
+                                         TealiumDataKey.totalLaunchCount: 12,
+                                         TealiumDataKey.totalSecondsAwake: 3000,
+                                         TealiumDataKey.totalSleepCount: 8,
+                                         TealiumDataKey.totalWakeCount: 7,
+                                         TealiumDataKey.wakeCount: 7],
+                                       TealiumDataKey.visitorId: "205CA6D0FE3A4242A3522DBE7F5B75DE",
+                                       TealiumDataKey.uuid: "205CA6D0-FE3A-4242-A352-2DBE7F5B75DE",
                                        "custom_persistent_key": "customValue"]
 
         let actual = migrator.extractUserDefaults()

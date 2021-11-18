@@ -32,8 +32,8 @@ class AppDataModuleTests: XCTestCase {
     func testInitMigratesLegacyAppData() {
         let appDataModule = createModule(with: MockMigratedDataLayer())
         guard let data = appDataModule.data,
-              let visId = data[TealiumKey.visitorId] as? String,
-              let uuid = data[TealiumKey.uuid] as? String else {
+              let visId = data[TealiumDataKey.visitorId] as? String,
+              let uuid = data[TealiumDataKey.uuid] as? String else {
             XCTFail("Nothing in persistent app data and there should be a visitor id and uuid.")
             return
         }
@@ -51,8 +51,8 @@ class AppDataModuleTests: XCTestCase {
     func testInitCreatesNewVisitorWhenNoMigratedData() {
         let appDataModule = createModule(with: MockMigratedDataLayerNoData())
         guard let data = appDataModule.data,
-              let visId = data[TealiumKey.visitorId] as? String,
-              let uuid = data[TealiumKey.uuid] as? String else {
+              let visId = data[TealiumDataKey.visitorId] as? String,
+              let uuid = data[TealiumDataKey.uuid] as? String else {
             XCTFail("Nothing in persistent app data and there should be a visitor id and uuid.")
             return
         }
@@ -64,7 +64,7 @@ class AppDataModuleTests: XCTestCase {
     func testInitSetsExistingAppData() {
         let module = createModule()
         XCTAssertEqual(mockDiskStorage.retrieveCount, 1)
-        guard let data = module.data, let visId = data[TealiumKey.visitorId] as? String else {
+        guard let data = module.data, let visId = data[TealiumDataKey.visitorId] as? String else {
             XCTFail("Nothing in persistent app data and there should be a test visitor id.")
             return
         }
@@ -77,11 +77,11 @@ class AppDataModuleTests: XCTestCase {
     }
 
     func testIsMissingPersistentKeys() {
-        let missingUUID = [TealiumKey.visitorId: "someVisitorId"]
+        let missingUUID = [TealiumDataKey.visitorId: "someVisitorId"]
         XCTAssertTrue(AppDataModule.isMissingPersistentKeys(data: missingUUID))
-        let missingVisitorID = [TealiumKey.uuid: "someUUID"]
+        let missingVisitorID = [TealiumDataKey.uuid: "someUUID"]
         XCTAssertTrue(AppDataModule.isMissingPersistentKeys(data: missingVisitorID))
-        let neitherMissing = [TealiumKey.visitorId: "someVisitorId", TealiumKey.uuid: "someUUID"]
+        let neitherMissing = [TealiumDataKey.visitorId: "someVisitorId", TealiumDataKey.uuid: "someUUID"]
         XCTAssertFalse(AppDataModule.isMissingPersistentKeys(data: neitherMissing))
     }
 
@@ -99,7 +99,7 @@ class AppDataModuleTests: XCTestCase {
         let data = module?.newPersistentData(for: uuid)
         XCTAssertEqual(mockDiskStorage.saveToDefaultsCount, 1)
         XCTAssertEqual(mockDiskStorage.saveCount, 1)
-        XCTAssertEqual(data?.dictionary.keys.sorted(), [TealiumKey.visitorId, TealiumKey.uuid].sorted())
+        XCTAssertEqual(data?.dictionary.keys.sorted(), [TealiumDataKey.visitorId, TealiumDataKey.uuid].sorted())
     }
 
     func testSetNewAppData() {
@@ -135,7 +135,7 @@ class AppDataModuleTests: XCTestCase {
     }
 
     func testPersistentDataInitFromDictionary() {
-        let data = [TealiumKey.visitorId: "someVisitorId", TealiumKey.uuid: "someUUID"]
+        let data = [TealiumDataKey.visitorId: "someVisitorId", TealiumDataKey.uuid: "someUUID"]
         let persistentData = PersistentAppData.new(from: data)
         XCTAssertEqual(persistentData?.visitorId, "someVisitorId")
         XCTAssertEqual(persistentData?.uuid, "someUUID")
@@ -143,10 +143,10 @@ class AppDataModuleTests: XCTestCase {
 
     func testAppDataDictionary() {
         let appDataDict = module?.appData.dictionary
-        XCTAssertNotNil(appDataDict?[TealiumKey.appName])
-        XCTAssertNotNil(appDataDict?[TealiumKey.appRDNS])
-        XCTAssertNotNil(appDataDict?[TealiumKey.visitorId])
-        XCTAssertNotNil(appDataDict?[TealiumKey.uuid])
+        XCTAssertNotNil(appDataDict?[TealiumDataKey.appName])
+        XCTAssertNotNil(appDataDict?[TealiumDataKey.appRDNS])
+        XCTAssertNotNil(appDataDict?[TealiumDataKey.visitorId])
+        XCTAssertNotNil(appDataDict?[TealiumDataKey.uuid])
     }
 
 }

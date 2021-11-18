@@ -5,7 +5,7 @@
 //  Copyright © 2021 Tealium, Inc. All rights reserved.
 //
 
-#if os(iOS)
+#if os(iOS) || os(tvOS)
 #if autotracking
 import TealiumCore
 #endif
@@ -68,23 +68,8 @@ private let swizzling: (AnyClass, Selector, Selector) -> Void = { forClass, orig
                 break
         // swiftlint:enable identifier_name
         default:
-            if getSuperclasses(cls: self) == "" {
-                break
-            }
             AutotrackingModule.autoTrackView(viewName: viewTitle)
         }
-    }
-
-    func getSuperclasses(cls: AnyObject) -> String {
-        var str = ""
-        let separatorToken = " >> "
-        var cls = cls
-        while let supercls = cls.superclass, let value = supercls {
-            str += String(describing: cls) + separatorToken
-            cls = value
-        }
-        str.removeLast(separatorToken.count)
-        return str
     }
 
 }

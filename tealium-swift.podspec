@@ -65,7 +65,8 @@ Pod::Spec.new do |s|
 
   #  When using multiple platforms
   # iOS 11 is required for SwiftUI to be optionally included. See https://github.com/CocoaPods/CocoaPods/issues/8915. 
-  # Clients can always have the Xcode project on iOS 9 but they have to specify iOS 11 on their podfile.
+  # Clients can always have the Xcode project on iOS 9, and add a post-install script to lower this ios deployment target, 
+  # but they have to specify iOS 11 on their podfile.
   s.ios.deployment_target = "11.0" 
   s.osx.deployment_target = "10.11"
   s.watchos.deployment_target = "3.0"
@@ -92,19 +93,19 @@ Pod::Spec.new do |s|
 
   s.subspec "TealiumFull" do |full|
     full.source_files  = "tealium/core/**/*.{swift,h,m}","tealium/collectors/**/*","tealium/dispatchers/**/*","tealium/scripts/*"
-    full.ios.exclude_files = "tealium/scripts/*","tealium/collectors/crash/*","tealium/core/objc/include/*"
-    full.tvos.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*","tealium/collectors/autotracking/*.{h,m}","tealium/core/objc/*"
-    full.watchos.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*","tealium/collectors/autotracking/*.{h,m}","tealium/core/objc/*"
-    full.osx.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*","tealium/collectors/autotracking/*.{h,m}","tealium/core/objc/*"
+    full.ios.exclude_files = "tealium/scripts/*","tealium/collectors/crash/*","tealium/**/objc/include/*"
+    full.tvos.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*","tealium/collectors/autotracking/objc/include/*.{h,m}","tealium/core/objc/**/*"
+    full.watchos.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*","tealium/collectors/autotracking/**/*.{h,m}","tealium/core/objc/**/*"
+    full.osx.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*","tealium/collectors/autotracking/**/*.{h,m}","tealium/core/objc/**/*"
     full.resources = "tealium/core/devicedata/device-names.json"
   end
 
   s.subspec "Core" do |core|
     core.source_files = "tealium/core/**/*.{swift,h,m}"
     core.ios.exclude_files = "tealium/core/objc/include/*"
-    core.tvos.exclude_files = "tealium/core/objc/*"
-    core.watchos.exclude_files = "tealium/core/objc/*"
-    core.osx.exclude_files = "tealium/core/objc/*"
+    core.tvos.exclude_files = "tealium/core/objc/**/*"
+    core.watchos.exclude_files = "tealium/core/objc/**/*"
+    core.osx.exclude_files = "tealium/core/objc/**/*"
     core.resources = "tealium/core/devicedata/device-names.json"
   end
 
@@ -114,11 +115,11 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "Autotracking" do |autotracking|
-    autotracking.source_files = "tealium/collectors/autotracking/*"
+    autotracking.source_files = "tealium/collectors/autotracking/**/*.{swift,h,m}"
     autotracking.ios.exclude_files = "tealium/collectors/autotracking/objc/include/*"
-    autotracking.tvos.exclude_files = "tealium/collectors/autotracking/objc/*"
-    autotracking.watchos.exclude_files = "tealium/collectors/autotracking/objc/*"
-    autotracking.osx.exclude_files = "tealium/collectors/autotracking/objc/*"
+    autotracking.tvos.exclude_files = "tealium/collectors/autotracking/objc/include/*"
+    autotracking.watchos.exclude_files = "tealium/collectors/autotracking/objc/**/*"
+    autotracking.osx.exclude_files = "tealium/collectors/autotracking/objc/**/*"
     autotracking.dependency "tealium-swift/Core"
   end
 

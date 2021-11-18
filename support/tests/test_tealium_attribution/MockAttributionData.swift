@@ -15,21 +15,21 @@ class MockAttributionData: AttributionDataProtocol {
     var updateConversionValueCalled = 0
     init() {
         self.persistentAttributionData = PersistentAttributionData(withDictionary: [
-            AttributionKey.clickedWithin30D: "true",
-            AttributionKey.orgName: "org name",
-            AttributionKey.orgId: "555555",
-            AttributionKey.campaignId: "12345678",
-            AttributionKey.campaignName: "campaign name",
-            AttributionKey.conversionDate: "2020-01-04T17:18:07Z",
-            AttributionKey.conversionType: "Download",
-            AttributionKey.clickedDate: "2020-01-04T17:17:00Z",
-            AttributionKey.adGroupId: "12345678",
-            AttributionKey.adGroupName: "adgroup name",
-            AttributionKey.region: "US",
-            AttributionKey.adKeyword: "keyword",
-            AttributionKey.adKeywordMatchType: "Broad",
-            AttributionKey.creativeSetId: "12345678",
-            AttributionKey.creativeSetName: "Creative Set name"
+            TealiumDataKey.adClickedWithin30D: "true",
+            TealiumDataKey.adOrgName: "org name",
+            TealiumDataKey.adOrgId: "555555",
+            TealiumDataKey.adCampaignId: "12345678",
+            TealiumDataKey.adCampaignName: "campaign name",
+            TealiumDataKey.adConversionDate: "2020-01-04T17:18:07Z",
+            TealiumDataKey.adConversionType: "Download",
+            TealiumDataKey.adClickedDate: "2020-01-04T17:17:00Z",
+            TealiumDataKey.adGroupId: "12345678",
+            TealiumDataKey.adGroupName: "adgroup name",
+            TealiumDataKey.adRegion: "US",
+            TealiumDataKey.adKeyword: "keyword",
+            TealiumDataKey.adKeywordMatchType: "Broad",
+            TealiumDataKey.adCreativeSetId: "12345678",
+            TealiumDataKey.adCreativeSetName: "Creative Set name"
         ])
     }
 
@@ -48,9 +48,9 @@ class MockAttributionData: AttributionDataProtocol {
     }
 
     var volatileData: [String: Any] {
-        [AttributionKey.idfa: idfa,
-         AttributionKey.idfv: idfv,
-         AttributionKey.isTrackingAllowed: isAdvertisingTrackingEnabled]
+        [TealiumDataKey.idfa: idfa,
+         TealiumDataKey.idfv: idfv,
+         TealiumDataKey.isTrackingAllowed: isAdvertisingTrackingEnabled]
     }
 
     var isAdvertisingTrackingEnabled: String = "true"

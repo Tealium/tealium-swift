@@ -12,12 +12,12 @@ public extension DataLayer {
     /// Adds traceId to the payload for debugging server side integrations.
     /// - Parameter id: `String` traceId from server side interface.
     func joinTrace(id: String) {
-        add(key: TealiumKey.traceId, value: id, expiry: .session)
+        add(key: TealiumDataKey.traceId, value: id, expiry: .session)
     }
 
     /// Ends the trace for the current session.
     func leaveTrace() {
-        delete(for: TealiumKey.traceId)
+        delete(for: TealiumDataKey.traceId)
     }
 }
 
@@ -53,11 +53,16 @@ public extension Tealium {
 
     /// Ends the current visitor session. Trace remains active, but visitor session is terminated.
     func killTraceVisitorSession() {
-        guard let traceId = dataLayer.all[TealiumKey.traceId] as? String else {
+        guard let traceId = dataLayer.all[TealiumDataKey.traceId] as? String else {
             return
         }
+        let dataLayer = [
+            TealiumDataKey.killVisitorSessionEvent: TealiumKey.killVisitorSession,
+            TealiumDataKey.eventType: TealiumKey.killVisitorSession,
+            TealiumDataKey.traceId: traceId
+        ]
         let dispatch = TealiumEvent(TealiumKey.killVisitorSession,
-                                    dataLayer: [TealiumKey.killVisitorSessionEvent: TealiumKey.killVisitorSession, TealiumKey.eventType: TealiumKey.killVisitorSession, TealiumKey.traceId: traceId])
+                                    dataLayer: dataLayer)
         self.track(dispatch)
     }
 
@@ -86,22 +91,22 @@ public extension Tealium {
             }
 
             if self.zz_internal_modulesManager?.config.deepLinkTrackingEnabled == true {
-                let oldQueryParamKeys: [String] = self.dataLayer.all.keys.filter { $0.starts(with: TealiumKey.deepLinkQueryPrefix) }
-                self.dataLayer.delete(for: oldQueryParamKeys + [TealiumKey.deepLinkReferrerUrl, TealiumKey.deepLinkReferrerApp])
+                let oldQueryParamKeys: [String] = self.dataLayer.all.keys.filter { $0.starts(with: TealiumDataKey.deepLinkQueryPrefix) }
+                self.dataLayer.delete(for: oldQueryParamKeys + [TealiumDataKey.deepLinkReferrerUrl, TealiumDataKey.deepLinkReferrerApp])
                 switch referrer {
                 case .url(let url):
-                    self.dataLayer.add(key: TealiumKey.deepLinkReferrerUrl, value: url.absoluteString, expiry: .session)
+                    self.dataLayer.add(key: TealiumDataKey.deepLinkReferrerUrl, value: url.absoluteString, expiry: .session)
                 case .app(let identifier):
-                    self.dataLayer.add(key: TealiumKey.deepLinkReferrerApp, value: identifier, expiry: .session)
+                    self.dataLayer.add(key: TealiumDataKey.deepLinkReferrerApp, value: identifier, expiry: .session)
                 default:
                     break
                 }
-                self.dataLayer.add(key: TealiumKey.deepLinkURL, value: link.absoluteString, expiry: .session)
+                self.dataLayer.add(key: TealiumDataKey.deepLinkURL, value: link.absoluteString, expiry: .session)
                 queryItems?.forEach {
                     guard let value = $0.value else {
                         return
                     }
-                    self.dataLayer.add(key: "\(TealiumKey.deepLinkQueryPrefix)_\($0.name)", value: value, expiry: .session)
+                    self.dataLayer.add(key: "\(TealiumDataKey.deepLinkQueryPrefix)_\($0.name)", value: value, expiry: .session)
                 }
             }
         }

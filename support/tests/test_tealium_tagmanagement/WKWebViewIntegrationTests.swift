@@ -126,8 +126,8 @@ class WKWebViewIntegrationTests: XCTestCase {
         tagManagementWKWebView.enable(webviewURL: testURL, delegates: nil, view: nil, completion: nil)
         tagManagementWKWebView.track(data) { _, info, error in
             XCTAssertNil(error, "Error returned from track call")
-            if let jsFromInfoDictionary = info[TagManagementKey.jsCommand] as? String,
-               let payload = info[TagManagementKey.payload] as? [String: Any] {
+            if let jsFromInfoDictionary = info[TealiumDataKey.jsCommand] as? String,
+               let payload = info[TealiumDataKey.payload] as? [String: Any] {
                 XCTAssertEqual(expectedJS, jsFromInfoDictionary, "Track call contained invalid data")
                 XCTAssertEqual(data.description, payload.description, "Data and Payload should be equal")
                 expectation.fulfill()

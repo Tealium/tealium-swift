@@ -122,7 +122,7 @@ class AutotrackingModuleTests: XCTestCase {
         AutotrackingModule.onAutoTrackView.subscribe { name in
             secondReceiveExp.fulfill()
         }.toDisposeBag(disposeBag)
-        wait(for: [firstReceiveExp, secondReceiveExp], timeout: 0)
+        wait(for: [firstReceiveExp, secondReceiveExp], timeout: 4.0)
     }
     
     func testBlocked() {
@@ -135,6 +135,25 @@ class AutotrackingModuleTests: XCTestCase {
         expectationRequest?.assertForOverFulfill = true
         module.requestViewTrack(viewName: viewName)
         module.requestViewTrack(viewName: blockedViewName)
+
+        waitForExpectations(timeout: 4.0, handler: nil)
+
+        XCTAssertEqual(viewName, currentViewName)
+    }
+    
+    func testBlockedContains() {
+        let viewName = currentViewName
+        let blockedViewName1 = "BlOckEd"
+        let blockedViewName2 = "UNBlOckEd"
+        let blockedViewName3 = "BlOckEdView"
+        
+        let module = self.module
+
+        expectationRequest = expectation(description: "Don't track any blocked view")
+        expectationRequest?.isInverted = true
+        module.requestViewTrack(viewName: blockedViewName1)
+        module.requestViewTrack(viewName: blockedViewName2)
+        module.requestViewTrack(viewName: blockedViewName3)
 
         waitForExpectations(timeout: 4.0, handler: nil)
 

@@ -175,8 +175,8 @@ public class TagManagementModule: Dispatcher {
             var requests = request.trackRequests
             requests = requests.map {
                 var trackData = $0.trackDictionary, track = $0
-                trackData[TealiumKey.wasQueued] = true
-                trackData[TealiumKey.queueReason] = "Tag Management Webview Not Ready"
+                trackData[TealiumDataKey.wasQueued] = true
+                trackData[TealiumDataKey.queueReason] = "Tag Management Webview Not Ready"
                 track.data = trackData.encodable
                 return track
             }
@@ -184,8 +184,8 @@ public class TagManagementModule: Dispatcher {
         case let request as TealiumTrackRequest:
             var track = request
             var trackData = track.trackDictionary
-            trackData[TealiumKey.wasQueued] = true
-            trackData[TealiumKey.queueReason] = "Tag Management Webview Not Ready"
+            trackData[TealiumDataKey.wasQueued] = true
+            trackData[TealiumDataKey.queueReason] = "Tag Management Webview Not Ready"
             track.data = trackData.encodable
             self.pendingTrackRequests.append((track, completion))
         case let request as TealiumRemoteAPIRequest:
@@ -210,7 +210,7 @@ public class TagManagementModule: Dispatcher {
     /// - Returns: `TealiumTrackRequest`
     func prepareForDispatch(_ request: TealiumTrackRequest) -> TealiumTrackRequest {
         var newTrack = request.trackDictionary
-        newTrack[TealiumKey.dispatchService] = TagManagementKey.moduleName
+        newTrack[TealiumDataKey.dispatchService] = TagManagementKey.moduleName
         return TealiumTrackRequest(data: newTrack)
     }
 

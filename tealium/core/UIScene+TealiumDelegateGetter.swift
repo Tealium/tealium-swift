@@ -19,12 +19,12 @@ private let swizzling: (AnyClass, Selector, Selector) -> Void = { forClass, orig
 
 @available(iOS 13.0, *)
 extension UIScene {
-
     static let tealSwizzleDelegateGetterOnce: Void = {
         let originalSelector = #selector(getter: delegate)
         let swizzledSelector = #selector(getter: teal_swizzled_delegate)
         swizzling(UIScene.self, originalSelector, swizzledSelector)
     }()
+
     static var onDelegateGetterBlock: ((UISceneDelegate?) -> Void)?
 
     // swiftlint:disable identifier_name

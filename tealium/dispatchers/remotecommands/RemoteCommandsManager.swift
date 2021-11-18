@@ -221,7 +221,7 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
     public func trigger(command type: SimpleCommandType, with data: [String: Any], completion: ModuleCompletion?) {
         switch type {
         case .webview:
-            guard let request = data[TealiumKey.tagmanagementNotification] as? URLRequest else {
+            guard let request = data[TealiumDataKey.tagmanagementNotification] as? URLRequest else {
                 return
             }
             triggerCommand(from: request)

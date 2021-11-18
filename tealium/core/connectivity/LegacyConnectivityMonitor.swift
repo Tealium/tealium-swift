@@ -124,14 +124,14 @@ class LegacyConnectivityMonitor: ConnectivityMonitorProtocol {
         zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
         zeroAddress.sin_family = sa_family_t(AF_INET)
 
-        let defaultRouteReachability = withUnsafePointer(to: &zeroAddress) {
+        let optionalDefaultRouteReachability = withUnsafePointer(to: &zeroAddress) {
             $0.withMemoryRebound(to: sockaddr.self, capacity: 1) { zeroSockAddress in
                 SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
             }
         }
 
         var flags: SCNetworkReachabilityFlags = SCNetworkReachabilityFlags()
-        guard let defaultRouteReachability = defaultRouteReachability else {
+        guard let defaultRouteReachability = optionalDefaultRouteReachability else {
             return false
         }
 

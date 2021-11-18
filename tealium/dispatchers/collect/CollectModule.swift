@@ -74,7 +74,7 @@ public class CollectModule: Dispatcher {
     /// - Parameter data: `[String: Any]` containing the data layer for this event
     /// - Returns: `Bool`
     func isConsentEvent(_ data: [String: Any]) -> Bool {
-        guard let event = data[TealiumKey.event] as? String else {
+        guard let event = data[TealiumDataKey.event] as? String else {
             return false
         }
         return TealiumKey.updateConsentCookieEventNames.contains(event)
@@ -86,17 +86,17 @@ public class CollectModule: Dispatcher {
     /// - Returns: `TealiumTrackRequest`
     func prepareForDispatch(_ request: TealiumTrackRequest) -> TealiumTrackRequest {
         var newTrack = request.trackDictionary
-        if newTrack[TealiumKey.account] == nil,
-           newTrack[TealiumKey.profile] == nil {
-            newTrack[TealiumKey.account] = config.account
-            newTrack[TealiumKey.profile] = config.profile
+        if newTrack[TealiumDataKey.account] == nil,
+           newTrack[TealiumDataKey.profile] == nil {
+            newTrack[TealiumDataKey.account] = config.account
+            newTrack[TealiumDataKey.profile] = config.profile
         }
 
         if let profileOverride = config.overrideCollectProfile {
-            newTrack[TealiumKey.profile] = profileOverride
+            newTrack[TealiumDataKey.profile] = profileOverride
         }
 
-        newTrack[TealiumKey.dispatchService] = CollectKey.moduleName
+        newTrack[TealiumDataKey.dispatchService] = CollectKey.moduleName
         return TealiumTrackRequest(data: newTrack)
     }
 

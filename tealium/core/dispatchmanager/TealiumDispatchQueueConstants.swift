@@ -9,8 +9,6 @@ import Foundation
 
 enum TealiumDispatchQueueConstants {
     static let moduleName = "dispatchqueue"
-    static let batchingBypassKeys = "batching_bypass_keys"
-    static let isRemoteAPIEnabled = "remote_api_enabled"
     static let lowBatteryThreshold = 20.0
     static let simulatorBatteryConstant = -100.0
     static let insufficientBatteryQueueReason = "insufficient_battery"

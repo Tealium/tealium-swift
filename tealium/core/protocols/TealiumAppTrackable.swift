@@ -6,7 +6,7 @@
 //
 
 import Foundation
-#if canImport(SwiftUI)
+#if canImport(SwiftUI) && (arch(arm64) || arch(x86_64))
 import SwiftUI
 
 @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)

@@ -12,26 +12,31 @@ import UIKit
 #else
 #endif
 
+extension TealiumConfigKey {
+    static let batchingBypassKeys = "batching_bypass_keys"
+    static let isRemoteAPIEnabled = "remote_api_enabled"
+}
+
 public extension TealiumConfig {
 
     /// The number of events after which the queue will be flushed
     var dispatchAfter: Int {
         get {
-            options[TealiumKey.eventLimit] as? Int ?? batchSize
+            options[TealiumConfigKey.eventLimit] as? Int ?? batchSize
         }
 
         set {
-            options[TealiumKey.eventLimit] = newValue
+            options[TealiumConfigKey.eventLimit] = newValue
         }
     }
 
     var batchingBypassKeys: [String]? {
         get {
-            options[TealiumDispatchQueueConstants.batchingBypassKeys] as? [String]
+            options[TealiumConfigKey.batchingBypassKeys] as? [String]
         }
 
         set {
-            options[TealiumDispatchQueueConstants.batchingBypassKeys] = newValue
+            options[TealiumConfigKey.batchingBypassKeys] = newValue
         }
     }
 
@@ -41,11 +46,11 @@ public extension TealiumConfig {
     /// Enables (`true`) or disables (`false`) `remote_api` event. Required for RemoteCommands module if DispatchQueue module in use.
     var remoteAPIEnabled: Bool? {
         get {
-            options[TealiumDispatchQueueConstants.isRemoteAPIEnabled] as? Bool
+            options[TealiumConfigKey.isRemoteAPIEnabled] as? Bool
         }
 
         set {
-            options[TealiumDispatchQueueConstants.isRemoteAPIEnabled] = newValue
+            options[TealiumConfigKey.isRemoteAPIEnabled] = newValue
         }
     }
     #endif
@@ -53,11 +58,11 @@ public extension TealiumConfig {
     /// Enables (`true`) or disables (`false`) lifecycle auto tracking. Default is `true`. If set to `false` and lifecycle launch/sleep/wake events are desired, they will need to be manually called using the public methods in the `LifecycleModule`.
     var lifecycleAutoTrackingEnabled: Bool {
         get {
-            options[TealiumKey.lifecycleAutotrackingEnabled] as? Bool ?? true
+            options[TealiumConfigKey.lifecycleAutotrackingEnabled] as? Bool ?? true
         }
 
         set {
-            options[TealiumKey.lifecycleAutotrackingEnabled] = newValue
+            options[TealiumConfigKey.lifecycleAutotrackingEnabled] = newValue
         }
     }
 }

@@ -61,7 +61,7 @@ class TealiumInstanceManagerTests: XCTestCase {
         TealiumInstanceManager.shared.didOpenUrl(url)
         
         TealiumQueues.backgroundSerialQueue.async {
-            let dataLayerUrl = tealium.dataLayer.all[TealiumKey.deepLinkURL] as? String
+            let dataLayerUrl = tealium.dataLayer.all[TealiumDataKey.deepLinkURL] as? String
             expectationRequest.fulfill()
             XCTAssertEqual(url.absoluteString, dataLayerUrl)
         }

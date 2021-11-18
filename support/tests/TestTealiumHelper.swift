@@ -42,15 +42,15 @@ let testTrackRequest = TealiumTrackRequest(data: [:])
 
 let testDataDictionary: [String: Any]  =
     [
-        TealiumKey.account: TealiumTestValue.account,
-        TealiumKey.profile: TealiumTestValue.profile,
-        TealiumKey.environment: TealiumTestValue.environment,
-        TealiumKey.event: TealiumTestValue.title,
-        TealiumKey.libraryName: TealiumValue.libraryName,
-        TealiumKey.libraryVersion: TealiumValue.libraryVersion,
-        TealiumKey.sessionId: TealiumTestValue.sessionId,
-        TealiumKey.visitorId: TealiumTestValue.visitorID,
-        TealiumKey.random: TealiumTestValue.random
+        TealiumDataKey.account: TealiumTestValue.account,
+        TealiumDataKey.profile: TealiumTestValue.profile,
+        TealiumDataKey.environment: TealiumTestValue.environment,
+        TealiumDataKey.event: TealiumTestValue.title,
+        TealiumDataKey.libraryName: TealiumValue.libraryName,
+        TealiumDataKey.libraryVersion: TealiumValue.libraryVersion,
+        TealiumDataKey.sessionId: TealiumTestValue.sessionId,
+        TealiumDataKey.visitorId: TealiumTestValue.visitorID,
+        TealiumDataKey.random: TealiumTestValue.random
     ]
 
 class TimeTraveler {

@@ -107,6 +107,17 @@ class AnyCodableTests: XCTestCase {
         try encodeTest(value: specificDate)
     }
     
+    func testSubstring() throws {
+        let base = "Some String"
+        let subStrings = base.split(separator: " ")
+        let subString = subStrings[0]
+        let string = String(subString)
+        let anyCodable = AnyCodable(subString)
+        let data = try encodeAnyCodable(anyCodable)
+        let res = try decodeAnyCodable(data)
+        XCTAssertEqual(string, res.value as? String)
+    }
+    
     func testArray() throws {
         try encodeTest(value: [Int]())
         try encodeTest(value: [1,2,3])

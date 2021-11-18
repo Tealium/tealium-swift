@@ -14,11 +14,17 @@ public extension Collectors {
     static let AutoTracking = AutotrackingModule.self
 }
 
+extension TealiumConfigKey {
+    static let autotrackingDelegate = "delegate"
+    static let autotrackingFilename = "filename"
+    static let autotrackingUrl = "url"
+}
+
 public extension TealiumConfig {
 
     var autoTrackingCollectorDelegate: AutoTrackingDelegate? {
         get {
-            let weakDelegate = options[TealiumAutotrackingKey.delegate] as? Weak<AnyObject>
+            let weakDelegate = options[TealiumConfigKey.autotrackingDelegate] as? Weak<AnyObject>
             return weakDelegate?.value as? AutoTrackingDelegate
         }
 
@@ -27,43 +33,39 @@ public extension TealiumConfig {
             if let newValue = newValue {
                 weakDelegate = Weak<AnyObject>(value: newValue)
             }
-            options[TealiumAutotrackingKey.delegate] = weakDelegate
+            options[TealiumConfigKey.autotrackingDelegate] = weakDelegate
         }
     }
 
     var autoTrackingBlocklistFilename: String? {
         get {
-            options[TealiumAutotrackingKey.filename] as? String
+            options[TealiumConfigKey.autotrackingFilename] as? String
         }
 
         set {
-            options[TealiumAutotrackingKey.filename] = newValue
+            options[TealiumConfigKey.autotrackingFilename] = newValue
         }
     }
 
     var autoTrackingBlocklistURL: String? {
         get {
-            options[TealiumAutotrackingKey.url] as? String
+            options[TealiumConfigKey.autotrackingUrl] as? String
         }
 
         set {
-            options[TealiumAutotrackingKey.url] = newValue
+            options[TealiumConfigKey.autotrackingUrl] = newValue
         }
     }
 }
 
-enum TealiumAutotrackingKey {
-    static let moduleName = "autotracking"
-    static let viewNotificationName = "com.tealium.autotracking.view"
+public extension TealiumDataKey {
     static let autotracked = "autotracked"
-    static let delegate = "delegate"
-    static let filename = "filename"
-    static let url = "url"
+}
 
+enum TealiumAutotrackingKey {
+    static let moduleName = "AutoTracking"
 }
 
 public protocol AutoTrackingDelegate: AnyObject {
-
     func onCollectScreenView(screenName: String) -> [String: Any]
-
 }

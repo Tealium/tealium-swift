@@ -75,13 +75,13 @@ public extension DeviceData {
             / Unit.megabyte.rawValue
 
         return [
-            DeviceDataKey.memoryFree: String(format: "%0.2fMB", free),
-            DeviceDataKey.memoryInactive: String(format: "%0.2fMB", inactive),
-            DeviceDataKey.memoryWired: String(format: "%0.2fMB", wired),
-            DeviceDataKey.memoryActive: String(format: "%0.2fMB", active),
-            DeviceDataKey.memoryCompressed: String(format: "%0.2fMB", compressed),
-            DeviceDataKey.physicalMemory: String(format: "%0.2fMB", physical),
-            DeviceDataKey.appMemoryUsage: appMemoryUsed
+            TealiumDataKey.memoryFree: String(format: "%0.2fMB", free),
+            TealiumDataKey.memoryInactive: String(format: "%0.2fMB", inactive),
+            TealiumDataKey.memoryWired: String(format: "%0.2fMB", wired),
+            TealiumDataKey.memoryActive: String(format: "%0.2fMB", active),
+            TealiumDataKey.memoryCompressed: String(format: "%0.2fMB", compressed),
+            TealiumDataKey.physicalMemory: String(format: "%0.2fMB", physical),
+            TealiumDataKey.appMemoryUsage: appMemoryUsed
         ]
     }
 }

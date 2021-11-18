@@ -133,7 +133,7 @@ open class RemoteCommand: RemoteCommandProtocol {
             completion?((.failure(TealiumRemoteCommandsError.commandsNotFound), nil))
             return nil
         }
-        guard let tealiumEvent = trackData[TealiumKey.event] as? String,
+        guard let tealiumEvent = trackData[TealiumDataKey.event] as? String,
               let commandName = commandNames[tealiumEvent] else {
             completion?((.failure(TealiumRemoteCommandsError.commandNameNotFound), nil))
             return nil

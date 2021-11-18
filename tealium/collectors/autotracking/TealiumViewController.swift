@@ -3,7 +3,7 @@
 // Copyright (c) 2021 Tealium, Inc. All rights reserved.
 //
 
-#if os(iOS)
+#if os(iOS) || os(tvOS)
 import Foundation
 import SwiftUI
 import UIKit

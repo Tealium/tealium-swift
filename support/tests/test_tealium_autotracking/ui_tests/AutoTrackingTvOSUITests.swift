@@ -28,13 +28,11 @@ class AutoTrackingTvOSUITests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
         let remote = XCUIRemote.shared
-        var text = """
-            RootView0
-            
-            """
+        var text = findStartText(app:app)
         assertStaticTextExists(app: app, text: text)
         remote.press(.select)
-        text += "SomeView\n"
+        text += "ViewControllerWrapper\n"
+        text += "RealVC\n" // Did appear happens late
         assertStaticTextExists(app: app, text: text)
         remote.press(.menu)
         text += "RootView1\n"
@@ -53,6 +51,26 @@ class AutoTrackingTvOSUITests: XCTestCase {
         remote.press(.menu)
         text += "RootView3\n"
         assertStaticTextExists(app: app, text: text)
+        remote.press(.down)
+        remote.press(.select)
+        text += "UI\n"
+        assertStaticTextExists(app: app, text: text)
+    }
+    // Sometimes UINavigationController is after RootView0
+    func findStartText(app: XCUIApplication) -> String {
+        let text = """
+            RootView0
+            UINavigationController
+            
+            """
+        if app.staticTexts[text].waitForExistence(timeout: 5) {
+            return text
+        }
+        return """
+            UINavigationController
+            RootView0
+            
+            """
     }
     
     func assertStaticTextExists(app: XCUIApplication, text: String) {

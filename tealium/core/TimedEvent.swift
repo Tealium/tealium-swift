@@ -51,10 +51,10 @@ public struct TimedEvent: Hashable {
               let duration = duration?.milliseconds else {
             return [String: Any]()
         }
-        data[TealiumKey.timedEventName] = self.name
-        data[TealiumKey.eventStart] = start
-        data[TealiumKey.eventStop] = stop
-        data[TealiumKey.eventDuration] = duration
+        data[TealiumDataKey.timedEventName] = self.name
+        data[TealiumDataKey.eventStart] = start
+        data[TealiumDataKey.eventStop] = stop
+        data[TealiumDataKey.eventDuration] = duration
         return data
     }
 

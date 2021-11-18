@@ -13,10 +13,6 @@ import TealiumCore
 public enum CollectKey {
     static let moduleName = "collect"
     static let encodedURLString = "encoded_url"
-    static let overrideCollectUrl = "tealium_override_collect_url"
-    static let overrideCollectBatchUrl = "tealium_override_collect_batch_url"
-    static let overrideCollectProfile = "tealium_override_collect_profile"
-    static let overrideCollectDomain = "tealium_override_collect_domain"
     static let payload = "payload"
     static let responseHeader = "response_headers"
     public static let errorHeaderKey = TealiumKey.errorHeaderKey
