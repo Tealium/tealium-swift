@@ -122,7 +122,7 @@ class AutotrackingModuleTests: XCTestCase {
         AutotrackingModule.onAutoTrackView.subscribe { name in
             secondReceiveExp.fulfill()
         }.toDisposeBag(disposeBag)
-        wait(for: [firstReceiveExp, secondReceiveExp], timeout: 0)
+        wait(for: [firstReceiveExp, secondReceiveExp], timeout: 4.0)
     }
     
     func testBlocked() {
