@@ -140,6 +140,25 @@ class AutotrackingModuleTests: XCTestCase {
 
         XCTAssertEqual(viewName, currentViewName)
     }
+    
+    func testBlockedContains() {
+        let viewName = currentViewName
+        let blockedViewName1 = "BlOckEd"
+        let blockedViewName2 = "UNBlOckEd"
+        let blockedViewName3 = "BlOckEdView"
+        
+        let module = self.module
+
+        expectationRequest = expectation(description: "Don't track any blocked view")
+        expectationRequest?.isInverted = true
+        module.requestViewTrack(viewName: blockedViewName1)
+        module.requestViewTrack(viewName: blockedViewName2)
+        module.requestViewTrack(viewName: blockedViewName3)
+
+        waitForExpectations(timeout: 4.0, handler: nil)
+
+        XCTAssertEqual(viewName, currentViewName)
+    }
 }
 
 extension AutotrackingModuleTests: ModuleDelegate {

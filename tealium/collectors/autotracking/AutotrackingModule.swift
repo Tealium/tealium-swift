@@ -26,6 +26,7 @@ public class AutotrackingModule: Collector {
     weak var autotrackingDelegate: AutoTrackingDelegate?
     var lastEvent: String?
     var disposeBag = TealiumDisposeBag()
+    // Lowercased list of blocked view names
     var blockList: [String]?
     var blockListBundle = Bundle.main
 
@@ -83,11 +84,14 @@ public class AutotrackingModule: Collector {
         }
     }
 
-    func shouldBlock(_ eventName: String) -> Bool {
+    func shouldBlock(_ viewName: String) -> Bool {
         guard let blockList = blockList else {
             return false
         }
-        return blockList.contains(eventName)
+        let lowerCasedView = viewName.lowercased()
+        return blockList.contains { blockKey in
+            return lowerCasedView.contains(blockKey)
+        }
     }
 
     func loadBlocklist() {
@@ -96,15 +100,15 @@ public class AutotrackingModule: Collector {
                 return
             }
             do {
+                var list: [String]?
                 if let file = self.config.autoTrackingBlocklistFilename,
                    let blockList: [String] = try JSONLoader.fromFile(file, bundle: self.blockListBundle, logger: nil) {
-                    self.blockList = blockList
+                    list = blockList
                 } else if let url = self.config.autoTrackingBlocklistURL,
                           let blockList: [String] = try JSONLoader.fromURL(url: url, logger: nil) {
-                    self.blockList = blockList
-                } else {
-                    self.blockList = nil
+                    list = blockList
                 }
+                self.blockList = list?.map { $0.lowercased() }
             } catch let error {
                 if let error = error as? LocalizedError {
                     let logRequest = TealiumLogRequest(title: "Auto Tracking",
