@@ -304,7 +304,8 @@ private extension TealiumDelegateProxy {
         let methodSelector = TealiumDelegateProxy.ApplicationOperUrlSelector
         guard let pointer = TealiumDelegateProxy.originalMethodImplementation(for: methodSelector, object: self),
               let pointerValue = pointer.pointerValue else {
-                  return true
+                  // return false to avoid consuming the URL - we never want to prevent the event from being consumed elsewhere
+                  return false
               }
         let originalImplementation = unsafeBitCast(pointerValue, to: ApplicationOpenURL.self)
         _ = originalImplementation(self, methodSelector, app, url, options)
@@ -321,7 +322,7 @@ private extension TealiumDelegateProxy {
         let methodSelector = TealiumDelegateProxy.ApplicationContinueUserActivitySelector
         guard let pointer = TealiumDelegateProxy.originalMethodImplementation(for: methodSelector, object: self),
               let pointerValue = pointer.pointerValue else {
-                  return true
+                  return false
               }
         let originalImplementation = unsafeBitCast(pointerValue, to: ApplicationContinueUserActivity.self)
         _ = originalImplementation(self, methodSelector, application, userActivity, restorationHandler)

@@ -1875,6 +1875,13 @@
 			remoteGlobalIDString = D755DC9821945E41003C6BA1;
 			remoteInfo = TealiumCore;
 		};
+		D7CAB3A727552CCF00306FC9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CF8805732554B74B0020E1B2;
+			remoteInfo = iOSTealiumTest;
+		};
 		D7F2DEBB233279A1000D0E0F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
@@ -4207,6 +4214,7 @@
 				CF13D81824FD5FE30024E79A /* PBXTargetDependency */,
 				CF13D81A24FD5FE30024E79A /* PBXTargetDependency */,
 				CF13D81C24FD5FE30024E79A /* PBXTargetDependency */,
+				D7CAB3A827552CCF00306FC9 /* PBXTargetDependency */,
 			);
 			name = "TealiumAppDelegateProxyTests-iOS";
 			productName = "tealium-swift-tests";
@@ -5017,7 +5025,7 @@
 					CF13D80D24FD5FE30024E79A = {
 						LastSwiftMigration = 1250;
 						ProvisioningStyle = Automatic;
-						TestTargetID = 15F57349272181E300194733;
+						TestTargetID = CF8805732554B74B0020E1B2;
 					};
 					CF13D84824FD61F80024E79A = {
 						ProvisioningStyle = Automatic;
@@ -7387,6 +7395,11 @@
 			target = D755DC9821945E41003C6BA1 /* TealiumCore */;
 			targetProxy = D79D017C2453129700A446DF /* PBXContainerItemProxy */;
 		};
+		D7CAB3A827552CCF00306FC9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CF8805732554B74B0020E1B2 /* iOSTealiumTest */;
+			targetProxy = D7CAB3A727552CCF00306FC9 /* PBXContainerItemProxy */;
+		};
 		D7F2DEBA233279A1000D0E0F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D736D6A42195CCB600B3BDEE /* TealiumCollect */;
@@ -8234,7 +8247,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "../support/tests/test_tealium_core/TealiumAppDelegateProxyTests-iOS-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AppDelegateTest.app/AppDelegateTest";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOSTealiumTest.app/iOSTealiumTest";
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
@@ -8267,7 +8280,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "../support/tests/test_tealium_core/TealiumAppDelegateProxyTests-iOS-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AppDelegateTest.app/AppDelegateTest";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOSTealiumTest.app/iOSTealiumTest";
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
