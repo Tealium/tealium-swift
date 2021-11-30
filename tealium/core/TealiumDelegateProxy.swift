@@ -304,11 +304,12 @@ private extension TealiumDelegateProxy {
         let methodSelector = TealiumDelegateProxy.ApplicationOperUrlSelector
         guard let pointer = TealiumDelegateProxy.originalMethodImplementation(for: methodSelector, object: self),
               let pointerValue = pointer.pointerValue else {
-                  return true
+                  // return false to avoid consuming the URL - we never want to prevent the event from being consumed elsewhere
+                  return false
               }
         let originalImplementation = unsafeBitCast(pointerValue, to: ApplicationOpenURL.self)
-        _ = originalImplementation(self, methodSelector, app, url, options)
-        return false
+        let originalResult = originalImplementation(self, methodSelector, app, url, options)
+        return originalResult
     }
 
     @objc
@@ -321,11 +322,11 @@ private extension TealiumDelegateProxy {
         let methodSelector = TealiumDelegateProxy.ApplicationContinueUserActivitySelector
         guard let pointer = TealiumDelegateProxy.originalMethodImplementation(for: methodSelector, object: self),
               let pointerValue = pointer.pointerValue else {
-                  return true
+                  return false
               }
         let originalImplementation = unsafeBitCast(pointerValue, to: ApplicationContinueUserActivity.self)
-        _ = originalImplementation(self, methodSelector, application, userActivity, restorationHandler)
-        return false
+        let originalResult = originalImplementation(self, methodSelector, application, userActivity, restorationHandler)
+        return originalResult
     }
 
     @objc
@@ -360,7 +361,7 @@ private extension TealiumDelegateProxy {
               }
 
         let originalImplementation = unsafeBitCast(pointerValue, to: SceneWillConnectTo.self)
-        _ = originalImplementation(self, methodSelector, scene, session, connectionOptions)
+        originalImplementation(self, methodSelector, scene, session, connectionOptions)
     }
 
     @objc
@@ -385,7 +386,7 @@ private extension TealiumDelegateProxy {
                   return
               }
         let originalImplementation = unsafeBitCast(pointerValue, to: SceneOpenURLContexts.self)
-        _ = originalImplementation(self, methodSelector, scene, URLContexts)
+        originalImplementation(self, methodSelector, scene, URLContexts)
     }
 
     func handleUrlContexts(_ urlContexts: Set<UIOpenURLContext>) {
