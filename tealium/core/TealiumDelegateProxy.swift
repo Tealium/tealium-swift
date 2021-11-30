@@ -308,8 +308,8 @@ private extension TealiumDelegateProxy {
                   return false
               }
         let originalImplementation = unsafeBitCast(pointerValue, to: ApplicationOpenURL.self)
-        _ = originalImplementation(self, methodSelector, app, url, options)
-        return false
+        let originalResult = originalImplementation(self, methodSelector, app, url, options)
+        return originalResult
     }
 
     @objc
@@ -325,8 +325,8 @@ private extension TealiumDelegateProxy {
                   return false
               }
         let originalImplementation = unsafeBitCast(pointerValue, to: ApplicationContinueUserActivity.self)
-        _ = originalImplementation(self, methodSelector, application, userActivity, restorationHandler)
-        return false
+        let originalResult = originalImplementation(self, methodSelector, application, userActivity, restorationHandler)
+        return originalResult
     }
 
     @objc
@@ -361,7 +361,7 @@ private extension TealiumDelegateProxy {
               }
 
         let originalImplementation = unsafeBitCast(pointerValue, to: SceneWillConnectTo.self)
-        _ = originalImplementation(self, methodSelector, scene, session, connectionOptions)
+        originalImplementation(self, methodSelector, scene, session, connectionOptions)
     }
 
     @objc
@@ -386,7 +386,7 @@ private extension TealiumDelegateProxy {
                   return
               }
         let originalImplementation = unsafeBitCast(pointerValue, to: SceneOpenURLContexts.self)
-        _ = originalImplementation(self, methodSelector, scene, URLContexts)
+        originalImplementation(self, methodSelector, scene, URLContexts)
     }
 
     func handleUrlContexts(_ urlContexts: Set<UIOpenURLContext>) {
