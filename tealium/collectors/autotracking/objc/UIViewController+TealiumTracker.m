@@ -8,7 +8,11 @@
 
 #if TARGET_OS_IOS || TARGET_OS_TV
 #if COCOAPODS
+#if defined __has_include && __has_include(<TealiumSwift-Swift.h>)
+#import <TealiumSwift-Swift.h>
+#else
 #import <TealiumSwift/TealiumSwift-Swift.h>
+#endif
 #else
 #ifdef SWIFT_PACKAGE
 @import TealiumAutotracking;
