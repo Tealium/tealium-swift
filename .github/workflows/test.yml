@@ -176,22 +176,22 @@ jobs:
       # - name: Validate Code Coverage - "${{ matrix.scheme }}"
       #   run: python3 coverage.py "${{ matrix.scheme }}".txt && exit $(echo $?)
       #   working-directory: ${{env.working-directory}}
-  test_VisitorServiceDemo_uiTests:
-    name: Test TealiumVisitorProfileDemo UI Tests
-    runs-on: macos-11
-    timeout-minutes: 60
-    env:
-      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-      working-directory: ./samples/VisitorServiceDemo
-    steps:
-      - name: Setup Xcode version
-        uses: maxim-lobanov/setup-xcode@v1.3.0
-        with:
-          xcode-version: latest-stable
-      - uses: actions/checkout@v2
-      - name: Test TealiumVisitorProfileDemo UI Tests iOS
-        run: rm -rf output && pod install && fastlane scan --scheme "TealiumVisitorProfileDemoUITests" --derived_data_path ./output --code_coverage false --skip_build true
-        working-directory: ${{ env.working-directory }}
+  # test_VisitorServiceDemo_uiTests:
+  #   name: Test TealiumVisitorProfileDemo UI Tests
+  #   runs-on: macos-11
+  #   timeout-minutes: 60
+  #   env:
+  #     DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+  #     working-directory: ./samples/VisitorServiceDemo
+  #   steps:
+  #     - name: Setup Xcode version
+  #       uses: maxim-lobanov/setup-xcode@v1.3.0
+  #       with:
+  #         xcode-version: latest-stable
+  #     - uses: actions/checkout@v2
+  #     - name: Test TealiumVisitorProfileDemo UI Tests iOS
+  #       run: rm -rf output && pod install && fastlane scan --scheme "TealiumVisitorProfileDemoUITests" --derived_data_path ./output --code_coverage false --skip_build true
+  #       working-directory: ${{ env.working-directory }}
   test_Autotracking_iOS_uiTests:
     name: Test TealiumAutotracking iOS UI Tests
     runs-on: macos-11
