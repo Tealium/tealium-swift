@@ -51,7 +51,7 @@ public class VisitorServiceModule: Collector, DispatchListener {
 
     func retrieveProfile(visitorId: String, _ completion: (() -> Void)? = nil) {
         // wait before triggering refresh, to give event time to process
-        TealiumQueues.backgroundConcurrentQueue.write(after: .now() + 2.1) {
+        TealiumQueues.backgroundSerialQueue.asyncAfter(deadline: .now() + 2.1) {
             guard self.firstEventSent else {
                 self.firstEventSent = true
                 self.visitorServiceManager?.startProfileUpdates(visitorId: visitorId)

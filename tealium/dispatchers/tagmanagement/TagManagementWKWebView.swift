@@ -138,7 +138,7 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
         }
         reloadHandler = completion
         let request = URLRequest(url: url)
-        TealiumQueues.mainQueue.async { [weak self] in
+        TealiumQueues.secureMainThreadExecution { [weak self] in
             guard let self = self else {
                 return
             }
@@ -170,7 +170,7 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
                         TagManagementError.couldNotJSONEncodeData)
             return
         }
-        TealiumQueues.mainQueue.async { [weak self] in
+        TealiumQueues.secureMainThreadExecution { [weak self] in
             guard let self = self else {
                 return
             }
@@ -233,7 +233,7 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
                 if let error = error {
                     info.value += [TealiumDataKey.jsError: error]
                 }
-                TealiumQueues.backgroundConcurrentQueue.write {
+                TealiumQueues.backgroundSerialQueue.async {
                     completion?(info.value)
                 }
             }

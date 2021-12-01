@@ -65,7 +65,7 @@ class TealiumInstanceManagerTests: XCTestCase {
             expectationRequest.fulfill()
             XCTAssertEqual(url.absoluteString, dataLayerUrl)
         }
-        waitForExpectations(timeout: 4.0, handler: nil)
+        waitForExpectations(timeout: 8.0, handler: nil)
     }
 
 }
