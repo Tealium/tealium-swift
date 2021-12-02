@@ -66,11 +66,15 @@ class AutoTrackingTvOSUITests: XCTestCase {
         if app.staticTexts[text].waitForExistence(timeout: 5) {
             return text
         }
-        return """
+        let otherText = """
             UINavigationController
             RootView0
             
             """
+        if app.staticTexts[otherText].waitForExistence(timeout: 5) {
+            return otherText
+        }
+        return text // This means it's failed
     }
     
     func assertStaticTextExists(app: XCUIApplication, text: String) {

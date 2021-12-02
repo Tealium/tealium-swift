@@ -139,4 +139,9 @@ class TealiumVisitorProfileDemoUITests: XCTestCase {
             }
         }
     }
+    
+    // For the future, if we want to wait for animations to complete.
+    func assertStaticTextExists(element: XCUIElement, text: String) {
+        XCTAssertTrue(element.waitForExistence(timeout: 5), "Can not find \(text)")
+    }
 }

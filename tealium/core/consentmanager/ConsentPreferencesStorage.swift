@@ -10,18 +10,13 @@ import Foundation
 /// Dedicated persistent storage for consent preferences
 class ConsentPreferencesStorage {
 
-    static let consentStorage = UserDefaults.standard
-    static let key = "consentpreferences"
-    let readWriteQueue = ReadWrite("\(ConsentPreferencesStorage.key).label")
     let diskStorage: TealiumDiskStorageProtocol
     var preferences: UserConsentPreferences? {
         get {
-            readWriteQueue.read {
-                guard let data = diskStorage.retrieve(as: UserConsentPreferences.self) else {
-                    return nil
-                }
-                return data
+            guard let data = diskStorage.retrieve(as: UserConsentPreferences.self) else {
+                return nil
             }
+            return data
         }
 
         set {

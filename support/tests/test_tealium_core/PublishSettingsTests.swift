@@ -103,9 +103,8 @@ class PublishSettingsTests: XCTestCase {
         PublishSettingsTests.delegateExpectationSuccess = self.expectation(description: "publishsettings")
         let config = testTealiumConfig.copy
         config.shouldUseRemotePublishSettings = true
-
-        let publishSettingsRetriever = TealiumPublishSettingsRetriever(config: config, diskStorage: nil, urlSession: MockURLSessionPublishSettings(), delegate: GetSavePublishSettings())
-        publishSettingsRetriever.getAndSave()
+        let delegate = GetSavePublishSettings()
+        _ = TealiumPublishSettingsRetriever(config: config, diskStorage: nil, urlSession: MockURLSessionPublishSettings(), delegate: delegate)
         wait(for: [PublishSettingsTests.delegateExpectationSuccess!], timeout: 5)
     }
 
@@ -113,9 +112,8 @@ class PublishSettingsTests: XCTestCase {
         PublishSettingsTests.delegateExpectationSuccess = self.expectation(description: "publishsettings")
         let config = testTealiumConfig.copy
         config.shouldUseRemotePublishSettings = true
-
-        let publishSettingsRetriever = TealiumPublishSettingsRetriever(config: config, diskStorage: nil, urlSession: MockURLSessionPublishSettings(), delegate: GetSavePublishSettings())
-        publishSettingsRetriever.refresh()
+        let delegate = GetSavePublishSettings()
+        _ = TealiumPublishSettingsRetriever(config: config, diskStorage: nil, urlSession: MockURLSessionPublishSettings(), delegate: delegate)
         wait(for: [PublishSettingsTests.delegateExpectationSuccess!], timeout: 5)
     }
 

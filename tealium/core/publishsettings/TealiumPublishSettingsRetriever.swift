@@ -67,12 +67,14 @@ class TealiumPublishSettingsRetriever {
 
         getRemoteSettings(url: mobileHTML,
                           lastFetch: cachedSettings?.lastFetch) { settings in
-            if let settings = settings {
-                self.cachedSettings = settings
-                self.diskStorage.save(settings, completion: nil)
-                self.delegate?.didUpdate(settings)
-            } else {
-                self.cachedSettings?.lastFetch = Date()
+            TealiumQueues.backgroundSerialQueue.async {
+                if let settings = settings {
+                    self.cachedSettings = settings
+                    self.diskStorage.save(settings, completion: nil)
+                    self.delegate?.didUpdate(settings)
+                } else {
+                    self.cachedSettings?.lastFetch = Date()
+                }
             }
         }
 

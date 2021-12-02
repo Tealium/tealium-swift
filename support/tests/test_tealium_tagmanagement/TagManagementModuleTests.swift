@@ -29,8 +29,10 @@ class TagManagementModuleTests: XCTestCase {
         let track = TealiumTrackRequest(data: ["test_track": true])
         module?.dynamicTrack(track, completion: nil)
         XCTAssertEqual(mockTagmanagement.reloadCallCount, 1)
-        XCTAssertEqual(module.errorState.value, 0)
-        expect.fulfill()
+        TealiumQueues.backgroundSerialQueue.async {
+            XCTAssertEqual(self.module.errorState.value, 0)
+            self.expect.fulfill()
+        }
         wait(for: [expect], timeout: 2.0)
     }
 
@@ -42,8 +44,10 @@ class TagManagementModuleTests: XCTestCase {
         let track = TealiumTrackRequest(data: ["test_track": true])
         module?.dynamicTrack(track, completion: nil)
         XCTAssertEqual(mockTagmanagement.reloadCallCount, 1)
-        XCTAssertEqual(module.errorState.value, 2)
-        expect.fulfill()
+        TealiumQueues.backgroundSerialQueue.async {
+            XCTAssertEqual(self.module.errorState.value, 2)
+            self.expect.fulfill()
+        }
         wait(for: [expect], timeout: 2.0)
     }
 
