@@ -212,8 +212,8 @@ public class ModulesManager {
         cachedTrackData = newRequest.trackDictionary
     }
 
-    func allTrackData(retreiveCachedData: Bool) -> [String: Any] {
-        if retreiveCachedData, let cachedData = self.cachedTrackData {
+    func allTrackData(retrieveCachedData: Bool) -> [String: Any] {
+        if retrieveCachedData, let cachedData = self.cachedTrackData {
             return cachedData
         }
         let data = gatherTrackData(for: TealiumTrackRequest(data: [:]).trackDictionary)
