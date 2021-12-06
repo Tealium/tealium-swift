@@ -340,18 +340,18 @@ class TealiumModulesManagerTests: XCTestCase {
         let collector = DummyCollector(context: modulesManager.context, delegate: self, diskStorage: nil) { _, _  in
         }
         modulesManager.addCollector(collector)
-        let data = modulesManager.allTrackData(retreiveCachedData: false)
+        let data = modulesManager.allTrackData(retrieveCachedData: false)
         XCTAssertNotNil(data["enabled_modules"]!)
         XCTAssertNotNil(data["dummy"])
         XCTAssertNotNil(data["dummyQueue"])
         XCTAssertNotNil(data["sessionData"])
         
-        let cachedData = modulesManager.allTrackData(retreiveCachedData: true)
+        let cachedData = modulesManager.allTrackData(retrieveCachedData: true)
         XCTAssertTrue(data.equal(to: cachedData))
         
         modulesManager.sendTrack(TealiumTrackRequest(data: ["tealium_event": "someValue"]))
         
-        let newCachedData = modulesManager.allTrackData(retreiveCachedData: true)
+        let newCachedData = modulesManager.allTrackData(retrieveCachedData: true)
         XCTAssertEqual(newCachedData["tealium_event"] as? String, "someValue")
     }
 
