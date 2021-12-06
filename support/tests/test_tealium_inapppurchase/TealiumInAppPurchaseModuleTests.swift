@@ -22,6 +22,7 @@ class InAppPurchaseModuleTests: XCTestCase {
 
     override func setUpWithError() throws {
         session = try SKTestSession(configurationFileNamed: "StoreKitTesting")
+        session.disableDialogs = true
         session.clearTransactions()
         let config = TestTealiumHelper().getConfig()
         let context = TestTealiumHelper.context(with: config)
