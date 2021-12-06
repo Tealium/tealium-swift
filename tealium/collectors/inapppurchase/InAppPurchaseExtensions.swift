@@ -21,11 +21,11 @@ extension SKPaymentTransaction {
             return nil
         }
         let data: [String: Any] = [
-            InAppPurchaseConstants.autotracked: true,
-            InAppPurchaseConstants.purchaseOrderId: transactionId,
-            InAppPurchaseConstants.purchaseTimestamp: transactionDate,
-            InAppPurchaseConstants.purchaseQuantity: payment.quantity,
-            InAppPurchaseConstants.purchaseSkus: payment.productIdentifier,
+            TealiumDataKey.inAppPurchaseAutotracked: true,
+            TealiumDataKey.purchaseOrderId: transactionId,
+            TealiumDataKey.purchaseTimestamp: transactionDate,
+            TealiumDataKey.purchaseQuantity: payment.quantity,
+            TealiumDataKey.purchaseSkus: payment.productIdentifier,
         ]
         let event = TealiumEvent(InAppPurchaseConstants.eventName, dataLayer: data)
         return event

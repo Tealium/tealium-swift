@@ -18,7 +18,6 @@ public class InAppPurchaseModule: Collector {
     public var config: TealiumConfig
     public var data: [String: Any]?
     var inAppPurchaseManager: InAppPurchaseManager
-    var diskStorage: TealiumDiskStorageProtocol!
 
     required public init(context: TealiumContext,
                          delegate: ModuleDelegate?,
@@ -28,7 +27,6 @@ public class InAppPurchaseModule: Collector {
         self.delegate = delegate
         self.inAppPurchaseManager = InAppPurchaseManager(delegate: delegate)
         SKPaymentQueue.default().add(inAppPurchaseManager)
-        self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config, forModule: ModuleNames.visitorservice.lowercased(), isCritical: false)
         completion((.success(true), nil))
     }
 }
