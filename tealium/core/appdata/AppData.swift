@@ -21,19 +21,19 @@ struct AppData: Codable {
         }
 
         if let name = name {
-            allData[TealiumKey.appName] = name
+            allData[TealiumDataKey.appName] = name
         }
 
         if let rdns = rdns {
-            allData[TealiumKey.appRDNS] = rdns
+            allData[TealiumDataKey.appRDNS] = rdns
         }
 
         if let version = version {
-            allData[TealiumKey.appVersion] = version
+            allData[TealiumDataKey.appVersion] = version
         }
 
         if let build = build {
-            allData[TealiumKey.appBuild] = build
+            allData[TealiumDataKey.appBuild] = build
         }
 
         return allData

@@ -81,10 +81,10 @@ public class AttributionData: AttributionDataProtocol {
     /// - Returns: `[String: Any]` of all volatile data (collected at init time): IDFV, IDFA, isTrackingAllowed
     public var volatileData: [String: Any] {
         return [
-            AttributionKey.idfa: idfa,
-            AttributionKey.idfv: idfv,
-            AttributionKey.isTrackingAllowed: isAdvertisingTrackingEnabled,
-            AttributionKey.trackingAuthorization: trackingAuthorizationStatus
+            TealiumDataKey.idfa: idfa,
+            TealiumDataKey.idfv: idfv,
+            TealiumDataKey.isTrackingAllowed: isAdvertisingTrackingEnabled,
+            TealiumDataKey.trackingAuthorization: trackingAuthorizationStatus
         ]
     }
 

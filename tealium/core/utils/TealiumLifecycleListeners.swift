@@ -88,12 +88,12 @@ public class TealiumLifecycleListeners {
         let operationQueue = OperationQueue()
         operationQueue.underlyingQueue = TealiumQueues.backgroundSerialQueue
 
-        wakeNotificationObserver = NotificationCenter.default.addObserver(forName: notificationNameApplicationDidBecomeActive, object: nil, queue: operationQueue) { _ in
-            self.wake()
+        wakeNotificationObserver = NotificationCenter.default.addObserver(forName: notificationNameApplicationDidBecomeActive, object: nil, queue: operationQueue) { [weak self] _ in
+            self?.wake()
         }
 
-        sleepNotificationObserser = NotificationCenter.default.addObserver(forName: notificationNameApplicationWillResignActive, object: nil, queue: operationQueue) { _ in
-            self.sleep()
+        sleepNotificationObserser = NotificationCenter.default.addObserver(forName: notificationNameApplicationWillResignActive, object: nil, queue: operationQueue) { [weak self] _ in
+            self?.sleep()
         }
 
         #endif

@@ -11,27 +11,32 @@ import Foundation
 import TealiumCore
 #endif
 
+extension TealiumConfigKey {
+    static let isSearchAdsEnabled = "com.tealium.attribution.searchads.enable"
+    static let isSKAdAttributionEnabled = "com.tealium.attribution.skadattribution.enable"
+}
+
 public extension TealiumConfig {
 
     /// Enables (`true`) or disables (`false`) Apple Search Ads API in the Attribution module￼.
     var searchAdsEnabled: Bool {
         get {
-            options[AttributionKey.isSearchAdsEnabled] as? Bool ?? false
+            options[TealiumConfigKey.isSearchAdsEnabled] as? Bool ?? false
         }
 
         set {
-            options[AttributionKey.isSearchAdsEnabled] = newValue
+            options[TealiumConfigKey.isSearchAdsEnabled] = newValue
         }
     }
 
     /// Enables (`true`) or disables (`false`) SKAdNetwork in the Attribution module￼.
     var skAdAttributionEnabled: Bool {
         get {
-            options[AttributionKey.isSKAdAttributionEnabled] as? Bool ?? false
+            options[TealiumConfigKey.isSKAdAttributionEnabled] as? Bool ?? false
         }
 
         set {
-            options[AttributionKey.isSKAdAttributionEnabled] = newValue
+            options[TealiumConfigKey.isSKAdAttributionEnabled] = newValue
         }
     }
 

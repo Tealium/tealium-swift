@@ -234,7 +234,6 @@ private extension TealiumDelegateProxy {
         objc_setAssociatedObject(originalDelegate, &AssociatedObjectKeys.originalImplementations, originalImplementationsStore, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
     // swiftlint:enable function_body_length
-
     static func overrideDescription(in subClass: AnyClass) {
         // Override the description so the custom class name will not show up.
         self.addInstanceMethod(
@@ -243,7 +242,6 @@ private extension TealiumDelegateProxy {
             fromClass: TealiumDelegateProxy.self,
             fromSelector: #selector(originalDescription))
     }
-
     // swiftlint:disable function_parameter_count
     static func proxyInstanceMethod(
         toClass destinationClass: AnyClass,
@@ -266,7 +264,6 @@ private extension TealiumDelegateProxy {
         originalImplementationsStore[destinationSelectorStr] = sourceImplementationPointer
     }
     // swiftlint:enable function_parameter_count
-
     static func addInstanceMethod(
         toClass destinationClass: AnyClass,
         toSelector destinationSelector: Selector,
@@ -279,7 +276,6 @@ private extension TealiumDelegateProxy {
         }
         let methodImplementation = method_getImplementation(method)
         let methodTypeEncoding = method_getTypeEncoding(method)
-
         if !class_addMethod(destinationClass, destinationSelector, methodImplementation, methodTypeEncoding) {
             log("Cannot copy method to destination selector '\(destinationSelector)' as it already exists.")
         }
@@ -301,7 +297,6 @@ private extension TealiumDelegateProxy {
 // MARK: App Delegate
 
 private extension TealiumDelegateProxy {
-
     @objc
     func application(_ app: UIApplication, openURL url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         TealiumDelegateProxy.log("Received Deep Link: \(url.absoluteString)")
@@ -309,12 +304,12 @@ private extension TealiumDelegateProxy {
         let methodSelector = TealiumDelegateProxy.ApplicationOperUrlSelector
         guard let pointer = TealiumDelegateProxy.originalMethodImplementation(for: methodSelector, object: self),
               let pointerValue = pointer.pointerValue else {
-                  return true
+                  // return false to avoid consuming the URL - we never want to prevent the event from being consumed elsewhere
+                  return false
               }
-
         let originalImplementation = unsafeBitCast(pointerValue, to: ApplicationOpenURL.self)
-        _ = originalImplementation(self, methodSelector, app, url, options)
-        return false
+        let originalResult = originalImplementation(self, methodSelector, app, url, options)
+        return originalResult
     }
 
     @objc
@@ -327,12 +322,11 @@ private extension TealiumDelegateProxy {
         let methodSelector = TealiumDelegateProxy.ApplicationContinueUserActivitySelector
         guard let pointer = TealiumDelegateProxy.originalMethodImplementation(for: methodSelector, object: self),
               let pointerValue = pointer.pointerValue else {
-                  return true
+                  return false
               }
-
         let originalImplementation = unsafeBitCast(pointerValue, to: ApplicationContinueUserActivity.self)
-        _ = originalImplementation(self, methodSelector, application, userActivity, restorationHandler)
-        return false
+        let originalResult = originalImplementation(self, methodSelector, application, userActivity, restorationHandler)
+        return originalResult
     }
 
     @objc
@@ -340,7 +334,6 @@ private extension TealiumDelegateProxy {
         if let originalClass = objc_getAssociatedObject(self, &AssociatedObjectKeys.originalClass) as? AnyClass {
             let originalClassName = NSStringFromClass(originalClass)
             let pointerHex = String(format: "%p", unsafeBitCast(self, to: Int.self))
-
             return "<\(originalClassName): \(pointerHex)>"
         }
         return "AppDelegate"
@@ -368,7 +361,7 @@ private extension TealiumDelegateProxy {
               }
 
         let originalImplementation = unsafeBitCast(pointerValue, to: SceneWillConnectTo.self)
-        _ = originalImplementation(self, methodSelector, scene, session, connectionOptions)
+        originalImplementation(self, methodSelector, scene, session, connectionOptions)
     }
 
     @objc
@@ -393,7 +386,7 @@ private extension TealiumDelegateProxy {
                   return
               }
         let originalImplementation = unsafeBitCast(pointerValue, to: SceneOpenURLContexts.self)
-        _ = originalImplementation(self, methodSelector, scene, URLContexts)
+        originalImplementation(self, methodSelector, scene, URLContexts)
     }
 
     func handleUrlContexts(_ urlContexts: Set<UIOpenURLContext>) {
@@ -407,7 +400,6 @@ private extension TealiumDelegateProxy {
 // MARK: Utils
 
 private extension TealiumDelegateProxy {
-
     func handleContinueUserActivity(_ userActivity: NSUserActivity) {
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb, let url = userActivity.webpageURL {
             TealiumDelegateProxy.log("Received Deep Link: \(url.absoluteString)")

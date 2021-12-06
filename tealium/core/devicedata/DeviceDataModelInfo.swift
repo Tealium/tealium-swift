@@ -30,28 +30,28 @@ public extension DeviceData {
     var model: [String: String] {
         let model = basicModel
         #if os(OSX)
-        return [TealiumKey.deviceType: model,
-                TealiumKey.simpleModel: "mac",
-                TealiumKey.device: "mac",
-                TealiumKey.fullModel: "mac"
+        return [TealiumDataKey.deviceType: model,
+                TealiumDataKey.simpleModel: "mac",
+                TealiumDataKey.device: "mac",
+                TealiumDataKey.fullModel: "mac"
         ]
         #else
         if let deviceInfo = allModelNames {
             if let currentModel = deviceInfo[model] as? [String: String],
-               let simpleModel = currentModel[TealiumKey.simpleModel],
-               let fullModel = currentModel[TealiumKey.fullModel] {
-                return [TealiumKey.deviceType: model,
-                        TealiumKey.simpleModel: simpleModel,
-                        TealiumKey.device: simpleModel,
-                        TealiumKey.fullModel: fullModel
+               let simpleModel = currentModel[TealiumDataKey.simpleModel],
+               let fullModel = currentModel[TealiumDataKey.fullModel] {
+                return [TealiumDataKey.deviceType: model,
+                        TealiumDataKey.simpleModel: simpleModel,
+                        TealiumDataKey.device: simpleModel,
+                        TealiumDataKey.fullModel: fullModel
                 ]
             }
         }
 
-        return [TealiumKey.deviceType: model,
-                TealiumKey.simpleModel: model,
-                TealiumKey.device: model,
-                TealiumKey.fullModel: ""
+        return [TealiumDataKey.deviceType: model,
+                TealiumDataKey.simpleModel: model,
+                TealiumDataKey.device: model,
+                TealiumDataKey.fullModel: ""
         ]
         #endif
     }

@@ -13,16 +13,24 @@ import WebKit
 import TealiumCore
 #endif
 
+extension TealiumConfigKey {
+    static let tagManagementOverrideURL = "tagmanagement_override_url"
+    static let tagManagementDelegate = "delegate"
+    static let uiview = "ui_view"
+    static let processPool = "wk_process_pool"
+    static let wkConfig = "wk_config"
+}
+
 public extension TealiumConfig {
 
     /// Adds optional delegates to the WebView instance.
     var webViewDelegates: [WKNavigationDelegate]? {
         get {
-            let weakDelegates = options[TagManagementConfigKey.delegate] as? [Weak<WKNavigationDelegate>]
+            let weakDelegates = options[TealiumConfigKey.tagManagementDelegate] as? [Weak<WKNavigationDelegate>]
             return weakDelegates?.compactMap { $0.value }
         }
         set {
-            options[TagManagementConfigKey.delegate] = newValue?.map { Weak(value: $0) }
+            options[TealiumConfigKey.tagManagementDelegate] = newValue?.map { Weak(value: $0) }
         }
     }
 
@@ -31,11 +39,11 @@ public extension TealiumConfig {
     /// A singleton WKProcessPool instance should be passed that is used for all `WKWebView`s in your app.
     var webviewProcessPool: WKProcessPool? {
         get {
-            options[TagManagementConfigKey.processPool] as? WKProcessPool
+            options[TealiumConfigKey.processPool] as? WKProcessPool
         }
 
         set {
-            options[TagManagementConfigKey.processPool] = newValue
+            options[TealiumConfigKey.processPool] = newValue
         }
     }
 
@@ -43,22 +51,22 @@ public extension TealiumConfig {
     /// Not normally required, but provides some additional customization options if requred.
     var webviewConfig: WKWebViewConfiguration {
         get {
-            options[TagManagementConfigKey.wkConfig] as? WKWebViewConfiguration ?? WKWebViewConfiguration()
+            options[TealiumConfigKey.wkConfig] as? WKWebViewConfiguration ?? WKWebViewConfiguration()
         }
 
         set {
-            options[TagManagementConfigKey.wkConfig] = newValue
+            options[TealiumConfigKey.wkConfig] = newValue
         }
     }
 
     /// Optional override for the tag management webview URL.
     var tagManagementOverrideURL: String? {
         get {
-            options[TagManagementConfigKey.overrideURL] as? String
+            options[TealiumConfigKey.tagManagementOverrideURL] as? String
         }
 
         set {
-            options[TagManagementConfigKey.overrideURL] = newValue
+            options[TealiumConfigKey.tagManagementOverrideURL] = newValue
         }
     }
 
@@ -76,11 +84,11 @@ public extension TealiumConfig {
     /// Sets a root view for `WKWebView` to be attached to. Only required for complex view hierarchies.
     var rootView: UIView? {
         get {
-            options[TagManagementConfigKey.uiview] as? UIView
+            options[TealiumConfigKey.uiview] as? UIView
         }
 
         set {
-            options[TagManagementConfigKey.uiview] = newValue
+            options[TealiumConfigKey.uiview] = newValue
         }
     }
 

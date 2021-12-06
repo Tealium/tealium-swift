@@ -7,25 +7,21 @@
 
 import Foundation
 
-class ConsentManagerModule: Collector, DispatchValidator {
+class ConsentManagerModule: DispatchValidator {
 
     public let id: String = ModuleNames.consentmanager
     var config: TealiumConfig
     var consentManager: ConsentManager?
     weak var delegate: ModuleDelegate?
     var dataLayer: DataLayerManagerProtocol?
-    var diskStorage: TealiumDiskStorageProtocol!
-
-    var data: [String: Any]? {
-        consentManager?.currentPolicy.consentPolicyStatusInfo
-    }
+    var diskStorage: TealiumDiskStorageProtocol
 
     required init(context: TealiumContext,
                   delegate: ModuleDelegate?,
                   diskStorage: TealiumDiskStorageProtocol?,
                   completion: ModuleCompletion) {
         self.config = context.config
-        self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config,
+        self.diskStorage = diskStorage ?? TealiumDiskStorage(config: context.config,
                                                              forModule: ConsentKey.moduleName,
                                                              isCritical: true)
         self.dataLayer = context.dataLayer
@@ -54,25 +50,26 @@ class ConsentManagerModule: Collector, DispatchValidator {
     /// - Parameter request: incoming `TealiumRequest`
     /// - Returns: `(Bool, [String: Any]?)` true/false if should be queued, then the resulting dictionary of consent data.
     func shouldQueue(request: TealiumRequest) -> (Bool, [String: Any]?) {
+        if let _ = request as? TealiumBatchTrackRequest {
+            return (true, [TealiumDataKey.queueReason: TealiumConfigKey.batchingEnabled])
+        }
         guard let request = request as? TealiumTrackRequest else {
-            return (true, [TealiumKey.queueReason: TealiumKey.batchingEnabled])
+            return (false, nil) // Should never happen
         }
         expireConsent()
-
+        var consentData = getConsentData()
         if request.containsAuditEvent {
-            return (false, nil)
+            return (false, consentData)
         }
 
         switch consentManager?.trackingStatus {
         case .trackingQueued:
-            var newData = request.trackDictionary
-            newData[TealiumKey.queueReason] = ConsentKey.moduleName
-            let newTrack = TealiumTrackRequest(data: newData)
-            return (true, addConsentDataToTrack(newTrack).trackDictionary)
+            consentData[TealiumDataKey.queueReason] = ConsentKey.moduleName
+            return (true, consentData)
         case .trackingAllowed:
-            return (false, addConsentDataToTrack(request).trackDictionary)
+            return (false, consentData)
         case .trackingForbidden:
-            return (false, addConsentDataToTrack(request).trackDictionary)
+            return (false, consentData)
         case .none:
             return (false, nil)
         }
@@ -104,15 +101,11 @@ class ConsentManagerModule: Collector, DispatchValidator {
         return consentManager?.trackingStatus == .trackingForbidden
     }
 
-    /// Adds consent categories and status to the tracking request.￼
-    ///
-    /// - Parameter track: `TealiumTrackRequest` to be modified
-    func addConsentDataToTrack(_ track: TealiumTrackRequest) -> TealiumTrackRequest {
-        var newTrack = track.trackDictionary
-        if let consentDictionary = consentManager?.currentPolicy.consentPolicyStatusInfo {
-            newTrack += consentDictionary
+    func getConsentData() -> [String: Any] {
+        if let consentDictionary = consentManager?.currentPolicy.policyTrackingData {
+            return consentDictionary
         }
-        return TealiumTrackRequest(data: newTrack)
+        return [:]
     }
 
     /// Checks if the consent selections are expired
@@ -142,7 +135,7 @@ class ConsentManagerModule: Collector, DispatchValidator {
 fileprivate extension TealiumTrackRequest {
     // allow tracking calls to continue if they are for auditing purposes
     var containsAuditEvent: Bool {
-        if let event = self.trackDictionary[TealiumKey.event] as? String,
+        if let event = self.trackDictionary[TealiumDataKey.event] as? String,
            (event == ConsentKey.consentPartialEventName ||
                 event == ConsentKey.consentGrantedEventName ||
                 event == ConsentKey.consentDeclinedEventName ||

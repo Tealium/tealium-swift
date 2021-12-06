@@ -82,13 +82,13 @@ public class ConsentManager {
 
         // try to load config from persistent storage first
         if let dataLayer = dataLayer,
-           let migratedConsentStatus = dataLayer.all[ConsentKey.consentStatus] as? Int,
-           let migratedConsentCategories = dataLayer.all[ConsentKey.consentCategoriesKey] as? [String] {
+           let migratedConsentStatus = dataLayer.all[TealiumDataKey.consentStatus] as? Int,
+           let migratedConsentCategories = dataLayer.all[TealiumDataKey.consentCategoriesKey] as? [String] {
             config.consentPolicy = .gdpr
             consentPreferencesStorage?.preferences = UserConsentPreferences(consentStatus: TealiumConsentStatus(integer: migratedConsentStatus),
                                                                             consentCategories: TealiumConsentCategories.consentCategoriesStringArrayToEnum(migratedConsentCategories))
-            config.consentLoggingEnabled = dataLayer.all[ConsentKey.consentLoggingEnabled] as? Bool ?? false
-            dataLayer.delete(for: [ConsentKey.consentStatus, ConsentKey.consentCategoriesKey, ConsentKey.consentLoggingEnabled])
+            config.consentLoggingEnabled = dataLayer.all[TealiumDataKey.consentLoggingEnabled] as? Bool ?? false
+            dataLayer.delete(for: [TealiumDataKey.consentStatus, TealiumDataKey.consentCategoriesKey, TealiumDataKey.consentLoggingEnabled])
         }
 
         let preferences = consentPreferencesStorage?.preferences ?? UserConsentPreferences(consentStatus: .unknown, consentCategories: nil)
@@ -97,25 +97,25 @@ public class ConsentManager {
 
         if preferences.consentStatus != .unknown {
             // always need to update the consent cookie in TiQ, so this will trigger update_consent_cookie
-            trackUserConsentPreferences(preferences)
+            trackUserConsentPreferences()
         }
     }
 
     /// Sends a track call containing the consent settings if consent logging is enabled￼.
     ///
     /// - Parameter preferences: `UserConsentPreferences?`
-    func trackUserConsentPreferences(_ preferences: UserConsentPreferences?) {
-        if var consentData = currentPolicy.consentPolicyStatusInfo {
-            consentData[TealiumKey.event] = currentPolicy.consentTrackingEventName
-            // this track call must only be sent if "Log Consent Changes" is enabled and user has consented
-            if consentLoggingEnabled, currentPolicy.shouldLogConsentStatus {
-                // call type must be set to override "link" or "view"
-                consentData[TealiumKey.eventType] = consentData[TealiumKey.event]
-                delegate?.requestTrack(TealiumTrackRequest(data: consentData))
-            }
-            // in all cases, update the cookie data in TiQ/webview
-            updateTIQCookie()
+    func trackUserConsentPreferences() {
+        // this track call must only be sent if "Log Consent Changes" is enabled and user has consented
+        if consentLoggingEnabled, currentPolicy.shouldLogConsentStatus {
+            // call type must be set to override "link" or "view"
+            let trackData = [
+                TealiumDataKey.event: currentPolicy.consentTrackingEventName,
+                TealiumDataKey.eventType: currentPolicy.consentTrackingEventName
+            ]
+            delegate?.requestTrack(TealiumTrackRequest(data: trackData))
         }
+        // in all cases, update the cookie data in TiQ/webview
+        updateTIQCookie()
     }
 
     /// Sends the track call to update TiQ cookie info. Ignored by Collect module.￼
@@ -123,14 +123,12 @@ public class ConsentManager {
     /// - Parameter consentData: `[String: Any]` containing the consent preferences
     func updateTIQCookie() {
         if currentPolicy.shouldUpdateConsentCookie {
-            var consentData = [String: Any]()
-            if let extraData = currentPolicy.consentPolicyStatusInfo {
-                consentData += extraData
-            }
             // collect module ignores this hit
-            consentData[TealiumKey.event] = currentPolicy.updateConsentCookieEventName
-            consentData[TealiumKey.eventType] = currentPolicy.updateConsentCookieEventName
-            delegate?.requestTrack(TealiumTrackRequest(data: consentData))
+            let trackData = [
+                TealiumDataKey.event: currentPolicy.updateConsentCookieEventName,
+                TealiumDataKey.eventType: currentPolicy.updateConsentCookieEventName
+            ]
+            delegate?.requestTrack(TealiumTrackRequest(data: trackData))
         }
     }
 
@@ -160,7 +158,7 @@ public class ConsentManager {
 
         lastConsentUpdate = Date()
         storeUserConsentPreferences(currentPolicy.preferences)
-        trackUserConsentPreferences(currentPolicy.preferences)
+        trackUserConsentPreferences()
     }
 
 }
@@ -173,6 +171,6 @@ public extension ConsentManager {
         consentPreferencesStorage?.preferences = nil
         currentPolicy.preferences.resetConsentCategories()
         currentPolicy.preferences.setConsentStatus(.unknown)
-        trackUserConsentPreferences(currentPolicy.preferences)
+        trackUserConsentPreferences()
     }
 }

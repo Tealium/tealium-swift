@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol TealiumLifecycleEvents {
+public protocol TealiumLifecycleEvents: AnyObject {
 
     /// Notifies listeners of a sleep event.
     func sleep()

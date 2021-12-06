@@ -33,7 +33,6 @@ public class JSONLoader {
         case fileNotFound = "File does not exist."
         case couldNotDecode = "Could not decode JSON."
         case couldNotRetrieve = "Could not retrieve JSON."
-
         public var errorDescription: String? {
             return self.rawValue
         }
@@ -87,5 +86,4 @@ public class JSONLoader {
         }
         return converted
     }
-
 }

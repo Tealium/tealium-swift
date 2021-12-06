@@ -33,15 +33,15 @@ class TealiumCollectTests: XCTestCase {
 
     func validTestDataDictionary() -> [String: Any] {
         return [
-            TealiumKey.account: "account",
-            TealiumKey.profile: "profile" ,
-            TealiumKey.environment: "environment" ,
-            TealiumKey.event: "test" ,
-            TealiumKey.libraryName: TealiumValue.libraryName ,
-            TealiumKey.libraryVersion: TealiumValue.libraryVersion ,
-            TealiumKey.sessionId: "someSessionId" ,
-            TealiumKey.visitorId: "someVisitorId" ,
-            TealiumKey.random: "someRandomNumber"
+            TealiumDataKey.account: "account",
+            TealiumDataKey.profile: "profile" ,
+            TealiumDataKey.environment: "environment" ,
+            TealiumDataKey.event: "test" ,
+            TealiumDataKey.libraryName: TealiumValue.libraryName ,
+            TealiumDataKey.libraryVersion: TealiumValue.libraryVersion ,
+            TealiumDataKey.sessionId: "someSessionId" ,
+            TealiumDataKey.visitorId: "someVisitorId" ,
+            TealiumDataKey.random: "someRandomNumber"
         ]
     }
 

@@ -71,22 +71,22 @@ public struct PersistentAttributionData: Codable {
     /// - Returns: `[String: String]`
     public var dictionary: [String: String] {
         // note: compiler cannot type-check in reasonable time, so assignment and return split up into separate statements
-        let attributionData: [String: String] = [AttributionKey.clickedWithin30D: clickedWithin30D ?? "",
-                                                 AttributionKey.clickedDate: clickedDate ?? "",
-                                                 AttributionKey.conversionDate: conversionDate ?? "",
-                                                 AttributionKey.conversionType: conversionType ?? "",
-                                                 AttributionKey.purchaseDate: purchaseDate ?? "",
-                                                 AttributionKey.orgName: orgName ?? "",
-                                                 AttributionKey.orgId: orgId ?? "",
-                                                 AttributionKey.campaignId: campaignId ?? "",
-                                                 AttributionKey.campaignName: campaignName ?? "",
-                                                 AttributionKey.adGroupId: adGroupId ?? "",
-                                                 AttributionKey.adGroupName: adGroupName ?? "",
-                                                 AttributionKey.adKeyword: adKeyword ?? "",
-                                                 AttributionKey.adKeywordMatchType: adKeywordMatchType ?? "",
-                                                 AttributionKey.creativeSetName: creativeSetName ?? "",
-                                                 AttributionKey.creativeSetId: creativeSetId ?? "",
-                                                 AttributionKey.region: region ?? "",
+        let attributionData: [String: String] = [TealiumDataKey.adClickedWithin30D: clickedWithin30D ?? "",
+                                                 TealiumDataKey.adClickedDate: clickedDate ?? "",
+                                                 TealiumDataKey.adConversionDate: conversionDate ?? "",
+                                                 TealiumDataKey.adConversionType: conversionType ?? "",
+                                                 TealiumDataKey.adPurchaseDate: purchaseDate ?? "",
+                                                 TealiumDataKey.adOrgName: orgName ?? "",
+                                                 TealiumDataKey.adOrgId: orgId ?? "",
+                                                 TealiumDataKey.adCampaignId: campaignId ?? "",
+                                                 TealiumDataKey.adCampaignName: campaignName ?? "",
+                                                 TealiumDataKey.adGroupId: adGroupId ?? "",
+                                                 TealiumDataKey.adGroupName: adGroupName ?? "",
+                                                 TealiumDataKey.adKeyword: adKeyword ?? "",
+                                                 TealiumDataKey.adKeywordMatchType: adKeywordMatchType ?? "",
+                                                 TealiumDataKey.adCreativeSetName: creativeSetName ?? "",
+                                                 TealiumDataKey.adCreativeSetId: creativeSetId ?? "",
+                                                 TealiumDataKey.adRegion: region ?? "",
         ]
 
         return attributionData.filter {

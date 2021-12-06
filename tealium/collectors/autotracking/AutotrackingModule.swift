@@ -26,6 +26,7 @@ public class AutotrackingModule: Collector {
     weak var autotrackingDelegate: AutoTrackingDelegate?
     var lastEvent: String?
     var disposeBag = TealiumDisposeBag()
+    // Lowercased list of blocked view names
     var blockList: [String]?
     var blockListBundle = Bundle.main
 
@@ -47,7 +48,6 @@ public class AutotrackingModule: Collector {
         self.config = context.config
         loadBlocklist()
         self.autotrackingDelegate = config.autoTrackingCollectorDelegate
-
         TealiumQueues.secureMainThreadExecution {
             AutotrackingModule.onAutoTrackView.subscribe { [weak self] viewName in
                 self?.requestViewTrack(viewName: viewName)
@@ -70,8 +70,8 @@ public class AutotrackingModule: Collector {
                 return
             }
 
-            var data: [String: Any] = [TealiumKey.event: viewName,
-                                       TealiumAutotrackingKey.autotracked: "true"]
+            var data: [String: Any] = [TealiumDataKey.event: viewName,
+                                       TealiumDataKey.autotracked: "true"]
 
             if let autotrackingDelegate = self.autotrackingDelegate {
                 data += autotrackingDelegate.onCollectScreenView(screenName: viewName)
@@ -84,11 +84,14 @@ public class AutotrackingModule: Collector {
         }
     }
 
-    func shouldBlock(_ eventName: String) -> Bool {
+    func shouldBlock(_ viewName: String) -> Bool {
         guard let blockList = blockList else {
             return false
         }
-        return blockList.contains(eventName)
+        let lowerCasedView = viewName.lowercased()
+        return blockList.contains { blockKey in
+            return lowerCasedView.contains(blockKey)
+        }
     }
 
     func loadBlocklist() {
@@ -97,22 +100,20 @@ public class AutotrackingModule: Collector {
                 return
             }
             do {
+                var list: [String]?
                 if let file = self.config.autoTrackingBlocklistFilename,
                    let blockList: [String] = try JSONLoader.fromFile(file, bundle: self.blockListBundle, logger: nil) {
-                    self.blockList = blockList
+                    list = blockList
                 } else if let url = self.config.autoTrackingBlocklistURL,
                           let blockList: [String] = try JSONLoader.fromURL(url: url, logger: nil) {
-                    self.blockList = blockList
-                } else {
-                    self.blockList = nil
+                    list = blockList
                 }
+                self.blockList = list?.map { $0.lowercased() }
             } catch let error {
                 if let error = error as? LocalizedError {
                     let logRequest = TealiumLogRequest(title: "Auto Tracking",
                                                        message: "BlockList could not be loaded. Error: \(error.localizedDescription)",
-                                                       info: nil,
-                                                       logLevel: .error,
-                                                       category: .general)
+                                                       info: nil, logLevel: .error, category: .general)
                     self.context.log(logRequest)
                 }
             }

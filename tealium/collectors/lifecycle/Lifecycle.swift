@@ -7,6 +7,10 @@
 
 import Foundation
 
+#if lifecycle
+import TealiumCore
+#endif
+
 // swiftlint:disable type_body_length
 public struct Lifecycle: Codable {
 
@@ -48,15 +52,15 @@ public struct Lifecycle: Codable {
 
     /// Used when migrating data from Objective-C library
     public init(from dictionary: [String: Any]) {
-        countLaunch = dictionary[LifecycleKey.launchCount] as? Int ?? 0
-        countWake = dictionary[LifecycleKey.wakeCount] as? Int ?? 0
-        countSleep = dictionary[LifecycleKey.sleepCount] as? Int ?? 0
-        countCrashTotal = dictionary[LifecycleKey.totalCrashCount] as? Int ?? 0
-        countLaunchTotal = dictionary[LifecycleKey.totalLaunchCount] as? Int ?? 0
-        countWakeTotal = dictionary[LifecycleKey.totalWakeCount] as? Int ?? 0
-        countSleepTotal = dictionary[LifecycleKey.totalSleepCount] as? Int ?? 0
+        countLaunch = dictionary[TealiumDataKey.launchCount] as? Int ?? 0
+        countWake = dictionary[TealiumDataKey.wakeCount] as? Int ?? 0
+        countSleep = dictionary[TealiumDataKey.sleepCount] as? Int ?? 0
+        countCrashTotal = dictionary[TealiumDataKey.totalCrashCount] as? Int ?? 0
+        countLaunchTotal = dictionary[TealiumDataKey.totalLaunchCount] as? Int ?? 0
+        countWakeTotal = dictionary[TealiumDataKey.totalWakeCount] as? Int ?? 0
+        countSleepTotal = dictionary[TealiumDataKey.totalSleepCount] as? Int ?? 0
         dateLastUpdate = Date()
-        totalSecondsAwake = dictionary[LifecycleKey.totalSecondsAwake] as? Int ?? 0
+        totalSecondsAwake = dictionary[TealiumDataKey.totalSecondsAwake] as? Int ?? 0
         sessionsSize = LifecycleKey.defaultSessionsSize
         if let session = LifecycleSession(from: dictionary) {
             sessions = [session]
@@ -173,48 +177,48 @@ public struct Lifecycle: Codable {
 
         let firstSession = sessions.first
 
-        dict[LifecycleKey.autotracked] = autotracked
+        dict[TealiumDataKey.lifecycleAutotracked] = autotracked
         if type == "launch" {
-            dict[LifecycleKey.didDetectCrash] = crashDetected
+            dict[TealiumDataKey.didDetectCrash] = crashDetected
             if firstLaunch {
-                dict[LifecycleKey.isFirstLaunch] = "true"
+                dict[TealiumDataKey.isFirstLaunch] = "true"
             }
         }
-        dict[LifecycleKey.dayOfWeek] = dayOfWeekLocal(for: date)
-        dict[LifecycleKey.daysSinceFirstLaunch] = daysFrom(earlierDate: firstSession?.wakeDate, laterDate: date)
-        dict[LifecycleKey.daysSinceLastUpdate] = daysFrom(earlierDate: dateLastUpdate, laterDate: date)
-        dict[LifecycleKey.daysSinceLastWake] = daysSinceLastWake(type: type, toDate: date)
-        dict[LifecycleKey.firstLaunchDate] = firstSession?.firstLaunchDate?.iso8601String ?? firstSession?.wakeDate.iso8601String
-        dict[LifecycleKey.firstLaunchDateMMDDYYYY] = firstSession?.wakeDate.mmDDYYYYString
-        dict[LifecycleKey.hourOfDayLocal] = hourOfDayLocal(for: date)
+        dict[TealiumDataKey.dayOfWeek] = dayOfWeekLocal(for: date)
+        dict[TealiumDataKey.daysSinceFirstLaunch] = daysFrom(earlierDate: firstSession?.wakeDate, laterDate: date)
+        dict[TealiumDataKey.daysSinceLastUpdate] = daysFrom(earlierDate: dateLastUpdate, laterDate: date)
+        dict[TealiumDataKey.daysSinceLastWake] = daysSinceLastWake(type: type, toDate: date)
+        dict[TealiumDataKey.firstLaunchDate] = firstSession?.firstLaunchDate?.iso8601String ?? firstSession?.wakeDate.iso8601String
+        dict[TealiumDataKey.firstLaunchDateMMDDYYYY] = firstSession?.wakeDate.mmDDYYYYString
+        dict[TealiumDataKey.hourOfDayLocal] = hourOfDayLocal(for: date)
 
         if firstLaunchAfterUpdate {
-            dict[LifecycleKey.isFirstLaunchUpdate] = "true"
+            dict[TealiumDataKey.isFirstLaunchUpdate] = "true"
         }
         if firstWakeThisMonth {
-            dict[LifecycleKey.isFirstWakeThisMonth] = "true"
+            dict[TealiumDataKey.isFirstWakeThisMonth] = "true"
         }
         if firstWakeToday {
-            dict[LifecycleKey.isFirstWakeToday] = true
+            dict[TealiumDataKey.isFirstWakeToday] = true
         }
-        dict[LifecycleKey.lastLaunchDate] = lastLaunchDate(type: type)?.iso8601String
-        dict[LifecycleKey.lastWakeDate] = lastWakeDate(type: type)?.iso8601String
-        dict[LifecycleKey.lastSleepDate] = lastSleepDate()?.iso8601String
-        dict[LifecycleKey.launchCount] = String(countLaunch)
-        dict[LifecycleKey.priorSecondsAwake] = priorSecondsAwake
-        dict[LifecycleKey.secondsAwake] = secondsAwake(to: date)
-        dict[LifecycleKey.sleepCount] = String(countSleep)
-        dict[LifecycleKey.type] = type
-        dict[LifecycleKey.totalCrashCount] = String(countCrashTotal)
-        dict[LifecycleKey.totalLaunchCount] = String(countLaunchTotal)
-        dict[LifecycleKey.totalSleepCount] = String(countSleepTotal)
-        dict[LifecycleKey.totalWakeCount] = String(countWakeTotal)
-        dict[LifecycleKey.totalSecondsAwake] = String(totalSecondsAwake)
-        dict[LifecycleKey.wakeCount] = String(countWake)
+        dict[TealiumDataKey.lastLaunchDate] = lastLaunchDate(type: type)?.iso8601String
+        dict[TealiumDataKey.lastWakeDate] = lastWakeDate(type: type)?.iso8601String
+        dict[TealiumDataKey.lastSleepDate] = lastSleepDate()?.iso8601String
+        dict[TealiumDataKey.launchCount] = String(countLaunch)
+        dict[TealiumDataKey.priorSecondsAwake] = priorSecondsAwake
+        dict[TealiumDataKey.secondsAwake] = secondsAwake(to: date)
+        dict[TealiumDataKey.sleepCount] = String(countSleep)
+        dict[TealiumDataKey.lifecycleType] = type
+        dict[TealiumDataKey.totalCrashCount] = String(countCrashTotal)
+        dict[TealiumDataKey.totalLaunchCount] = String(countLaunchTotal)
+        dict[TealiumDataKey.totalSleepCount] = String(countSleepTotal)
+        dict[TealiumDataKey.totalWakeCount] = String(countWakeTotal)
+        dict[TealiumDataKey.totalSecondsAwake] = String(totalSecondsAwake)
+        dict[TealiumDataKey.wakeCount] = String(countWake)
 
         if dateLastUpdate != nil {
             // We've just reset values
-            dict[LifecycleKey.updateLaunchDate] = dateLastUpdate?.iso8601String
+            dict[TealiumDataKey.updateLaunchDate] = dateLastUpdate?.iso8601String
         }
         return dict
     }

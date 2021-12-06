@@ -40,7 +40,7 @@ public class TealiumObservable<Element>: TealiumObservableProtocol {
     }
 
     fileprivate func publish(_ element: Element) {
-        let observers = observers.values
+        let observers = self.observers.values
         for observer in observers {
             observer(element)
         }
@@ -88,7 +88,6 @@ public class TealiumPublisher<Element>: TealiumPublisherProtocol {
 }
 
 public class TealiumPublishSubject<Element>: TealiumPublisher<Element>, TealiumSubjectProtocol {
-
 }
 
 // MARK: Replay
@@ -102,7 +101,7 @@ public class TealiumReplayObservable<Element>: TealiumObservable<Element> {
 
     @discardableResult
     public override func subscribe(_ observer: @escaping Observer) -> TealiumSubscription<Element> {
-        let cache = cache
+        let cache = self.cache
         defer {
             for element in cache {
                 observer(element)
@@ -115,11 +114,7 @@ public class TealiumReplayObservable<Element>: TealiumObservable<Element> {
         while let size = cacheSize, cache.count >= size && cache.count > 0 {
             cache.remove(at: 0)
         }
-        if let cacheSize = cacheSize {
-            if cacheSize > 0 {
-                cache.append(element)
-            }
-        } else {
+        if cacheSize == nil || cacheSize > 0 {
             cache.append(element)
         }
         super.publish(element)
@@ -153,7 +148,7 @@ public class TealiumBufferedObservable<Element>: TealiumObservable<Element> {
 
     @discardableResult
     override public func subscribe(_ observer: @escaping Observer) -> TealiumSubscription<Element> {
-        let buffer = buffer
+        let buffer = self.buffer
         self.buffer = []
         defer {
             for element in buffer {
@@ -168,11 +163,7 @@ public class TealiumBufferedObservable<Element>: TealiumObservable<Element> {
             while let size = bufferSize, buffer.count >= size && buffer.count > 0 {
                 buffer.remove(at: 0)
             }
-            if let bufferSize = bufferSize {
-                if bufferSize > 0 {
-                    buffer.append(element)
-                }
-            } else {
+            if bufferSize == nil || bufferSize > 0 {
                 buffer.append(element)
             }
         }
@@ -186,4 +177,15 @@ public class TealiumBufferedSubject<Element>: TealiumPublishSubject<Element> {
     public init(bufferSize: Int? = 1) {
         super.init(TealiumBufferedObservable<Element>(bufferSize: bufferSize))
     }
+}
+
+private extension Optional where Wrapped == Int {
+
+    static func > (lhs: Int?, rhs: Int) -> Bool {
+        if let value = lhs {
+            return value > rhs
+        }
+        return false
+    }
+
 }

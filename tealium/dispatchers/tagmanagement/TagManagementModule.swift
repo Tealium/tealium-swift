@@ -52,7 +52,7 @@ public class TagManagementModule: Dispatcher {
             guard let self = self else {
                 return
             }
-            TealiumQueues.backgroundConcurrentQueue.write {
+            TealiumQueues.backgroundSerialQueue.async {
                 if error != nil {
                     self.errorState.incrementAndGet()
                     self.webViewState?.value = .loadFailure
@@ -81,7 +81,7 @@ public class TagManagementModule: Dispatcher {
             #if TEST
             #else
             self.tagManagement?.trackMultiple(allTrackData) { success, _, error in
-                TealiumQueues.backgroundConcurrentQueue.write {
+                TealiumQueues.backgroundSerialQueue.async {
                     guard error == nil else {
                         if let error = error {
                             completion?((.failure(error), nil))
@@ -96,7 +96,7 @@ public class TagManagementModule: Dispatcher {
             #if TEST
             #else
             self.tagManagement?.track(track.trackDictionary) { success, _, error in
-                TealiumQueues.backgroundConcurrentQueue.write {
+                TealiumQueues.backgroundSerialQueue.async {
                     guard error == nil else {
                         if let error = error {
                             completion?((.failure(error), nil))
@@ -120,13 +120,15 @@ public class TagManagementModule: Dispatcher {
                              completion: ModuleCompletion?) {
         if self.errorState.value > 0 {
             self.tagManagement?.reload { success, _, _ in
-                if success {
-                    self.errorState.value = 0
-                    self.dynamicTrack(track, completion: completion)
-                } else {
-                    _ = self.errorState.incrementAndGet()
-                    self.enqueue(track, completion: completion)
-                    completion?((.failure(TagManagementError.couldNotLoadURL), nil))
+                TealiumQueues.backgroundSerialQueue.async {
+                    if success {
+                        self.errorState.value = 0
+                        self.dynamicTrack(track, completion: completion)
+                    } else {
+                        _ = self.errorState.incrementAndGet()
+                        self.enqueue(track, completion: completion)
+                        completion?((.failure(TagManagementError.couldNotLoadURL), nil))
+                    }
                 }
             }
             return
@@ -175,8 +177,8 @@ public class TagManagementModule: Dispatcher {
             var requests = request.trackRequests
             requests = requests.map {
                 var trackData = $0.trackDictionary, track = $0
-                trackData[TealiumKey.wasQueued] = true
-                trackData[TealiumKey.queueReason] = "Tag Management Webview Not Ready"
+                trackData[TealiumDataKey.wasQueued] = true
+                trackData[TealiumDataKey.queueReason] = "Tag Management Webview Not Ready"
                 track.data = trackData.encodable
                 return track
             }
@@ -184,8 +186,8 @@ public class TagManagementModule: Dispatcher {
         case let request as TealiumTrackRequest:
             var track = request
             var trackData = track.trackDictionary
-            trackData[TealiumKey.wasQueued] = true
-            trackData[TealiumKey.queueReason] = "Tag Management Webview Not Ready"
+            trackData[TealiumDataKey.wasQueued] = true
+            trackData[TealiumDataKey.queueReason] = "Tag Management Webview Not Ready"
             track.data = trackData.encodable
             self.pendingTrackRequests.append((track, completion))
         case let request as TealiumRemoteAPIRequest:
@@ -210,7 +212,7 @@ public class TagManagementModule: Dispatcher {
     /// - Returns: `TealiumTrackRequest`
     func prepareForDispatch(_ request: TealiumTrackRequest) -> TealiumTrackRequest {
         var newTrack = request.trackDictionary
-        newTrack[TealiumKey.dispatchService] = TagManagementKey.moduleName
+        newTrack[TealiumDataKey.dispatchService] = TagManagementKey.moduleName
         return TealiumTrackRequest(data: newTrack)
     }
 

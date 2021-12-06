@@ -10,6 +10,13 @@ import Foundation
 import TealiumCore
 #endif
 
+extension TealiumConfigKey {
+    static let overrideCollectUrl = "tealium_override_collect_url"
+    static let overrideCollectBatchUrl = "tealium_override_collect_batch_url"
+    static let overrideCollectProfile = "tealium_override_collect_profile"
+    static let overrideCollectDomain = "tealium_override_collect_domain"
+}
+
 public extension TealiumConfig {
 
     /// Overrides the default Collect endpoint URL￼.
@@ -19,14 +26,14 @@ public extension TealiumConfig {
     /// If using your own custom endpoint, the URL can be any valid URL.
     var overrideCollectURL: String? {
         get {
-            options[CollectKey.overrideCollectUrl] as? String
+            options[TealiumConfigKey.overrideCollectUrl] as? String
         }
 
         set {
             guard let newValue = newValue else {
                 return
             }
-            options[CollectKey.overrideCollectUrl] = newValue
+            options[TealiumConfigKey.overrideCollectUrl] = newValue
         }
     }
 
@@ -36,25 +43,25 @@ public extension TealiumConfig {
     /// If using your own custom endpoint, the URL can be any valid URL. Your endpoint must be prepared to accept batched events in Tealium's proprietary gzipped format.
     var overrideCollectBatchURL: String? {
         get {
-            options[CollectKey.overrideCollectBatchUrl] as? String
+            options[TealiumConfigKey.overrideCollectBatchUrl] as? String
         }
 
         set {
             guard let newValue = newValue else {
                 return
             }
-            options[CollectKey.overrideCollectBatchUrl] = newValue
+            options[TealiumConfigKey.overrideCollectBatchUrl] = newValue
         }
     }
 
     /// Overrides the default Collect endpoint profile￼.
     var overrideCollectProfile: String? {
         get {
-            options[CollectKey.overrideCollectProfile] as? String
+            options[TealiumConfigKey.overrideCollectProfile] as? String
         }
 
         set {
-            options[CollectKey.overrideCollectProfile] = newValue
+            options[TealiumConfigKey.overrideCollectProfile] = newValue
         }
     }
 
@@ -62,11 +69,11 @@ public extension TealiumConfig {
     /// Only the hostname should be provided, excluding the protocol, e.g. `my-company.com`
     var overrideCollectDomain: String? {
         get {
-            options[CollectKey.overrideCollectDomain] as? String
+            options[TealiumConfigKey.overrideCollectDomain] as? String
         }
 
         set {
-            options[CollectKey.overrideCollectDomain] = newValue
+            options[TealiumConfigKey.overrideCollectDomain] = newValue
         }
     }
 }

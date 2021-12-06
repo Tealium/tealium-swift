@@ -10,7 +10,6 @@ import Foundation
 
 @propertyWrapper
 public final class ToAnyObservable<P: TealiumPublisherProtocol>: TealiumPublisherProtocol {
-
     private let publisher: P
     public init(_ anyPublisher: P) {
         self.publisher = anyPublisher

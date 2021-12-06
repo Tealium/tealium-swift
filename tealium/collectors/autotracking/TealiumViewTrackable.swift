@@ -10,7 +10,7 @@ import TealiumCore
 #endif
 
 import Foundation
-#if canImport(SwiftUI)
+#if canImport(SwiftUI) && (arch(arm64) || arch(x86_64))
 import SwiftUI
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)

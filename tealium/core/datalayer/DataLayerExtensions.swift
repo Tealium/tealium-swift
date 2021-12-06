@@ -11,7 +11,7 @@ public extension Tealium {
 
     /// - Returns: `String` The Tealium Visitor Id
     var visitorId: String? {
-        appDataModule?.data?[TealiumKey.visitorId] as? String
+        appDataModule?.data?[TealiumDataKey.visitorId] as? String
     }
 
     /// Resets the Tealium Visitor Id
@@ -34,22 +34,22 @@ public extension TealiumConfig {
     /// The dictionary `value` denotes the name of the data layer key that should looked up for this event, e.g. `"product_id".`
     var hostedDataLayerKeys: [String: String]? {
         get {
-            options[TealiumKey.hostedDataLayerKeys] as? [String: String]
+            options[TealiumConfigKey.hostedDataLayerKeys] as? [String: String]
         }
 
         set {
-            options[TealiumKey.hostedDataLayerKeys] = newValue
+            options[TealiumConfigKey.hostedDataLayerKeys] = newValue
         }
     }
 
     /// Sets the expiry for the Hosted Data Layer cache.
     var hostedDataLayerExpiry: (Int, unit: TimeUnit) {
         get {
-            options[TealiumKey.hostedDataLayerExpiry] as? (Int, unit: TimeUnit) ?? TealiumValue.defaultHDLExpiry
+            options[TealiumConfigKey.hostedDataLayerExpiry] as? (Int, unit: TimeUnit) ?? TealiumValue.defaultHDLExpiry
         }
 
         set {
-            options[TealiumKey.hostedDataLayerExpiry] = newValue
+            options[TealiumConfigKey.hostedDataLayerExpiry] = newValue
         }
     }
 }
@@ -60,7 +60,7 @@ public extension TealiumValue {
     static let sessionBaseURL = "https://tags.tiqcdn.com/utag/tiqapp/utag.v.js?a="
 }
 
-public extension TealiumKey {
+public extension TealiumDataKey {
     static let timestampEpoch = "tealium_timestamp_epoch"
     static let timestamp = "timestamp"
     static let timestampLocal = "timestamp_local"

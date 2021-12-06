@@ -5,7 +5,7 @@
 //  Copyright © 2019 Tealium. All rights reserved.
 //
 
-#if os(iOS)
+#if os(iOS) && !targetEnvironment(macCatalyst)
 import CoreLocation
 import Foundation
 #if location
@@ -52,7 +52,6 @@ class GeofenceProvider {
     }
     private let bundle: Bundle
     private let config: TealiumConfig
-
     init(config: TealiumConfig, bundle: Bundle) {
         self.config = config
         self.bundle = bundle

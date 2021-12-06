@@ -56,7 +56,6 @@ public extension TealiumPublisherProtocol where Element == Void {
 }
 
 public protocol TealiumSubjectProtocol: TealiumObservableProtocol, TealiumPublisherProtocol {
-
 }
 
 public extension TealiumSubjectProtocol {

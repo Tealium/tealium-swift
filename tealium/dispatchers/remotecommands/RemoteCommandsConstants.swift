@@ -21,9 +21,7 @@ public enum SimpleCommandType {
 
 enum RemoteCommandsKey {
     static let moduleName = "remotecommands"
-    static let disable = "disable_remote_commands"
-    static let disableHTTP = "disable_remote_command_http"
-    static let allCommands = "remote_commands"
+
     static let authenticate = "authenticate"
     static let headers = "headers"
     static let method = "method"
@@ -39,7 +37,6 @@ enum RemoteCommandsKey {
     static let commandId = "_http"
     static let jsCommand = "js"
     static let commandName = "command_name"
-    static let refreshInterval = "remote_config_refresh"
     static let defaultRefreshInterval = Int(3600)
     static let dlePrefix = "https://tags.tiqcdn.com/dle/"
 }

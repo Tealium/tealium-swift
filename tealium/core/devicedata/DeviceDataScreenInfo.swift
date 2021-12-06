@@ -59,13 +59,13 @@ public extension DeviceData {
         let orientation = UIDevice.current.orientation
 
         let isLandscape = orientation.isLandscape
-        var fullOrientation = [DeviceDataKey.orientation: isLandscape ? "Landscape" : "Portrait"]
+        var fullOrientation = [TealiumDataKey.orientation: isLandscape ? "Landscape" : "Portrait"]
 
-        fullOrientation[DeviceDataKey.fullOrientation] = getDeviceOrientation(orientation)
+        fullOrientation[TealiumDataKey.fullOrientation] = getDeviceOrientation(orientation)
         return fullOrientation
         #else
-        return [DeviceDataKey.orientation: TealiumValue.unknown,
-                DeviceDataKey.fullOrientation: TealiumValue.unknown
+        return [TealiumDataKey.orientation: TealiumValue.unknown,
+                TealiumDataKey.fullOrientation: TealiumValue.unknown
         ]
         #endif
     }
