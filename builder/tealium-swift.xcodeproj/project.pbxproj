@@ -2177,19 +2177,15 @@
 		43DE5EBD1C69E504069DAA7A /* Disk+Codable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Disk+Codable.swift"; sourceTree = "<group>"; };
 		43DE5F88587CAF42730CDBC4 /* Disk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Disk.swift; sourceTree = "<group>"; };
 		48405B372739B9760094EA18 /* InAppPurchaseModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchaseModule.swift; sourceTree = "<group>"; };
-		48405B572739B9850094EA18 /* TealiumAttribution copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "TealiumAttribution copy-Info.plist"; path = "/Users/tylerrister/development/mobile/tealium-swift/builder/TealiumAttribution copy-Info.plist"; sourceTree = "<absolute>"; };
 		48405B592739B9B20094EA18 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/iOSSupport/System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		48405B5B273AC6B10094EA18 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.0.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
 		48405B5D273AD2810094EA18 /* StoreKitTesting.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = StoreKitTesting.storekit; sourceTree = "<group>"; };
 		48405B5E273AD7A80094EA18 /* InAppPurchaseExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchaseExtensions.swift; sourceTree = "<group>"; };
 		48A13AFF273B02960031E2B5 /* InAppPurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchaseManager.swift; sourceTree = "<group>"; };
-		48A13B17273C28CB0031E2B5 /* TealiumAttributionTests-iOS copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "TealiumAttributionTests-iOS copy-Info.plist"; path = "/Users/tylerrister/development/mobile/tealium-swift/builder/TealiumAttributionTests-iOS copy-Info.plist"; sourceTree = "<absolute>"; };
 		48A13B18273C29390031E2B5 /* TealiumInAppPurchaseModuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TealiumInAppPurchaseModuleTests.swift; sourceTree = "<group>"; };
 		48A13B22273D62070031E2B5 /* InAppPurchaseConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchaseConstants.swift; sourceTree = "<group>"; };
 		48AB110E275E42C30011D4D6 /* TealiumInAppPurchaseTests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TealiumInAppPurchaseTests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		48AB110F275E42C30011D4D6 /* TealiumCollectTests-iOS copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "TealiumCollectTests-iOS copy-Info.plist"; path = "/Users/tylerrister/development/mobile/tealium-swift/builder/TealiumCollectTests-iOS copy-Info.plist"; sourceTree = "<absolute>"; };
 		48B28446273D674700FE908D /* TealiumInAppPurchase.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TealiumInAppPurchase.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		48B28447273D674700FE908D /* TealiumAttribution copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "TealiumAttribution copy2-Info.plist"; path = "/Users/tylerrister/development/mobile/tealium-swift/builder/TealiumAttribution copy2-Info.plist"; sourceTree = "<absolute>"; };
 		4B0187CF20067A890057E281 /* TealiumRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TealiumRequests.swift; sourceTree = "<group>"; };
 		4B0187D82006B56A0057E281 /* TealiumLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TealiumLogger.swift; sourceTree = "<group>"; };
 		4B7444A82006BA9500616F95 /* DeviceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceData.swift; sourceTree = "<group>"; };
@@ -3262,10 +3258,6 @@
 				15B84D7626F206950094DC05 /* AutoTrackingTvOSTest */,
 				7182DD0A1D77492D0001A95B /* Products */,
 				D79876C11FACE5B100FFA96B /* Frameworks */,
-				48405B572739B9850094EA18 /* TealiumAttribution copy-Info.plist */,
-				48A13B17273C28CB0031E2B5 /* TealiumAttributionTests-iOS copy-Info.plist */,
-				48B28447273D674700FE908D /* TealiumAttribution copy2-Info.plist */,
-				48AB110F275E42C30011D4D6 /* TealiumCollectTests-iOS copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -8441,10 +8433,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				EXCLUDED_ARCHS = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)",
-					"$(SDKROOT)/System/iOSSupport/System/Library/Frameworks",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				INFOPLIST_FILE = "TealiumInAppPurchase-Info.plist";
@@ -8491,10 +8480,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				EXCLUDED_ARCHS = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)",
-					"$(SDKROOT)/System/iOSSupport/System/Library/Frameworks",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = "TealiumInAppPurchase-Info.plist";

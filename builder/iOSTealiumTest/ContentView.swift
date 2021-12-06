@@ -52,16 +52,8 @@ class IAPHelper: NSObject, ObservableObject, SKProductsRequestDelegate, SKPaymen
           case .purchased:
             complete(transaction: transaction)
             break
-          case .failed:
+          default:
               break
-            break
-          case .restored:
-              break
-            break
-          case .deferred:
-            break
-          case .purchasing:
-            break
           }
         }
       }
