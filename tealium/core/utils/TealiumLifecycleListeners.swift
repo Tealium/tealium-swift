@@ -13,9 +13,17 @@ import UIKit
 
 public class TealiumLifecycleListeners {
 
-    var listeningDelegates = TealiumMulticastDelegate<TealiumLifecycleEvents>()
-    var hasLaunched = false
-    var launchDate: Date?
+    @ToAnyObservable(TealiumBufferedSubject<Date>(bufferSize: 10))
+    public var launchSubject: TealiumObservable<Date>
+
+    public var sleepSubject = TealiumPublishSubject<Void>()
+    public var wakeSubject = TealiumPublishSubject<Void>()
+//    @ToAnyObservable(TealiumBufferedSubject(bufferSize: 10))
+//    public var sleepSubject: TealiumObservable<Void>
+//
+//    @ToAnyObservable(TealiumBufferedSubject(bufferSize: 10))
+//    public var wakeSubject: TealiumObservable<Void>
+
     var wakeNotificationObserver: NSObjectProtocol?
     var sleepNotificationObserser: NSObjectProtocol?
 
@@ -24,52 +32,20 @@ public class TealiumLifecycleListeners {
         launch()
     }
 
-    /// Adds delegate to be notified of new events￼.
-    ///
-    /// - Parameter delegate:`TealiumLifecycleEvents` delegate
-    public func addDelegate(delegate: TealiumLifecycleEvents) {
-        listeningDelegates.add(delegate)
-        if hasLaunched, let launchDate = launchDate {
-            delegate.launch(at: launchDate)
-        }
-    }
-
-    /// Removes a previously-added delegate￼.
-    ///
-    /// - Parameter delegate: `TealiumLifecycleEvents` delegate
-    public func removeDelegate(delegate: TealiumLifecycleEvents) {
-        listeningDelegates.remove(delegate)
-    }
-
-    /// Removes all listening delegates
-    public func removeAll() {
-        listeningDelegates.removeAll()
-    }
-
     /// Notifies listeners of a launch event.
     public func launch() {
-        hasLaunched = true
-        launchDate = Date()
-        guard let launchDate = launchDate else {
-            return
-        }
-        listeningDelegates.invoke {
-            $0.launch(at: launchDate)
-        }
+        let launchDate = Date()
+        _launchSubject.publish(launchDate)
     }
 
     /// Notifies listeners of a sleep event.
     public func sleep() {
-        listeningDelegates.invoke {
-            $0.sleep()
-        }
+        sleepSubject.publish()
     }
 
     /// Notifies listeners of a wake event.
     public func wake() {
-        listeningDelegates.invoke {
-            $0.wake()
-        }
+        wakeSubject.publish()
     }
 
     /// Sets up notification listeners to trigger events in listening delegates.

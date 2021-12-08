@@ -18,6 +18,7 @@ public class MediaModule: Collector {
     public var data: [String: Any]?
     weak var delegate: ModuleDelegate?
     var activeSessions = [MediaSession]()
+    private var disposeBag = TealiumDisposeBag()
 
     public required init(context: TealiumContext,
                          delegate: ModuleDelegate?,
@@ -26,7 +27,15 @@ public class MediaModule: Collector {
         self.config = context.config
         self.delegate = delegate
         #if !os(tvOS) && !os(macOS)
-        Tealium.lifecycleListeners.addDelegate(delegate: self)
+        Tealium.lifecycleListeners.launchSubject.asObservable().subscribeOnce { [unowned self] launchDate in
+            self.launch(at: launchDate)
+        }
+        Tealium.lifecycleListeners.wakeSubject.asObservable().subscribe { [unowned self] in
+            self.wake()
+        }.toDisposeBag(self.disposeBag)
+        Tealium.lifecycleListeners.sleepSubject.asObservable().subscribe { [unowned self] in
+            self.sleep()
+        }.toDisposeBag(self.disposeBag)
         #endif
     }
 
@@ -41,7 +50,7 @@ public class MediaModule: Collector {
 
 }
 #if !os(tvOS) && !os(macOS)
-extension MediaModule: TealiumLifecycleEvents {
+extension MediaModule {
 
     #if os(iOS)
     class var sharedApplication: UIApplication? {

@@ -65,14 +65,19 @@ struct ContentView: View {
                         TealiumTextButton(title: "Reset Consent") {
                             TealiumHelper.shared.resetConsentPreferences()
                         }
-                        TealiumTextButton(title: "ATT Authorization") {
-                            if ATTrackingManager.trackingAuthorizationStatus == ATTrackingManager.AuthorizationStatus.notDetermined {
-                                ATTrackingManager.requestTrackingAuthorization { status in
-                                    print("ATT Status ", status.rawValue)
+                        Group {
+                            TealiumTextButton(title: "ATT Authorization") {
+                                if ATTrackingManager.trackingAuthorizationStatus == ATTrackingManager.AuthorizationStatus.notDetermined {
+                                    ATTrackingManager.requestTrackingAuthorization { status in
+                                        print("ATT Status ", status.rawValue)
+                                    }
+                                } else {
+                                    showAlert.toggle()
                                 }
-                            } else {
-                                showAlert.toggle()
                             }
+                            TealiumTextButton(title: "Switch Profile", {
+                                TealiumHelper.shared.changeProfile()
+                            })
                         }
                     }
                 }

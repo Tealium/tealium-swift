@@ -3312,6 +3312,7 @@
 				D72FAD4024F442B000700ABF /* TealiumDelegateProxy.swift */,
 				D7157F7F24F51B1400F1F323 /* TealiumContext.swift */,
 				CF8B687A255DC57C0055D72E /* TimedEvent.swift */,
+				CFF242BF23CE77F10091B7BF /* location */,
 				CF8B6894255DC5E10055D72E /* TimedEventScheduler.swift */,
 				15F573ED2721827E00194733 /* UIScene+TealiumDelegateGetter.swift */,
 			);
@@ -3623,7 +3624,6 @@
 			children = (
 				CFAD9D5B25A66C040079B19A /* media */,
 				D780586F233A68E900DAD90E /* visitorservice */,
-				CFF242BF23CE77F10091B7BF /* location */,
 				71F085BD1DDE154C008850C8 /* attribution */,
 				71D2B34C1E2FE3670049BCF3 /* autotracking */,
 				712184711E536099000DCE07 /* lifecycle */,

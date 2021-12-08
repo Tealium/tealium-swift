@@ -21,6 +21,7 @@ class LifecycleModuleTests: XCTestCase {
     var config: TealiumConfig!
     var returnData: [String: Any]!
     var tealium: Tealium!
+    var lifecycleDisposeBag = TealiumDisposeBag()
     
     func createModule(with config: TealiumConfig? = nil, dataLayer: DataLayerManagerProtocol? = nil) -> LifecycleModule {
         let context = TestTealiumHelper.context(with: config ?? TestTealiumHelper().getConfig(), dataLayer: dataLayer ?? DummyDataManager())
@@ -455,7 +456,15 @@ class LifecycleModuleTests: XCTestCase {
         autotrackedRequest = expectation(description: "testAutotrackedTrue")
         lifecycleModule = createModule(with: config, dataLayer: MockMigratedDataLayerNoData())
 
-        Tealium.lifecycleListeners.addDelegate(delegate: self)
+        Tealium.lifecycleListeners.launchSubject.asObservable().subscribeOnce { [unowned self] launchDate in
+            self.launch(at: launchDate)
+        }
+        Tealium.lifecycleListeners.wakeSubject.asObservable().subscribe { [unowned self] in
+            self.wake()
+        }.toDisposeBag(lifecycleDisposeBag)
+        Tealium.lifecycleListeners.sleepSubject.asObservable().subscribe { [unowned self] in
+            self.sleep()
+        }.toDisposeBag(lifecycleDisposeBag)
 
         lifecycleModule.lifecycleDetected(type: .launch)
 
@@ -525,7 +534,7 @@ extension LifecycleModuleTests: ModuleDelegate {
 
 }
 
-extension LifecycleModuleTests: TealiumLifecycleEvents {
+extension LifecycleModuleTests {
 
     func sleep() {
         // ...

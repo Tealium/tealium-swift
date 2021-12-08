@@ -30,6 +30,7 @@ public class LifecycleModule: Collector {
     var userDefaults: Storable?
     public var config: TealiumConfig
     var migrated = false
+    private var lifecycleDisposeBag = TealiumDisposeBag()
 
     public var data: [String: Any]? {
         lifecycle?.asDictionary(type: nil, for: Date())
@@ -59,8 +60,15 @@ public class LifecycleModule: Collector {
         migrated = true
         enabledPrior = false
         if config.lifecycleAutoTrackingEnabled {
-            Tealium.lifecycleListeners.addDelegate(delegate: self)
-            process(type: .launch, at: Date(), autotracked: true)
+            Tealium.lifecycleListeners.launchSubject.subscribeOnce { [unowned self] launchDate in
+                self.launch(at: launchDate)
+            }
+            Tealium.lifecycleListeners.wakeSubject.subscribe { [unowned self] in
+                self.wake()
+            }.toDisposeBag(self.lifecycleDisposeBag)
+            Tealium.lifecycleListeners.sleepSubject.subscribe { [unowned self] in
+                self.sleep()
+            }.toDisposeBag(self.lifecycleDisposeBag)
         }
         completion((.success(true), nil))
     }
@@ -160,7 +168,7 @@ public class LifecycleModule: Collector {
     }
 
     deinit {
-        Tealium.lifecycleListeners.removeAll()
+        lifecycleDisposeBag.dispose()
     }
 }
 
