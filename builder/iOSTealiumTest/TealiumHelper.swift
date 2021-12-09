@@ -27,7 +27,6 @@ class TealiumHelper {
     
     static let shared = TealiumHelper()
     var tealium: Tealium?
-    var tealiumSecond: Tealium?
     var enableHelperLogs = true
 
     private init() { }
@@ -198,10 +197,10 @@ extension TealiumHelper: VisitorServiceDelegate {
 
 extension TealiumHelper: DispatchListener {
     public func willTrack(request: TealiumRequest) {
-//        _onWillTrack.publish((request as! TealiumTrackRequest).trackDictionary)
-//        if self.enableHelperLogs {
-//            print("helper - willtrack")
-//        }
+        _onWillTrack.publish((request as! TealiumTrackRequest).trackDictionary)
+        if self.enableHelperLogs {
+            print("helper - willtrack")
+        }
     }
 }
 

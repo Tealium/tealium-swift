@@ -16,11 +16,6 @@ public class TealiumLifecycleListeners {
     public var launchSubject = TealiumReplaySubject<Date>()
     public var sleepSubject = TealiumReplaySubject<Void>()
     public var wakeSubject = TealiumReplaySubject<Void>()
-//    @ToAnyObservable(TealiumBufferedSubject(bufferSize: 10))
-//    public var sleepSubject: TealiumObservable<Void>
-//
-//    @ToAnyObservable(TealiumBufferedSubject(bufferSize: 10))
-//    public var wakeSubject: TealiumObservable<Void>
 
     var wakeNotificationObserver: NSObjectProtocol?
     var sleepNotificationObserser: NSObjectProtocol?

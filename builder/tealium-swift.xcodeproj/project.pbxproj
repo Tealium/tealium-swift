@@ -3621,9 +3621,9 @@
 		D70FC7AD24508146004AD838 /* collectors */ = {
 			isa = PBXGroup;
 			children = (
-				CFF242BF23CE77F10091B7BF /* location */,
 				CFAD9D5B25A66C040079B19A /* media */,
 				D780586F233A68E900DAD90E /* visitorservice */,
+				CFF242BF23CE77F10091B7BF /* location */,
 				71F085BD1DDE154C008850C8 /* attribution */,
 				71D2B34C1E2FE3670049BCF3 /* autotracking */,
 				712184711E536099000DCE07 /* lifecycle */,
