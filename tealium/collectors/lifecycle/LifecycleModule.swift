@@ -60,13 +60,13 @@ public class LifecycleModule: Collector {
         migrated = true
         enabledPrior = false
         if config.lifecycleAutoTrackingEnabled {
-            Tealium.lifecycleListeners.launchSubject.subscribeOnce { [unowned self] launchDate in
+            Tealium.lifecycleListeners.launchSubject.asObservable().subscribeOnce { [unowned self] launchDate in
                 self.launch(at: launchDate)
             }
-            Tealium.lifecycleListeners.wakeSubject.subscribe { [unowned self] in
+            Tealium.lifecycleListeners.wakeSubject.asObservable().subscribe { [unowned self] in
                 self.wake()
             }.toDisposeBag(self.lifecycleDisposeBag)
-            Tealium.lifecycleListeners.sleepSubject.subscribe { [unowned self] in
+            Tealium.lifecycleListeners.sleepSubject.asObservable().subscribe { [unowned self] in
                 self.sleep()
             }.toDisposeBag(self.lifecycleDisposeBag)
         }
