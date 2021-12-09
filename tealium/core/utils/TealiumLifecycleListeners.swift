@@ -13,11 +13,9 @@ import UIKit
 
 public class TealiumLifecycleListeners {
 
-    @ToAnyObservable(TealiumBufferedSubject<Date>(bufferSize: 10))
-    public var launchSubject: TealiumObservable<Date>
-
-    public var sleepSubject = TealiumPublishSubject<Void>()
-    public var wakeSubject = TealiumPublishSubject<Void>()
+    public var launchSubject = TealiumReplaySubject<Date>()
+    public var sleepSubject = TealiumReplaySubject<Void>()
+    public var wakeSubject = TealiumReplaySubject<Void>()
 //    @ToAnyObservable(TealiumBufferedSubject(bufferSize: 10))
 //    public var sleepSubject: TealiumObservable<Void>
 //
@@ -35,7 +33,7 @@ public class TealiumLifecycleListeners {
     /// Notifies listeners of a launch event.
     public func launch() {
         let launchDate = Date()
-        _launchSubject.publish(launchDate)
+        launchSubject.publish(launchDate)
     }
 
     /// Notifies listeners of a sleep event.
