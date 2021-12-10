@@ -142,12 +142,18 @@ extension DispatchManager {
             guard let self = self else {
                 return
             }
-
-            if ProcessInfo.processInfo.isLowPowerModeEnabled {
-                self.lowPowerModeEnabled = true
-            } else {
-                self.lowPowerModeEnabled = false
-                self.handleDequeueRequest(reason: "Low power mode disabled.")
+            // We suspect an iOS 15 bug (ref.: https://openradar.appspot.com/FB9741207) which leads to rare
+            // `_os_unfair_lock_recursive_abort` crash when `processInfo.isLowPowerModeEnabled` is accessed
+            // directly in the notification handler. As a workaround, we defer its access to the next run loop
+            // where underlying lock should be already released.
+            OperationQueue.main.addOperation {
+               let enabled = ProcessInfo.processInfo.isLowPowerModeEnabled
+                TealiumQueues.backgroundSerialQueue.async {
+                    self.lowPowerModeEnabled = enabled
+                    if !enabled {
+                        self.handleDequeueRequest(reason: "Low power mode disabled.")
+                    }
+                }
             }
         }
         #endif
