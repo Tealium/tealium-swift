@@ -52,34 +52,6 @@ class TealiumModulesManagerTests: XCTestCase {
         TealiumExpectations.expectations = [:]
     }
 
-    func testUpdateConfig() {
-        let modulesManager = self.modulesManager
-
-        #if os(iOS)
-        XCTAssertTrue(testTealiumConfig.isTagManagementEnabled)
-        #endif
-
-        let config = testTealiumConfig
-        config.shouldUseRemotePublishSettings = false
-        config.isCollectEnabled = false
-        config.isTagManagementEnabled = true
-        modulesManager.updateConfig(config: config)
-        XCTAssertFalse(modulesManager.dispatchers.contains(where: { $0.id == "Collect" }))
-        #if os(iOS)
-        XCTAssertTrue(modulesManager.dispatchers.contains(where: { $0.id == "TagManagement" }))
-        #endif
-        config.isTagManagementEnabled = false
-        modulesManager.updateConfig(config: config)
-        XCTAssertFalse(modulesManager.dispatchers.contains(where: { $0.id == "TagManagement" }))
-        config.isTagManagementEnabled = true
-        config.isCollectEnabled = true
-        modulesManager.updateConfig(config: config)
-        #if os(iOS)
-        XCTAssertTrue(modulesManager.dispatchers.contains(where: { $0.id == "TagManagement" }))
-        #endif
-        XCTAssertTrue(modulesManager.dispatchers.contains(where: { $0.id == "Collect" }))
-    }
-
     func testAddCollector() {
         let context = TestTealiumHelper.context(with: testTealiumConfig, dataLayer: DummyDataManagerNoData())
         let collector = DummyCollector(context: context, delegate: self, diskStorage: nil) { _, _ in

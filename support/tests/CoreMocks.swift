@@ -259,8 +259,8 @@ class DummyDataManagerNoData: DataLayerManagerProtocol {
 class DummyDispatcher: Dispatcher {
     var isReady: Bool = true
 
-    required init(config: TealiumConfig, delegate: ModuleDelegate, completion: ModuleCompletion?) {
-        self.config = config
+    required init(context: TealiumContext, delegate: ModuleDelegate, completion: ModuleCompletion?) {
+        self.config = context.config
     }
 
     func dynamicTrack(_ request: TealiumRequest, completion: ModuleCompletion?) {

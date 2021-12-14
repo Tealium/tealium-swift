@@ -22,7 +22,8 @@ class CollectModuleTests: XCTestCase {
     }
 
     func testBatchTrack() {
-        let collectModule = CollectModule(config: testTealiumConfig, delegate: self, completion: nil)
+        let context = TestTealiumHelper.context(with: testTealiumConfig)
+        let collectModule = CollectModule(context: context, delegate: self, completion: nil)
         collectModule.collect = CollectEventDispatcher(config: testTealiumConfig, urlSession: MockURLSession(), completion: nil)
         let track = TealiumTrackRequest(data: ["test_track": true])
         let batchTrack = TealiumBatchTrackRequest(trackRequests: [track, track, track])
@@ -37,7 +38,8 @@ class CollectModuleTests: XCTestCase {
     }
 
     func testBatchTrackInvalidRequest() {
-        let collectModule = CollectModule(config: testTealiumConfig, delegate: self, completion: nil)
+        let context = TestTealiumHelper.context(with: testTealiumConfig)
+        let collectModule = CollectModule(context: context, delegate: self, completion: nil)
         collectModule.collect = CollectEventDispatcher(config: testTealiumConfig, urlSession: MockURLSession(), completion: nil)
         let batchTrack = TealiumBatchTrackRequest(trackRequests: [])
         collectModule.batchTrack(batchTrack) { result in
@@ -51,7 +53,8 @@ class CollectModuleTests: XCTestCase {
     }
 
     func testBatchTrackCollectNotInitialized() {
-        let collectModule = CollectModule(config: testTealiumConfig, delegate: self, completion: nil)
+        let context = TestTealiumHelper.context(with: testTealiumConfig)
+        let collectModule = CollectModule(context: context, delegate: self, completion: nil)
         collectModule.collect = nil
         //        let track = TealiumTrackRequest(data: ["test_track": true])
         let batchTrack = TealiumBatchTrackRequest(trackRequests: [])
@@ -66,7 +69,8 @@ class CollectModuleTests: XCTestCase {
     }
 
     func testTrack() {
-        let collectModule = CollectModule(config: testTealiumConfig, delegate: self, completion: nil)
+        let context = TestTealiumHelper.context(with: testTealiumConfig)
+        let collectModule = CollectModule(context: context, delegate: self, completion: nil)
         collectModule.collect = CollectEventDispatcher(config: testTealiumConfig, urlSession: MockURLSession(), completion: nil)
         let track = TealiumTrackRequest(data: ["test_track": true])
         collectModule.track(track) { result in
@@ -80,7 +84,8 @@ class CollectModuleTests: XCTestCase {
     }
 
     func testTrackCollectNotInitialized() {
-        let collectModule = CollectModule(config: testTealiumConfig, delegate: self, completion: nil)
+        let context = TestTealiumHelper.context(with: testTealiumConfig)
+        let collectModule = CollectModule(context: context, delegate: self, completion: nil)
         collectModule.collect = nil
         let track = TealiumTrackRequest(data: ["test_track": true])
         collectModule.track(track) { result in
@@ -95,7 +100,8 @@ class CollectModuleTests: XCTestCase {
 
     func testCollectNil() {
         let expectation = self.expectation(description: "dynamic track")
-        let collectModule = CollectModule(config: testTealiumConfig, delegate: self, completion: nil)
+        let context = TestTealiumHelper.context(with: testTealiumConfig)
+        let collectModule = CollectModule(context: context, delegate: self, completion: nil)
         collectModule.collect = nil
         let track = TealiumTrackRequest(data: ["test_track": true])
         collectModule.dynamicTrack(track) { result in
@@ -111,7 +117,8 @@ class CollectModuleTests: XCTestCase {
     }
 
     func testPrepareForDispatch() {
-        let collectModule = CollectModule(config: testTealiumConfig, delegate: self, completion: nil)
+        let context = TestTealiumHelper.context(with: testTealiumConfig)
+        let collectModule = CollectModule(context: context, delegate: self, completion: nil)
         let track = TealiumTrackRequest(data: [String: Any]())
         let newTrack = collectModule.prepareForDispatch(track).trackDictionary
         XCTAssertNotNil(newTrack[TealiumDataKey.account])
@@ -120,7 +127,8 @@ class CollectModuleTests: XCTestCase {
 
     func testDynamicDispatchSingleTrack() {
         let expectation = self.expectation(description: "dynamic track")
-        let collectModule = CollectModule(config: testTealiumConfig, delegate: self, completion: nil)
+        let context = TestTealiumHelper.context(with: testTealiumConfig)
+        let collectModule = CollectModule(context: context, delegate: self, completion: nil)
         collectModule.collect = CollectEventDispatcher(config: testTealiumConfig, urlSession: MockURLSession(), completion: nil)
         let track = TealiumTrackRequest(data: ["test_track": true])
         collectModule.dynamicTrack(track) { result in
@@ -137,7 +145,8 @@ class CollectModuleTests: XCTestCase {
 
     func testDynamicDispatchSingleTrackConsentCookie() {
         let expectation = self.expectation(description: "dynamic track")
-        let collectModule = CollectModule(config: testTealiumConfig, delegate: self, completion: nil)
+        let context = TestTealiumHelper.context(with: testTealiumConfig)
+        let collectModule = CollectModule(context: context, delegate: self, completion: nil)
         collectModule.collect = CollectEventDispatcher(config: testTealiumConfig, urlSession: MockURLSession(), completion: nil)
         let track = TealiumTrackRequest(data: [TealiumDataKey.event: "update_consent_cookie"])
         collectModule.dynamicTrack(track) { result in
@@ -155,7 +164,8 @@ class CollectModuleTests: XCTestCase {
 
     func testDynamicDispatchBatchTrack() {
         let expectation = self.expectation(description: "dynamic track")
-        let collectModule = CollectModule(config: testTealiumConfig, delegate: self, completion: nil)
+        let context = TestTealiumHelper.context(with: testTealiumConfig)
+        let collectModule = CollectModule(context: context, delegate: self, completion: nil)
         collectModule.collect = CollectEventDispatcher(config: testTealiumConfig, urlSession: MockURLSession(), completion: nil)
         let track = TealiumTrackRequest(data: ["test_track": true])
         let batchRequest = TealiumBatchTrackRequest(trackRequests: [track])
@@ -173,7 +183,8 @@ class CollectModuleTests: XCTestCase {
 
     func testDynamicDispatchBatchTrackConsentCookie() {
         let expectation = self.expectation(description: "dynamic track")
-        let collectModule = CollectModule(config: testTealiumConfig, delegate: self, completion: nil)
+        let context = TestTealiumHelper.context(with: testTealiumConfig)
+        let collectModule = CollectModule(context: context, delegate: self, completion: nil)
         collectModule.collect = CollectEventDispatcher(config: testTealiumConfig, urlSession: MockURLSession(), completion: nil)
         let track = TealiumTrackRequest(data: [TealiumDataKey.event: "update_consent_cookie"])
         let batchRequest = TealiumBatchTrackRequest(trackRequests: [track])
@@ -206,7 +217,8 @@ class CollectModuleTests: XCTestCase {
     func testPrepareTrackWithProfileOverride() {
         let config = testTealiumConfig.copy
         config.overrideCollectProfile = "testprofile"
-        let collectModule = CollectModule(config: config, delegate: self, completion: nil)
+        let context = TestTealiumHelper.context(with: config)
+        let collectModule = CollectModule(context: context, delegate: self, completion: nil)
         collectModule.collect = CollectEventDispatcher(config: config, urlSession: MockURLSession(), completion: nil)
         let track = TealiumTrackRequest(data: [TealiumDataKey.event: "testevent"])
         let newTrack = collectModule.prepareForDispatch(track).trackDictionary
@@ -215,7 +227,8 @@ class CollectModuleTests: XCTestCase {
     
     func testInvalidTrackRequest() {
         let config = testTealiumConfig.copy
-        let collectModule = CollectModule(config: config, delegate: self, completion: nil)
+        let context = TestTealiumHelper.context(with: config)
+        let collectModule = CollectModule(context: context, delegate: self, completion: nil)
         collectModule.collect = CollectEventDispatcher(config: config, urlSession: MockURLSession(), completion: nil)
         let request = TealiumRemoteCommandRequest(data: [:])
         collectModule.dynamicTrack(request) { response in

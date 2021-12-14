@@ -31,21 +31,6 @@ class ConsentManagerModule: DispatchValidator {
         completion((.success(true), nil))
     }
 
-    func updateConfig(_ request: TealiumUpdateConfigRequest) {
-        let newConfig = request.config.copy
-        guard newConfig.consentPolicy != nil else {
-            consentManager = nil
-            return
-        }
-        if newConfig != self.config,
-           newConfig.account != config.account,
-           newConfig.profile != config.profile {
-            self.diskStorage = TealiumDiskStorage(config: request.config, forModule: ConsentKey.moduleName, isCritical: true)
-            consentManager = ConsentManager(config: config, delegate: delegate, diskStorage: self.diskStorage, dataLayer: self.dataLayer)
-        }
-        config = newConfig
-    }
-
     /// Determines whether or not a request should be queued based on a user's consent preferences selection.
     /// - Parameter request: incoming `TealiumRequest`
     /// - Returns: `(Bool, [String: Any]?)` true/false if should be queued, then the resulting dictionary of consent data.

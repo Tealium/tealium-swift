@@ -162,7 +162,8 @@ class WKWebViewIntegrationTests: XCTestCase {
 
     func testDispatchTrackCreatesTrackRequest() {
         expect = expectation(description: "trackRequest")
-        module = TagManagementModule(config: config, delegate: TagManagementModuleDelegate(), completion: { _ in })
+        let context = TestTealiumHelper.context(with: config)
+        module = TagManagementModule(context: context, delegate: TagManagementModuleDelegate(), completion: { _ in })
         let track = TealiumTrackRequest(data: ["test_track": true])
         module?.dispatchTrack(track, completion: { result in
             switch result.0 {
@@ -178,7 +179,8 @@ class WKWebViewIntegrationTests: XCTestCase {
 
     func testDispatchTrackCreatesBatchTrackRequest() {
         expect = expectation(description: "batchTrackRequest")
-        module = TagManagementModule(config: config, delegate: TagManagementModuleDelegate(), completion: { _ in })
+        let context = TestTealiumHelper.context(with: config)
+        module = TagManagementModule(context: context, delegate: TagManagementModuleDelegate(), completion: { _ in })
         let track = TealiumTrackRequest(data: ["test_track": true])
         let batchTrack = TealiumBatchTrackRequest(trackRequests: [track, track, track])
         module?.dispatchTrack(batchTrack, completion: { result in
