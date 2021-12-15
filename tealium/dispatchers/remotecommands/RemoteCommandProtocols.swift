@@ -40,16 +40,19 @@ public protocol RemoteCommandProtocol {
     static func sendRemoteCommandResponse(for commandId: String,
                                           response: RemoteCommandResponseProtocol,
                                           delegate: ModuleDelegate?)
+
+    var name: String { get }
+    var version: String? { get }
 }
 
 public extension RemoteCommandProtocol {
 
     internal var nameAndVersion: String {
         var suffix = ""
-        if let version = version {
+        if let version = self.version {
             suffix += "-\(version)"
         }
-        return name + suffix
+        return self.name + suffix
     }
 
     var name: String {
@@ -57,11 +60,15 @@ public extension RemoteCommandProtocol {
     }
 
     var version: String? {
-        guard let aClass = Swift.type(of: self) as? AnyClass else {
-            return nil
-        }
-        return versionString(bundle: Bundle(for: aClass))
+        versionForObject(self)
     }
+}
+
+func versionForObject(_ obj: Any) -> String? {
+    guard let aClass = Swift.type(of: obj) as? AnyClass else {
+        return nil
+    }
+    return versionString(bundle: Bundle(for: aClass))
 }
 
 func versionString(bundle: Bundle) -> String? {
