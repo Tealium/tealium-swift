@@ -43,6 +43,15 @@ public protocol RemoteCommandProtocol {
 }
 
 public extension RemoteCommandProtocol {
+
+    internal var nameAndVersion: String {
+        var suffix = ""
+        if let version = version {
+            suffix += "-\(version)"
+        }
+        return name + suffix
+    }
+
     var name: String {
         return commandId
     }

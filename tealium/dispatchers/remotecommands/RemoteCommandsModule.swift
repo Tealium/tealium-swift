@@ -41,14 +41,9 @@ public class RemoteCommandsModule: Dispatcher {
         updateReservedCommands(config: config)
         addCommands(from: config)
         remoteCommands.onCommandsChanged.subscribe { commands in
-            let commandsList: [String] = commands.map { command in
-                var suffix = ""
-                if let version = command.version {
-                    suffix += "-\(version)"
-                }
-                return command.name + suffix
-            }
-            context.dataLayer?.add(data: ["remote_commands": commandsList], expiry: Expiry.untilRestart)
+            let data = [TealiumDataKey.remoteCommands: commands.map { $0.nameAndVersion }]
+            context.dataLayer?.add(data: data,
+                                   expiry: Expiry.untilRestart)
         }.toDisposeBag(disposeBag)
     }
 
