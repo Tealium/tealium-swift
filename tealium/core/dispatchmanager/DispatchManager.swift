@@ -128,14 +128,17 @@ class DispatchManager: DispatchManagerProtocol {
         persistentQueue = TealiumPersistentDispatchQueue(diskStorage: self.diskStorage)
         removeOldDispatches()
         if config.lifecycleAutoTrackingEnabled {
-            Tealium.lifecycleListeners.launchSubject.asObservable().subscribeOnce { [unowned self] launchDate in
-                    self.launch(at: launchDate)
-            }
-            Tealium.lifecycleListeners.sleepSubject.asObservable().subscribe { [unowned self] in
-                    self.sleep()
-            }.toDisposeBag(self.disposeBag)
-            Tealium.lifecycleListeners.wakeSubject.asObservable().subscribe { [unowned self] in
+            self.launch(at: Tealium.lifecycleListeners.launchDate)
+            Tealium.lifecycleListeners.onBackgroundStateChange.subscribe { [weak self] state in
+                guard let self = self else {
+                    return
+                }
+                switch state {
+                case .wake:
                     self.wake()
+                case .sleep:
+                    self.sleep()
+                }
             }.toDisposeBag(self.disposeBag)
         }
         registerForPowerNotifications()
@@ -344,7 +347,6 @@ class DispatchManager: DispatchManagerProtocol {
         if let observer = lowPowerNotificationObserver {
             NotificationCenter.default.removeObserver(observer)
         }
-        disposeBag.dispose()
     }
 
 }

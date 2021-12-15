@@ -27,14 +27,16 @@ public class MediaModule: Collector {
         self.config = context.config
         self.delegate = delegate
         #if !os(tvOS) && !os(macOS)
-        Tealium.lifecycleListeners.launchSubject.asObservable().subscribeOnce { [unowned self] launchDate in
-            self.launch(at: launchDate)
-        }
-        Tealium.lifecycleListeners.wakeSubject.asObservable().subscribe { [unowned self] in
-            self.wake()
-        }.toDisposeBag(self.disposeBag)
-        Tealium.lifecycleListeners.sleepSubject.asObservable().subscribe { [unowned self] in
-            self.sleep()
+        Tealium.lifecycleListeners.onBackgroundStateChange.subscribe { [weak self] state in
+            guard let self = self else {
+                return
+            }
+            switch state {
+            case .wake:
+                self.wake()
+            case .sleep:
+                self.sleep()
+            }
         }.toDisposeBag(self.disposeBag)
         #endif
     }
@@ -109,7 +111,6 @@ extension MediaModule {
             session.backgroundStatusResumed = true
         }
     }
-    public func launch(at date: Date) { }
 
     func sendEndSessionInBackground(_ session: MediaSession) {
         if !session.backgroundStatusResumed {

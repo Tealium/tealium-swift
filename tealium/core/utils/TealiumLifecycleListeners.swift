@@ -13,32 +13,32 @@ import UIKit
 
 public class TealiumLifecycleListeners {
 
-    public var launchSubject = TealiumReplaySubject<Date>()
-    public var sleepSubject = TealiumReplaySubject<Void>()
-    public var wakeSubject = TealiumReplaySubject<Void>()
+    @frozen
+    public enum BackgroundState {
+        case wake(date: Date)
+        case sleep(date: Date)
+    }
+
+    public var launchDate = Date()
+
+    @ToAnyObservable(TealiumReplaySubject<BackgroundState>(cacheSize: 10))
+    public var onBackgroundStateChange: TealiumObservable<BackgroundState>
 
     var wakeNotificationObserver: NSObjectProtocol?
     var sleepNotificationObserser: NSObjectProtocol?
 
     public init() {
         addListeners()
-        launch()
-    }
-
-    /// Notifies listeners of a launch event.
-    public func launch() {
-        let launchDate = Date()
-        launchSubject.publish(launchDate)
     }
 
     /// Notifies listeners of a sleep event.
     public func sleep() {
-        sleepSubject.publish()
+        _onBackgroundStateChange.publish(.sleep(date: Date()))
     }
 
     /// Notifies listeners of a wake event.
     public func wake() {
-        wakeSubject.publish()
+        _onBackgroundStateChange.publish(.wake(date: Date()))
     }
 
     /// Sets up notification listeners to trigger events in listening delegates.
