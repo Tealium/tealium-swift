@@ -85,7 +85,7 @@ class TealiumModulesManagerTests: XCTestCase {
         let collector = DummyCollector(context: context, delegate: self, diskStorage: nil) { _, _ in
 
         }
-        let dispatcher = DummyDispatcher(config: testTealiumConfig, delegate: self) { _ in
+        let dispatcher = DummyDispatcher(context: context, delegate: self) { _ in
 
         }
         let modulesManager = ModulesManager(context)
