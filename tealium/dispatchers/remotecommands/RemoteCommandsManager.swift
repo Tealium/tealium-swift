@@ -196,7 +196,9 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
                 update(command: &remoteCommand, url: url, file: urlString.fileName)
                 jsonCommands.append(remoteCommand)
             }
-            remoteCommand.config = cachedConfig(for: urlString.fileName)
+            if let cached = cachedConfig(for: urlString.fileName) {
+                remoteCommand.config = cached
+            }
             remove(jsonCommand: urlString.fileName)
             update(command: &remoteCommand, url: url, file: urlString.fileName)
             refresh(remoteCommand, url: url, file: urlString.fileName)
