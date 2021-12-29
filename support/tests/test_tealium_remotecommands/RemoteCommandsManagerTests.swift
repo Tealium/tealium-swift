@@ -163,6 +163,17 @@ class RemoteCommandsManagerTests: XCTestCase {
         XCTAssertEqual(1, mockDiskStorage.saveCount)
     }
     
+    func testAddRemoteCommandDoesntDeleteConfig() {
+        let fileName = "testName"
+        let command = RemoteCommand(commandId: "id", description: nil, type: .remote(url: "https://testName.com")) { response in
+
+        }
+        command.config = RemoteCommandConfig(config: ["fileName": fileName], mappings: [:], apiCommands: [:], commandName: fileName, commandURL: nil)
+        XCTAssertNotNil(command.config)
+        tealiumRemoteCommandsManager.add(command)
+        XCTAssertNotNil(command.config)
+    }
+    
     func testAddCommandsWithSameIdDoesNothing() {
         let currentJSONCommandCount = tealiumRemoteCommandsManager.jsonCommands.count
         let webviewCommandId = tealiumRemoteCommandsManager.webviewCommands.first!.commandId
