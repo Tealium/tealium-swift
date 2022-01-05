@@ -362,11 +362,12 @@ class MockUnarchiverConsent: Unarchivable {
     func setClass(_ cls: AnyClass?, forClassName codedName: String) {
         setClassCount += 1
     }
-
-    static func unarchiveTopLevelObjectWithData(_ data: Data) throws -> Any? {
-        unarchiveCount += 1
+    
+    func decodeObject(of classes: [AnyClass]?, forKey key: String) -> Any? {
+        MockUnarchiverConsent.unarchiveCount += 1
         return MockConsentConfiguration()
     }
+    
 }
 
 class MockUnarchiverConsentNoData: Unarchivable {
@@ -374,7 +375,7 @@ class MockUnarchiverConsentNoData: Unarchivable {
     func setClass(_ cls: AnyClass?, forClassName codedName: String) {
     }
 
-    static func unarchiveTopLevelObjectWithData(_ data: Data) throws -> Any? {
+    func decodeObject(of classes: [AnyClass]?, forKey key: String) -> Any? {
         nil
     }
 }
