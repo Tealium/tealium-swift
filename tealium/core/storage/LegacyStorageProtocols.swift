@@ -17,7 +17,6 @@ extension UserDefaults: Storable { }
 
 public protocol Unarchivable {
     func setClass(_ cls: AnyClass?, forClassName codedName: String)
-//    static func unarchivedObject(ofClasses classes: [AnyClass], from data: Data) throws -> Any?
     func decodeObject(of classes: [AnyClass]?, forKey key: String) -> Any?
 }
 
