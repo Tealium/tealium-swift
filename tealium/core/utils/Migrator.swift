@@ -89,7 +89,10 @@ public struct Migrator: Migratable {
 
     func unarchive(data: Data) throws -> Any? {
         guard let unarchiver = unarchiver else {
-            if #available(iOSApplicationExtension 11.0, *) {
+            if #available(iOSApplicationExtension 11.0, *),
+                #available(macOSApplicationExtension 10.13, *),
+                #available(tvOSApplicationExtension 11.0, *),
+                #available(watchOSApplicationExtension 4.0, *) {
                 let unarchiver = try NSKeyedUnarchiver(forReadingFrom: data)
                 unarchiver.setClass(LegacyConsentConfiguration.self, forClassName: MigrationKey.TEALConsentConfiguration)
                 unarchiver.requiresSecureCoding = true
