@@ -98,8 +98,8 @@ public struct Migrator: Migratable {
 
     func unarchive(data: Data) throws -> Any? {
         guard let unarchiver = unarchiver else {
-            return try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data)
+            return try NSKeyedUnarchiver.unarchivedObject(ofClasses: [LegacyConsentConfiguration.self], from: data)
         }
-        return try type(of: unarchiver).self.unarchiveTopLevelObjectWithData(data)
+        return try type(of: unarchiver).self.unarchivedObject(ofClasses: [LegacyConsentConfiguration.self], from: data)
     }
 }

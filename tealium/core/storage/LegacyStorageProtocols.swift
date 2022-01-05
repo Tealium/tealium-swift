@@ -17,7 +17,7 @@ extension UserDefaults: Storable { }
 
 public protocol Unarchivable {
     func setClass(_ cls: AnyClass?, forClassName codedName: String)
-    static func unarchiveTopLevelObjectWithData(_ data: Data) throws -> Any?
+    static func unarchivedObject(ofClasses classes: [AnyClass], from data: Data) throws -> Any?
 }
 
 extension NSKeyedUnarchiver: Unarchivable { }
