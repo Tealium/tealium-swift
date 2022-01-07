@@ -52,18 +52,6 @@ class MigratorTests: XCTestCase {
         XCTAssertEqual(mockUserDefaultsConsent.removeCount, 0)
     }
 
-    func testExtractConsentPreferences_unarchiver_setClassMethodRun() {
-        migrator = Migrator(config: config, userDefaults: mockUserDefaultsConsent, unarchiver: mockUnarchiverConsent)
-        _ = migrator.extractConsentPreferences()
-        XCTAssertEqual(mockUnarchiverConsent.setClassCount, 1)
-    }
-
-    func testExtractConsentPreferences_unarchiver_setClassMethodNotRunWithNoData() {
-        migrator = Migrator(config: config, userDefaults: mockUserDefaultsConsentNoData, unarchiver: mockUnarchiverConsent)
-        _ = migrator.extractConsentPreferences()
-        XCTAssertEqual(mockUnarchiverConsent.setClassCount, 0)
-    }
-
     func testExtractConsentPreferences_unarchiver_unarchiveMethodRun() {
         MockUnarchiverConsent.unarchiveCount = 0
         migrator = Migrator(config: config, userDefaults: mockUserDefaultsConsent, unarchiver: mockUnarchiverConsent)

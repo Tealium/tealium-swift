@@ -21,11 +21,30 @@ public protocol Migratable {
     func migratePersistent(dataLayer: DataLayerManagerProtocol)
 }
 
+struct LegacyConsentUnarchiver: ConsentUnarchiver {
+
+    func decodeObject(fromData data: Data) throws -> Any? {
+        if #available(iOS 11.0, *),
+                #available(macOS 10.13, *),
+                #available(tvOS 11.0, *),
+                #available(watchOS 4.0, *) {
+            let unarchiver = try NSKeyedUnarchiver(forReadingFrom: data)
+            unarchiver.setClass(LegacyConsentConfiguration.self, forClassName: MigrationKey.TEALConsentConfiguration)
+            unarchiver.requiresSecureCoding = true
+            let unarchived = unarchiver.decodeObject(of: [LegacyConsentConfiguration.self], forKey: NSKeyedArchiveRootObjectKey)
+            unarchiver.finishDecoding()
+            return unarchived
+        } else {
+            return nil
+        }
+    }
+}
+
 public struct Migrator: Migratable {
 
     var config: TealiumConfig
     var userDefaults: Storable? = UserDefaults.standard
-    var unarchiver: Unarchivable?
+    var unarchiver: ConsentUnarchiver? = LegacyConsentUnarchiver()
     var instance: String {
         "\(config.account).\(config.profile).\(config.environment)"
     }
@@ -89,21 +108,8 @@ public struct Migrator: Migratable {
 
     func unarchive(data: Data) throws -> Any? {
         guard let unarchiver = unarchiver else {
-            if #available(iOSApplicationExtension 11.0, *),
-                #available(macOSApplicationExtension 10.13, *),
-                #available(tvOSApplicationExtension 11.0, *),
-                #available(watchOSApplicationExtension 4.0, *) {
-                let unarchiver = try NSKeyedUnarchiver(forReadingFrom: data)
-                unarchiver.setClass(LegacyConsentConfiguration.self, forClassName: MigrationKey.TEALConsentConfiguration)
-                unarchiver.requiresSecureCoding = true
-                let unarchived = unarchiver.decodeObject(of: [LegacyConsentConfiguration.self], forKey: NSKeyedArchiveRootObjectKey)
-                unarchiver.finishDecoding()
-                return unarchived
-            } else {
                 return nil
-            }
         }
-        unarchiver.setClass(LegacyConsentConfiguration.self, forClassName: MigrationKey.TEALConsentConfiguration)
-        return unarchiver.decodeObject(of: [LegacyConsentConfiguration.self], forKey: NSKeyedArchiveRootObjectKey)
+        return try? unarchiver.decodeObject(fromData: data)
     }
 }
