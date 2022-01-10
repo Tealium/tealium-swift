@@ -6,7 +6,10 @@
 //
 
 import Foundation
+
+#if inapppurchase
 import TealiumCore
+#endif
 
 enum InAppPurchaseConstants {
     static let eventName = "in_app_purchase"
