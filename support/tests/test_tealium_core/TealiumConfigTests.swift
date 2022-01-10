@@ -54,6 +54,21 @@ class TealiumConfigTests: XCTestCase {
 //        XCTAssertIdentical(config.logger as? DummyLogger, dummyLogger) // Only for xcode 12.5+, CICD has older version 
     }
 
+    #if os(macOS)
+    
+    func testFailing1() {
+        XCTAssertTrue(false)
+    }
+    
+    func testFailing2() {
+        XCTAssertTrue(false, "this should be true")
+    }
+    
+    func testFailing3() {
+        XCTAssertNotNil(nil, "This should not be nil")
+    }
+    
+    #endif
 }
 
 class DummyLogger: TealiumLoggerProtocol {
