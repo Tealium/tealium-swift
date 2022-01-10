@@ -244,6 +244,25 @@ class DispatchManager: DispatchManagerProtocol {
         persistentQueue.removeOldDispatches(maxQueueSize, since: sinceDate)
     }
 
+    func triggerRemoteAPIRequest(_ request: TealiumTrackRequest) {
+        guard isRemoteAPIEnabled else {
+            return
+        }
+        let request = TealiumRemoteAPIRequest(trackRequest: request)
+        runDispatchers(for: request)
+    }
+
+    deinit {
+        if let observer = lowPowerNotificationObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
+    }
+
+}
+
+// Queue
+extension DispatchManager {
+
     func enqueue(_ request: TealiumTrackRequest,
                  reason: String?) {
         defer {
@@ -334,24 +353,6 @@ class DispatchManager: DispatchManagerProtocol {
             }
         }
     }
-
-    func triggerRemoteAPIRequest(_ request: TealiumTrackRequest) {
-        guard isRemoteAPIEnabled else {
-            return
-        }
-        let request = TealiumRemoteAPIRequest(trackRequest: request)
-        runDispatchers(for: request)
-    }
-
-    deinit {
-        if let observer = lowPowerNotificationObserver {
-            NotificationCenter.default.removeObserver(observer)
-        }
-    }
-
-}
-
-extension DispatchManager {
 
     func shouldQueue(request: TealiumRequest) -> (Bool, [String: Any]?) {
 

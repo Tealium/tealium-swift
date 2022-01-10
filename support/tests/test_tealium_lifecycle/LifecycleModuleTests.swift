@@ -369,7 +369,7 @@ class LifecycleModuleTests: XCTestCase {
         config.lifecycleAutoTrackingEnabled = false
         lifecycleModule = createModule(with: config, dataLayer: MockMigratedDataLayerNoData())
 
-        lifecycleModule.launch(at: Date())
+        lifecycleModule.lifecycleDetected(type: .launch)
 
         if let request = requestProcess as? TealiumTrackRequest {
             returnData = request.trackDictionary
@@ -397,8 +397,8 @@ class LifecycleModuleTests: XCTestCase {
         config.lifecycleAutoTrackingEnabled = false
         lifecycleModule = createModule(with: config, dataLayer: MockMigratedDataLayerNoData())
 
-        lifecycleModule.launch(at: Date())
-        lifecycleModule.sleep()
+        lifecycleModule.lifecycleDetected(type: .launch)
+        lifecycleModule.lifecycleDetected(type: .sleep)
 
         if let request = requestProcess as? TealiumTrackRequest {
             returnData = request.trackDictionary
@@ -426,9 +426,9 @@ class LifecycleModuleTests: XCTestCase {
         config.lifecycleAutoTrackingEnabled = false
         lifecycleModule = createModule(with: config, dataLayer: MockMigratedDataLayerNoData())
 
-        lifecycleModule.launch(at: Date())
-        lifecycleModule.sleep()
-        lifecycleModule.wake()
+        lifecycleModule.lifecycleDetected(type: .launch)
+        lifecycleModule.lifecycleDetected(type: .sleep)
+        lifecycleModule.lifecycleDetected(type: .wake)
 
         if let request = requestProcess as? TealiumTrackRequest {
             returnData = request.trackDictionary
@@ -456,14 +456,14 @@ class LifecycleModuleTests: XCTestCase {
         autotrackedRequest = expectation(description: "testAutotrackedTrue")
         lifecycleModule = createModule(with: config, dataLayer: MockMigratedDataLayerNoData())
 
-        Tealium.lifecycleListeners.launchSubject.asObservable().subscribeOnce { [unowned self] launchDate in
-            self.launch(at: launchDate)
-        }
-        Tealium.lifecycleListeners.wakeSubject.asObservable().subscribe { [unowned self] in
-            self.wake()
-        }.toDisposeBag(lifecycleDisposeBag)
-        Tealium.lifecycleListeners.sleepSubject.asObservable().subscribe { [unowned self] in
-            self.sleep()
+        self.launch(at: Tealium.lifecycleListeners.launchDate)
+        Tealium.lifecycleListeners.onBackgroundStateChange.subscribe { state in
+            switch state {
+            case .sleep:
+                self.sleep()
+            case .wake:
+                self.wake()
+            }
         }.toDisposeBag(lifecycleDisposeBag)
 
         lifecycleModule.lifecycleDetected(type: .launch)
