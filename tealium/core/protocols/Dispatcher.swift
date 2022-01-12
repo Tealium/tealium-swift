@@ -8,8 +8,7 @@
 import Foundation
 
 public protocol Dispatcher: TealiumModule {
-
-    init(config: TealiumConfig,
+    init(context: TealiumContext,
          delegate: ModuleDelegate,
          completion: ModuleCompletion?)
 

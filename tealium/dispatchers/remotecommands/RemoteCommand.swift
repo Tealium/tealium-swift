@@ -15,6 +15,13 @@ import TealiumCore
 /// and called on-demand by the Tag Management module
 open class RemoteCommand: RemoteCommandProtocol {
 
+    open var version: String? {
+        versionForObject(self)
+    }
+    open var name: String? {
+        commandId
+    }
+
     public let commandId: String
     weak public var delegate: RemoteCommandDelegate?
     public var description: String?

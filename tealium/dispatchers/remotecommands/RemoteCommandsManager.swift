@@ -14,8 +14,20 @@ import TealiumCore
 public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
 
     weak var queue = TealiumQueues.backgroundSerialQueue
-    public var jsonCommands = [RemoteCommandProtocol]()
-    public var webviewCommands = [RemoteCommandProtocol]()
+
+    @ToAnyObservable(TealiumReplaySubject<[RemoteCommandProtocol]>())
+    public var onCommandsChanged: TealiumObservable
+
+    public var jsonCommands = [RemoteCommandProtocol]() {
+        didSet {
+            _onCommandsChanged.publish(jsonCommands + webviewCommands)
+        }
+    }
+    public var webviewCommands = [RemoteCommandProtocol]() {
+        didSet {
+            _onCommandsChanged.publish(jsonCommands + webviewCommands)
+        }
+    }
     weak public var moduleDelegate: ModuleDelegate?
     static var pendingResponses = Atomic<[String: Bool]>(value: [String: Bool]())
     public var urlSession: URLSessionProtocol

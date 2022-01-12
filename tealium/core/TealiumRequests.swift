@@ -22,20 +22,6 @@ public protocol TealiumRequest {
     static func instanceTypeId() -> String
 }
 
-// MARK: Update Config Request
-public struct TealiumUpdateConfigRequest: TealiumRequest {
-    public var typeId = TealiumUpdateConfigRequest.instanceTypeId()
-    public let config: TealiumConfig
-
-    public init(config: TealiumConfig) {
-        self.config = config
-    }
-
-    public static func instanceTypeId() -> String {
-        return "updateconfig"
-    }
-}
-
 // MARK: Enqueue Request
 /// Request to queue a track call
 public struct TealiumEnqueueRequest: TealiumRequest {

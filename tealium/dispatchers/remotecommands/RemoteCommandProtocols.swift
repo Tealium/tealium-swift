@@ -12,6 +12,7 @@ import TealiumCore
 #endif
 
 public protocol RemoteCommandsManagerProtocol {
+    var onCommandsChanged: TealiumObservable<[RemoteCommandProtocol]> { get }
     var jsonCommands: [RemoteCommandProtocol] { get set }
     var webviewCommands: [RemoteCommandProtocol] { get set }
     var moduleDelegate: ModuleDelegate? { get set }
@@ -39,6 +40,43 @@ public protocol RemoteCommandProtocol {
     static func sendRemoteCommandResponse(for commandId: String,
                                           response: RemoteCommandResponseProtocol,
                                           delegate: ModuleDelegate?)
+
+    var name: String { get }
+    var version: String? { get }
+}
+
+public extension RemoteCommandProtocol {
+
+    internal var nameAndVersion: String {
+        var suffix = ""
+        if let version = self.version {
+            suffix += "-\(version)"
+        }
+        return self.name + suffix
+    }
+
+    var name: String {
+        return commandId
+    }
+
+    var version: String? {
+        versionForObject(self)
+    }
+}
+
+func versionForObject(_ obj: Any) -> String? {
+    guard let aClass = Swift.type(of: obj) as? AnyClass else {
+        return nil
+    }
+    return versionString(bundle: Bundle(for: aClass))
+}
+
+func versionString(bundle: Bundle) -> String? {
+    guard let dictionary = bundle.infoDictionary,
+          let version = dictionary["CFBundleShortVersionString"] as? String else {
+        return nil
+    }
+    return "\(version)"
 }
 
 public protocol RemoteCommandResponseProtocol {

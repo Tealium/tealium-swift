@@ -15,6 +15,7 @@ import TealiumCore
 public class TagManagementModule: Dispatcher {
 
     public let id: String = ModuleNames.tagmanagement
+    public var context: TealiumContext
     public var config: TealiumConfig
     var errorState = AtomicInteger(value: 0)
     var pendingTrackRequests = [(TealiumRequest, ModuleCompletion?)]()
@@ -24,13 +25,13 @@ public class TagManagementModule: Dispatcher {
 
     /// Provided for unit testing￼.
     ///
-    /// - Parameter config: `TealiumConfig` instance
+    /// - Parameter context: `TealiumContext` instance
     /// - Parameter delegate: `ModuleDelegate` instance
     /// - Parameter tagManagement: Class instance conforming to `TealiumTagManagementProtocol`
-    convenience init(config: TealiumConfig,
+    convenience init(context: TealiumContext,
                      delegate: ModuleDelegate,
                      tagManagement: TagManagementProtocol) {
-        self.init(config: config, delegate: delegate) { _ in
+        self.init(context: context, delegate: delegate) { _ in
         }
         self.tagManagement = tagManagement
     }
@@ -40,10 +41,11 @@ public class TagManagementModule: Dispatcher {
     /// - Parameter config: `TealiumConfig` instance
     /// - Parameter delegate: `ModuleDelegate` instance
     /// - Parameter completion: `ModuleCompletion?` block to be called when init is finished
-    public required init(config: TealiumConfig,
+    public required init(context: TealiumContext,
                          delegate: ModuleDelegate,
                          completion: ModuleCompletion?) {
-        self.config = config
+        self.config = context.config
+        self.context = context
         self.delegate = delegate
         self.tagManagement = tagManagement ?? TagManagementWKWebView(config: config, delegate: delegate)
         self.tagManagement?.enable(webviewURL: config.webviewURL,

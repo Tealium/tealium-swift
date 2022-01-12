@@ -18,47 +18,35 @@ public class RemoteCommandsModule: Dispatcher {
     public var isReady: Bool = false
     public var remoteCommands: RemoteCommandsManagerProtocol
     var reservedCommandsAdded = false
+    let disposeBag = TealiumDisposeBag()
 
     /// Provided for unit testing￼.
     ///
     /// - Parameter remoteCommands: Class instance conforming to `RemoteCommandsManagerProtocol`
-    convenience init (config: TealiumConfig,
+    convenience init (context: TealiumContext,
                       delegate: ModuleDelegate,
                       remoteCommands: RemoteCommandsManagerProtocol? = nil) {
-        self.init(config: config, delegate: delegate) { _ in }
+        self.init(context: context, delegate: delegate) { _ in }
         self.remoteCommands = remoteCommands ?? self.remoteCommands
     }
 
     /// Initializes the module
     ///
-    /// - Parameter config: `TealiumConfig` instance
+    /// - Parameter context: `TealiumContext` instance
     /// - Parameter delegate: `ModuleDelegate` instance
     /// - Parameter completion: `ModuleCompletion` block to be called when init is finished
-    public required init(config: TealiumConfig, delegate: ModuleDelegate, completion: ModuleCompletion?) {
-        self.config = config
+    public required init(context: TealiumContext, delegate: ModuleDelegate, completion: ModuleCompletion?) {
+        self.config = context.config
         remoteCommands = RemoteCommandsManager(config: config, delegate: delegate)
         updateReservedCommands(config: config)
         addCommands(from: config)
+        remoteCommands.onCommandsChanged.subscribe { commands in
+            let data = [TealiumDataKey.remoteCommands: commands.map { $0.nameAndVersion }]
+            context.dataLayer?.add(data: data,
+                                   expiry: Expiry.untilRestart)
+        }.toDisposeBag(disposeBag)
     }
 
-    public func updateConfig(_ request: TealiumUpdateConfigRequest) {
-        let newConfig = request.config.copy
-        if newConfig != self.config {
-            self.config = newConfig
-            let existingWebViewCommands = self.remoteCommands.webviewCommands
-            let existingJSONCommands = self.remoteCommands.jsonCommands
-            if let newWebViewCommands = newConfig.remoteCommands, newWebViewCommands.count > 0 {
-                existingWebViewCommands.forEach {
-                    newConfig.addRemoteCommand($0)
-                }
-            }
-            if let newJSONCommands = newConfig.remoteCommands, newJSONCommands.count > 0 {
-                existingJSONCommands.forEach {
-                    newConfig.addRemoteCommand($0)
-                }
-            }
-        }
-    }
     /// Allows Remote Commands to be added from the TealiumConfig object.
     /// ￼
     /// - Parameter config: `TealiumConfig` object containing Remote Commands
