@@ -122,6 +122,10 @@ public class Tealium {
         #if os(iOS)
         TealiumDelegateProxy.removeContext(self.context)
         #endif
+        let disposeBag = self.disposeBag
+        TealiumQueues.secureMainThreadExecution { // disposeBag needs to be used from main thread
+            disposeBag.dispose() // avoid capturing self in deinit
+        }
     }
 
 }
