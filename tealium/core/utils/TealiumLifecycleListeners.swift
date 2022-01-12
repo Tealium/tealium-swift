@@ -13,63 +13,32 @@ import UIKit
 
 public class TealiumLifecycleListeners {
 
-    var listeningDelegates = TealiumMulticastDelegate<TealiumLifecycleEvents>()
-    var hasLaunched = false
-    var launchDate: Date?
+    @frozen
+    public enum BackgroundState {
+        case wake(date: Date)
+        case sleep(date: Date)
+    }
+
+    public var launchDate = Date()
+
+    @ToAnyObservable(TealiumReplaySubject<BackgroundState>(cacheSize: 10))
+    public var onBackgroundStateChange: TealiumObservable<BackgroundState>
+
     var wakeNotificationObserver: NSObjectProtocol?
     var sleepNotificationObserser: NSObjectProtocol?
 
     public init() {
         addListeners()
-        launch()
-    }
-
-    /// Adds delegate to be notified of new events￼.
-    ///
-    /// - Parameter delegate:`TealiumLifecycleEvents` delegate
-    public func addDelegate(delegate: TealiumLifecycleEvents) {
-        listeningDelegates.add(delegate)
-        if hasLaunched, let launchDate = launchDate {
-            delegate.launch(at: launchDate)
-        }
-    }
-
-    /// Removes a previously-added delegate￼.
-    ///
-    /// - Parameter delegate: `TealiumLifecycleEvents` delegate
-    public func removeDelegate(delegate: TealiumLifecycleEvents) {
-        listeningDelegates.remove(delegate)
-    }
-
-    /// Removes all listening delegates
-    public func removeAll() {
-        listeningDelegates.removeAll()
-    }
-
-    /// Notifies listeners of a launch event.
-    public func launch() {
-        hasLaunched = true
-        launchDate = Date()
-        guard let launchDate = launchDate else {
-            return
-        }
-        listeningDelegates.invoke {
-            $0.launch(at: launchDate)
-        }
     }
 
     /// Notifies listeners of a sleep event.
     public func sleep() {
-        listeningDelegates.invoke {
-            $0.sleep()
-        }
+        _onBackgroundStateChange.publish(.sleep(date: Date()))
     }
 
     /// Notifies listeners of a wake event.
     public func wake() {
-        listeningDelegates.invoke {
-            $0.wake()
-        }
+        _onBackgroundStateChange.publish(.wake(date: Date()))
     }
 
     /// Sets up notification listeners to trigger events in listening delegates.

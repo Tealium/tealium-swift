@@ -18,6 +18,7 @@ public class MediaModule: Collector {
     public var data: [String: Any]?
     weak var delegate: ModuleDelegate?
     var activeSessions = [MediaSession]()
+    private var disposeBag = TealiumDisposeBag()
 
     public required init(context: TealiumContext,
                          delegate: ModuleDelegate?,
@@ -26,7 +27,17 @@ public class MediaModule: Collector {
         self.config = context.config
         self.delegate = delegate
         #if !os(tvOS) && !os(macOS)
-        Tealium.lifecycleListeners.addDelegate(delegate: self)
+        Tealium.lifecycleListeners.onBackgroundStateChange.subscribe { [weak self] state in
+            guard let self = self else {
+                return
+            }
+            switch state {
+            case .wake:
+                self.wake()
+            case .sleep:
+                self.sleep()
+            }
+        }.toDisposeBag(self.disposeBag)
         #endif
     }
 
@@ -41,7 +52,7 @@ public class MediaModule: Collector {
 
 }
 #if !os(tvOS) && !os(macOS)
-extension MediaModule: TealiumLifecycleEvents {
+extension MediaModule {
 
     #if os(iOS)
     class var sharedApplication: UIApplication? {
@@ -100,7 +111,6 @@ extension MediaModule: TealiumLifecycleEvents {
             session.backgroundStatusResumed = true
         }
     }
-    public func launch(at date: Date) { }
 
     func sendEndSessionInBackground(_ session: MediaSession) {
         if !session.backgroundStatusResumed {

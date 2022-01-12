@@ -140,7 +140,6 @@ class TealiumHelper {
             remoteCommands.add(display)
             #endif
         }
-
     }
 
     func resetConsentPreferences() {
