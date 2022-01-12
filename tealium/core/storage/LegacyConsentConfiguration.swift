@@ -28,7 +28,7 @@ public class LegacyConsentConfiguration: NSObject, NSSecureCoding, ConsentConfig
     required public init?(coder: NSCoder) {
         self.consentStatus = coder.decodeInteger(forKey: MigrationKey.consentStatus)
         self.enableConsentLogging = coder.decodeBool(forKey: MigrationKey.consentLogging)
-        guard let categoriesArray = coder.decodeObject(of: NSArray.self, forKey: MigrationKey.consentCategories),
+        guard let categoriesArray = coder.decodeObject(of: [NSArray.self, NSString.self], forKey: MigrationKey.consentCategories),
               let categories = categoriesArray as? [String] else {
             self.consentCategories = TealiumConsentCategories.all.map { $0.rawValue }
             return
