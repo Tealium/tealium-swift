@@ -354,27 +354,19 @@ class MockLegacyUserDefaultsNoData: Storable {
     }
 }
 
-class MockUnarchiverConsent: Unarchivable {
-
-    var setClassCount = 0
+class MockUnarchiverConsent: ConsentUnarchiver {
     static var unarchiveCount = 0
-
-    func setClass(_ cls: AnyClass?, forClassName codedName: String) {
-        setClassCount += 1
-    }
-
-    static func unarchiveTopLevelObjectWithData(_ data: Data) throws -> Any? {
-        unarchiveCount += 1
+    
+    func decodeObject(fromData data: Data) throws -> Any? {
+        MockUnarchiverConsent.unarchiveCount += 1
         return MockConsentConfiguration()
     }
+    
 }
 
-class MockUnarchiverConsentNoData: Unarchivable {
+class MockUnarchiverConsentNoData: ConsentUnarchiver {
 
-    func setClass(_ cls: AnyClass?, forClassName codedName: String) {
-    }
-
-    static func unarchiveTopLevelObjectWithData(_ data: Data) throws -> Any? {
+    func decodeObject(fromData data: Data) throws -> Any? {
         nil
     }
 }

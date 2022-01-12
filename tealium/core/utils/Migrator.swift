@@ -21,11 +21,27 @@ public protocol Migratable {
     func migratePersistent(dataLayer: DataLayerManagerProtocol)
 }
 
+struct LegacyConsentUnarchiver: ConsentUnarchiver {
+
+    func decodeObject(fromData data: Data) throws -> Any? {
+        if #available(iOS 11.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *) {
+            let unarchiver = try NSKeyedUnarchiver(forReadingFrom: data)
+            unarchiver.setClass(LegacyConsentConfiguration.self, forClassName: MigrationKey.TEALConsentConfiguration)
+            unarchiver.requiresSecureCoding = true
+            let unarchived = unarchiver.decodeObject(of: [LegacyConsentConfiguration.self], forKey: NSKeyedArchiveRootObjectKey)
+            unarchiver.finishDecoding()
+            return unarchived
+        } else {
+            return nil
+        }
+    }
+}
+
 public struct Migrator: Migratable {
 
     var config: TealiumConfig
     var userDefaults: Storable? = UserDefaults.standard
-    var unarchiver: Unarchivable?
+    var unarchiver: ConsentUnarchiver? = LegacyConsentUnarchiver()
     var instance: String {
         "\(config.account).\(config.profile).\(config.environment)"
     }
@@ -34,7 +50,6 @@ public struct Migrator: Migratable {
         guard let consentConfiguration = retrieve(for: MigrationKey.consentConfiguration) as? Data else {
             return [String: Any]()
         }
-        set(type: LegacyConsentConfiguration.self, class: MigrationKey.TEALConsentConfiguration)
         guard let unarchivedConsentConfiguration = try? unarchive(data: consentConfiguration) as? ConsentConfigurable else {
             return [String: Any]()
         }
@@ -88,18 +103,10 @@ public struct Migrator: Migratable {
         userDefaults?.object(forKey: key)
     }
 
-    func set(type: AnyClass, class name: String) {
-        guard let unarchiver = unarchiver else {
-            NSKeyedUnarchiver.setClass(type, forClassName: name)
-            return
-        }
-        unarchiver.setClass(type, forClassName: name)
-    }
-
     func unarchive(data: Data) throws -> Any? {
         guard let unarchiver = unarchiver else {
-            return try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data)
+                return nil
         }
-        return try type(of: unarchiver).self.unarchiveTopLevelObjectWithData(data)
+        return try? unarchiver.decodeObject(fromData: data)
     }
 }
