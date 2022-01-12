@@ -67,7 +67,7 @@ public extension TealiumConfig {
     }
 }
 
-extension DispatchManager: TealiumLifecycleEvents {
+extension DispatchManager {
 
     #if os(iOS)
     class var sharedApplication: UIApplication? {

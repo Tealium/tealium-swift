@@ -30,6 +30,7 @@ public class LifecycleModule: Collector {
     var userDefaults: Storable?
     public var config: TealiumConfig
     var migrated = false
+    private var lifecycleDisposeBag = TealiumDisposeBag()
 
     public var data: [String: Any]? {
         lifecycle?.asDictionary(type: nil, for: Date())
@@ -59,8 +60,18 @@ public class LifecycleModule: Collector {
         migrated = true
         enabledPrior = false
         if config.lifecycleAutoTrackingEnabled {
-            Tealium.lifecycleListeners.addDelegate(delegate: self)
-            process(type: .launch, at: Date(), autotracked: true)
+            lifecycleDetected(type: .launch, at: Tealium.lifecycleListeners.launchDate)
+            Tealium.lifecycleListeners.onBackgroundStateChange.subscribe { [weak self] state in
+                guard let self = self else {
+                    return
+                }
+                switch state {
+                case .wake(let date):
+                    self.lifecycleDetected(type: .wake, at: date)
+                case .sleep(let date):
+                    self.lifecycleDetected(type: .sleep, at: date)
+                }
+            }.toDisposeBag(self.lifecycleDisposeBag)
         }
         completion((.success(true), nil))
     }
@@ -139,8 +150,8 @@ public class LifecycleModule: Collector {
     /// - Parameters:
     ///   - type: `LifecycleType` launch, sleep, wake
     ///   - date: `Date` of lifecycle event
-    public func lifecycleDetected(type: LifecycleType,
-                                  at date: Date = Date()) {
+    func lifecycleDetected(type: LifecycleType,
+                           at date: Date = Date()) {
         guard lifecycleAcceptable(type: type) else {
             return
         }
@@ -151,29 +162,11 @@ public class LifecycleModule: Collector {
     /// Sends a track request to the module delegate.
     ///
     /// - Parameter data: `[String: Any]` containing the lifecycle data to track
-    public func requestTrack(data: [String: Any]) {
+    func requestTrack(data: [String: Any]) {
         guard let title = data[TealiumDataKey.lifecycleType] as? String else {
             return
         }
         let dispatch = TealiumEvent(title, dataLayer: data)
         delegate?.requestTrack(dispatch.trackRequest)
-    }
-
-    deinit {
-        Tealium.lifecycleListeners.removeAll()
-    }
-}
-
-extension LifecycleModule: TealiumLifecycleEvents {
-    public func sleep() {
-        lifecycleDetected(type: .sleep)
-    }
-
-    public func wake() {
-        lifecycleDetected(type: .wake)
-    }
-
-    public func launch(at date: Date) {
-        lifecycleDetected(type: .launch, at: date)
     }
 }

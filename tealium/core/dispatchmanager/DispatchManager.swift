@@ -40,6 +40,7 @@ class DispatchManager: DispatchManagerProtocol {
     var diskStorage: TealiumDiskStorageProtocol!
     var config: TealiumConfig
     var connectivityManager: ConnectivityModule
+    private var disposeBag = TealiumDisposeBag()
 
     var shouldDequeue: Bool {
         if let dispatchers = dispatchers, !dispatchers.isEmpty {
@@ -127,7 +128,18 @@ class DispatchManager: DispatchManagerProtocol {
         persistentQueue = TealiumPersistentDispatchQueue(diskStorage: self.diskStorage)
         removeOldDispatches()
         if config.lifecycleAutoTrackingEnabled {
-            Tealium.lifecycleListeners.addDelegate(delegate: self)
+            self.launch(at: Tealium.lifecycleListeners.launchDate)
+            Tealium.lifecycleListeners.onBackgroundStateChange.subscribe { [weak self] state in
+                guard let self = self else {
+                    return
+                }
+                switch state {
+                case .wake:
+                    self.wake()
+                case .sleep:
+                    self.sleep()
+                }
+            }.toDisposeBag(self.disposeBag)
         }
         registerForPowerNotifications()
     }
@@ -232,6 +244,25 @@ class DispatchManager: DispatchManagerProtocol {
         persistentQueue.removeOldDispatches(maxQueueSize, since: sinceDate)
     }
 
+    func triggerRemoteAPIRequest(_ request: TealiumTrackRequest) {
+        guard isRemoteAPIEnabled else {
+            return
+        }
+        let request = TealiumRemoteAPIRequest(trackRequest: request)
+        runDispatchers(for: request)
+    }
+
+    deinit {
+        if let observer = lowPowerNotificationObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
+    }
+
+}
+
+// Queue
+extension DispatchManager {
+
     func enqueue(_ request: TealiumTrackRequest,
                  reason: String?) {
         defer {
@@ -322,24 +353,6 @@ class DispatchManager: DispatchManagerProtocol {
             }
         }
     }
-
-    func triggerRemoteAPIRequest(_ request: TealiumTrackRequest) {
-        guard isRemoteAPIEnabled else {
-            return
-        }
-        let request = TealiumRemoteAPIRequest(trackRequest: request)
-        runDispatchers(for: request)
-    }
-
-    deinit {
-        if let observer = lowPowerNotificationObserver {
-            NotificationCenter.default.removeObserver(observer)
-        }
-    }
-
-}
-
-extension DispatchManager {
 
     func shouldQueue(request: TealiumRequest) -> (Bool, [String: Any]?) {
 
