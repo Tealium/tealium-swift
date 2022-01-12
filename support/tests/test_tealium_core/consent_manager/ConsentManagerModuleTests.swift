@@ -35,23 +35,6 @@ class ConsentManagerModuleTests: XCTestCase {
         XCTAssertNil(teal.consentManager)
     }
 
-    func testUpdateConfig() {
-        var newConfig = TealiumConfig(account: "testAccount", profile: "testProfile", environment: "testEnvironment")
-        newConfig.consentPolicy = nil
-        var updateRequest = TealiumUpdateConfigRequest(config: newConfig)
-        let module = createModule(with: config)
-        module.updateConfig(updateRequest)
-        XCTAssertNil(module.consentManager)
-        let expect = expectation(description: "consent mgr init")
-        newConfig = TealiumConfig(account: "testAccount2", profile: "testProfile2", environment: "testEnvironment")
-        newConfig.consentPolicy = .gdpr
-        updateRequest = TealiumUpdateConfigRequest(config: newConfig)
-        module.updateConfig(updateRequest)
-        expect.fulfill()
-        XCTAssertNotNil(module.consentManager)
-        wait(for: [expect], timeout: 2.0)
-    }
-
     func testShouldQueueIsBatchTrackRequest() {
         track = TealiumTrackRequest(data: ["test": "track"])
         let batchTrack = TealiumBatchTrackRequest(trackRequests: [track, track, track])

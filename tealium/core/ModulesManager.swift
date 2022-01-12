@@ -89,7 +89,8 @@ public class ModulesManager {
             self.dispatchManager?.config = newValue
             self.connectivityManager.config = newValue
             self.logger?.config = newValue
-            self.updateConfig(config: newValue)
+            self.context.config = newValue
+            self.updateConfig(context: self.context)
             self.modules.forEach {
                 var module = $0
                 module.config = newValue
@@ -116,7 +117,7 @@ public class ModulesManager {
             }
         }
         self.logger = self.config.logger
-        self.setupDispatchers(config: self.config)
+        self.setupDispatchers(context: context)
         self.setupHostedDataLayer(config: self.config)
         self.setupConsentManagerModule(config: self.config)
         self.setupTimedEventScheduler()
@@ -139,7 +140,8 @@ public class ModulesManager {
         }
     }
 
-    func updateConfig(config: TealiumConfig) {
+    func updateConfig(context: TealiumContext) {
+        let config = context.config
         if config.isCollectEnabled == false {
             disableModule(id: ModuleNames.collect)
         }
@@ -148,7 +150,7 @@ public class ModulesManager {
             disableModule(id: ModuleNames.tagmanagement)
         }
 
-        self.setupDispatchers(config: config)
+        self.setupDispatchers(context: context)
     }
 
     func addDispatchListener(_ listener: DispatchListener) {
@@ -310,8 +312,9 @@ extension ModulesManager {
         dispatchers.append(dispatcher)
     }
 
-    func setupDispatchers(config: TealiumConfig) {
+    func setupDispatchers(context: TealiumContext) {
         self.config.dispatchers?.forEach { dispatcherType in
+            let config = context.config
             let dispatcherTypeDescription = String(describing: dispatcherType)
 
             if dispatcherTypeDescription.contains(ModuleNames.tagmanagement) {
@@ -326,7 +329,7 @@ extension ModulesManager {
                 return
             }
 
-            let dispatcher = dispatcherType.init(config: config, delegate: self) { result, _ in
+            let dispatcher = dispatcherType.init(context: context, delegate: self) { result, _ in
                 switch result {
                 case .failure:
                     print("log error")

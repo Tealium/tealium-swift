@@ -25,6 +25,9 @@ public extension Dispatchers {
     static let RemoteCommands = RemoteCommandsModule.self
 }
 
+extension TealiumDataKey {
+    static let remoteCommands = "remote_commands"
+}
 extension TealiumConfigKey {
     static let disable = "disable_remote_commands"
     static let disableHTTP = "disable_remote_command_http"

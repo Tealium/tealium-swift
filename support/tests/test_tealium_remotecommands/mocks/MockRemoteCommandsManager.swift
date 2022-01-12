@@ -10,6 +10,9 @@ import Foundation
 @testable import TealiumRemoteCommands
 
 class MockRemoteCommandsManager: RemoteCommandsManagerProtocol {
+    @ToAnyObservable(TealiumPublisher())
+    var onCommandsChanged: TealiumObservable<[RemoteCommandProtocol]>
+    
     var urlSession: URLSessionProtocol = URLSession(configuration: .ephemeral)
     var jsonCommands = [RemoteCommandProtocol]()
     var mockJSONCommand = MockJSONRemoteCommand()

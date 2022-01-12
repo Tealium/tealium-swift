@@ -23,11 +23,11 @@ public class CollectModule: Dispatcher {
     /// - Parameter config: `TealiumConfig` instance
     /// - Parameter delegate: `ModuleDelegate` instance
     /// - Parameter completion: `ModuleCompletion?` block to be called when init is finished
-    public required init(config: TealiumConfig,
+    public required init(context: TealiumContext,
                          delegate: ModuleDelegate,
                          completion: ModuleCompletion?) {
 
-        self.config = config
+        self.config = context.config
         self.delegate = delegate
         collect = CollectEventDispatcher(config: config, completion: nil)
         completion?((.success(true), nil))

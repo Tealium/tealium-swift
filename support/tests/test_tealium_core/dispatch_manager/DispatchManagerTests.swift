@@ -93,7 +93,8 @@ class DispatchQueueModuleTests: XCTestCase {
         dispatchManager = DispatchManager(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: DispatchQueueModuleTests.connectivity, config: config, diskStorage: DispatchQueueMockDiskStorage())
         DispatchQueueModuleTests.remoteAPIExpectation = self.expectation(description: "remote api")
 
-        let dispatcher = DispatchQueueDummyDispatcher(config: config, delegate: self, completion: nil)
+        let context = TestTealiumHelper.context(with: config)
+        let dispatcher = DispatchQueueDummyDispatcher(context: context, delegate: self, completion: nil)
         dispatchManager.dispatchers = [dispatcher]
 
         let trackRequest = TealiumTrackRequest(data: ["tealium_event": "myevent"])
@@ -214,8 +215,8 @@ extension DispatchQueueModuleTests: ModuleDelegate {
 class DispatchQueueDummyDispatcher: Dispatcher {
     var isReady: Bool = true
 
-    required init(config: TealiumConfig, delegate: ModuleDelegate, completion: ModuleCompletion?) {
-        self.config = config
+    required init(context: TealiumContext, delegate: ModuleDelegate, completion: ModuleCompletion?) {
+        self.config = context.config
     }
 
     func dynamicTrack(_ request: TealiumRequest, completion: ModuleCompletion?) {
