@@ -4,11 +4,67 @@
 //
 //  Copyright © 2020 Tealium. All rights reserved.
 //
+import Combine
 import SwiftUI
+import StoreKit
 import AppTrackingTransparency
 import TealiumAutotracking
 
+class IAPHelper: NSObject, ObservableObject, SKProductsRequestDelegate, SKPaymentTransactionObserver {
+    static let shared = IAPHelper()
+
+    override init() {
+        super.init()
+        SKPaymentQueue.default().add(self)
+        requestProduct()
+    }
+    
+    func requestProduct() {
+         let request = SKProductsRequest(productIdentifiers: ["com.tealium.iOSTealiumTestApp.product1"])
+         request.delegate = self
+         request.start()
+    }
+
+    var product: SKProduct? {
+        willSet {
+          DispatchQueue.main.async {
+            self.objectWillChange.send()
+          }
+        }
+      }
+    // Create the SKProductsRequestDelegate protocol method
+    // to receive the array of products.
+    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+        if !response.products.isEmpty {
+            product = response.products.first!
+        }
+    }
+    
+    func buyProduct() {
+        let payment = SKPayment(product: product!)
+        SKPaymentQueue.default().add(payment)
+    }
+    
+    public func paymentQueue(_ queue: SKPaymentQueue,
+                               updatedTransactions transactions: [SKPaymentTransaction]) {
+        for transaction in transactions {
+          switch transaction.transactionState {
+          case .purchased:
+            complete(transaction: transaction)
+            break
+          default:
+              break
+          }
+        }
+      }
+     
+      private func complete(transaction: SKPaymentTransaction) {
+        SKPaymentQueue.default().finishTransaction(transaction)
+      }
+}
+
 struct ContentView: View {
+    @ObservedObject var iapHelper = IAPHelper.shared
     @State private var traceId: String = ""
     @State private var showAlert = false
     let name = "Main Screen"
@@ -75,6 +131,14 @@ struct ContentView: View {
                             }
                         }
                     }
+                    Group {
+                        if let product = iapHelper.product {
+                            TealiumTextButton(title: "Purchase \(product.localizedTitle)") {
+                                iapHelper.buyProduct()
+                            }
+                        }
+                    }
+                    Spacer()
                 }
                 .navigationTitle("iOSTealiumTest")
                 .navigationBarTitleDisplayMode(.inline)
