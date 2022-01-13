@@ -1503,21 +1503,3 @@ class TealiumMediaTests: XCTestCase {
     }
 
 }
-
-class MockModuleDelegate: ModuleDelegate {
-    
-    var mediaData: [String: Any]?
-    var asyncExpectation: XCTestExpectation?
-    
-    func requestTrack(_ track: TealiumTrackRequest) {
-        guard let expectation = asyncExpectation else {
-            XCTFail("MockModuleDelegate was not setup correctly. Missing XCTestExpectation reference")
-            return
-        }
-        mediaData = track.trackDictionary
-        expectation.fulfill()
-    }
-    
-    func requestDequeue(reason: String) {}
-    func processRemoteCommandRequest(_ request: TealiumRequest) {}
-}
