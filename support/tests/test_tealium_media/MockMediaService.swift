@@ -9,6 +9,7 @@
 import Foundation
 import TealiumCore
 import TealiumMedia
+import XCTest
 
 class MockMediaService: MediaEventDispatcher {
     var delegate: ModuleDelegate?
@@ -80,6 +81,8 @@ class MockMediaService: MediaEventDispatcher {
         case .custom(let name):
             customEvent.count += 1
             customEvent.name = name
+        @unknown default:
+            break
         }
     }
     
@@ -99,6 +102,22 @@ class MockRepeatingTimer: Repeater {
     func suspend() {
         suspendCount += 1
     }
+}
+
+class MockModuleDelegate: ModuleDelegate {
     
+    var mediaData: [String: Any]?
+    var asyncExpectation: XCTestExpectation?
     
+    func requestTrack(_ track: TealiumTrackRequest) {
+        guard let expectation = asyncExpectation else {
+            XCTFail("MockModuleDelegate was not setup correctly. Missing XCTestExpectation reference")
+            return
+        }
+        mediaData = track.trackDictionary
+        expectation.fulfill()
+    }
+    
+    func requestDequeue(reason: String) {}
+    func processRemoteCommandRequest(_ request: TealiumRequest) {}
 }

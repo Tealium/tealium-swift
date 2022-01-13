@@ -1,0 +1,33 @@
+{
+  "identifier" : "AE20C146",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "60CB32B5",
+      "localizations" : [
+        {
+          "description" : "Test Product",
+          "displayName" : "Test Product",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.tealium.iOSTealiumTestApp.product1",
+      "referenceName" : "Test Product",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 1,
+    "minor" : 1
+  }
+}

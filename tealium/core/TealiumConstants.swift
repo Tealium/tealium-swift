@@ -43,6 +43,7 @@ public enum ModuleNames {
     public static let crash = "Crash"
     public static let devicedata = "DeviceData"
     public static let lifecycle = "Lifecycle"
+    public static let inapppurchase = "InAppPurchase"
     public static let location = "Location"
     public static let remotecommands = "RemoteCommands"
     public static let tagmanagement = "TagManagement"
