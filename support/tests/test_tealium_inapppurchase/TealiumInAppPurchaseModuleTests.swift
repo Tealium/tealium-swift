@@ -10,7 +10,7 @@
 import StoreKitTest
 import XCTest
 
-@available(iOS 14.0, *)
+@available(iOS 14.0, tvOS 14, *)
 class InAppPurchaseModuleTests: XCTestCase {
 
     var module: InAppPurchaseModule?
@@ -45,7 +45,7 @@ class InAppPurchaseModuleTests: XCTestCase {
 
 }
 
-@available(iOS 14.0, *)
+@available(iOS 14.0, tvOS 14, *)
 extension InAppPurchaseModuleTests: SKProductsRequestDelegate, SKPaymentTransactionObserver {
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         for transaction in transactions {
@@ -78,7 +78,7 @@ struct PurchaseEvent: Codable {
     let purchaseTimestamp: Date
 }
 
-@available(iOS 14.0, *)
+@available(iOS 14.0, tvOS 14, *)
 extension InAppPurchaseModuleTests: ModuleDelegate {
     func processRemoteCommandRequest(_ request: TealiumRequest) {
         
