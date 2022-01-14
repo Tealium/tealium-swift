@@ -11,6 +11,7 @@ import StoreKit
 import TealiumCore
 #endif
 
+@available(watchOS 6.2, *)
 class InAppPurchaseManager: NSObject, SKPaymentTransactionObserver {
 
     weak public var delegate: ModuleDelegate?

@@ -5,16 +5,17 @@
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 
-#if os(iOS) && !targetEnvironment(macCatalyst)
 import StoreKit
 #if inapppurchase
 import TealiumCore
 #endif
 
+@available(watchOS 6.2, *)
 public extension Collectors {
     static let InAppPurchase = InAppPurchaseModule.self
 }
 
+@available(watchOS 6.2, *)
 extension SKPaymentTransaction {
     func toTealiumEvent() -> TealiumEvent? {
         guard let transactionId = transactionIdentifier, let transactionDate = transactionDate else {
@@ -31,5 +32,3 @@ extension SKPaymentTransaction {
         return event
     }
 }
-
-#endif

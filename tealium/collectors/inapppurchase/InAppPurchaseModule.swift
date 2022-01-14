@@ -11,6 +11,7 @@ import StoreKit
 import TealiumCore
 #endif
 
+@available(watchOS 6.2, *)
 public class InAppPurchaseModule: Collector {
 
     public let id: String = ModuleNames.inapppurchase
