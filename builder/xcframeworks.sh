@@ -6,7 +6,7 @@
 
 # variable declarations
 BUILD_PATH="build"
-XCFRAMEWORK_PATH="tealium-xcframeworks"
+XCFRAMEWORK_PATH="tealium.xcframework"
 XCODE_PROJECT="tealium-swift"
 MACOS_SDKROOT="SDKROOT = macosx;"
 IOS_SDKROOT="SDKROOT = \"iphoneos\";"
