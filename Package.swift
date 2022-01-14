@@ -19,6 +19,9 @@ let package = Package(
             name: "TealiumCollect",
             targets: ["TealiumCollect"]),
         .library(
+            name: "TealiumInAppPurchase",
+            targets: ["TealiumInAppPurchase"]),
+        .library(
             name: "TealiumLifecycle",
             targets: ["TealiumLifecycle"]),
         .library(
@@ -77,6 +80,12 @@ let package = Package(
             dependencies: ["TealiumCore"],
             path: "tealium/dispatchers/collect/",
             swiftSettings: [.define("collect")]
+        ),
+        .target(
+            name: "TealiumInAppPurchase",
+            dependencies: ["TealiumCore"],
+            path: "tealium/collectors/inapppurchase/",
+            swiftSettings: [.define("inapppurchase")]
         ),
         .target(
             name: "TealiumLifecycle",

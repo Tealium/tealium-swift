@@ -12,8 +12,8 @@ import TealiumCore
 import TealiumLifecycle
 import TealiumVisitorService
 import TealiumAutotracking
-#if os(iOS)
 import TealiumInAppPurchase
+#if os(iOS)
 import TealiumAttribution
 import TealiumLocation
 import TealiumRemoteCommands
@@ -100,7 +100,8 @@ class TealiumHelper {
                 Collectors.Connectivity,
                 Collectors.Device,
                 Collectors.VisitorService,
-                Collectors.AutoTracking
+                Collectors.AutoTracking,
+                Collectors.InAppPurchase
             ]
             config.dispatchers = [
                 Dispatchers.Collect,

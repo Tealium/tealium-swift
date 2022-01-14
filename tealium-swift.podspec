@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 
   s.name         = "tealium-swift"
   s.module_name  = "TealiumSwift"
-  s.version      = "2.5.1"
+  s.version      = "2.6.0"
   s.summary      = "Tealium Swift Integration Library"
 
   # This description is used to generate tags and improve search results.
@@ -126,6 +126,11 @@ Pod::Spec.new do |s|
   s.subspec "Collect" do |collect|
     collect.source_files = "tealium/dispatchers/collect/*"
     collect.dependency "tealium-swift/Core"
+  end
+
+  s.subspec "InAppPurchase" do |inapppurchase|
+    inapppurchase.source_files = "tealium/collectors/inapppurchase/*"
+    inapppurchase.dependency "tealium-swift/Core"
   end
 
   s.subspec "Lifecycle" do |lifecycle|

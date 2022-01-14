@@ -30,6 +30,7 @@ jobs:
             - TealiumAutotrackingTests-iOS
             - TealiumCollectTests-iOS
             - TealiumCoreTests-iOS
+            - TealiumInAppPurchaseTests-iOS
             - TealiumLifecycleTests-iOS
             - TealiumLocationTests-iOS
             - TealiumMediaTests-iOS
@@ -139,6 +140,7 @@ jobs:
           - TealiumAutotrackingTests-tvOS
           - TealiumCoreTests-tvOS
           - TealiumCollectTests-tvOS
+          - TealiumInAppPurchaseTests-tvOS
           - TealiumLifecycleTests-tvOS
           - TealiumMediaTests-tvOS
           - TealiumVisitorServiceTests-tvOS
