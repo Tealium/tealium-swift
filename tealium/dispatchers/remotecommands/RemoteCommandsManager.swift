@@ -15,7 +15,7 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
 
     weak var queue = TealiumQueues.backgroundSerialQueue
 
-    @ToAnyObservable(TealiumReplaySubject<[RemoteCommandProtocol]>())
+    @ToAnyObservable<TealiumReplaySubject>(TealiumReplaySubject<[RemoteCommandProtocol]>())
     public var onCommandsChanged: TealiumObservable
 
     public var jsonCommands = [RemoteCommandProtocol]() {
