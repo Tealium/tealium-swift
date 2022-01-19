@@ -21,7 +21,7 @@ public class TealiumLifecycleListeners {
 
     public var launchDate = Date()
 
-    @ToAnyObservable(TealiumReplaySubject<BackgroundState>(cacheSize: 10))
+    @ToAnyObservable<TealiumReplaySubject>(TealiumReplaySubject<BackgroundState>(cacheSize: 10))
     public var onBackgroundStateChange: TealiumObservable<BackgroundState>
 
     var wakeNotificationObserver: NSObjectProtocol?
