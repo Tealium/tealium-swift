@@ -6,7 +6,8 @@
 
 # variable declarations
 BUILD_PATH="build"
-XCFRAMEWORK_PATH="tealium.xcframework"
+XCFRAMEWORK_PATH="tealium-xcframeworks"
+ZIP_PATH="tealium.xcframework.zip"
 XCODE_PROJECT="tealium-swift"
 MACOS_SDKROOT="SDKROOT = macosx;"
 IOS_SDKROOT="SDKROOT = \"iphoneos\";"
@@ -55,8 +56,8 @@ function clean_build_folder {
     if [[ -d "${XCFRAMEWORK_PATH}" ]]; then
         rm -rf "${XCFRAMEWORK_PATH}"
     fi
-    if [[ -d "${XCFRAMEWORK_PATH}.zip" ]]; then
-        rm "${XCFRAMEWORK_PATH}.zip"
+    if [[ -d "${ZIP_PATH}" ]]; then
+        rm "${ZIP_PATH}"
     fi
     mkdir "${XCFRAMEWORK_PATH}"
 }
@@ -163,7 +164,7 @@ function create_archives {
 # zip all the xcframeworks
 function zip_xcframeworks {
     if [[ -d "${XCFRAMEWORK_PATH}" ]]; then
-        zip -r "${XCFRAMEWORK_PATH}.zip" "${XCFRAMEWORK_PATH}"
+        zip -r "${ZIP_PATH}" "${XCFRAMEWORK_PATH}"
         rm -rf "${XCFRAMEWORK_PATH}"
     fi
 }
@@ -175,7 +176,7 @@ clean_build_folder
 create_archives "$1"
 zip_xcframeworks
 
-mv "${XCFRAMEWORK_PATH}.zip" "../"
+mv "${ZIP_PATH}" "../"
 
 echo ""
-echo "Done! Upload ${XCFRAMEWORK_PATH}.zip to GitHub when you create the release."
+echo "Done! Upload ${ZIP_PATH} to GitHub when you create the release."
