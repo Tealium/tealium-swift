@@ -187,3 +187,12 @@ public enum HttpStatusCodes: Int {
     case ok = 200
 }
 // swiftlint:enable identifier_name
+
+public protocol TealiumErrorEnum: Error {}
+
+// Add default localizedDescription
+extension TealiumErrorEnum {
+    var localizedDescription: String? {
+        return "\(type(of: self)).\(self)"
+    }
+}
