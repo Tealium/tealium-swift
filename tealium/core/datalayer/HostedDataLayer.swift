@@ -167,7 +167,7 @@ public class HostedDataLayer: HostedDataLayerProtocol {
 
 }
 
-enum HostedDataLayerError: Error {
+enum HostedDataLayerError: TealiumErrorEnum {
     case unknownResponseType
     case emptyResponse
     case unableToDecodeData

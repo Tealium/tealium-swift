@@ -8,6 +8,10 @@
 #if os(iOS)
 import Foundation
 
+#if remotecommands
+import TealiumCore
+#endif
+
 public enum RemoteCommandType {
     case webview
     case remote(url: String)
@@ -49,7 +53,7 @@ enum RemoteCommandStatusCode: Int {
     case failure = 404
 }
 
-public enum TealiumRemoteCommandsError: Error, Equatable {
+public enum TealiumRemoteCommandsError: TealiumErrorEnum, Equatable {
     case invalidScheme
     case commandIdNotFound
     case commandNotFound
@@ -67,7 +71,7 @@ public enum TealiumRemoteCommandsError: Error, Equatable {
     case notModified
 }
 
-enum TealiumRemoteCommandResponseError: Error {
+enum TealiumRemoteCommandResponseError: TealiumErrorEnum {
     case noMappedPayloadData
     case missingURLTarget
     case missingURLMethod

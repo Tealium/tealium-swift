@@ -10,7 +10,7 @@ import Foundation
 import TealiumCore
 #endif
 
-public enum HTTPError: Error {
+public enum HTTPError: TealiumErrorEnum {
     case transportError(Error)
     case serverSideError(Int)
     case unknown
