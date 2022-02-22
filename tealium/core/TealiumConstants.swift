@@ -140,6 +140,7 @@ public enum TealiumConfigKey {
     static let minimumFreeDiskSpace = "min_free_disk_space"
     static let diskStorageEnabled = "disk_storage"
     public static let diskStorageDirectory = "disk_storage_directory"
+    public static let sessionCountingEnabled = "session_counting_enabled"
 }
 
 public enum TealiumKey {

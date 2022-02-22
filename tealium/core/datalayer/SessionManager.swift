@@ -63,7 +63,7 @@ public extension DataLayer {
     /// If the tag management module is enabled and multiple tracks have been sent in given time, a new session is started.
     /// - Parameter sessionStarter: `SessionStarterProtocol`
     func startNewSession(with sessionStarter: SessionStarterProtocol) {
-        if isTagManagementEnabled, shouldTriggerSessionRequest {
+        if isTagManagementEnabled, shouldTriggerSessionRequest, config.sessionCountingEnabled {
             sessionStarter.requestSession { [weak self] result in
                 switch result {
                 case .success:
