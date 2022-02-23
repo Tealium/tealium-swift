@@ -136,6 +136,16 @@ open class TealiumConfig {
                              options: options)
     }
 
+    /// Prevents session counting if false
+    public var sessionCountingEnabled: Bool {
+        get {
+            options[TealiumConfigKey.sessionCountingEnabled] as? Bool ?? true
+        }
+        set {
+            options[TealiumConfigKey.sessionCountingEnabled] = newValue
+        }
+    }
+
     /// Convenience constructor.
     ///
     /// - Parameters:

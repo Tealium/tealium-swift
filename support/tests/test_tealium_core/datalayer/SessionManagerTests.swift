@@ -93,5 +93,14 @@ class SessionManagerTests: XCTestCase {
         eventDataManager.startNewSession(with: mockSessionStarter)
         XCTAssertEqual(mockSessionStarter.sessionRequestCount, 1)
     }
+    
+    func testSessionCountingDisabled() {
+        config.sessionCountingEnabled = false
+        eventDataManager.isTagManagementEnabled = true
+        eventDataManager.shouldTriggerSessionRequest = true
+        let count = mockSessionStarter.sessionRequestCount
+        eventDataManager.startNewSession(with: mockSessionStarter)
+        XCTAssertEqual(mockSessionStarter.sessionRequestCount, count)
+    }
 
 }
