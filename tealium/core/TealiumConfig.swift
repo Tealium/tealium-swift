@@ -135,7 +135,7 @@ open class TealiumConfig {
                              dataSource: self.dataSource,
                              options: options)
     }
-    
+
     /// Prevents session counting if false
     public var sessionCountingEnabled: Bool {
         get {
