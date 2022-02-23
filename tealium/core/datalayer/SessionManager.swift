@@ -46,12 +46,17 @@ public extension DataLayer {
         sessionId = existingSessionId
     }
 
+    /// Calculates the number of track calls within the specified `secondsBetweenTrackEvents`
+    /// property that will then determine if a new session shall be generated.
     func newTrackRequest() {
         let current = Date()
         if let lastTrackDate = lastTrackDate {
             if let date = lastTrackDate.addSeconds(secondsBetweenTrackEvents),
                date > current {
-                startNewSession(with: sessionStarter)
+                let tracks = numberOfTrackRequests + 1
+                if tracks == 2 { // To avoid multiple tracks to generate multiple simultaneous session API call
+                    startNewSession(with: sessionStarter)
+                }
             } else {
                 numberOfTrackRequests = 0
             }
