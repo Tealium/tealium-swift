@@ -38,6 +38,7 @@ class SessionManagerTests: XCTestCase {
     func testTwoTracksInSecondsBetweenTracksStartsNewSession() {
         eventDataManager.isTagManagementEnabled = true
         eventDataManager.shouldTriggerSessionRequest = true
+        eventDataManager.numberOfTrackRequests = 1
         eventDataManager.lastTrackDate = timeTraveler.travel(by: 20)
         eventDataManager.newTrackRequest()
         XCTAssertEqual(mockSessionStarter.sessionRequestCount, 1)
