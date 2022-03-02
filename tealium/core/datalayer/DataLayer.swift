@@ -156,19 +156,38 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
     /// - Parameter forKeys: `[String]` keys to delete.
     public func delete(for keys: [String]) {
         keys.forEach {
-            self.delete(for: $0)
+            self.deletePersistent(key: $0)
+        }
+        TealiumQueues.backgroundConcurrentQueue.write { [weak self] in
+            keys.forEach {
+                self?.deleteteRestart(key: $0)
+            }
+        }
+    }
+
+    private func deletePersistent(key: String) {
+        persistentDataStorage?.remove(key: key)
+    }
+
+    private func deleteteRestart(key: String) {
+        TealiumQueues.backgroundConcurrentQueue.write { [weak self] in
+            self?.restartData.removeValue(forKey: key)
         }
     }
 
     /// Deletes a value from storage.
     /// - Parameter key: `String` to delete.
     public func delete(for key: String) {
-        persistentDataStorage?.remove(key: key)
+        deletePersistent(key: key)
+        deleteteRestart(key: key)
     }
 
     /// Deletes all values from storage.
     public func deleteAll() {
         persistentDataStorage?.removeAll()
+        TealiumQueues.backgroundConcurrentQueue.write { [weak self] in
+            self?.restartData.removeAll()
+        }
     }
 
     /// - Returns: `String` format of random 16 digit number
