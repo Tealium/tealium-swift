@@ -58,7 +58,7 @@ public class LocationModule: Collector {
 
     /// Removes all geofences that are currently being monitored from the Location Client
     public func clearMonitoredGeofences() {
-        TealiumQueues.mainQueue.async { [weak self] in
+        TealiumQueues.secureMainThreadExecution { [weak self] in
             guard let self = self else {
                 return
             }
@@ -71,7 +71,7 @@ public class LocationModule: Collector {
     /// - return: `[String]?` Array containing the names of all geofences
     public var createdGeofences: [String]? {
         var created: [String]?
-        TealiumQueues.mainQueue.async { [weak self] in
+        TealiumQueues.secureMainThreadExecution { [weak self] in
             guard let self = self else {
                 return
             }
@@ -80,9 +80,15 @@ public class LocationModule: Collector {
         return created
     }
 
+    public func getCreatedGeofences(completion: @escaping ([String]?) -> Void) {
+        TealiumQueues.secureMainThreadExecution { [weak self] in
+            completion(self?.tealiumLocationManager?.createdGeofences)
+        }
+    }
+
     /// Disables the module and deletes all associated data
     func disable() {
-        TealiumQueues.mainQueue.async { [weak self] in
+        TealiumQueues.secureMainThreadExecution { [weak self] in
             guard let self = self else {
                 return
             }
@@ -93,7 +99,7 @@ public class LocationModule: Collector {
     /// - Returns: `Bool` Whether or not the user has authorized location tracking/updates
     var isAuthorized: Bool? {
         var authorized: Bool?
-        TealiumQueues.mainQueue.async { [weak self] in
+        TealiumQueues.secureMainThreadExecution { [weak self] in
             guard let self = self else {
                 return
             }
@@ -106,7 +112,7 @@ public class LocationModule: Collector {
     @available(iOS 14.0, *)
     var isFullAccuracy: Bool? {
         var fullAccuracy: Bool?
-        TealiumQueues.mainQueue.async { [weak self] in
+        TealiumQueues.secureMainThreadExecution { [weak self] in
             guard let self = self else {
                 return
             }
@@ -120,7 +126,7 @@ public class LocationModule: Collector {
     /// - returns: `CLLocation?` location object
     public var lastLocation: CLLocation? {
         var latest: CLLocation?
-        TealiumQueues.mainQueue.async { [weak self] in
+        TealiumQueues.secureMainThreadExecution { [weak self] in
             guard let self = self else {
                 return
             }
@@ -129,12 +135,18 @@ public class LocationModule: Collector {
         return latest
     }
 
+    public func getLastLocation(completion: @escaping (CLLocation?) -> Void) {
+        TealiumQueues.secureMainThreadExecution { [weak self] in
+            completion(self?.tealiumLocationManager?.lastLocation)
+        }
+    }
+
     /// Returns the names of all the geofences that are currently being monitored
     ///
     /// - return: `[String]?` Array containing the names of monitored geofences
     public var monitoredGeofences: [String]? {
         var monitored: [String]?
-        TealiumQueues.mainQueue.async { [weak self] in
+        TealiumQueues.secureMainThreadExecution { [weak self] in
             guard let self = self else {
                 return
             }
@@ -143,12 +155,18 @@ public class LocationModule: Collector {
         return monitored
     }
 
+    public func getMonitoredGeofences(completion: @escaping ([String]?) -> Void) {
+        TealiumQueues.secureMainThreadExecution { [weak self] in
+            completion(self?.tealiumLocationManager?.monitoredGeofences)
+        }
+    }
+
     /// Sends a Tealium tracking event, appending geofence data to the track.
     ///
     /// - parameter region: `CLRegion` that was entered
     /// - parameter triggeredTransition: `String` Type of transition that occured
     public func sendGeofenceTrackingEvent(region: CLRegion, triggeredTransition: String) {
-        TealiumQueues.mainQueue.async { [weak self] in
+        TealiumQueues.secureMainThreadExecution { [weak self] in
             guard let self = self else {
                 return
             }
@@ -159,7 +177,7 @@ public class LocationModule: Collector {
     /// Enables regular updates of location data through the location client
     /// Update frequency is dependant on config.useHighAccuracy, a parameter passed on initisalizatuion of this class.
     public func startLocationUpdates() {
-        TealiumQueues.mainQueue.async { [weak self] in
+        TealiumQueues.secureMainThreadExecution { [weak self] in
             guard let self = self else {
                 return
             }
@@ -169,7 +187,7 @@ public class LocationModule: Collector {
 
     /// Stops the updating of location data through the location client.
     public func stopLocationUpdates() {
-        TealiumQueues.mainQueue.async { [weak self] in
+        TealiumQueues.secureMainThreadExecution { [weak self] in
             guard let self = self else {
                 return
             }
@@ -181,7 +199,7 @@ public class LocationModule: Collector {
     ///
     /// - parameter geofences: `[CLCircularRegion]` Geofences to be added
     public func startMonitoring(geofences: [CLCircularRegion]) {
-        TealiumQueues.mainQueue.async { [weak self] in
+        TealiumQueues.secureMainThreadExecution { [weak self] in
             guard let self = self else {
                 return
             }
@@ -193,7 +211,7 @@ public class LocationModule: Collector {
     ///
     /// - parameter geofences: `[CLCircularRegion]` Geofences to be removed
     public func stopMonitoring(geofences: [CLCircularRegion]) {
-        TealiumQueues.mainQueue.async { [weak self] in
+        TealiumQueues.secureMainThreadExecution { [weak self] in
             guard let self = self else {
                 return
             }
@@ -203,7 +221,7 @@ public class LocationModule: Collector {
 
     /// Prompts the user to enable permission for location servies
     public func requestAuthorization() {
-        TealiumQueues.mainQueue.async { [weak self] in
+        TealiumQueues.secureMainThreadExecution { [weak self] in
             guard let self = self else {
                 return
             }
@@ -216,7 +234,7 @@ public class LocationModule: Collector {
     /// - Parameter purposeKey: `String` A key in the `NSLocationTemporaryUsageDescriptionDictionary` dictionary of the app’s `Info.plist` file.
     @available(iOS 14, *)
     public func requestTemporaryFullAccuracyAuthorization(purposeKey: String) {
-        TealiumQueues.mainQueue.async { [weak self] in
+        TealiumQueues.secureMainThreadExecution { [weak self] in
             guard let self = self else {
                 return
             }
