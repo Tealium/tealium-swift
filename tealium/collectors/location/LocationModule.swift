@@ -68,7 +68,11 @@ public class LocationModule: Collector {
 
     /// Returns the names of all the created geofences (those currently being monitored and those that are not)
     ///
+    /// - Warning: Deprecated
+    /// Doesn't work out of main thread. Use getCreatedGeofences(completion:) instead.
+    ///
     /// - return: `[String]?` Array containing the names of all geofences
+    @available(*, deprecated, message: "Doesn't work out of main thread. Use getCreatedGeofences(completion:) instead.")
     public var createdGeofences: [String]? {
         var created: [String]?
         TealiumQueues.secureMainThreadExecution { [weak self] in
@@ -80,6 +84,9 @@ public class LocationModule: Collector {
         return created
     }
 
+    /// Returns the names of all the created geofences (those currently being monitored and those that are not)
+    ///
+    /// - parameter completion: Completion block called with the created geofences
     public func getCreatedGeofences(completion: @escaping ([String]?) -> Void) {
         TealiumQueues.secureMainThreadExecution { [weak self] in
             completion(self?.tealiumLocationManager?.createdGeofences)
@@ -123,7 +130,11 @@ public class LocationModule: Collector {
 
     /// Gets the user's last known location
     ///
+    /// - Warning: Deprecated
+    /// Doesn't work out of main thread. Use getLatsLocation(completion:) instead.
+    ///
     /// - returns: `CLLocation?` location object
+    @available(*, deprecated, message: "Doesn't work out of main thread. Use getLatsLocation(completion:) instead.")
     public var lastLocation: CLLocation? {
         var latest: CLLocation?
         TealiumQueues.secureMainThreadExecution { [weak self] in
@@ -135,6 +146,9 @@ public class LocationModule: Collector {
         return latest
     }
 
+    /// Gets the user's last known location
+    ///
+    /// - parameter completion: Completion block called with the last known location
     public func getLastLocation(completion: @escaping (CLLocation?) -> Void) {
         TealiumQueues.secureMainThreadExecution { [weak self] in
             completion(self?.tealiumLocationManager?.lastLocation)
@@ -143,7 +157,11 @@ public class LocationModule: Collector {
 
     /// Returns the names of all the geofences that are currently being monitored
     ///
+    /// - Warning: Deprecated
+    /// Doesn't work out of main thread. Use getMonitoredGeofences(completion:) instead.
+    ///
     /// - return: `[String]?` Array containing the names of monitored geofences
+    @available(*, deprecated, message: "Doesn't work out of main thread. Use getMonitoredGeofences(completion:) instead.")
     public var monitoredGeofences: [String]? {
         var monitored: [String]?
         TealiumQueues.secureMainThreadExecution { [weak self] in
@@ -155,6 +173,9 @@ public class LocationModule: Collector {
         return monitored
     }
 
+    /// Returns the names of all the geofences that are currently being monitored
+    ///
+    /// - parameter completion: Completion block called with the currently monitored geofences
     public func getMonitoredGeofences(completion: @escaping ([String]?) -> Void) {
         TealiumQueues.secureMainThreadExecution { [weak self] in
             completion(self?.tealiumLocationManager?.monitoredGeofences)
