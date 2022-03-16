@@ -116,6 +116,19 @@ class PublishSettingsTests: XCTestCase {
         _ = TealiumPublishSettingsRetriever(config: config, diskStorage: nil, urlSession: MockURLSessionPublishSettings(), delegate: delegate)
         wait(for: [PublishSettingsTests.delegateExpectationSuccess!], timeout: 5)
     }
+    
+    func testMultipleRefresh() {
+        PublishSettingsTests.delegateExpectationSuccess = self.expectation(description: "publishsettings")
+        PublishSettingsTests.delegateExpectationSuccess?.assertForOverFulfill = true
+        let config = testTealiumConfig.copy
+        config.shouldUseRemotePublishSettings = true
+        let delegate = GetSavePublishSettings()
+        TealiumQueues.backgroundSerialQueue.async { // Make sure mock returns after refresh is called 
+            let retriver = TealiumPublishSettingsRetriever(config: config, diskStorage: nil, urlSession: MockURLSessionPublishSettings(), delegate: delegate)
+            retriver.refresh()
+        }
+        wait(for: [PublishSettingsTests.delegateExpectationSuccess!], timeout: 15)
+    }
 
 }
 

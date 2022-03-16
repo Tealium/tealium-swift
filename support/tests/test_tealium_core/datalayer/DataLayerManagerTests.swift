@@ -100,6 +100,17 @@ class DataLayerManagerTests: XCTestCase {
         let retrieved = self.mockDiskStorage.retrieve(as: Set<DataLayerItem>.self)
         XCTAssertTrue(((retrieved?.contains(eventDataItem)) != nil))
     }
+    
+    func testDeleteRestartData() {
+        let restartData: [String: Any] = ["1": "1", "2":"2", "3": "3"]
+        eventDataManager.add(data: restartData, expiry: .untilRestart)
+        let count = eventDataManager.all.count
+        // Delete restart data
+        eventDataManager.delete(for: "1")
+        XCTAssertEqual(eventDataManager.all.count, count-1)
+        eventDataManager.delete(for: ["2", "3"])
+        XCTAssertEqual(eventDataManager.all.count, count-3)
+    }
 
     func testAddForeverData() {
         let foreverData: [String: Any] = ["hello": "forever"]

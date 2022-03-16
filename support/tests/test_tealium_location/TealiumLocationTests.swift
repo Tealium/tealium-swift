@@ -805,17 +805,12 @@ class TealiumLocationTests: XCTestCase {
         }
         wait(for: [expect], timeout: 2.0)
     }
-
+    
     func testIsFullAccuracy() {
         if #available(iOS 14, *) {
-            let expect = expectation(description: "Module latest location called")
             locationModule?.tealiumLocationManager = mockTealiumLocationManager
             _ = locationModule?.isFullAccuracy
-            TealiumQueues.mainQueue.async { [weak self] in
-                XCTAssertEqual(self?.mockTealiumLocationManager.isFullAccuracyCallCount, 1)
-                expect.fulfill()
-            }
-            wait(for: [expect], timeout: 2.0)
+            XCTAssertEqual(self.mockTealiumLocationManager.isFullAccuracyCallCount, 1)
         }
     }
 
