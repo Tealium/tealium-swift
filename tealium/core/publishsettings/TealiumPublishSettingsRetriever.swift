@@ -17,7 +17,7 @@ class TealiumPublishSettingsRetriever {
     weak var delegate: TealiumPublishSettingsDelegate?
     var cachedSettings: RemotePublishSettings?
     var config: TealiumConfig
-    var hasFetched = false
+    var fetching = false
     var publishSettingsURL: URL? {
         if let urlString = config.publishSettingsURL,
            let url = URL(string: urlString) {
@@ -37,17 +37,18 @@ class TealiumPublishSettingsRetriever {
         self.cachedSettings = getCachedSettings()
         self.urlSession = urlSession
         self.delegate = delegate
-        refresh()
+        getAndSave()
     }
 
     func refresh() {
-        // always request on launch
-        if !hasFetched || cachedSettings == nil {
+        guard !fetching else {
+            return
+        }
+        guard let cachedSettings = cachedSettings else {
             getAndSave()
             return
         }
-
-        guard let date = cachedSettings?.lastFetch.addMinutes(cachedSettings?.minutesBetweenRefresh), Date() > date else {
+        guard let date = cachedSettings.lastFetch.addMinutes(cachedSettings.minutesBetweenRefresh), Date() > date else {
             return
         }
         getAndSave()
@@ -59,8 +60,7 @@ class TealiumPublishSettingsRetriever {
     }
 
     func getAndSave() {
-        hasFetched = true
-
+        fetching = true
         guard let mobileHTML = publishSettingsURL else {
             return
         }
@@ -68,6 +68,7 @@ class TealiumPublishSettingsRetriever {
         getRemoteSettings(url: mobileHTML,
                           lastFetch: cachedSettings?.lastFetch) { settings in
             TealiumQueues.backgroundSerialQueue.async {
+                self.fetching = false
                 if let settings = settings {
                     self.cachedSettings = settings
                     self.diskStorage.save(settings, completion: nil)
