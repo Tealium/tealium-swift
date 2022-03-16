@@ -160,7 +160,7 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
         }
         TealiumQueues.backgroundConcurrentQueue.write { [weak self] in
             keys.forEach {
-                self?.deleteteRestart(key: $0)
+                self?.deleteRestart(key: $0)
             }
         }
     }
@@ -169,7 +169,7 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
         persistentDataStorage?.remove(key: key)
     }
 
-    private func deleteteRestart(key: String) {
+    private func deleteRestart(key: String) {
         TealiumQueues.backgroundConcurrentQueue.write { [weak self] in
             self?.restartData.removeValue(forKey: key)
         }
@@ -179,7 +179,7 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
     /// - Parameter key: `String` to delete.
     public func delete(for key: String) {
         deletePersistent(key: key)
-        deleteteRestart(key: key)
+        deleteRestart(key: key)
     }
 
     /// Deletes all values from storage.
