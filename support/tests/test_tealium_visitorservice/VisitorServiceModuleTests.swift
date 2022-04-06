@@ -22,7 +22,6 @@ class VisitorServiceModuleTests: XCTestCase {
         config = TealiumConfig(account: "testAccount", profile: "testProfile", environment: "testEnv")
         mockDiskStorage = MockTealiumDiskStorage()
         visitorServiceManager = VisitorServiceManager(config: config, delegate: nil, diskStorage: mockDiskStorage)
-        visitorServiceManager?.visitorId = "test"
     }
 
     func testRequestVisitorProfileRunWhenFirstEventSentTrue() {

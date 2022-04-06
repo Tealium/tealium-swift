@@ -21,19 +21,18 @@ public enum VisitorServiceStatus: Int {
 
 public protocol VisitorServiceManagerProtocol {
     func startProfileUpdates(visitorId: String)
-    func requestVisitorProfile()
+    func requestVisitorProfile(visitorId: String)
 }
 
 public class VisitorServiceManager: VisitorServiceManagerProtocol {
 
     weak public var delegate: VisitorServiceDelegate?
-    var visitorServiceRetriever: VisitorServiceRetriever?
+    var visitorServiceRetriever: VisitorServiceRetriever
     var diskStorage: TealiumDiskStorageProtocol
     var timer: TealiumRepeatingTimer?
     var stateTimer: TealiumRepeatingTimer?
     var lifetimeEvents = 0.0
     var tealiumConfig: TealiumConfig
-    var visitorId: String?
     var currentState: AtomicInteger = AtomicInteger(value: VisitorServiceStatus.ready.rawValue)
     var pollingAttempts: AtomicInteger = AtomicInteger(value: 0)
     var maxPollingAttempts = 5
@@ -49,6 +48,7 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
         tealiumConfig = config
         self.delegate = delegate
         self.diskStorage = diskStorage
+        self.visitorServiceRetriever = VisitorServiceRetriever(config: config)
         guard let profile = diskStorage.retrieve(as: TealiumVisitorProfile.self) else {
             return
         }
@@ -62,29 +62,26 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
     }
 
     public func startProfileUpdates(visitorId: String) {
-        self.visitorId = visitorId
-        visitorServiceRetriever = visitorServiceRetriever ?? VisitorServiceRetriever(config: tealiumConfig, visitorId: visitorId)
-        requestVisitorProfile()
+        requestVisitorProfile(visitorId: visitorId)
     }
 
-    public func requestVisitorProfile() {
+    public func requestVisitorProfile(visitorId: String) {
         // No need to request if no delegates are listening
         guard delegate != nil else {
             return
         }
 
-        guard currentState.value == VisitorServiceStatus.ready.rawValue,
-              let _ = visitorId else {
+        guard currentState.value == VisitorServiceStatus.ready.rawValue else {
             return
         }
         self.blockState()
-        fetchProfile { profile, error in
+        fetchProfile(visitorId: visitorId) { profile, error in
             guard error == nil else {
                 self.releaseState()
                 return
             }
             guard let profile = profile else {
-                self.startPolling()
+                self.startPolling(visitorId: visitorId)
                 return
             }
             self.releaseState()
@@ -110,7 +107,7 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
         currentState.value = VisitorServiceStatus.ready.rawValue
     }
 
-    func startPolling() {
+    func startPolling(visitorId: String) {
         // No need to request if no delegates are listening
         guard delegate != nil else {
             return
@@ -124,7 +121,7 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
             guard let self = self else {
                 return
             }
-            self.fetchProfile { profile, error in
+            self.fetchProfile(visitorId: visitorId) { profile, error in
                 guard error == nil else {
                     self.releaseState()
                     self.timer?.suspend()
@@ -147,12 +144,12 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
         self.timer?.resume()
     }
 
-    func fetchProfile(completion: @escaping (TealiumVisitorProfile?, NetworkError?) -> Void) {
+    func fetchProfile(visitorId: String, completion: @escaping (TealiumVisitorProfile?, NetworkError?) -> Void) {
         // No need to request if no delegates are listening
         guard delegate != nil else {
             return
         }
-        visitorServiceRetriever?.fetchVisitorProfile { [weak self] result in
+        visitorServiceRetriever.fetchVisitorProfile(visitorId: visitorId) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let profile):

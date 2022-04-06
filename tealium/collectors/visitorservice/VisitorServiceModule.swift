@@ -58,7 +58,7 @@ public class VisitorServiceModule: Collector, DispatchListener {
                 completion?()
                 return
             }
-            self.visitorServiceManager?.requestVisitorProfile()
+            self.visitorServiceManager?.requestVisitorProfile(visitorId: visitorId)
             completion?()
         }
     }

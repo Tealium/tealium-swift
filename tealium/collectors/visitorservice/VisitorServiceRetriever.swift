@@ -16,7 +16,6 @@ public class VisitorServiceRetriever {
     var tealiumConfig: TealiumConfig
     var visitorProfile: TealiumVisitorProfile?
     var lastFetch: Date?
-    var tealiumVisitorId: String
 
     enum URLRequestResult {
         case success(Data)
@@ -32,14 +31,11 @@ public class VisitorServiceRetriever {
     ///
     /// - Parameters:
     ///   - config: existing TealiumConfig instance
-    ///   - visitorId: visitor Id for the visitor
     ///   - urlSession: shared URLSession
     init(config: TealiumConfig,
-         visitorId: String,
          urlSession: URLSessionProtocol = getURLSession()) {
         tealiumConfig = config
         self.urlSession = urlSession
-        self.tealiumVisitorId = visitorId
     }
 
     /// - Returns: `URLSession` - `ephemeral` session to avoid sending cookies to UDH.
@@ -83,7 +79,7 @@ public class VisitorServiceRetriever {
     }
 
     /// Generates the visitor service url
-    var visitorServiceURL: String {
+    func visitorServiceURL(tealiumVisitorId: String) -> String {
         var url = VisitorServiceConstants.defaultVisitorServiceDomain
         if let overrideURL = tealiumConfig.visitorServiceOverrideURL, URL(string: overrideURL) != nil {
             url = overrideURL
@@ -136,13 +132,14 @@ public class VisitorServiceRetriever {
 
     /// Fetches the visitor profile from the visitor service endpoint
     ///
+    /// - Parameter visitorId: visitor Id for the visitor
     /// - Parameter completion: Accepts a boolean to indicate if successful along with the updated profile retrieved
-    func fetchVisitorProfile(_ completion: @escaping (FetchVisitorProfileResult) -> Void) {
+    func fetchVisitorProfile(visitorId: String, completion: @escaping (FetchVisitorProfileResult) -> Void) {
         guard shouldFetchVisitorProfile else {
             completion(.success(nil))
             return
         }
-        guard let url = URL(string: visitorServiceURL) else {
+        guard let url = URL(string: visitorServiceURL(tealiumVisitorId: visitorId)) else {
             completion(.success(nil))
             return
         }

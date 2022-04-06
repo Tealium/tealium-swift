@@ -18,13 +18,14 @@ class VisitorServiceManagerTests: XCTestCase {
     let maxRuns = 10 // max runs for each test
     let waiter = XCTWaiter()
     var currentTest: String = ""
+    let visitorId = "abc123"
 
     override func setUp() {
         expectations = [XCTestExpectation]()
         visitorServiceManager = nil
         mockDiskStorage = MockTealiumDiskStorage()
         visitorServiceManager = VisitorServiceManager(config: TestTealiumHelper().getConfig(), delegate: nil, diskStorage: mockDiskStorage)
-        visitorServiceManager?.visitorServiceRetriever = VisitorServiceRetriever(config: TestTealiumHelper().getConfig(), visitorId: "abc123", urlSession: MockURLSession())
+        visitorServiceManager?.visitorServiceRetriever = VisitorServiceRetriever(config: TestTealiumHelper().getConfig(), urlSession: MockURLSession())
     }
 
     override func tearDown() {
@@ -53,8 +54,7 @@ class VisitorServiceManagerTests: XCTestCase {
         currentTest = "testDelegateDidUpdateViaRequestVisitorProfile"
         expectations.append(expectation)
         visitorServiceManager?.delegate = self
-        visitorServiceManager?.visitorId = "test"
-        visitorServiceManager?.requestVisitorProfile()
+        visitorServiceManager?.requestVisitorProfile(visitorId: "test")
         waiter.wait(for: expectations, timeout: 5.0)
     }
 

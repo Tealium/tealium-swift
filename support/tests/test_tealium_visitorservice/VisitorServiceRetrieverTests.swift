@@ -13,18 +13,19 @@ class VisitorServiceRetrieverTests: XCTestCase {
 
     var tealConfig: TealiumConfig!
     var visitorServiceRetriever: VisitorServiceRetriever!
+    let visitorId = "testVisitorId"
 
     override func setUp() {
         tealConfig = TealiumConfig(account: "test", profile: "test", environment: "dev", dataSource: nil, options: [:])
-        visitorServiceRetriever = VisitorServiceRetriever(config: tealConfig, visitorId: "testVisitorId", urlSession: MockURLSession())
+        visitorServiceRetriever = VisitorServiceRetriever(config: tealConfig, urlSession: MockURLSession())
     }
 
     override func tearDown() {
     }
 
     func testVisitorServiceURL() {
-        XCTAssertEqual("https://visitor-service.tealiumiq.com/\(tealConfig.account)/\(tealConfig.profile)/\(visitorServiceRetriever.tealiumVisitorId)",
-                       visitorServiceRetriever.visitorServiceURL)
+        XCTAssertEqual("https://visitor-service.tealiumiq.com/\(tealConfig.account)/\(tealConfig.profile)/\(visitorId)",
+                       visitorServiceRetriever.visitorServiceURL(tealiumVisitorId: visitorId))
     }
 
     func testIntervalSince() {
@@ -73,7 +74,7 @@ class VisitorServiceRetrieverTests: XCTestCase {
 
         tealConfig = TealiumConfig(account: "test", profile: "test", environment: "prod")
         tealConfig.visitorServiceRefresh = .every(0, .seconds)
-        visitorServiceRetriever = VisitorServiceRetriever(config: tealConfig, visitorId: "test")
+        visitorServiceRetriever = VisitorServiceRetriever(config: tealConfig)
         visitorServiceRetriever.lastFetch = timeTraveler.travel(by: (60 * 2 + 1) * -1)
         XCTAssertEqual(true, visitorServiceRetriever.shouldFetchVisitorProfile)
 
@@ -85,7 +86,7 @@ class VisitorServiceRetrieverTests: XCTestCase {
         tealConfig = TealiumConfig(account: "test", profile: "test", environment: "prod")
         // resetting back to default
         tealConfig.visitorServiceRefresh = .every(5, .minutes)
-        visitorServiceRetriever = VisitorServiceRetriever(config: tealConfig, visitorId: "test")
+        visitorServiceRetriever = VisitorServiceRetriever(config: tealConfig)
         visitorServiceRetriever.lastFetch = timeTraveler.travel(by: (60 * 2 + 1) * -1)
         XCTAssertEqual(false, visitorServiceRetriever.shouldFetchVisitorProfile)
     }
@@ -143,10 +144,10 @@ class VisitorServiceRetrieverTests: XCTestCase {
     func testDoNotFetchVisitorProfile() {
         let timeTraveler = TimeTraveler()
         let config = TealiumConfig(account: "test", profile: "test", environment: "prod", dataSource: nil, options: [:])
-        let retriever = VisitorServiceRetriever(config: config, visitorId: "test", urlSession: MockURLSession())
+        let retriever = VisitorServiceRetriever(config: config, urlSession: MockURLSession())
         let expect = expectation(description: "should not fetch")
         retriever.lastFetch = timeTraveler.travel(by: (60 * 4 + 1) * -1)
-        retriever.fetchVisitorProfile { result in
+        retriever.fetchVisitorProfile(visitorId: visitorId) { result in
             if case .success(let profile) = result {
                 XCTAssertNil(profile)
                 expect.fulfill()
