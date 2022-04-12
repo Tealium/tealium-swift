@@ -14,7 +14,6 @@ public class VisitorServiceRetriever {
 
     var urlSession: URLSessionProtocol?
     var tealiumConfig: TealiumConfig
-    var visitorProfile: TealiumVisitorProfile?
     var lastFetch: Date?
 
     enum URLRequestResult {
@@ -148,7 +147,6 @@ public class VisitorServiceRetriever {
             switch result {
             case .success(let data):
                 if let visitor = try? Tealium.jsonDecoder.decode(TealiumVisitorProfile.self, from: data) {
-                    self?.visitorProfile = visitor
                     self?.lastFetch = Date()
                     completion(.success(visitor))
                 } else {

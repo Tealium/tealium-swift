@@ -20,7 +20,7 @@ public enum VisitorServiceStatus: Int {
 }
 
 public protocol VisitorServiceManagerProtocol {
-    func startProfileUpdates(visitorId: String)
+    var cachedProfile: TealiumVisitorProfile? { get }
     func requestVisitorProfile(visitorId: String)
 }
 
@@ -31,7 +31,9 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
     var diskStorage: TealiumDiskStorageProtocol
     var timer: TealiumRepeatingTimer?
     var stateTimer: TealiumRepeatingTimer?
-    var lifetimeEvents = 0.0
+    var lifetimeEvents: Double {
+        cachedProfile?.lifetimeEventCount ?? -1.0
+    }
     var tealiumConfig: TealiumConfig
     var currentState: AtomicInteger = AtomicInteger(value: VisitorServiceStatus.ready.rawValue)
     var pollingAttempts: AtomicInteger = AtomicInteger(value: 0)
@@ -59,10 +61,6 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
     ///             As long as a previous fetch has been made, this should always return a profile, even if the device is offline
     public var cachedProfile: TealiumVisitorProfile? {
         diskStorage.retrieve(as: TealiumVisitorProfile.self)
-    }
-
-    public func startProfileUpdates(visitorId: String) {
-        requestVisitorProfile(visitorId: visitorId)
     }
 
     public func requestVisitorProfile(visitorId: String) {
@@ -158,7 +156,7 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
                     completion(nil, nil)
                     return
                 }
-                guard let lifetimeEventCount = profile.numbers?[VisitorServiceConstants.eventCountMetric],
+                guard let lifetimeEventCount = profile.lifetimeEventCount,
                       self.lifetimeEventCountHasBeenUpdated(lifetimeEventCount) else {
                     completion(nil, nil)
                     return
@@ -180,7 +178,6 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
             return false
         }
         let eventCountUpdated = currentCount > lifetimeEvents
-        lifetimeEvents = currentCount
         return eventCountUpdated
     }
 }
@@ -193,5 +190,11 @@ public extension VisitorServiceManager {
     func didUpdate(visitorProfile: TealiumVisitorProfile) {
         delegate?.didUpdate(visitorProfile: visitorProfile)
     }
+}
 
+extension TealiumVisitorProfile {
+    var lifetimeEventCount: Double? {
+        get { numbers?[VisitorServiceConstants.eventCountMetric] }
+        set { numbers?[VisitorServiceConstants.eventCountMetric] = newValue }
+    }
 }

@@ -9,6 +9,7 @@ import Foundation
 @testable import TealiumCore
 
 public class MockTealiumDiskStorage: TealiumDiskStorageProtocol {
+    var storedData: AnyCodable?
     public func append(_ data: [String: Any], fileName: String, completion: TealiumCompletion?) {
 
     }
@@ -22,18 +23,26 @@ public class MockTealiumDiskStorage: TealiumDiskStorageProtocol {
 
     public func save(_ data: AnyCodable, completion: TealiumCompletion?) {
         saveCount += 1
+        storedData = data
+        completion?(true, nil, nil)
     }
 
     public func save(_ data: AnyCodable, fileName: String, completion: TealiumCompletion?) {
         saveCount += 1
+        storedData = data
+        completion?(true, nil, nil)
     }
 
     public func save<T>(_ data: T, completion: TealiumCompletion?) where T: Encodable {
         saveCount += 1
+        storedData = AnyCodable(data)
+        completion?(true, nil, nil)
     }
 
     public func save<T>(_ data: T, fileName: String, completion: TealiumCompletion?) where T: Encodable {
         saveCount += 1
+        storedData = AnyCodable(data)
+        completion?(true, nil, nil)
     }
 
     public func append<T>(_ data: T, completion: TealiumCompletion?) where T: Decodable, T: Encodable {
@@ -44,16 +53,17 @@ public class MockTealiumDiskStorage: TealiumDiskStorageProtocol {
 
     public func retrieve<T>(as type: T.Type) -> T? where T: Decodable {
         retrieveCount += 1
-        return nil
+        return storedData?.value as? T
     }
 
     public func retrieve<T>(_ fileName: String, as type: T.Type) -> T? where T: Decodable {
         retrieveCount += 1
-        return nil
+        return storedData?.value as? T
     }
 
     public func retrieve(fileName: String, completion: (Bool, [String: Any]?, Error?) -> Void) {
         retrieveCount += 1
+        completion(true, nil, nil)
     }
 
     public func append(_ data: [String: Any], forKey: String, fileName: String, completion: TealiumCompletion?) {

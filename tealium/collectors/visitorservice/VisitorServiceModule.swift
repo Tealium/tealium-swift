@@ -16,10 +16,9 @@ public class VisitorServiceModule: Collector, DispatchListener {
     public var config: TealiumConfig
     public var data: [String: Any]?
     var diskStorage: TealiumDiskStorageProtocol!
-    var firstEventSent = false
-    var visitorId: String?
     var visitorServiceManager: VisitorServiceManagerProtocol?
-
+    private var bag = TealiumDisposeBag()
+    private var lastVisitorId: String?
     /// Provided for unit testing￼.
     ///
     /// - Parameter visitorServiceManager: Class instance conforming to `VisitorServiceManagerProtocol`
@@ -46,19 +45,34 @@ public class VisitorServiceModule: Collector, DispatchListener {
         self.visitorServiceManager = VisitorServiceManager(config: config,
                                                            delegate: config.visitorServiceDelegate,
                                                            diskStorage: self.diskStorage)
+        TealiumQueues.backgroundSerialQueue.async {
+            context.onVisitorId?.subscribe { [weak self] visitorId in
+                guard let self = self,
+                      visitorId != self.lastVisitorId
+                else {
+                    return
+                }
+                if self.lastVisitorId != nil { // actually changed id
+                    self.diskStorage.delete { _, _, _ in
+                        self.retrieveProfile(visitorId: visitorId)
+                    }
+                } else {
+                    self.retrieveProfile(visitorId: visitorId) // Just first launch
+                }
+            }.toDisposeBag(self.bag)
+        }
         completion((.success(true), nil))
     }
 
-    func retrieveProfile(visitorId: String, _ completion: (() -> Void)? = nil) {
+    private func retrieveProfile(visitorId: String) {
+        self.lastVisitorId = visitorId
+        self.visitorServiceManager?.requestVisitorProfile(visitorId: visitorId)
+    }
+
+    func retrieveProfileDelayed(visitorId: String, _ completion: (() -> Void)? = nil) {
         // wait before triggering refresh, to give event time to process
-        TealiumQueues.backgroundSerialQueue.asyncAfter(deadline: .now() + 2.1) {
-            guard self.firstEventSent else {
-                self.firstEventSent = true
-                self.visitorServiceManager?.startProfileUpdates(visitorId: visitorId)
-                completion?()
-                return
-            }
-            self.visitorServiceManager?.requestVisitorProfile(visitorId: visitorId)
+        TealiumQueues.backgroundSerialQueue.asyncAfter(deadline: .now() + 2.1) { [weak self] in
+            self?.retrieveProfile(visitorId: visitorId)
             completion?()
         }
     }
@@ -69,13 +83,13 @@ public class VisitorServiceModule: Collector, DispatchListener {
             guard let visitorId = request.visitorId else {
                 return
             }
-            retrieveProfile(visitorId: visitorId)
+            retrieveProfileDelayed(visitorId: visitorId)
         case let request as TealiumBatchTrackRequest:
             guard let lastRequest = request.trackRequests.last,
                   let visitorId = lastRequest.visitorId else {
                 return
             }
-            retrieveProfile(visitorId: visitorId)
+            retrieveProfileDelayed(visitorId: visitorId)
         default:
             break
         }

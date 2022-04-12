@@ -24,6 +24,9 @@ public struct TealiumContext: Hashable, TealiumContextProtocol {
     public unowned var config: TealiumConfig
     public weak var dataLayer: DataLayerManagerProtocol?
     fileprivate weak var tealium: Tealium?
+    public var onVisitorId: TealiumObservable<String>? {
+        return tealium?.appDataModule?.onVisitorId
+    }
 
     public init(config: TealiumConfig,
                 dataLayer: DataLayerManagerProtocol,

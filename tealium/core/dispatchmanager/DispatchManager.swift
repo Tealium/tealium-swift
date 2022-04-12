@@ -175,7 +175,7 @@ class DispatchManager: DispatchManagerProtocol {
             case .success:
                 let shouldQueue = self.shouldQueue(request: newRequest)
                 if shouldQueue.0 == true {
-                    let batchingReason = shouldQueue.1? [TealiumDataKey.queueReason] as? String ?? TealiumConfigKey.batchingEnabled
+                    let batchingReason = shouldQueue.1?[TealiumDataKey.queueReason] as? String ?? TealiumConfigKey.batchingEnabled
 
                     self.enqueue(newRequest, reason: batchingReason)
                     // batch request and release if necessary

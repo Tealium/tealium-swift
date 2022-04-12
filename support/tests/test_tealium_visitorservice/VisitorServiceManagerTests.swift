@@ -69,14 +69,20 @@ class VisitorServiceManagerTests: XCTestCase {
     }
 
     func testLifetimeEventCountHasBeenUpdated() {
-        visitorServiceManager?.lifetimeEvents = 4.0
+        let visitor = TestTealiumHelper.loadStub(from: "visitor", type(of: self))
+        var profile = try! JSONDecoder().decode(TealiumVisitorProfile.self, from: visitor)
+        profile.lifetimeEventCount = 4.0
+        visitorServiceManager?.diskStorage.save(profile, completion: nil)
         let result = visitorServiceManager?.lifetimeEventCountHasBeenUpdated(5.0)
         XCTAssertTrue(result!)
     }
 
     func testLifetimeEventCountNotUpdated() {
-        visitorServiceManager?.lifetimeEvents = 4.0
-        let result = visitorServiceManager?.lifetimeEventCountHasBeenUpdated(4.0)
+        let visitor = TestTealiumHelper.loadStub(from: "visitor", type(of: self))
+        var profile = try! JSONDecoder().decode(TealiumVisitorProfile.self, from: visitor)
+        profile.lifetimeEventCount = 4.0
+        visitorServiceManager?.diskStorage.save(profile, completion: nil)
+        let result = self.visitorServiceManager?.lifetimeEventCountHasBeenUpdated(4.0)
         XCTAssertFalse(result!)
     }
 

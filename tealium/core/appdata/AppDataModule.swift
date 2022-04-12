@@ -15,6 +15,8 @@ public class AppDataModule: Collector {
     private var bundle: Bundle
     private var appDataCollector: AppDataCollection
     var appData = AppData()
+    @ToAnyObservable(TealiumReplaySubject())
+    public var onVisitorId: TealiumObservable<String>
 
     /// Retrieves current appdata
     public var data: [String: Any]? {
@@ -86,6 +88,11 @@ public class AppDataModule: Collector {
             appData.persistentData?.visitorId = migratedVisitorId
             diskStorage?.save(appData.persistentData, completion: nil)
             dataLayer.delete(for: [TealiumDataKey.uuid, TealiumDataKey.visitorId])
+        }
+        if let id = appData.persistentData?.visitorId {
+            TealiumQueues.backgroundSerialQueue.async {
+                self._onVisitorId.publish(id)
+            }
         }
         completion((.success(true), nil))
     }
@@ -192,8 +199,12 @@ public class AppDataModule: Collector {
         guard var persistentData = diskStorage.retrieve(as: PersistentAppData.self) else {
             return
         }
-        persistentData.visitorId = self.visitorId(from: UUID().uuidString)
+        let id = self.visitorId(from: UUID().uuidString)
+        persistentData.visitorId = id
         appData.persistentData = persistentData
+        TealiumQueues.backgroundSerialQueue.async { [weak self] in
+            self?._onVisitorId.publish(id)
+        }
     }
 
 }
