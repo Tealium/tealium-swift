@@ -431,6 +431,8 @@ class MockMigratedDataLayer: DataLayerManagerProtocol {
     
 
     var deleteCount = 0
+    static let uuid = UUID().uuidString
+    static let visitorId = uuid.replacingOccurrences(of: "-", with: "")
 
     static let mockData: [String: Any] = [LifecycleKey.migratedLifecycle:
                                             [LifecycleKey.firstLaunchDate: "2020-10-12T18:22:12Z",
@@ -446,8 +448,8 @@ class MockMigratedDataLayer: DataLayerManagerProtocol {
                                              LifecycleKey.totalSleepCount: 8,
                                              LifecycleKey.totalWakeCount: 7,
                                              LifecycleKey.wakeCount: 7],
-                                          TealiumDataKey.visitorId: "205CA6D0FE3A4242A3522DBE7F5B75DE",
-                                          TealiumDataKey.uuid: "205CA6D0-FE3A-4242-A352-2DBE7F5B75DE",
+                                          TealiumDataKey.visitorId: visitorId,
+                                          TealiumDataKey.uuid: uuid,
                                           "custom_persistent_key": "customValue",
                                           TealiumDataKey.consentStatus: 1,
                                           TealiumDataKey.consentLoggingEnabled: true,
