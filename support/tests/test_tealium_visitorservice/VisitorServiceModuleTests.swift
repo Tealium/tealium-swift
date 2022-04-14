@@ -29,7 +29,7 @@ class VisitorServiceModuleTests: XCTestCase {
         let context = TestTealiumHelper.context(with: config)
         let module = VisitorServiceModule(context: context, delegate: self, diskStorage: mockDiskStorage, visitorServiceManager: mockVisitorServiceManager)
         module.retrieveProfileDelayed(visitorId: "test") {
-            XCTAssertEqual(1, self.mockVisitorServiceManager.requestVisitorProfileCount)
+            XCTAssertEqual(2, self.mockVisitorServiceManager.requestVisitorProfileCount)
             expect.fulfill()
         }
         wait(for: [expect], timeout: 3.0)
@@ -43,7 +43,7 @@ class VisitorServiceModuleTests: XCTestCase {
         let batchTrackRequest = TealiumBatchTrackRequest(trackRequests: [trackRequest])
         module.willTrack(request: batchTrackRequest)
         TealiumQueues.backgroundSerialQueue.asyncAfter(deadline: .now() + 3.0) {
-            XCTAssertEqual(1, self.mockVisitorServiceManager.requestVisitorProfileCount)
+            XCTAssertEqual(2, self.mockVisitorServiceManager.requestVisitorProfileCount)
             expect.fulfill()
         }
         wait(for: [expect], timeout: 10.0)
@@ -57,7 +57,7 @@ class VisitorServiceModuleTests: XCTestCase {
         module.willTrack(request: trackRequest)
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
             TealiumQueues.backgroundSerialQueue.async {
-                XCTAssertEqual(1, self.mockVisitorServiceManager.requestVisitorProfileCount)
+                XCTAssertEqual(2, self.mockVisitorServiceManager.requestVisitorProfileCount)
                 expect.fulfill()
             }
         }
