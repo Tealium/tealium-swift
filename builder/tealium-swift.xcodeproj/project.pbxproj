@@ -5340,7 +5340,6 @@
 					D788A42F23196C0F00BC6D60 = {
 						LastSwiftMigration = 1130;
 						ProvisioningStyle = Manual;
-						TestTargetID = 15A0077B27284EF9005E1927;
 					};
 					D788A44723196D2500BC6D60 = {
 						LastSwiftMigration = 1130;
@@ -10705,7 +10704,6 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AutoTrackingIOSTest.app/AutoTrackingIOSTest";
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
@@ -10739,7 +10737,6 @@
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AutoTrackingIOSTest.app/AutoTrackingIOSTest";
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
