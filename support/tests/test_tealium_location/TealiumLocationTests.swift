@@ -48,10 +48,10 @@ class TealiumLocationTests: XCTestCase {
     }
     
     func testEnabledBackgroundLocationIsSet() {
-        let locationManager1 = TealiumLocationManager(config: config, locationManager: MockLocationManager(config: config, delegateClass: nil)!)
+        let locationManager1 = TealiumLocationManager(config: config)
         XCTAssertFalse(locationManager1.locationManager.allowsBackgroundLocationUpdates) // default false
         config.enableBackgroundLocation = true
-        let locationManager2 = TealiumLocationManager(config: config, locationManager: MockLocationManager(config: config, delegateClass: nil)!)
+        let locationManager2 = TealiumLocationManager(config: config)
         XCTAssertTrue(locationManager2.locationManager.allowsBackgroundLocationUpdates)
     }
 
