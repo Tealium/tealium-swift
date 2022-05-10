@@ -1,16 +1,14 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "GSPlayer",
-        "repositoryURL": "https://github.com/wxxsw/GSPlayer",
-        "state": {
-          "branch": null,
-          "revision": "95c5498ac7be1101cbe5520a2bf5536352a3b1a0",
-          "version": "0.2.18"
-        }
+  "pins" : [
+    {
+      "identity" : "gsplayer",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/wxxsw/GSPlayer",
+      "state" : {
+        "revision" : "95c5498ac7be1101cbe5520a2bf5536352a3b1a0",
+        "version" : "0.2.18"
       }
-    ]
-  },
-  "version": 1
+    }
+  ],
+  "version" : 2
 }
