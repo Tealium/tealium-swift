@@ -130,6 +130,7 @@
 		15D4AFD026EB94F4004316D0 /* TestTealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716C7D1B1DDBC3A500512C99 /* TestTealiumHelper.swift */; };
 		15D4AFD126EB94FE004316D0 /* MockSessionStarter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7187F1A24768F5000CF0AB0 /* MockSessionStarter.swift */; };
 		15D4AFD226EB9506004316D0 /* CoreMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA558BF24E4E6B200BFBED8 /* CoreMocks.swift */; };
+		15D7E4DC28180679008E8DA6 /* NameAndVersionRemoteCommandTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D7E4DB28180679008E8DA6 /* NameAndVersionRemoteCommandTests.swift */; };
 		15E601B92728036100CE4FAC /* AutotrackingConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E601B82728036100CE4FAC /* AutotrackingConfigTests.swift */; };
 		15E601BA2728036100CE4FAC /* AutotrackingConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E601B82728036100CE4FAC /* AutotrackingConfigTests.swift */; };
 		15E601BB2728036100CE4FAC /* AutotrackingConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E601B82728036100CE4FAC /* AutotrackingConfigTests.swift */; };
@@ -2162,6 +2163,7 @@
 		15D43D5B26F20A68004E52FE /* AutoTrackingTvOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoTrackingTvOSUITests.swift; sourceTree = "<group>"; };
 		15D4AFC326EB7D4A004316D0 /* TealiumAutotrackingTests-watchOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TealiumAutotrackingTests-watchOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		15D4AFD926EB9CE6004316D0 /* AutoTrackingIOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoTrackingIOSUITests.swift; sourceTree = "<group>"; };
+		15D7E4DB28180679008E8DA6 /* NameAndVersionRemoteCommandTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameAndVersionRemoteCommandTests.swift; sourceTree = "<group>"; };
 		15E601B82728036100CE4FAC /* AutotrackingConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutotrackingConfigTests.swift; sourceTree = "<group>"; };
 		15E601BD2728064500CE4FAC /* blocklist.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = blocklist.json; sourceTree = "<group>"; };
 		15F573ED2721827E00194733 /* UIScene+TealiumDelegateGetter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScene+TealiumDelegateGetter.swift"; sourceTree = "<group>"; };
@@ -3504,6 +3506,7 @@
 				CF7A8F132489A0F7003AE25D /* TealiumRemoteCommandTests.swift */,
 				CF6E9E32249AEFD90032A663 /* RemoteCommandExtensionsTests.swift */,
 				CF6E9E30249AEFCE0032A663 /* RemoteCommandResponseTests.swift */,
+				15D7E4DB28180679008E8DA6 /* NameAndVersionRemoteCommandTests.swift */,
 			);
 			path = test_tealium_remotecommands;
 			sourceTree = "<group>";
@@ -6628,6 +6631,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF7A8F142489A0F8003AE25D /* TealiumRemoteCommandTests.swift in Sources */,
+				15D7E4DC28180679008E8DA6 /* NameAndVersionRemoteCommandTests.swift in Sources */,
 				CF75E54B248827430086FF26 /* MockRemoteCommandsManager.swift in Sources */,
 				CF83EE48251C17A200188533 /* MockRemoteCommandResponse.swift in Sources */,
 				CFAD63CD2541FD91007D4EDB /* MockSessionStarter.swift in Sources */,

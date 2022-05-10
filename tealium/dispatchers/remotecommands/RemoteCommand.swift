@@ -18,7 +18,7 @@ open class RemoteCommand: RemoteCommandProtocol {
     open var version: String? {
         versionForObject(self)
     }
-    open var name: String? {
+    open var name: String {
         commandId
     }
 
