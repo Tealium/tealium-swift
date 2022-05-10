@@ -85,6 +85,16 @@ class DispatchQueueModuleTests: XCTestCase {
         dispatchManager.removeOldDispatches()
         wait(for: [DispatchQueueModuleTests.expiredDispatchesExpectation!], timeout: 5.0)
     }
+    
+    func testOldestExpirationDate() {
+        let config = testTealiumConfig
+        config.dispatchExpiration = -1
+        dispatchManager = DispatchManager(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: DispatchQueueModuleTests.connectivity, config: testTealiumConfig.copy, diskStorage: DispatchQueueMockDiskStorage())
+        dispatchManager.config = config
+        XCTAssertNil(dispatchManager.oldestExpirationDate)
+        dispatchManager.config.dispatchExpiration = 10
+        XCTAssertNotNil(dispatchManager.oldestExpirationDate)
+    }
 
     #if os(iOS)
     func testRemoteAPIEnabled() {

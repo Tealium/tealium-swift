@@ -58,6 +58,17 @@ class DispatchManager: DispatchManagerProtocol {
         return TealiumValue.defaultMaxQueueSize
     }
 
+    var oldestExpirationDate: Date? {
+        guard batchExpirationDays >= 0 else {
+            return nil
+        }
+        let currentDate = Date()
+        var components = DateComponents()
+        components.calendar = Calendar.autoupdatingCurrent
+        components.setValue(-batchExpirationDays, for: .day)
+        return Calendar(identifier: .gregorian).date(byAdding: components, to: currentDate)
+    }
+
     // max number of events in a single batch
     var maxDispatchSize: Int {
         config.batchSize
@@ -175,7 +186,7 @@ class DispatchManager: DispatchManagerProtocol {
             case .success:
                 let shouldQueue = self.shouldQueue(request: newRequest)
                 if shouldQueue.0 == true {
-                    let batchingReason = shouldQueue.1? [TealiumDataKey.queueReason] as? String ?? TealiumConfigKey.batchingEnabled
+                    let batchingReason = shouldQueue.1?[TealiumDataKey.queueReason] as? String ?? TealiumConfigKey.batchingEnabled
 
                     self.enqueue(newRequest, reason: batchingReason)
                     // batch request and release if necessary
@@ -236,12 +247,7 @@ class DispatchManager: DispatchManagerProtocol {
     }
 
     func removeOldDispatches() {
-        let currentDate = Date()
-        var components = DateComponents()
-        components.calendar = Calendar.autoupdatingCurrent
-        components.setValue(-batchExpirationDays, for: .day)
-        let sinceDate = Calendar(identifier: .gregorian).date(byAdding: components, to: currentDate)
-        persistentQueue.removeOldDispatches(maxQueueSize, since: sinceDate)
+        persistentQueue.removeOldDispatches(maxQueueSize, since: oldestExpirationDate)
     }
 
     func triggerRemoteAPIRequest(_ request: TealiumTrackRequest) {
