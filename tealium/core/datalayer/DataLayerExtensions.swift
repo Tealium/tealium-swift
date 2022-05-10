@@ -19,7 +19,7 @@ public extension Tealium {
         appDataModule?.resetVisitorId()
     }
 
-    private var appDataModule: AppDataModule? {
+    internal var appDataModule: AppDataModule? {
         zz_internal_modulesManager?.collectors.first {
             $0 is AppDataModule
         } as? AppDataModule
