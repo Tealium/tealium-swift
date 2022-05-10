@@ -26,6 +26,7 @@ public extension Collectors {
 }
 
 extension TealiumConfigKey {
+    static let enableBackgroundLocation = "enable_background_location"
     static let desiredAccuracy = "desired_accuracy"
     static let updateDistance = "update_distance"
     static let useHighAccuracy = "is_high_accuracy"
@@ -47,6 +48,15 @@ public extension TealiumConfig {
 
         set {
             options[TealiumConfigKey.desiredAccuracy] = newValue
+        }
+    }
+
+    var enableBackgroundLocation: Bool {
+        get {
+            options[TealiumConfigKey.enableBackgroundLocation] as? Bool ?? false
+        }
+        set {
+            options[TealiumConfigKey.enableBackgroundLocation] = newValue
         }
     }
 
