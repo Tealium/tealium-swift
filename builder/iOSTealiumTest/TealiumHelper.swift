@@ -66,6 +66,7 @@ class TealiumHelper {
             print("Consent expired")
         }
         #if os(iOS)
+            config.enableBackgroundLocation = true
             config.collectors = [
                 Collectors.Attribution,
                 Collectors.Lifecycle,

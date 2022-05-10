@@ -35,6 +35,7 @@ public protocol LocationManagerProtocol {
     static func authorizationStatus() -> CLAuthorizationStatus
     var distanceFilter: Double { get set }
     var desiredAccuracy: CLLocationAccuracy { get set }
+    var allowsBackgroundLocationUpdates: Bool { get set }
     var delegate: CLLocationManagerDelegate? { get set }
     var monitoredRegions: Set<CLRegion> { get }
     var pausesLocationUpdatesAutomatically: Bool { get set }

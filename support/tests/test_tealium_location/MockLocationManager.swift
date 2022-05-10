@@ -30,7 +30,7 @@ class MockLocationManager: LocationManagerProtocol {
     static var enableLocationServices = false
     var monitoredRegions: Set<CLRegion> = Set<CLRegion>()
     var pausesLocationUpdatesAutomatically: Bool = true
-
+    var allowsBackgroundLocationUpdates: Bool = false
     init?(config: TealiumConfig, enableServices: Bool = false, delegateClass: CLLocationManagerDelegate?) {
 
         self.distanceFilter = config.updateDistance
