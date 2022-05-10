@@ -200,7 +200,9 @@ extension TealiumHelper: VisitorServiceDelegate {
 
 extension TealiumHelper: DispatchListener {
     public func willTrack(request: TealiumRequest) {
-        _onWillTrack.publish((request as! TealiumTrackRequest).trackDictionary)
+        if let request = request as? TealiumTrackRequest {
+            _onWillTrack.publish(request.trackDictionary)
+        }
         if self.enableHelperLogs {
             print("helper - willtrack")
         }

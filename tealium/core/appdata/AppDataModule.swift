@@ -11,10 +11,12 @@ public class AppDataModule: Collector {
 
     public let id: String = ModuleNames.appdata
     private(set) var uuid: String?
-    private var diskStorage: TealiumDiskStorageProtocol!
+    let diskStorage: TealiumDiskStorageProtocol!
     private var bundle: Bundle
     private var appDataCollector: AppDataCollection
     var appData = AppData()
+    @ToAnyObservable(TealiumReplaySubject())
+    public var onVisitorId: TealiumObservable<String>
 
     /// Retrieves current appdata
     public var data: [String: Any]? {
@@ -84,8 +86,15 @@ public class AppDataModule: Collector {
            let migratedVisitorId = dataLayer.all[TealiumDataKey.visitorId] as? String {
             appData.persistentData?.uuid = migratedUUID
             appData.persistentData?.visitorId = migratedVisitorId
-            diskStorage?.save(appData.persistentData, completion: nil)
+            if let persistentData = appData.persistentData {
+                savePersistentData(persistentData)
+            }
             dataLayer.delete(for: [TealiumDataKey.uuid, TealiumDataKey.visitorId])
+        }
+        if let id = appData.persistentData?.visitorId {
+            TealiumQueues.backgroundSerialQueue.async {
+                self._onVisitorId.publish(id)
+            }
         }
         completion((.success(true), nil))
     }
@@ -135,8 +144,7 @@ public class AppDataModule: Collector {
     func newPersistentData(for uuid: String) -> PersistentAppData {
         let visitorId = existingVisitorId ?? self.visitorId(from: uuid)
         let persistentData = PersistentAppData(visitorId: visitorId, uuid: uuid)
-        diskStorage.saveToDefaults(key: TealiumDataKey.visitorId, value: visitorId)
-        diskStorage?.save(persistentData, completion: nil)
+        savePersistentData(persistentData)
         return persistentData
     }
 
@@ -180,11 +188,15 @@ public class AppDataModule: Collector {
         if let existingVisitorId = self.existingVisitorId,
            let persistentData = appData.persistentData {
             let newPersistentData = PersistentAppData(visitorId: existingVisitorId, uuid: persistentData.uuid)
-            diskStorage.saveToDefaults(key: TealiumDataKey.visitorId, value: existingVisitorId)
-            diskStorage.save(newPersistentData, completion: nil)
+            savePersistentData(newPersistentData)
             self.appData.persistentData = newPersistentData
         }
         newVolatileData()
+    }
+
+    private func savePersistentData(_ data: PersistentAppData) {
+        diskStorage.saveToDefaults(key: TealiumDataKey.visitorId, value: data.visitorId)
+        diskStorage.save(data, completion: nil)
     }
 
     /// Resets Tealium Visitor Id
@@ -192,8 +204,13 @@ public class AppDataModule: Collector {
         guard var persistentData = diskStorage.retrieve(as: PersistentAppData.self) else {
             return
         }
-        persistentData.visitorId = self.visitorId(from: UUID().uuidString)
-        appData.persistentData = persistentData
+        let id = self.visitorId(from: UUID().uuidString)
+        persistentData.visitorId = id
+        savePersistentData(persistentData)
+        self.appData.persistentData = persistentData
+        TealiumQueues.backgroundSerialQueue.async { [weak self] in
+            self?._onVisitorId.publish(id)
+        }
     }
 
 }

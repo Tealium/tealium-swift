@@ -8,9 +8,10 @@
 @testable import TealiumCore
 import XCTest
 
+let mockDiskStorage = MockAppDataDiskStorage()
 class AppDataModuleTests: XCTestCase {
 
-    let mockDiskStorage = MockAppDataDiskStorage()
+    
     let appDataCollector = MockAppDataCollector()
     
     var module: AppDataModule? {
@@ -18,27 +19,35 @@ class AppDataModuleTests: XCTestCase {
         return AppDataModule(context: context, delegate: self, diskStorage: mockDiskStorage, bundle: Bundle(for: type(of: self)), appDataCollector: appDataCollector)
     }
     
-    func createModule(with dataLayer: DataLayerManagerProtocol? = nil) -> AppDataModule {
+    func createModule(with dataLayer: DataLayerManagerProtocol? = nil, diskStorage: TealiumDiskStorageProtocol? = mockDiskStorage) -> AppDataModule {
         let context = TestTealiumHelper.context(with: TestTealiumHelper().getConfig(), dataLayer: dataLayer ?? DummyDataManager())
-        return AppDataModule(context: context, delegate: self, diskStorage: mockDiskStorage, bundle: Bundle(for: type(of: self)), appDataCollector: appDataCollector)
+        return AppDataModule(context: context, delegate: self, diskStorage: diskStorage, bundle: Bundle(for: type(of: self)), appDataCollector: appDataCollector)
     }
 
     override func setUp() {
+        mockDiskStorage.reset()
+        let data = PersistentAppData(visitorId: TealiumTestValue.visitorID,
+                                     uuid: TealiumTestValue.visitorID)
+        mockDiskStorage.storedData = AnyCodable(data)
     }
     
     override func tearDownWithError() throws {
     }
     
     func testInitMigratesLegacyAppData() {
-        let appDataModule = createModule(with: MockMigratedDataLayer())
+        let appDataModule = createModule(with: MockMigratedDataLayer(), diskStorage: nil)
         guard let data = appDataModule.data,
               let visId = data[TealiumDataKey.visitorId] as? String,
               let uuid = data[TealiumDataKey.uuid] as? String else {
             XCTFail("Nothing in persistent app data and there should be a visitor id and uuid.")
             return
         }
-        XCTAssertEqual(visId, "205CA6D0FE3A4242A3522DBE7F5B75DE")
-        XCTAssertEqual(uuid, "205CA6D0-FE3A-4242-A352-2DBE7F5B75DE")
+        XCTAssertEqual(visId, MockMigratedDataLayer.visitorId)
+        XCTAssertEqual(uuid, MockMigratedDataLayer.uuid)
+        let appData = appDataModule.diskStorage.retrieve(as: PersistentAppData.self)
+        XCTAssertNotNil(appData)
+        XCTAssertEqual(appData?.visitorId, MockMigratedDataLayer.visitorId)
+        XCTAssertEqual(appData?.uuid, MockMigratedDataLayer.uuid)
     }
     
     func testInitRemovesAppDataFromDataLayerAfterMigration() {

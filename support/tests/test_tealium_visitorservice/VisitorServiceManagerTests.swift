@@ -18,13 +18,14 @@ class VisitorServiceManagerTests: XCTestCase {
     let maxRuns = 10 // max runs for each test
     let waiter = XCTWaiter()
     var currentTest: String = ""
+    let visitorId = "abc123"
 
     override func setUp() {
         expectations = [XCTestExpectation]()
         visitorServiceManager = nil
         mockDiskStorage = MockTealiumDiskStorage()
         visitorServiceManager = VisitorServiceManager(config: TestTealiumHelper().getConfig(), delegate: nil, diskStorage: mockDiskStorage)
-        visitorServiceManager?.visitorServiceRetriever = VisitorServiceRetriever(config: TestTealiumHelper().getConfig(), visitorId: "abc123", urlSession: MockURLSession())
+        visitorServiceManager?.visitorServiceRetriever = VisitorServiceRetriever(config: TestTealiumHelper().getConfig(), urlSession: MockURLSession())
     }
 
     override func tearDown() {
@@ -53,8 +54,7 @@ class VisitorServiceManagerTests: XCTestCase {
         currentTest = "testDelegateDidUpdateViaRequestVisitorProfile"
         expectations.append(expectation)
         visitorServiceManager?.delegate = self
-        visitorServiceManager?.visitorId = "test"
-        visitorServiceManager?.requestVisitorProfile()
+        visitorServiceManager?.requestVisitorProfile(visitorId: "test")
         waiter.wait(for: expectations, timeout: 5.0)
     }
 
@@ -69,14 +69,20 @@ class VisitorServiceManagerTests: XCTestCase {
     }
 
     func testLifetimeEventCountHasBeenUpdated() {
-        visitorServiceManager?.lifetimeEvents = 4.0
+        let visitor = TestTealiumHelper.loadStub(from: "visitor", type(of: self))
+        var profile = try! JSONDecoder().decode(TealiumVisitorProfile.self, from: visitor)
+        profile.lifetimeEventCount = 4.0
+        visitorServiceManager?.diskStorage.save(profile, completion: nil)
         let result = visitorServiceManager?.lifetimeEventCountHasBeenUpdated(5.0)
         XCTAssertTrue(result!)
     }
 
     func testLifetimeEventCountNotUpdated() {
-        visitorServiceManager?.lifetimeEvents = 4.0
-        let result = visitorServiceManager?.lifetimeEventCountHasBeenUpdated(4.0)
+        let visitor = TestTealiumHelper.loadStub(from: "visitor", type(of: self))
+        var profile = try! JSONDecoder().decode(TealiumVisitorProfile.self, from: visitor)
+        profile.lifetimeEventCount = 4.0
+        visitorServiceManager?.diskStorage.save(profile, completion: nil)
+        let result = self.visitorServiceManager?.lifetimeEventCountHasBeenUpdated(4.0)
         XCTAssertFalse(result!)
     }
 

@@ -40,7 +40,7 @@ public protocol RemoteCommandProtocol {
     static func sendRemoteCommandResponse(for commandId: String,
                                           response: RemoteCommandResponseProtocol,
                                           delegate: ModuleDelegate?)
-
+    /// Default is commandId
     var name: String { get }
     var version: String? { get }
 }
@@ -72,9 +72,10 @@ func versionForObject(_ obj: Any) -> String? {
 }
 
 func versionString(bundle: Bundle) -> String? {
-    guard let dictionary = bundle.infoDictionary,
+    guard bundle != Bundle.main, // We don't care about app's version here
+        let dictionary = bundle.infoDictionary,
           let version = dictionary["CFBundleShortVersionString"] as? String else {
-        return nil
+        return "0.0"
     }
     return "\(version)"
 }
