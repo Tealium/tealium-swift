@@ -56,7 +56,6 @@ class TealiumHelper {
         config.visitorServiceDelegate = self
         config.memoryReportingEnabled = true
         config.autoTrackingCollectorDelegate = self
-        config.enableBackgroundLocation = true
         config.batterySaverEnabled = true
         config.hostedDataLayerKeys = ["hdl-test": "product_id"]
         config.timedEventTriggers = [TimedEventTrigger(start: "product_view", end: "order_complete"),
@@ -67,6 +66,7 @@ class TealiumHelper {
             print("Consent expired")
         }
         #if os(iOS)
+            config.enableBackgroundLocation = true
             config.collectors = [
                 Collectors.Attribution,
                 Collectors.Lifecycle,
