@@ -46,6 +46,14 @@ class TealiumLocationTests: XCTestCase {
         let locationManager = TealiumLocationManager(config: config)
         XCTAssertEqual(locationManager.locationManager.desiredAccuracy, kCLLocationAccuracyBestForNavigation)
     }
+    
+    func testEnabledBackgroundLocationIsSet() {
+        let locationManager1 = TealiumLocationManager(config: config, locationManager: MockLocationManager(config: config, delegateClass: nil)!)
+        XCTAssertFalse(locationManager1.locationManager.allowsBackgroundLocationUpdates) // default false
+        config.enableBackgroundLocation = true
+        let locationManager2 = TealiumLocationManager(config: config, locationManager: MockLocationManager(config: config, delegateClass: nil)!)
+        XCTAssertTrue(locationManager2.locationManager.allowsBackgroundLocationUpdates)
+    }
 
     func testLocationAccuracyEnum() {
         if #available(iOS 14, *) {
