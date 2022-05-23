@@ -13,3 +13,9 @@ public protocol DispatchValidator {
     func shouldDrop(request: TealiumRequest) -> Bool
     func shouldPurge(request: TealiumRequest) -> Bool
 }
+
+public extension DispatchValidator {
+    func requestDequeue() {
+        
+    }
+}

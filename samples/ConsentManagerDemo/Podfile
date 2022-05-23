@@ -7,4 +7,5 @@ target 'ConsentManagerDemo' do
   # Pods for ConsentManagerDemo
   pod 'Eureka', '~> 5.3'
   pod 'tealium-swift', :path=> '../..'
+  pod 'UsercentricsUI', '2.5.3'
 end

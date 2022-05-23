@@ -7,7 +7,14 @@
 
 import Foundation
 
-class ConsentManagerModule: DispatchValidator {
+enum IABTCFKeys {
+    static let tcfString = "IABTCF_TCString"
+    static let cmpId = "IABTCF_CmpSdkID"
+    static let vendorConsents = "IABTCF_VendorConsents"
+    static let purposeConsents = "IABTCF_PurposeConsents"
+}
+var contextPointer = 1
+class ConsentManagerModule: NSObject, DispatchValidator {
 
     public let id: String = ModuleNames.consentmanager
     var config: TealiumConfig
@@ -26,9 +33,23 @@ class ConsentManagerModule: DispatchValidator {
                                                              isCritical: true)
         self.dataLayer = context.dataLayer
         self.delegate = delegate
+        super.init()
         expireConsent()
         consentManager = ConsentManager(config: config, delegate: delegate, diskStorage: self.diskStorage, dataLayer: self.dataLayer)
         completion((.success(true), nil))
+        
+        UserDefaults.standard.addObserver(self, forKeyPath: IABTCFKeys.tcfString, options: NSKeyValueObservingOptions.new, context: &contextPointer)
+        
+        let a = UserDefaults.standard.string(forKey: IABTCFKeys.tcfString)
+        print(a)
+    }
+
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        guard context == &contextPointer else {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+            return
+        }
+        print("caspiooooo", keyPath, object)
     }
 
     /// Determines whether or not a request should be queued based on a user's consent preferences selection.

@@ -7,6 +7,8 @@
 
 import Eureka
 import UIKit
+import Usercentrics
+import UsercentricsUI
 
 class ViewController: FormViewController {
 
@@ -50,6 +52,36 @@ class ViewController: FormViewController {
             }.onCellSelection { _, _ in
                 helper.resetConsentPreferences()
             }
+//        UsercentricsCore.reset()
+        UsercentricsCore.isReady { [weak self] status in
+            guard let self = self else { return }
+            UsercentricsCore.shared.getTCFData { data in
+                print(data)
+            }
+            if status.shouldCollectConsent {
+//                var usercentricsUI: UIViewController?
+                let banner = UsercentricsBanner()
+                banner.showFirstLayer(hostView: self, layout: .sheet) { response in
+                    self.dismiss(animated: true)
+                }
+//                usercentricsUI = UsercentricsUserInterface.getPredefinedUI(settings: nil, dismissViewHandler: { response in                    usercentricsUI?.dismiss(animated: true, completion: nil)
+//                })
+//                guard let ui = usercentricsUI else { return}
+//                self.present(ui, animated: true, completion: nil)
+            } else {
+                let service = status.consents[0]
+//                let data = UsercentricsCore.shared.getCMPData()
+//                let settings = data.settings
+//                let services = data.services
+//                let categories = data.categories
+                print(service)
+
+                // Apply consent with status.consents
+            }
+        } onFailure: { error in
+            print(error)
+            // Handle non-localized error
+        }
     }
 
     override func didReceiveMemoryWarning() {

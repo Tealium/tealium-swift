@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		154B3A0E27623E5600B83E6B /* UserCentricDispatchValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154B3A0D27623E5600B83E6B /* UserCentricDispatchValidator.swift */; };
 		406D2AF8314871C8C082CA71 /* Pods_ConsentManagerDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC907E61307C494B1CAF7A9 /* Pods_ConsentManagerDemo.framework */; };
 		43DE51442884F15ADE8EE90A /* PreferencesOnOffOnly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DE53AE769EF4C6ADA17B71 /* PreferencesOnOffOnly.swift */; };
 		43DE51619421DEF496B1AEFE /* PreferencesWithSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DE585CCFF0805F49F44594 /* PreferencesWithSlider.swift */; };
@@ -37,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		154B3A0D27623E5600B83E6B /* UserCentricDispatchValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCentricDispatchValidator.swift; sourceTree = "<group>"; };
 		25498382C459750E59AFF627 /* Pods-ConsentManagerDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ConsentManagerDemo.debug.xcconfig"; path = "Target Support Files/Pods-ConsentManagerDemo/Pods-ConsentManagerDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		267CB4A6E2C02C61149C0BB3 /* Pods-ConsentManagerDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ConsentManagerDemo.release.xcconfig"; path = "Target Support Files/Pods-ConsentManagerDemo/Pods-ConsentManagerDemo.release.xcconfig"; sourceTree = "<group>"; };
 		43DE51E98BF48273E9B36D37 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 				43DE5B61E297E63593ABF1D2 /* PreferencesDialogViewController.swift */,
 				43DE585CCFF0805F49F44594 /* PreferencesWithSlider.swift */,
 				43DE53AE769EF4C6ADA17B71 /* PreferencesOnOffOnly.swift */,
+				154B3A0D27623E5600B83E6B /* UserCentricDispatchValidator.swift */,
 			);
 			path = ConsentManagerDemo;
 			sourceTree = "<group>";
@@ -132,7 +135,6 @@
 				25498382C459750E59AFF627 /* Pods-ConsentManagerDemo.debug.xcconfig */,
 				267CB4A6E2C02C61149C0BB3 /* Pods-ConsentManagerDemo.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -201,7 +203,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = "";
-				ORGANIZATIONNAME = ___FULLUSERNAME___;
+				ORGANIZATIONNAME = "___FULLUSERNAME___";
 				TargetAttributes = {
 					43DE55A6C155C73D2EC3DECF = {
 						DevelopmentTeam = XC939GDC9P;
@@ -294,11 +296,15 @@
 				"${PODS_ROOT}/Target Support Files/Pods-ConsentManagerDemo/Pods-ConsentManagerDemo-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
 				"${BUILT_PRODUCTS_DIR}/tealium-swift/TealiumSwift.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Usercentrics/Usercentrics.framework/Usercentrics",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/UsercentricsUI/UsercentricsUI.framework/UsercentricsUI",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Eureka.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TealiumSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Usercentrics.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UsercentricsUI.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -316,6 +322,7 @@
 				43DE5E51A748A462BCEB9D55 /* ViewController.swift in Sources */,
 				43DE587F39720941E7B28E0B /* TealiumHelper.swift in Sources */,
 				43DE57E0F4EB1F26F6753FFE /* PreferencesDialogViewController.swift in Sources */,
+				154B3A0E27623E5600B83E6B /* UserCentricDispatchValidator.swift in Sources */,
 				43DE51619421DEF496B1AEFE /* PreferencesWithSlider.swift in Sources */,
 				43DE51442884F15ADE8EE90A /* PreferencesOnOffOnly.swift in Sources */,
 			);

@@ -33,20 +33,24 @@ class TealiumHelper {
         if enableLogs { config.logLevel = .debug }
 
         // Set up consent manager
-        config.consentLoggingEnabled = true
-        config.consentPolicy = .gdpr // You can also create your own custom policy by using `.custom(MyCustomPolicy.self)`
-        config.consentExpiry = (90, .days)
-        config.onConsentExpiration = {
-            print("Consent Expired")
-        }
+//        config.consentLoggingEnabled = true
+//        config.consentPolicy = .gdpr // You can also create your own custom policy by using `.custom(MyCustomPolicy.self)`
+//        config.consentExpiry = (90, .days)
+//        config.onConsentExpiration = {
+//            print("Consent Expired")
+//        }
 
         // Add collectors
         config.collectors = [Collectors.Lifecycle]
 
         // Add dispatchers
         config.dispatchers = [Dispatchers.Collect]
+        config.dispatchValidators = [UserCentricDispatchValidator(settingsId: "184_k2cMV", templateId: "H1Vl5NidjWX")]
 
         tealium = Tealium(config: config)
+        TealiumQueues.backgroundSerialQueue.async {
+            self.tealium?.track(TealiumEvent("testevent"))
+        }
     }
 
     public func start() {
