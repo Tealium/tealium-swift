@@ -13,7 +13,7 @@ public class TealiumInstanceManager {
 
     public static var shared = TealiumInstanceManager()
 
-    @ToAnyObservable(TealiumReplaySubject(cacheSize: 10))
+    @ToAnyObservable<TealiumReplaySubject>(TealiumReplaySubject(cacheSize: 10))
     var onOpenUrl: TealiumObservable<URL>
 
     init() {
