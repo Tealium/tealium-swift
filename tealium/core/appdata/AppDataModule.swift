@@ -15,7 +15,7 @@ public class AppDataModule: Collector {
     private var bundle: Bundle
     private var appDataCollector: AppDataCollection
     var appData = AppData()
-    @ToAnyObservable(TealiumReplaySubject())
+    @ToAnyObservable<TealiumReplaySubject>(TealiumReplaySubject())
     public var onVisitorId: TealiumObservable<String>
 
     /// Retrieves current appdata

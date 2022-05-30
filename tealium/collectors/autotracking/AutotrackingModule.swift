@@ -15,7 +15,7 @@ import TealiumCore
 
 public class AutotrackingModule: Collector {
 
-    @ToAnyObservable(TealiumBufferedSubject(bufferSize: 10))
+    @ToAnyObservable<TealiumBufferedSubject>(TealiumBufferedSubject(bufferSize: 10))
     static var onAutoTrackView: TealiumObservable<String>
 
     public let id: String = TealiumAutotrackingKey.moduleName
@@ -30,7 +30,7 @@ public class AutotrackingModule: Collector {
     var blockList: [String]?
     var blockListBundle = Bundle.main
 
-    @ToAnyObservable(TealiumReplaySubject())
+    @ToAnyObservable<TealiumReplaySubject>(TealiumReplaySubject())
     private var onReady: TealiumObservable<Void>
 
     /// Initializes the module
