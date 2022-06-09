@@ -94,11 +94,6 @@ public class ConsentManager {
         let preferences = consentPreferencesStorage?.preferences ?? UserConsentPreferences(consentStatus: .unknown, consentCategories: nil)
 
         self.currentPolicy = ConsentPolicyFactory.create(config.consentPolicy ?? .gdpr, preferences: preferences)
-
-        if preferences.consentStatus != .unknown {
-            // always need to update the consent cookie in TiQ, so this will trigger update_consent_cookie
-            trackUserConsentPreferences()
-        }
     }
 
     /// Sends a track call containing the consent settings if consent logging is enabled￼.
