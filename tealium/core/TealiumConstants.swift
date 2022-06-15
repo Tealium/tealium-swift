@@ -113,6 +113,7 @@ public enum TealiumConfigKey {
     static let hostedDataLayerExpiry = "hosted_data_layer_expiry"
     static let consentExpiry = "consent_expiry"
     static let consentExpiryCallback = "consent_expiry_callback"
+    static let overrideConsentCategoriesKey = "override_consent_categories_key"
     static let timedEventTriggers = "timed_event_triggers"
     // number of events in a batch, max 10
     public static let batchSizeKey = "batch_size"

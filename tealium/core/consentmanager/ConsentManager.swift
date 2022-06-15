@@ -86,12 +86,12 @@ public class ConsentManager {
            let migratedConsentCategories = dataLayer.all[TealiumDataKey.consentCategoriesKey] as? [String] {
             config.consentPolicy = .gdpr
             consentPreferencesStorage?.preferences = UserConsentPreferences(consentStatus: TealiumConsentStatus(integer: migratedConsentStatus),
-                                                                            consentCategories: TealiumConsentCategories.consentCategoriesStringArrayToEnum(migratedConsentCategories))
+                                                                            consentCategories: TealiumConsentCategories.consentCategoriesStringArrayToEnum(migratedConsentCategories), config: config)
             config.consentLoggingEnabled = dataLayer.all[TealiumDataKey.consentLoggingEnabled] as? Bool ?? false
             dataLayer.delete(for: [TealiumDataKey.consentStatus, TealiumDataKey.consentCategoriesKey, TealiumDataKey.consentLoggingEnabled])
         }
 
-        let preferences = consentPreferencesStorage?.preferences ?? UserConsentPreferences(consentStatus: .unknown, consentCategories: nil)
+        let preferences = consentPreferencesStorage?.preferences ?? UserConsentPreferences(consentStatus: .unknown, consentCategories: nil, config: config)
 
         self.currentPolicy = ConsentPolicyFactory.create(config.consentPolicy ?? .gdpr, preferences: preferences)
 

@@ -40,6 +40,7 @@ open class TealiumConfig {
             options[TealiumConfigKey.logger] = newValue
         }
     }
+    
 
     /// Set to `false` to disable the Tealium AppDelegate proxy for deep link handling.
     /// Default `true`.
@@ -436,6 +437,17 @@ public extension TealiumConfig {
 
         set {
             options[TealiumConfigKey.consentExpiryCallback] = newValue
+        }
+    }
+    
+    /// Allows the Consent Categories key to be overridden
+    var overrideConsentCategoriesKey: String? {
+        get {
+            options[TealiumConfigKey.overrideConsentCategoriesKey] as? String
+        }
+        
+        set {
+            options[TealiumConfigKey.overrideConsentCategoriesKey] = newValue
         }
     }
 
