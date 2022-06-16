@@ -26,14 +26,22 @@ public class Attributor: Attributable {
     public init() { }
 
     public static func registerAppForAdNetworkAttribution() {
-        if #available(iOS 11.3, *) {
-            SKAdNetwork.registerAppForAdNetworkAttribution()
+        if #available(iOS 15.4, *) {
+            SKAdNetwork.updatePostbackConversionValue(0)
+        } else {
+            if #available(iOS 11.3, *) {
+                SKAdNetwork.registerAppForAdNetworkAttribution()
+            }
         }
     }
 
     public static func updateConversionValue(_ conversionValue: Int) {
-        if #available(iOS 14.0, *) {
-            SKAdNetwork.updateConversionValue(conversionValue)
+        if #available(iOS 15.4, *) {
+            SKAdNetwork.updatePostbackConversionValue(conversionValue)
+        } else {
+            if #available(iOS 14.0, *) {
+                SKAdNetwork.updateConversionValue(conversionValue)
+            }
         }
     }
 }
