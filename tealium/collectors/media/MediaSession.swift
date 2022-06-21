@@ -10,6 +10,146 @@ import Foundation
 import TealiumCore
 #endif
 
+protocol MediaSessionPlugin {
+    // let order: Int // or whatever we want to ask to the plugins from the mediaSession
+}
+
+protocol BasicPluginFactory {
+    static func create(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin
+}
+
+//protocol ReadyOptions {
+//
+//    func onReady(callback: () -> ())
+//}
+
+protocol PluginFactoryWithOptions {
+    associatedtype Options//: ReadyOptions
+    static func create(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) -> MediaSessionPlugin
+}
+
+struct AnyPluginFactory {
+
+    private let createBlock: (MediaSessionStorage, MediaSessionEvents2, MediaTracker) -> (MediaSessionPlugin)
+
+    init<P: PluginFactoryWithOptions, Options>(_ plugin: P.Type, _ options: Options) where P.Options == Options {
+        createBlock = { storage, events, tracker in
+            return plugin.create(storage: storage, events: events, tracker: tracker, options: options)
+        }
+    }
+
+    init<P: BasicPluginFactory>(_ plugin: P.Type) {
+        createBlock = plugin.create
+    }
+
+    func create(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin {
+        createBlock(storage, events, tracker)
+    }
+}
+
+class Session {
+    let events = MediaSessionEvents2()
+    
+    func play() {
+//        events.onPlay.notify()
+    }
+    
+}
+
+class MediaModule2 {
+    // with some sort of MediaMetadata
+    class func createSession(pluginFactory: [AnyPluginFactory]) -> [MediaSessionPlugin] {
+        pluginFactory.map { $0.create(storage: MediaSessionStorage(),
+                                      events: MediaSessionEvents2(),
+                                      tracker: MediaTrackerImpl())
+        }
+    }
+}
+
+class SomePluginWithOptions: PluginFactoryWithOptions, MediaSessionPlugin {
+    typealias Options = Int
+    
+    
+    static func create(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) -> MediaSessionPlugin {
+        return SomePluginWithOptions(storage: storage, events: events, tracker: tracker, options: options)
+    }
+    
+    
+    init(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) {
+        print(options)
+        
+        events.onPlay.subscribe { _ in
+            tracker.track("play")
+        }
+    }
+}
+
+struct ComplexPluginOptions {
+    let aaa: String
+    let bbb: Int
+}
+
+class SomePluginWithComplexOptions: PluginFactoryWithOptions, MediaSessionPlugin {
+    typealias Options = ComplexPluginOptions
+
+    static func create(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) -> MediaSessionPlugin {
+        return SomePluginWithComplexOptions(storage: storage, events: events, tracker: tracker, options: options)
+    }
+    init(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) {
+        print(options)
+    }
+}
+
+class SomeSimplePlugin: BasicPluginFactory, MediaSessionPlugin {
+    static func create(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin {
+        SomeSimplePlugin(storage: storage, events: events, tracker: tracker)
+    }
+    
+    init(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker) {
+        
+    }
+    
+}
+
+func usage() -> [MediaSessionPlugin] {
+    // Pass the MediaMetadata too
+    return MediaModule2.createSession(pluginFactory: [
+        AnyPluginFactory(SomePluginWithOptions.self, 2),
+        AnyPluginFactory(SomeSimplePlugin.self),
+        AnyPluginFactory(SomePluginWithComplexOptions.self, ComplexPluginOptions(aaa: "a", bbb: 2))
+    ])
+}
+
+/// In memory storage for this media session. Possibly edited by every plugin. Used when tracking data.
+class MediaSessionStorage {
+//    let mediaContent: MediaContent // by the outside
+//    let dataLayer: [String: Any] // By the plugins
+//    let state: Any // By the session
+//
+//    var trackingData: [String: Any] {
+//
+//        return [:]
+//    }
+}
+
+class MediaSessionEvents2 {
+    @ToAnyObservable<TealiumPublishSubject<Void>>(TealiumPublishSubject<Void>())
+    var onPlay: TealiumObservable<Void>
+    @ToAnyObservable<TealiumPublishSubject<Void>>(TealiumPublishSubject<Void>())
+    var onPause: TealiumObservable<Void>
+
+}
+
+protocol MediaTracker {
+    func track(_ event: String)
+}
+
+class MediaTrackerImpl: MediaTracker {
+    func track(_ event: String) {
+
+    }
+}
+
 public protocol MediaSessionProtocol: MediaSessionEvents {
     var bitrate: Int? { get set }
     var droppedFrames: Int { get set }
