@@ -11,7 +11,6 @@ public struct UserConsentPreferences: Equatable, Codable {
 
     public var consentCategories: [TealiumConsentCategories]?
     public var consentStatus: TealiumConsentStatus
-    private var consentCategoriesKey: String
     var lastUpdate: Date?
 
     /// Initializes preferences￼.
@@ -19,10 +18,9 @@ public struct UserConsentPreferences: Equatable, Codable {
     /// - Parameters:
     ///     - consentStatus: `TealiumConsentStatus?` - The user's current consent status. Defaults to unknown if nil￼
     ///     - consentCategories: `[TealiumConsentCategories]?` - The user's selected consent categories, if any.
-    public init(consentStatus: TealiumConsentStatus, consentCategories: [TealiumConsentCategories]?, config: TealiumConfig) {
+    public init(consentStatus: TealiumConsentStatus, consentCategories: [TealiumConsentCategories]?) {
         self.consentCategories = consentCategories
         self.consentStatus = consentStatus
-        self.consentCategoriesKey = config.overrideConsentCategoriesKey ?? TealiumDataKey.consentCategoriesKey
     }
 
     /// Initializes `UserConsentPreferences` from a dictionary. Used for initialization from previously-stored preferences.￼
@@ -78,9 +76,9 @@ public struct UserConsentPreferences: Equatable, Codable {
         preferencesDictionary[TealiumDataKey.consentStatus] = self.consentStatus.rawValue
 
         if let categories = self.consentCategories, categories.count > 0 {
-            preferencesDictionary[self.consentCategoriesKey] = consentCategoriesEnumToStringArray(categories)
+            preferencesDictionary[TealiumDataKey.consentCategoriesKey] = consentCategoriesEnumToStringArray(categories)
         } else {
-            preferencesDictionary[self.consentCategoriesKey] = [String]()
+            preferencesDictionary[TealiumDataKey.consentCategoriesKey] = [String]()
         }
         return preferencesDictionary.count > 0 ? preferencesDictionary : nil
     }
