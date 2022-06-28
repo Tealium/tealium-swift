@@ -11,11 +11,11 @@ import Foundation
 import TealiumCore
 #endif
 
-protocol MediaSessionPlugin {
+public protocol MediaSessionPlugin {
     // let order: Int // or whatever we want to ask to the plugins from the mediaSession
 }
 
-protocol BasicPluginFactory {
+public protocol BasicPluginFactory {
     static func create(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin
 }
 
@@ -24,22 +24,22 @@ protocol BasicPluginFactory {
 //    func onReady(callback: () -> ())
 //  }
 
-protocol PluginFactoryWithOptions {
+public protocol PluginFactoryWithOptions {
     associatedtype Options//: ReadyOptions
     static func create(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) -> MediaSessionPlugin
 }
 
-struct AnyPluginFactory {
+public struct AnyPluginFactory {
 
     private let createBlock: (MediaSessionStorage, MediaSessionEvents2, MediaTracker) -> (MediaSessionPlugin)
 
-    init<P: PluginFactoryWithOptions, Options>(_ plugin: P.Type, _ options: Options) where P.Options == Options {
+    public init<P: PluginFactoryWithOptions, Options>(_ plugin: P.Type, _ options: Options) where P.Options == Options {
         createBlock = { storage, events, tracker in
             return plugin.create(storage: storage, events: events, tracker: tracker, options: options)
         }
     }
 
-    init<P: BasicPluginFactory>(_ plugin: P.Type) {
+    public init<P: BasicPluginFactory>(_ plugin: P.Type) {
         createBlock = plugin.create
     }
 
@@ -52,9 +52,9 @@ public class MediaSession2 {
     private let notifier = MediaSessionEventsNotifier()
     private let storage: MediaSessionStorage
     private let plugins: [MediaSessionPlugin]
-    init(pluginFactory: [AnyPluginFactory], delegate: ModuleDelegate?) {
+    init(mediaContent: MediaContent2, pluginFactory: [AnyPluginFactory], delegate: ModuleDelegate?) {
         let events = notifier.asObservables
-        let storage = MediaSessionStorage()
+        let storage = MediaSessionStorage(mediaContent: mediaContent)
         self.storage = storage
         let tracker = Tracker(storage: storage, delegate: delegate)
         plugins = pluginFactory.map { $0.create(storage: storage,
@@ -70,24 +70,80 @@ public class MediaSession2 {
             self.storage = storage
             self.delegate = delegate
         }
-        func requestTrack(_ track: TealiumTrackRequest) {
-            delegate?.requestTrack(track)
+        func requestTrack(_ event: MediaEvent, dataLayer: [String: Any]?) {
+            var data = dataLayer ?? [:]
+            data += storage.trackingData
+            delegate?.requestTrack(TealiumEvent(event.toString,
+                                                dataLayer: data).trackRequest)
         }
     }
 
     public func play() {
         notifier.onPlay.publish()
     }
-
     public func pause() {
         notifier.onPause.publish()
+    }
+    public func startSession() {
+        notifier.onStart.publish()
+    }
+    public func resumeSession() {
+        notifier.onResume.publish()
+    }
+    public func startChapter(_ chapter: Chapter) {
+        notifier.onStartChapter.publish(chapter)
+    }
+    public func skipChapter() {
+        notifier.onSkipChapter.publish()
+    }
+    public func endChapter() {
+        notifier.onEndChapter.publish()
+    }
+    public func startBuffer() {
+        notifier.onStartBuffer.publish()
+    }
+    public func endBuffer() {
+        notifier.onEndBuffer.publish()
+    }
+    public func startSeek(at position: Double?) {
+        notifier.onStartSeek.publish(position)
+    }
+    public func endSeek(at position: Double?) {
+        notifier.onEndSeek.publish(position)
+    }
+    public func startAdBreak(_ adBreak: AdBreak) {
+        notifier.onStartAdBreak.publish(adBreak)
+    }
+    public func endAdBreak() {
+        notifier.onEndAdBreak.publish()
+    }
+    public func startAd(_ adv: Ad) {
+        notifier.onStartAd.publish(adv)
+    }
+    public func clickAd() {
+        notifier.onClickAd.publish()
+    }
+    public func skipAd() {
+        notifier.onSkipAd.publish()
+    }
+    public func endAd() {
+        notifier.onEndAd.publish()
+    }
+    public func custom(_ event: String) {
+        notifier.onCustomEvent.publish(event)
+    }
+    public func endContent() {
+        notifier.onEndContent.publish()
+    }
+    public func endSession() {
+        notifier.onEndSession.publish()
     }
 }
 
 class MediaModule2 {
     // with some sort of MediaMetadata
-    class func createSession(pluginFactory: [AnyPluginFactory]) -> MediaSession2 {
-        MediaSession2(pluginFactory: pluginFactory, delegate: nil)
+    class func createSession(mediaContent: MediaContent2, pluginFactory: [AnyPluginFactory]) -> MediaSession2 {
+        MediaSession2(mediaContent: mediaContent, pluginFactory: pluginFactory, delegate: nil)
     }
 }
 
@@ -102,7 +158,7 @@ class SomePluginWithOptions: PluginFactoryWithOptions, MediaSessionPlugin {
         print(options)
 
         events.onPlay.subscribe { _ in
-            tracker.requestTrack(TealiumEvent(StandardMediaEvent.play.rawValue).trackRequest)
+            tracker.requestTrack(.event(.play))
         }
     }
 }
@@ -135,24 +191,32 @@ class SomeSimplePlugin: BasicPluginFactory, MediaSessionPlugin {
 
 func usage() -> MediaSession2 {
     // Pass the MediaMetadata too
-    return MediaModule2.createSession(pluginFactory: [
-        AnyPluginFactory(SomePluginWithOptions.self, 2),
-        AnyPluginFactory(SomeSimplePlugin.self),
-        AnyPluginFactory(SomePluginWithComplexOptions.self, ComplexPluginOptions(aaa: "a", bbb: 2)),
-        AnyPluginFactory(SummaryMediaSessionPlugin.self)
-    ])
+    return MediaModule2.createSession(mediaContent: MediaContent2(title: "Some title"),
+                                      pluginFactory: [
+                                        AnyPluginFactory(SomePluginWithOptions.self, 2),
+                                        AnyPluginFactory(SomeSimplePlugin.self),
+                                        AnyPluginFactory(SomePluginWithComplexOptions.self, ComplexPluginOptions(aaa: "a", bbb: 2)),
+                                        AnyPluginFactory(SummaryMediaSessionPlugin.self)
+                                      ])
 }
 
 /// In memory storage for this media session. Possibly edited by every plugin. Used when tracking data.
-class MediaSessionStorage {
-//    let mediaContent: MediaContent // by the outside
-    var dataLayer: [String: Any] = [:] // By the plugins
+public class MediaSessionStorage {
+    public let mediaContent: MediaContent2 // by the outside
+    public var dataLayer: [String: Any] = [:] // By the plugins
 //    let state: Any // By the session
-//
-//    var trackingData: [String: Any] {
-//
-//        return [:] // merge the three things together
-//    }
+
+    init(mediaContent: MediaContent2) {
+        self.mediaContent = mediaContent
+    }
+
+    var trackingData: [String: Any] {
+        return dataLayer // merge the three things together
+    }
+}
+
+public struct MediaContent2 {
+    let title: String
 }
 
 class MediaSessionEventsNotifier {
@@ -175,6 +239,7 @@ class MediaSessionEventsNotifier {
     let onEndAd = TealiumPublishSubject<Void>()
     let onEndContent = TealiumPublishSubject<Void>()
     let onEndSession = TealiumPublishSubject<Void>()
+    let onCustomEvent = TealiumPublishSubject<String>()
 
     var asObservables: MediaSessionEvents2 {
         MediaSessionEvents2(notifier: self)
@@ -201,7 +266,7 @@ public class MediaSessionEvents2 {
     public let onEndAd: TealiumObservable<Void>
     public let onEndContent: TealiumObservable<Void>
     public let onEndSession: TealiumObservable<Void>
-//    func custom(_ event: String)
+    public let onCustomEvent: TealiumObservable<String>
 //    func sendMilestone(_ milestone: Milestone)
 //    func ping()
 //    func stopPing()
@@ -227,15 +292,16 @@ public class MediaSessionEvents2 {
         self.onEndAd = notifier.onEndAd.asObservable()
         self.onEndContent = notifier.onEndContent.asObservable()
         self.onEndSession = notifier.onEndSession.asObservable()
+        self.onCustomEvent = notifier.onCustomEvent.asObservable()
     }
 }
 
-protocol MediaTracker {
-    func requestTrack(_ track: TealiumTrackRequest)
+public protocol MediaTracker {
+    func requestTrack(_ event: MediaEvent, dataLayer: [String: Any]?)
 }
 
-class MediaTrackerImpl: MediaTracker {
-    func requestTrack(_ track: TealiumTrackRequest) {
-        print(track)
+public extension MediaTracker {
+    func requestTrack(_ event: MediaEvent) {
+        self.requestTrack(event, dataLayer: nil)
     }
 }

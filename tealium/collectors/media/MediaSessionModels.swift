@@ -105,6 +105,15 @@ public enum StandardMediaEvent: String {
 public enum MediaEvent {
     case event(StandardMediaEvent)
     case custom(String)
+
+    var toString: String {
+        switch self {
+        case let .event(name):
+            return name.rawValue
+        case let .custom(name):
+            return name
+        }
+    }
 }
 
 public enum MediaContentState {

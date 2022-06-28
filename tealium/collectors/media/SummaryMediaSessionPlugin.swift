@@ -41,9 +41,7 @@ public class SummaryMediaSessionPlugin: MediaSessionPlugin, BasicPluginFactory {
             events.onEndContent.subscribe(builder.endContent),
             events.onEndSession.subscribe {
                 builder.endSession()
-                let event = TealiumEvent(StandardMediaEvent.summary.rawValue,
-                                         dataLayer: builder.build().encoded)
-                tracker.requestTrack(event.trackRequest)
+                tracker.requestTrack(.event(.summary), dataLayer: builder.build().encoded)
             }
         ]
     }
