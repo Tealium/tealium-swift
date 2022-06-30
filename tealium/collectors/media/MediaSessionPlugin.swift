@@ -52,9 +52,9 @@ public class MediaSession2 {
     private let notifier = MediaSessionEventsNotifier()
     private let storage: MediaSessionStorage
     private let plugins: [MediaSessionPlugin]
-    init(mediaContent: MediaContent2, pluginFactory: [AnyPluginFactory], delegate: ModuleDelegate?) {
+    init(mediaMetadata: MediaMetadata, pluginFactory: [AnyPluginFactory], delegate: ModuleDelegate?) {
         let events = notifier.asObservables
-        let storage = MediaSessionStorage(mediaContent: mediaContent)
+        let storage = MediaSessionStorage(mediaMetadata: mediaMetadata)
         self.storage = storage
         let tracker = Tracker(storage: storage, delegate: delegate)
         plugins = pluginFactory.map { $0.create(storage: storage,
@@ -86,6 +86,9 @@ public class MediaSession2 {
     }
     public func startSession() {
         notifier.onStart.publish()
+    }
+    public func loadedMetadata(metadata: MediaMetadata) {
+        storage.mediaMetadata = storage.mediaMetadata.merging(metadata: metadata)
     }
     public func resumeSession() {
         notifier.onResume.publish()
@@ -138,12 +141,19 @@ public class MediaSession2 {
     public func endSession() {
         notifier.onEndSession.publish()
     }
+
+    public func addCustomData(_ dataLayer: [String: Any]) {
+        storage.dataLayer += dataLayer
+    }
+    public func removeCustomData(forKey key: String) {
+        storage.dataLayer.removeValue(forKey: key)
+    }
 }
 
 class MediaModule2 {
     // with some sort of MediaMetadata
-    class func createSession(mediaContent: MediaContent2, pluginFactory: [AnyPluginFactory]) -> MediaSession2 {
-        MediaSession2(mediaContent: mediaContent, pluginFactory: pluginFactory, delegate: nil)
+    class func createSession(mediaMetadata: MediaMetadata, pluginFactory: [AnyPluginFactory]) -> MediaSession2 {
+        MediaSession2(mediaMetadata: mediaMetadata, pluginFactory: pluginFactory, delegate: nil)
     }
 }
 
@@ -191,7 +201,7 @@ class SomeSimplePlugin: BasicPluginFactory, MediaSessionPlugin {
 
 func usage() -> MediaSession2 {
     // Pass the MediaMetadata too
-    return MediaModule2.createSession(mediaContent: MediaContent2(title: "Some title"),
+    return MediaModule2.createSession(mediaMetadata: MediaMetadata(id: "12345", name: "Some title"),
                                       pluginFactory: [
                                         AnyPluginFactory(SomePluginWithOptions.self, 2),
                                         AnyPluginFactory(SomeSimplePlugin.self),
@@ -202,12 +212,12 @@ func usage() -> MediaSession2 {
 
 /// In memory storage for this media session. Possibly edited by every plugin. Used when tracking data.
 public class MediaSessionStorage {
-    public let mediaContent: MediaContent2 // by the outside
+    public var mediaMetadata: MediaMetadata // by the outside
     public var dataLayer: [String: Any] = [:] // By the plugins
 //    let state: Any // By the session
 
-    init(mediaContent: MediaContent2) {
-        self.mediaContent = mediaContent
+    init(mediaMetadata: MediaMetadata) {
+        self.mediaMetadata = mediaMetadata
     }
 
     var trackingData: [String: Any] {
@@ -215,8 +225,51 @@ public class MediaSessionStorage {
     }
 }
 
-public struct MediaContent2 {
-    let title: String
+// Variables are constant to make it clear that they can't really change it afterwards
+public struct MediaMetadata: Codable {
+    let id: String?
+    let name: String?
+    let duration: Int?
+    let streamType: StreamType?
+    let mediaType: MediaType?
+    let startTime: Date?
+    let playerName: String?
+    let channelName: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id = "media_custom_id"
+        case name = "media_name"
+        case streamType = "media_stream_type"
+        case mediaType = "media_type"
+        case startTime = "media_session_start_time"
+        case duration = "media_duration"
+        case playerName = "media_player_name"
+        case channelName = "media_channel_name"
+    }
+
+    public init(id: String? = nil, name: String? = nil, duration: Int? = nil, streamType: StreamType? = nil,
+                mediaType: MediaType? = nil, startTime: Date? = nil, playerName: String? = nil, channelName: String? = nil) {
+        self.id = id
+        self.name = name
+        self.duration = duration
+        self.streamType = streamType
+        self.mediaType = mediaType
+        self.startTime = startTime
+        self.playerName = playerName
+        self.channelName = channelName
+    }
+
+    // This is an internal method that we can use when they send us the updated metadata at the loadedMetadata event
+    func merging(metadata: MediaMetadata) -> MediaMetadata {
+        MediaMetadata(id: metadata.id ?? id,
+                      name: metadata.name ?? name,
+                      duration: metadata.duration ?? duration,
+                      streamType: metadata.streamType ?? streamType,
+                      mediaType: metadata.mediaType ?? mediaType,
+                      startTime: metadata.startTime ?? startTime,
+                      playerName: metadata.playerName ?? playerName,
+                      channelName: metadata.channelName ?? channelName)
+    }
 }
 
 class MediaSessionEventsNotifier {
