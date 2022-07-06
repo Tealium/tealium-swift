@@ -11,6 +11,25 @@ import Foundation
 import TealiumCore
 #endif
 
+// Something like adobe plugin could be created like this
+public class MixedMediaSessionPlugin: MediaSessionPlugin, BasicPluginFactory {
+
+    let summary: MediaSessionPlugin
+    let someOther: MediaSessionPlugin
+
+    public static func create(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin {
+        MixedMediaSessionPlugin(storage: storage, events: events, tracker: tracker)
+    }
+
+    private init(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker) {
+        self.summary = SummaryMediaSessionPlugin.create(storage: storage, events: events, tracker: tracker)
+        self.someOther = SomeSimplePlugin.create(storage: storage, events: events, tracker: tracker)
+    }
+}
+
+// Or like this
+public let mixedSessionPlugin = [AnyPluginFactory(SummaryMediaSessionPlugin.self), AnyPluginFactory(SomeSimplePlugin.self)]
+
 public class SummaryMediaSessionPlugin: MediaSessionPlugin, BasicPluginFactory {
     private var bag = TealiumDisposeBag()
 

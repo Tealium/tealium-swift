@@ -35,7 +35,10 @@ public struct AnyPluginFactory {
 
     public init<P: PluginFactoryWithOptions, Options>(_ plugin: P.Type, _ options: Options) where P.Options == Options {
         createBlock = { storage, events, tracker in
-            return plugin.create(storage: storage, events: events, tracker: tracker, options: options)
+            return plugin.create(storage: storage,
+                                 events: events,
+                                 tracker: tracker,
+                                 options: options)
         }
     }
 
@@ -52,11 +55,11 @@ public class MediaSession2 {
     private let notifier = MediaSessionEventsNotifier()
     private let storage: MediaSessionStorage
     private let plugins: [MediaSessionPlugin]
-    init(mediaMetadata: MediaMetadata, pluginFactory: [AnyPluginFactory], delegate: ModuleDelegate?) {
+    init(storage: MediaSessionStorage, pluginFactory: [AnyPluginFactory], moduleDelegate: ModuleDelegate?) {
         let events = notifier.asObservables
-        let storage = MediaSessionStorage(mediaMetadata: mediaMetadata)
         self.storage = storage
-        let tracker = Tracker(storage: storage, delegate: delegate)
+        let tracker = Tracker(storage: storage,
+                              delegate: moduleDelegate)
         plugins = pluginFactory.map { $0.create(storage: storage,
                                                 events: events,
                                                 tracker: tracker)
@@ -80,9 +83,11 @@ public class MediaSession2 {
 
     public func play() {
         notifier.onPlay.publish()
+        storage.state.playback = .playing
     }
     public func pause() {
         notifier.onPause.publish()
+        storage.state.playback = .paused
     }
     public func startSession() {
         notifier.onStart.publish()
@@ -104,15 +109,32 @@ public class MediaSession2 {
     }
     public func startBuffer() {
         notifier.onStartBuffer.publish()
+        storage.state.buffering = true
     }
     public func endBuffer() {
         notifier.onEndBuffer.publish()
+        storage.state.buffering = false
     }
     public func startSeek(at position: Double?) {
         notifier.onStartSeek.publish(position)
     }
     public func endSeek(at position: Double?) {
         notifier.onEndSeek.publish(position)
+    }
+    public func changePlayerPosition(_ position: MediaSessionState.PlayerPosition) {
+        notifier.onPlayerPosition.publish(position)
+        storage.state.position = position
+    }
+    public func relevantQoEChange() {
+        notifier.onRelevantQoEChange.publish()
+    }
+    public func mute(_ muted: Bool) {
+        notifier.onMuted.publish(muted)
+        storage.state.muted = muted
+    }
+    public func closedCaption(_ closedCaptionOn: Bool) {
+        notifier.onClosedCaption.publish(closedCaptionOn)
+        storage.state.closedCaption = closedCaptionOn
     }
     public func startAdBreak(_ adBreak: AdBreak) {
         notifier.onStartAdBreak.publish(adBreak)
@@ -122,21 +144,33 @@ public class MediaSession2 {
     }
     public func startAd(_ adv: Ad) {
         notifier.onStartAd.publish(adv)
+        storage.state.adPlaying = true
+    }
+    public func adStartBuffer() {
+        notifier.onAdStartBuffer.publish()
+        storage.state.adBuffering = true
+    }
+    public func adEndBuffer() {
+        notifier.onAdEndBuffer.publish()
+        storage.state.adBuffering = false
     }
     public func clickAd() {
         notifier.onClickAd.publish()
     }
     public func skipAd() {
         notifier.onSkipAd.publish()
+        storage.state.adPlaying = false
     }
     public func endAd() {
         notifier.onEndAd.publish()
+        storage.state.adPlaying = false
     }
     public func custom(_ event: String) {
         notifier.onCustomEvent.publish(event)
     }
     public func endContent() {
         notifier.onEndContent.publish()
+        storage.state.playback = .ended
     }
     public func endSession() {
         notifier.onEndSession.publish()
@@ -150,10 +184,26 @@ public class MediaSession2 {
     }
 }
 
+public protocol MediaSessionDelegate: AnyObject {
+    func getQoE() -> QoE?
+    func getPlayhead() -> Double?
+}
+
+extension MediaSessionDelegate {
+    var trackingData: [String: Any] {
+        var data = getQoE()?.encoded ?? [:]
+        data["playhead"] = getPlayhead()
+        return data
+    }
+}
+
 class MediaModule2 {
     // with some sort of MediaMetadata
-    class func createSession(mediaMetadata: MediaMetadata, pluginFactory: [AnyPluginFactory]) -> MediaSession2 {
-        MediaSession2(mediaMetadata: mediaMetadata, pluginFactory: pluginFactory, delegate: nil)
+    class func createSession(mediaMetadata: MediaMetadata, pluginFactory: [AnyPluginFactory], delegate: MediaSessionDelegate? = nil) -> MediaSession2 {
+        MediaSession2(storage: MediaSessionStorage(mediaMetadata: mediaMetadata,
+                                                   delegate: delegate),
+                      pluginFactory: pluginFactory,
+                      moduleDelegate: nil)
     }
 }
 
@@ -161,7 +211,10 @@ class SomePluginWithOptions: PluginFactoryWithOptions, MediaSessionPlugin {
     typealias Options = Int
 
     static func create(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) -> MediaSessionPlugin {
-        return SomePluginWithOptions(storage: storage, events: events, tracker: tracker, options: options)
+        SomePluginWithOptions(storage: storage,
+                              events: events,
+                              tracker: tracker,
+                              options: options)
     }
 
     init(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) {
@@ -182,7 +235,10 @@ class SomePluginWithComplexOptions: PluginFactoryWithOptions, MediaSessionPlugin
     typealias Options = ComplexPluginOptions
 
     static func create(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) -> MediaSessionPlugin {
-        return SomePluginWithComplexOptions(storage: storage, events: events, tracker: tracker, options: options)
+        SomePluginWithComplexOptions(storage: storage,
+                                     events: events,
+                                     tracker: tracker,
+                                     options: options)
     }
     init(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) {
         print(options)
@@ -191,7 +247,9 @@ class SomePluginWithComplexOptions: PluginFactoryWithOptions, MediaSessionPlugin
 
 class SomeSimplePlugin: BasicPluginFactory, MediaSessionPlugin {
     static func create(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin {
-        SomeSimplePlugin(storage: storage, events: events, tracker: tracker)
+        SomeSimplePlugin(storage: storage,
+                         events: events,
+                         tracker: tracker)
     }
 
     init(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker) {
@@ -210,18 +268,49 @@ func usage() -> MediaSession2 {
                                       ])
 }
 
+public struct MediaSessionState: Codable {
+    var position: PlayerPosition = .inline
+    var playback: PlaybackState = .idle
+    var closedCaption: Bool = false
+    var muted: Bool = false
+    var buffering: Bool = false
+    var adPlaying: Bool = false
+    var adBuffering: Bool = false
+
+    public enum PlayerPosition: String, Codable {
+        case inline
+        case pictureInPicture
+        case fullscreen
+    }
+
+    public enum PlaybackState: String, Codable {
+        case idle
+        case playing
+        case paused
+        case ended
+    }
+}
+
 /// In memory storage for this media session. Possibly edited by every plugin. Used when tracking data.
 public class MediaSessionStorage {
+    let uuid = UUID().uuidString
     public var mediaMetadata: MediaMetadata // by the outside
     public var dataLayer: [String: Any] = [:] // By the plugins
-//    let state: Any // By the session
+    public var state = MediaSessionState() // By the session
+    weak public private(set) var delegate: MediaSessionDelegate?
 
-    init(mediaMetadata: MediaMetadata) {
+    init(mediaMetadata: MediaMetadata, delegate: MediaSessionDelegate?) {
         self.mediaMetadata = mediaMetadata
+        self.delegate = delegate
     }
 
     var trackingData: [String: Any] {
-        return dataLayer // merge the three things together
+        var data = dataLayer
+        data["media_uuid"] = uuid
+        data += mediaMetadata.encoded ?? [:]
+        data += delegate?.trackingData ?? [:]
+        data += state.encoded ?? [:]
+        return data // merge the three things together
     }
 }
 
@@ -284,9 +373,15 @@ class MediaSessionEventsNotifier {
     let onEndBuffer = TealiumPublishSubject<Void>()
     let onStartSeek = TealiumPublishSubject<Double?>()
     let onEndSeek = TealiumPublishSubject<Double?>()
+    let onPlayerPosition = TealiumPublishSubject<MediaSessionState.PlayerPosition>()
+    let onMuted = TealiumPublishSubject<Bool>()
+    let onClosedCaption = TealiumPublishSubject<Bool>()
+    let onRelevantQoEChange = TealiumPublishSubject<Void>()
     let onStartAdBreak = TealiumPublishSubject<AdBreak>()
     let onEndAdBreak = TealiumPublishSubject<Void>()
     let onStartAd = TealiumPublishSubject<Ad>()
+    let onAdStartBuffer = TealiumPublishSubject<Void>()
+    let onAdEndBuffer = TealiumPublishSubject<Void>()
     let onClickAd = TealiumPublishSubject<Void>()
     let onSkipAd = TealiumPublishSubject<Void>()
     let onEndAd = TealiumPublishSubject<Void>()
@@ -311,7 +406,13 @@ public class MediaSessionEvents2 {
     public let onEndBuffer: TealiumObservable<Void>
     public let onStartSeek: TealiumObservable<Double?>
     public let onEndSeek: TealiumObservable<Double?>
+    public let onPlayerPosition: TealiumObservable<MediaSessionState.PlayerPosition>
+    public let onRelevantQoEChange: TealiumObservable<Void>
+    public let onMuted: TealiumObservable<Bool>
+    public let onClosedCaption: TealiumObservable<Bool>
     public let onStartAdBreak: TealiumObservable<AdBreak>
+    public let onAdStartBuffer: TealiumObservable<Void>
+    public let onAdEndBuffer: TealiumObservable<Void>
     public let onEndAdBreak: TealiumObservable<Void>
     public let onStartAd: TealiumObservable<Ad>
     public let onClickAd: TealiumObservable<Void>
@@ -320,10 +421,6 @@ public class MediaSessionEvents2 {
     public let onEndContent: TealiumObservable<Void>
     public let onEndSession: TealiumObservable<Void>
     public let onCustomEvent: TealiumObservable<String>
-//    func sendMilestone(_ milestone: Milestone)
-//    func ping()
-//    func stopPing()
-//    func setSummaryInfo()
 
     init(notifier: MediaSessionEventsNotifier) {
         self.onStart = notifier.onStart.asObservable()
@@ -337,7 +434,13 @@ public class MediaSessionEvents2 {
         self.onEndBuffer = notifier.onEndBuffer.asObservable()
         self.onStartSeek = notifier.onStartSeek.asObservable()
         self.onEndSeek = notifier.onEndSeek.asObservable()
+        self.onPlayerPosition = notifier.onPlayerPosition.asObservable()
+        self.onRelevantQoEChange = notifier.onRelevantQoEChange.asObservable()
+        self.onMuted = notifier.onMuted.asObservable()
+        self.onClosedCaption = notifier.onClosedCaption.asObservable()
         self.onStartAdBreak = notifier.onStartAdBreak.asObservable()
+        self.onAdStartBuffer = notifier.onAdStartBuffer.asObservable()
+        self.onAdEndBuffer = notifier.onAdEndBuffer.asObservable()
         self.onEndAdBreak = notifier.onEndAdBreak.asObservable()
         self.onStartAd = notifier.onStartAd.asObservable()
         self.onClickAd = notifier.onClickAd.asObservable()
