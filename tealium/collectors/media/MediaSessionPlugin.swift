@@ -82,24 +82,26 @@ public class MediaSession2 {
     }
 
     public func play() {
-        notifier.onPlay.publish()
+        notifier.onPlaybackStateChange.publish(.playing)
         dataProvider.state.playback = .playing
     }
     public func pause() {
-        notifier.onPause.publish()
+        notifier.onPlaybackStateChange.publish(.paused)
         dataProvider.state.playback = .paused
     }
     public func startSession() {
         notifier.onStart.publish()
     }
     public func loadedMetadata(metadata: MediaMetadata) {
-        dataProvider.mediaMetadata = dataProvider.mediaMetadata.merging(metadata: metadata)
+        let merged = dataProvider.mediaMetadata.merging(metadata: metadata)
+        notifier.onLoadedMetadata.publish(merged)
+        dataProvider.mediaMetadata = merged
     }
     public func resumeSession() {
         notifier.onResume.publish()
     }
     public func startChapter(_ chapter: Chapter) {
-        notifier.onStartChapter.publish(chapter)
+        notifier.onStartChapter.publish(chapter) // TODO: implement the rest of these methods and hold the data
     }
     public func skipChapter() {
         notifier.onSkipChapter.publish()
@@ -169,7 +171,7 @@ public class MediaSession2 {
         notifier.onCustomEvent.publish(event)
     }
     public func endContent() {
-        notifier.onEndContent.publish()
+        notifier.onPlaybackStateChange.publish(.ended)
         dataProvider.state.playback = .ended
     }
     public func endSession() {
@@ -220,8 +222,10 @@ class SomePluginWithOptions: PluginFactoryWithOptions, MediaSessionPlugin {
     init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) {
         print(options)
 
-        events.onPlay.subscribe { _ in
-            tracker.requestTrack(.event(.play))
+        events.onPlaybackStateChange.subscribe { state in
+            if state == .playing {
+                tracker.requestTrack(.event(.play))
+            }
         }
     }
 }
@@ -363,9 +367,9 @@ public struct MediaMetadata: Codable {
 
 class MediaSessionEventsNotifier {
     let onStart = TealiumPublishSubject<Void>()
+    let onLoadedMetadata = TealiumPublishSubject<MediaMetadata>()
     let onResume = TealiumPublishSubject<Void>()
-    let onPlay = TealiumPublishSubject<Void>()
-    let onPause = TealiumPublishSubject<Void>()
+    let onPlaybackStateChange = TealiumPublishSubject<MediaSessionState.PlaybackState>()
     let onStartChapter = TealiumPublishSubject<Chapter>()
     let onSkipChapter = TealiumPublishSubject<Void>()
     let onEndChapter = TealiumPublishSubject<Void>()
@@ -385,7 +389,6 @@ class MediaSessionEventsNotifier {
     let onClickAd = TealiumPublishSubject<Void>()
     let onSkipAd = TealiumPublishSubject<Void>()
     let onEndAd = TealiumPublishSubject<Void>()
-    let onEndContent = TealiumPublishSubject<Void>()
     let onEndSession = TealiumPublishSubject<Void>()
     let onCustomEvent = TealiumPublishSubject<String>()
 
@@ -396,9 +399,9 @@ class MediaSessionEventsNotifier {
 
 public class MediaSessionEvents2 {
     public let onStart: TealiumObservable<Void>
+    public let onLoadedMetadata: TealiumObservable<MediaMetadata>
     public let onResume: TealiumObservable<Void>
-    public let onPlay: TealiumObservable<Void>
-    public let onPause: TealiumObservable<Void>
+    public let onPlaybackStateChange: TealiumObservable<MediaSessionState.PlaybackState>
     public let onStartChapter: TealiumObservable<Chapter>
     public let onSkipChapter: TealiumObservable<Void>
     public let onEndChapter: TealiumObservable<Void>
@@ -418,15 +421,14 @@ public class MediaSessionEvents2 {
     public let onClickAd: TealiumObservable<Void>
     public let onSkipAd: TealiumObservable<Void>
     public let onEndAd: TealiumObservable<Void>
-    public let onEndContent: TealiumObservable<Void>
     public let onEndSession: TealiumObservable<Void>
     public let onCustomEvent: TealiumObservable<String>
 
     init(notifier: MediaSessionEventsNotifier) {
         self.onStart = notifier.onStart.asObservable()
+        self.onLoadedMetadata = notifier.onLoadedMetadata.asObservable()
         self.onResume = notifier.onResume.asObservable()
-        self.onPlay = notifier.onPlay.asObservable()
-        self.onPause = notifier.onPause.asObservable()
+        self.onPlaybackStateChange = notifier.onPlaybackStateChange.asObservable()
         self.onStartChapter = notifier.onStartChapter.asObservable()
         self.onSkipChapter = notifier.onSkipChapter.asObservable()
         self.onEndChapter = notifier.onEndChapter.asObservable()
@@ -446,7 +448,6 @@ public class MediaSessionEvents2 {
         self.onClickAd = notifier.onClickAd.asObservable()
         self.onSkipAd = notifier.onSkipAd.asObservable()
         self.onEndAd = notifier.onEndAd.asObservable()
-        self.onEndContent = notifier.onEndContent.asObservable()
         self.onEndSession = notifier.onEndSession.asObservable()
         self.onCustomEvent = notifier.onCustomEvent.asObservable()
     }

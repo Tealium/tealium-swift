@@ -42,6 +42,8 @@
 		15274FA72791926F009F645A /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D788A5A82326AD1100BC6D60 /* MockURLSession.swift */; };
 		15274FA827919279009F645A /* MockSessionStarter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7187F1A24768F5000CF0AB0 /* MockSessionStarter.swift */; };
 		15274FA92791927F009F645A /* TestTealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716C7D1B1DDBC3A500512C99 /* TestTealiumHelper.swift */; };
+		1532DD032876E7AC001B0452 /* MilestoneMediaSessionPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1532DD022876E7AC001B0452 /* MilestoneMediaSessionPlugin.swift */; };
+		1532DD052877262F001B0452 /* EarlyEndContentMediaSessionPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1532DD042877262F001B0452 /* EarlyEndContentMediaSessionPlugin.swift */; };
 		1555F58F26E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1555F58E26E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift */; };
 		1555F59026E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1555F58E26E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift */; };
 		1555F59126E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1555F58E26E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift */; };
@@ -2146,6 +2148,8 @@
 		1519E00526E2689C000C71B4 /* ToAnyObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToAnyObservable.swift; sourceTree = "<group>"; };
 		1519E00726E26B3D000C71B4 /* PubSub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PubSub.swift; sourceTree = "<group>"; };
 		15274F97279191E0009F645A /* TealiumInAppPurchaseTests-tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TealiumInAppPurchaseTests-tvOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1532DD022876E7AC001B0452 /* MilestoneMediaSessionPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilestoneMediaSessionPlugin.swift; sourceTree = "<group>"; };
+		1532DD042877262F001B0452 /* EarlyEndContentMediaSessionPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarlyEndContentMediaSessionPlugin.swift; sourceTree = "<group>"; };
 		15372735279081B60080D563 /* StoreKitTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKitTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/StoreKitTest.framework; sourceTree = DEVELOPER_DIR; };
 		1537275127908B2D0080D563 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS15.2.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
 		1555F58E26E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TealiumInstanceManagerTests.swift; sourceTree = "<group>"; };
@@ -3704,6 +3708,8 @@
 				CFADA42F25AD01480079B19A /* MediaSessionModels.swift */,
 				15AE5FFF286AF83E0011CF02 /* MediaSessionPlugin.swift */,
 				15AE6001286B29750011CF02 /* SummaryMediaSessionPlugin.swift */,
+				1532DD022876E7AC001B0452 /* MilestoneMediaSessionPlugin.swift */,
+				1532DD042877262F001B0452 /* EarlyEndContentMediaSessionPlugin.swift */,
 			);
 			path = media;
 			sourceTree = "<group>";
@@ -6295,6 +6301,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1532DD032876E7AC001B0452 /* MilestoneMediaSessionPlugin.swift in Sources */,
 				CFAC000125AF81A000CD51C6 /* MediaSessionFactory.swift in Sources */,
 				CFADA22125A781CA0079B19A /* MediaSession.swift in Sources */,
 				15AE6000286AF83E0011CF02 /* MediaSessionPlugin.swift in Sources */,
@@ -6306,6 +6313,7 @@
 				CFADA40A25AD010A0079B19A /* MediaSessionTypes.swift in Sources */,
 				CFACFFDB25AF816400CD51C6 /* MediaEventService.swift in Sources */,
 				CFADA4A025AD02750079B19A /* MediaDispatch.swift in Sources */,
+				1532DD052877262F001B0452 /* EarlyEndContentMediaSessionPlugin.swift in Sources */,
 				CFADA45525AD01680079B19A /* MediaSessionModels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -45,7 +45,7 @@ public class SummaryMediaSessionPlugin: MediaSessionPlugin, BasicPluginFactory {
     private func registerForEvents(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> [TealiumDisposableProtocol] {
         let builder = SummaryBuilder()
         return [
-            events.onPlay.subscribe(builder.play),
+            events.onPlaybackStateChange.subscribe(builder.playbackStateChange),
             events.onStartChapter.subscribe(builder.startChapter),
             events.onSkipChapter.subscribe(builder.skipChapter),
             events.onEndChapter.subscribe(builder.endChapter),
@@ -56,8 +56,6 @@ public class SummaryMediaSessionPlugin: MediaSessionPlugin, BasicPluginFactory {
             events.onStartAd.subscribe(builder.startAd),
             events.onSkipAd.subscribe(builder.skipAd),
             events.onEndAd.subscribe(builder.endAd),
-            events.onPause.subscribe(builder.pause),
-            events.onEndContent.subscribe(builder.endContent),
             events.onEndSession.subscribe {
                 builder.endSession()
                 tracker.requestTrack(.event(.summary), dataLayer: builder.build().encoded)
@@ -69,7 +67,20 @@ public class SummaryMediaSessionPlugin: MediaSessionPlugin, BasicPluginFactory {
 class SummaryBuilder {
     private var summary = Summary()
 
-    func play() {
+    func playbackStateChange(_ state: MediaSessionState.PlaybackState) {
+        switch state {
+        case .playing:
+            play()
+        case .paused:
+            pause()
+        case .ended:
+            endContent()
+        case .idle:
+            break
+        }
+    }
+
+    private func play() {
         summary.plays.increment()
         summary.playStartTime = Date()
     }
@@ -125,13 +136,13 @@ class SummaryBuilder {
         summary.totalAdTime.increment(by: adPlayDuration)
     }
 
-    func pause() {
+    private func pause() {
         guard let playDuration = calculate(duration: summary.playStartTime) else { return }
         summary.pauses.increment()
         summary.totalPlayTime.increment(by: playDuration)
     }
 
-    func endContent() {
+    private func endContent() {
         guard let playDuration = calculate(duration: summary.playStartTime) else { return }
         summary.playToEnd = true
         summary.totalPlayTime.increment(by: playDuration)
