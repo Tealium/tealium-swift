@@ -16,7 +16,7 @@ public protocol MediaSessionPlugin {
 }
 
 public protocol BasicPluginFactory {
-    static func create(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin
+    static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin
 }
 
 //  protocol ReadyOptions {
@@ -26,16 +26,16 @@ public protocol BasicPluginFactory {
 
 public protocol PluginFactoryWithOptions {
     associatedtype Options//: ReadyOptions
-    static func create(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) -> MediaSessionPlugin
+    static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) -> MediaSessionPlugin
 }
 
 public struct AnyPluginFactory {
 
-    private let createBlock: (MediaSessionStorage, MediaSessionEvents2, MediaTracker) -> (MediaSessionPlugin)
+    private let createBlock: (MediaSessionDataProvider, MediaSessionEvents2, MediaTracker) -> (MediaSessionPlugin)
 
     public init<P: PluginFactoryWithOptions, Options>(_ plugin: P.Type, _ options: Options) where P.Options == Options {
-        createBlock = { storage, events, tracker in
-            return plugin.create(storage: storage,
+        createBlock = { dataProvider, events, tracker in
+            return plugin.create(dataProvider: dataProvider,
                                  events: events,
                                  tracker: tracker,
                                  options: options)
@@ -46,21 +46,21 @@ public struct AnyPluginFactory {
         createBlock = plugin.create
     }
 
-    func create(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin {
-        createBlock(storage, events, tracker)
+    func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin {
+        createBlock(dataProvider, events, tracker)
     }
 }
 
 public class MediaSession2 {
     private let notifier = MediaSessionEventsNotifier()
-    private let storage: MediaSessionStorage
+    private let dataProvider: MediaSessionDataProvider
     private let plugins: [MediaSessionPlugin]
-    init(storage: MediaSessionStorage, pluginFactory: [AnyPluginFactory], moduleDelegate: ModuleDelegate?) {
+    init(dataProvider: MediaSessionDataProvider, pluginFactory: [AnyPluginFactory], moduleDelegate: ModuleDelegate?) {
         let events = notifier.asObservables
-        self.storage = storage
-        let tracker = Tracker(storage: storage,
+        self.dataProvider = dataProvider
+        let tracker = Tracker(dataProvider: dataProvider,
                               delegate: moduleDelegate)
-        plugins = pluginFactory.map { $0.create(storage: storage,
+        plugins = pluginFactory.map { $0.create(dataProvider: dataProvider,
                                                 events: events,
                                                 tracker: tracker)
         }
@@ -68,14 +68,14 @@ public class MediaSession2 {
 
     class Tracker: MediaTracker {
         weak var delegate: ModuleDelegate?
-        let storage: MediaSessionStorage
-        init(storage: MediaSessionStorage, delegate: ModuleDelegate?) {
-            self.storage = storage
+        let dataProvider: MediaSessionDataProvider
+        init(dataProvider: MediaSessionDataProvider, delegate: ModuleDelegate?) {
+            self.dataProvider = dataProvider
             self.delegate = delegate
         }
         func requestTrack(_ event: MediaEvent, dataLayer: [String: Any]?) {
             var data = dataLayer ?? [:]
-            data += storage.trackingData
+            data += dataProvider.trackingData
             delegate?.requestTrack(TealiumEvent(event.toString,
                                                 dataLayer: data).trackRequest)
         }
@@ -83,17 +83,17 @@ public class MediaSession2 {
 
     public func play() {
         notifier.onPlay.publish()
-        storage.state.playback = .playing
+        dataProvider.state.playback = .playing
     }
     public func pause() {
         notifier.onPause.publish()
-        storage.state.playback = .paused
+        dataProvider.state.playback = .paused
     }
     public func startSession() {
         notifier.onStart.publish()
     }
     public func loadedMetadata(metadata: MediaMetadata) {
-        storage.mediaMetadata = storage.mediaMetadata.merging(metadata: metadata)
+        dataProvider.mediaMetadata = dataProvider.mediaMetadata.merging(metadata: metadata)
     }
     public func resumeSession() {
         notifier.onResume.publish()
@@ -109,11 +109,11 @@ public class MediaSession2 {
     }
     public func startBuffer() {
         notifier.onStartBuffer.publish()
-        storage.state.buffering = true
+        dataProvider.state.buffering = true
     }
     public func endBuffer() {
         notifier.onEndBuffer.publish()
-        storage.state.buffering = false
+        dataProvider.state.buffering = false
     }
     public func startSeek(at position: Double?) {
         notifier.onStartSeek.publish(position)
@@ -123,18 +123,18 @@ public class MediaSession2 {
     }
     public func changePlayerPosition(_ position: MediaSessionState.PlayerPosition) {
         notifier.onPlayerPosition.publish(position)
-        storage.state.position = position
+        dataProvider.state.position = position
     }
     public func relevantQoEChange() {
         notifier.onRelevantQoEChange.publish()
     }
     public func mute(_ muted: Bool) {
         notifier.onMuted.publish(muted)
-        storage.state.muted = muted
+        dataProvider.state.muted = muted
     }
     public func closedCaption(_ closedCaptionOn: Bool) {
         notifier.onClosedCaption.publish(closedCaptionOn)
-        storage.state.closedCaption = closedCaptionOn
+        dataProvider.state.closedCaption = closedCaptionOn
     }
     public func startAdBreak(_ adBreak: AdBreak) {
         notifier.onStartAdBreak.publish(adBreak)
@@ -144,43 +144,43 @@ public class MediaSession2 {
     }
     public func startAd(_ adv: Ad) {
         notifier.onStartAd.publish(adv)
-        storage.state.adPlaying = true
+        dataProvider.state.adPlaying = true
     }
     public func adStartBuffer() {
         notifier.onAdStartBuffer.publish()
-        storage.state.adBuffering = true
+        dataProvider.state.adBuffering = true
     }
     public func adEndBuffer() {
         notifier.onAdEndBuffer.publish()
-        storage.state.adBuffering = false
+        dataProvider.state.adBuffering = false
     }
     public func clickAd() {
         notifier.onClickAd.publish()
     }
     public func skipAd() {
         notifier.onSkipAd.publish()
-        storage.state.adPlaying = false
+        dataProvider.state.adPlaying = false
     }
     public func endAd() {
         notifier.onEndAd.publish()
-        storage.state.adPlaying = false
+        dataProvider.state.adPlaying = false
     }
     public func custom(_ event: String) {
         notifier.onCustomEvent.publish(event)
     }
     public func endContent() {
         notifier.onEndContent.publish()
-        storage.state.playback = .ended
+        dataProvider.state.playback = .ended
     }
     public func endSession() {
         notifier.onEndSession.publish()
     }
 
     public func addCustomData(_ dataLayer: [String: Any]) {
-        storage.dataLayer += dataLayer
+        dataProvider.dataLayer += dataLayer
     }
     public func removeCustomData(forKey key: String) {
-        storage.dataLayer.removeValue(forKey: key)
+        dataProvider.dataLayer.removeValue(forKey: key)
     }
 }
 
@@ -200,8 +200,8 @@ extension MediaSessionDelegate {
 class MediaModule2 {
     // with some sort of MediaMetadata
     class func createSession(mediaMetadata: MediaMetadata, pluginFactory: [AnyPluginFactory], delegate: MediaSessionDelegate? = nil) -> MediaSession2 {
-        MediaSession2(storage: MediaSessionStorage(mediaMetadata: mediaMetadata,
-                                                   delegate: delegate),
+        MediaSession2(dataProvider: MediaSessionDataProvider(mediaMetadata: mediaMetadata,
+                                                             delegate: delegate),
                       pluginFactory: pluginFactory,
                       moduleDelegate: nil)
     }
@@ -210,14 +210,14 @@ class MediaModule2 {
 class SomePluginWithOptions: PluginFactoryWithOptions, MediaSessionPlugin {
     typealias Options = Int
 
-    static func create(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) -> MediaSessionPlugin {
-        SomePluginWithOptions(storage: storage,
+    static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) -> MediaSessionPlugin {
+        SomePluginWithOptions(dataProvider: dataProvider,
                               events: events,
                               tracker: tracker,
                               options: options)
     }
 
-    init(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) {
+    init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) {
         print(options)
 
         events.onPlay.subscribe { _ in
@@ -234,25 +234,25 @@ struct ComplexPluginOptions {
 class SomePluginWithComplexOptions: PluginFactoryWithOptions, MediaSessionPlugin {
     typealias Options = ComplexPluginOptions
 
-    static func create(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) -> MediaSessionPlugin {
-        SomePluginWithComplexOptions(storage: storage,
+    static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) -> MediaSessionPlugin {
+        SomePluginWithComplexOptions(dataProvider: dataProvider,
                                      events: events,
                                      tracker: tracker,
                                      options: options)
     }
-    init(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) {
+    init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) {
         print(options)
     }
 }
 
 class SomeSimplePlugin: BasicPluginFactory, MediaSessionPlugin {
-    static func create(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin {
-        SomeSimplePlugin(storage: storage,
+    static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin {
+        SomeSimplePlugin(dataProvider: dataProvider,
                          events: events,
                          tracker: tracker)
     }
 
-    init(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker) {
+    init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) {
 
     }
 }
@@ -291,8 +291,8 @@ public struct MediaSessionState: Codable {
     }
 }
 
-/// In memory storage for this media session. Possibly edited by every plugin. Used when tracking data.
-public class MediaSessionStorage {
+/// In memory dataProvider for this media session. Possibly edited by every plugin. Used when tracking data.
+public class MediaSessionDataProvider {
     let uuid = UUID().uuidString
     public var mediaMetadata: MediaMetadata // by the outside
     public var dataLayer: [String: Any] = [:] // By the plugins

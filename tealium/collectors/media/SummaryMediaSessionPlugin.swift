@@ -17,13 +17,13 @@ public class MixedMediaSessionPlugin: MediaSessionPlugin, BasicPluginFactory {
     let summary: MediaSessionPlugin
     let someOther: MediaSessionPlugin
 
-    public static func create(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin {
-        MixedMediaSessionPlugin(storage: storage, events: events, tracker: tracker)
+    public static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin {
+        MixedMediaSessionPlugin(dataProvider: dataProvider, events: events, tracker: tracker)
     }
 
-    private init(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker) {
-        self.summary = SummaryMediaSessionPlugin.create(storage: storage, events: events, tracker: tracker)
-        self.someOther = SomeSimplePlugin.create(storage: storage, events: events, tracker: tracker)
+    private init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) {
+        self.summary = SummaryMediaSessionPlugin.create(dataProvider: dataProvider, events: events, tracker: tracker)
+        self.someOther = SomeSimplePlugin.create(dataProvider: dataProvider, events: events, tracker: tracker)
     }
 }
 
@@ -33,16 +33,16 @@ public let mixedSessionPlugin = [AnyPluginFactory(SummaryMediaSessionPlugin.self
 public class SummaryMediaSessionPlugin: MediaSessionPlugin, BasicPluginFactory {
     private var bag = TealiumDisposeBag()
 
-    public static func create(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin {
-        SummaryMediaSessionPlugin(storage: storage, events: events, tracker: tracker)
+    public static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin {
+        SummaryMediaSessionPlugin(dataProvider: dataProvider, events: events, tracker: tracker)
     }
 
-    private init(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker) {
-        registerForEvents(storage: storage, events: events, tracker: tracker)
+    private init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) {
+        registerForEvents(dataProvider: dataProvider, events: events, tracker: tracker)
             .forEach { bag.add($0) }
     }
 
-    private func registerForEvents(storage: MediaSessionStorage, events: MediaSessionEvents2, tracker: MediaTracker) -> [TealiumDisposableProtocol] {
+    private func registerForEvents(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> [TealiumDisposableProtocol] {
         let builder = SummaryBuilder()
         return [
             events.onPlay.subscribe(builder.play),
