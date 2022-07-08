@@ -101,7 +101,8 @@ public class MediaSession2 {
         notifier.onResume.publish()
     }
     public func startChapter(_ chapter: Chapter) {
-        notifier.onStartChapter.publish(chapter) // TODO: implement the rest of these methods and hold the data
+        notifier.onStartChapter.publish(chapter)
+        dataProvider.state.chapters.append(chapter)
     }
     public func skipChapter() {
         notifier.onSkipChapter.publish()
@@ -140,12 +141,14 @@ public class MediaSession2 {
     }
     public func startAdBreak(_ adBreak: AdBreak) {
         notifier.onStartAdBreak.publish(adBreak)
+        dataProvider.state.adBreaks.append(adBreak)
     }
     public func endAdBreak() {
         notifier.onEndAdBreak.publish()
     }
     public func startAd(_ adv: Ad) {
         notifier.onStartAd.publish(adv)
+        dataProvider.state.ads.append(adv)
         dataProvider.state.adPlaying = true
     }
     public func adStartBuffer() {
@@ -280,6 +283,9 @@ public struct MediaSessionState: Codable {
     var buffering: Bool = false
     var adPlaying: Bool = false
     var adBuffering: Bool = false
+    var adBreaks = [AdBreak]()
+    var ads = [Ad]()
+    var chapters = [Chapter]()
 
     public enum PlayerPosition: String, Codable {
         case inline
@@ -292,6 +298,19 @@ public struct MediaSessionState: Codable {
         case playing
         case paused
         case ended
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case position = "media_position"
+        case playback = "media_playback"
+        case closedCaption = "media_closedCaption"
+        case muted = "media_muted"
+        case buffering = "media_buffering"
+        case adPlaying = "media_adPlaying"
+        case adBuffering = "media_adBuffering"
+        case adBreaks = "media_adBreaks"
+        case ads = "media_ads"
+        case chapters = "media_chapters"
     }
 }
 
