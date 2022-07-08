@@ -102,6 +102,7 @@ public enum StandardMediaEvent: String {
     case sessionStart = "media_session_start"
     case contentEnd = "media_content_end"
     case summary = "media_summary"
+    case loadedMetadata = "media_loaded_metadata"
 }
 
 public enum MediaEvent {

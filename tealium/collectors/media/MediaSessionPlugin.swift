@@ -98,7 +98,7 @@ public class MediaSession2 {
         dataProvider.state.playback = .paused
     }
     public func startSession() {
-        notifier.onStart.publish()
+        notifier.onStartSession.publish()
     }
     public func loadedMetadata(metadata: MediaMetadata) {
         let merged = dataProvider.mediaMetadata.merging(metadata: metadata)
@@ -106,7 +106,7 @@ public class MediaSession2 {
         dataProvider.mediaMetadata = merged
     }
     public func resumeSession() {
-        notifier.onResume.publish()
+        notifier.onResumeSession.publish()
     }
     public func startChapter(_ chapter: Chapter) {
         notifier.onStartChapter.publish(chapter)
@@ -178,8 +178,8 @@ public class MediaSession2 {
         notifier.onEndAd.publish()
         dataProvider.state.adPlaying = false
     }
-    public func custom(_ event: String) {
-        notifier.onCustomEvent.publish(event)
+    public func custom(_ event: String, dataLayer: [String: Any]? = nil) {
+        notifier.onCustomEvent.publish((event, dataLayer))
     }
     public func endContent() {
         notifier.onPlaybackStateChange.publish(.ended)
@@ -330,9 +330,9 @@ public struct MediaMetadata: Codable {
 }
 
 class MediaSessionEventsNotifier {
-    let onStart = TealiumPublishSubject<Void>()
+    let onStartSession = TealiumPublishSubject<Void>()
     let onLoadedMetadata = TealiumPublishSubject<MediaMetadata>()
-    let onResume = TealiumPublishSubject<Void>()
+    let onResumeSession = TealiumPublishSubject<Void>()
     let onPlaybackStateChange = TealiumPublishSubject<MediaSessionState.PlaybackState>()
     let onStartChapter = TealiumPublishSubject<Chapter>()
     let onSkipChapter = TealiumPublishSubject<Void>()
@@ -354,7 +354,7 @@ class MediaSessionEventsNotifier {
     let onSkipAd = TealiumPublishSubject<Void>()
     let onEndAd = TealiumPublishSubject<Void>()
     let onEndSession = TealiumPublishSubject<Void>()
-    let onCustomEvent = TealiumPublishSubject<String>()
+    let onCustomEvent = TealiumPublishSubject<(String, [String: Any]?)>()
 
     var asObservables: MediaSessionEvents2 {
         MediaSessionEvents2(notifier: self)
@@ -362,9 +362,9 @@ class MediaSessionEventsNotifier {
 }
 
 public class MediaSessionEvents2 {
-    public let onStart: TealiumObservable<Void>
+    public let onStartSession: TealiumObservable<Void>
     public let onLoadedMetadata: TealiumObservable<MediaMetadata>
-    public let onResume: TealiumObservable<Void>
+    public let onResumeSession: TealiumObservable<Void>
     public let onPlaybackStateChange: TealiumObservable<MediaSessionState.PlaybackState>
     public let onStartChapter: TealiumObservable<Chapter>
     public let onSkipChapter: TealiumObservable<Void>
@@ -386,12 +386,12 @@ public class MediaSessionEvents2 {
     public let onSkipAd: TealiumObservable<Void>
     public let onEndAd: TealiumObservable<Void>
     public let onEndSession: TealiumObservable<Void>
-    public let onCustomEvent: TealiumObservable<String>
+    public let onCustomEvent: TealiumObservable<(String, [String: Any]?)>
 
     init(notifier: MediaSessionEventsNotifier) {
-        self.onStart = notifier.onStart.asObservable()
+        self.onStartSession = notifier.onStartSession.asObservable()
         self.onLoadedMetadata = notifier.onLoadedMetadata.asObservable()
-        self.onResume = notifier.onResume.asObservable()
+        self.onResumeSession = notifier.onResumeSession.asObservable()
         self.onPlaybackStateChange = notifier.onPlaybackStateChange.asObservable()
         self.onStartChapter = notifier.onStartChapter.asObservable()
         self.onSkipChapter = notifier.onSkipChapter.asObservable()
