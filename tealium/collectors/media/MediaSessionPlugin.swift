@@ -32,13 +32,8 @@ public protocol BasicPluginFactory {
     static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin
 }
 
-//  protocol ReadyOptions {
-//
-//    func onReady(callback: () -> ())
-//  }
-
 public protocol PluginFactoryWithOptions {
-    associatedtype Options//: ReadyOptions
+    associatedtype Options
     static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) -> MediaSessionPlugin
 }
 
@@ -223,69 +218,6 @@ class MediaModule2 {
                       pluginFactory: pluginFactory,
                       moduleDelegate: nil)
     }
-}
-
-class SomePluginWithOptions: PluginFactoryWithOptions, MediaSessionPlugin {
-    typealias Options = Int
-
-    static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) -> MediaSessionPlugin {
-        SomePluginWithOptions(dataProvider: dataProvider,
-                              events: events,
-                              tracker: tracker,
-                              options: options)
-    }
-
-    init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) {
-        print(options)
-
-        events.onPlaybackStateChange.subscribe { state in
-            if state == .playing {
-                tracker.requestTrack(.event(.play))
-            }
-        }
-    }
-}
-
-struct ComplexPluginOptions {
-    let aaa: String
-    let bbb: Int
-}
-
-class SomePluginWithComplexOptions: PluginFactoryWithOptions, MediaSessionPlugin {
-    typealias Options = ComplexPluginOptions
-
-    static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) -> MediaSessionPlugin {
-        SomePluginWithComplexOptions(dataProvider: dataProvider,
-                                     events: events,
-                                     tracker: tracker,
-                                     options: options)
-    }
-    init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) {
-        print(options)
-    }
-}
-
-class SomeSimplePlugin: BasicPluginFactory, MediaSessionPlugin {
-    static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin {
-        SomeSimplePlugin(dataProvider: dataProvider,
-                         events: events,
-                         tracker: tracker)
-    }
-
-    init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) {
-
-    }
-}
-
-func usage() -> MediaSession2 {
-    // Pass the MediaMetadata too
-    return MediaModule2.createSession(mediaMetadata: MediaMetadata(id: "12345", name: "Some title"),
-                                      pluginFactory: [
-                                        AnyPluginFactory(SomePluginWithOptions.self, 2),
-                                        AnyPluginFactory(SomeSimplePlugin.self),
-                                        AnyPluginFactory(SomePluginWithComplexOptions.self, ComplexPluginOptions(aaa: "a", bbb: 2)),
-                                        AnyPluginFactory(SummaryMediaSessionPlugin.self)
-                                      ])
 }
 
 public struct MediaSessionState: Codable {
