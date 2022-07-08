@@ -15,6 +15,19 @@ public protocol MediaSessionPlugin {
     // let order: Int // or whatever we want to ask to the plugins from the mediaSession
 }
 
+public extension MediaSessionPlugin {
+    /// Calculates the duration of the content, in seconds
+    static func calculateDuration(since: Date?) -> Double? {
+        guard let since = since else {
+            return nil
+        }
+        let calculated = Calendar.current.dateComponents([.second],
+                                                         from: since,
+                                                         to: Date())
+        return Double(calculated.second ?? 0)
+    }
+}
+
 public protocol BasicPluginFactory {
     static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin
 }
@@ -152,11 +165,11 @@ public class MediaSession2 {
         dataProvider.state.adPlaying = true
     }
     public func adStartBuffer() {
-        notifier.onAdStartBuffer.publish()
+        notifier.onStartBufferAd.publish()
         dataProvider.state.adBuffering = true
     }
     public func adEndBuffer() {
-        notifier.onAdEndBuffer.publish()
+        notifier.onEndBufferAd.publish()
         dataProvider.state.adBuffering = false
     }
     public func clickAd() {
@@ -403,8 +416,8 @@ class MediaSessionEventsNotifier {
     let onStartAdBreak = TealiumPublishSubject<AdBreak>()
     let onEndAdBreak = TealiumPublishSubject<Void>()
     let onStartAd = TealiumPublishSubject<Ad>()
-    let onAdStartBuffer = TealiumPublishSubject<Void>()
-    let onAdEndBuffer = TealiumPublishSubject<Void>()
+    let onStartBufferAd = TealiumPublishSubject<Void>()
+    let onEndBufferAd = TealiumPublishSubject<Void>()
     let onClickAd = TealiumPublishSubject<Void>()
     let onSkipAd = TealiumPublishSubject<Void>()
     let onEndAd = TealiumPublishSubject<Void>()
@@ -433,8 +446,8 @@ public class MediaSessionEvents2 {
     public let onMuted: TealiumObservable<Bool>
     public let onClosedCaption: TealiumObservable<Bool>
     public let onStartAdBreak: TealiumObservable<AdBreak>
-    public let onAdStartBuffer: TealiumObservable<Void>
-    public let onAdEndBuffer: TealiumObservable<Void>
+    public let onStartBufferAd: TealiumObservable<Void>
+    public let onEndBufferAd: TealiumObservable<Void>
     public let onEndAdBreak: TealiumObservable<Void>
     public let onStartAd: TealiumObservable<Ad>
     public let onClickAd: TealiumObservable<Void>
@@ -460,8 +473,8 @@ public class MediaSessionEvents2 {
         self.onMuted = notifier.onMuted.asObservable()
         self.onClosedCaption = notifier.onClosedCaption.asObservable()
         self.onStartAdBreak = notifier.onStartAdBreak.asObservable()
-        self.onAdStartBuffer = notifier.onAdStartBuffer.asObservable()
-        self.onAdEndBuffer = notifier.onAdEndBuffer.asObservable()
+        self.onStartBufferAd = notifier.onStartBufferAd.asObservable()
+        self.onEndBufferAd = notifier.onEndBufferAd.asObservable()
         self.onEndAdBreak = notifier.onEndAdBreak.asObservable()
         self.onStartAd = notifier.onStartAd.asObservable()
         self.onClickAd = notifier.onClickAd.asObservable()

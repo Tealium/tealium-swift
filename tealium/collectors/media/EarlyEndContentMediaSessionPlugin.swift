@@ -67,3 +67,21 @@ public class EarlyEndContentMediaSessionPlugin: MediaSessionPingPlugin, MediaSes
         }
     }
 }
+
+public class EndContentMediaSessionPlugin: MediaSessionPlugin, BasicPluginFactory {
+    public typealias Options = EarlyEndContentPluginOptions
+
+    public static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin {
+        EndContentMediaSessionPlugin(dataProvider: dataProvider, events: events, tracker: tracker)
+    }
+
+    private init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) {
+        let bag = TealiumDisposeBag()
+        events.onPlaybackStateChange.subscribe { state in
+            if state == .ended {
+                bag.dispose()
+                tracker.requestTrack(.event(.contentEnd))
+            }
+        }
+    }
+}

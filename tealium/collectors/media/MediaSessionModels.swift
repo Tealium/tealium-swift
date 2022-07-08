@@ -81,6 +81,8 @@ public enum StandardMediaEvent: String {
     case adEnd = "media_ad_end"
     case adSkip = "media_ad_skip"
     case adStart = "media_ad_start"
+    case adBufferEnd = "media_ad_buffer_end"
+    case adBufferStart = "media_ad_buffer_start"
     case bitrateChange = "media_bitrate_change"
     case bufferEnd = "media_buffer_end"
     case bufferStart = "media_buffer_start"
