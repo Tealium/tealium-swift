@@ -36,7 +36,7 @@ open class MediaSessionPingPlugin {
                 self?.timer.resume()
             default:
                 self?.timer.suspend()
-                self?.pingHandler()
+                self?.onSuspend(for: state)
             }
         }.toDisposeBag(bag)
         events.onEndSession.subscribe { [weak self] in
@@ -46,6 +46,15 @@ open class MediaSessionPingPlugin {
 
     open func pingHandler() {
 
+    }
+
+    open func onSuspend(for state: MediaSessionState.PlaybackState) {
+
+    }
+
+    func calculatePercentage(playhead: Double, duration: Int) -> Double {
+        let duration = Double(duration)
+        return max(min(((playhead / duration) * 100).rounded(.up), 100), 0)
     }
 }
 
@@ -92,9 +101,8 @@ public class MilestoneMediaSessionPlugin: MediaSessionPingPlugin, MediaSessionPl
             break
         }
     }
-}
 
-private func calculatePercentage(playhead: Double, duration: Int) -> Double {
-    let duration = Double(duration)
-    return max(min(((playhead / duration) * 100).rounded(.up), 100), 0)
+    public override func onSuspend(for state: MediaSessionState.PlaybackState) {
+        pingHandler()
+    }
 }

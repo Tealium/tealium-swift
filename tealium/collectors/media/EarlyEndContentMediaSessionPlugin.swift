@@ -42,14 +42,6 @@ public class EarlyEndContentMediaSessionPlugin: MediaSessionPingPlugin, MediaSes
         self.options = options
         self.tracker = tracker
         super.init(events: events, timer: options.timer)
-        events.onPlaybackStateChange.subscribe { [weak self] state in
-            switch state {
-            case .ended:
-                self?.contentEnded()
-            default:
-                break
-            }
-        }.toDisposeBag(bag)
     }
 
     private func contentEnded() {
@@ -66,9 +58,12 @@ public class EarlyEndContentMediaSessionPlugin: MediaSessionPingPlugin, MediaSes
             contentEnded()
         }
     }
-}
 
-private func calculatePercentage(playhead: Double, duration: Int) -> Double {
-    let duration = Double(duration)
-    return max(min(((playhead / duration) * 100).rounded(.up), 100), 0)
+    public override func onSuspend(for state: MediaSessionState.PlaybackState) {
+        if state == .ended {
+            contentEnded()
+        } else {
+            pingHandler()
+        }
+    }
 }

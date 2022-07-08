@@ -44,6 +44,7 @@
 		15274FA92791927F009F645A /* TestTealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716C7D1B1DDBC3A500512C99 /* TestTealiumHelper.swift */; };
 		1532DD032876E7AC001B0452 /* MilestoneMediaSessionPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1532DD022876E7AC001B0452 /* MilestoneMediaSessionPlugin.swift */; };
 		1532DD052877262F001B0452 /* EarlyEndContentMediaSessionPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1532DD042877262F001B0452 /* EarlyEndContentMediaSessionPlugin.swift */; };
+		1532DD0728786AC7001B0452 /* IntervalMediaSessionPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1532DD0628786AC7001B0452 /* IntervalMediaSessionPlugin.swift */; };
 		1555F58F26E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1555F58E26E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift */; };
 		1555F59026E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1555F58E26E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift */; };
 		1555F59126E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1555F58E26E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift */; };
@@ -2150,6 +2151,7 @@
 		15274F97279191E0009F645A /* TealiumInAppPurchaseTests-tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TealiumInAppPurchaseTests-tvOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1532DD022876E7AC001B0452 /* MilestoneMediaSessionPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilestoneMediaSessionPlugin.swift; sourceTree = "<group>"; };
 		1532DD042877262F001B0452 /* EarlyEndContentMediaSessionPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarlyEndContentMediaSessionPlugin.swift; sourceTree = "<group>"; };
+		1532DD0628786AC7001B0452 /* IntervalMediaSessionPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntervalMediaSessionPlugin.swift; sourceTree = "<group>"; };
 		15372735279081B60080D563 /* StoreKitTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKitTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/StoreKitTest.framework; sourceTree = DEVELOPER_DIR; };
 		1537275127908B2D0080D563 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS15.2.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
 		1555F58E26E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TealiumInstanceManagerTests.swift; sourceTree = "<group>"; };
@@ -3710,6 +3712,7 @@
 				15AE6001286B29750011CF02 /* SummaryMediaSessionPlugin.swift */,
 				1532DD022876E7AC001B0452 /* MilestoneMediaSessionPlugin.swift */,
 				1532DD042877262F001B0452 /* EarlyEndContentMediaSessionPlugin.swift */,
+				1532DD0628786AC7001B0452 /* IntervalMediaSessionPlugin.swift */,
 			);
 			path = media;
 			sourceTree = "<group>";
@@ -6311,6 +6314,7 @@
 				CF38C1A025B2736E000913E1 /* MediaContent.swift in Sources */,
 				15AE6002286B29750011CF02 /* SummaryMediaSessionPlugin.swift in Sources */,
 				CFADA40A25AD010A0079B19A /* MediaSessionTypes.swift in Sources */,
+				1532DD0728786AC7001B0452 /* IntervalMediaSessionPlugin.swift in Sources */,
 				CFACFFDB25AF816400CD51C6 /* MediaEventService.swift in Sources */,
 				CFADA4A025AD02750079B19A /* MediaDispatch.swift in Sources */,
 				1532DD052877262F001B0452 /* EarlyEndContentMediaSessionPlugin.swift in Sources */,
