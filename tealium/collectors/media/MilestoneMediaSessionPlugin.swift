@@ -24,12 +24,35 @@ public struct MilestonePluginOptions {
     }
 }
 
-public class MilestoneMediaSessionPlugin: MediaSessionPlugin, PluginFactoryWithOptions {
+open class MediaSessionPingPlugin {
+    public var bag = TealiumDisposeBag()
+    private var timer: Repeater
+    public init(events: MediaSessionEvents2, timer: Repeater) {
+        self.timer = timer
+        self.timer.eventHandler = self.pingHandler
+        events.onPlaybackStateChange.subscribe { [weak self] state in
+            switch state {
+            case .playing:
+                self?.timer.resume()
+            default:
+                self?.timer.suspend()
+                self?.pingHandler()
+            }
+        }.toDisposeBag(bag)
+        events.onEndSession.subscribe { [weak self] in
+            self?.timer.suspend()
+        }.toDisposeBag(bag)
+    }
+
+    open func pingHandler() {
+
+    }
+}
+
+public class MilestoneMediaSessionPlugin: MediaSessionPingPlugin, MediaSessionPlugin, PluginFactoryWithOptions {
     public typealias Options = MilestonePluginOptions
-    private var bag = TealiumDisposeBag()
     let dataProvider: MediaSessionDataProvider
     let tracker: MediaTracker
-    var timer: Repeater
 
     public static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) -> MediaSessionPlugin {
         MilestoneMediaSessionPlugin(dataProvider: dataProvider, events: events, tracker: tracker, options: options)
@@ -38,29 +61,7 @@ public class MilestoneMediaSessionPlugin: MediaSessionPlugin, PluginFactoryWithO
     private init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) {
         self.dataProvider = dataProvider
         self.tracker = tracker
-        self.timer = options.timer
-        timer.eventHandler = { [weak self] in
-            self?.checkPlayheadMilestone()
-        }
-        registerForEvents(dataProvider: dataProvider, events: events, tracker: tracker)
-            .forEach { bag.add($0) }
-    }
-
-    private func registerForEvents(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> [TealiumDisposableProtocol] {
-        return [
-            events.onPlaybackStateChange.subscribe { [weak self] state in
-                switch state {
-                case .playing:
-                    self?.startPing()
-                default:
-                    self?.stopPing()
-                    self?.checkPlayheadMilestone()
-                }
-            },
-            events.onEndSession.subscribe { [weak self] in
-                self?.stopPing()
-            }
-        ]
+        super.init(events: events, timer: options.timer)
     }
 
     private func sendMilestone(_ milestone: Milestone) {
@@ -69,15 +70,7 @@ public class MilestoneMediaSessionPlugin: MediaSessionPlugin, PluginFactoryWithO
         tracker.requestTrack(.event(.milestone))
     }
 
-    private func startPing() {
-        timer.resume()
-    }
-
-    private func stopPing() {
-        timer.suspend()
-    }
-
-    private func checkPlayheadMilestone() {
+    public override func pingHandler() {
         guard let playhead = dataProvider.delegate?.getPlayhead(),
               let duration = dataProvider.mediaMetadata.duration else { return }
         let percentage = calculatePercentage(playhead: playhead,

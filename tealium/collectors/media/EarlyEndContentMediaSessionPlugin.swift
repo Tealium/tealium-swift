@@ -27,13 +27,11 @@ public struct EarlyEndContentPluginOptions {
     }
 }
 
-public class EarlyEndContentMediaSessionPlugin: MediaSessionPlugin, PluginFactoryWithOptions {
+public class EarlyEndContentMediaSessionPlugin: MediaSessionPingPlugin, MediaSessionPlugin, PluginFactoryWithOptions {
     public typealias Options = EarlyEndContentPluginOptions
-    private var bag = TealiumDisposeBag()
     let dataProvider: MediaSessionDataProvider
     let tracker: MediaTracker
     let options: Options
-    var timer: Repeater
 
     public static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) -> MediaSessionPlugin {
         EarlyEndContentMediaSessionPlugin(dataProvider: dataProvider, events: events, tracker: tracker, options: options)
@@ -43,39 +41,23 @@ public class EarlyEndContentMediaSessionPlugin: MediaSessionPlugin, PluginFactor
         self.dataProvider = dataProvider
         self.options = options
         self.tracker = tracker
-        timer = options.timer
-        timer.eventHandler = { [weak self] in
-            self?.checkPlayheadContentEnded()
-        }
-        registerForEvents(dataProvider: dataProvider, events: events, tracker: tracker)
-            .forEach { bag.add($0) }
-    }
-
-    private func registerForEvents(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> [TealiumDisposableProtocol] {
-        [
-            events.onPlaybackStateChange.subscribe { [weak self] state in
-                switch state {
-                case .playing:
-                    self?.timer.resume()
-                case .paused:
-                    self?.timer.suspend()
-                case .ended:
-                    self?.contentEnded()
-                default:
-                    break
-                }
-            },
-            events.onEndSession.subscribe(timer.suspend)
-        ]
+        super.init(events: events, timer: options.timer)
+        events.onPlaybackStateChange.subscribe { [weak self] state in
+            switch state {
+            case .ended:
+                self?.contentEnded()
+            default:
+                break
+            }
+        }.toDisposeBag(bag)
     }
 
     private func contentEnded() {
-        timer.suspend()
         bag.dispose()
         tracker.requestTrack(.event(.contentEnd))
     }
 
-    private func checkPlayheadContentEnded() {
+    override public func pingHandler() {
         guard let playhead = dataProvider.delegate?.getPlayhead(),
               let duration = dataProvider.mediaMetadata.duration else { return }
         let percentage = calculatePercentage(playhead: playhead,
