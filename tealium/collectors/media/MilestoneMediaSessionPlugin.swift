@@ -58,7 +58,7 @@ open class MediaSessionPingPlugin {
     }
 }
 
-public class MilestoneMediaSessionPlugin: MediaSessionPingPlugin, MediaSessionPlugin, PluginFactoryWithOptions {
+public class MilestoneMediaSessionPlugin: MediaSessionPingPlugin, MediaSessionPlugin, TrackingPluginFactoryWithOptions {
     public typealias Options = MilestonePluginOptions
     let dataProvider: MediaSessionDataProvider
     let tracker: MediaTracker

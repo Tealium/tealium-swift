@@ -28,48 +28,77 @@ public extension MediaSessionPlugin {
     }
 }
 
-public protocol BasicPluginFactory {
+public protocol BehaviorChangePluginFactory {
+    static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEventsNotifier) -> MediaSessionPlugin
+}
+
+public protocol BehaviorChangePluginFactoryWithOptions {
+    associatedtype Options
+    static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEventsNotifier, options: Options) -> MediaSessionPlugin
+}
+
+public protocol TrackingPluginFactory { // tracking
     static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin
 }
 
-public protocol PluginFactoryWithOptions {
+public protocol TrackingPluginFactoryWithOptions { // tracking
     associatedtype Options
     static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) -> MediaSessionPlugin
 }
 
 public struct AnyPluginFactory {
 
-    private let createBlock: (MediaSessionDataProvider, MediaSessionEvents2, MediaTracker) -> (MediaSessionPlugin)
+    private let createBlock: (MediaSessionDataProvider, MediaSessionEventsNotifier, MediaTracker) -> (MediaSessionPlugin)
 
-    public init<P: PluginFactoryWithOptions, Options>(_ plugin: P.Type, _ options: Options) where P.Options == Options {
+    public init<P: TrackingPluginFactoryWithOptions, Options>(_ plugin: P.Type, _ options: Options) where P.Options == Options {
         createBlock = { dataProvider, events, tracker in
             return plugin.create(dataProvider: dataProvider,
-                                 events: events,
+                                 events: events.asObservables,
                                  tracker: tracker,
                                  options: options)
         }
     }
 
-    public init<P: BasicPluginFactory>(_ plugin: P.Type) {
-        createBlock = plugin.create
+    public init<P: TrackingPluginFactory>(_ plugin: P.Type) {
+        createBlock = { dataProvider, events, tracker in
+            return plugin.create(dataProvider: dataProvider,
+                                 events: events.asObservables,
+                                 tracker: tracker)
+        }
     }
 
-    func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin {
+    public init<P: BehaviorChangePluginFactory>(_ plugin: P.Type) {
+        createBlock = { dataProvider, events, _ in
+            return plugin.create(dataProvider: dataProvider,
+                                 events: events)
+        }
+    }
+
+    public init<P: BehaviorChangePluginFactoryWithOptions, Options>(_ plugin: P.Type, _ options: Options) where P.Options == Options {
+        createBlock = { dataProvider, events, _ in
+            return plugin.create(dataProvider: dataProvider,
+                                 events: events,
+                                 options: options)
+        }
+    }
+
+    func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEventsNotifier, tracker: MediaTracker) -> MediaSessionPlugin {
         createBlock(dataProvider, events, tracker)
     }
 }
 
 public class MediaSession2 {
-    private let notifier = MediaSessionEventsNotifier()
+    private let notifier: MediaSessionEventsNotifier
     private let dataProvider: MediaSessionDataProvider
     private let plugins: [MediaSessionPlugin]
     init(dataProvider: MediaSessionDataProvider, pluginFactory: [AnyPluginFactory], moduleDelegate: ModuleDelegate?) {
-        let events = notifier.asObservables
+        let notifier = MediaSessionEventsNotifier()
+        self.notifier = notifier
         self.dataProvider = dataProvider
         let tracker = Tracker(dataProvider: dataProvider,
                               delegate: moduleDelegate)
         plugins = pluginFactory.map { $0.create(dataProvider: dataProvider,
-                                                events: events,
+                                                events: notifier,
                                                 tracker: tracker)
         }
     }
@@ -264,7 +293,7 @@ public class MediaSessionDataProvider {
     let uuid = UUID().uuidString
     public var mediaMetadata: MediaMetadata // by the outside
     public var dataLayer: [String: Any] = [:] // By the plugins
-    public var state = MediaSessionState() // By the session
+    public var state = MediaSessionState() // By the session // TODO: need to find a way to make this only changeable from the session and not from the plugin
     weak public private(set) var delegate: MediaSessionDelegate?
 
     init(mediaMetadata: MediaMetadata, delegate: MediaSessionDelegate?) {
@@ -329,32 +358,32 @@ public struct MediaMetadata: Codable {
     }
 }
 
-class MediaSessionEventsNotifier {
-    let onStartSession = TealiumPublishSubject<Void>()
-    let onLoadedMetadata = TealiumPublishSubject<MediaMetadata>()
-    let onResumeSession = TealiumPublishSubject<Void>()
-    let onPlaybackStateChange = TealiumPublishSubject<MediaSessionState.PlaybackState>()
-    let onStartChapter = TealiumPublishSubject<Chapter>()
-    let onSkipChapter = TealiumPublishSubject<Void>()
-    let onEndChapter = TealiumPublishSubject<Void>()
-    let onStartBuffer = TealiumPublishSubject<Void>()
-    let onEndBuffer = TealiumPublishSubject<Void>()
-    let onStartSeek = TealiumPublishSubject<Double?>()
-    let onEndSeek = TealiumPublishSubject<Double?>()
-    let onPlayerPosition = TealiumPublishSubject<MediaSessionState.PlayerPosition>()
-    let onMuted = TealiumPublishSubject<Bool>()
-    let onClosedCaption = TealiumPublishSubject<Bool>()
-    let onRelevantQoEChange = TealiumPublishSubject<Void>()
-    let onStartAdBreak = TealiumPublishSubject<AdBreak>()
-    let onEndAdBreak = TealiumPublishSubject<Void>()
-    let onStartAd = TealiumPublishSubject<Ad>()
-    let onStartBufferAd = TealiumPublishSubject<Void>()
-    let onEndBufferAd = TealiumPublishSubject<Void>()
-    let onClickAd = TealiumPublishSubject<Void>()
-    let onSkipAd = TealiumPublishSubject<Void>()
-    let onEndAd = TealiumPublishSubject<Void>()
-    let onEndSession = TealiumPublishSubject<Void>()
-    let onCustomEvent = TealiumPublishSubject<(String, [String: Any]?)>()
+public class MediaSessionEventsNotifier {
+    public let onStartSession = TealiumPublishSubject<Void>()
+    public let onLoadedMetadata = TealiumPublishSubject<MediaMetadata>()
+    public let onResumeSession = TealiumPublishSubject<Void>()
+    public let onPlaybackStateChange = TealiumPublishSubject<MediaSessionState.PlaybackState>()
+    public let onStartChapter = TealiumPublishSubject<Chapter>()
+    public let onSkipChapter = TealiumPublishSubject<Void>()
+    public let onEndChapter = TealiumPublishSubject<Void>()
+    public let onStartBuffer = TealiumPublishSubject<Void>()
+    public let onEndBuffer = TealiumPublishSubject<Void>()
+    public let onStartSeek = TealiumPublishSubject<Double?>()
+    public let onEndSeek = TealiumPublishSubject<Double?>()
+    public let onPlayerPosition = TealiumPublishSubject<MediaSessionState.PlayerPosition>()
+    public let onMuted = TealiumPublishSubject<Bool>()
+    public let onClosedCaption = TealiumPublishSubject<Bool>()
+    public let onRelevantQoEChange = TealiumPublishSubject<Void>()
+    public let onStartAdBreak = TealiumPublishSubject<AdBreak>()
+    public let onEndAdBreak = TealiumPublishSubject<Void>()
+    public let onStartAd = TealiumPublishSubject<Ad>()
+    public let onStartBufferAd = TealiumPublishSubject<Void>()
+    public let onEndBufferAd = TealiumPublishSubject<Void>()
+    public let onClickAd = TealiumPublishSubject<Void>()
+    public let onSkipAd = TealiumPublishSubject<Void>()
+    public let onEndAd = TealiumPublishSubject<Void>()
+    public let onEndSession = TealiumPublishSubject<Void>()
+    public let onCustomEvent = TealiumPublishSubject<(String, [String: Any]?)>()
 
     var asObservables: MediaSessionEvents2 {
         MediaSessionEvents2(notifier: self)

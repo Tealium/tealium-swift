@@ -27,26 +27,35 @@ public struct EarlyEndContentPluginOptions {
     }
 }
 
-public class EarlyEndContentMediaSessionPlugin: MediaSessionPingPlugin, MediaSessionPlugin, PluginFactoryWithOptions {
-    public typealias Options = EarlyEndContentPluginOptions
-    let dataProvider: MediaSessionDataProvider
-    let tracker: MediaTracker
-    let options: Options
+public struct EndContentPluginOptions {
+    let earlyEndContentOptions: EarlyEndContentPluginOptions?
 
-    public static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) -> MediaSessionPlugin {
-        EarlyEndContentMediaSessionPlugin(dataProvider: dataProvider, events: events, tracker: tracker, options: options)
+    public init(earlyEndContentOptions: EarlyEndContentPluginOptions? = nil) {
+        self.earlyEndContentOptions = nil
+    }
+}
+
+class EarlyEndContentMediaSessionPlugin: MediaSessionPingPlugin, MediaSessionPlugin, BehaviorChangePluginFactoryWithOptions {
+    typealias Options = EarlyEndContentPluginOptions
+    let dataProvider: MediaSessionDataProvider
+    let options: Options
+    let notifier: MediaSessionEventsNotifier
+
+    static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEventsNotifier, options: Options) -> MediaSessionPlugin {
+        EarlyEndContentMediaSessionPlugin(dataProvider: dataProvider, events: events, options: options)
     }
 
-    private init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) {
+    private init(dataProvider: MediaSessionDataProvider, events: MediaSessionEventsNotifier, options: Options) {
         self.dataProvider = dataProvider
         self.options = options
-        self.tracker = tracker
-        super.init(events: events, timer: options.timer)
+        self.notifier = events
+        super.init(events: events.asObservables,
+                   timer: options.timer)
     }
 
     private func contentEnded() {
         bag.dispose()
-        tracker.requestTrack(.event(.contentEnd))
+        notifier.onPlaybackStateChange.publish(.ended) // TODO: maybe we do need a state change plugin otherwise this won't change an actual state change (?)
     }
 
     override public func pingHandler() {
@@ -60,26 +69,23 @@ public class EarlyEndContentMediaSessionPlugin: MediaSessionPingPlugin, MediaSes
     }
 
     public override func onSuspend(for state: MediaSessionState.PlaybackState) {
-        if state == .ended {
-            contentEnded()
-        } else {
+        if state != .ended {
             pingHandler()
         }
     }
 }
 
-public class EndContentMediaSessionPlugin: MediaSessionPlugin, BasicPluginFactory {
-    public typealias Options = EarlyEndContentPluginOptions
-
-    public static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin {
-        EndContentMediaSessionPlugin(dataProvider: dataProvider, events: events, tracker: tracker)
+public class EndContentMediaSessionPlugin: MediaSessionPlugin, TrackingPluginFactoryWithOptions {
+    public typealias Options = EndContentPluginOptions
+    public static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) -> MediaSessionPlugin {
+        EndContentMediaSessionPlugin(dataProvider: dataProvider, events: events, tracker: tracker, options: options)
     }
-
-    private init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) {
-        let bag = TealiumDisposeBag()
-        events.onPlaybackStateChange.subscribe { state in
+    let bag = TealiumDisposeBag()
+    private init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) {
+        
+        events.onPlaybackStateChange.subscribe { [weak self] state in
             if state == .ended {
-                bag.dispose()
+                self?.bag.dispose()
                 tracker.requestTrack(.event(.contentEnd))
             }
         }

@@ -11,7 +11,7 @@ import Foundation
 import TealiumCore
 #endif
 
-public class CustomTrackerMediaSessionPlugin: MediaSessionPlugin, BasicPluginFactory {
+public class CustomTrackerMediaSessionPlugin: MediaSessionPlugin, TrackingPluginFactory {
     public static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin {
         CustomTrackerMediaSessionPlugin(dataProvider: dataProvider, events: events, tracker: tracker)
     }
@@ -25,7 +25,7 @@ public class CustomTrackerMediaSessionPlugin: MediaSessionPlugin, BasicPluginFac
     }
 }
 
-public class LoadedMetadataTrackerMediaSessionPlugin: MediaSessionPlugin, BasicPluginFactory {
+public class LoadedMetadataTrackerMediaSessionPlugin: MediaSessionPlugin, TrackingPluginFactory {
     public static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin {
         LoadedMetadataTrackerMediaSessionPlugin(dataProvider: dataProvider, events: events, tracker: tracker)
     }

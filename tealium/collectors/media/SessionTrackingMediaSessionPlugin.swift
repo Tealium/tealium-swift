@@ -11,14 +11,32 @@ import Foundation
 import TealiumCore
 #endif
 
-public class SessionTrackingMediaSessionPlugin: MediaSessionPlugin, BasicPluginFactory {
-    let bag = TealiumDisposeBag()
+public struct SessionTrackingMediaPluginOptions {
+    public struct AutotrackingBackgroundSessions {
 
-    public static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin {
-        SessionTrackingMediaSessionPlugin(dataProvider: dataProvider, events: events, tracker: tracker)
     }
 
-    private init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) {
+    let timer: Repeater
+
+    public init(interval: Double) {
+        self.init(timer: TealiumRepeatingTimer(timeInterval: interval,
+                                               dispatchQueue: TealiumQueues.backgroundSerialQueue))
+    }
+
+    init(timer: Repeater) {
+        self.timer = timer
+    }
+}
+
+public class SessionTrackingMediaSessionPlugin: MediaSessionPlugin, TrackingPluginFactoryWithOptions {
+    public typealias Options = SessionTrackingMediaPluginOptions
+    let bag = TealiumDisposeBag()
+
+    public static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) -> MediaSessionPlugin {
+        SessionTrackingMediaSessionPlugin(dataProvider: dataProvider, events: events, tracker: tracker, options: options)
+    }
+
+    private init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) {
         registerForEvents(dataProvider: dataProvider, events: events, tracker: tracker)
             .forEach { bag.add($0) }
     }
@@ -36,4 +54,8 @@ public class SessionTrackingMediaSessionPlugin: MediaSessionPlugin, BasicPluginF
             }
         ]
     }
+}
+
+class BackgroundBehaviorSessionPlugin {
+
 }

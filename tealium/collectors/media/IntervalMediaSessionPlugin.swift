@@ -24,7 +24,7 @@ public struct IntervalPluginOptions {
     }
 }
 
-public class IntervalMediaSessionPlugin: MediaSessionPingPlugin, MediaSessionPlugin, PluginFactoryWithOptions {
+public class IntervalMediaSessionPlugin: MediaSessionPingPlugin, MediaSessionPlugin, TrackingPluginFactoryWithOptions {
     public typealias Options = IntervalPluginOptions
     let dataProvider: MediaSessionDataProvider
     let tracker: MediaTracker

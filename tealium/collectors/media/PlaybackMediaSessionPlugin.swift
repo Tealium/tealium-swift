@@ -11,7 +11,7 @@ import Foundation
 import TealiumCore
 #endif
 
-public class PlaybackMediaSessionPlugin: MediaSessionPlugin, BasicPluginFactory {
+public class PlaybackMediaSessionPlugin: MediaSessionPlugin, TrackingPluginFactory {
     private var bag = TealiumDisposeBag()
 
     public static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin {
