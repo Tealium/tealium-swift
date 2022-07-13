@@ -26,7 +26,7 @@ public class SummaryMediaSessionPlugin: MediaSessionPlugin, TrackingPluginFactor
     private func registerForEvents(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> [TealiumDisposableProtocol] {
         let builder = SummaryBuilder()
         return [
-            events.onPlaybackStateChange.subscribe(builder.playbackStateChange),
+            dataProvider.state.observeNew(\.playback, changeHandler: builder.playbackStateChange),
             events.onStartChapter.subscribe(builder.startChapter),
             events.onSkipChapter.subscribe(builder.skipChapter),
             events.onEndChapter.subscribe(builder.endChapter),

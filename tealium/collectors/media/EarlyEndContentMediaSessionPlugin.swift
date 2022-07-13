@@ -49,18 +49,20 @@ class EarlyEndContentMediaSessionPlugin: MediaSessionPingPlugin, MediaSessionPlu
         self.dataProvider = dataProvider
         self.options = options
         self.notifier = events
-        super.init(events: events.asObservables,
+        super.init(dataProvider: dataProvider,
+                   events: events.asObservables,
                    timer: options.timer)
     }
 
     private func contentEnded() {
         bag.dispose()
-        notifier.onPlaybackStateChange.publish(.ended) // TODO: maybe we do need a state change plugin otherwise this won't change an actual state change (?)
+        dataProvider.state.playback = .ended
+//        notifier.onPlaybackStateChange.publish(.ended) // TODO: maybe we do need a state change plugin otherwise this won't change an actual state change (?)
     }
 
     override public func pingHandler() {
         guard let playhead = dataProvider.delegate?.getPlayhead(),
-              let duration = dataProvider.mediaMetadata.duration else { return }
+              let duration = dataProvider.state.mediaMetadata.duration else { return }
         let percentage = calculatePercentage(playhead: playhead,
                                              duration: duration)
         if percentage >= options.percentageToComplete {
@@ -82,12 +84,11 @@ public class EndContentMediaSessionPlugin: MediaSessionPlugin, TrackingPluginFac
     }
     let bag = TealiumDisposeBag()
     private init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) {
-        
-        events.onPlaybackStateChange.subscribe { [weak self] state in
+        dataProvider.state.observeNew(\.playback) { [weak self] state in
             if state == .ended {
                 self?.bag.dispose()
                 tracker.requestTrack(.event(.contentEnd))
             }
-        }
+        }.toDisposeBag(bag)
     }
 }

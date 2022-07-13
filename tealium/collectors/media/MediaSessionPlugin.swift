@@ -119,20 +119,17 @@ public class MediaSession2 {
     }
 
     public func play() {
-        notifier.onPlaybackStateChange.publish(.playing)
         dataProvider.state.playback = .playing
     }
     public func pause() {
-        notifier.onPlaybackStateChange.publish(.paused)
         dataProvider.state.playback = .paused
     }
     public func startSession() {
         notifier.onStartSession.publish()
     }
     public func loadedMetadata(metadata: MediaMetadata) {
-        let merged = dataProvider.mediaMetadata.merging(metadata: metadata)
-        notifier.onLoadedMetadata.publish(merged)
-        dataProvider.mediaMetadata = merged
+        let merged = dataProvider.state.mediaMetadata.merging(metadata: metadata)
+        dataProvider.state.mediaMetadata = merged
     }
     public func resumeSession() {
         notifier.onResumeSession.publish()
@@ -162,18 +159,15 @@ public class MediaSession2 {
         notifier.onEndSeek.publish(position)
     }
     public func changePlayerPosition(_ position: MediaSessionState.PlayerPosition) {
-        notifier.onPlayerPosition.publish(position)
         dataProvider.state.position = position
     }
     public func relevantQoEChange() {
         notifier.onRelevantQoEChange.publish()
     }
     public func mute(_ muted: Bool) {
-        notifier.onMuted.publish(muted)
         dataProvider.state.muted = muted
     }
     public func closedCaption(_ closedCaptionOn: Bool) {
-        notifier.onClosedCaption.publish(closedCaptionOn)
         dataProvider.state.closedCaption = closedCaptionOn
     }
     public func startAdBreak(_ adBreak: AdBreak) {
@@ -211,7 +205,6 @@ public class MediaSession2 {
         notifier.onCustomEvent.publish((event, dataLayer))
     }
     public func endContent() {
-        notifier.onPlaybackStateChange.publish(.ended)
         dataProvider.state.playback = .ended
     }
     public func endSession() {
@@ -249,29 +242,70 @@ class MediaModule2 {
     }
 }
 
-public struct MediaSessionState: Codable {
-    var position: PlayerPosition = .inline
-    var playback: PlaybackState = .idle
-    var closedCaption: Bool = false
-    var muted: Bool = false
-    var buffering: Bool = false
-    var adPlaying: Bool = false
-    var adBuffering: Bool = false
-    var adBreaks = [AdBreak]()
-    var ads = [Ad]()
-    var chapters = [Chapter]()
+public class MediaSessionState: NSObject, Encodable {
+    @objc dynamic public var mediaMetadata: MediaMetadata
+    @objc dynamic public var position: PlayerPosition = .inline
+    @objc dynamic public var playback: PlaybackState = .idle
+    @objc dynamic public var closedCaption: Bool = false
+    @objc dynamic public var muted: Bool = false
+    @objc dynamic public var buffering: Bool = false
+    @objc dynamic public var adPlaying: Bool = false
+    @objc dynamic public var adBuffering: Bool = false
+    public var adBreaks = [AdBreak]()
+    public var ads = [Ad]()
+    public var chapters = [Chapter]()
 
-    public enum PlayerPosition: String, Codable {
+    init(mediaMetadata: MediaMetadata) {
+        self.mediaMetadata = mediaMetadata
+    }
+
+    @objc
+    public enum PlayerPosition: Int, Encodable {
         case inline
         case pictureInPicture
         case fullscreen
+
+        var toString: String {
+            switch self {
+            case .inline:
+                return "inline"
+            case .pictureInPicture:
+                return "pictureInPicture"
+            case .fullscreen:
+                return "fullscreen"
+            }
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+            try container.encode(self.toString)
+        }
     }
 
-    public enum PlaybackState: String, Codable {
+    @objc
+    public enum PlaybackState: Int, Encodable {
         case idle
         case playing
         case paused
         case ended
+
+        var toString: String {
+            switch self {
+            case .idle:
+                return "idle"
+            case .playing:
+                return "playing"
+            case .paused:
+                return "paused"
+            case .ended:
+                return "ended"
+            }
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+            try container.encode(self.toString)
+        }
     }
 
     enum CodingKeys: String, CodingKey {
@@ -286,33 +320,46 @@ public struct MediaSessionState: Codable {
         case ads = "media_ads"
         case chapters = "media_chapters"
     }
+
+    func observeNew<Value>(_ keyPath: KeyPath<MediaSessionState, Value>, changeHandler: @escaping (Value) -> Void) -> NSKeyValueObservation {
+        observe(keyPath, options: .new) { _, change in
+            guard let value = change.newValue else { return }
+            changeHandler(value)
+        }
+    }
+
+    func observeOldNew<Value>(_ keyPath: KeyPath<MediaSessionState, Value>, changeHandler: @escaping (Value, Value) -> Void) -> NSKeyValueObservation {
+        observe(keyPath, options: [.old, .new]) { _, change in
+            guard let old = change.oldValue,
+                let new = change.newValue else { return }
+            changeHandler(old, new)
+        }
+    }
 }
 
 /// In memory dataProvider for this media session. Possibly edited by every plugin. Used when tracking data.
 public class MediaSessionDataProvider {
     let uuid = UUID().uuidString
-    public var mediaMetadata: MediaMetadata // by the outside
     public var dataLayer: [String: Any] = [:] // By the plugins
-    public var state = MediaSessionState() // By the session // TODO: need to find a way to make this only changeable from the session and not from the plugin
+    public var state: MediaSessionState // By the session // TODO: need to find a way to make this only changeable from the session and not from the plugin
     weak public private(set) var delegate: MediaSessionDelegate?
 
     init(mediaMetadata: MediaMetadata, delegate: MediaSessionDelegate?) {
-        self.mediaMetadata = mediaMetadata
+        self.state = MediaSessionState(mediaMetadata: mediaMetadata)
         self.delegate = delegate
     }
 
     var trackingData: [String: Any] {
         var data = dataLayer
         data["media_uuid"] = uuid
-        data += mediaMetadata.encoded ?? [:]
         data += delegate?.trackingData ?? [:]
-        data += state.encoded ?? [:]
+        data += state.encoded?.flattened ?? [:]
         return data // merge the three things together
     }
 }
 
 // Variables are constant to make it clear that they can't really change it afterwards
-public struct MediaMetadata: Codable {
+public class MediaMetadata: NSObject, Codable {
     let id: String?
     let name: String?
     let duration: Int?
@@ -360,9 +407,7 @@ public struct MediaMetadata: Codable {
 
 public class MediaSessionEventsNotifier {
     public let onStartSession = TealiumPublishSubject<Void>()
-    public let onLoadedMetadata = TealiumPublishSubject<MediaMetadata>()
     public let onResumeSession = TealiumPublishSubject<Void>()
-    public let onPlaybackStateChange = TealiumPublishSubject<MediaSessionState.PlaybackState>()
     public let onStartChapter = TealiumPublishSubject<Chapter>()
     public let onSkipChapter = TealiumPublishSubject<Void>()
     public let onEndChapter = TealiumPublishSubject<Void>()
@@ -370,9 +415,6 @@ public class MediaSessionEventsNotifier {
     public let onEndBuffer = TealiumPublishSubject<Void>()
     public let onStartSeek = TealiumPublishSubject<Double?>()
     public let onEndSeek = TealiumPublishSubject<Double?>()
-    public let onPlayerPosition = TealiumPublishSubject<MediaSessionState.PlayerPosition>()
-    public let onMuted = TealiumPublishSubject<Bool>()
-    public let onClosedCaption = TealiumPublishSubject<Bool>()
     public let onRelevantQoEChange = TealiumPublishSubject<Void>()
     public let onStartAdBreak = TealiumPublishSubject<AdBreak>()
     public let onEndAdBreak = TealiumPublishSubject<Void>()
@@ -392,9 +434,7 @@ public class MediaSessionEventsNotifier {
 
 public class MediaSessionEvents2 {
     public let onStartSession: TealiumObservable<Void>
-    public let onLoadedMetadata: TealiumObservable<MediaMetadata>
     public let onResumeSession: TealiumObservable<Void>
-    public let onPlaybackStateChange: TealiumObservable<MediaSessionState.PlaybackState>
     public let onStartChapter: TealiumObservable<Chapter>
     public let onSkipChapter: TealiumObservable<Void>
     public let onEndChapter: TealiumObservable<Void>
@@ -402,10 +442,7 @@ public class MediaSessionEvents2 {
     public let onEndBuffer: TealiumObservable<Void>
     public let onStartSeek: TealiumObservable<Double?>
     public let onEndSeek: TealiumObservable<Double?>
-    public let onPlayerPosition: TealiumObservable<MediaSessionState.PlayerPosition>
     public let onRelevantQoEChange: TealiumObservable<Void>
-    public let onMuted: TealiumObservable<Bool>
-    public let onClosedCaption: TealiumObservable<Bool>
     public let onStartAdBreak: TealiumObservable<AdBreak>
     public let onStartBufferAd: TealiumObservable<Void>
     public let onEndBufferAd: TealiumObservable<Void>
@@ -419,9 +456,7 @@ public class MediaSessionEvents2 {
 
     init(notifier: MediaSessionEventsNotifier) {
         self.onStartSession = notifier.onStartSession.asObservable()
-        self.onLoadedMetadata = notifier.onLoadedMetadata.asObservable()
         self.onResumeSession = notifier.onResumeSession.asObservable()
-        self.onPlaybackStateChange = notifier.onPlaybackStateChange.asObservable()
         self.onStartChapter = notifier.onStartChapter.asObservable()
         self.onSkipChapter = notifier.onSkipChapter.asObservable()
         self.onEndChapter = notifier.onEndChapter.asObservable()
@@ -429,10 +464,7 @@ public class MediaSessionEvents2 {
         self.onEndBuffer = notifier.onEndBuffer.asObservable()
         self.onStartSeek = notifier.onStartSeek.asObservable()
         self.onEndSeek = notifier.onEndSeek.asObservable()
-        self.onPlayerPosition = notifier.onPlayerPosition.asObservable()
         self.onRelevantQoEChange = notifier.onRelevantQoEChange.asObservable()
-        self.onMuted = notifier.onMuted.asObservable()
-        self.onClosedCaption = notifier.onClosedCaption.asObservable()
         self.onStartAdBreak = notifier.onStartAdBreak.asObservable()
         self.onStartBufferAd = notifier.onStartBufferAd.asObservable()
         self.onEndBufferAd = notifier.onEndBufferAd.asObservable()

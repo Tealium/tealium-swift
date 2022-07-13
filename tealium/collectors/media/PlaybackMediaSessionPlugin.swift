@@ -25,7 +25,7 @@ public class PlaybackMediaSessionPlugin: MediaSessionPlugin, TrackingPluginFacto
 
     private func registerForEvents(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> [TealiumDisposableProtocol] {
         return [
-            events.onPlaybackStateChange.subscribe { state in
+            dataProvider.state.observeNew(\.playback) { state in
                 switch state {
                 case .playing:
                     tracker.requestTrack(.event(.play))

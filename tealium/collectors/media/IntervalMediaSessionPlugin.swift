@@ -38,7 +38,7 @@ public class IntervalMediaSessionPlugin: MediaSessionPingPlugin, MediaSessionPlu
         self.dataProvider = dataProvider
         self.options = options
         self.tracker = tracker
-        super.init(events: events, timer: options.timer)
+        super.init(dataProvider: dataProvider, events: events, timer: options.timer)
     }
 
     override public func pingHandler() {

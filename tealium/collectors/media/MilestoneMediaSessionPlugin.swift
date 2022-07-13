@@ -27,10 +27,10 @@ public struct MilestonePluginOptions {
 open class MediaSessionPingPlugin {
     public var bag = TealiumDisposeBag()
     private var timer: Repeater
-    public init(events: MediaSessionEvents2, timer: Repeater) {
+    public init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, timer: Repeater) {
         self.timer = timer
         self.timer.eventHandler = self.pingHandler
-        events.onPlaybackStateChange.subscribe { [weak self] state in
+        dataProvider.state.observeNew(\.playback) { [weak self] state in
             switch state {
             case .playing:
                 self?.timer.resume()
@@ -70,7 +70,7 @@ public class MilestoneMediaSessionPlugin: MediaSessionPingPlugin, MediaSessionPl
     private init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) {
         self.dataProvider = dataProvider
         self.tracker = tracker
-        super.init(events: events, timer: options.timer)
+        super.init(dataProvider: dataProvider, events: events, timer: options.timer)
     }
 
     private func sendMilestone(_ milestone: Milestone) {
@@ -81,7 +81,7 @@ public class MilestoneMediaSessionPlugin: MediaSessionPingPlugin, MediaSessionPl
 
     public override func pingHandler() {
         guard let playhead = dataProvider.delegate?.getPlayhead(),
-              let duration = dataProvider.mediaMetadata.duration else { return }
+              let duration = dataProvider.state.mediaMetadata.duration else { return }
         let percentage = calculatePercentage(playhead: playhead,
                                              duration: duration)
         switch percentage {

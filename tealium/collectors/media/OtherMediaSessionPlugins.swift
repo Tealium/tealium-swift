@@ -33,7 +33,7 @@ public class LoadedMetadataTrackerMediaSessionPlugin: MediaSessionPlugin, Tracki
     let bag = TealiumDisposeBag()
 
     private init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) {
-        events.onLoadedMetadata.subscribe { metadata in
+        dataProvider.state.observeNew(\.mediaMetadata) { metadata in
             tracker.requestTrack(.event(.loadedMetadata), dataLayer: metadata.encoded)
         }.toDisposeBag(bag)
     }
