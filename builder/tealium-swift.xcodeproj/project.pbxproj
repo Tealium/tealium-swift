@@ -48,7 +48,7 @@
 		1532DD0928787514001B0452 /* PlaybackMediaTrackingPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1532DD0828787514001B0452 /* PlaybackMediaTrackingPlugin.swift */; };
 		1532DD0B28787DC3001B0452 /* AdPlaybackMediaSessionPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1532DD0A28787DC3001B0452 /* AdPlaybackMediaSessionPlugin.swift */; };
 		1532DD0D28788FB2001B0452 /* OtherMediaSessionPlugins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1532DD0C28788FB2001B0452 /* OtherMediaSessionPlugins.swift */; };
-		1532DD0F287890D3001B0452 /* SessiionMediaTrackingPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1532DD0E287890D3001B0452 /* SessiionMediaTrackingPlugin.swift */; };
+		1532DD0F287890D3001B0452 /* SessionMediaTrackingPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1532DD0E287890D3001B0452 /* SessionMediaTrackingPlugin.swift */; };
 		1555F58F26E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1555F58E26E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift */; };
 		1555F59026E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1555F58E26E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift */; };
 		1555F59126E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1555F58E26E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift */; };
@@ -2161,7 +2161,7 @@
 		1532DD0828787514001B0452 /* PlaybackMediaTrackingPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackMediaTrackingPlugin.swift; sourceTree = "<group>"; };
 		1532DD0A28787DC3001B0452 /* AdPlaybackMediaSessionPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdPlaybackMediaSessionPlugin.swift; sourceTree = "<group>"; };
 		1532DD0C28788FB2001B0452 /* OtherMediaSessionPlugins.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherMediaSessionPlugins.swift; sourceTree = "<group>"; };
-		1532DD0E287890D3001B0452 /* SessiionMediaTrackingPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessiionMediaTrackingPlugin.swift; sourceTree = "<group>"; };
+		1532DD0E287890D3001B0452 /* SessionMediaTrackingPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionMediaTrackingPlugin.swift; sourceTree = "<group>"; };
 		15372735279081B60080D563 /* StoreKitTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKitTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/StoreKitTest.framework; sourceTree = DEVELOPER_DIR; };
 		1537275127908B2D0080D563 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS15.2.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
 		1555F58E26E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TealiumInstanceManagerTests.swift; sourceTree = "<group>"; };
@@ -3728,7 +3728,7 @@
 				1532DD0828787514001B0452 /* PlaybackMediaTrackingPlugin.swift */,
 				1532DD0A28787DC3001B0452 /* AdPlaybackMediaSessionPlugin.swift */,
 				1532DD0C28788FB2001B0452 /* OtherMediaSessionPlugins.swift */,
-				1532DD0E287890D3001B0452 /* SessiionMediaTrackingPlugin.swift */,
+				1532DD0E287890D3001B0452 /* SessionMediaTrackingPlugin.swift */,
 				158350DD28800FA80026E05C /* MediaSessionState.swift */,
 				158350DF288023B30026E05C /* BackgroundTimeoutMediaBehaviorPlugin.swift */,
 			);
@@ -6327,7 +6327,7 @@
 				CFADA22125A781CA0079B19A /* MediaSession.swift in Sources */,
 				15AE6000286AF83E0011CF02 /* MediaSessionPlugin.swift in Sources */,
 				CFADA5E725AE1DB60079B19A /* MediaSessionEvents.swift in Sources */,
-				1532DD0F287890D3001B0452 /* SessiionMediaTrackingPlugin.swift in Sources */,
+				1532DD0F287890D3001B0452 /* SessionMediaTrackingPlugin.swift in Sources */,
 				CFADA39B25AD00CF0079B19A /* MediaExtensions.swift in Sources */,
 				158350DE28800FA80026E05C /* MediaSessionState.swift in Sources */,
 				CFADA04D25A66F020079B19A /* MediaModule.swift in Sources */,

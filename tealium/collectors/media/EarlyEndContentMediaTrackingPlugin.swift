@@ -27,30 +27,22 @@ public struct EarlyEndContentPluginOptions {
     }
 }
 
-public struct EndContentPluginOptions {
-    let earlyEndContentOptions: EarlyEndContentPluginOptions?
-
-    public init(earlyEndContentOptions: EarlyEndContentPluginOptions? = nil) {
-        self.earlyEndContentOptions = nil
-    }
-}
-
 class EarlyEndContentMediaTrackingPlugin: MediaSessionPingPlugin, MediaSessionPlugin, BehaviorChangePluginFactoryWithOptions {
     typealias Options = EarlyEndContentPluginOptions
     let dataProvider: MediaSessionDataProvider
     let options: Options
     let notifier: MediaSessionEventsNotifier
 
-    static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEventsNotifier, options: Options) -> MediaSessionPlugin {
-        EarlyEndContentMediaTrackingPlugin(dataProvider: dataProvider, events: events, options: options)
+    static func create(dataProvider: MediaSessionDataProvider, notifier: MediaSessionEventsNotifier, options: Options) -> MediaSessionPlugin {
+        EarlyEndContentMediaTrackingPlugin(dataProvider: dataProvider, notifier: notifier, options: options)
     }
 
-    private init(dataProvider: MediaSessionDataProvider, events: MediaSessionEventsNotifier, options: Options) {
+    private init(dataProvider: MediaSessionDataProvider, notifier: MediaSessionEventsNotifier, options: Options) {
         self.dataProvider = dataProvider
         self.options = options
-        self.notifier = events
+        self.notifier = notifier
         super.init(dataProvider: dataProvider,
-                   events: events.asObservables,
+                   events: notifier.asObservables,
                    timer: options.timer)
     }
 

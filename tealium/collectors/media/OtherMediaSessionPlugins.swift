@@ -39,13 +39,12 @@ public class LoadedMetadataMediaTrackingPlugin: MediaSessionPlugin, TrackingPlug
     }
 }
 
-public class EndContentMediaTrackingPlugin: MediaSessionPlugin, TrackingPluginFactoryWithOptions {
-    public typealias Options = EndContentPluginOptions
-    public static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) -> MediaSessionPlugin {
-        EndContentMediaTrackingPlugin(dataProvider: dataProvider, events: events, tracker: tracker, options: options)
+public class EndContentMediaTrackingPlugin: MediaSessionPlugin, TrackingPluginFactory {
+    public static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin {
+        EndContentMediaTrackingPlugin(dataProvider: dataProvider, events: events, tracker: tracker)
     }
     let bag = TealiumDisposeBag()
-    private init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) {
+    private init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) {
         dataProvider.state.observeNew(\.playback) { [weak self] state in
             if state == .ended {
                 self?.bag.dispose()

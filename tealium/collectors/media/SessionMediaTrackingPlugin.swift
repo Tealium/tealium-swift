@@ -1,5 +1,5 @@
 //
-//  SessiionMediaTrackingPlugin.swift
+//  SessionMediaTrackingPlugin.swift
 //  TealiumMedia
 //
 //  Created by Enrico Zannini on 08/07/22.
@@ -11,11 +11,11 @@ import Foundation
 import TealiumCore
 #endif
 
-public class SessiionMediaTrackingPlugin: MediaSessionPlugin, TrackingPluginFactory {
+public class SessionMediaTrackingPlugin: MediaSessionPlugin, TrackingPluginFactory {
     let bag = TealiumDisposeBag()
 
     public static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin {
-        SessiionMediaTrackingPlugin(dataProvider: dataProvider, events: events, tracker: tracker)
+        SessionMediaTrackingPlugin(dataProvider: dataProvider, events: events, tracker: tracker)
     }
 
     private init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) {

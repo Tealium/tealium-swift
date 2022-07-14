@@ -29,12 +29,12 @@ public extension MediaSessionPlugin {
 }
 
 public protocol BehaviorChangePluginFactory {
-    static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEventsNotifier) -> MediaSessionPlugin
+    static func create(dataProvider: MediaSessionDataProvider, notifier: MediaSessionEventsNotifier) -> MediaSessionPlugin
 }
 
 public protocol BehaviorChangePluginFactoryWithOptions {
     associatedtype Options
-    static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEventsNotifier, options: Options) -> MediaSessionPlugin
+    static func create(dataProvider: MediaSessionDataProvider, notifier: MediaSessionEventsNotifier, options: Options) -> MediaSessionPlugin
 }
 
 public protocol TrackingPluginFactory { // tracking
@@ -51,39 +51,39 @@ public struct AnyPluginFactory {
     private let createBlock: (MediaSessionDataProvider, MediaSessionEventsNotifier, MediaTracker) -> (MediaSessionPlugin)
 
     public init<P: TrackingPluginFactoryWithOptions, Options>(_ plugin: P.Type, _ options: Options) where P.Options == Options {
-        createBlock = { dataProvider, events, tracker in
+        createBlock = { dataProvider, notifier, tracker in
             return plugin.create(dataProvider: dataProvider,
-                                 events: events.asObservables,
+                                 events: notifier.asObservables,
                                  tracker: tracker,
                                  options: options)
         }
     }
 
     public init<P: TrackingPluginFactory>(_ plugin: P.Type) {
-        createBlock = { dataProvider, events, tracker in
+        createBlock = { dataProvider, notifier, tracker in
             return plugin.create(dataProvider: dataProvider,
-                                 events: events.asObservables,
+                                 events: notifier.asObservables,
                                  tracker: tracker)
         }
     }
 
     public init<P: BehaviorChangePluginFactory>(_ plugin: P.Type) {
-        createBlock = { dataProvider, events, _ in
+        createBlock = { dataProvider, notifier, _ in
             return plugin.create(dataProvider: dataProvider,
-                                 events: events)
+                                 notifier: notifier)
         }
     }
 
     public init<P: BehaviorChangePluginFactoryWithOptions, Options>(_ plugin: P.Type, _ options: Options) where P.Options == Options {
-        createBlock = { dataProvider, events, _ in
+        createBlock = { dataProvider, notifier, _ in
             return plugin.create(dataProvider: dataProvider,
-                                 events: events,
+                                 notifier: notifier,
                                  options: options)
         }
     }
 
-    func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEventsNotifier, tracker: MediaTracker) -> MediaSessionPlugin {
-        createBlock(dataProvider, events, tracker)
+    func create(dataProvider: MediaSessionDataProvider, notifier: MediaSessionEventsNotifier, tracker: MediaTracker) -> MediaSessionPlugin {
+        createBlock(dataProvider, notifier, tracker)
     }
 }
 
@@ -98,7 +98,7 @@ public class MediaSession2 {
         let tracker = Tracker(dataProvider: dataProvider,
                               delegate: moduleDelegate)
         plugins = pluginFactory.map { $0.create(dataProvider: dataProvider,
-                                                events: notifier,
+                                                notifier: notifier,
                                                 tracker: tracker)
         }
     }

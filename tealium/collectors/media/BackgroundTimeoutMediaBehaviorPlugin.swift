@@ -24,8 +24,8 @@ public struct BackgroundTimeoutBehaviorPluginOption {
 class BackgroundTimeoutMediaBehaviorPlugin: MediaSessionPlugin, BehaviorChangePluginFactoryWithOptions {
     typealias Options = BackgroundTimeoutBehaviorPluginOption
 
-    static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEventsNotifier, options: Options) -> MediaSessionPlugin {
-        BackgroundTimeoutMediaBehaviorPlugin(dataProvider: dataProvider, events: events, options: options)
+    static func create(dataProvider: MediaSessionDataProvider, notifier: MediaSessionEventsNotifier, options: Options) -> MediaSessionPlugin {
+        BackgroundTimeoutMediaBehaviorPlugin(dataProvider: dataProvider, notifier: notifier, options: options)
     }
 
     let bag = TealiumDisposeBag()
@@ -34,9 +34,9 @@ class BackgroundTimeoutMediaBehaviorPlugin: MediaSessionPlugin, BehaviorChangePl
     var isSessionResumed = false
     var isSessionEnded = false
 
-    init(dataProvider: MediaSessionDataProvider, events: MediaSessionEventsNotifier, options: Options) {
+    init(dataProvider: MediaSessionDataProvider, notifier: MediaSessionEventsNotifier, options: Options) {
         self.options = options
-        self.notifier = events
+        self.notifier = notifier
         Tealium.lifecycleListeners.onBackgroundStateChange.subscribe { [weak self] state in
             guard let self = self else {
                 return
@@ -48,7 +48,7 @@ class BackgroundTimeoutMediaBehaviorPlugin: MediaSessionPlugin, BehaviorChangePl
                 self.sleep()
             }
         }.toDisposeBag(bag)
-        events.onResumeSession.subscribe { [weak self] in
+        notifier.onResumeSession.subscribe { [weak self] in
             self?.wake()
         }.toDisposeBag(bag)
     }
