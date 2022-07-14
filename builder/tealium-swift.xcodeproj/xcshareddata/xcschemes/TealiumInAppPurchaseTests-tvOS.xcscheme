@@ -21,6 +21,11 @@
                BlueprintName = "TealiumInAppPurchaseTests-tvOS"
                ReferencedContainer = "container:tealium-swift.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "InAppPurchaseModuleTests">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>
@@ -51,15 +56,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CF8806692554B80C0020E1B2"
-            BuildableName = "tvOSTealiumTest.app"
-            BlueprintName = "tvOSTealiumTest"
-            ReferencedContainer = "container:tealium-swift.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
