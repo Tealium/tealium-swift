@@ -337,7 +337,7 @@ public class MediaSessionEventsNotifier {
     init(stateUpdater: MediaSessionStateUpdater) {
         self.stateUpdater = stateUpdater
     }
-    
+
     var asObservables: MediaSessionEvents2 {
         MediaSessionEvents2(notifier: self)
     }
