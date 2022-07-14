@@ -1,5 +1,5 @@
 //
-//  EarlyEndContentMediaSessionPlugin.swift
+//  EarlyEndContentMediaTrackingPlugin.swift
 //  TealiumMedia
 //
 //  Created by Enrico Zannini on 07/07/22.
@@ -35,14 +35,14 @@ public struct EndContentPluginOptions {
     }
 }
 
-class EarlyEndContentMediaSessionPlugin: MediaSessionPingPlugin, MediaSessionPlugin, BehaviorChangePluginFactoryWithOptions {
+class EarlyEndContentMediaTrackingPlugin: MediaSessionPingPlugin, MediaSessionPlugin, BehaviorChangePluginFactoryWithOptions {
     typealias Options = EarlyEndContentPluginOptions
     let dataProvider: MediaSessionDataProvider
     let options: Options
     let notifier: MediaSessionEventsNotifier
 
     static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEventsNotifier, options: Options) -> MediaSessionPlugin {
-        EarlyEndContentMediaSessionPlugin(dataProvider: dataProvider, events: events, options: options)
+        EarlyEndContentMediaTrackingPlugin(dataProvider: dataProvider, events: events, options: options)
     }
 
     private init(dataProvider: MediaSessionDataProvider, events: MediaSessionEventsNotifier, options: Options) {
@@ -73,21 +73,5 @@ class EarlyEndContentMediaSessionPlugin: MediaSessionPingPlugin, MediaSessionPlu
         if state != .ended {
             pingHandler()
         }
-    }
-}
-
-public class EndContentMediaSessionPlugin: MediaSessionPlugin, TrackingPluginFactoryWithOptions {
-    public typealias Options = EndContentPluginOptions
-    public static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) -> MediaSessionPlugin {
-        EndContentMediaSessionPlugin(dataProvider: dataProvider, events: events, tracker: tracker, options: options)
-    }
-    let bag = TealiumDisposeBag()
-    private init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) {
-        dataProvider.state.observeNew(\.playback) { [weak self] state in
-            if state == .ended {
-                self?.bag.dispose()
-                tracker.requestTrack(.event(.contentEnd))
-            }
-        }.toDisposeBag(bag)
     }
 }

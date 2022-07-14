@@ -11,9 +11,9 @@ import Foundation
 import TealiumCore
 #endif
 
-public class CustomTrackerMediaSessionPlugin: MediaSessionPlugin, TrackingPluginFactory {
+public class CustomEventMediaTrackingPlugin: MediaSessionPlugin, TrackingPluginFactory {
     public static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin {
-        CustomTrackerMediaSessionPlugin(dataProvider: dataProvider, events: events, tracker: tracker)
+        CustomEventMediaTrackingPlugin(dataProvider: dataProvider, events: events, tracker: tracker)
     }
 
     let bag = TealiumDisposeBag()
@@ -25,9 +25,9 @@ public class CustomTrackerMediaSessionPlugin: MediaSessionPlugin, TrackingPlugin
     }
 }
 
-public class LoadedMetadataTrackerMediaSessionPlugin: MediaSessionPlugin, TrackingPluginFactory {
+public class LoadedMetadataMediaTrackingPlugin: MediaSessionPlugin, TrackingPluginFactory {
     public static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin {
-        LoadedMetadataTrackerMediaSessionPlugin(dataProvider: dataProvider, events: events, tracker: tracker)
+        LoadedMetadataMediaTrackingPlugin(dataProvider: dataProvider, events: events, tracker: tracker)
     }
 
     let bag = TealiumDisposeBag()
@@ -35,6 +35,22 @@ public class LoadedMetadataTrackerMediaSessionPlugin: MediaSessionPlugin, Tracki
     private init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) {
         dataProvider.state.observeNew(\.mediaMetadata) { metadata in
             tracker.requestTrack(.event(.loadedMetadata), dataLayer: metadata.encoded)
+        }.toDisposeBag(bag)
+    }
+}
+
+public class EndContentMediaTrackingPlugin: MediaSessionPlugin, TrackingPluginFactoryWithOptions {
+    public typealias Options = EndContentPluginOptions
+    public static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) -> MediaSessionPlugin {
+        EndContentMediaTrackingPlugin(dataProvider: dataProvider, events: events, tracker: tracker, options: options)
+    }
+    let bag = TealiumDisposeBag()
+    private init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) {
+        dataProvider.state.observeNew(\.playback) { [weak self] state in
+            if state == .ended {
+                self?.bag.dispose()
+                tracker.requestTrack(.event(.contentEnd))
+            }
         }.toDisposeBag(bag)
     }
 }

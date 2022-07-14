@@ -1,5 +1,5 @@
 //
-//  MilestoneMediaSessionPlugin.swift
+//  MilestoneMediaTrackingPlugin.swift
 //  TealiumMedia
 //
 //  Created by Enrico Zannini on 07/07/22.
@@ -10,19 +10,6 @@ import Foundation
 #if media
 import TealiumCore
 #endif
-
-public struct MilestonePluginOptions {
-    let timer: Repeater
-
-    public init(interval: Double) {
-        self.init(timer: TealiumRepeatingTimer(timeInterval: interval,
-                                               dispatchQueue: TealiumQueues.backgroundSerialQueue))
-    }
-
-    init(timer: Repeater) {
-        self.timer = timer
-    }
-}
 
 open class MediaSessionPingPlugin {
     public var bag = TealiumDisposeBag()
@@ -58,13 +45,26 @@ open class MediaSessionPingPlugin {
     }
 }
 
-public class MilestoneMediaSessionPlugin: MediaSessionPingPlugin, MediaSessionPlugin, TrackingPluginFactoryWithOptions {
+public struct MilestonePluginOptions {
+    let timer: Repeater
+
+    public init(interval: Double) {
+        self.init(timer: TealiumRepeatingTimer(timeInterval: interval,
+                                               dispatchQueue: TealiumQueues.backgroundSerialQueue))
+    }
+
+    init(timer: Repeater) {
+        self.timer = timer
+    }
+}
+
+public class MilestoneMediaTrackingPlugin: MediaSessionPingPlugin, MediaSessionPlugin, TrackingPluginFactoryWithOptions {
     public typealias Options = MilestonePluginOptions
     let dataProvider: MediaSessionDataProvider
     let tracker: MediaTracker
 
     public static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) -> MediaSessionPlugin {
-        MilestoneMediaSessionPlugin(dataProvider: dataProvider, events: events, tracker: tracker, options: options)
+        MilestoneMediaTrackingPlugin(dataProvider: dataProvider, events: events, tracker: tracker, options: options)
     }
 
     private init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) {

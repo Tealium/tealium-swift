@@ -1,5 +1,5 @@
 //
-//  IntervalMediaSessionPlugin.swift
+//  IntervalMediaTrackingPlugin.swift
 //  TealiumMedia
 //
 //  Created by Enrico Zannini on 08/07/22.
@@ -24,14 +24,14 @@ public struct IntervalPluginOptions {
     }
 }
 
-public class IntervalMediaSessionPlugin: MediaSessionPingPlugin, MediaSessionPlugin, TrackingPluginFactoryWithOptions {
+public class IntervalMediaTrackingPlugin: MediaSessionPingPlugin, MediaSessionPlugin, TrackingPluginFactoryWithOptions {
     public typealias Options = IntervalPluginOptions
     let dataProvider: MediaSessionDataProvider
     let tracker: MediaTracker
     let options: Options
 
     public static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) -> MediaSessionPlugin {
-        IntervalMediaSessionPlugin(dataProvider: dataProvider, events: events, tracker: tracker, options: options)
+        IntervalMediaTrackingPlugin(dataProvider: dataProvider, events: events, tracker: tracker, options: options)
     }
 
     private init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker, options: Options) {

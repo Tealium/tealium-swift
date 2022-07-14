@@ -1,8 +1,8 @@
 //
-//  SessionTrackingMediaSessionPlugin.swift
+//  BackgroundTimeoutMediaBehaviorPlugin.swift
 //  TealiumMedia
 //
-//  Created by Enrico Zannini on 08/07/22.
+//  Created by Enrico Zannini on 14/07/22.
 //  Copyright © 2022 Tealium, Inc. All rights reserved.
 //
 
@@ -12,34 +12,7 @@ import UIKit
 import TealiumCore
 #endif
 
-public class SessionTrackingMediaSessionPlugin: MediaSessionPlugin, TrackingPluginFactory {
-    let bag = TealiumDisposeBag()
-
-    public static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin {
-        SessionTrackingMediaSessionPlugin(dataProvider: dataProvider, events: events, tracker: tracker)
-    }
-
-    private init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) {
-        registerForEvents(dataProvider: dataProvider, events: events, tracker: tracker)
-            .forEach { bag.add($0) }
-    }
-
-    private func registerForEvents(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> [TealiumDisposableProtocol] {
-        [
-            events.onStartSession.subscribe {
-                tracker.requestTrack(.event(.sessionStart))
-            },
-            events.onResumeSession.subscribe {
-                tracker.requestTrack(.event(.sessionResume))
-            },
-            events.onEndSession.subscribe {
-                tracker.requestTrack(.event(.sessionEnd))
-            }
-        ]
-    }
-}
-
-public struct BackgroundTimeoutBehaviorSessionPluginOption {
+public struct BackgroundTimeoutBehaviorPluginOption {
 
     let interval: Double
 
@@ -48,11 +21,11 @@ public struct BackgroundTimeoutBehaviorSessionPluginOption {
     }
 }
 
-class BackgroundTimeoutBehaviorSessionPlugin: MediaSessionPlugin, BehaviorChangePluginFactoryWithOptions {
-    typealias Options = BackgroundTimeoutBehaviorSessionPluginOption
+class BackgroundTimeoutMediaBehaviorPlugin: MediaSessionPlugin, BehaviorChangePluginFactoryWithOptions {
+    typealias Options = BackgroundTimeoutBehaviorPluginOption
 
     static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEventsNotifier, options: Options) -> MediaSessionPlugin {
-        BackgroundTimeoutBehaviorSessionPlugin(dataProvider: dataProvider, events: events, options: options)
+        BackgroundTimeoutMediaBehaviorPlugin(dataProvider: dataProvider, events: events, options: options)
     }
 
     let bag = TealiumDisposeBag()
@@ -91,9 +64,9 @@ class BackgroundTimeoutBehaviorSessionPlugin: MediaSessionPlugin, BehaviorChange
         isSessionResumed = false
         #if os(iOS)
         var backgroundTaskId: UIBackgroundTaskIdentifier?
-        backgroundTaskId = BackgroundTimeoutBehaviorSessionPlugin.sharedApplication?.beginBackgroundTask {
+        backgroundTaskId = BackgroundTimeoutMediaBehaviorPlugin.sharedApplication?.beginBackgroundTask {
             if let taskId = backgroundTaskId {
-                BackgroundTimeoutBehaviorSessionPlugin.sharedApplication?.endBackgroundTask(taskId)
+                BackgroundTimeoutMediaBehaviorPlugin.sharedApplication?.endBackgroundTask(taskId)
                 backgroundTaskId = .invalid
             }
         }
@@ -103,7 +76,7 @@ class BackgroundTimeoutBehaviorSessionPlugin: MediaSessionPlugin, BehaviorChange
 
         if let taskId = backgroundTaskId {
             TealiumQueues.backgroundSerialQueue.asyncAfter(deadline: .now() + (options.interval + 1.0)) {
-                BackgroundTimeoutBehaviorSessionPlugin.sharedApplication?.endBackgroundTask(taskId)
+                BackgroundTimeoutMediaBehaviorPlugin.sharedApplication?.endBackgroundTask(taskId)
                 backgroundTaskId = .invalid
             }
         }

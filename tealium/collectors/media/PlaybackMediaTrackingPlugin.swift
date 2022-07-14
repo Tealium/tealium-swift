@@ -1,5 +1,5 @@
 //
-//  PlaybackMediaSessionPlugin.swift
+//  PlaybackMediaTrackingPlugin.swift
 //  TealiumMedia
 //
 //  Created by Enrico Zannini on 08/07/22.
@@ -11,11 +11,11 @@ import Foundation
 import TealiumCore
 #endif
 
-public class PlaybackMediaSessionPlugin: MediaSessionPlugin, TrackingPluginFactory {
+public class PlaybackMediaTrackingPlugin: MediaSessionPlugin, TrackingPluginFactory {
     private var bag = TealiumDisposeBag()
 
     public static func create(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) -> MediaSessionPlugin {
-        PlaybackMediaSessionPlugin(dataProvider: dataProvider, events: events, tracker: tracker)
+        PlaybackMediaTrackingPlugin(dataProvider: dataProvider, events: events, tracker: tracker)
     }
 
     private init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) {
@@ -58,7 +58,7 @@ public class PlaybackMediaSessionPlugin: MediaSessionPlugin, TrackingPluginFacto
                     return
                 }
                 if chapter.duration == nil {
-                    chapter.duration = PlaybackMediaSessionPlugin.calculateDuration(since: chapter.startTime)
+                    chapter.duration = PlaybackMediaTrackingPlugin.calculateDuration(since: chapter.startTime)
                 }
                 tracker.requestTrack(.event(.chapterEnd), dataLayer: chapter.encoded)
             }

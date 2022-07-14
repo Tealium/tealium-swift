@@ -39,7 +39,7 @@ public class AdPlaybackMediaSessionPlugin: MediaSessionPlugin, TrackingPluginFac
                     return
                 }
                 if adBreak.duration == nil {
-                    adBreak.duration = PlaybackMediaSessionPlugin.calculateDuration(since: adBreak.startTime)
+                    adBreak.duration = PlaybackMediaTrackingPlugin.calculateDuration(since: adBreak.startTime)
                 }
                 tracker.requestTrack(.event(.adBreakEnd), dataLayer: adBreak.encoded)
             },
@@ -51,7 +51,7 @@ public class AdPlaybackMediaSessionPlugin: MediaSessionPlugin, TrackingPluginFac
                     return
                 }
                 if adv.duration == nil {
-                    adv.duration = PlaybackMediaSessionPlugin.calculateDuration(since: adv.startTime)
+                    adv.duration = PlaybackMediaTrackingPlugin.calculateDuration(since: adv.startTime)
                 }
                 tracker.requestTrack(.event(.adEnd), dataLayer: adv.encoded)
             },
