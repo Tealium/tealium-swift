@@ -92,7 +92,7 @@ public class MediaSession2 {
     private let dataProvider: MediaSessionDataProvider
     private let plugins: [MediaSessionPlugin]
     init(dataProvider: MediaSessionDataProvider, pluginFactory: [AnyPluginFactory], moduleDelegate: ModuleDelegate?) {
-        let notifier = MediaSessionEventsNotifier()
+        let notifier = MediaSessionEventsNotifier(stateUpdater: MediaSessionStateUpdater(state: dataProvider.state))
         self.notifier = notifier
         self.dataProvider = dataProvider
         let tracker = Tracker(dataProvider: dataProvider,
@@ -119,24 +119,24 @@ public class MediaSession2 {
     }
 
     public func play() {
-        dataProvider.state.playback = .playing
+        notifier.stateUpdater.playback = .playing
     }
     public func pause() {
-        dataProvider.state.playback = .paused
+        notifier.stateUpdater.playback = .paused
     }
     public func startSession() {
         notifier.onStartSession.publish()
     }
     public func loadedMetadata(metadata: MediaMetadata) {
         let merged = dataProvider.state.mediaMetadata.merging(metadata: metadata)
-        dataProvider.state.mediaMetadata = merged
+        notifier.stateUpdater.mediaMetadata = merged
     }
     public func resumeSession() {
         notifier.onResumeSession.publish()
     }
     public func startChapter(_ chapter: Chapter) {
         notifier.onStartChapter.publish(chapter)
-        dataProvider.state.chapters.append(chapter)
+        notifier.stateUpdater.chapters.append(chapter)
     }
     public func skipChapter() {
         notifier.onSkipChapter.publish()
@@ -146,11 +146,11 @@ public class MediaSession2 {
     }
     public func startBuffer() {
         notifier.onStartBuffer.publish()
-        dataProvider.state.buffering = true
+        notifier.stateUpdater.buffering = true
     }
     public func endBuffer() {
         notifier.onEndBuffer.publish()
-        dataProvider.state.buffering = false
+        notifier.stateUpdater.buffering = false
     }
     public func startSeek(at position: Double?) {
         notifier.onStartSeek.publish(position)
@@ -159,53 +159,53 @@ public class MediaSession2 {
         notifier.onEndSeek.publish(position)
     }
     public func changePlayerPosition(_ position: MediaSessionState.PlayerPosition) {
-        dataProvider.state.position = position
+        notifier.stateUpdater.position = position
     }
     public func relevantQoEChange() {
         notifier.onRelevantQoEChange.publish()
     }
     public func mute(_ muted: Bool) {
-        dataProvider.state.muted = muted
+        notifier.stateUpdater.muted = muted
     }
     public func closedCaption(_ closedCaptionOn: Bool) {
-        dataProvider.state.closedCaption = closedCaptionOn
+        notifier.stateUpdater.closedCaption = closedCaptionOn
     }
     public func startAdBreak(_ adBreak: AdBreak) {
         notifier.onStartAdBreak.publish(adBreak)
-        dataProvider.state.adBreaks.append(adBreak)
+        notifier.stateUpdater.adBreaks.append(adBreak)
     }
     public func endAdBreak() {
         notifier.onEndAdBreak.publish()
     }
     public func startAd(_ adv: Ad) {
         notifier.onStartAd.publish(adv)
-        dataProvider.state.ads.append(adv)
-        dataProvider.state.adPlaying = true
+        notifier.stateUpdater.ads.append(adv)
+        notifier.stateUpdater.adPlaying = true
     }
     public func adStartBuffer() {
         notifier.onStartBufferAd.publish()
-        dataProvider.state.adBuffering = true
+        notifier.stateUpdater.adBuffering = true
     }
     public func adEndBuffer() {
         notifier.onEndBufferAd.publish()
-        dataProvider.state.adBuffering = false
+        notifier.stateUpdater.adBuffering = false
     }
     public func clickAd() {
         notifier.onClickAd.publish()
     }
     public func skipAd() {
         notifier.onSkipAd.publish()
-        dataProvider.state.adPlaying = false
+        notifier.stateUpdater.adPlaying = false
     }
     public func endAd() {
         notifier.onEndAd.publish()
-        dataProvider.state.adPlaying = false
+        notifier.stateUpdater.adPlaying = false
     }
     public func custom(_ event: String, dataLayer: [String: Any]? = nil) {
         notifier.onCustomEvent.publish((event, dataLayer))
     }
     public func endContent() {
-        dataProvider.state.playback = .ended
+        notifier.stateUpdater.playback = .ended
     }
     public func endSession() {
         notifier.onEndSession.publish()
@@ -242,106 +242,12 @@ class MediaModule2 {
     }
 }
 
-public class MediaSessionState: NSObject, Encodable {
-    @objc dynamic public var mediaMetadata: MediaMetadata
-    @objc dynamic public var position: PlayerPosition = .inline
-    @objc dynamic public var playback: PlaybackState = .idle
-    @objc dynamic public var closedCaption: Bool = false
-    @objc dynamic public var muted: Bool = false
-    @objc dynamic public var buffering: Bool = false
-    @objc dynamic public var adPlaying: Bool = false
-    @objc dynamic public var adBuffering: Bool = false
-    public var adBreaks = [AdBreak]()
-    public var ads = [Ad]()
-    public var chapters = [Chapter]()
-
-    init(mediaMetadata: MediaMetadata) {
-        self.mediaMetadata = mediaMetadata
-    }
-
-    @objc
-    public enum PlayerPosition: Int, Encodable {
-        case inline
-        case pictureInPicture
-        case fullscreen
-
-        var toString: String {
-            switch self {
-            case .inline:
-                return "inline"
-            case .pictureInPicture:
-                return "pictureInPicture"
-            case .fullscreen:
-                return "fullscreen"
-            }
-        }
-
-        public func encode(to encoder: Encoder) throws {
-            var container = encoder.singleValueContainer()
-            try container.encode(self.toString)
-        }
-    }
-
-    @objc
-    public enum PlaybackState: Int, Encodable {
-        case idle
-        case playing
-        case paused
-        case ended
-
-        var toString: String {
-            switch self {
-            case .idle:
-                return "idle"
-            case .playing:
-                return "playing"
-            case .paused:
-                return "paused"
-            case .ended:
-                return "ended"
-            }
-        }
-
-        public func encode(to encoder: Encoder) throws {
-            var container = encoder.singleValueContainer()
-            try container.encode(self.toString)
-        }
-    }
-
-    enum CodingKeys: String, CodingKey {
-        case position = "media_position"
-        case playback = "media_playback"
-        case closedCaption = "media_closedCaption"
-        case muted = "media_muted"
-        case buffering = "media_buffering"
-        case adPlaying = "media_adPlaying"
-        case adBuffering = "media_adBuffering"
-        case adBreaks = "media_adBreaks"
-        case ads = "media_ads"
-        case chapters = "media_chapters"
-    }
-
-    func observeNew<Value>(_ keyPath: KeyPath<MediaSessionState, Value>, changeHandler: @escaping (Value) -> Void) -> NSKeyValueObservation {
-        observe(keyPath, options: .new) { _, change in
-            guard let value = change.newValue else { return }
-            changeHandler(value)
-        }
-    }
-
-    func observeOldNew<Value>(_ keyPath: KeyPath<MediaSessionState, Value>, changeHandler: @escaping (Value, Value) -> Void) -> NSKeyValueObservation {
-        observe(keyPath, options: [.old, .new]) { _, change in
-            guard let old = change.oldValue,
-                let new = change.newValue else { return }
-            changeHandler(old, new)
-        }
-    }
-}
-
 /// In memory dataProvider for this media session. Possibly edited by every plugin. Used when tracking data.
 public class MediaSessionDataProvider {
     let uuid = UUID().uuidString
     public var dataLayer: [String: Any] = [:] // By the plugins
-    public var state: MediaSessionState // By the session // TODO: need to find a way to make this only changeable from the session and not from the plugin
+    public var state: MediaSessionState // By the session
+
     weak public private(set) var delegate: MediaSessionDelegate?
 
     init(mediaMetadata: MediaMetadata, delegate: MediaSessionDelegate?) {
@@ -426,7 +332,12 @@ public class MediaSessionEventsNotifier {
     public let onEndAd = TealiumPublishSubject<Void>()
     public let onEndSession = TealiumPublishSubject<Void>()
     public let onCustomEvent = TealiumPublishSubject<(String, [String: Any]?)>()
+    public let stateUpdater: MediaSessionStateUpdater
 
+    init(stateUpdater: MediaSessionStateUpdater) {
+        self.stateUpdater = stateUpdater
+    }
+    
     var asObservables: MediaSessionEvents2 {
         MediaSessionEvents2(notifier: self)
     }

@@ -56,8 +56,7 @@ class EarlyEndContentMediaSessionPlugin: MediaSessionPingPlugin, MediaSessionPlu
 
     private func contentEnded() {
         bag.dispose()
-        dataProvider.state.playback = .ended
-//        notifier.onPlaybackStateChange.publish(.ended) // TODO: maybe we do need a state change plugin otherwise this won't change an actual state change (?)
+        notifier.stateUpdater.playback = .ended
     }
 
     override public func pingHandler() {

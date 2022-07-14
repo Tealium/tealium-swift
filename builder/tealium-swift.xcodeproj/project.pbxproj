@@ -80,6 +80,7 @@
 		15755DDA27904D9200F894CA /* TealiumInAppPurchase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48B28446273D674700FE908D /* TealiumInAppPurchase.framework */; };
 		15755DDB27904DA200F894CA /* TealiumInAppPurchase.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 48B28446273D674700FE908D /* TealiumInAppPurchase.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		15831B652743FB8100C0E8FC /* ViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BF515225DAC89000AD3A0D /* ViewControllerTest.swift */; };
+		158350DE28800FA80026E05C /* MediaSessionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158350DD28800FA80026E05C /* MediaSessionState.swift */; };
 		158CA93726B9478100748A80 /* TealiumASIdentifierManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158CA93626B9478100748A80 /* TealiumASIdentifierManagerTests.swift */; };
 		1591EC5F26EA553100C45781 /* MockInMemoryDataLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1555F5CE26E6769E00AFDC3D /* MockInMemoryDataLayer.swift */; };
 		1591EC6026EA553100C45781 /* MockInMemoryDataLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1555F5CE26E6769E00AFDC3D /* MockInMemoryDataLayer.swift */; };
@@ -2171,6 +2172,7 @@
 		1566C23E272C460800FE9A5A /* TealiumDelegateProxy+Swizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TealiumDelegateProxy+Swizzle.m"; sourceTree = "<group>"; };
 		156C322F282A822E00D823E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		156CB50B26CD4ACB005EFEDB /* AnyCodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCodableTests.swift; sourceTree = "<group>"; };
+		158350DD28800FA80026E05C /* MediaSessionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSessionState.swift; sourceTree = "<group>"; };
 		158CA93626B9478100748A80 /* TealiumASIdentifierManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TealiumASIdentifierManagerTests.swift; sourceTree = "<group>"; };
 		1593AC5026E8E129005B42E3 /* LoggingDataToStringConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingDataToStringConverter.swift; sourceTree = "<group>"; };
 		15A0077C27284EF9005E1927 /* AutoTrackingIOSTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AutoTrackingIOSTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3725,6 +3727,7 @@
 				1532DD0A28787DC3001B0452 /* AdPlaybackMediaSessionPlugin.swift */,
 				1532DD0C28788FB2001B0452 /* OtherMediaSessionPlugins.swift */,
 				1532DD0E287890D3001B0452 /* SessionTrackingMediaSessionPlugin.swift */,
+				158350DD28800FA80026E05C /* MediaSessionState.swift */,
 			);
 			path = media;
 			sourceTree = "<group>";
@@ -6323,6 +6326,7 @@
 				CFADA5E725AE1DB60079B19A /* MediaSessionEvents.swift in Sources */,
 				1532DD0F287890D3001B0452 /* SessionTrackingMediaSessionPlugin.swift in Sources */,
 				CFADA39B25AD00CF0079B19A /* MediaExtensions.swift in Sources */,
+				158350DE28800FA80026E05C /* MediaSessionState.swift in Sources */,
 				CFADA04D25A66F020079B19A /* MediaModule.swift in Sources */,
 				1532DD0B28787DC3001B0452 /* AdPlaybackMediaSessionPlugin.swift in Sources */,
 				CF38C1A025B2736E000913E1 /* MediaContent.swift in Sources */,
