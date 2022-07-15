@@ -258,7 +258,7 @@ public class MediaSessionDataProvider {
     var trackingData: [String: Any] {
         var data = dataLayer
         data["media_uuid"] = uuid
-        data += delegate?.trackingData ?? [:]
+        data += delegate?.trackingData.flattened ?? [:]
         data += state.encoded?.flattened ?? [:]
         return data // merge the three things together
     }
@@ -396,5 +396,9 @@ public protocol MediaTracker {
 public extension MediaTracker {
     func requestTrack(_ event: MediaEvent) {
         self.requestTrack(event, dataLayer: nil)
+    }
+
+    func requestTrack(_ event: MediaEvent, segment: Segment) {
+        self.requestTrack(event, dataLayer: segment.dictionary?.flattened)
     }
 }

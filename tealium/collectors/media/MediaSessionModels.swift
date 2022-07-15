@@ -130,7 +130,7 @@ public struct QoE: Codable {
     var fps: Int?
     var droppedFrames: Int?
     var playbackSpeed: Double?
-    var metadata: AnyCodable?
+    var additionalInfo: AnyCodable?
 
     enum CodingKeys: String, CodingKey {
         case bitrate = "media_qoe_bitrate"
@@ -138,7 +138,7 @@ public struct QoE: Codable {
         case fps = "media_qoe_frames_per_second"
         case droppedFrames = "media_qoe_dropped_frames"
         case playbackSpeed = "media_qoe_playback_speed"
-        case metadata = "media_qoe_metadata"
+        case additionalInfo = "media_qoe_additional_info"
     }
 
     public init(bitrate: Int,
@@ -146,13 +146,13 @@ public struct QoE: Codable {
                 fps: Int? = nil,
                 droppedFrames: Int? = nil,
                 playbackSpeed: Double? = nil,
-                metadata: AnyCodable? = nil) {
+                additionalInfo: AnyCodable? = nil) {
         self.bitrate = bitrate
         self.startTime = startTime
         self.fps = fps
         self.droppedFrames = droppedFrames
         self.playbackSpeed = playbackSpeed
-        self.metadata = metadata
+        self.additionalInfo = additionalInfo
     }
 }
 
@@ -162,7 +162,7 @@ public struct Chapter: Codable {
     var duration: Double?
     var position: Int?
     var startTime: Date?
-    var metadata: AnyCodable?
+    var additionalInfo: AnyCodable?
 
     enum CodingKeys: String, CodingKey {
         case uuid = "media_chapter_uuid"
@@ -170,19 +170,19 @@ public struct Chapter: Codable {
         case duration = "media_chapter_duration"
         case position = "media_chapter_position"
         case startTime = "media_chapter_start_time"
-        case metadata = "media_chapter_metadata"
+        case additionalInfo = "media_chapter_additional_info"
     }
 
     public init(name: String,
                 duration: Double? = nil,
                 position: Int? = nil,
                 startTime: Date? = Date(),
-                metadata: AnyCodable? = nil) {
+                additionalInfo: AnyCodable? = nil) {
         self.name = name
         self.duration = duration
         self.position = position
         self.startTime = startTime
-        self.metadata = metadata
+        self.additionalInfo = additionalInfo
     }
 }
 
@@ -203,6 +203,7 @@ public struct Ad: Codable {
     var pod: String?
     var playerName: String?
     var startTime: Date = Date()
+    var additionalInfo: AnyCodable?
 
     enum CodingKeys: String, CodingKey {
         case uuid = "media_ad_uuid"
@@ -219,6 +220,7 @@ public struct Ad: Codable {
         case numberOfLoads = "media_ad_load"
         case pod = "media_ad_pod"
         case playerName = "media_ad_player_name"
+        case additionalInfo = "media_ad_additional_info"
     }
 
     public init(name: String? = nil,
@@ -233,7 +235,8 @@ public struct Ad: Codable {
                 creativeUrl: String? = nil,
                 numberOfLoads: Int? = nil,
                 pod: String? = nil,
-                playerName: String? = nil) {
+                playerName: String? = nil,
+                additionalInfo: AnyCodable? = nil) {
         self.name = name ?? "Ad \(uuid)"
         self.id = id
         self.duration = duration
@@ -247,6 +250,7 @@ public struct Ad: Codable {
         self.numberOfLoads = numberOfLoads
         self.pod = pod
         self.playerName = playerName
+        self.additionalInfo = additionalInfo
     }
 
 }
@@ -260,6 +264,7 @@ public struct AdBreak: Codable {
     var index: Int?
     var position: Int?
     var startTime: Date = Date()
+    var additionalInfo: AnyCodable?
 
     enum CodingKeys: String, CodingKey {
         case uuid = "media_ad_break_uuid"
@@ -268,18 +273,21 @@ public struct AdBreak: Codable {
         case duration = "media_ad_break_duration"
         case index = "media_ad_break_index"
         case position = "media_ad_break_position"
+        case additionalInfo = "media_ad_break_additional_info"
     }
 
     public init(name: String? = nil,
                 id: String? = nil,
                 duration: Double? = nil,
                 index: Int? = nil,
-                position: Int? = nil) {
+                position: Int? = nil,
+                additionalInfo: AnyCodable? = nil) {
         self.name = name ?? "Ad Break \(uuid)"
         self.id = id
         self.duration = duration
         self.index = index
         self.position = position
+        self.additionalInfo = additionalInfo
     }
 
 }

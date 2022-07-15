@@ -32,7 +32,7 @@ public class AdPlaybackMediaSessionPlugin: MediaSessionPlugin, TrackingPluginFac
                 tracker.requestTrack(.event(.adBufferEnd))
             },
             events.onStartAdBreak.subscribe { adBreak in
-                tracker.requestTrack(.event(.adBreakStart), dataLayer: adBreak.encoded)
+                tracker.requestTrack(.event(.adBreakStart), segment: .adBreak(adBreak))
             },
             events.onEndAdBreak.subscribe {
                 guard var adBreak = dataProvider.state.adBreaks.last else {
@@ -41,10 +41,10 @@ public class AdPlaybackMediaSessionPlugin: MediaSessionPlugin, TrackingPluginFac
                 if adBreak.duration == nil {
                     adBreak.duration = PlaybackMediaTrackingPlugin.calculateDuration(since: adBreak.startTime)
                 }
-                tracker.requestTrack(.event(.adBreakEnd), dataLayer: adBreak.encoded)
+                tracker.requestTrack(.event(.adBreakEnd), segment: .adBreak(adBreak))
             },
             events.onStartAd.subscribe { adv in
-                tracker.requestTrack(.event(.adStart), dataLayer: adv.encoded)
+                tracker.requestTrack(.event(.adStart), segment: .ad(adv))
             },
             events.onEndAd.subscribe {
                 guard var adv = dataProvider.state.ads.last else {
@@ -53,13 +53,15 @@ public class AdPlaybackMediaSessionPlugin: MediaSessionPlugin, TrackingPluginFac
                 if adv.duration == nil {
                     adv.duration = PlaybackMediaTrackingPlugin.calculateDuration(since: adv.startTime)
                 }
-                tracker.requestTrack(.event(.adEnd), dataLayer: adv.encoded)
+                tracker.requestTrack(.event(.adEnd), segment: .ad(adv))
             },
             events.onSkipAd.subscribe {
-                tracker.requestTrack(.event(.adSkip), dataLayer: dataProvider.state.ads.last?.encoded)
+                guard let adv = dataProvider.state.ads.last else { return }
+                tracker.requestTrack(.event(.adSkip), segment: .ad(adv))
             },
             events.onClickAd.subscribe {
-                tracker.requestTrack(.event(.adClick), dataLayer: dataProvider.state.ads.last?.encoded)
+                guard let adv = dataProvider.state.ads.last else { return }
+                tracker.requestTrack(.event(.adClick), segment: .ad(adv))
             }
         ]
     }

@@ -48,10 +48,11 @@ public class PlaybackMediaTrackingPlugin: MediaSessionPlugin, TrackingPluginFact
                 tracker.requestTrack(.event(.bufferEnd))
             },
             events.onStartChapter.subscribe { chapter in
-                tracker.requestTrack(.event(.chapterStart), dataLayer: chapter.encoded)
+                tracker.requestTrack(.event(.chapterStart), segment: .chapter(chapter))
             },
             events.onSkipChapter.subscribe {
-                tracker.requestTrack(.event(.chapterSkip), dataLayer: dataProvider.state.chapters.last?.encoded)
+                guard let chapter = dataProvider.state.chapters.last else { return }
+                tracker.requestTrack(.event(.chapterSkip), segment: .chapter(chapter))
             },
             events.onEndChapter.subscribe {
                 guard var chapter = dataProvider.state.chapters.last else {
@@ -60,7 +61,7 @@ public class PlaybackMediaTrackingPlugin: MediaSessionPlugin, TrackingPluginFact
                 if chapter.duration == nil {
                     chapter.duration = PlaybackMediaTrackingPlugin.calculateDuration(since: chapter.startTime)
                 }
-                tracker.requestTrack(.event(.chapterEnd), dataLayer: chapter.encoded)
+                tracker.requestTrack(.event(.chapterEnd), segment: .chapter(chapter))
             }
         ]
     }
