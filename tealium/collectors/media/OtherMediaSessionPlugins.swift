@@ -45,9 +45,8 @@ public class EndContentMediaTrackingPlugin: MediaSessionPlugin, TrackingPluginFa
     }
     let bag = TealiumDisposeBag()
     private init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, tracker: MediaTracker) {
-        dataProvider.state.observeNew(\.playback) { [weak self] state in
-            if state == .ended {
-                self?.bag.dispose()
+        dataProvider.state.observeOldNew(\.playback) { oldState, state in
+            if oldState == .playing, state == .ended {
                 tracker.requestTrack(.event(.contentEnd))
             }
         }.toDisposeBag(bag)

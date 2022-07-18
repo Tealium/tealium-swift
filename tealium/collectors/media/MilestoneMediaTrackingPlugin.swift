@@ -17,7 +17,8 @@ open class MediaSessionPingPlugin {
     public init(dataProvider: MediaSessionDataProvider, events: MediaSessionEvents2, timer: Repeater) {
         self.timer = timer
         self.timer.eventHandler = self.pingHandler
-        dataProvider.state.observeNew(\.playback) { [weak self] state in
+        dataProvider.state.observeOldNew(\.playback) { [weak self] old, state in
+            guard old != state else { return }
             switch state {
             case .playing:
                 self?.timer.resume()

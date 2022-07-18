@@ -43,7 +43,7 @@
 		15274FA827919279009F645A /* MockSessionStarter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7187F1A24768F5000CF0AB0 /* MockSessionStarter.swift */; };
 		15274FA92791927F009F645A /* TestTealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716C7D1B1DDBC3A500512C99 /* TestTealiumHelper.swift */; };
 		1532DD032876E7AC001B0452 /* MilestoneMediaTrackingPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1532DD022876E7AC001B0452 /* MilestoneMediaTrackingPlugin.swift */; };
-		1532DD052877262F001B0452 /* EarlyEndContentMediaTrackingPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1532DD042877262F001B0452 /* EarlyEndContentMediaTrackingPlugin.swift */; };
+		1532DD052877262F001B0452 /* EarlyEndContentMediaBehaviorPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1532DD042877262F001B0452 /* EarlyEndContentMediaBehaviorPlugin.swift */; };
 		1532DD0728786AC7001B0452 /* IntervalMediaTrackingPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1532DD0628786AC7001B0452 /* IntervalMediaTrackingPlugin.swift */; };
 		1532DD0928787514001B0452 /* PlaybackMediaTrackingPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1532DD0828787514001B0452 /* PlaybackMediaTrackingPlugin.swift */; };
 		1532DD0B28787DC3001B0452 /* AdPlaybackMediaSessionPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1532DD0A28787DC3001B0452 /* AdPlaybackMediaSessionPlugin.swift */; };
@@ -2156,7 +2156,7 @@
 		1519E00726E26B3D000C71B4 /* PubSub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PubSub.swift; sourceTree = "<group>"; };
 		15274F97279191E0009F645A /* TealiumInAppPurchaseTests-tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TealiumInAppPurchaseTests-tvOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1532DD022876E7AC001B0452 /* MilestoneMediaTrackingPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilestoneMediaTrackingPlugin.swift; sourceTree = "<group>"; };
-		1532DD042877262F001B0452 /* EarlyEndContentMediaTrackingPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarlyEndContentMediaTrackingPlugin.swift; sourceTree = "<group>"; };
+		1532DD042877262F001B0452 /* EarlyEndContentMediaBehaviorPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarlyEndContentMediaBehaviorPlugin.swift; sourceTree = "<group>"; };
 		1532DD0628786AC7001B0452 /* IntervalMediaTrackingPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntervalMediaTrackingPlugin.swift; sourceTree = "<group>"; };
 		1532DD0828787514001B0452 /* PlaybackMediaTrackingPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackMediaTrackingPlugin.swift; sourceTree = "<group>"; };
 		1532DD0A28787DC3001B0452 /* AdPlaybackMediaSessionPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdPlaybackMediaSessionPlugin.swift; sourceTree = "<group>"; };
@@ -3723,7 +3723,7 @@
 				15AE5FFF286AF83E0011CF02 /* MediaSessionPlugin.swift */,
 				15AE6001286B29750011CF02 /* SummaryMediaTrackingPlugin.swift */,
 				1532DD022876E7AC001B0452 /* MilestoneMediaTrackingPlugin.swift */,
-				1532DD042877262F001B0452 /* EarlyEndContentMediaTrackingPlugin.swift */,
+				1532DD042877262F001B0452 /* EarlyEndContentMediaBehaviorPlugin.swift */,
 				1532DD0628786AC7001B0452 /* IntervalMediaTrackingPlugin.swift */,
 				1532DD0828787514001B0452 /* PlaybackMediaTrackingPlugin.swift */,
 				1532DD0A28787DC3001B0452 /* AdPlaybackMediaSessionPlugin.swift */,
@@ -6341,7 +6341,7 @@
 				1532DD0728786AC7001B0452 /* IntervalMediaTrackingPlugin.swift in Sources */,
 				CFACFFDB25AF816400CD51C6 /* MediaEventService.swift in Sources */,
 				CFADA4A025AD02750079B19A /* MediaDispatch.swift in Sources */,
-				1532DD052877262F001B0452 /* EarlyEndContentMediaTrackingPlugin.swift in Sources */,
+				1532DD052877262F001B0452 /* EarlyEndContentMediaBehaviorPlugin.swift in Sources */,
 				CFADA45525AD01680079B19A /* MediaSessionModels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

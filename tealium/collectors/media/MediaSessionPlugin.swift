@@ -214,6 +214,9 @@ public class MediaSession2 {
     public func addCustomData(_ dataLayer: [String: Any]) {
         dataProvider.dataLayer += dataLayer
     }
+    public func getCustomData(forKey key: String) -> Any? {
+        dataProvider.dataLayer[key]
+    }
     public func removeCustomData(forKey key: String) {
         dataProvider.dataLayer.removeValue(forKey: key)
     }

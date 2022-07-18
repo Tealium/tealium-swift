@@ -1,5 +1,5 @@
 //
-//  EarlyEndContentMediaTrackingPlugin.swift
+//  EarlyEndContentMediaBehaviorPlugin.swift
 //  TealiumMedia
 //
 //  Created by Enrico Zannini on 07/07/22.
@@ -27,14 +27,14 @@ public struct EarlyEndContentPluginOptions {
     }
 }
 
-class EarlyEndContentMediaTrackingPlugin: MediaSessionPingPlugin, MediaSessionPlugin, BehaviorChangePluginFactoryWithOptions {
+class EarlyEndContentMediaBehaviorPlugin: MediaSessionPingPlugin, MediaSessionPlugin, BehaviorChangePluginFactoryWithOptions {
     typealias Options = EarlyEndContentPluginOptions
     let dataProvider: MediaSessionDataProvider
     let options: Options
     let notifier: MediaSessionEventsNotifier
 
     static func create(dataProvider: MediaSessionDataProvider, notifier: MediaSessionEventsNotifier, options: Options) -> MediaSessionPlugin {
-        EarlyEndContentMediaTrackingPlugin(dataProvider: dataProvider, notifier: notifier, options: options)
+        EarlyEndContentMediaBehaviorPlugin(dataProvider: dataProvider, notifier: notifier, options: options)
     }
 
     private init(dataProvider: MediaSessionDataProvider, notifier: MediaSessionEventsNotifier, options: Options) {
@@ -47,7 +47,6 @@ class EarlyEndContentMediaTrackingPlugin: MediaSessionPingPlugin, MediaSessionPl
     }
 
     private func contentEnded() {
-        bag.dispose()
         notifier.stateUpdater.playback = .ended
     }
 
