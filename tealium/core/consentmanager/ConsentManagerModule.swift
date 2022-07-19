@@ -88,9 +88,8 @@ class ConsentManagerModule: DispatchValidator {
 
     func getConsentData() -> [String: Any] {
         if var consentDictionary = consentManager?.currentPolicy.policyTrackingData {
-            let consentCategoriesKey = config.overrideConsentCategoriesKey
-            if consentCategoriesKey != nil {
-                consentDictionary[consentCategoriesKey!] = consentDictionary[TealiumDataKey.consentCategoriesKey]
+            if let consentCategoriesKey = config.overrideConsentCategoriesKey, consentCategoriesKey != TealiumDataKey.consentCategoriesKey {
+                consentDictionary[consentCategoriesKey] = consentDictionary[TealiumDataKey.consentCategoriesKey]
                 consentDictionary.removeValue(forKey: TealiumDataKey.consentCategoriesKey)
             }
             return consentDictionary

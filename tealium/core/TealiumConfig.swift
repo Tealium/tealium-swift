@@ -444,7 +444,7 @@ public extension TealiumConfig {
         get {
             options[TealiumConfigKey.overrideConsentCategoriesKey] as? String
         }
-        
+
         set {
             options[TealiumConfigKey.overrideConsentCategoriesKey] = newValue
         }
