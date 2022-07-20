@@ -94,11 +94,8 @@ public class ConsentManager {
         let preferences = consentPreferencesStorage?.preferences ?? UserConsentPreferences(consentStatus: .unknown, consentCategories: nil)
 
         self.currentPolicy = ConsentPolicyFactory.create(config.consentPolicy ?? .gdpr, preferences: preferences)
-
-        if preferences.consentStatus != .unknown {
-            // always need to update the consent cookie in TiQ, so this will trigger update_consent_cookie
-            trackUserConsentPreferences()
-        }
+        // Make sure TiQ has a valid consent cookie once the consent manager is started
+        updateTIQCookie()
     }
 
     /// Sends a track call containing the consent settings if consent logging is enabled￼.
@@ -114,8 +111,6 @@ public class ConsentManager {
             ]
             delegate?.requestTrack(TealiumTrackRequest(data: trackData))
         }
-        // in all cases, update the cookie data in TiQ/webview
-        updateTIQCookie()
     }
 
     /// Sends the track call to update TiQ cookie info. Ignored by Collect module.￼
@@ -137,6 +132,8 @@ public class ConsentManager {
         currentPolicy.preferences = preferences
         // store data
         consentPreferencesStorage?.preferences = preferences
+        // Send an update to TiQ any time the stored preferences are changed, to keep the cookie in sync
+        updateTIQCookie()
     }
 
     /// Can set both Consent Status and Consent Categories in a single call￼.

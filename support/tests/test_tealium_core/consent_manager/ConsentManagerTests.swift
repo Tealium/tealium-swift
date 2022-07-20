@@ -93,10 +93,9 @@ class ConsentManagerTests: XCTestCase {
         let config = testTealiumConfig
         config.consentPolicy = .gdpr
         let mockConsentDelegate = MockConsentDelegate()
-        let consentManager = ConsentManager(config: config, delegate: mockConsentDelegate, diskStorage: ConsentMockDiskStorage(), dataLayer: DummyDataManager())
         let expect = expectation(description: "testConsentGrantedTriggersDequeueRequest")
         mockConsentDelegate.asyncExpectation = expect
-
+        let consentManager = ConsentManager(config: config, delegate: mockConsentDelegate, diskStorage: ConsentMockDiskStorage(), dataLayer: DummyDataManager())
         consentManager.userConsentStatus = .consented
 
         waitForExpectations(timeout: 2) { error in
@@ -111,9 +110,9 @@ class ConsentManagerTests: XCTestCase {
         let config = testTealiumConfig
         config.consentPolicy = .custom(MockCustomConsentPolicy.self)
         let mockConsentDelegate = MockConsentDelegate()
-        let consentManager = ConsentManager(config: config, delegate: mockConsentDelegate, diskStorage: ConsentMockDiskStorage(), dataLayer: DummyDataManager())
         let expect = expectation(description: "testCustomConsentPolicyStatusInfo_SentInTrack")
         mockConsentDelegate.asyncExpectation = expect
+        let consentManager = ConsentManager(config: config, delegate: mockConsentDelegate, diskStorage: ConsentMockDiskStorage(), dataLayer: DummyDataManager())
         consentManager.trackUserConsentPreferences()
 
         waitForExpectations(timeout: 2) { error in
@@ -173,9 +172,9 @@ class ConsentManagerTests: XCTestCase {
         let config = testTealiumConfig
         config.consentLoggingEnabled = true
         let mockConsentDelegate = MockConsentDelegate()
-        let consentManager = ConsentManager(config: config, delegate: mockConsentDelegate, diskStorage: ConsentMockDiskStorage(), dataLayer: DummyDataManager())
         let expect = expectation(description: "testTrackUserConsentPreferences")
         mockConsentDelegate.asyncExpectation = expect
+        let consentManager = ConsentManager(config: config, delegate: mockConsentDelegate, diskStorage: ConsentMockDiskStorage(), dataLayer: DummyDataManager())
         consentManager.trackUserConsentPreferences()
 
         waitForExpectations(timeout: 2) { error in
