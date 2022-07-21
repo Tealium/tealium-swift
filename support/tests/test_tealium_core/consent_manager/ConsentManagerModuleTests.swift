@@ -189,6 +189,25 @@ class ConsentManagerModuleTests: XCTestCase {
         let purge = module.shouldPurge(request: track)
         XCTAssertFalse(purge)
     }
+    
+    func testOverrideConsentCategoriesKey() {
+        config.consentPolicy = .gdpr
+        let overrideKey = "test_override_consent_categories_key"
+        config.overrideConsentCategoriesKey = overrideKey
+        let module = createModule(with: config)
+        module.consentManager?.userConsentStatus = .consented
+        module.consentManager?.userConsentCategories = [.affiliates, .analytics, .email, .personalization, .mobile]
+        let lastUpdate = module.consentManager?.lastConsentUpdate?.unixTimeMilliseconds
+        let expected: [String:Any] = [
+            TealiumDataKey.consentStatus: "consented",
+            overrideKey : ["affiliates", "analytics", "email", "personalization", "mobile"],
+            TealiumDataKey.policyKey: "gdpr",
+            TealiumDataKey.consentLastUpdated:
+                lastUpdate!
+        ]
+        let consentData = module.getConsentData()
+        XCTAssertTrue(NSDictionary(dictionary: expected).isEqual(to: consentData))
+    }
 
     func testAddConsentDataToTrackWhenConsented() {
         config.consentPolicy = .gdpr
