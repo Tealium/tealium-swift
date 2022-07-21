@@ -439,6 +439,16 @@ public extension TealiumConfig {
         }
     }
 
+    /// Allows the Consent Categories key to be overridden
+    var overrideConsentCategoriesKey: String? {
+        get {
+            options[TealiumConfigKey.overrideConsentCategoriesKey] as? String
+        }
+
+        set {
+            options[TealiumConfigKey.overrideConsentCategoriesKey] = newValue
+        }
+    }
 }
 
 // MARK: Deep Linking/QR Trace
