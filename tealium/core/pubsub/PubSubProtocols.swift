@@ -74,3 +74,15 @@ public extension TealiumSubjectProtocol {
 public protocol TealiumDisposableProtocol {
     func dispose()
 }
+
+public extension TealiumDisposableProtocol {
+    func toDisposeBag(_ disposeBag: TealiumDisposeBag) {
+        disposeBag.add(self)
+    }
+}
+
+extension NSKeyValueObservation: TealiumDisposableProtocol {
+    public func dispose() {
+        self.invalidate()
+    }
+}

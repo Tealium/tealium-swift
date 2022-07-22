@@ -21,7 +21,6 @@ public class TealiumObservable<Element>: TealiumObservableProtocol {
 
     fileprivate init() {}
 
-    @discardableResult
     public func subscribe(_ observer: @escaping Observer) -> TealiumSubscription<Element> {
         count += 1
         let key = uuid + String(count)
@@ -63,10 +62,6 @@ public class TealiumSubscription<T>: TealiumDisposableProtocol {
 
     public func dispose() {
         observable?.unsubscribe(self)
-    }
-
-    public func toDisposeBag(_ disposeBag: TealiumDisposeBag) {
-        disposeBag.add(self)
     }
 }
 
@@ -134,7 +129,6 @@ public class TealiumReplaySubject<Element>: TealiumPublishSubject<Element> {
     public func last() -> Element? {
         (observable as? TealiumReplayObservable<Element>)?.last()
     }
-
 }
 
 // MARK: Buffered
