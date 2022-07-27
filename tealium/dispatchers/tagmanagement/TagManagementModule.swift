@@ -22,6 +22,7 @@ public class TagManagementModule: Dispatcher {
     var tagManagement: TagManagementProtocol?
     var webViewState: Atomic<WebViewState>?
     weak var delegate: ModuleDelegate?
+    private let bag = TealiumDisposeBag()
 
     /// Provided for unit testing￼.
     ///
@@ -48,25 +49,31 @@ public class TagManagementModule: Dispatcher {
         self.context = context
         self.delegate = delegate
         self.tagManagement = tagManagement ?? TagManagementWKWebView(config: config, delegate: delegate)
-        self.tagManagement?.enable(webviewURL: config.webviewURL,
-                                   delegates: config.webViewDelegates,
-                                   view: config.rootView) { [weak self] _, error in
-            guard let self = self else {
-                return
-            }
-            TealiumQueues.backgroundSerialQueue.async {
-                if error != nil {
-                    self.errorState.incrementAndGet()
-                    self.webViewState?.value = .loadFailure
-                    completion?((.failure(TagManagementError.webViewNotYetReady), nil))
-                } else {
-                    self.errorState.resetToZero()
-                    self.webViewState = Atomic(value: .loadSuccess)
-                    self.flushQueue()
-                    completion?((.success(true), nil))
+        var enabled = false
+        context.sharedState.observe(\.additionalQueryParams, options: [.initial, .new]) { [weak self] params in
+            guard let self = self else { return }
+            let url = context.config.webviewURL?.appendingQueryItems(params)
+            if enabled {
+                self.tagManagement?.reload(url, { _, _, _ in })
+            } else {
+                enabled = true
+                self.tagManagement?.enable(webviewURL: url,
+                                           delegates: context.config.webViewDelegates,
+                                           view: context.config.rootView) { [weak self] _, error in
+                    guard let self = self else { return }
+                    let success = error != nil
+                    TealiumQueues.backgroundSerialQueue.async {
+                        self.loadComplete(success: success)
+                        if success {
+                            self.flushQueue()
+                            completion?((.success(true), nil))
+                        } else {
+                            completion?((.failure(TagManagementError.webViewNotYetReady), nil))
+                        }
+                    }
                 }
             }
-        }
+        }.toDisposeBag(bag)
     }
 
     /// Sends the track request to the webview.
@@ -114,6 +121,25 @@ public class TagManagementModule: Dispatcher {
         }
     }
 
+    private func loadComplete(success: Bool) {
+        if success {
+            self.webViewState = Atomic(value: .loadSuccess)
+            self.errorState.resetToZero()
+        } else {
+            self.webViewState = Atomic(value: .loadFailure)
+            _ = self.errorState.incrementAndGet()
+        }
+    }
+
+    private func reload(_ url: URL? = nil, completion: @escaping (Bool) -> Void) {
+        self.tagManagement?.reload(url) { [weak self] success, _, _ in
+            TealiumQueues.backgroundSerialQueue.async {
+                self?.loadComplete(success: success)
+                completion(success)
+            }
+        }
+    }
+
     /// Detects track type and dispatches appropriately.
     ///
     /// - Parameter track: `TealiumRequest`, which is expected to be a `TealiumTrackRequest`, `TealiumBatchTrackRequest` or a `TealiumRemoteCommandRequestResponse`
@@ -121,16 +147,12 @@ public class TagManagementModule: Dispatcher {
     public func dynamicTrack(_ track: TealiumRequest,
                              completion: ModuleCompletion?) {
         if self.errorState.value > 0 {
-            self.tagManagement?.reload { success, _, _ in
-                TealiumQueues.backgroundSerialQueue.async {
-                    if success {
-                        self.errorState.value = 0
-                        self.dynamicTrack(track, completion: completion)
-                    } else {
-                        _ = self.errorState.incrementAndGet()
-                        self.enqueue(track, completion: completion)
-                        completion?((.failure(TagManagementError.couldNotLoadURL), nil))
-                    }
+            self.reload { success in
+                if success {
+                    self.dynamicTrack(track, completion: completion)
+                } else {
+                    self.enqueue(track, completion: completion)
+                    completion?((.failure(TagManagementError.couldNotLoadURL), nil))
                 }
             }
             return

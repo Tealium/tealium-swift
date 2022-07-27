@@ -27,6 +27,7 @@ public struct TealiumContext: Hashable, TealiumContextProtocol {
     public var onVisitorId: TealiumObservable<String>? {
         return tealium?.appDataModule?.onVisitorId
     }
+    public let sharedState = SharedState()
 
     public init(config: TealiumConfig,
                 dataLayer: DataLayerManagerProtocol,
@@ -48,4 +49,16 @@ public struct TealiumContext: Hashable, TealiumContextProtocol {
         self.tealium?.handleDeepLink(url, referrer: referrer)
     }
 
+}
+
+public class SharedState: NSObject {
+
+    @objc dynamic public var additionalQueryParams: [URLQueryItem] = []
+
+    public func observe<Value>(_ keyPath: KeyPath<SharedState, Value>, options: NSKeyValueObservingOptions = .new, changeHandler: @escaping (Value) -> Void) -> NSKeyValueObservation {
+        observe(keyPath, options: options) { _, change in
+            guard let value = change.newValue else { return }
+            changeHandler(value)
+        }
+    }
 }

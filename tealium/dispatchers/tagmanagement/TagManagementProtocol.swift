@@ -37,8 +37,9 @@ protocol TagManagementProtocol {
 
     /// Reloads the webview
     ///
+    /// - Parameter url: An optional URL to override the old one
     /// - Parameter completion: Completion block to be run when the webview has finished reloading
-    func reload(_ completion: @escaping TealiumCompletion)
+    func reload(_ url: URL?, _ completion: @escaping TealiumCompletion)
 
     /// Process event data for UTAG delivery.
     ///
@@ -82,4 +83,11 @@ protocol TagManagementProtocol {
     func setRootView(_ view: UIView) -> Bool
 
 }
+
+extension TagManagementProtocol {
+    func reload(_ completion: @escaping TealiumCompletion) {
+        reload(nil, completion)
+    }
+}
+
 #endif

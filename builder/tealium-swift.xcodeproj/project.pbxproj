@@ -87,6 +87,7 @@
 		15A312382805DAF200653FAF /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
 		15A312392805DAF200653FAF /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
 		15A3123A2805DAF300653FAF /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
+		15A4DEE9288AF29A00E66517 /* URL+Tealium.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A4DEE8288AF29A00E66517 /* URL+Tealium.swift */; };
 		15B84D7826F206950094DC05 /* AutoTrackingTvOSTestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B84D7726F206950094DC05 /* AutoTrackingTvOSTestApp.swift */; };
 		15B84D7C26F206960094DC05 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15B84D7B26F206960094DC05 /* Assets.xcassets */; };
 		15B84D7F26F206960094DC05 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15B84D7E26F206960094DC05 /* Preview Assets.xcassets */; };
@@ -2161,6 +2162,7 @@
 		15A0077E27284EF9005E1927 /* AutoTrackingIOSTestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoTrackingIOSTestApp.swift; sourceTree = "<group>"; };
 		15A0078227284EFA005E1927 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		15A0078527284EFA005E1927 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		15A4DEE8288AF29A00E66517 /* URL+Tealium.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Tealium.swift"; sourceTree = "<group>"; };
 		15B84D7526F206950094DC05 /* AutoTrackingTvOSTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AutoTrackingTvOSTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		15B84D7726F206950094DC05 /* AutoTrackingTvOSTestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoTrackingTvOSTestApp.swift; sourceTree = "<group>"; };
 		15B84D7B26F206960094DC05 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -3979,6 +3981,7 @@
 				CFB6E75C255DF033007F2773 /* TimedEvent+Tealium.swift */,
 				CFA0C0AF252FE26F009CDF33 /* Migrator.swift */,
 				CF6E3ADB25F9356900900902 /* Tealium+Encodable.swift */,
+				15A4DEE8288AF29A00E66517 /* URL+Tealium.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -6471,6 +6474,7 @@
 				D70FC7A7244F2C3D004AD838 /* AppDataCollection.swift in Sources */,
 				D7157F8024F51B1400F1F323 /* TealiumContext.swift in Sources */,
 				D755DCCA21945E41003C6BA1 /* TealiumUtils.swift in Sources */,
+				15A4DEE9288AF29A00E66517 /* URL+Tealium.swift in Sources */,
 				4BD9036A24F5CD800041EFA0 /* Date+Tealium.swift in Sources */,
 				15F573EE2721827E00194733 /* UIScene+TealiumDelegateGetter.swift in Sources */,
 				D7A9DAB0246C1C0D00DE4CB6 /* JSONEncoderDecoder.swift in Sources */,

@@ -24,7 +24,6 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
 
     var webview: WKWebView?
     var tealConfig: TealiumConfig
-    var webviewDidFinishLoading = false
     var enableCompletion: ((_ success: Bool, _ error: Error?) -> Void)?
     // current view being used for WKWebView
     weak var view: UIView?
@@ -132,15 +131,18 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
     /// Reloads the webview.
     ///
     /// - Parameter completion: Completion block to be run when the webview has finished reloading
-    func reload(_ completion: @escaping (Bool, [String: Any]?, Error?) -> Void) {
-        guard let url = url else {
+    func reload(_ url: URL?, _ completion: @escaping (Bool, [String: Any]?, Error?) -> Void) {
+        guard let url = url ?? self.url else {
             return
         }
-        reloadHandler = completion
+        self.url = url
         let request = URLRequest(url: url)
         TealiumQueues.secureMainThreadExecution { [weak self] in
-            guard let self = self else {
-                return
+            guard let self = self else { return }
+            let oldHandler = self.reloadHandler
+            self.reloadHandler = { success, data, error in
+                oldHandler?(success, data, error)
+                completion(success, data, error)
             }
             self.currentState = AtomicInteger(value: InternalWebViewState.isLoading.rawValue)
             self.webview?.load(request)
@@ -247,34 +249,16 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
     ///     - error: `Error?`
     func webviewStateDidChange(_ state: WebViewState,
                                withError error: Error?) {
-        switch state {
-        case .loadSuccess:
-            self.currentState = AtomicInteger(value: InternalWebViewState.isLoaded.rawValue)
-            if let reloadHandler = self.reloadHandler {
-                self.webviewDidFinishLoading = true
-                reloadHandler(true, nil, nil)
-                self.reloadHandler = nil
-            } else {
-                guard webviewDidFinishLoading == false else {
-                    return
-                }
-                webviewDidFinishLoading = true
-
-                if let enableCompletion = enableCompletion {
-                    self.enableCompletion = nil
-                    enableCompletion(true, nil)
-                }
-
-            }
-        case .loadFailure:
-            self.currentState = AtomicInteger(value: InternalWebViewState.didFailToLoad.rawValue)
-            if let reloadHandler = self.reloadHandler {
-                self.webviewDidFinishLoading = true
-                reloadHandler(false, nil, error)
-                self.reloadHandler = nil
-            } else {
-                self.enableCompletion?(false, error)
-            }
+        let success = state == .loadSuccess
+        self.currentState = AtomicInteger(value: success ? InternalWebViewState.isLoaded.rawValue
+                                          : InternalWebViewState.didFailToLoad.rawValue)
+        if let enableCompletion = enableCompletion {
+            self.enableCompletion = nil
+            enableCompletion(success, error)
+        }
+        if let reloadHandler = self.reloadHandler {
+            self.reloadHandler = nil
+            reloadHandler(success, nil, error)
         }
     }
 

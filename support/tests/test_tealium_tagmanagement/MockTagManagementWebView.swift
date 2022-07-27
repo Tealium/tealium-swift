@@ -37,7 +37,7 @@ class MockTagManagementWebView: TagManagementProtocol {
         }
     }
 
-    func reload(_ completion: @escaping TealiumCompletion) {
+    func reload(_ url: URL?, _ completion: @escaping TealiumCompletion) {
         reloadCallCount += 1
         if success {
             completion(true, nil, nil)
