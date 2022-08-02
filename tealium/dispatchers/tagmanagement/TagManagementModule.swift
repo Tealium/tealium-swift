@@ -46,26 +46,30 @@ public class TagManagementModule: Dispatcher {
     public required init(context: TealiumContext,
                          delegate: ModuleDelegate,
                          completion: ModuleCompletion?) {
-        self.config = context.config
+        let config = context.config
+        self.config = config
         self.context = context
         self.delegate = delegate
         self.tagManagement = tagManagement ?? TagManagementWKWebView(config: config, delegate: delegate)
-        self.tagManagement?.enable(webviewURL: config.webviewURL,
-                                   delegates: config.webViewDelegates,
-                                   view: config.rootView) { [weak self] _, error in
-            guard let self = self else {
-                return
-            }
-            if error != nil {
-                self.errorCount.incrementAndGet()
-                self.webViewState = .loadFailure
-                completion?((.failure(TagManagementError.webViewNotYetReady), nil))
-            } else {
-                self.errorCount.resetToZero()
-                self.webViewState = .loadSuccess
-                self.flushQueue()
-                completion?((.success(true), nil))
-            }
+        TealiumQueues.backgroundSerialQueue.async { // This is required cause modules are not present yet
+            TagManagementUrlBuilder(modules: context.modules, baseURL: config.webviewURL)
+                .createUrl { [weak self] url in
+                    self?.tagManagement?.enable(webviewURL: url,
+                                                delegates: config.webViewDelegates,
+                                                view: config.rootView) { [weak self] _, error in
+                        guard let self = self else { return }
+                        if error != nil {
+                            self.errorCount.incrementAndGet()
+                            self.webViewState = .loadFailure
+                            completion?((.failure(TagManagementError.webViewNotYetReady), nil))
+                        } else {
+                            self.errorCount.resetToZero()
+                            self.webViewState = .loadSuccess
+                            self.flushQueue()
+                            completion?((.success(true), nil))
+                        }
+                    }
+                }
         }
     }
 

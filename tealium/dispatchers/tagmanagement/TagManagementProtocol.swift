@@ -34,6 +34,11 @@ protocol TagManagementProtocol {
     ///
     /// - Returns: `Bool` indicating whether or not the internal webview is ready for dispatching.
     var isWebViewReady: Bool { get }
+    
+    /// The current, loading or loaded, URL
+    ///
+    /// - Returns: The current, loading or loaded, `URL`
+    var url: URL? { get }
 
     /// Reloads the webview
     ///
