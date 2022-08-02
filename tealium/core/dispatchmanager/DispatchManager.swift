@@ -225,7 +225,7 @@ class DispatchManager: DispatchManagerProtocol {
         }.count > 0
     }
 
-    func runDispatchers (for request: TealiumRequest) {
+    func runDispatchers(for request: TealiumRequest) {
         if request is TealiumTrackRequest || request is TealiumBatchTrackRequest {
             self.dispatchListeners?.forEach {
                 $0.willTrack(request: request)
