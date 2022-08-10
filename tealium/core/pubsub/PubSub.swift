@@ -123,7 +123,7 @@ public class TealiumReplayObservable<Element>: TealiumObservable<Element> {
     public func clear() {
         cache.removeAll()
     }
-    
+
     public func last() -> Element? {
         return cache.last
     }

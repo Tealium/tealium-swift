@@ -11,10 +11,6 @@ import Foundation
 import TealiumCore
 #endif
 
-public protocol QueryParameterProvider: AnyObject {
-    func provideParameters(completion: @escaping ([URLQueryItem]) -> Void)
-}
-
 class TagManagementUrlBuilder {
     let modules: [TealiumModule]?
     let baseURL: URL?
