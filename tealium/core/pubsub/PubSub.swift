@@ -125,7 +125,11 @@ public class TealiumReplayObservable<Element>: TealiumObservable<Element> {
         super.publish(element)
     }
 
-    func last() -> Element? {
+    public func clear() {
+        cache.removeAll()
+    }
+    
+    public func last() -> Element? {
         return cache.last
     }
 }
@@ -134,6 +138,10 @@ public class TealiumReplaySubject<Element>: TealiumPublishSubject<Element> {
 
     public init(cacheSize: Int? = 1) {
         super.init(TealiumReplayObservable<Element>(cacheSize: cacheSize))
+    }
+
+    public func clear() {
+        (observable as? TealiumReplayObservable<Element>)?.clear()
     }
 
     public func last() -> Element? {
