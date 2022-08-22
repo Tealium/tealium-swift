@@ -46,7 +46,7 @@ class TealiumHelper {
         config.consentLoggingEnabled = true
 //        config.remoteHTTPCommandDisabled = false
         config.dispatchListeners = [self]
-        config.dispatchValidators = [self]
+        config.dispatchValidators = [self, JSExtension(), NativeExtension()]
         config.shouldUseRemotePublishSettings = false
         config.autoTrackingBlocklistFilename = "blocklist"
         // config.batchingEnabled = true
