@@ -56,6 +56,9 @@ public class JSExtension: DispatchValidator {
             NSLog("EXTENSIONS JS Exception \(error)")
         }
         
+        addMethodWithCallback(context) { value in
+            print(value)
+        }
         for i in 1..<testCount {
             addKeyToContext(context, key: "\(i)")
         }
@@ -72,6 +75,24 @@ public class JSExtension: DispatchValidator {
         context.evaluateScript("""
             datalayer["\(key)"] = \(key)
 """)
+    }
+    
+    func addMethodWithCallback(_ context: JSContext, completion: @escaping @convention(block) (JSValue?) -> Void) {
+        let callback = JSValue(object: completion, in: context)!
+        
+        context.evaluateScript("""
+            async function someAsync() {
+
+            }
+            function some(completion) {
+                someAsync()
+                    .then( () => {
+                    completion("ciao")
+                })
+            }
+""")
+        let function = context.objectForKeyedSubscript("some" as NSString)
+        function?.call(withArguments: [callback])
     }
     
     func setDataLayer(context: JSContext, data: [String: Any]) {
