@@ -18,6 +18,7 @@ public class JSExtension: DispatchValidator {
     public var id: String = "Extensions"
     var timings = [Int64]()
     public init() {
+//        return;
         queue.asyncAfter(deadline: .now() + 15) {
             let time = self.timings
             var total: Int64 = 0
@@ -29,6 +30,7 @@ public class JSExtension: DispatchValidator {
         }
     }
     public func shouldQueue(request: TealiumRequest) -> (Bool, [String : Any]?) {
+//        return (true, nil)
         if let req = request as? TealiumTrackRequest {
             queue.async {
                 self.runExtensions(data: req.trackDictionary)
@@ -54,14 +56,15 @@ public class JSExtension: DispatchValidator {
             NSLog("EXTENSIONS JS Exception \(error)")
         }
         
-//        for i in 1..<testCount {
-//            addKeyToContext(context, key: "\(i)")
-//        }
+        for i in 1..<testCount {
+            addKeyToContext(context, key: "\(i)")
+        }
         let data = getDataLayer(context: context)
         let end = Date().millisecondsFrom(earlierDate: start)
         timings.append(end)
         NSLog("EXTENSIONS JS Final data: \(data)")
         NSLog("EXTENSIONS JS END \(end)")
+        context.setObject(JSValue(undefinedIn: context), forKeyedSubscript: "datalayer" as NSString)
         
     }
     
@@ -137,6 +140,7 @@ public class NativeExtension: DispatchValidator {
     public var id: String = "NativeExtensions"
     var timings = [Int64]()
     public init() {
+//        return;
         queue.asyncAfter(deadline: .now() + 15) {
             let time = self.timings
             var total: Int64 = 0
@@ -148,6 +152,7 @@ public class NativeExtension: DispatchValidator {
         }
     }
     public func shouldQueue(request: TealiumRequest) -> (Bool, [String : Any]?) {
+//        return (true, nil)
         if let req = request as? TealiumTrackRequest {
             var dict = req.trackDictionary
             queue.async {
@@ -166,7 +171,6 @@ public class NativeExtension: DispatchValidator {
     }
     
     func runExtensions(data: inout [String: Any]) {
-        return;
         let start = Date()
         NSLog("EXTENSIONS Native START")
         for i in 1..<testCount {
