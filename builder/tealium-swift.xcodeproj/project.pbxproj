@@ -105,6 +105,7 @@
 		15C88ADB26F3A09A00D56064 /* VisitorServiceConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C88AD826F3A09A00D56064 /* VisitorServiceConfigTests.swift */; };
 		15C88ADD26F3A22200D56064 /* TagManagementConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C88ADC26F3A22200D56064 /* TagManagementConfigTests.swift */; };
 		15C88ADE26F3A22200D56064 /* TagManagementConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C88ADC26F3A22200D56064 /* TagManagementConfigTests.swift */; };
+		15CBD81628B660DD000745D5 /* VisitorSwitcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CBD81528B660DD000745D5 /* VisitorSwitcher.swift */; };
 		15D0C1E12733E13700364B13 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D0C1E02733E13700364B13 /* ContentView.swift */; };
 		15D0C1E22733E13700364B13 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D0C1E02733E13700364B13 /* ContentView.swift */; };
 		15D0C1E32733E13700364B13 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D0C1E02733E13700364B13 /* ContentView.swift */; };
@@ -2170,6 +2171,7 @@
 		15C6015127902A2900497901 /* TealiumMediaIntegrationTests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TealiumMediaIntegrationTests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		15C88AD826F3A09A00D56064 /* VisitorServiceConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorServiceConfigTests.swift; sourceTree = "<group>"; };
 		15C88ADC26F3A22200D56064 /* TagManagementConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagManagementConfigTests.swift; sourceTree = "<group>"; };
+		15CBD81528B660DD000745D5 /* VisitorSwitcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorSwitcher.swift; sourceTree = "<group>"; };
 		15D0C1E02733E13700364B13 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		15D3D1E626F4EA71004D9BFC /* TealiumAppDelegateProxyTests-iOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TealiumAppDelegateProxyTests-iOS-Bridging-Header.h"; sourceTree = "<group>"; };
 		15D3D1E726F4EA71004D9BFC /* UIApplication+ManualContinueActivity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIApplication+ManualContinueActivity.h"; sourceTree = "<group>"; };
@@ -3910,6 +3912,7 @@
 				CF33DA5024B919C400ECEE64 /* VisitorServiceManager.swift */,
 				CF33DA5224B919C400ECEE64 /* VisitorServiceRetriever.swift */,
 				D7805876233A691800DAD90E /* VisitorServiceModule.swift */,
+				15CBD81528B660DD000745D5 /* VisitorSwitcher.swift */,
 			);
 			path = visitorservice;
 			sourceTree = "<group>";
@@ -6552,6 +6555,7 @@
 				CF8FF2C4244634240081C1A9 /* TealiumVisitorProfile.swift in Sources */,
 				CF33DA5324B919C400ECEE64 /* VisitorServiceConstants.swift in Sources */,
 				CF33DA5524B919C400ECEE64 /* VisitorServiceExtensions.swift in Sources */,
+				15CBD81628B660DD000745D5 /* VisitorSwitcher.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

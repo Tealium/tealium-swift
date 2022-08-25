@@ -15,6 +15,7 @@ public protocol DataLayerManagerProtocol: AnyObject {
     var all: [String: Any] { get set }
     var allSessionData: [String: Any] { get }
     var sessionId: String? { get set }
+    var onNewDataAdded: TealiumObservable<[String: Any]> { get }
     func add(data: [String: Any], expiry: Expiry)
     func add(key: String, value: Any, expiry: Expiry)
     func joinTrace(id: String)

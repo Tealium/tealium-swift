@@ -42,6 +42,9 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
         refreshSession()
     }
 
+    @ToAnyObservable<TealiumPublisher>(TealiumPublisher<[String: Any]>())
+    public var onNewDataAdded: TealiumObservable<[String: Any]>
+
     /// - Returns: `[String: Any]` containing all stored event data.
     public var all: [String: Any] {
         get {
@@ -126,6 +129,9 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
     ///   - expiration: `Expiry` level.
     public func add(data: [String: Any],
                     expiry: Expiry = .session) {
+        TealiumQueues.backgroundSerialQueue.async {
+            self._onNewDataAdded.publish(data)
+        }
         TealiumQueues.backgroundConcurrentQueue.write {
             let dataToInsert: [String: Any]
             switch expiry {
