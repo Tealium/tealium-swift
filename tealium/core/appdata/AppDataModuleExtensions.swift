@@ -10,3 +10,18 @@ import Foundation
 public extension Collectors {
     static let AppData = AppDataModule.self
 }
+
+public extension TealiumConfigKey {
+    static let visitorIdentityKey = "visitorIdentityKey"
+}
+
+public extension TealiumConfig {
+    var visitorIdentityKey: String? {
+        get {
+            return options[TealiumConfigKey.visitorIdentityKey] as? String
+        }
+        set {
+            options[TealiumConfigKey.visitorIdentityKey] = newValue
+        }
+    }
+}

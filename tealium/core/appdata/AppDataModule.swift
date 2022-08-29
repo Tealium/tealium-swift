@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class AppDataModule: Collector, VisitorSwitcherDelegate {
+public class AppDataModule: Collector {
 
     public let id: String = ModuleNames.appdata
     private(set) var uuid: String?
@@ -15,8 +15,9 @@ public class AppDataModule: Collector, VisitorSwitcherDelegate {
     private var bundle: Bundle
     private var appDataCollector: AppDataCollection
     var appData = AppData()
-    @ToAnyObservable<TealiumReplaySubject>(TealiumReplaySubject())
-    public var onVisitorId: TealiumObservable<String>
+    public var onVisitorId: TealiumObservable<String> {
+        visitorIdProvider.onVisitorId.asObservable()
+    }
 
     /// Retrieves current appdata
     public var data: [String: Any]? {
@@ -42,7 +43,7 @@ public class AppDataModule: Collector, VisitorSwitcherDelegate {
         }
 
     }
-    var visitorSwitcher: VisitorSwitcher?
+    let visitorIdProvider: VisitorIdProvider
     /// Optional override for visitor ID
     var existingVisitorId: String? {
         config.existingVisitorId
@@ -81,7 +82,8 @@ public class AppDataModule: Collector, VisitorSwitcherDelegate {
         self.bundle = Bundle.main
         self.appDataCollector = AppDataCollector()
         self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config, forModule: ModuleNames.appdata.lowercased(), isCritical: true)
-        visitorSwitcher = VisitorSwitcher(context: context, delegate: self)
+        let onVisitorId = TealiumReplaySubject<String>()
+        visitorIdProvider = VisitorIdProvider(context: context, onVisitorId: onVisitorId)
         fillCache()
         if let dataLayer = context.dataLayer,
            let migratedUUID = dataLayer.all[TealiumDataKey.uuid] as? String,
@@ -93,10 +95,18 @@ public class AppDataModule: Collector, VisitorSwitcherDelegate {
             }
             dataLayer.delete(for: [TealiumDataKey.uuid, TealiumDataKey.visitorId])
         }
-        if let id = appData.persistentData?.visitorId {
-            TealiumQueues.backgroundSerialQueue.async {
-                self._onVisitorId.publish(id)
+        onVisitorId.subscribe { [weak self] visitorId in
+            guard let self = self,
+                var persistentData = self.diskStorage.retrieve(as: PersistentAppData.self) else {
+                return
             }
+            persistentData.visitorId = visitorId
+            self.savePersistentData(persistentData)
+            self.appData.persistentData = persistentData
+        }
+
+        if let id = appData.persistentData?.visitorId {
+            onVisitorId.publish(id)
         }
         completion((.success(true), nil))
     }
@@ -131,20 +141,11 @@ public class AppDataModule: Collector, VisitorSwitcherDelegate {
         return false
     }
 
-    /// Converts UUID to Tealium Visitor ID format.
-    ///
-    /// - Parameter from: `String` containing a UUID
-    /// - Returns: `String` containing Tealium Visitor ID
-    func visitorId(from uuid: String) -> String {
-        return uuid.replacingOccurrences(of: "-", with: "")
-    }
-
     /// Prepares new Tealium default App related data.
     ///
-    /// - Parameter uuid: The uuid string to use for new persistent data.
     /// - Returns: `PersistentAppData`
     func newPersistentData(for uuid: String) -> PersistentAppData {
-        let visitorId = existingVisitorId ?? self.visitorId(from: uuid)
+        let visitorId = existingVisitorId ?? self.visitorIdProvider.visitorId(from: uuid)
         let persistentData = PersistentAppData(visitorId: visitorId, uuid: uuid)
         savePersistentData(persistentData)
         return persistentData
@@ -203,19 +204,8 @@ public class AppDataModule: Collector, VisitorSwitcherDelegate {
 
     /// Resets Tealium Visitor Id
     func resetVisitorId() {
-        let id = self.visitorId(from: UUID().uuidString)
-        setVisitorId(id)
-    }
-
-    func setVisitorId(_ visitorId: String) {
-        guard var persistentData = diskStorage.retrieve(as: PersistentAppData.self) else {
-            return
-        }
-        persistentData.visitorId = visitorId
-        savePersistentData(persistentData)
-        self.appData.persistentData = persistentData
         TealiumQueues.backgroundSerialQueue.async { [weak self] in
-            self?._onVisitorId.publish(visitorId)
+            self?.visitorIdProvider.resetVisitorId()
         }
     }
 }
