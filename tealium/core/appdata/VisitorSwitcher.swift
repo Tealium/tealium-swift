@@ -1,6 +1,6 @@
 //
 //  VisitorSwitcher.swift
-//  TealiumVisitorService
+//  tealium-swift
 //
 //  Created by Enrico Zannini on 24/08/22.
 //  Copyright © 2022 Tealium, Inc. All rights reserved.
@@ -35,11 +35,16 @@ class VisitorSwitcher {
     private let bag = TealiumDisposeBag()
     let identityListener: VisitorIdentityListener
     weak var delegate: VisitorSwitcherDelegate?
+    let storageName: String
+    let userDefaults: UserDefaults
     init?(context: TealiumContext, delegate: VisitorSwitcherDelegate?) {
+        storageName = TealiumDiskStorage.filePath(forConfig: context.config, name: ModuleNames.appdata.lowercased()+".visitorMap")
         guard let dataLayer = context.dataLayer,
-                let identityKey = context.config.visitorIdentityKey else {
+                let identityKey = context.config.visitorIdentityKey,
+                let userDefaults = UserDefaults(suiteName: storageName) else {
             return nil
         }
+        self.userDefaults = userDefaults
         self.delegate = delegate
         identityListener = VisitorIdentityListener(dataLayer: dataLayer, visitorIdentityKey: identityKey)
         var lastIdentity: String?
@@ -62,20 +67,19 @@ class VisitorSwitcher {
             self.saveVisitorId(visitorId, forKey: lastIdentity)
         }).toDisposeBag(bag)
     }
-    
+
     func clearStoredVisitorIds() {
-        // delete the storage
+        userDefaults.removePersistentDomain(forName: storageName)
     }
-    
+
     func saveVisitorId(_ id: String, forKey key: String) {
-        // hash key
-        // save {hashedKey:id}
+        let hashedKey = id // TODO: hash key
+        userDefaults.set(hashedKey, forKey: key)
     }
-    
+
     func getVisitorId(forKey key: String) -> String? {
-        // Hash key
-        // get visitorId for key
-        return nil
+        let hashedKey = key // TODO: hash key
+        return userDefaults.value(forKey: hashedKey) as? String
     }
 }
 

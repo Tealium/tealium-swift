@@ -73,10 +73,6 @@ public class MockRemoteCommandsDiskStorage: TealiumDiskStorageProtocol {
     public func delete(completion: TealiumCompletion?) {
     }
 
-    public func totalSizeSavedData() -> String? {
-        return ""
-    }
-
     public func saveStringToDefaults(key: String, value: String) {
     }
 

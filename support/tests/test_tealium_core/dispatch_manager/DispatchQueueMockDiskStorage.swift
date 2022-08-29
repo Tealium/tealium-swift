@@ -79,9 +79,7 @@ class DispatchQueueMockDiskStorage: TealiumDiskStorageProtocol {
         completion?(true, nil, nil)
     }
 
-    func totalSizeSavedData() -> String? {
-        return "1000"
-    }
+
 
     func saveStringToDefaults(key: String, value: String) {
 

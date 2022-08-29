@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class AppDataModule: Collector {
+public class AppDataModule: Collector, VisitorSwitcherDelegate {
 
     public let id: String = ModuleNames.appdata
     private(set) var uuid: String?
@@ -42,6 +42,7 @@ public class AppDataModule: Collector {
         }
 
     }
+    var visitorSwitcher: VisitorSwitcher?
     /// Optional override for visitor ID
     var existingVisitorId: String? {
         config.existingVisitorId
@@ -79,7 +80,8 @@ public class AppDataModule: Collector {
         self.config = context.config
         self.bundle = Bundle.main
         self.appDataCollector = AppDataCollector()
-        self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config, forModule: "appdata", isCritical: true)
+        self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config, forModule: ModuleNames.appdata.lowercased(), isCritical: true)
+        visitorSwitcher = VisitorSwitcher(context: context, delegate: self)
         fillCache()
         if let dataLayer = context.dataLayer,
            let migratedUUID = dataLayer.all[TealiumDataKey.uuid] as? String,
@@ -201,16 +203,19 @@ public class AppDataModule: Collector {
 
     /// Resets Tealium Visitor Id
     func resetVisitorId() {
+        let id = self.visitorId(from: UUID().uuidString)
+        setVisitorId(id)
+    }
+
+    func setVisitorId(_ visitorId: String) {
         guard var persistentData = diskStorage.retrieve(as: PersistentAppData.self) else {
             return
         }
-        let id = self.visitorId(from: UUID().uuidString)
-        persistentData.visitorId = id
+        persistentData.visitorId = visitorId
         savePersistentData(persistentData)
         self.appData.persistentData = persistentData
         TealiumQueues.backgroundSerialQueue.async { [weak self] in
-            self?._onVisitorId.publish(id)
+            self?._onVisitorId.publish(visitorId)
         }
     }
-
 }

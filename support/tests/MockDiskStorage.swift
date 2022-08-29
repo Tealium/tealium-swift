@@ -81,10 +81,6 @@ public class MockTealiumDiskStorage: TealiumDiskStorageProtocol {
         deleteCount += 1
     }
 
-    public func totalSizeSavedData() -> String? {
-        return ""
-    }
-
     public func saveStringToDefaults(key: String, value: String) {
     }
 

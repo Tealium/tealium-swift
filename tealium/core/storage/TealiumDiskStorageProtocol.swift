@@ -111,11 +111,6 @@ public protocol TealiumDiskStorageProtocol {
     /// - Parameter completion: Completion block to be called upon deletion
     func delete(completion: TealiumCompletion?)
 
-    /// Gets the total size of all data saved by this module.
-    ///
-    /// - Returns: `String` containing the total size in bytes of data saved by this module
-    func totalSizeSavedData() -> String?
-
     /// Saves a `String` value to UserDefaults.
     ///
     /// - Parameters:
