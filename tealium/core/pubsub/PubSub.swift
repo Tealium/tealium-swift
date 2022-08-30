@@ -18,6 +18,7 @@ public class TealiumObservable<Element>: TealiumObservableProtocol {
     private let uuid = UUID().uuidString
     private var count = 0
     fileprivate var observers = [String: Observer]()
+    fileprivate var orderedKeys = [String]()
 
     fileprivate init() {}
 
@@ -26,6 +27,7 @@ public class TealiumObservable<Element>: TealiumObservableProtocol {
         count += 1
         let key = uuid + String(count)
         observers[key] = observer
+        orderedKeys.append(key)
         return TealiumSubscription(self, key: key)
     }
 
@@ -34,15 +36,18 @@ public class TealiumObservable<Element>: TealiumObservableProtocol {
         let key = subscription.key
         if observers[key] != nil {
             observers.removeValue(forKey: key)
+            orderedKeys.removeAll { $0 == key }
             return true
         }
         return false
     }
 
     fileprivate func publish(_ element: Element) {
-        let observers = self.observers.values
-        for observer in observers {
-            observer(element)
+        let orderedKeys = self.orderedKeys
+        for key in orderedKeys {
+            if let observer = observers[key] {
+                observer(element)
+            }
         }
     }
 
