@@ -59,7 +59,7 @@ class VisitorIdProvider {
                     if cachedVisitorId != currentVisitorId {
                         self.setVisitorId(cachedVisitorId) // Notify and Persist visitorId
                     } else {
-                        self.persistStorage() // To save the current identity alone
+                        self.persistStorage() // To just save the current identity
                     }
                 } else if oldIdentity == nil { // first launch
                     self.saveVisitorId(currentVisitorId ?? firstVisitorId, forKey: identity) // currentVisitorId should never be nil anyway, firstVisitorId added just to compile
@@ -75,13 +75,16 @@ class VisitorIdProvider {
     }
 
     func saveVisitorId(_ id: String, forKey key: String) {
-        let hashedKey = id // TODO: hash key
-        visitorIdMap.cachedIds[key] = hashedKey
+        if let hashedKey = id.sha256() {
+            visitorIdMap.cachedIds[key] = hashedKey
+        }
         persistStorage()
     }
 
     func getVisitorId(forKey key: String) -> String? {
-        let hashedKey = key // TODO: hash key
+        guard let hashedKey = key.sha256() else {
+             return nil
+        }
         return visitorIdMap.cachedIds[hashedKey]
     }
 
