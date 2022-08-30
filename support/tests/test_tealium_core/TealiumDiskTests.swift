@@ -29,7 +29,6 @@ class TealiumDiskTests: XCTestCase {
     func testInit() {
         let diskstorage = TealiumDiskStorage(config: config, forModule: "Tests")
         XCTAssertNotNil(diskstorage)
-        XCTAssertEqual(diskstorage.filePrefix, "account.profile/")
         XCTAssertFalse(diskstorage.isCritical, "Default should be false")
         XCTAssertTrue(diskstorage.isDiskStorageEnabled)
     }

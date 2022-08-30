@@ -96,10 +96,7 @@ class AppDataModuleTests: XCTestCase {
 
     func testVisitorIdFromUUID() {
         let uuid = UUID().uuidString
-        guard let visitorId = module?.visitorId(from: uuid) else {
-            XCTFail("Visitor id should not be null")
-            return
-        }
+        let visitorId = VisitorIdProvider.visitorId(from: uuid)
         XCTAssertTrue(!visitorId.contains("-"))
     }
 

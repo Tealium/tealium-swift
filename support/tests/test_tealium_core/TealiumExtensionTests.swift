@@ -53,14 +53,16 @@ class TealiumExtensionTests: XCTestCase {
                                 .filter { $0 is AppDataModule }
                                 .first as? AppDataModule)?.uuid
             self.tealium.resetVisitorId()
-            let newVisitorId = self.tealium.visitorId
-            XCTAssertEqual(currentUUID, (self.tealium.zz_internal_modulesManager?.collectors
-                                            .filter { $0 is AppDataModule }
-                                            .first as? AppDataModule)?.uuid)
-            XCTAssertEqual(newVisitorId?.count, 32)
-            XCTAssertNotEqual(newVisitorId, currentVisitorId)
-            XCTAssertEqual(self.tealium.visitorId, newVisitorId)
-            expect.fulfill()
+            TealiumQueues.backgroundSerialQueue.async {
+                let newVisitorId = self.tealium.visitorId
+                XCTAssertEqual(currentUUID, (self.tealium.zz_internal_modulesManager?.collectors
+                                                .filter { $0 is AppDataModule }
+                                                .first as? AppDataModule)?.uuid)
+                XCTAssertEqual(newVisitorId?.count, 32)
+                XCTAssertNotEqual(newVisitorId, currentVisitorId)
+                XCTAssertEqual(self.tealium.visitorId, newVisitorId)
+                expect.fulfill()
+            }
         }
         wait(for: [expect], timeout: 2.0)
     }

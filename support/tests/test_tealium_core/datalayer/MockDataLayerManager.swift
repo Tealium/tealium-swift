@@ -15,7 +15,7 @@ class MockDataLayerManager: DataLayerManagerProtocol {
     var deleteSingleCount = 0
     var deleteMultiCount = 0
     var deleteAllCount = 0
-
+    var onNewDataAdded: TealiumObservable<[String : Any]> = TealiumPublisher<[String:Any]>().asObservable()
     var all: [String: Any] {
         get {
             ["all": "eventdata"]

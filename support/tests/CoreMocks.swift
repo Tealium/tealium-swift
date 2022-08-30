@@ -52,7 +52,7 @@ class DummyCollector: Collector, DispatchListener, DispatchValidator {
 
 class DummyDataManager: DataLayerManagerProtocol {
     var addCount = 0
-
+    var onNewDataAdded: TealiumObservable<[String : Any]> = TealiumPublisher<[String:Any]>().asObservable()
     var all: [String: Any] = ["eventData": true, "sessionData": true]
 
     var allSessionData: [String: Any] = ["sessionData": true]
@@ -195,7 +195,7 @@ class DummyDispatchManagerdequeue: DispatchManagerProtocol {
 
 class DummyDataManagerNoData: DataLayerManagerProtocol {
     var all: [String: Any] = [:]
-
+    var onNewDataAdded: TealiumObservable<[String : Any]> = TealiumPublisher<[String:Any]>().asObservable()
     var allSessionData: [String: Any] = [:]
 
     var minutesBetweenSessionIdentifier: TimeInterval = TimeInterval(floatLiteral: 0.0)
@@ -429,7 +429,7 @@ extension DataLayerManagerProtocol {
 
 class MockMigratedDataLayer: DataLayerManagerProtocol {
     
-
+    var onNewDataAdded: TealiumObservable<[String : Any]> = TealiumPublisher<[String:Any]>().asObservable()
     var deleteCount = 0
     static let uuid = UUID().uuidString
     static let visitorId = uuid.replacingOccurrences(of: "-", with: "")
@@ -510,7 +510,7 @@ class MockMigratedDataLayer: DataLayerManagerProtocol {
 }
 
 class MockMigratedDataLayerNoData: DataLayerManagerProtocol {
-
+    var onNewDataAdded: TealiumObservable<[String : Any]> = TealiumPublisher<[String:Any]>().asObservable()
     var all: [String: Any] {
         get {
             [String: Any]()

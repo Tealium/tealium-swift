@@ -9,6 +9,7 @@ import SwiftUI
 import StoreKit
 import AppTrackingTransparency
 import TealiumAutotracking
+import TealiumCore
 
 class IAPHelper: NSObject, ObservableObject, SKProductsRequestDelegate, SKPaymentTransactionObserver {
     static let shared = IAPHelper()
@@ -67,6 +68,7 @@ struct ContentView: View {
     @ObservedObject var iapHelper = IAPHelper.shared
     @State private var traceId: String = ""
     @State private var showAlert = false
+    @State private var email: String = TealiumHelper.shared.tealium?.dataLayer.all[TealiumDataKey.email] as? String ?? ""
     let name = "Main Screen"
     // Timed event start
     var playButton: some View {
@@ -135,6 +137,13 @@ struct ContentView: View {
                         if let product = iapHelper.product {
                             TealiumTextButton(title: "Purchase \(product.localizedTitle)") {
                                 iapHelper.buyProduct()
+                            }
+                        }
+                        TealiumTextField($email, placeholder: "Enter email") {
+                            if email.isEmpty {
+                                TealiumHelper.shared.tealium?.dataLayer.delete(for: TealiumDataKey.email)
+                            } else {
+                                TealiumHelper.shared.tealium?.dataLayer.add(key: TealiumDataKey.email, value: email, expiry: .forever)
                             }
                         }
                     }
