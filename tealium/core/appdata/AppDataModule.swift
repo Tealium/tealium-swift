@@ -145,7 +145,7 @@ public class AppDataModule: Collector {
     ///
     /// - Returns: `PersistentAppData`
     func newPersistentData(for uuid: String) -> PersistentAppData {
-        let visitorId = existingVisitorId ?? self.visitorIdProvider.visitorId(from: uuid)
+        let visitorId = existingVisitorId ?? VisitorIdProvider.visitorId(from: uuid)
         let persistentData = PersistentAppData(visitorId: visitorId, uuid: uuid)
         savePersistentData(persistentData)
         return persistentData

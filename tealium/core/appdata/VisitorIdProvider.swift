@@ -52,16 +52,18 @@ class VisitorIdProvider {
                     return
                 }
                 let oldIdentity = self.visitorIdMap.currentIdentity
-                if oldIdentity != identity {
+                let hasIdentityChanged = oldIdentity != identity
+                if hasIdentityChanged {
                     self.visitorIdMap.currentIdentity = identity
                 }
+                let isFirstLaunch = oldIdentity == nil
                 if let cachedVisitorId = self.getVisitorId(forKey: identity) {
                     if cachedVisitorId != currentVisitorId {
-                        self.setVisitorId(cachedVisitorId) // Notify and Persist visitorId
-                    } else {
+                        self.setVisitorId(cachedVisitorId) // Notify and Persist the current visitorId over the cached one
+                    } else if hasIdentityChanged {
                         self.persistStorage() // To just save the current identity
                     }
-                } else if oldIdentity == nil { // first launch
+                } else if isFirstLaunch {
                     self.saveVisitorId(currentVisitorId ?? firstVisitorId, forKey: identity) // currentVisitorId should never be nil anyway, firstVisitorId added just to compile
                 } else {
                     self.resetVisitorId()
@@ -75,8 +77,8 @@ class VisitorIdProvider {
     }
 
     func saveVisitorId(_ id: String, forKey key: String) {
-        if let hashedKey = id.sha256() {
-            visitorIdMap.cachedIds[key] = hashedKey
+        if let hashedKey = key.sha256() {
+            visitorIdMap.cachedIds[hashedKey] = id
         }
         persistStorage()
     }
@@ -92,7 +94,7 @@ class VisitorIdProvider {
     /// - returns: the newly created visitorId
     @discardableResult
     func resetVisitorId() -> String {
-        let id = self.visitorId(from: UUID().uuidString)
+        let id = Self.visitorId(from: UUID().uuidString)
         setVisitorId(id)
         return id
     }
@@ -105,7 +107,7 @@ class VisitorIdProvider {
     ///
     /// - Parameter from: `String` containing a UUID
     /// - Returns: `String` containing Tealium Visitor ID
-    func visitorId(from uuid: String) -> String {
+    static func visitorId(from uuid: String) -> String {
         return uuid.replacingOccurrences(of: "-", with: "")
     }
 
