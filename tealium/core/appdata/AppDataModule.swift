@@ -198,7 +198,6 @@ public class AppDataModule: Collector {
     }
 
     private func savePersistentData(_ data: PersistentAppData) {
-        diskStorage.saveToDefaults(key: TealiumDataKey.visitorId, value: data.visitorId)
         diskStorage.save(data, completion: nil)
     }
 

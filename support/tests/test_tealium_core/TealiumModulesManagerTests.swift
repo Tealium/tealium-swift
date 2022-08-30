@@ -231,11 +231,6 @@ class TealiumModulesManagerTests: XCTestCase {
         modulesManager.dispatchers = []
         modulesManager.collectors = [collector]
         XCTAssertEqual(modulesManager.modules.count, modulesManager.collectors.count)
-        modulesManager.modules = [collector, collector]
-        XCTAssertEqual(modulesManager.modules.count, modulesManager.collectors.count)
-        modulesManager.modules = []
-        XCTAssertEqual(modulesManager.modules.count, modulesManager.collectors.count)
-        XCTAssertEqual(modulesManager.modules.count, 0)
     }
 
     func testDispatchValidatorAddedFromConfig() {
