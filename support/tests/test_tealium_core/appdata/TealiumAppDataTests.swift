@@ -35,7 +35,8 @@ class AppDataModuleTests: XCTestCase {
     }
     
     func testInitMigratesLegacyAppData() {
-        let appDataModule = createModule(with: MockMigratedDataLayer(), diskStorage: nil)
+        let dataLayer = MockMigratedDataLayer()
+        let appDataModule = createModule(with: dataLayer, diskStorage: nil)
         guard let data = appDataModule.data,
               let visId = data[TealiumDataKey.visitorId] as? String,
               let uuid = data[TealiumDataKey.uuid] as? String else {
@@ -103,14 +104,12 @@ class AppDataModuleTests: XCTestCase {
     func testNewPersistentData() {
         let uuid = UUID().uuidString
         let data = module?.newPersistentData(for: uuid)
-        XCTAssertEqual(mockDiskStorage.saveToDefaultsCount, 1)
-        XCTAssertEqual(mockDiskStorage.saveCount, 1)
+        XCTAssertEqual(mockDiskStorage.saveCount, 0, "New persistent Data just creates, doesn't store")
         XCTAssertEqual(data?.dictionary.keys.sorted(), [TealiumDataKey.visitorId, TealiumDataKey.uuid].sorted())
     }
 
     func testSetNewAppData() {
         module?.storeNewAppData()
-        XCTAssertEqual(mockDiskStorage.saveToDefaultsCount, 1)
         XCTAssertEqual(mockDiskStorage.saveCount, 1)
         XCTAssertNotNil(module?.appData.persistentData?.visitorId)
         XCTAssertNotNil(module?.appData.persistentData?.uuid)
@@ -133,7 +132,6 @@ class AppDataModuleTests: XCTestCase {
         let testPersistentData = PersistentAppData(visitorId: "someVisitorId", uuid: "someUUID")
         module.loadPersistentAppData(data: testPersistentData)
         // 2x because of init in setUp
-        XCTAssertEqual(mockDiskStorage.saveToDefaultsCount, 2)
         XCTAssertEqual(mockDiskStorage.saveCount, 2)
         XCTAssertNotNil(module.appData.name)
         XCTAssertNotNil(module.appData.rdns)

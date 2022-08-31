@@ -84,25 +84,15 @@ public class AppDataModule: Collector {
         self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config, forModule: ModuleNames.appdata.lowercased(), isCritical: true)
         let onVisitorId = TealiumReplaySubject<String>()
         visitorIdProvider = VisitorIdProvider(context: context, onVisitorId: onVisitorId)
-        fillCache()
-        if let dataLayer = context.dataLayer,
-           let migratedUUID = dataLayer.all[TealiumDataKey.uuid] as? String,
-           let migratedVisitorId = dataLayer.all[TealiumDataKey.visitorId] as? String {
-            appData.persistentData?.uuid = migratedUUID
-            appData.persistentData?.visitorId = migratedVisitorId
-            if let persistentData = appData.persistentData {
-                savePersistentData(persistentData)
-            }
-            dataLayer.delete(for: [TealiumDataKey.uuid, TealiumDataKey.visitorId])
-        }
+        fillCache(context: context)
         onVisitorId.subscribe { [weak self] visitorId in
             guard let self = self,
-                var persistentData = self.diskStorage.retrieve(as: PersistentAppData.self) else {
+                  var persistentData = self.appData.persistentData, // Always present at this point
+                  persistentData.visitorId != visitorId else {
                 return
             }
             persistentData.visitorId = visitorId
             self.savePersistentData(persistentData)
-            self.appData.persistentData = persistentData
         }
 
         if let id = appData.persistentData?.visitorId {
@@ -112,7 +102,16 @@ public class AppDataModule: Collector {
     }
 
     /// Retrieves existing data from persistent storage and stores in volatile memory.
-    func fillCache() {
+    func fillCache(context: TealiumContext) {
+        newVolatileData()
+        if let dataLayer = context.dataLayer,
+           let migratedUUID = dataLayer.all[TealiumDataKey.uuid] as? String,
+           let migratedVisitorId = dataLayer.all[TealiumDataKey.visitorId] as? String {
+            let persistentData = PersistentAppData(visitorId: migratedVisitorId, uuid: migratedUUID)
+            savePersistentData(persistentData)
+            dataLayer.delete(for: [TealiumDataKey.uuid, TealiumDataKey.visitorId])
+            return
+        }
         guard let data = diskStorage.retrieve(as: PersistentAppData.self) else {
             storeNewAppData()
             return
@@ -147,7 +146,6 @@ public class AppDataModule: Collector {
     func newPersistentData(for uuid: String) -> PersistentAppData {
         let visitorId = existingVisitorId ?? VisitorIdProvider.visitorId(from: uuid)
         let persistentData = PersistentAppData(visitorId: visitorId, uuid: uuid)
-        savePersistentData(persistentData)
         return persistentData
     }
 
@@ -173,8 +171,9 @@ public class AppDataModule: Collector {
     /// Stores current AppData in memory
     func storeNewAppData() {
         let newUUID = UUID().uuidString
-        appData.persistentData = newPersistentData(for: UUID().uuidString)
-        newVolatileData()
+        let persistentData = newPersistentData(for: UUID().uuidString)
+        appData.persistentData = persistentData
+        savePersistentData(persistentData)
         uuid = newUUID
     }
 
@@ -189,15 +188,14 @@ public class AppDataModule: Collector {
 
         appData.persistentData = data
         if let existingVisitorId = self.existingVisitorId,
-           let persistentData = appData.persistentData {
-            let newPersistentData = PersistentAppData(visitorId: existingVisitorId, uuid: persistentData.uuid)
-            savePersistentData(newPersistentData)
-            self.appData.persistentData = newPersistentData
+           var persistentData = appData.persistentData {
+            persistentData.visitorId = existingVisitorId
+            savePersistentData(persistentData)
         }
-        newVolatileData()
     }
 
     private func savePersistentData(_ data: PersistentAppData) {
+        self.appData.persistentData = data
         diskStorage.save(data, completion: nil)
     }
 

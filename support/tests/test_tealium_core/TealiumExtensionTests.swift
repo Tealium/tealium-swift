@@ -64,7 +64,7 @@ class TealiumExtensionTests: XCTestCase {
                 expect.fulfill()
             }
         }
-        wait(for: [expect], timeout: 2.0)
+        wait(for: [expect], timeout: 5.0)
     }
 
     func testConsentManagerNotNil() {
