@@ -20,10 +20,10 @@ class VisitorIdProvider {
     private let bag = TealiumDisposeBag()
     let identityListener: VisitorIdentityListener?
     let visitorIdMap: VisitorIdMap
-    let storage: TealiumDiskStorage
+    let storage: TealiumDiskStorageProtocol
     let onVisitorId: TealiumReplaySubject<String>
-    init(context: TealiumContext, onVisitorId: TealiumReplaySubject<String>) {
-        storage = TealiumDiskStorage(config: context.config, forModule: ModuleNames.appdata.lowercased() + ".visitorIdMap")
+    init(context: TealiumContext, onVisitorId: TealiumReplaySubject<String>, diskStorage: TealiumDiskStorageProtocol? = nil) {
+        storage = diskStorage ?? TealiumDiskStorage(config: context.config, forModule: ModuleNames.appdata.lowercased() + ".visitorIdMap")
         visitorIdMap = storage.retrieve(as: VisitorIdMap.self) ?? VisitorIdMap()
 
         self.onVisitorId = onVisitorId
