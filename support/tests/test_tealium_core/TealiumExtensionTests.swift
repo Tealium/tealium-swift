@@ -92,7 +92,7 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNotNil(self.tealium.logger)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 2.0)
+        wait(for: [expect], timeout: 4.0)
     }
 
     func testVisitorServiceNotNil() {

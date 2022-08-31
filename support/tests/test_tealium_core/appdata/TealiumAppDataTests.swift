@@ -108,12 +108,6 @@ class AppDataModuleTests: XCTestCase {
         XCTAssertEqual(data?.dictionary.keys.sorted(), [TealiumDataKey.visitorId, TealiumDataKey.uuid].sorted())
     }
 
-    func testSetNewAppData() {
-        module?.storeNewAppData()
-        XCTAssertEqual(mockDiskStorage.saveCount, 1)
-        XCTAssertNotNil(module?.appData.persistentData?.visitorId)
-        XCTAssertNotNil(module?.appData.persistentData?.uuid)
-    }
 
     func testNewVolatileData() {
         let module = createModule()
@@ -124,18 +118,33 @@ class AppDataModuleTests: XCTestCase {
         XCTAssertNotNil(module.appData.build, "DummyBuild")
     }
 
-    func testSetLoadedAppData() {
+    func testGetInitialPersistentData() {
         let config = TestTealiumHelper().getConfig()
         config.existingVisitorId = "someOtherVisitorId"
         let context = TestTealiumHelper.context(with: config)
         let module = AppDataModule(context: context, delegate: self, diskStorage: mockDiskStorage, bundle: Bundle(for: type(of: self)), appDataCollector: appDataCollector)
-        let testPersistentData = PersistentAppData(visitorId: "someVisitorId", uuid: "someUUID")
-        module.loadPersistentAppData(data: testPersistentData)
-        // 2x because of init in setUp
-        XCTAssertEqual(mockDiskStorage.saveCount, 2)
         XCTAssertNotNil(module.appData.name)
         XCTAssertNotNil(module.appData.rdns)
         XCTAssertNotNil(module.appData.build)
+        XCTAssertEqual(mockDiskStorage.saveCount, 0, "Mock disk storage already has data")
+        let (persistentData1, shouldBePersisted1) = module.getInitialPersistentData(context: context)
+        XCTAssertNotEqual(persistentData1.visitorId, config.existingVisitorId, "Existing visitorID only used on absolute first launch")
+        XCTAssertFalse(shouldBePersisted1, "VisitorId was already saved in mockStorage")
+    }
+
+    func testGetInitialPersistentDataFirstLaunch() {
+        let config = TestTealiumHelper().getConfig()
+        config.existingVisitorId = "someOtherVisitorId"
+        let context = TestTealiumHelper.context(with: config)
+        mockDiskStorage.storedData = nil
+        let module = AppDataModule(context: context, delegate: self, diskStorage: mockDiskStorage, bundle: Bundle(for: type(of: self)), appDataCollector: appDataCollector)
+        XCTAssertNotNil(module.appData.name)
+        XCTAssertNotNil(module.appData.rdns)
+        XCTAssertNotNil(module.appData.build)
+        XCTAssertEqual(mockDiskStorage.saveCount, 1, "Module init saves on first launch")
+        let (persistentData1, shouldBePersisted1) = module.getInitialPersistentData(context: context)
+        XCTAssertEqual(persistentData1.visitorId, config.existingVisitorId, "Existing visitorID is used on absolute first launch")
+        XCTAssertFalse(shouldBePersisted1, "VisitorId was already saved in module init")
     }
 
     func testPersistentDataInitFromDictionary() {

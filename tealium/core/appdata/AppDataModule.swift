@@ -10,7 +10,9 @@ import Foundation
 public class AppDataModule: Collector {
 
     public let id: String = ModuleNames.appdata
-    private(set) var uuid: String?
+    var uuid: String? {
+        appData.persistentData?.uuid
+    }
     let diskStorage: TealiumDiskStorageProtocol!
     private var bundle: Bundle
     private var appDataCollector: AppDataCollection
@@ -104,19 +106,30 @@ public class AppDataModule: Collector {
     /// Retrieves existing data from persistent storage and stores in volatile memory.
     func fillCache(context: TealiumContext) {
         newVolatileData()
+        let (persistentData, shouldBePersisted) = getInitialPersistentData(context: context)
+        if shouldBePersisted {
+            savePersistentData(persistentData)
+        } else {
+            appData.persistentData = persistentData
+        }
+    }
+
+    func getInitialPersistentData(context: TealiumContext) -> (PersistentAppData, Bool) {
+        var persistentData: PersistentAppData
+        var shouldBePersisted = true
         if let dataLayer = context.dataLayer,
            let migratedUUID = dataLayer.all[TealiumDataKey.uuid] as? String,
            let migratedVisitorId = dataLayer.all[TealiumDataKey.visitorId] as? String {
-            let persistentData = PersistentAppData(visitorId: migratedVisitorId, uuid: migratedUUID)
-            savePersistentData(persistentData)
             dataLayer.delete(for: [TealiumDataKey.uuid, TealiumDataKey.visitorId])
-            return
+            persistentData = PersistentAppData(visitorId: migratedVisitorId, uuid: migratedUUID)
+        } else if let data = diskStorage.retrieve(as: PersistentAppData.self),
+                  !AppDataModule.isMissingPersistentKeys(data: data.dictionary) {
+            persistentData = data
+            shouldBePersisted = false
+        } else {
+            persistentData = newPersistentData(for: UUID().uuidString)
         }
-        guard let data = diskStorage.retrieve(as: PersistentAppData.self) else {
-            storeNewAppData()
-            return
-        }
-        self.loadPersistentAppData(data: data)
+        return (persistentData, shouldBePersisted)
     }
 
     /// Deletes all app data, including persistent data.
@@ -165,32 +178,6 @@ public class AppDataModule: Collector {
 
         if let build = appDataCollector.build(bundle: bundle) {
             appData.build = build
-        }
-    }
-
-    /// Stores current AppData in memory
-    func storeNewAppData() {
-        let newUUID = UUID().uuidString
-        let persistentData = newPersistentData(for: UUID().uuidString)
-        appData.persistentData = persistentData
-        savePersistentData(persistentData)
-        uuid = newUUID
-    }
-
-    /// Populates in-memory AppData with existing values from persistent storage, if present.
-    ///
-    /// - Parameter data: `PersistentAppData` instance  containing existing AppData variables
-    func loadPersistentAppData(data: PersistentAppData) {
-        guard !AppDataModule.isMissingPersistentKeys(data: data.dictionary) else {
-            storeNewAppData()
-            return
-        }
-
-        appData.persistentData = data
-        if let existingVisitorId = self.existingVisitorId,
-           var persistentData = appData.persistentData {
-            persistentData.visitorId = existingVisitorId
-            savePersistentData(persistentData)
         }
     }
 
