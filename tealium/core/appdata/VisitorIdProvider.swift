@@ -73,7 +73,8 @@ class VisitorIdProvider {
     }
 
     func clearStoredVisitorIds() {
-        storage.delete(completion: nil)
+        visitorIdMap.cachedIds.removeAll()
+        persistStorage()
     }
 
     func saveVisitorId(_ id: String, forKey key: String) {

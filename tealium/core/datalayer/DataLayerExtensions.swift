@@ -19,6 +19,10 @@ public extension Tealium {
         appDataModule?.resetVisitorId()
     }
 
+    func clearStoredVisitorIds() {
+        appDataModule?.clearStoredVisitorIds()
+    }
+    
     internal var appDataModule: AppDataModule? {
         zz_internal_modulesManager?.collectors.first {
             $0 is AppDataModule

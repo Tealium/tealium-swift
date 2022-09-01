@@ -192,4 +192,10 @@ public class AppDataModule: Collector {
             self?.visitorIdProvider.resetVisitorId()
         }
     }
+    
+    func clearStoredVisitorIds() {
+        TealiumQueues.backgroundSerialQueue.async { [weak self] in
+            self?.visitorIdProvider.clearStoredVisitorIds()
+        }
+    }
 }
