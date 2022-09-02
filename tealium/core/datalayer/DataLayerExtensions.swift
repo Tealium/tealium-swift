@@ -19,6 +19,7 @@ public extension Tealium {
         appDataModule?.resetVisitorId()
     }
 
+    /// Clears the stored visitorIds and resets the current visitorId. Mainly for legal compliance reasons.
     func clearStoredVisitorIds() {
         appDataModule?.clearStoredVisitorIds()
     }
