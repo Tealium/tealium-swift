@@ -145,8 +145,8 @@ class VisitorIdProviderTests: XCTestCase {
         XCTAssertGreaterThan(provider.visitorIdMap.cachedIds.count, 0)
         XCTAssertEqual(provider.getVisitorId(forKey: identityValue), visitorId)
         provider.clearStoredVisitorIds()
-        XCTAssertEqual(provider.visitorIdMap.cachedIds.count, 0)
-        XCTAssertNil(provider.getVisitorId(forKey: identityValue))
+        XCTAssertNotEqual(provider.getVisitorId(forKey: identityValue), visitorId)
         XCTAssertNotNil(provider.visitorIdMap.currentIdentity, "Identity doesn't get cleared")
+        XCTAssertEqual(provider.visitorIdMap.cachedIds.count, 1)
     }
 }

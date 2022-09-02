@@ -74,7 +74,7 @@ class VisitorIdProvider {
 
     func clearStoredVisitorIds() {
         visitorIdMap.cachedIds.removeAll()
-        persistStorage()
+        self.resetVisitorId()
     }
 
     func saveVisitorId(_ id: String, forKey key: String) {
