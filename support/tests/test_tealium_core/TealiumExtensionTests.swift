@@ -71,14 +71,18 @@ class TealiumExtensionTests: XCTestCase {
         let expect = expectation(description: "Visitor id is reset")
         let config = defaultTealiumConfig.copy
         config.visitorIdentityKey = "someId"
+        let identity = "identity"
         tealium = Tealium(config: config) { _ in
-            self.tealium.dataLayer.add(key: "someId", value: "idValue", expiry: .untilRestart)
+            self.tealium.dataLayer.add(key: "someId", value: identity, expiry: .untilRestart)
             let idProvider = self.tealium.appDataModule!.visitorIdProvider
             TealiumQueues.backgroundSerialQueue.async {
                 XCTAssertGreaterThan(idProvider.visitorIdMap.cachedIds.count, 0)
+                let firstId = idProvider.getVisitorId(forKey: identity)
+                XCTAssertEqual(firstId, idProvider.onVisitorId.last())
                 self.tealium.clearStoredVisitorIds()
                 TealiumQueues.backgroundSerialQueue.async {
-                    XCTAssertEqual(idProvider.visitorIdMap.cachedIds.count, 0)
+                    XCTAssertNotEqual(idProvider.visitorIdMap.cachedIds[identity], firstId)
+                    XCTAssertEqual(idProvider.getVisitorId(forKey: identity), idProvider.onVisitorId.last())
                     expect.fulfill()
                 }
             }
