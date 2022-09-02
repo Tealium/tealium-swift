@@ -67,6 +67,25 @@ class TealiumExtensionTests: XCTestCase {
         wait(for: [expect], timeout: 5.0)
     }
 
+    func testClearStoredVisitorIds() {
+        let expect = expectation(description: "Visitor id is reset")
+        let config = defaultTealiumConfig.copy
+        config.visitorIdentityKey = "someId"
+        tealium = Tealium(config: config) { _ in
+            self.tealium.dataLayer.add(key: "someId", value: "idValue", expiry: .untilRestart)
+            let idProvider = self.tealium.appDataModule!.visitorIdProvider
+            TealiumQueues.backgroundSerialQueue.async {
+                XCTAssertGreaterThan(idProvider.visitorIdMap.cachedIds.count, 0)
+                self.tealium.clearStoredVisitorIds()
+                TealiumQueues.backgroundSerialQueue.async {
+                    XCTAssertEqual(idProvider.visitorIdMap.cachedIds.count, 0)
+                    expect.fulfill()
+                }
+            }
+        }
+        wait(for: [expect], timeout: 5.0)
+    }
+
     func testConsentManagerNotNil() {
         let expect = expectation(description: "Consent Manager Module not nil")
         defaultTealiumConfig.consentPolicy = .ccpa

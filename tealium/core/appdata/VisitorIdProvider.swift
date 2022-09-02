@@ -22,14 +22,14 @@ class VisitorIdProvider {
     let visitorIdMap: VisitorIdMap
     let storage: TealiumDiskStorageProtocol
     let onVisitorId: TealiumReplaySubject<String>
-    init(context: TealiumContext, onVisitorId: TealiumReplaySubject<String>, diskStorage: TealiumDiskStorageProtocol? = nil) {
-        storage = diskStorage ?? TealiumDiskStorage(config: context.config, forModule: ModuleNames.appdata.lowercased() + ".visitorIdMap")
+    init(config: TealiumConfig, dataLayer: DataLayerManagerProtocol?, onVisitorId: TealiumReplaySubject<String>, diskStorage: TealiumDiskStorageProtocol? = nil) {
+        storage = diskStorage ?? TealiumDiskStorage(config: config, forModule: ModuleNames.appdata.lowercased() + ".visitorIdMap")
         visitorIdMap = storage.retrieve(as: VisitorIdMap.self) ?? VisitorIdMap()
 
         self.onVisitorId = onVisitorId
 
-        guard let dataLayer = context.dataLayer,
-           let identityKey = context.config.visitorIdentityKey else {
+        guard let dataLayer = dataLayer,
+           let identityKey = config.visitorIdentityKey else {
             self.identityListener = nil
             return
         }

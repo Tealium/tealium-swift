@@ -85,7 +85,7 @@ public class AppDataModule: Collector {
         self.appDataCollector = AppDataCollector()
         self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config, forModule: ModuleNames.appdata.lowercased(), isCritical: true)
         let onVisitorId = TealiumReplaySubject<String>()
-        visitorIdProvider = VisitorIdProvider(context: context, onVisitorId: onVisitorId)
+        visitorIdProvider = VisitorIdProvider(config: context.config, dataLayer: context.dataLayer, onVisitorId: onVisitorId)
         fillCache(context: context)
         onVisitorId.subscribe { [weak self] visitorId in
             guard let self = self,

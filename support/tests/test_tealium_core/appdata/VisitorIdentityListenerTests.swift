@@ -12,22 +12,33 @@ import XCTest
 class VisitorIdentityListenerTests: XCTestCase {
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        dataLayer.deleteAll()
+        
     }
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
+    let dataLayer = DataLayer(config: TealiumConfig(account: "", profile: "", environment: ""))
+    let identityKey = "id_key"
+    let identityValue = "someIdentity"
+    
+    var identityListener: VisitorIdentityListener!
+
+    func addIdentityValue(_ value: String) {
+        dataLayer.add(data: [identityKey: value], expiry: .untilRestart)
+    }
+
+    func createIdentityListener() {
+        identityListener = VisitorIdentityListener(dataLayer: dataLayer, visitorIdentityKey: identityKey)
+    }
 
     func testDataAlreadyPresent() {
+        addIdentityValue(self.identityValue)
+        createIdentityListener()
         let expect = expectation(description: "onNewIdentity called")
-        let dataLayer = DataLayer(config: TealiumConfig(account: "", profile: "", environment: ""))
-        let identityKey = "id_key"
-        let identityValue = "someIdentity"
-        dataLayer.add(data: [identityKey: identityValue])
-        let identityListener = VisitorIdentityListener(dataLayer: dataLayer, visitorIdentityKey: identityKey)
         identityListener.onNewIdentity.subscribeOnce { identity in
-            XCTAssertEqual(identity, identityValue)
+            XCTAssertEqual(identity, self.identityValue)
             expect.fulfill()
         }
         waitForExpectations(timeout: 2)
@@ -35,49 +46,42 @@ class VisitorIdentityListenerTests: XCTestCase {
 
     func testDataNotAlreadyPresent() {
         let expect = expectation(description: "onNewIdentity called")
-        let dataLayer = DataLayer(config: TealiumConfig(account: "", profile: "", environment: ""))
-        let identityKey = "id_key"
-        let identityValue = "someIdentity"
-        let identityListener = VisitorIdentityListener(dataLayer: dataLayer, visitorIdentityKey: identityKey)
+        createIdentityListener()
         identityListener.onNewIdentity.subscribeOnce { identity in
-            XCTAssertEqual(identity, identityValue)
+            XCTAssertEqual(identity, self.identityValue)
             expect.fulfill()
         }
-        dataLayer.add(data: [identityKey: identityValue])
+        dataLayer.add(data: [identityKey: identityValue], expiry: .untilRestart)
         waitForExpectations(timeout: 2)
     }
 
     func testDataRemovedNotTrigger() {
         let expect = expectation(description: "onNewIdentity called only once")
         expect.assertForOverFulfill = true
-        let dataLayer = DataLayer(config: TealiumConfig(account: "", profile: "", environment: ""))
-        let identityKey = "id_key"
-        let identityValue = "someIdentity"
-        dataLayer.add(data: [identityKey: identityValue])
-        let identityListener = VisitorIdentityListener(dataLayer: dataLayer, visitorIdentityKey: identityKey)
+        addIdentityValue(self.identityValue)
+        createIdentityListener()
         let subscription = identityListener.onNewIdentity.subscribe { identity in
-            XCTAssertEqual(identity, identityValue)
+            XCTAssertEqual(identity, self.identityValue)
             expect.fulfill()
         }
         dataLayer.delete(for: identityKey)
         waitForExpectations(timeout: 2)
-        subscription.dispose()
+        TealiumQueues.backgroundSerialQueue.sync {
+            subscription.dispose()
+        }
     }
 
     func testDataChanged() {
         let expect = expectation(description: "onNewIdentity called")
         let expect2 = expectation(description: "onNewIdentity called for the second time")
-        let dataLayer = DataLayer(config: TealiumConfig(account: "", profile: "", environment: ""))
-        let identityKey = "id_key"
-        let identityValue = "someIdentity"
-        dataLayer.add(data: [identityKey: identityValue])
-        let identityListener = VisitorIdentityListener(dataLayer: dataLayer, visitorIdentityKey: identityKey)
+        addIdentityValue(self.identityValue)
+        createIdentityListener()
         identityListener.onNewIdentity.subscribeOnce { identity in
-            XCTAssertEqual(identity, identityValue)
+            XCTAssertEqual(identity, self.identityValue)
             expect.fulfill()
         }
         let identityValue2 = "someIdentity2"
-        dataLayer.add(data: [identityKey: identityValue2])
+        addIdentityValue(identityValue2)
         TealiumQueues.backgroundSerialQueue.sync {
             identityListener.onNewIdentity.subscribeOnce { identity in
                 XCTAssertEqual(identity, identityValue2)
