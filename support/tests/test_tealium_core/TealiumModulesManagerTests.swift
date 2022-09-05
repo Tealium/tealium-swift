@@ -345,7 +345,7 @@ class DummyDispatchManagerRequestTrack: DispatchManagerProtocol {
         }
     }
 
-    required init(dispatchers: [Dispatcher]?, dispatchValidators: [DispatchValidator]?, dispatchListeners: [DispatchListener]?, connectivityManager: ConnectivityModule, config: TealiumConfig) {
+    required init(dispatchers: [Dispatcher]?, dispatchValidators: [DispatchValidator]?, dispatchListeners: [DispatchListener]?, connectivityManager: ConnectivityModule, config: TealiumConfig, diskStorage: TealiumDiskStorageProtocol? = nil) {
         self.dispatchers = dispatchers
         self.dispatchValidators = dispatchValidators
         self.dispatchListeners = dispatchListeners
@@ -381,7 +381,7 @@ class DummyDispatchManagerSendTrack: DispatchManagerProtocol {
         }
     }
 
-    required init(dispatchers: [Dispatcher]?, dispatchValidators: [DispatchValidator]?, dispatchListeners: [DispatchListener]?, connectivityManager: ConnectivityModule, config: TealiumConfig) {
+    required init(dispatchers: [Dispatcher]?, dispatchValidators: [DispatchValidator]?, dispatchListeners: [DispatchListener]?, connectivityManager: ConnectivityModule, config: TealiumConfig, diskStorage: TealiumDiskStorageProtocol? = nil) {
         self.dispatchers = dispatchers
         self.dispatchValidators = dispatchValidators
         self.dispatchListeners = dispatchListeners
