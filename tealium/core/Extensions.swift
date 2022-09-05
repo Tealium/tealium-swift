@@ -12,7 +12,7 @@ import JavaScriptCore
 // swiftlint:disable all
 
 let testCount = 10000
-let queue = TealiumQueues.mainQueue
+let queue = TealiumQueues.backgroundSerialQueue
 
 public class JSExtension: DispatchValidator {
     public var id: String = "Extensions"
@@ -96,17 +96,26 @@ public class JSExtension: DispatchValidator {
     }
     
     func setDataLayer(context: JSContext, data: [String: Any]) {
-        let jsvalue = JSValue(newObjectIn: context)
-        data.forEach { k,v in
-            jsvalue?.setObject(v, forKeyedSubscript: k as NSString)
-        }
-        context.setObject(jsvalue, forKeyedSubscript: "datalayer" as NSString)
+//        let jsvalue = JSValue(newObjectIn: context)
+//        data.forEach { k,v in
+//            jsvalue?.setObject(v, forKeyedSubscript: k as NSString)
+//        }
+        guard let json = try? data.toJSONString() else { return }
+        context.setObject(json, forKeyedSubscript: "datalayer" as NSString)
+        context.evaluateScript("""
+    datalayer = JSON.parse(datalayer)
+""")
     }
     
     func getDataLayer(context: JSContext) -> [String: Any] {
-        let value = context.evaluateScript("datalayer")
-        
-        return value!.toDictionary2() ?? [String: Any]()
+        guard let data = context.evaluateScript("JSON.stringify(datalayer)")?.toString().data(using: .utf8),
+              let dictionary = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+            return [:]
+        }
+        return dictionary
+//        let value = context.evaluateScript("datalayer")
+//
+//        return value!.toDictionary2() ?? [String: Any]()
     }
 }
 
@@ -208,20 +217,4 @@ public class NativeExtension: DispatchValidator {
         data[key] = key
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // swiftlint:enable all
