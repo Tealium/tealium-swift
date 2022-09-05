@@ -22,7 +22,8 @@ protocol DispatchManagerProtocol {
          dispatchValidators: [DispatchValidator]?,
          dispatchListeners: [DispatchListener]?,
          connectivityManager: ConnectivityModule,
-         config: TealiumConfig)
+         config: TealiumConfig,
+         diskStorage: TealiumDiskStorageProtocol?)
 
     func processTrack(_ request: TealiumTrackRequest)
     func handleDequeueRequest(reason: String)
@@ -107,21 +108,12 @@ class DispatchManager: DispatchManagerProtocol {
     var lowPowerModeEnabled = false
     var lowPowerNotificationObserver: NSObjectProtocol?
 
-    convenience init (dispatchers: [Dispatcher]?,
-                      dispatchValidators: [DispatchValidator]?,
-                      dispatchListeners: [DispatchListener]?,
-                      connectivityManager: ConnectivityModule,
-                      config: TealiumConfig,
-                      diskStorage: TealiumDiskStorageProtocol? = nil) {
-        self.init(dispatchers: dispatchers, dispatchValidators: dispatchValidators, dispatchListeners: dispatchListeners, connectivityManager: connectivityManager, config: config)
-        self.diskStorage = diskStorage
-    }
-
     required init(dispatchers: [Dispatcher]?,
                   dispatchValidators: [DispatchValidator]?,
                   dispatchListeners: [DispatchListener]?,
                   connectivityManager: ConnectivityModule,
-                  config: TealiumConfig) {
+                  config: TealiumConfig,
+                  diskStorage: TealiumDiskStorageProtocol? = nil) {
         self.config = config
         self.connectivityManager = connectivityManager
         self.dispatchers = dispatchers
@@ -133,9 +125,7 @@ class DispatchManager: DispatchManagerProtocol {
         }
 
         // allows overriding for unit tests
-        if self.diskStorage == nil {
-            self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config, forModule: TealiumDispatchQueueConstants.moduleName)
-        }
+        self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config, forModule: TealiumDispatchQueueConstants.moduleName)
         persistentQueue = TealiumPersistentDispatchQueue(diskStorage: self.diskStorage)
         removeOldDispatches()
         if config.lifecycleAutoTrackingEnabled {
