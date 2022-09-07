@@ -15,16 +15,16 @@ class VisitorIdentityListener {
     public var onNewIdentity: TealiumObservable<String>
 
     init(dataLayer: DataLayerManagerProtocol, visitorIdentityKey: String) {
-        self.valuateData(data: dataLayer.all, for: visitorIdentityKey)
+        self.evaluateData(data: dataLayer.all, for: visitorIdentityKey)
         dataLayer.onNewDataAdded.subscribe({ [weak self] data in
-            self?.valuateData(data: data, for: visitorIdentityKey)
+            self?.evaluateData(data: data, for: visitorIdentityKey)
         }).toDisposeBag(bag)
     }
 
-    private func valuateData(data: [String: Any], for key: String) {
+    private func evaluateData(data: [String: Any], for key: String) {
         if let value = data[key] {
             let stringValue = String(describing: value)
-            if stringValue != $onNewIdentity.last() {
+            if stringValue != $onNewIdentity.last() && !stringValue.isEmpty {
                 _onNewIdentity.publish(stringValue)
             }
         }

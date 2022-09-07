@@ -48,6 +48,17 @@ public struct TealiumTextField: View {
                         .accentColor(.tealBlue)
                 }
             }
+            if let onCommit = onCommit {
+                Button {
+                    onCommit()
+                } label: {
+                    Text("Apply")
+                        .frame(width: 60, height: 50)
+                        .background(Color.tealBlue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+            }
           }
         .frame(width: 200.0)
         .padding()

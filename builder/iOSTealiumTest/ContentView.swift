@@ -140,11 +140,13 @@ struct ContentView: View {
                             }
                         }
                         TealiumTextField($email, placeholder: "Enter email") {
-                            if email.isEmpty {
-                                TealiumHelper.shared.tealium?.dataLayer.delete(for: TealiumDataKey.email)
-                            } else {
-                                TealiumHelper.shared.tealium?.dataLayer.add(key: TealiumDataKey.email, value: email, expiry: .forever)
-                            }
+                            applyEmail()
+                        }
+                        TealiumTextButton(title: "Clear Stored Visitor IDs") {
+                            TealiumHelper.shared.tealium?.clearStoredVisitorIds()
+                        }
+                        TealiumTextButton(title: "Reset Visitor ID") {
+                            TealiumHelper.shared.tealium?.resetVisitorId()
                         }
                     }
                     Spacer()
@@ -165,6 +167,13 @@ struct ContentView: View {
         }
     }
     
+    func applyEmail() {
+        if email.isEmpty {
+            TealiumHelper.shared.tealium?.dataLayer.delete(for: TealiumDataKey.email)
+        } else {
+            TealiumHelper.shared.tealium?.dataLayer.add(key: TealiumDataKey.email, value: email, expiry: .forever)
+        }
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
