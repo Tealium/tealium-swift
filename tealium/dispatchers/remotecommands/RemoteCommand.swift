@@ -140,8 +140,7 @@ open class RemoteCommand: RemoteCommandProtocol {
             completion?((.failure(TealiumRemoteCommandsError.commandsNotFound), nil))
             return nil
         }
-        guard let tealiumEvent = trackData[TealiumDataKey.event] as? String,
-              let commandName = commandNames[tealiumEvent] else {
+        guard let commandName = extractCommandName(trackData: trackData, commandNames: commandNames) else {
             completion?((.failure(TealiumRemoteCommandsError.commandNameNotFound), nil))
             return nil
         }
@@ -150,6 +149,16 @@ open class RemoteCommand: RemoteCommandProtocol {
             mapped.merge(config) { _, second in second }
         }
         return mapped
+    }
+
+    func extractCommandName(trackData: [String: Any], commandNames: [String: String]) -> String? {
+        if let tealiumEvent = trackData[TealiumDataKey.event] as? String,
+           let commandName = commandNames[tealiumEvent] {
+            return commandName
+        } else if let eventType = trackData[TealiumDataKey.eventType] as? String {
+            return commandNames["all_\(eventType)s"]
+        }
+        return nil
     }
 
     /// Maps the payload recieved from a tracking call to the data specific to the third party

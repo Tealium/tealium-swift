@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		15046A0F28C8CBF000B0535E /* allEventsCommands.json in Resources */ = {isa = PBXBuildFile; fileRef = 15046A0E28C8CBF000B0535E /* allEventsCommands.json */; };
 		15062EEB270758EC00734060 /* large-event-data.json in Resources */ = {isa = PBXBuildFile; fileRef = D7187F1524768F5000CF0AB0 /* large-event-data.json */; };
 		15062EEC270758EC00734060 /* big-visitor.json in Resources */ = {isa = PBXBuildFile; fileRef = CF8FF2C524466FD90081C1A9 /* big-visitor.json */; };
 		151098E2273D5B150022AD66 /* TealiumAttribution.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D76FE19D2193093A00D73EC5 /* TealiumAttribution.framework */; };
@@ -2135,6 +2136,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		15046A0E28C8CBF000B0535E /* allEventsCommands.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = allEventsCommands.json; sourceTree = "<group>"; };
 		1516A2DE26EF7F26003DF8F2 /* TealiumAutotrackingUITests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TealiumAutotrackingUITests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1516A2EC26EF8193003DF8F2 /* TextContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextContent.swift; sourceTree = "<group>"; };
 		1519251E27219C68009BCACF /* SceneDelegateProxyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegateProxyTests.swift; sourceTree = "<group>"; };
@@ -3568,6 +3570,7 @@
 				CF3A590224DB462400A4851D /* badData.json */,
 				CF3A590324DB462400A4851D /* noMappingsKey.json */,
 				CF3A590424DB462400A4851D /* objectMappings.json */,
+				15046A0E28C8CBF000B0535E /* allEventsCommands.json */,
 			);
 			path = stubs;
 			sourceTree = "<group>";
@@ -5729,6 +5732,7 @@
 				CF3A590A24DB462500A4851D /* objectMappings.json in Resources */,
 				CF3A590624DB462500A4851D /* exampleNoConfig.json in Resources */,
 				CF3A590724DB462500A4851D /* example.json in Resources */,
+				15046A0F28C8CBF000B0535E /* allEventsCommands.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
