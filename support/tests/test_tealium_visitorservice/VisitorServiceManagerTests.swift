@@ -60,12 +60,12 @@ class VisitorServiceManagerTests: XCTestCase {
 
     func testBlockState() {
         visitorServiceManager?.blockState()
-        XCTAssertEqual(visitorServiceManager?.currentState.value, VisitorServiceStatus.blocked.rawValue)
+        XCTAssertEqual(visitorServiceManager?.currentState, VisitorServiceStatus.blocked)
     }
 
     func testReleaseState() {
         visitorServiceManager?.releaseState()
-        XCTAssertEqual(visitorServiceManager?.currentState.value, VisitorServiceStatus.ready.rawValue)
+        XCTAssertEqual(visitorServiceManager?.currentState, VisitorServiceStatus.ready)
     }
 
     func testLifetimeEventCountHasBeenUpdated() {

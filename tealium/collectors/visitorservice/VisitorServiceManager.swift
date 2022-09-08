@@ -35,8 +35,8 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
         cachedProfile?.lifetimeEventCount ?? -1.0
     }
     var tealiumConfig: TealiumConfig
-    var currentState: AtomicInteger = AtomicInteger(value: VisitorServiceStatus.ready.rawValue)
-    var pollingAttempts: AtomicInteger = AtomicInteger(value: 0)
+    var currentState = VisitorServiceStatus.ready
+    var pollingAttempts = 0
     var maxPollingAttempts = 5
 
     /// Initializes the Visitor Service Manager
@@ -63,33 +63,35 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
         diskStorage.retrieve(as: TealiumVisitorProfile.self)
     }
 
-    public func requestVisitorProfile(visitorId: String) {
-        // No need to request if no delegates are listening
-        guard delegate != nil else {
-            return
-        }
-
-        guard currentState.value == VisitorServiceStatus.ready.rawValue else {
-            return
-        }
-        self.blockState()
-        fetchProfile(visitorId: visitorId) { profile, error in
-            guard error == nil else {
+    /// Retrieves and saves the visitor profile for the visitorId
+    public func requestVisitorProfile(visitorId: String) { // This is called from outside too
+        TealiumQueues.backgroundSerialQueue.async {
+            // No need to request if no delegates are listening
+            guard self.delegate != nil else {
+                return
+            }
+            guard self.currentState == VisitorServiceStatus.ready else {
+                return
+            }
+            self.blockState()
+            self.fetchProfile(visitorId: visitorId) { profile, error in
+                guard error == nil else {
+                    self.releaseState()
+                    return
+                }
+                guard let profile = profile else {
+                    self.startPolling(visitorId: visitorId)
+                    return
+                }
                 self.releaseState()
-                return
+                self.diskStorage.save(profile, completion: nil)
+                self.didUpdate(visitorProfile: profile)
             }
-            guard let profile = profile else {
-                self.startPolling(visitorId: visitorId)
-                return
-            }
-            self.releaseState()
-            self.diskStorage.save(profile, completion: nil)
-            self.didUpdate(visitorProfile: profile)
         }
     }
 
     func blockState() {
-        currentState.value = VisitorServiceStatus.blocked.rawValue
+        currentState = VisitorServiceStatus.blocked
         stateTimer = TealiumRepeatingTimer(timeInterval: 10.0)
         stateTimer?.eventHandler = { [weak self] in
             guard let self = self else {
@@ -102,7 +104,7 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
     }
 
     func releaseState() {
-        currentState.value = VisitorServiceStatus.ready.rawValue
+        currentState = VisitorServiceStatus.ready
     }
 
     func startPolling(visitorId: String) {
@@ -113,7 +115,7 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
         if timer != nil {
             timer = nil
         }
-        pollingAttempts.value = 0
+        pollingAttempts = 0
         self.timer = TealiumRepeatingTimer(timeInterval: VisitorServiceConstants.pollingInterval)
         self.timer?.eventHandler = { [weak self] in
             guard let self = self else {
@@ -126,10 +128,11 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
                     return
                 }
                 guard let profile = profile else {
-                    let attempts = self.pollingAttempts.incrementAndGet()
+                    self.pollingAttempts += 1
+                    let attempts = self.pollingAttempts
                     if attempts == self.maxPollingAttempts {
                         self.timer?.suspend()
-                        self.pollingAttempts.resetToZero()
+                        self.pollingAttempts = 0
                     }
                     return
                 }

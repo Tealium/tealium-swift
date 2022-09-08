@@ -57,21 +57,23 @@ public class VisitorServiceRetriever {
         }
 
         urlSession.tealiumDataTask(with: request) { data, response, error in
-            guard error == nil else {
-                if let error = error as? URLError, error.code == URLError.notConnectedToInternet || error.code == URLError.networkConnectionLost || error.code == URLError.timedOut {
-                    completion(.failure(.noInternet))
-                } else {
-                    completion(.failure(.unknownIssueWithSend))
+            TealiumQueues.backgroundSerialQueue.async {
+                guard error == nil else {
+                    if let error = error as? URLError, error.code == URLError.notConnectedToInternet || error.code == URLError.networkConnectionLost || error.code == URLError.timedOut {
+                        completion(.failure(.noInternet))
+                    } else {
+                        completion(.failure(.unknownIssueWithSend))
+                    }
+                    return
                 }
-                return
-            }
-            if let status = response as? HTTPURLResponse {
-                if let _ = status.allHeaderFields[TealiumKey.errorHeaderKey] as? String {
-                    completion(.failure(.xErrorDetected))
-                } else if status.statusCode != 200 {
-                    completion(.failure(.non200Response))
-                } else if let data = data {
-                    completion(.success(data))
+                if let status = response as? HTTPURLResponse {
+                    if let _ = status.allHeaderFields[TealiumKey.errorHeaderKey] as? String {
+                        completion(.failure(.xErrorDetected))
+                    } else if status.statusCode != 200 {
+                        completion(.failure(.non200Response))
+                    } else if let data = data {
+                        completion(.success(data))
+                    }
                 }
             }
         }.resume()
