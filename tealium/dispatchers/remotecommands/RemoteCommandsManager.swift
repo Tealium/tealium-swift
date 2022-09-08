@@ -250,7 +250,7 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
             }
         }
     }
-    
+
     func getPayloadData(data: [String: Any]) -> [String: Any] {
         guard var payload = data[RemoteCommandsKey.payload] as? [String: Any] else {
             return data
