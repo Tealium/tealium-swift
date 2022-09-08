@@ -20,8 +20,9 @@ public enum VisitorServiceStatus: Int {
 }
 
 public protocol VisitorServiceManagerProtocol {
+    var currentVisitorId: String? { get set }
     var cachedProfile: TealiumVisitorProfile? { get }
-    func requestVisitorProfile(visitorId: String)
+    func requestVisitorProfile()
 }
 
 public class VisitorServiceManager: VisitorServiceManagerProtocol {
@@ -38,6 +39,7 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
     var currentState = VisitorServiceStatus.ready
     var pollingAttempts = 0
     var maxPollingAttempts = 5
+    public var currentVisitorId: String?
 
     /// Initializes the Visitor Service Manager
     ///
@@ -63,11 +65,12 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
         diskStorage.retrieve(as: TealiumVisitorProfile.self)
     }
 
-    /// Retrieves and saves the visitor profile for the visitorId
-    public func requestVisitorProfile(visitorId: String) { // This is called from outside too
+    /// Retrieves and saves the visitor profile for the current visitorId
+    public func requestVisitorProfile() { // This is called from outside too
         TealiumQueues.backgroundSerialQueue.async {
             // No need to request if no delegates are listening
-            guard self.delegate != nil else {
+            guard let visitorId = self.currentVisitorId,
+                self.delegate != nil else {
                 return
             }
             guard self.currentState == VisitorServiceStatus.ready else {

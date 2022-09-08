@@ -18,7 +18,14 @@ public class VisitorServiceModule: Collector, DispatchListener {
     var diskStorage: TealiumDiskStorageProtocol!
     var visitorServiceManager: VisitorServiceManagerProtocol?
     private var bag = TealiumDisposeBag()
-    private var lastVisitorId: String?
+    private var lastVisitorId: String? {
+        get {
+            self.visitorServiceManager?.currentVisitorId
+        }
+        set {
+            self.visitorServiceManager?.currentVisitorId = newValue
+        }
+    }
     /// Provided for unit testing￼.
     ///
     /// - Parameter visitorServiceManager: Class instance conforming to `VisitorServiceManagerProtocol`
@@ -66,7 +73,7 @@ public class VisitorServiceModule: Collector, DispatchListener {
 
     private func retrieveProfile(visitorId: String) {
         self.lastVisitorId = visitorId
-        self.visitorServiceManager?.requestVisitorProfile(visitorId: visitorId)
+        self.visitorServiceManager?.requestVisitorProfile()
     }
 
     func retrieveProfileDelayed(visitorId: String, _ completion: (() -> Void)? = nil) {

@@ -54,7 +54,7 @@ class VisitorServiceManagerTests: XCTestCase {
         currentTest = "testDelegateDidUpdateViaRequestVisitorProfile"
         expectations.append(expectation)
         visitorServiceManager?.delegate = self
-        visitorServiceManager?.requestVisitorProfile(visitorId: "test")
+        visitorServiceManager?.requestVisitorProfile()
         waiter.wait(for: expectations, timeout: 5.0)
     }
 
