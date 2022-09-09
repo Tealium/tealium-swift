@@ -38,7 +38,7 @@ class TealiumHelper {
     func start() {
         let config = TealiumConfig(account: "tealiummobile",
                                    profile: "demo",
-                                   environment: "dev",
+                                   environment: "prod",
                                    dataSource: "test12",
                                    options: nil)
 

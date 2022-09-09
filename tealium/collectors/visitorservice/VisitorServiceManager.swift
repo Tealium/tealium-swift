@@ -157,12 +157,12 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
                     completion(nil, nil)
                     return
                 }
+                self.lastFetch = Date()
                 guard let lifetimeEventCount = profile.lifetimeEventCount,
                       self.lifetimeEventCountHasBeenUpdated(lifetimeEventCount) else {
                     completion(nil, nil)
                     return
                 }
-                self.lastFetch = Date()
                 completion(profile, nil)
             case .failure(let error):
                 completion(nil, error)

@@ -10,6 +10,7 @@ import StoreKit
 import AppTrackingTransparency
 import TealiumAutotracking
 import TealiumCore
+import TealiumVisitorService
 
 class IAPHelper: NSObject, ObservableObject, SKProductsRequestDelegate, SKPaymentTransactionObserver {
     static let shared = IAPHelper()
@@ -147,6 +148,9 @@ struct ContentView: View {
                         }
                         TealiumTextButton(title: "Reset Visitor ID") {
                             TealiumHelper.shared.tealium?.resetVisitorId()
+                        }
+                        TealiumTextButton(title: "VisitorProfileRequest") {
+                            TealiumHelper.shared.tealium?.visitorService?.requestVisitorProfile()
                         }
                     }
                     Spacer()
