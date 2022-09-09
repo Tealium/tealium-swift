@@ -71,9 +71,11 @@ public class VisitorServiceModule: Collector, DispatchListener {
         completion((.success(true), nil))
     }
 
-    private func retrieveProfile(visitorId: String) {
+    func retrieveProfile(visitorId: String) {
         self.lastVisitorId = visitorId
-        self.visitorServiceManager?.requestVisitorProfile(waitTimeout: true)
+        if shouldFetchVisitorProfile {
+            self.visitorServiceManager?.requestVisitorProfile()
+        }
     }
 
     func retrieveProfileDelayed(visitorId: String, _ completion: (() -> Void)? = nil) {
@@ -100,7 +102,50 @@ public class VisitorServiceModule: Collector, DispatchListener {
         default:
             break
         }
+    }
 
+    /// Should fetch visitor profile based on interval set in the config or defaults to every 5 minutes
+    public var shouldFetchVisitorProfile: Bool {
+        let lastFetch = visitorServiceManager?.lastFetch
+        guard let refresh = config.visitorServiceRefresh else {
+            return shouldFetch(basedOn: lastFetch, interval: VisitorServiceConstants.defaultRefreshInterval.milliseconds, environment: config.environment)
+        }
+        return shouldFetch(basedOn: lastFetch, interval: refresh.interval.milliseconds, environment: config.environment)
+    }
+
+    /// Calculates the milliseconds since the last time the visitor profile was fetched
+    ///
+    /// - Parameters:
+    ///   - lastFetch: The date the visitor profile was last retrieved
+    ///   - currentDate: The current date/timestamp in milliseconds
+    /// - Returns: `Int64` - milliseconds since last fetch
+    func intervalSince(lastFetch: Date, _ currentDate: Date = Date()) -> Int64 {
+        return currentDate.millisecondsFrom(earlierDate: lastFetch)
+    }
+
+    /// Checks if the profile should be fetched based on the date of last fetch,
+    /// the interval set in the config (default 5 minutes) and the current environment.
+    /// If the environment is dev or qa, the profile will be fetched every tracking call.
+    ///
+    /// - Parameters:
+    ///   - lastFetch: The date the visitor profile was last retrieved
+    ///   - interval: The interval, in milliseconds, between visitor profile retrieval
+    ///   - environment: The environment set in TealiumConfig
+    /// - Returns: `Bool` - whether or not the profile should be fetched
+    func shouldFetch(basedOn lastFetch: Date?,
+                     interval: Int64?,
+                     environment: String) -> Bool {
+        guard let lastFetch = lastFetch else {
+            return true
+        }
+        guard environment == TealiumKey.prod else {
+            return true
+        }
+        guard let interval = interval else {
+            return true
+        }
+        let millisecondsFromLastFetch = intervalSince(lastFetch: lastFetch)
+        return millisecondsFromLastFetch >= interval
     }
 
 }
