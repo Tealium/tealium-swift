@@ -15,7 +15,7 @@ public class MockTealiumVisitorServiceManager: VisitorServiceManagerProtocol {
     
     var requestVisitorProfileCount = 0
 
-    public func requestVisitorProfile() {
+    public func requestVisitorProfile(waitTimeout: Bool = false) {
         requestVisitorProfileCount += 1
     }
 }

@@ -28,69 +28,6 @@ class VisitorServiceRetrieverTests: XCTestCase {
                        visitorServiceRetriever.visitorServiceURL(tealiumVisitorId: visitorId))
     }
 
-    func testIntervalSince() {
-        let timeTraveler = TimeTraveler()
-
-        var mockedLastFetch = timeTraveler.travel(by: (60 * 5 + 1) * -1)
-        var expectedResult: Int64 = 301_000
-
-        var actualResult = visitorServiceRetriever.intervalSince(lastFetch: mockedLastFetch)
-
-        XCTAssertEqual(expectedResult, actualResult)
-
-        mockedLastFetch = timeTraveler.travel(by: (60 * 4 + 1) * -1)
-        expectedResult = 241_000
-
-        actualResult = visitorServiceRetriever.intervalSince(lastFetch: mockedLastFetch)
-
-        XCTAssertEqual(expectedResult, actualResult)
-
-    }
-
-    func testShouldFetch() {
-        var result = visitorServiceRetriever.shouldFetch(basedOn: Date(), interval: 300_000, environment: "dev")
-        XCTAssertEqual(true, result)
-
-        result = visitorServiceRetriever.shouldFetch(basedOn: Date(), interval: nil, environment: "prod")
-        XCTAssertEqual(true, result)
-
-        let timeTraveler = TimeTraveler()
-        var mockedLastFetch = timeTraveler.travel(by: (60 * 5 + 1) * -1)
-        result = visitorServiceRetriever.shouldFetch(basedOn: mockedLastFetch, interval: 300_000, environment: "prod")
-        XCTAssertEqual(true, result)
-
-        mockedLastFetch = timeTraveler.travel(by: (60 * 4 + 1) * -1)
-        result = visitorServiceRetriever.shouldFetch(basedOn: mockedLastFetch, interval: 300_000, environment: "prod")
-        XCTAssertEqual(false, result)
-    }
-
-    func testShouldFetchVisitorProfile() {
-        let timeTraveler = TimeTraveler()
-
-        tealConfig = TealiumConfig(account: "test", profile: "test", environment: "dev")
-        visitorServiceRetriever.tealiumConfig = tealConfig
-        visitorServiceRetriever.lastFetch = timeTraveler.travel(by: (60 * 2 + 1) * -1)
-        XCTAssertEqual(true, visitorServiceRetriever.shouldFetchVisitorProfile)
-
-        tealConfig = TealiumConfig(account: "test", profile: "test", environment: "prod")
-        tealConfig.visitorServiceRefresh = .every(0, .seconds)
-        visitorServiceRetriever = VisitorServiceRetriever(config: tealConfig)
-        visitorServiceRetriever.lastFetch = timeTraveler.travel(by: (60 * 2 + 1) * -1)
-        XCTAssertEqual(true, visitorServiceRetriever.shouldFetchVisitorProfile)
-
-        tealConfig = TealiumConfig(account: "test", profile: "test", environment: "prod")
-        visitorServiceRetriever.tealiumConfig = tealConfig
-        visitorServiceRetriever.lastFetch = timeTraveler.travel(by: (60 * 5 + 1) * -1)
-        XCTAssertEqual(true, visitorServiceRetriever.shouldFetchVisitorProfile)
-
-        tealConfig = TealiumConfig(account: "test", profile: "test", environment: "prod")
-        // resetting back to default
-        tealConfig.visitorServiceRefresh = .every(5, .minutes)
-        visitorServiceRetriever = VisitorServiceRetriever(config: tealConfig)
-        visitorServiceRetriever.lastFetch = timeTraveler.travel(by: (60 * 2 + 1) * -1)
-        XCTAssertEqual(false, visitorServiceRetriever.shouldFetchVisitorProfile)
-    }
-
     func testSendURLRequest_Success() {
         let expect = expectation(description: "successful url request")
         let url = URL(string: "https://visitor-service.tealiumiq.com/tealiummobile/main/11CF7685E35542FEB93EB730A9A83BF2")!
@@ -139,21 +76,6 @@ class VisitorServiceRetrieverTests: XCTestCase {
             expect.fulfill()
         }
         wait(for: [expect], timeout: 3.0)
-    }
-
-    func testDoNotFetchVisitorProfile() {
-        let timeTraveler = TimeTraveler()
-        let config = TealiumConfig(account: "test", profile: "test", environment: "prod", dataSource: nil, options: [:])
-        let retriever = VisitorServiceRetriever(config: config, urlSession: MockURLSession())
-        let expect = expectation(description: "should not fetch")
-        retriever.lastFetch = timeTraveler.travel(by: (60 * 4 + 1) * -1)
-        retriever.fetchVisitorProfile(visitorId: visitorId) { result in
-            if case .success(let profile) = result {
-                XCTAssertNil(profile)
-                expect.fulfill()
-            }
-        }
-        wait(for: [expect], timeout: 1.0)
     }
 
 }

@@ -22,7 +22,7 @@ public enum VisitorServiceStatus: Int {
 public protocol VisitorServiceManagerProtocol {
     var currentVisitorId: String? { get set }
     var cachedProfile: TealiumVisitorProfile? { get }
-    func requestVisitorProfile()
+    func requestVisitorProfile(waitTimeout: Bool)
 }
 
 public class VisitorServiceManager: VisitorServiceManagerProtocol {
@@ -38,6 +38,7 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
     var currentState = VisitorServiceStatus.ready
     var pollingAttempts = 0
     var maxPollingAttempts = 5
+    var lastFetch: Date?
     public var currentVisitorId: String?
 
     /// Initializes the Visitor Service Manager
@@ -65,20 +66,29 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
     }
 
     /// Retrieves and saves the visitor profile for the current visitorId
-    public func requestVisitorProfile() { // This is called from outside too
+    public func requestVisitorProfile() { // This is called from outside
         TealiumQueues.backgroundSerialQueue.async {
-            // No need to request if no delegates are listening
-            guard let visitorId = self.currentVisitorId,
-                self.delegate != nil else {
-                return
-            }
-            guard self.currentState == VisitorServiceStatus.ready else {
-                return
-            }
-            self.blockState()
-            self.fetchProfileOrRetry(visitorId: visitorId) {
-                self.startPolling(visitorId: visitorId)
-            }
+            self.requestVisitorProfile(waitTimeout: false)
+        }
+    }
+
+    /// Retrieves and saves the visitor profile for the current visitorId if the timeout has expired
+    public func requestVisitorProfile(waitTimeout: Bool) {
+        // No need to request if no delegates are listening
+        guard let visitorId = self.currentVisitorId,
+            self.delegate != nil else {
+            return
+        }
+        let mustWaitTimeout = waitTimeout && !shouldFetchVisitorProfile
+        guard !mustWaitTimeout else {
+            return
+        }
+        guard self.currentState == VisitorServiceStatus.ready else {
+            return
+        }
+        self.blockState()
+        self.fetchProfileOrRetry(visitorId: visitorId) {
+            self.startPolling(visitorId: visitorId)
         }
     }
 
@@ -156,6 +166,7 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
                     completion(nil, nil)
                     return
                 }
+                self.lastFetch = Date()
                 completion(profile, nil)
             case .failure(let error):
                 completion(nil, error)
@@ -174,6 +185,49 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
         }
         let eventCountUpdated = currentCount > lifetimeEvents
         return eventCountUpdated
+    }
+
+    /// Should fetch visitor profile based on interval set in the config or defaults to every 5 minutes
+    var shouldFetchVisitorProfile: Bool {
+        guard let refresh = tealiumConfig.visitorServiceRefresh else {
+            return shouldFetch(basedOn: lastFetch, interval: VisitorServiceConstants.defaultRefreshInterval.milliseconds, environment: tealiumConfig.environment)
+        }
+        return shouldFetch(basedOn: lastFetch, interval: refresh.interval.milliseconds, environment: tealiumConfig.environment)
+    }
+
+    /// Calculates the milliseconds since the last time the visitor profile was fetched
+    ///
+    /// - Parameters:
+    ///   - lastFetch: The date the visitor profile was last retrieved
+    ///   - currentDate: The current date/timestamp in milliseconds
+    /// - Returns: `Int64` - milliseconds since last fetch
+    func intervalSince(lastFetch: Date, _ currentDate: Date = Date()) -> Int64 {
+        return currentDate.millisecondsFrom(earlierDate: lastFetch)
+    }
+
+    /// Checks if the profile should be fetched based on the date of last fetch,
+    /// the interval set in the config (default 5 minutes) and the current environment.
+    /// If the environment is dev or qa, the profile will be fetched every tracking call.
+    ///
+    /// - Parameters:
+    ///   - lastFetch: The date the visitor profile was last retrieved
+    ///   - interval: The interval, in milliseconds, between visitor profile retrieval
+    ///   - environment: The environment set in TealiumConfig
+    /// - Returns: `Bool` - whether or not the profile should be fetched
+    func shouldFetch(basedOn lastFetch: Date?,
+                     interval: Int64?,
+                     environment: String) -> Bool {
+        guard let lastFetch = lastFetch else {
+            return true
+        }
+        guard environment == TealiumKey.prod else {
+            return true
+        }
+        guard let interval = interval else {
+            return true
+        }
+        let millisecondsFromLastFetch = intervalSince(lastFetch: lastFetch)
+        return millisecondsFromLastFetch >= interval
     }
 }
 

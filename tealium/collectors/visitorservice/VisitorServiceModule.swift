@@ -73,7 +73,7 @@ public class VisitorServiceModule: Collector, DispatchListener {
 
     private func retrieveProfile(visitorId: String) {
         self.lastVisitorId = visitorId
-        self.visitorServiceManager?.requestVisitorProfile()
+        self.visitorServiceManager?.requestVisitorProfile(waitTimeout: true)
     }
 
     func retrieveProfileDelayed(visitorId: String, _ completion: (() -> Void)? = nil) {

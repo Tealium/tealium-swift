@@ -24,22 +24,13 @@ class VisitorServiceManagerTests: XCTestCase {
         expectations = [XCTestExpectation]()
         visitorServiceManager = nil
         mockDiskStorage = MockTealiumDiskStorage()
-        visitorServiceManager = VisitorServiceManager(config: TestTealiumHelper().getConfig(), delegate: nil, diskStorage: mockDiskStorage)
+        let config = TealiumConfig(account: "test", profile: "test", environment: "prod")
+        visitorServiceManager = VisitorServiceManager(config: config, delegate: self, diskStorage: mockDiskStorage)
         visitorServiceManager?.visitorServiceRetriever = VisitorServiceRetriever(config: TestTealiumHelper().getConfig(), urlSession: MockURLSession())
     }
 
     override func tearDown() {
         visitorServiceManager = nil
-    }
-
-    func getExpectation(forDescription: String) -> XCTestExpectation? {
-        let exp = expectations.filter {
-            $0.description == forDescription
-        }
-        if exp.count > 0 {
-            return exp[0]
-        }
-        return nil
     }
 
     func testInitialVisitorProfileSettingsFromConfig() {
@@ -105,13 +96,96 @@ class VisitorServiceManagerTests: XCTestCase {
         XCTAssertFalse(result)
     }
 
+    func testIntervalSince() {
+        let timeTraveler = TimeTraveler()
+
+        var mockedLastFetch = timeTraveler.travel(by: (60 * 5 + 1) * -1)
+        var expectedResult: Int64 = 301_000
+
+        var actualResult = visitorServiceManager!.intervalSince(lastFetch: mockedLastFetch)
+
+        XCTAssertEqual(expectedResult, actualResult)
+
+        mockedLastFetch = timeTraveler.travel(by: (60 * 4 + 1) * -1)
+        expectedResult = 241_000
+
+        actualResult = visitorServiceManager!.intervalSince(lastFetch: mockedLastFetch)
+
+        XCTAssertEqual(expectedResult, actualResult)
+
+    }
+
+    func testShouldFetch() {
+        var result = visitorServiceManager!.shouldFetch(basedOn: Date(), interval: 300_000, environment: "dev")
+        XCTAssertEqual(true, result)
+
+        result = visitorServiceManager!.shouldFetch(basedOn: Date(), interval: nil, environment: "prod")
+        XCTAssertEqual(true, result)
+
+        let timeTraveler = TimeTraveler()
+        var mockedLastFetch = timeTraveler.travel(by: (60 * 5 + 1) * -1)
+        result = visitorServiceManager!.shouldFetch(basedOn: mockedLastFetch, interval: 300_000, environment: "prod")
+        XCTAssertEqual(true, result)
+
+        mockedLastFetch = timeTraveler.travel(by: (60 * 4 + 1) * -1)
+        result = visitorServiceManager!.shouldFetch(basedOn: mockedLastFetch, interval: 300_000, environment: "prod")
+        XCTAssertEqual(false, result)
+    }
+
+    func testShouldFetchVisitorProfile() {
+        let timeTraveler = TimeTraveler()
+
+        var tealConfig = TealiumConfig(account: "test", profile: "test", environment: "dev")
+        visitorServiceManager!.tealiumConfig = tealConfig
+        visitorServiceManager!.lastFetch = timeTraveler.travel(by: (60 * 2 + 1) * -1)
+        XCTAssertEqual(true, visitorServiceManager!.shouldFetchVisitorProfile)
+
+        tealConfig = TealiumConfig(account: "test", profile: "test", environment: "prod")
+        tealConfig.visitorServiceRefresh = .every(0, .seconds)
+        visitorServiceManager! = VisitorServiceManager(config: tealConfig, delegate: self, diskStorage: mockDiskStorage)
+        visitorServiceManager!.lastFetch = timeTraveler.travel(by: (60 * 2 + 1) * -1)
+        XCTAssertEqual(true, visitorServiceManager!.shouldFetchVisitorProfile)
+
+        tealConfig = TealiumConfig(account: "test", profile: "test", environment: "prod")
+        visitorServiceManager!.tealiumConfig = tealConfig
+        visitorServiceManager!.lastFetch = timeTraveler.travel(by: (60 * 5 + 1) * -1)
+        XCTAssertEqual(true, visitorServiceManager!.shouldFetchVisitorProfile)
+
+        tealConfig = TealiumConfig(account: "test", profile: "test", environment: "prod")
+        // resetting back to default
+        tealConfig.visitorServiceRefresh = .every(5, .minutes)
+        visitorServiceManager! = VisitorServiceManager(config: tealConfig, delegate: self, diskStorage: mockDiskStorage)
+        visitorServiceManager!.lastFetch = timeTraveler.travel(by: (60 * 2 + 1) * -1)
+        XCTAssertEqual(false, visitorServiceManager!.shouldFetchVisitorProfile)
+    }
+
+    func testDoNotFetchVisitorProfile() {
+        visitorServiceManager!.currentVisitorId = "test"
+        let expect = expectation(description: "should not fetch")
+        expect.isInverted = true
+        expectations.append(expect)
+        visitorServiceManager!.lastFetch = Date()
+        visitorServiceManager!.requestVisitorProfile(waitTimeout: true)
+        wait(for: [expect], timeout: 3.0)
+    }
+
+    func testDoFetchVisitorProfile() {
+        visitorServiceManager!.currentVisitorId = "test"
+        let expect = expectation(description: "should not fetch")
+        expectations.append(expect)
+        visitorServiceManager!.lastFetch = Date()
+        visitorServiceManager!.requestVisitorProfile(waitTimeout: false)
+        wait(for: [expect], timeout: 3.0)
+    }
+
 }
 
 extension VisitorServiceManagerTests: VisitorServiceDelegate {
 
     func didUpdate(visitorProfile: TealiumVisitorProfile) {
-        self.getExpectation(forDescription: "testDelegateDidUpdateViaRequestVisitorProfile")?.fulfill()
-        self.getExpectation(forDescription: "testPollForVisitorProfile")?.fulfill()
+        for expectation in expectations {
+            expectation.fulfill()
+        }
         visitorServiceManager?.timer?.suspend()
     }
 
