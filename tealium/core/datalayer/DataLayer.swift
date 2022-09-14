@@ -106,7 +106,7 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
             if let newValue = newValue {
                 let newData = newValue.removeExpired()
                 _ = sendRemovedEvent(forKeys: newValue
-                    .filter { newData.contains($0) }
+                    .filter { !newData.contains($0) }
                     .map { $0.key })
                 self.diskStorage.save(newData, completion: nil)
             }
