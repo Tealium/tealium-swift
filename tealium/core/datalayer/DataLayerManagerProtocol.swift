@@ -26,7 +26,7 @@ public protocol DataLayerManagerProtocol: AnyObject {
     func deleteAll()
 }
 
-protocol SessionManagerProtocol {
+protocol SessionManagerProtocol: AnyObject {
     var isTagManagementEnabled: Bool { get set }
     var minutesBetweenSessionIdentifier: TimeInterval { get set }
     var secondsBetweenTrackEvents: TimeInterval { get set }
