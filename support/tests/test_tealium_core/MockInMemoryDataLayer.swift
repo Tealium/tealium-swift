@@ -11,7 +11,9 @@ import TealiumCore
 
 
 class MockInMemoryDataLayer: DataLayerManagerProtocol {
-    var onNewDataAdded: TealiumObservable<[String : Any]> = TealiumPublisher<[String:Any]>().asObservable()
+    var onDataRemoved: TealiumObservable<[String]> = TealiumPublisher<[String]>().asObservable()
+    
+    var onDataUpdated: TealiumObservable<[String : Any]> = TealiumPublisher<[String:Any]>().asObservable()
     
     
     var all: [String : Any] = [:] {

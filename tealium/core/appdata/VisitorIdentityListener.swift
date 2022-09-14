@@ -16,7 +16,7 @@ class VisitorIdentityListener {
 
     init(dataLayer: DataLayerManagerProtocol, visitorIdentityKey: String) {
         self.evaluateData(data: dataLayer.all, for: visitorIdentityKey)
-        dataLayer.onNewDataAdded.subscribe({ [weak self] data in
+        dataLayer.onDataUpdated.subscribe({ [weak self] data in
             self?.evaluateData(data: data, for: visitorIdentityKey)
         }).toDisposeBag(bag)
     }
