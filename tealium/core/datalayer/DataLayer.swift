@@ -42,9 +42,11 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
         refreshSession()
     }
 
+    /// Will receive events for data added or updated in the data layer
     @ToAnyObservable<TealiumPublisher>(TealiumPublisher<[String: Any]>())
     public var onDataUpdated: TealiumObservable<[String: Any]>
 
+    /// Will receive events for data removed or expired from the data layer
     @ToAnyObservable<TealiumPublisher>(TealiumPublisher<[String]>())
     public var onDataRemoved: TealiumObservable<[String]>
 
@@ -168,19 +170,11 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
     /// Deletes specified values from storage.
     /// - Parameter forKeys: `[String]` keys to delete.
     public func delete(for keys: [String]) {
-        let keysToRemove = filterPresentKeys(forKeys: keys)
+        let keysToRemove = filterKeysInDataLayer(keys)
         guard sendRemovedEvent(forKeys: keysToRemove) else { return }
         keysToRemove.forEach {
-            self.deletePersistent(key: $0)
+            persistentDataStorage?.remove(key: $0)
         }
-        self.deleteRestart(keys: keysToRemove)
-    }
-
-    private func deletePersistent(key: String) {
-        persistentDataStorage?.remove(key: key)
-    }
-
-    private func deleteRestart(keys: [String]) {
         TealiumQueues.backgroundConcurrentQueue.write { [weak self] in
             keys.forEach {
                 self?.restartData.removeValue(forKey: $0)
@@ -191,32 +185,31 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
     /// Deletes a value from storage.
     /// - Parameter key: `String` to delete.
     public func delete(for key: String) {
-        guard sendRemovedEvent(forKeys: filterPresentKeys(forKeys: [key])) else { return }
-        deletePersistent(key: key)
-        deleteRestart(keys: [key])
+        delete(for: [key])
     }
 
     /// Deletes all values from storage.
     public func deleteAll() {
-        guard sendRemovedEvent(forKeys: filterPresentKeys()) else { return }
+        guard sendRemovedEvent(forKeys: getAllDataKeys()) else { return }
         persistentDataStorage?.removeAll()
         TealiumQueues.backgroundConcurrentQueue.write { [weak self] in
             self?.restartData.removeAll()
         }
     }
 
-    private func filterPresentKeys(forKeys keys: [String]? = nil) -> [String] {
-        let sessionDataKeys = self.all.keys
-        let presentKeys: [String]
-        if let keys = keys {
-            presentKeys = keys.filter { sessionDataKeys.contains($0) }
-        } else {
-            presentKeys = Array(sessionDataKeys)
-        }
-        return presentKeys
+    /// Filters and returns only the keys that are present in the data layer.
+    func filterKeysInDataLayer(_ keys: [String]) -> [String] {
+        guard keys.count > 0 else { return [] }
+        let allDataKeys = getAllDataKeys()
+        return keys.filter { allDataKeys.contains($0) }
     }
 
-    private func sendRemovedEvent(forKeys keys: [String]) -> Bool {
+    private func getAllDataKeys() -> [String] {
+        Array(self.all.keys)
+    }
+
+    /// Sends the removed event if the keys are not empty and returns true, otherwise returns false.
+    func sendRemovedEvent(forKeys keys: [String]) -> Bool {
         guard keys.count > 0 else {
             return false
         }
