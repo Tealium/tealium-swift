@@ -40,7 +40,7 @@ class VisitorIdProvider {
         onVisitorId.subscribe({ [weak self] visitorId in
             guard let self = self else { return }
             currentVisitorId = visitorId
-            guard let lastIdentity = self.visitorIdMap.currentIdentity else { // First launch
+            guard let lastIdentity = self.visitorIdMap.currentIdentity else { // First launch or Reset
                 return
             }
             self.saveVisitorId(visitorId, forKey: lastIdentity)
@@ -48,7 +48,8 @@ class VisitorIdProvider {
         onVisitorId.subscribeOnce { [weak self] firstVisitorId in // Just to wait for the first visitor to be dispatched
             guard let self = self else { return }
             identityListener.onNewIdentity.subscribe { [weak self] identity in
-                guard let self = self else {
+                guard let self = self,
+                    let identity = identity.sha256() else {
                     return
                 }
                 let oldIdentity = self.visitorIdMap.currentIdentity
@@ -74,20 +75,17 @@ class VisitorIdProvider {
 
     func clearStoredVisitorIds() {
         visitorIdMap.cachedIds.removeAll()
-        self.resetVisitorId()
+        visitorIdMap.currentIdentity = nil
+        resetVisitorId()
+        identityListener?.reset()
     }
 
-    func saveVisitorId(_ id: String, forKey key: String) {
-        if let hashedKey = key.sha256() {
-            visitorIdMap.cachedIds[hashedKey] = id
-        }
+    func saveVisitorId(_ id: String, forKey hashedKey: String) {
+        visitorIdMap.cachedIds[hashedKey] = id
         persistStorage()
     }
 
-    func getVisitorId(forKey key: String) -> String? {
-        guard let hashedKey = key.sha256() else {
-             return nil
-        }
+    func getVisitorId(forKey hashedKey: String) -> String? {
         return visitorIdMap.cachedIds[hashedKey]
     }
 

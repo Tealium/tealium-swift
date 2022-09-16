@@ -67,22 +67,51 @@ class TealiumExtensionTests: XCTestCase {
         wait(for: [expect], timeout: 5.0)
     }
 
-    func testClearStoredVisitorIds() {
+    func testClearStoredVisitorIdsWithoutDeletingFromDataLayer() {
         let expect = expectation(description: "Visitor id is reset")
         let config = defaultTealiumConfig.copy
         config.visitorIdentityKey = "someId"
         let identity = "identity"
+        let hashedIdentity = identity.sha256()!
         tealium = Tealium(config: config) { _ in
             self.tealium.dataLayer.add(key: "someId", value: identity, expiry: .untilRestart)
             let idProvider = self.tealium.appDataModule!.visitorIdProvider
             TealiumQueues.backgroundSerialQueue.async {
                 XCTAssertGreaterThan(idProvider.visitorIdMap.cachedIds.count, 0)
-                let firstId = idProvider.getVisitorId(forKey: identity)
+                let firstId = idProvider.getVisitorId(forKey: hashedIdentity)
                 XCTAssertEqual(firstId, idProvider.onVisitorId.last())
                 self.tealium.clearStoredVisitorIds()
                 TealiumQueues.backgroundSerialQueue.async {
-                    XCTAssertNotEqual(idProvider.visitorIdMap.cachedIds[identity], firstId)
-                    XCTAssertEqual(idProvider.getVisitorId(forKey: identity), idProvider.onVisitorId.last())
+                    XCTAssertNotEqual(idProvider.visitorIdMap.cachedIds[hashedIdentity], firstId)
+                    XCTAssertEqual(idProvider.getVisitorId(forKey: hashedIdentity), idProvider.onVisitorId.last())
+                    XCTAssertNotNil(idProvider.visitorIdMap.currentIdentity)
+                    XCTAssertEqual(hashedIdentity, idProvider.visitorIdMap.currentIdentity)
+                    expect.fulfill()
+                }
+            }
+        }
+        wait(for: [expect], timeout: 5.0)
+    }
+
+    func testClearStoredVisitorIdsCorrectly() {
+        let expect = expectation(description: "Visitor id is reset")
+        let config = defaultTealiumConfig.copy
+        config.visitorIdentityKey = "someId"
+        let identity = "identity"
+        let hashedIdentity = identity.sha256()!
+        tealium = Tealium(config: config) { _ in
+            self.tealium.dataLayer.add(key: "someId", value: identity, expiry: .untilRestart)
+            let idProvider = self.tealium.appDataModule!.visitorIdProvider
+            TealiumQueues.backgroundSerialQueue.async {
+                XCTAssertGreaterThan(idProvider.visitorIdMap.cachedIds.count, 0)
+                let firstId = idProvider.getVisitorId(forKey: hashedIdentity)
+                XCTAssertEqual(firstId, idProvider.onVisitorId.last())
+                self.tealium.dataLayer.delete(for: "someId")
+                self.tealium.clearStoredVisitorIds()
+                TealiumQueues.backgroundSerialQueue.async {
+                    XCTAssertNil(idProvider.visitorIdMap.cachedIds[hashedIdentity])
+                    XCTAssertNil(idProvider.getVisitorId(forKey: hashedIdentity))
+                    XCTAssertNil(idProvider.visitorIdMap.currentIdentity)
                     expect.fulfill()
                 }
             }

@@ -14,6 +14,9 @@ class VisitorIdProviderTests: XCTestCase {
     let identityKey = "identity"
     let identityValue = "identityValue"
     let visitorId = "123456"
+    lazy var hashedIdentityValue: String = {
+        identityValue.sha256() ?? ""
+    }()
     lazy var config: TealiumConfig = {
         let c = TealiumConfig(account: "", profile: "", environment: "")
         c.visitorIdentityKey = identityKey
@@ -45,18 +48,23 @@ class VisitorIdProviderTests: XCTestCase {
     
     func testKeysAreHashed() {
         createProvider()
-        XCTAssertEqual(provider.getVisitorId(forKey: identityValue), visitorId)
+        XCTAssertEqual(provider.getVisitorId(forKey: hashedIdentityValue), visitorId)
         let keys = provider.visitorIdMap.cachedIds.keys
         XCTAssertFalse(keys.contains { $0 == identityValue })
-        XCTAssertTrue(keys.contains { $0 == identityValue.sha256() })
+        XCTAssertTrue(keys.contains { $0 == hashedIdentityValue })
+    }
+
+    func testCurrentIdentityIsHashed() {
+        createProvider()
+        XCTAssertEqual(provider.visitorIdMap.currentIdentity, hashedIdentityValue)
     }
 
     func testResetVisitorId() {
         createProvider()
-        XCTAssertEqual(provider.getVisitorId(forKey: identityValue), visitorId)
+        XCTAssertEqual(provider.getVisitorId(forKey: hashedIdentityValue), visitorId)
         let resultId = provider.resetVisitorId()
-        XCTAssertNotEqual(provider.getVisitorId(forKey: identityValue), visitorId)
-        XCTAssertEqual(resultId, provider.getVisitorId(forKey: identityValue))
+        XCTAssertNotEqual(provider.getVisitorId(forKey: hashedIdentityValue), visitorId)
+        XCTAssertEqual(resultId, provider.getVisitorId(forKey: hashedIdentityValue))
     }
 
     func testChangeIdentityKey() {
@@ -69,7 +77,7 @@ class VisitorIdProviderTests: XCTestCase {
         }
         changeIdentityValue(to: "someOtherValue")
         TealiumQueues.backgroundSerialQueue.sync {
-            XCTAssertEqual(provider.getVisitorId(forKey: identityValue), visitorId, "Old visitorId for old identifier hasn't changed")
+            XCTAssertEqual(provider.getVisitorId(forKey: hashedIdentityValue), visitorId, "Old visitorId for old identifier hasn't changed")
         }
         waitForExpectations(timeout: 3)
         TealiumQueues.backgroundSerialQueue.sync {
@@ -93,13 +101,13 @@ class VisitorIdProviderTests: XCTestCase {
         }
         changeIdentityValue(to: "someOtherValue")
         TealiumQueues.backgroundSerialQueue.sync {
-            XCTAssertEqual(provider.getVisitorId(forKey: identityValue), visitorId, "Old visitorId for old identifier hasn't changed")
+            XCTAssertEqual(provider.getVisitorId(forKey: hashedIdentityValue), visitorId, "Old visitorId for old identifier hasn't changed")
         }
         changeIdentityValue(to: identityValue)
         TealiumQueues.backgroundSerialQueue.sync {
             let cachedIdentities = provider.visitorIdMap.cachedIds.keys
             XCTAssertEqual(cachedIdentities.count, 2)
-            XCTAssertTrue(cachedIdentities.contains { $0 == identityValue.sha256() })
+            XCTAssertTrue(cachedIdentities.contains { $0 == hashedIdentityValue })
             XCTAssertTrue(cachedIdentities.contains { $0 == "someOtherValue".sha256() })
         }
         waitForExpectations(timeout: 10)
@@ -143,10 +151,17 @@ class VisitorIdProviderTests: XCTestCase {
     func testClearStoredVisitorIds() {
         createProvider()
         XCTAssertGreaterThan(provider.visitorIdMap.cachedIds.count, 0)
-        XCTAssertEqual(provider.getVisitorId(forKey: identityValue), visitorId)
+        XCTAssertEqual(provider.getVisitorId(forKey: hashedIdentityValue), visitorId)
         provider.clearStoredVisitorIds()
-        XCTAssertNotEqual(provider.getVisitorId(forKey: identityValue), visitorId)
-        XCTAssertNotNil(provider.visitorIdMap.currentIdentity, "Identity doesn't get cleared")
+        XCTAssertNotNil(provider.getVisitorId(forKey: hashedIdentityValue))
+        XCTAssertNotEqual(provider.getVisitorId(forKey: hashedIdentityValue), visitorId, "VisitorId for the same identity has to change")
+        XCTAssertNotNil(provider.visitorIdMap.currentIdentity, "Identity doesn't get cleared if the identity is still in the dataLayer")
         XCTAssertEqual(provider.visitorIdMap.cachedIds.count, 1)
+        dataLayer.delete(for: self.identityKey)
+        provider.clearStoredVisitorIds()
+        XCTAssertNil(provider.getVisitorId(forKey: hashedIdentityValue))
+        XCTAssertNil(provider.getVisitorId(forKey: hashedIdentityValue))
+        XCTAssertNil(provider.visitorIdMap.currentIdentity, "Identity does get cleared if the identity is cleared from dataLayer")
+        XCTAssertEqual(provider.visitorIdMap.cachedIds.count, 0)
     }
 }

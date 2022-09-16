@@ -20,6 +20,11 @@ public extension Tealium {
     }
 
     /// Clears the stored visitorIds and resets the current visitorId. Mainly for legal compliance reasons.
+    ///
+    /// This will also automatically reset the current visitorIds.
+    /// Visitor Ids will still get stored in future, as long as the visitorIdentityKey is passed in the config and the dataLayer contains that key.
+    ///
+    /// - Warning: In order to avoid storing the newly reset visitorId with the current identity right after the storage is cleared, the identity key must be previously deleted from the data layer.
     func clearStoredVisitorIds() {
         appDataModule?.clearStoredVisitorIds()
     }

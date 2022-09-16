@@ -10,15 +10,16 @@ import Foundation
 
 class VisitorIdentityListener {
     private let bag = TealiumDisposeBag()
+    private let dataLayer: DataLayerManagerProtocol
+    private let identityKey: String
 
     @ToAnyObservable<TealiumReplaySubject>(TealiumReplaySubject<String>())
     public var onNewIdentity: TealiumObservable<String>
 
     init(dataLayer: DataLayerManagerProtocol, visitorIdentityKey: String) {
-        self.evaluateData(data: dataLayer.all, for: visitorIdentityKey)
-        dataLayer.onDataUpdated.subscribe({ [weak self] data in
-            self?.evaluateData(data: data, for: visitorIdentityKey)
-        }).toDisposeBag(bag)
+        self.dataLayer = dataLayer
+        self.identityKey = visitorIdentityKey
+        reset()
     }
 
     private func evaluateData(data: [String: Any], for key: String) {
@@ -28,5 +29,14 @@ class VisitorIdentityListener {
                 _onNewIdentity.publish(stringValue)
             }
         }
+    }
+
+    func reset() {
+        $onNewIdentity.clear()
+        self.evaluateData(data: dataLayer.all, for: identityKey)
+        dataLayer.onDataUpdated.subscribe({ [weak self] data in
+            guard let self = self else { return }
+            self.evaluateData(data: data, for: self.identityKey)
+        }).toDisposeBag(bag)
     }
 }
