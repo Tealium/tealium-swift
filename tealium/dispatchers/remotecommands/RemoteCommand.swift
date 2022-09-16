@@ -168,12 +168,12 @@ open class RemoteCommand: RemoteCommandProtocol {
     /// - Parameter self: `[String: String]` `mappings` key from JSON file definition
     /// - Returns: `[String: Any]` mapped key value pairs for specific remote command vendor
     public func mapPayload(_ payload: [String: Any], lookup: [String: String]) -> [String: Any] {
-        return lookup.reduce(into: [String: Any]()) { result, dictionary in
-            let values = dictionary.value.split(separator: ",")
+        return lookup.reduce(into: [String: Any]()) { result, tuple in
+            let values = tuple.value.split(separator: ",")
                 .map { $0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) }
-            values.forEach {
-                if payload[dictionary.key] != nil {
-                    result[String($0)] = payload[dictionary.key]
+            if let payload = payload[tuple.key] {
+                values.forEach {
+                    result[$0] = payload
                 }
             }
         }
