@@ -152,16 +152,24 @@ open class RemoteCommand: RemoteCommandProtocol {
     }
 
     func extractCommandName(trackData: [String: Any], commandNames: [String: String]) -> String? {
+        var commands = [String]()
         if let tealiumEvent = trackData[TealiumDataKey.event] as? String,
            let commandName = commandNames[tealiumEvent] {
-            return commandName
-        } else if var eventType = trackData[TealiumDataKey.eventType] as? String {
+            commands.append(commandName)
+        }
+        if var eventType = trackData[TealiumDataKey.eventType] as? String {
             if eventType != TealiumTrackType.view.rawValue {
                 eventType = TealiumTrackType.event.rawValue // Some events change this for utag.js
             }
-            return commandNames["all_\(eventType)s"]
+            if let commandName = commandNames["all_\(eventType)s"] {
+                commands.append(commandName)
+            }
         }
-        return nil
+        if commands.count > 0 {
+            return commands.joined(separator: ",")
+        } else {
+            return nil
+        }
     }
 
     /// Maps the payload recieved from a tracking call to the data specific to the third party
