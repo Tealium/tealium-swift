@@ -148,7 +148,7 @@ public class TagManagementModule: Dispatcher {
             let newRequest = TealiumBatchTrackRequest(trackRequests: track.trackRequests.map { prepareForDispatch($0) })
             self.dispatchTrack(newRequest, completion: completion)
         case let track as TealiumRemoteAPIRequest:
-            self.dispatchTrack(prepareForDispatch(track.trackRequest), completion: completion)
+            self.dispatchTrack(prepareForDispatch(track.trackRequest, overrideEventType: TealiumKey.remoteAPIEventType), completion: completion)
             return
         case let command as TealiumRemoteCommandRequestResponse:
             if var jsCommand = command.data[TealiumKey.jsCommand] as? String {
@@ -212,9 +212,12 @@ public class TagManagementModule: Dispatcher {
     ///
     /// - Parameter request: `TealiumTrackRequest` to be insepcted/modified
     /// - Returns: `TealiumTrackRequest`
-    func prepareForDispatch(_ request: TealiumTrackRequest) -> TealiumTrackRequest {
+    func prepareForDispatch(_ request: TealiumTrackRequest, overrideEventType: String? = nil) -> TealiumTrackRequest {
         var newTrack = request.trackDictionary
         newTrack[TealiumDataKey.dispatchService] = TagManagementKey.moduleName
+        if let newEventType = overrideEventType {
+            newTrack[TealiumDataKey.eventType] = newEventType
+        }
         return TealiumTrackRequest(data: newTrack)
     }
 

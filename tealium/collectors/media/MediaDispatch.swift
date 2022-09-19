@@ -24,15 +24,21 @@ public struct TealiumMediaEvent: MediaDispatch {
     /// Consolidates all the data from the media session for a given track call
     /// - Returns; `[String: Any]`, flattened
     var data: [String: Any] {
-        var dictionary = [String: Any]()
+        trackRequest.trackDictionary
+    }
+
+    public var trackRequest: TealiumTrackRequest {
+        let eventName: String
         switch event {
         case .event(let name):
             if name.rawValue != StandardMediaEvent.milestone.rawValue {
                 parameters.milestone = nil
             }
-            dictionary[TealiumDataKey.event] = name.rawValue
-        case .custom(let name): dictionary[TealiumDataKey.event] = name
+            eventName = name.rawValue
+        case .custom(let name):
+            eventName = name
         }
+        var dictionary = [String: Any]()
         if let parameters = parameters.encoded?.flattened {
             dictionary += parameters.flattened
         }
@@ -40,11 +46,7 @@ public struct TealiumMediaEvent: MediaDispatch {
            let flattened = segment.dictionary?.flattened {
             dictionary.merge(flattened) { _, new in new }
         }
-        return dictionary
-    }
-
-    public var trackRequest: TealiumTrackRequest {
-        TealiumTrackRequest(data: self.data)
+        return TealiumEvent(eventName, dataLayer: dictionary).trackRequest
     }
 
 }

@@ -104,12 +104,7 @@ public class ConsentManager {
     func trackUserConsentPreferences() {
         // this track call must only be sent if "Log Consent Changes" is enabled and user has consented
         if consentLoggingEnabled, currentPolicy.shouldLogConsentStatus {
-            // call type must be set to override "link" or "view"
-            let trackData = [
-                TealiumDataKey.event: currentPolicy.consentTrackingEventName,
-                TealiumDataKey.eventType: currentPolicy.consentTrackingEventName
-            ]
-            delegate?.requestTrack(TealiumTrackRequest(data: trackData))
+            delegate?.requestTrack(TealiumEvent(currentPolicy.consentTrackingEventName).trackRequest)
         }
     }
 
@@ -118,7 +113,7 @@ public class ConsentManager {
     /// - Parameter consentData: `[String: Any]` containing the consent preferences
     func updateTIQCookie() {
         if currentPolicy.shouldUpdateConsentCookie {
-            // collect module ignores this hit
+            // collect module ignores this hit. Can't change the event type cause it's used to change the track call in the utag.js
             let trackData = [
                 TealiumDataKey.event: currentPolicy.updateConsentCookieEventName,
                 TealiumDataKey.eventType: currentPolicy.updateConsentCookieEventName
