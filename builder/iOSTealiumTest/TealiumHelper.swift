@@ -69,6 +69,7 @@ class TealiumHelper {
             print("Consent expired")
         }
         config.visitorIdentityKey = TealiumDataKey.email
+        config.visitorServiceRefresh = .every(1, .minutes)
         #if os(iOS)
             config.enableBackgroundLocation = true
             config.collectors = [

@@ -67,6 +67,9 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
     }
 
     /// Retrieves and saves the visitor profile for the current visitorId
+    ///
+    /// Use this method to avoid waiting for the `visitorServiceRefresh` interval between polling requests
+    /// if you urgently need an update on the profile.
     public func requestVisitorProfile() { // This is called from outside
         TealiumQueues.backgroundSerialQueue.async {
             // No need to request if no delegates are listening
@@ -74,10 +77,6 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
                 self.delegate != nil else {
                 return
             }
-//            let mustWaitTimeout = waitTimeout && !shouldFetchVisitorProfile
-//            guard !mustWaitTimeout else {
-//                return
-//            }
             guard self.currentState == VisitorServiceStatus.ready else {
                 return
             }
