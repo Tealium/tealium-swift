@@ -416,7 +416,7 @@ class RemoteCommandsManagerTests: XCTestCase {
 
     func testGetPayloadDataWithoutPayload() {
         let data: [String: Any] = [
-            "someKey": "someValye",
+            "someKey": "someValue",
             TealiumDataKey.eventType: TealiumTrackType.event.description
         ]
         let payload = tealiumRemoteCommandsManager.getPayloadData(data: data)
