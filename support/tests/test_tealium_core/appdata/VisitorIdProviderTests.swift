@@ -38,7 +38,7 @@ class VisitorIdProviderTests: XCTestCase {
     func createProvider(config: TealiumConfig? = nil, migrator: VisitorIdMigratorProtocol? = nil) {
         self.provider = nil
         diskStorage.save(VisitorIdStorage(visitorId: visitorId), completion: nil)
-        provider = VisitorIdProvider(context: TestTealiumHelper.context(with: config ?? self.config, dataLayer: self.dataLayer), diskStorage: diskStorage, visitorIdMigrator: migrator)
+        provider = VisitorIdProvider(config: config ?? self.config, dataLayer: self.dataLayer, diskStorage: diskStorage, visitorIdMigrator: migrator)
     }
 
     override func tearDownWithError() throws {

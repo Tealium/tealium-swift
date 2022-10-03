@@ -16,21 +16,21 @@ class VisitorIdProvider {
     @ToAnyObservable<TealiumReplaySubject<String>>(TealiumReplaySubject<String>())
     var onVisitorId: TealiumObservable<String>
 
-    init(context: TealiumContext, diskStorage: TealiumDiskStorageProtocol? = nil, visitorIdMigrator: VisitorIdMigratorProtocol? = nil) {
-        self.diskStorage = diskStorage ?? TealiumDiskStorage(config: context.config, forModule: "VisitorIdStorage")
-        guard let dataLayer = context.dataLayer else {
+    init(config: TealiumConfig, dataLayer: DataLayerManagerProtocol?, diskStorage: TealiumDiskStorageProtocol? = nil, visitorIdMigrator: VisitorIdMigratorProtocol? = nil) {
+        self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config, forModule: "VisitorIdStorage")
+        guard let dataLayer = dataLayer else {
             self.identityListener = nil
             self.visitorIdStorage = Self.newVisitorIdStorage()
             return
         }
-        if let identityKey = context.config.visitorIdentityKey {
+        if let identityKey = config.visitorIdentityKey {
             self.identityListener = VisitorIdentityListener(dataLayer: dataLayer,
                                                             visitorIdentityKey: identityKey)
         } else {
             self.identityListener = nil
         }
         let migrator = visitorIdMigrator ?? VisitorIdMigrator(dataLayer: dataLayer,
-                                                              config: context.config)
+                                                              config: config)
         if let oldData = migrator.getOldPersistentData() {
             self.visitorIdStorage = VisitorIdStorage(visitorId: oldData.visitorId)
             dataLayer.add(key: TealiumDataKey.uuid, value: oldData.uuid, expiry: .forever)
@@ -38,7 +38,7 @@ class VisitorIdProvider {
         } else if let storage = self.diskStorage.retrieve(as: VisitorIdStorage.self) {
             self.visitorIdStorage = storage
         } else {
-            self.visitorIdStorage = Self.newVisitorIdStorage(config: context.config)
+            self.visitorIdStorage = Self.newVisitorIdStorage(config: config)
         }
         if dataLayer.all[TealiumDataKey.uuid] == nil {
             dataLayer.add(key: TealiumDataKey.uuid, value: UUID().uuidString, expiry: .forever)

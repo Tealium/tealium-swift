@@ -76,7 +76,9 @@ public class AppDataModule: Collector {
         self.config = context.config
         self.bundle = Bundle.main
         self.appDataCollector = AppDataCollector()
-        visitorIdProvider = VisitorIdProvider(context: context, diskStorage: diskStorage)
+        visitorIdProvider = VisitorIdProvider(config: context.config,
+                                              dataLayer: context.dataLayer,
+                                              diskStorage: diskStorage)
         newVolatileData()
         completion((.success(true), nil))
     }
