@@ -49,15 +49,11 @@ class TealiumExtensionTests: XCTestCase {
         let expect = expectation(description: "Visitor id is reset")
         tealium = Tealium(config: defaultTealiumConfig) { _ in
             let currentVisitorId = self.tealium.visitorId
-            let currentUUID = (self.tealium.zz_internal_modulesManager?.collectors
-                                .filter { $0 is AppDataModule }
-                                .first as? AppDataModule)?.uuid
+            let currentUUID = self.tealium.dataLayer.all[TealiumDataKey.uuid] as? String
             self.tealium.resetVisitorId()
             TealiumQueues.backgroundSerialQueue.async {
                 let newVisitorId = self.tealium.visitorId
-                XCTAssertEqual(currentUUID, (self.tealium.zz_internal_modulesManager?.collectors
-                                                .filter { $0 is AppDataModule }
-                                                .first as? AppDataModule)?.uuid)
+                XCTAssertEqual(currentUUID, self.tealium.dataLayer.all[TealiumDataKey.uuid] as? String)
                 XCTAssertEqual(newVisitorId?.count, 32)
                 XCTAssertNotEqual(newVisitorId, currentVisitorId)
                 XCTAssertEqual(self.tealium.visitorId, newVisitorId)
@@ -77,15 +73,15 @@ class TealiumExtensionTests: XCTestCase {
             self.tealium.dataLayer.add(key: "someId", value: identity, expiry: .untilRestart)
             let idProvider = self.tealium.appDataModule!.visitorIdProvider
             TealiumQueues.backgroundSerialQueue.async {
-                XCTAssertGreaterThan(idProvider.visitorIdMap.cachedIds.count, 0)
+                XCTAssertGreaterThan(idProvider.visitorIdStorage.cachedIds.count, 0)
                 let firstId = idProvider.getVisitorId(forKey: hashedIdentity)
-                XCTAssertEqual(firstId, idProvider.onVisitorId.last())
+                XCTAssertEqual(firstId, idProvider.visitorIdStorage.visitorId)
                 self.tealium.clearStoredVisitorIds()
                 TealiumQueues.backgroundSerialQueue.async {
-                    XCTAssertNotEqual(idProvider.visitorIdMap.cachedIds[hashedIdentity], firstId)
-                    XCTAssertEqual(idProvider.getVisitorId(forKey: hashedIdentity), idProvider.onVisitorId.last())
-                    XCTAssertNotNil(idProvider.visitorIdMap.currentIdentity)
-                    XCTAssertEqual(hashedIdentity, idProvider.visitorIdMap.currentIdentity)
+                    XCTAssertNotEqual(idProvider.visitorIdStorage.cachedIds[hashedIdentity], firstId)
+                    XCTAssertEqual(idProvider.getVisitorId(forKey: hashedIdentity), idProvider.visitorIdStorage.visitorId)
+                    XCTAssertNotNil(idProvider.visitorIdStorage.currentIdentity)
+                    XCTAssertEqual(hashedIdentity, idProvider.visitorIdStorage.currentIdentity)
                     expect.fulfill()
                 }
             }
@@ -103,15 +99,15 @@ class TealiumExtensionTests: XCTestCase {
             self.tealium.dataLayer.add(key: "someId", value: identity, expiry: .untilRestart)
             let idProvider = self.tealium.appDataModule!.visitorIdProvider
             TealiumQueues.backgroundSerialQueue.async {
-                XCTAssertGreaterThan(idProvider.visitorIdMap.cachedIds.count, 0)
+                XCTAssertGreaterThan(idProvider.visitorIdStorage.cachedIds.count, 0)
                 let firstId = idProvider.getVisitorId(forKey: hashedIdentity)
-                XCTAssertEqual(firstId, idProvider.onVisitorId.last())
+                XCTAssertEqual(firstId, idProvider.visitorIdStorage.visitorId)
                 self.tealium.dataLayer.delete(for: "someId")
                 self.tealium.clearStoredVisitorIds()
                 TealiumQueues.backgroundSerialQueue.async {
-                    XCTAssertNil(idProvider.visitorIdMap.cachedIds[hashedIdentity])
+                    XCTAssertNil(idProvider.visitorIdStorage.cachedIds[hashedIdentity])
                     XCTAssertNil(idProvider.getVisitorId(forKey: hashedIdentity))
-                    XCTAssertNil(idProvider.visitorIdMap.currentIdentity)
+                    XCTAssertNil(idProvider.visitorIdStorage.currentIdentity)
                     expect.fulfill()
                 }
             }

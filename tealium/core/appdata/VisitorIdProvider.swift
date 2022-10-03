@@ -8,85 +8,88 @@
 
 import Foundation
 
-class VisitorIdMap: Codable {
-    var currentIdentity: String?
-    var cachedIds: [String: String]
-    init() {
-        cachedIds = [:]
-    }
-}
-
 class VisitorIdProvider {
     private let bag = TealiumDisposeBag()
     let identityListener: VisitorIdentityListener?
-    let visitorIdMap: VisitorIdMap
-    let storage: TealiumDiskStorageProtocol
-    let onVisitorId: TealiumReplaySubject<String>
-    init(config: TealiumConfig, dataLayer: DataLayerManagerProtocol?, onVisitorId: TealiumReplaySubject<String>, diskStorage: TealiumDiskStorageProtocol? = nil) {
-        storage = diskStorage ?? TealiumDiskStorage(config: config, forModule: ModuleNames.appdata.lowercased() + ".visitorIdMap")
-        visitorIdMap = storage.retrieve(as: VisitorIdMap.self) ?? VisitorIdMap()
+    var visitorIdStorage: VisitorIdStorage
+    let diskStorage: TealiumDiskStorageProtocol
+    @ToAnyObservable<TealiumReplaySubject<String>>(TealiumReplaySubject<String>())
+    var onVisitorId: TealiumObservable<String>
 
-        self.onVisitorId = onVisitorId
-
-        guard let dataLayer = dataLayer,
-           let identityKey = config.visitorIdentityKey else {
+    init(context: TealiumContext, diskStorage: TealiumDiskStorageProtocol? = nil, visitorIdMigrator: VisitorIdMigratorProtocol? = nil) {
+        self.diskStorage = diskStorage ?? TealiumDiskStorage(config: context.config, forModule: "VisitorIdStorage")
+        guard let dataLayer = context.dataLayer else {
             self.identityListener = nil
+            self.visitorIdStorage = Self.newVisitorIdStorage()
             return
         }
-        let identityListener = VisitorIdentityListener(dataLayer: dataLayer, visitorIdentityKey: identityKey)
-        self.identityListener = identityListener
-
-        var currentVisitorId: String?
+        if let identityKey = context.config.visitorIdentityKey {
+            self.identityListener = VisitorIdentityListener(dataLayer: dataLayer,
+                                                            visitorIdentityKey: identityKey)
+        } else {
+            self.identityListener = nil
+        }
+        let migrator = visitorIdMigrator ?? VisitorIdMigrator(dataLayer: dataLayer,
+                                                              config: context.config)
+        if let oldData = migrator.getOldPersistentData() {
+            self.visitorIdStorage = VisitorIdStorage(visitorId: oldData.visitorId)
+            dataLayer.add(key: TealiumDataKey.uuid, value: oldData.uuid, expiry: .forever)
+            migrator.deleteOldPersistentData()
+        } else if let storage = self.diskStorage.retrieve(as: VisitorIdStorage.self) {
+            self.visitorIdStorage = storage
+        } else {
+            self.visitorIdStorage = Self.newVisitorIdStorage(config: context.config)
+        }
+        if dataLayer.all[TealiumDataKey.uuid] == nil {
+            dataLayer.add(key: TealiumDataKey.uuid, value: UUID().uuidString, expiry: .forever)
+        }
+        _onVisitorId.publish(visitorIdStorage.visitorId)
         onVisitorId.subscribe({ [weak self] visitorId in
-            guard let self = self else { return }
-            currentVisitorId = visitorId
-            guard let lastIdentity = self.visitorIdMap.currentIdentity else { // First launch or Reset
+            guard let self = self, self.visitorIdStorage.visitorId != visitorId else { return }
+            self.visitorIdStorage.setVisitorIdForCurrentIdentity(visitorId)
+            self.persistStorage()
+        }).toDisposeBag(bag)
+        handleIdentitySwitch()
+    }
+
+    func handleIdentitySwitch() {
+        identityListener?.onNewIdentity.subscribe { [weak self] identity in
+            guard let self = self,
+                  let identity = identity.sha256() else {
                 return
             }
-            self.saveVisitorId(visitorId, forKey: lastIdentity)
-        }).toDisposeBag(bag)
-        onVisitorId.subscribeOnce { [weak self] firstVisitorId in // Just to wait for the first visitor to be dispatched
-            guard let self = self else { return }
-            identityListener.onNewIdentity.subscribe { [weak self] identity in
-                guard let self = self,
-                    let identity = identity.sha256() else {
-                    return
-                }
-                let oldIdentity = self.visitorIdMap.currentIdentity
-                let hasIdentityChanged = oldIdentity != identity
-                if hasIdentityChanged {
-                    self.visitorIdMap.currentIdentity = identity
-                }
-                let isFirstLaunch = oldIdentity == nil
-                if let cachedVisitorId = self.getVisitorId(forKey: identity) {
-                    if cachedVisitorId != currentVisitorId {
-                        self.setVisitorId(cachedVisitorId) // Notify and Persist the current visitorId over the cached one
-                    } else if hasIdentityChanged {
-                        self.persistStorage() // To just save the current identity
-                    }
-                } else if isFirstLaunch {
-                    self.saveVisitorId(currentVisitorId ?? firstVisitorId, forKey: identity) // currentVisitorId should never be nil anyway, firstVisitorId added just to compile
+            let oldIdentity = self.visitorIdStorage.currentIdentity
+            guard oldIdentity != identity else { return }
+            self.visitorIdStorage.currentIdentity = identity
+            let isFirstLaunch = oldIdentity == nil
+            if let cachedVisitorId = self.getVisitorId(forKey: identity) {
+                if cachedVisitorId != self.visitorIdStorage.visitorId {
+                    self.setVisitorId(cachedVisitorId) // Notify and Persist the cachedVisitorId for the new current Identity
                 } else {
-                    self.resetVisitorId()
+                    self.persistStorage() // To just save the current identity
                 }
-            }.toDisposeBag(self.bag)
-        }
+            } else if isFirstLaunch {
+                self.visitorIdStorage.setCurrentVisitorIdForCurrentIdentity()
+                self.persistStorage()
+            } else {
+                self.resetVisitorId()
+            }
+        }.toDisposeBag(self.bag)
     }
 
     func clearStoredVisitorIds() {
-        visitorIdMap.cachedIds.removeAll()
-        visitorIdMap.currentIdentity = nil
-        resetVisitorId()
+        diskStorage.delete(completion: nil)
+        visitorIdStorage = Self.newVisitorIdStorage()
+        setVisitorId(visitorIdStorage.visitorId)
         identityListener?.reset()
     }
 
-    func saveVisitorId(_ id: String, forKey hashedKey: String) {
-        visitorIdMap.cachedIds[hashedKey] = id
-        persistStorage()
+    static func newVisitorIdStorage(config: TealiumConfig? = nil) -> VisitorIdStorage {
+        VisitorIdStorage(visitorId: config?.existingVisitorId ?? Self.visitorId(from: UUID().uuidString))
     }
 
     func getVisitorId(forKey hashedKey: String) -> String? {
-        return visitorIdMap.cachedIds[hashedKey]
+        return visitorIdStorage.cachedIds[hashedKey]
     }
 
     /// Resets Tealium Visitor Id
@@ -99,7 +102,7 @@ class VisitorIdProvider {
     }
 
     private func setVisitorId(_ visitorId: String) {
-        onVisitorId.publish(visitorId)
+        _onVisitorId.publish(visitorId)
     }
 
     /// Converts UUID to Tealium Visitor ID format.
@@ -111,6 +114,6 @@ class VisitorIdProvider {
     }
 
     private func persistStorage() {
-        storage.save(visitorIdMap, completion: nil)
+        diskStorage.save(visitorIdStorage, completion: nil)
     }
 }
