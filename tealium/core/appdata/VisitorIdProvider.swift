@@ -34,21 +34,20 @@ class VisitorIdProvider {
         if let oldData = migrator.getOldPersistentData() {
             self.visitorIdStorage = VisitorIdStorage(visitorId: oldData.visitorId)
             dataLayer.add(key: TealiumDataKey.uuid, value: oldData.uuid, expiry: .forever)
+            persistStorage()
             migrator.deleteOldPersistentData()
         } else if let storage = self.diskStorage.retrieve(as: VisitorIdStorage.self) {
             self.visitorIdStorage = storage
         } else {
             self.visitorIdStorage = Self.newVisitorIdStorage(config: config)
+            persistStorage()
         }
         if dataLayer.all[TealiumDataKey.uuid] == nil {
-            dataLayer.add(key: TealiumDataKey.uuid, value: UUID().uuidString, expiry: .forever)
+            dataLayer.add(key: TealiumDataKey.uuid,
+                          value: UUID().uuidString,
+                          expiry: .forever)
         }
-        _onVisitorId.publish(visitorIdStorage.visitorId)
-        onVisitorId.subscribe({ [weak self] visitorId in
-            guard let self = self, self.visitorIdStorage.visitorId != visitorId else { return }
-            self.visitorIdStorage.setVisitorIdForCurrentIdentity(visitorId)
-            self.persistStorage()
-        }).toDisposeBag(bag)
+        setVisitorId(visitorIdStorage.visitorId)
         handleIdentitySwitch()
     }
 
@@ -64,7 +63,7 @@ class VisitorIdProvider {
             let isFirstLaunch = oldIdentity == nil
             if let cachedVisitorId = self.getVisitorId(forKey: identity) {
                 if cachedVisitorId != self.visitorIdStorage.visitorId {
-                    self.setVisitorId(cachedVisitorId) // Notify and Persist the cachedVisitorId for the new current Identity
+                    self.setVisitorId(cachedVisitorId, andPersist: true)
                 } else {
                     self.persistStorage() // To just save the current identity
                 }
@@ -80,7 +79,7 @@ class VisitorIdProvider {
     func clearStoredVisitorIds() {
         diskStorage.delete(completion: nil)
         visitorIdStorage = Self.newVisitorIdStorage()
-        setVisitorId(visitorIdStorage.visitorId)
+        setVisitorId(visitorIdStorage.visitorId, andPersist: true)
         identityListener?.reset()
     }
 
@@ -97,12 +96,17 @@ class VisitorIdProvider {
     @discardableResult
     func resetVisitorId() -> String {
         let id = Self.visitorId(from: UUID().uuidString)
-        setVisitorId(id)
+        setVisitorId(id, andPersist: true)
         return id
     }
 
-    private func setVisitorId(_ visitorId: String) {
+    /// Always use this method to publish new visitor IDs so we can also persist them
+    private func setVisitorId(_ visitorId: String, andPersist shouldPersist: Bool = false) {
         _onVisitorId.publish(visitorId)
+        if shouldPersist {
+            visitorIdStorage.setVisitorIdForCurrentIdentity(visitorId)
+            persistStorage()
+        }
     }
 
     /// Converts UUID to Tealium Visitor ID format.
