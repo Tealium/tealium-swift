@@ -47,7 +47,7 @@ class VisitorIdProvider {
                           value: UUID().uuidString,
                           expiry: .forever)
         }
-        setVisitorId(visitorIdStorage.visitorId)
+        publishVisitorId(visitorIdStorage.visitorId, andUpdateStorage: false)
         handleIdentitySwitch()
     }
 
@@ -60,14 +60,14 @@ class VisitorIdProvider {
             let oldIdentity = self.visitorIdStorage.currentIdentity
             guard oldIdentity != identity else { return }
             self.visitorIdStorage.currentIdentity = identity
-            let isFirstLaunch = oldIdentity == nil
+            let isFirstLaunchWithVisitorSwitching = oldIdentity == nil
             if let cachedVisitorId = self.getVisitorId(forKey: identity) {
                 if cachedVisitorId != self.visitorIdStorage.visitorId {
-                    self.setVisitorId(cachedVisitorId, andPersist: true)
+                    self.publishVisitorId(cachedVisitorId, andUpdateStorage: true)
                 } else {
                     self.persistStorage() // To just save the current identity
                 }
-            } else if isFirstLaunch {
+            } else if isFirstLaunchWithVisitorSwitching {
                 self.visitorIdStorage.setCurrentVisitorIdForCurrentIdentity()
                 self.persistStorage()
             } else {
@@ -79,7 +79,7 @@ class VisitorIdProvider {
     func clearStoredVisitorIds() {
         diskStorage.delete(completion: nil)
         visitorIdStorage = Self.newVisitorIdStorage()
-        setVisitorId(visitorIdStorage.visitorId, andPersist: true)
+        publishVisitorId(visitorIdStorage.visitorId, andUpdateStorage: true)
         identityListener?.reset()
     }
 
@@ -96,14 +96,14 @@ class VisitorIdProvider {
     @discardableResult
     func resetVisitorId() -> String {
         let id = Self.visitorId(from: UUID().uuidString)
-        setVisitorId(id, andPersist: true)
+        publishVisitorId(id, andUpdateStorage: true)
         return id
     }
 
     /// Always use this method to publish new visitor IDs so we can also persist them
-    private func setVisitorId(_ visitorId: String, andPersist shouldPersist: Bool = false) {
+    func publishVisitorId(_ visitorId: String, andUpdateStorage shouldUpdate: Bool) {
         _onVisitorId.publish(visitorId)
-        if shouldPersist {
+        if shouldUpdate {
             visitorIdStorage.setVisitorIdForCurrentIdentity(visitorId)
             persistStorage()
         }

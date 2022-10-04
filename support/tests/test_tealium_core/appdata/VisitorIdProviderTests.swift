@@ -197,4 +197,36 @@ class VisitorIdProviderTests: XCTestCase {
         XCTAssertNil(provider.visitorIdStorage.currentIdentity, "Identity does get cleared if the identity is cleared from dataLayer")
         XCTAssertEqual(provider.visitorIdStorage.cachedIds.count, 0)
     }
+
+    func testPublishVisitorId() {
+        let expectation = expectation(description: "New id is published")
+        createProvider()
+        provider.publishVisitorId("newId", andUpdateStorage: false)
+        provider.onVisitorId.subscribe { id in
+            if id == "newId" {
+                expectation.fulfill()
+            }
+        }
+        XCTAssertNotEqual(provider.visitorIdStorage.visitorId, "newId")
+        let idStorage = diskStorage.retrieve(as: VisitorIdStorage.self)
+        XCTAssertNotNil(idStorage)
+        XCTAssertNotEqual(idStorage?.visitorId, "newId")
+        waitForExpectations(timeout: 2.0)
+    }
+
+    func testPublishVisitorIdAndUpdate() {
+        let expectation = expectation(description: "New id is published")
+        createProvider()
+        provider.publishVisitorId("newId", andUpdateStorage: true)
+        provider.onVisitorId.subscribe { id in
+            if id == "newId" {
+                expectation.fulfill()
+            }
+        }
+        XCTAssertEqual(provider.visitorIdStorage.visitorId, "newId")
+        let idStorage = diskStorage.retrieve(as: VisitorIdStorage.self)
+        XCTAssertNotNil(idStorage)
+        XCTAssertEqual(idStorage?.visitorId, "newId")
+        waitForExpectations(timeout: 2.0)
+    }
 }
