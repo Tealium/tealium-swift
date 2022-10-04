@@ -62,4 +62,10 @@ class TealiumDiskTests: XCTestCase {
         XCTAssertNotNil(data?.trackDictionary["double"], "data unexpectedly missing")
         XCTAssertEqual(data?.trackDictionary["double"] as! Double, value, "unexpected data retrieved")
     }
+
+    func testFilePath() {
+        let config = TealiumConfig(account: "account", profile: "profile", environment: "env")
+        let path = TealiumDiskStorage.filePath(forConfig: config, name: "name")
+        XCTAssertEqual(path, "account.profile/name/")
+    }
 }
