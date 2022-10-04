@@ -40,7 +40,13 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
     var pollingAttempts = 0
     var maxPollingAttempts = 5
     private(set) public var lastFetch: Date?
-    public var currentVisitorId: String?
+    public var currentVisitorId: String? {
+        didSet {
+            if let currentVisitorId = currentVisitorId, oldValue != currentVisitorId {
+                releaseState()
+            }
+        }
+    }
 
     /// Initializes the Visitor Service Manager
     ///
@@ -107,7 +113,7 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
         }
         self.timer = TealiumRepeatingTimer(timeInterval: VisitorServiceConstants.pollingInterval)
         self.timer?.eventHandler = { [weak self] in
-            guard let self = self else {
+            guard let self = self, self.currentVisitorId == visitorId else {
                 return
             }
             self.fetchProfileOrRetry(visitorId: visitorId) {
@@ -148,7 +154,7 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
             return
         }
         visitorServiceRetriever.fetchVisitorProfile(visitorId: visitorId) { [weak self] result in
-            guard let self = self else { return }
+            guard let self = self, self.currentVisitorId == visitorId else { return }
             switch result {
             case .success(let profile):
                 guard let profile = profile,
