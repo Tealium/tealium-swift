@@ -62,10 +62,6 @@ class MockHDLDiskStorageFullCache: TealiumDiskStorageProtocol {
 
     func delete(completion: TealiumCompletion?) { }
 
-    func totalSizeSavedData() -> String? {
-        return "1000"
-    }
-
     func saveStringToDefaults(key: String, value: String) { }
 
     func getStringFromDefaults(key: String) -> String? {
@@ -134,10 +130,6 @@ class MockHDLDiskStorageEmptyCache: TealiumDiskStorageProtocol {
     func append(_ data: [String: Any], forKey: String, fileName: String, completion: TealiumCompletion?) { }
 
     func delete(completion: TealiumCompletion?) { }
-
-    func totalSizeSavedData() -> String? {
-        return "1000"
-    }
 
     func saveStringToDefaults(key: String, value: String) { }
 
@@ -219,10 +211,6 @@ class MockHDLDiskStorageExpiringCache: TealiumDiskStorageProtocol {
     func append(_ data: [String: Any], forKey: String, fileName: String, completion: TealiumCompletion?) { }
 
     func delete(completion: TealiumCompletion?) { }
-
-    func totalSizeSavedData() -> String? {
-        return "1000"
-    }
 
     func saveStringToDefaults(key: String, value: String) { }
 

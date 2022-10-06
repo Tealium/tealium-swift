@@ -77,10 +77,6 @@ class MockLocationDiskStorage: TealiumDiskStorageProtocol {
 
     }
 
-    func totalSizeSavedData() -> String? {
-        ""
-    }
-
     func saveStringToDefaults(key: String, value: String) {
 
     }

@@ -62,9 +62,7 @@ class MockDataLayerDiskStorage: TealiumDiskStorageProtocol {
 
     func delete(completion: TealiumCompletion?) { }
 
-    func totalSizeSavedData() -> String? {
-        return "1000"
-    }
+
 
     func saveStringToDefaults(key: String, value: String) { }
 

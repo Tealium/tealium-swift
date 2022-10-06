@@ -18,11 +18,7 @@ public class MockTealiumDiskStorage: TealiumDiskStorageProtocol {
 
     }
 
-    public var saveCount = 0 {
-        didSet {
-            print("asd")
-        }
-    }
+    public var saveCount = 0
     public var retrieveCount = 0
     
     var saveToDefaultsCount = 0
@@ -77,12 +73,9 @@ public class MockTealiumDiskStorage: TealiumDiskStorageProtocol {
     }
 
     public func delete(completion: TealiumCompletion?) {
+        storedData = nil
         completion?(true, nil, nil)
         deleteCount += 1
-    }
-
-    public func totalSizeSavedData() -> String? {
-        return ""
     }
 
     public func saveStringToDefaults(key: String, value: String) {

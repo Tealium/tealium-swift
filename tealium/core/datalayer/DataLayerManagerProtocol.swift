@@ -15,6 +15,8 @@ public protocol DataLayerManagerProtocol: AnyObject {
     var all: [String: Any] { get set }
     var allSessionData: [String: Any] { get }
     var sessionId: String? { get set }
+    var onDataUpdated: TealiumObservable<[String: Any]> { get }
+    var onDataRemoved: TealiumObservable<[String]> { get }
     func add(data: [String: Any], expiry: Expiry)
     func add(key: String, value: Any, expiry: Expiry)
     func joinTrace(id: String)
@@ -24,7 +26,7 @@ public protocol DataLayerManagerProtocol: AnyObject {
     func deleteAll()
 }
 
-protocol SessionManagerProtocol {
+protocol SessionManagerProtocol: AnyObject {
     var isTagManagementEnabled: Bool { get set }
     var minutesBetweenSessionIdentifier: TimeInterval { get set }
     var secondsBetweenTrackEvents: TimeInterval { get set }

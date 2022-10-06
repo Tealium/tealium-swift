@@ -74,7 +74,10 @@ class AutoTrackingTvOSUITests: XCTestCase {
         if app.staticTexts[otherText].waitForExistence(timeout: 5) {
             return otherText
         }
-        return text // This means it's failed
+        return app.staticTexts
+            .containing(NSPredicate(format: "label CONTAINS 'RootView0'"))
+            .element(matching: .any, identifier: nil)
+            .label // Last attempt
     }
     
     func assertStaticTextExists(app: XCUIApplication, text: String) {

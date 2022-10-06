@@ -39,6 +39,7 @@ public extension TealiumConfig {
 
     /// Enables (default) or disables disk storage.
     /// If disabled, only critical data will be saved, and UserDefaults will be used in place of disk storage￼.
+    /// - Warning: After your first release of the application you can't change this flag. Changing it will incur in loss of critical data stored on the device (e.g. the visitorId).
     var diskStorageEnabled: Bool {
         get {
             options[TealiumConfigKey.diskStorageEnabled] as? Bool ?? true

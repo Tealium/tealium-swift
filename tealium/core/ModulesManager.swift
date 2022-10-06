@@ -26,8 +26,7 @@ public class ModulesManager {
     var remotePublishSettingsRetriever: TealiumPublishSettingsRetriever?
     var collectorTypes: [Collector.Type] {
         if let optionalCollectors = config.collectors {
-            return [AppDataModule.self
-            ] + optionalCollectors
+            return [AppDataModule.self] + optionalCollectors
         } else {
             return [AppDataModule.self,
                     DeviceDataModule.self,
@@ -55,34 +54,11 @@ public class ModulesManager {
     }
     var dataLayerManager: DataLayerManagerProtocol?
     var sessionManager: SessionManagerProtocol? {
-        get {
-            dataLayerManager as? SessionManagerProtocol
-        }
-        // swiftlint:disable unused_setter_value
-        set { }
-        // swiftlint:enable unused_setter_value
+        dataLayerManager as? SessionManagerProtocol
     }
     var logger: TealiumLoggerProtocol?
     public var modules: [TealiumModule] {
-        get {
-            self.collectors + self.dispatchers
-        }
-
-        set {
-            let modules = newValue
-            dispatchers = []
-            collectors = []
-            modules.forEach {
-                switch $0 {
-                case let module as Dispatcher:
-                    addDispatcher(module)
-                case let module as Collector:
-                    addCollector(module)
-                default:
-                    return
-                }
-            }
-        }
+        self.collectors + self.dispatchers
     }
     var config: TealiumConfig {
         willSet {
@@ -277,17 +253,14 @@ extension ModulesManager {
         if let dispatchValidator = collector as? DispatchValidator {
             addDispatchValidator(dispatchValidator)
         }
-
-        guard collectors.first(where: {
-            type(of: $0) == type(of: collector)
-        }) == nil else {
-            return
-        }
         collectors.append(collector)
     }
 
     func setupCollectors(config: TealiumConfig) {
         collectorTypes.forEach { collector in
+            guard !collectors.contains(where: { type(of: $0) == collector }) else {
+                return
+            }
             if collector == ConnectivityModule.self {
                 addCollector(connectivityManager)
                 return
@@ -304,16 +277,14 @@ extension ModulesManager {
 extension ModulesManager {
 
     func addDispatcher(_ dispatcher: Dispatcher) {
-        guard dispatchers.first(where: {
-            type(of: $0) == type(of: dispatcher)
-        }) == nil else {
-            return
-        }
         dispatchers.append(dispatcher)
     }
 
     func setupDispatchers(context: TealiumContext) {
         self.config.dispatchers?.forEach { dispatcherType in
+            guard !dispatchers.contains(where: { type(of: $0) == dispatcherType }) else {
+                return
+            }
             let config = context.config
             let dispatcherTypeDescription = String(describing: dispatcherType)
 
@@ -348,7 +319,6 @@ extension ModulesManager {
                                                category: .`init`)
             self.logger?.log(logRequest)
         }
-
     }
 }
 

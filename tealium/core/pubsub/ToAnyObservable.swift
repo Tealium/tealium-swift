@@ -22,4 +22,8 @@ public final class ToAnyObservable<P: TealiumPublisherProtocol>: TealiumPublishe
     public func asObservable() -> TealiumObservable<P.Element> {
         return publisher.asObservable()
     }
+
+    public var projectedValue: P {
+        return publisher
+    }
 }

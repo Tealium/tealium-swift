@@ -53,31 +53,21 @@ class TealiumModulesManagerTests: XCTestCase {
     }
 
     func testAddCollector() {
-        let context = TestTealiumHelper.context(with: testTealiumConfig, dataLayer: DummyDataManagerNoData())
-        let collector = DummyCollector(context: context, delegate: self, diskStorage: nil) { _, _ in
-
+        let config = testTealiumConfig.copy
+        config.collectors = [DummyCollector.self, DummyCollector.self]
+        let context = TestTealiumHelper.context(with: config, dataLayer: DummyDataManagerNoData())
+        TealiumQueues.backgroundSerialQueue.sync {
+            let modulesManager = ModulesManager(context)
+            
+            XCTAssertTrue(modulesManager.collectors.contains(where: { $0.id == "Dummy" }))
+            
+            XCTAssertTrue(modulesManager.dispatchListeners.contains(where: { type(of: $0) == DummyCollector.self }))
+            XCTAssertTrue(modulesManager.dispatchValidators.contains(where: { type(of: $0) == DummyCollector.self }))
+            
+            XCTAssertEqual(modulesManager.collectors.filter{ $0.id == "Dummy" }.count, 1)
+            XCTAssertEqual(modulesManager.dispatchListeners.filter{ type(of:$0) == DummyCollector.self }.count, 1)
+            XCTAssertEqual(modulesManager.dispatchValidators.filter{ $0.id == "Dummy" }.count, 1)
         }
-        let modulesManager = ModulesManager(context)
-
-        modulesManager.collectors = []
-        modulesManager.dispatchListeners = []
-        modulesManager.dispatchValidators = []
-
-        modulesManager.addCollector(collector)
-        XCTAssertTrue(modulesManager.collectors.contains(where: { $0.id == "Dummy" }))
-
-        XCTAssertTrue(modulesManager.dispatchListeners.contains(where: { ($0 as! Collector).id == "Dummy" }))
-        XCTAssertTrue(modulesManager.dispatchValidators.contains(where: { ($0 as! Collector).id == "Dummy" }))
-
-        XCTAssertEqual(modulesManager.collectors.count, 1)
-        XCTAssertEqual(modulesManager.dispatchListeners.count, 1)
-
-        modulesManager.addCollector(collector)
-        modulesManager.addCollector(collector)
-
-        XCTAssertEqual(modulesManager.collectors.count, 1)
-        XCTAssertEqual(modulesManager.dispatchListeners.count, 1)
-        XCTAssertEqual(modulesManager.dispatchValidators.count, 1)
     }
 
     func testDisableModule() {
@@ -231,11 +221,6 @@ class TealiumModulesManagerTests: XCTestCase {
         modulesManager.dispatchers = []
         modulesManager.collectors = [collector]
         XCTAssertEqual(modulesManager.modules.count, modulesManager.collectors.count)
-        modulesManager.modules = [collector, collector]
-        XCTAssertEqual(modulesManager.modules.count, modulesManager.collectors.count)
-        modulesManager.modules = []
-        XCTAssertEqual(modulesManager.modules.count, modulesManager.collectors.count)
-        XCTAssertEqual(modulesManager.modules.count, 0)
     }
 
     func testDispatchValidatorAddedFromConfig() {

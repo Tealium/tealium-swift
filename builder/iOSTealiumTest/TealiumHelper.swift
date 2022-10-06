@@ -20,6 +20,9 @@ import TealiumRemoteCommands
 import TealiumTagManagement
 #endif
 
+extension TealiumDataKey {
+    static let email = "email"
+}
 
 class TealiumHelper {
 
@@ -65,12 +68,12 @@ class TealiumHelper {
         config.onConsentExpiration = {
             print("Consent expired")
         }
+        config.visitorIdentityKey = TealiumDataKey.email
         #if os(iOS)
             config.enableBackgroundLocation = true
             config.collectors = [
                 Collectors.Attribution,
                 Collectors.Lifecycle,
-                Collectors.AppData,
                 Collectors.Connectivity,
                 Collectors.Device,
                 Collectors.Location,
