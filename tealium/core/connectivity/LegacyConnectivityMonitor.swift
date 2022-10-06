@@ -102,12 +102,14 @@ class LegacyConnectivityMonitor: ConnectivityMonitorProtocol {
         var request = URLRequest(url: testURL)
         request.httpMethod = "HEAD"
         let task = session.tealiumDataTask(with: request) { _, _, error in
-            if let _ = error as? URLError {
-                self.connectionLost()
-                completion(.failure(TealiumConnectivityError.noConnection))
-            } else {
-                self.connectionRestored()
-                completion(.success(true))
+            TealiumQueues.backgroundSerialQueue.async {
+                if let _ = error as? URLError {
+                    self.connectionLost()
+                    completion(.failure(TealiumConnectivityError.noConnection))
+                } else {
+                    self.connectionRestored()
+                    completion(.success(true))
+                }
             }
         }
         task.resume()

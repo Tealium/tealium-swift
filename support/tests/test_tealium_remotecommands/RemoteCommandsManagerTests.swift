@@ -403,6 +403,26 @@ class RemoteCommandsManagerTests: XCTestCase {
         }
     }
 
+    func testGetPayaloadDataWithPayload() {
+        let innerData = ["someKey": "anything"]
+        let data: [String: Any] = [
+            RemoteCommandsKey.payload: innerData,
+            TealiumDataKey.eventType: TealiumTrackType.event.description
+        ]
+        let payload = tealiumRemoteCommandsManager.getPayloadData(data: data)
+        XCTAssertTrue(payload.contains { $0.0 == "someKey"})
+        XCTAssertTrue(payload.contains { $0.0 == TealiumDataKey.eventType})
+    }
+
+    func testGetPayloadDataWithoutPayload() {
+        let data: [String: Any] = [
+            "someKey": "someValue",
+            TealiumDataKey.eventType: TealiumTrackType.event.description
+        ]
+        let payload = tealiumRemoteCommandsManager.getPayloadData(data: data)
+        XCTAssertEqual(payload as? [String: String], data as? [String: String])
+    }
+
 }
 
 extension RemoteCommandsManagerTests: ModuleDelegate {
