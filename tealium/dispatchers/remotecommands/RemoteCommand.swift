@@ -140,8 +140,7 @@ open class RemoteCommand: RemoteCommandProtocol {
             completion?((.failure(TealiumRemoteCommandsError.commandsNotFound), nil))
             return nil
         }
-        guard let tealiumEvent = trackData[TealiumDataKey.event] as? String,
-              let commandName = commandNames[tealiumEvent] else {
+        guard let commandName = extractCommandName(trackData: trackData, commandNames: commandNames) else {
             completion?((.failure(TealiumRemoteCommandsError.commandNameNotFound), nil))
             return nil
         }
@@ -152,6 +151,27 @@ open class RemoteCommand: RemoteCommandProtocol {
         return mapped
     }
 
+    func extractCommandName(trackData: [String: Any], commandNames: [String: String]) -> String? {
+        var commands = [String]()
+        if let tealiumEvent = trackData[TealiumDataKey.event] as? String,
+           let commandName = commandNames[tealiumEvent] {
+            commands.append(commandName)
+        }
+        if var eventType = trackData[TealiumDataKey.eventType] as? String {
+            if eventType != TealiumTrackType.view.rawValue {
+                eventType = TealiumTrackType.event.rawValue // Some events change this for utag.js
+            }
+            if let commandName = commandNames["all_\(eventType)s"] {
+                commands.append(commandName)
+            }
+        }
+        if commands.count > 0 {
+            return commands.joined(separator: ",")
+        } else {
+            return nil
+        }
+    }
+
     /// Maps the payload recieved from a tracking call to the data specific to the third party
     /// vendor specified for the remote command. A lookup dictionary is used to determine the
     /// mapping.
@@ -159,12 +179,12 @@ open class RemoteCommand: RemoteCommandProtocol {
     /// - Parameter self: `[String: String]` `mappings` key from JSON file definition
     /// - Returns: `[String: Any]` mapped key value pairs for specific remote command vendor
     public func mapPayload(_ payload: [String: Any], lookup: [String: String]) -> [String: Any] {
-        return lookup.reduce(into: [String: Any]()) { result, dictionary in
-            let values = dictionary.value.split(separator: ",")
+        return lookup.reduce(into: [String: Any]()) { result, tuple in
+            let values = tuple.value.split(separator: ",")
                 .map { $0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) }
-            values.forEach {
-                if payload[dictionary.key] != nil {
-                    result[String($0)] = payload[dictionary.key]
+            if let payload = payload[tuple.key] {
+                values.forEach {
+                    result[$0] = payload
                 }
             }
         }

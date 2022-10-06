@@ -132,9 +132,9 @@ class RemoteCommandsModuleTests: XCTestCase {
     }
     
     func testTealiumEventType() {
-        let request = TealiumRemoteAPIRequest(trackRequest: TealiumTrackRequest(data: ["test": "data"]))
+        let request = TealiumRemoteAPIRequest(trackRequest: TealiumEvent("SomeEvent", dataLayer: ["test": "data"]).trackRequest)
         XCTAssertNil(request.trackRequest.trackDictionary["call_type"])
-        XCTAssertEqual(request.trackRequest.trackDictionary[TealiumDataKey.eventType] as! String, "remote_api")
+        XCTAssertEqual(request.trackRequest.trackDictionary[TealiumDataKey.eventType] as! String, "event", "remote_api is just sent instead of link in tagmanagement")
     }
 
 }

@@ -244,14 +244,22 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
                 guard let config = command.config else {
                     return
                 }
-                guard let payload = data[RemoteCommandsKey.payload] as? [String: Any] else {
-                    command.complete(with: data, config: config, completion: completion)
-                    return
-                }
-                command.complete(with: payload, config: config, completion: completion)
+                command.complete(with: getPayloadData(data: data),
+                                 config: config,
+                                 completion: completion)
             }
         }
+    }
 
+    func getPayloadData(data: [String: Any]) -> [String: Any] {
+        guard var payload = data[RemoteCommandsKey.payload] as? [String: Any] else {
+            return data
+        }
+        let key = TealiumDataKey.eventType
+        if let eventType = data[key] {
+            payload += [key: eventType]
+        }
+        return payload
     }
 
     /// Trigger an associated remote command from a url request.

@@ -1,0 +1,11 @@
+{
+    "config": {
+    },
+    "mappings": {
+    },
+    "commands": {
+        "launch": "initialize",
+        "all_events": "logevent",
+        "all_views": "logview"
+    }
+}
