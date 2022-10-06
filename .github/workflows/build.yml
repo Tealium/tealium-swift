@@ -118,7 +118,7 @@ jobs:
           MAX_ATTEMPT=10
           ATTEMPT=0
           while [ -z $SUCCESS ] && [ "$ATTEMPT" -le "$MAX_ATTEMPT" ]; do
-            xcodebuild clean -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" | grep -q "CLEAN SUCCEEDED" && SUCCESS=true
+            xcodebuild clean  -scheme "TealiumSwiftExample" -destination "platform=iOS Simulator,name=iPhone 12" | grep -q "CLEAN SUCCEEDED" && SUCCESS=true
             ATTEMPT=$(($ATTEMPT+1))
           done
           set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumSwiftExample.xcworkspace -scheme "TealiumSwiftExample" -destination "platform=iOS Simulator,name=iPhone 12" clean build | xcpretty
@@ -137,7 +137,14 @@ jobs:
           xcode-version: latest-stable
       - uses: actions/checkout@v2
       - name: Build TealiumSwiftExample tvOS
-        run: set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumSwiftExample.xcworkspace -scheme "TealiumSwiftTVExample" -destination "platform=tvOS Simulator,name=Apple TV" clean build | xcpretty
+        run: |
+          MAX_ATTEMPT=10
+          ATTEMPT=0
+          while [ -z $SUCCESS ] && [ "$ATTEMPT" -le "$MAX_ATTEMPT" ]; do
+            xcodebuild clean  -scheme "TealiumSwiftExample" -destination "platform=iOS Simulator,name=iPhone 12" | grep -q "CLEAN SUCCEEDED" && SUCCESS=true
+            ATTEMPT=$(($ATTEMPT+1))
+          done
+          set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumSwiftExample.xcworkspace -scheme "TealiumSwiftTVExample" -destination "platform=tvOS Simulator,name=Apple TV" clean build | xcpretty
         working-directory: ${{ env.working-directory }}
   build_ConsentManagerDemo:
     name: Build ConsentManagerDemo
