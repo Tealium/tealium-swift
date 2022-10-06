@@ -26,12 +26,12 @@ class TagManagementModuleTests: XCTestCase {
         mockTagmanagement = MockTagManagementWebView(success: true)
         let context = TestTealiumHelper.context(with: config)
         module = TagManagementModule(context: context, delegate: self, tagManagement: mockTagmanagement)
-        module?.errorState = AtomicInteger(value: 1)
+        module?.errorCount = AtomicInteger(value: 1)
         let track = TealiumTrackRequest(data: ["test_track": true])
         module?.dynamicTrack(track, completion: nil)
         XCTAssertEqual(mockTagmanagement.reloadCallCount, 1)
         TealiumQueues.backgroundSerialQueue.async {
-            XCTAssertEqual(self.module.errorState.value, 0)
+            XCTAssertEqual(self.module.errorCount.value, 0)
             self.expect.fulfill()
         }
         wait(for: [expect], timeout: 2.0)
@@ -42,12 +42,12 @@ class TagManagementModuleTests: XCTestCase {
         mockTagmanagement = MockTagManagementWebView(success: false)
         let context = TestTealiumHelper.context(with: config)
         module = TagManagementModule(context: context, delegate: self, tagManagement: mockTagmanagement)
-        module?.errorState = AtomicInteger(value: 1)
+        module?.errorCount = AtomicInteger(value: 1)
         let track = TealiumTrackRequest(data: ["test_track": true])
         module?.dynamicTrack(track, completion: nil)
         XCTAssertEqual(mockTagmanagement.reloadCallCount, 1)
         TealiumQueues.backgroundSerialQueue.async {
-            XCTAssertEqual(self.module.errorState.value, 2)
+            XCTAssertEqual(self.module.errorCount.value, 2)
             self.expect.fulfill()
         }
         wait(for: [expect], timeout: 2.0)
@@ -106,7 +106,7 @@ class TagManagementModuleTests: XCTestCase {
         module = TagManagementModule(context: context, delegate: self, tagManagement: mockTagmanagement)
         let track = TealiumTrackRequest(data: ["test": "track"])
         module.pendingTrackRequests.append((track, nil))
-        module.webViewState = Atomic(value: .loadSuccess)
+        module.webViewState = .loadSuccess
         module.flushQueue()
 
         XCTAssertEqual(module.pendingTrackRequests.count, 0)
@@ -122,7 +122,7 @@ class TagManagementModuleTests: XCTestCase {
         module = TagManagementModule(context: context, delegate: self, tagManagement: mockTagmanagement)
         let track = TealiumTrackRequest(data: ["test": "track"])
         module.pendingTrackRequests.append((track, nil))
-        module.webViewState = Atomic(value: .loadSuccess)
+        module.webViewState = .loadSuccess
         module.flushQueue()
 
         XCTAssertEqual(module.pendingTrackRequests.count, 1)
