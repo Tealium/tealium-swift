@@ -14,6 +14,9 @@ class VisitorIdProviderTests: XCTestCase {
     let identityKey = "identity"
     let identityValue = "identityValue"
     let visitorId = "123456"
+    lazy var hashedIdentityValue: String = {
+        identityValue.sha256() ?? ""
+    }()
     lazy var config: TealiumConfig = {
         let c = TealiumConfig(account: "", profile: "", environment: "")
         c.visitorIdentityKey = identityKey
@@ -32,44 +35,82 @@ class VisitorIdProviderTests: XCTestCase {
     func changeIdentityValue(to value: String) {
         dataLayer.add(key: identityKey, value: value, expiry: .untilRestart)
     }
-    
-    func createProvider(config: TealiumConfig? = nil) {
+
+    func createProvider(config: TealiumConfig? = nil, migrator: VisitorIdMigratorProtocol? = nil) {
         self.provider = nil
-        onVisitorId.publish(visitorId)
-        provider = VisitorIdProvider(config: config ?? self.config, dataLayer: self.dataLayer, onVisitorId: onVisitorId, diskStorage: diskStorage)
+        diskStorage.save(VisitorIdStorage(visitorId: visitorId), completion: nil)
+        provider = VisitorIdProvider(config: config ?? self.config, dataLayer: self.dataLayer, diskStorage: diskStorage, visitorIdMigrator: migrator)
     }
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
+
+    func testMigrationFromDataLayer() {
+        dataLayer.add(data: [
+            TealiumDataKey.uuid: "oldUUID",
+            TealiumDataKey.visitorId: "oldVisitorId"
+        ], expiry: .untilRestart)
+        createProvider()
+        let data = dataLayer.all
+        XCTAssertNil(data[TealiumDataKey.visitorId])
+        XCTAssertEqual("oldUUID", data[TealiumDataKey.uuid] as? String)
+        XCTAssertEqual(provider.visitorIdStorage.visitorId, "oldVisitorId")
+    }
+
+    func testMigrationFromPersistentAppData() {
+        let oldDiskStorage = MockAppDataDiskStorage()
+        oldDiskStorage.save(PersistentAppData(visitorId: "oldVisitorId", uuid: "oldUUID"), completion: nil)
+        XCTAssertNotNil(oldDiskStorage.storedData)
+        let migrator = VisitorIdMigrator(dataLayer: MockDataLayerManager(), config: self.config, diskStorage: oldDiskStorage)
+        createProvider(config: nil, migrator: migrator)
+        let data = dataLayer.all
+        XCTAssertNil(data[TealiumDataKey.visitorId])
+        XCTAssertNil(oldDiskStorage.storedData)
+        XCTAssertEqual("oldUUID", data[TealiumDataKey.uuid] as? String)
+        XCTAssertEqual(provider.visitorIdStorage.visitorId, "oldVisitorId")
+    }
+
+    func testVisitorIdFromNewDiskStorage() {
+        createProvider()
+        XCTAssertEqual(provider.visitorIdStorage.visitorId, visitorId)
+        let data = dataLayer.all
+        XCTAssertNil(data[TealiumDataKey.visitorId])
+        XCTAssertNotNil(data[TealiumDataKey.uuid])
+    }
     
     func testKeysAreHashed() {
         createProvider()
-        XCTAssertEqual(provider.getVisitorId(forKey: identityValue), visitorId)
-        let keys = provider.visitorIdMap.cachedIds.keys
+        XCTAssertEqual(provider.getVisitorId(forKey: hashedIdentityValue), visitorId)
+        let keys = provider.visitorIdStorage.cachedIds.keys
         XCTAssertFalse(keys.contains { $0 == identityValue })
-        XCTAssertTrue(keys.contains { $0 == identityValue.sha256() })
+        XCTAssertTrue(keys.contains { $0 == hashedIdentityValue })
+    }
+
+    func testCurrentIdentityIsHashed() {
+        createProvider()
+        XCTAssertEqual(provider.visitorIdStorage.currentIdentity, hashedIdentityValue)
     }
 
     func testResetVisitorId() {
         createProvider()
-        XCTAssertEqual(provider.getVisitorId(forKey: identityValue), visitorId)
+        XCTAssertEqual(provider.getVisitorId(forKey: hashedIdentityValue), visitorId)
         let resultId = provider.resetVisitorId()
-        XCTAssertNotEqual(provider.getVisitorId(forKey: identityValue), visitorId)
-        XCTAssertEqual(resultId, provider.getVisitorId(forKey: identityValue))
+        XCTAssertNotEqual(provider.getVisitorId(forKey: hashedIdentityValue), visitorId)
+        XCTAssertEqual(resultId, provider.getVisitorId(forKey: hashedIdentityValue))
     }
 
     func testChangeIdentityKey() {
         createProvider()
         let expect = expectation(description: "VisitorId has changed")
-        let sub = onVisitorId.subscribe { id in
+        let sub = provider.onVisitorId.subscribe { id in
             if id != self.visitorId {
                 expect.fulfill()
             }
         }
         changeIdentityValue(to: "someOtherValue")
         TealiumQueues.backgroundSerialQueue.sync {
-            XCTAssertEqual(provider.getVisitorId(forKey: identityValue), visitorId, "Old visitorId for old identifier hasn't changed")
+            XCTAssertEqual(provider.getVisitorId(forKey: hashedIdentityValue), visitorId, "Old visitorId for old identifier hasn't changed")
         }
         waitForExpectations(timeout: 3)
         TealiumQueues.backgroundSerialQueue.sync {
@@ -82,7 +123,7 @@ class VisitorIdProviderTests: XCTestCase {
         let visitorChanged = expectation(description: "VisitorId has changed")
         var count = 0
         let visitorBackToFirst = expectation(description: "VisitorId is back to first")
-        let sub = onVisitorId.subscribe { id in
+        let sub = provider.onVisitorId.subscribe { id in
             count += 1
             if id != self.visitorId {
                 visitorChanged.fulfill()
@@ -93,13 +134,13 @@ class VisitorIdProviderTests: XCTestCase {
         }
         changeIdentityValue(to: "someOtherValue")
         TealiumQueues.backgroundSerialQueue.sync {
-            XCTAssertEqual(provider.getVisitorId(forKey: identityValue), visitorId, "Old visitorId for old identifier hasn't changed")
+            XCTAssertEqual(provider.getVisitorId(forKey: hashedIdentityValue), visitorId, "Old visitorId for old identifier hasn't changed")
         }
         changeIdentityValue(to: identityValue)
         TealiumQueues.backgroundSerialQueue.sync {
-            let cachedIdentities = provider.visitorIdMap.cachedIds.keys
+            let cachedIdentities = provider.visitorIdStorage.cachedIds.keys
             XCTAssertEqual(cachedIdentities.count, 2)
-            XCTAssertTrue(cachedIdentities.contains { $0 == identityValue.sha256() })
+            XCTAssertTrue(cachedIdentities.contains { $0 == hashedIdentityValue })
             XCTAssertTrue(cachedIdentities.contains { $0 == "someOtherValue".sha256() })
         }
         waitForExpectations(timeout: 10)
@@ -115,7 +156,7 @@ class VisitorIdProviderTests: XCTestCase {
         createProvider(config: config)
         let expect = expectation(description: "Visitor Id doesn't change")
         expect.assertForOverFulfill = true
-        let sub = onVisitorId.subscribe { id in
+        let sub = provider.onVisitorId.subscribe { id in
             XCTAssertEqual(id, self.visitorId)
             expect.fulfill()
         }
@@ -127,9 +168,10 @@ class VisitorIdProviderTests: XCTestCase {
     }
 
     func testDeleteDataLayerNotTriggerNewVisitorIds() {
+        createProvider()
         let expect = expectation(description: "Visitor Id doesn't change")
         expect.assertForOverFulfill = true
-        let sub = onVisitorId.subscribe { id in
+        let sub = provider.onVisitorId.subscribe { id in
             expect.fulfill()
             XCTAssertEqual(self.visitorId, id)
         }
@@ -142,11 +184,50 @@ class VisitorIdProviderTests: XCTestCase {
 
     func testClearStoredVisitorIds() {
         createProvider()
-        XCTAssertGreaterThan(provider.visitorIdMap.cachedIds.count, 0)
-        XCTAssertEqual(provider.getVisitorId(forKey: identityValue), visitorId)
+        XCTAssertGreaterThan(provider.visitorIdStorage.cachedIds.count, 0)
+        XCTAssertEqual(provider.getVisitorId(forKey: hashedIdentityValue), visitorId)
         provider.clearStoredVisitorIds()
-        XCTAssertNotEqual(provider.getVisitorId(forKey: identityValue), visitorId)
-        XCTAssertNotNil(provider.visitorIdMap.currentIdentity, "Identity doesn't get cleared")
-        XCTAssertEqual(provider.visitorIdMap.cachedIds.count, 1)
+        XCTAssertNotNil(provider.getVisitorId(forKey: hashedIdentityValue))
+        XCTAssertNotEqual(provider.getVisitorId(forKey: hashedIdentityValue), visitorId, "VisitorId for the same identity has to change")
+        XCTAssertNotNil(provider.visitorIdStorage.currentIdentity, "Identity doesn't get cleared if the identity is still in the dataLayer")
+        XCTAssertEqual(provider.visitorIdStorage.cachedIds.count, 1)
+        dataLayer.delete(for: self.identityKey)
+        provider.clearStoredVisitorIds()
+        XCTAssertNil(provider.getVisitorId(forKey: hashedIdentityValue))
+        XCTAssertNil(provider.getVisitorId(forKey: hashedIdentityValue))
+        XCTAssertNil(provider.visitorIdStorage.currentIdentity, "Identity does get cleared if the identity is cleared from dataLayer")
+        XCTAssertEqual(provider.visitorIdStorage.cachedIds.count, 0)
+    }
+
+    func testPublishVisitorId() {
+        let expectation = expectation(description: "New id is published")
+        createProvider()
+        provider.publishVisitorId("newId", andUpdateStorage: false)
+        provider.onVisitorId.subscribe { id in
+            if id == "newId" {
+                expectation.fulfill()
+            }
+        }
+        XCTAssertNotEqual(provider.visitorIdStorage.visitorId, "newId")
+        let idStorage = diskStorage.retrieve(as: VisitorIdStorage.self)
+        XCTAssertNotNil(idStorage)
+        XCTAssertNotEqual(idStorage?.visitorId, "newId")
+        waitForExpectations(timeout: 2.0)
+    }
+
+    func testPublishVisitorIdAndUpdate() {
+        let expectation = expectation(description: "New id is published")
+        createProvider()
+        provider.publishVisitorId("newId", andUpdateStorage: true)
+        provider.onVisitorId.subscribe { id in
+            if id == "newId" {
+                expectation.fulfill()
+            }
+        }
+        XCTAssertEqual(provider.visitorIdStorage.visitorId, "newId")
+        let idStorage = diskStorage.retrieve(as: VisitorIdStorage.self)
+        XCTAssertNotNil(idStorage)
+        XCTAssertEqual(idStorage?.visitorId, "newId")
+        waitForExpectations(timeout: 2.0)
     }
 }

@@ -54,12 +54,7 @@ public class ModulesManager {
     }
     var dataLayerManager: DataLayerManagerProtocol?
     var sessionManager: SessionManagerProtocol? {
-        get {
-            dataLayerManager as? SessionManagerProtocol
-        }
-        // swiftlint:disable unused_setter_value
-        set { }
-        // swiftlint:enable unused_setter_value
+        dataLayerManager as? SessionManagerProtocol
     }
     var logger: TealiumLoggerProtocol?
     public var modules: [TealiumModule] {

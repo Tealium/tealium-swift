@@ -166,7 +166,7 @@ public enum TealiumKey {
     static let traceIdQueryParam = "tealium_trace_id"
 }
 
-public enum TealiumTrackType {
+public enum TealiumTrackType: String {
     case view           // Whenever content is displayed to the user.
     case event
 

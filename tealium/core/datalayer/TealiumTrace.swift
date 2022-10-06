@@ -58,7 +58,6 @@ public extension Tealium {
         }
         let dataLayer = [
             TealiumDataKey.killVisitorSessionEvent: TealiumKey.killVisitorSession,
-            TealiumDataKey.eventType: TealiumKey.killVisitorSession,
             TealiumDataKey.traceId: traceId
         ]
         let dispatch = TealiumEvent(TealiumKey.killVisitorSession,

@@ -27,7 +27,7 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
     }
 
     public static func filePath(forConfig config: TealiumConfig, name: String) -> String {
-        "\(config.account).\(config.profile)/\(name)"
+        "\(config.account).\(config.profile)/\(name)/"
     }
 
     /// - Parameters:

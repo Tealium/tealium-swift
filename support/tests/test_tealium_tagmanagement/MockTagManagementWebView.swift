@@ -12,6 +12,7 @@ import WebKit
 #endif
 
 class MockTagManagementWebView: TagManagementProtocol {
+    var url: URL?
 
     var reloadCallCount = 0
     var evaluateJavascriptCallCount = 0
@@ -71,4 +72,31 @@ class MockTagManagementWebView: TagManagementProtocol {
         return true
     }
 
+}
+
+class MockQueryParamsProvider: Collector, QueryParameterProvider {
+    var data: [String : Any]? = nil
+    
+    static let defaultItems = [URLQueryItem(name: "test", value: "value")]
+    required convenience init(context: TealiumContext, delegate: ModuleDelegate?, diskStorage: TealiumDiskStorageProtocol?, completion: ((Result<Bool, Error>, [String : Any]?)) -> Void) {
+        self.init(items: MockQueryParamsProvider.defaultItems, delay: 1)
+    }
+    
+    
+    var id: String = "Mock Query Params Provider"
+    var config: TealiumConfig = TealiumConfig(account: "", profile: "", environment: "")
+    
+    
+    let items: [URLQueryItem]
+    let secondsDelay: TimeInterval
+    init(items: [URLQueryItem], delay seconds: TimeInterval) {
+        self.items = items
+        self.secondsDelay = seconds
+    }
+    
+    func provideParameters(completion: @escaping ([URLQueryItem]) -> Void) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + secondsDelay) {
+            completion(self.items)
+        }
+    }
 }

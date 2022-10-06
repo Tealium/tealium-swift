@@ -115,7 +115,7 @@ extension TagManagementWKWebView: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-        if self.currentState.value == InternalWebViewState.didFailToLoad.rawValue {
+        if self.currentState == InternalWebViewState.didFailToLoad {
             return
         }
         self.webviewStateDidChange(.loadFailure, withError: error)
