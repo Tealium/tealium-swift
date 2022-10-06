@@ -5,7 +5,6 @@
 //
 
 import AVFoundation
-import GSPlayer
 import SwiftUI
 
 @available(iOS 13, *)
@@ -42,34 +41,6 @@ public struct CustomVideoPlayer {
         self.url = url
         _play = play
         _time = time
-    }
-}
-
-@available(iOS 13, *)
-public extension CustomVideoPlayer {
-    
-    /// Set the preload size, the default value is 1024 * 1024, unit is byte.
-    static var preloadByteCount: Int {
-        get { VideoPreloadManager.shared.preloadByteCount }
-        set { VideoPreloadManager.shared.preloadByteCount = newValue }
-    }
-    
-    /// Set the video urls to be preload queue.
-    /// Preloading will automatically cache a short segment of the beginning of the video
-    /// and decide whether to start or pause the preload based on the buffering of the currently playing video.
-    /// - Parameter urls: URL array
-    static func preload(urls: [URL]) {
-        VideoPreloadManager.shared.set(waiting: urls)
-    }
-    
-    /// Get the total size of the video cache.
-    static func calculateCachedSize() -> UInt {
-        return VideoCacheManager.calculateCachedSize()
-    }
-    
-    /// Clean up all caches.
-    static func cleanAllCache() {
-        try? VideoCacheManager.cleanAllCache()
     }
 }
 
