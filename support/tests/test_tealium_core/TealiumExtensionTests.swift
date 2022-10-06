@@ -262,4 +262,9 @@ class TealiumExtensionTests: XCTestCase {
     }
     #endif
 
+    func testAppendingQueryItems() {
+        let url = URL(string: "www.tealium.com")
+        let queryItems = [URLQueryItem(name: "key1", value: "value1"), URLQueryItem(name: "key2", value: "value2")]
+        XCTAssertTrue(URLComponents(url: url!.appendingQueryItems(queryItems), resolvingAgainstBaseURL: false)!.queryItems!.elementsEqual(queryItems))
+    }
 }
