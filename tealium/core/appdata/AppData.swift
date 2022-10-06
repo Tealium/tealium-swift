@@ -7,18 +7,14 @@
 
 import Foundation
 
-struct AppData: Codable {
+struct AppData {
     var name: String?,
         rdns: String?,
         version: String?,
-        build: String?,
-        persistentData: PersistentAppData?
+        build: String?
 
     public var dictionary: [String: Any] {
         var allData = [String: Any]()
-        if let persistentData = persistentData {
-            allData += persistentData.dictionary
-        }
 
         if let name = name {
             allData[TealiumDataKey.appName] = name
@@ -40,7 +36,6 @@ struct AppData: Codable {
     }
 
     mutating func removeAll() {
-        persistentData = nil
         name = nil
         version = nil
         rdns = nil

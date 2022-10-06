@@ -149,6 +149,49 @@ class DataLayerManagerTests: XCTestCase {
         let retrieved = mockDiskStorage.retrieve(as: Set<DataLayerItem>.self)
         XCTAssertEqual(retrieved?.count, 0)
     }
+    
+    func testFilterKeysInDataLayer() {
+        eventDataManager.deleteAll()
+        eventDataManager.add(key: "someRestart", value: "value", expiry: .untilRestart)
+        eventDataManager.add(key: "somePersistent", value: "value", expiry: .forever)
+        let keys = eventDataManager.filterKeysInDataLayer(["somePersistent", "someRestart", "nonPresent"])
+        XCTAssertEqual(keys, ["somePersistent", "someRestart"])
+    }
+
+    func testSendRemovedEventNotTriggered() {
+        let expect = expectation(description: "Data is not removed for empty keys")
+        expect.isInverted = true
+        let sub = eventDataManager.onDataRemoved.subscribe { _ in
+            expect.fulfill()
+        }
+        let removed = eventDataManager.sendRemovedEvent(forKeys: [])
+        XCTAssertFalse(removed)
+        waitForExpectations(timeout: 2)
+        sub.dispose()
+    }
+
+    func testSendRemovedEventTriggered() {
+        let expect = expectation(description: "Data is not removed for empty keys")
+        let sub = eventDataManager.onDataRemoved.subscribe { _ in
+            expect.fulfill()
+        }
+        let removed = eventDataManager.sendRemovedEvent(forKeys: ["someKey"])
+        XCTAssertTrue(removed)
+        waitForExpectations(timeout: 2)
+        sub.dispose()
+    }
+
+    func testExpiredItems() {
+        let key = "expired"
+        let expect = expectation(description: "Data is removed")
+        eventDataManager.onDataRemoved.subscribe { removedKeys in
+            XCTAssertTrue(removedKeys.contains(key))
+            expect.fulfill()
+        }
+        eventDataManager.add(key: key, value: "any", expiry: .after(Date()))
+        XCTAssertFalse(eventDataManager.all.keys.contains(key))
+        waitForExpectations(timeout: 2)
+    }
 
     //    func testAddPersistendDataFromBackgroundThread() {
     //        let expect = expectation(description: "testAddPersistendDataFromBackgroundThread")

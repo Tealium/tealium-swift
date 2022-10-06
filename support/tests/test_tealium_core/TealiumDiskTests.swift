@@ -29,7 +29,6 @@ class TealiumDiskTests: XCTestCase {
     func testInit() {
         let diskstorage = TealiumDiskStorage(config: config, forModule: "Tests")
         XCTAssertNotNil(diskstorage)
-        XCTAssertEqual(diskstorage.filePrefix, "account.profile/")
         XCTAssertFalse(diskstorage.isCritical, "Default should be false")
         XCTAssertTrue(diskstorage.isDiskStorageEnabled)
     }
@@ -62,5 +61,11 @@ class TealiumDiskTests: XCTestCase {
         let data = diskstorage.retrieve(as: TealiumTrackRequest.self)
         XCTAssertNotNil(data?.trackDictionary["double"], "data unexpectedly missing")
         XCTAssertEqual(data?.trackDictionary["double"] as! Double, value, "unexpected data retrieved")
+    }
+
+    func testFilePath() {
+        let config = TealiumConfig(account: "account", profile: "profile", environment: "env")
+        let path = TealiumDiskStorage.filePath(forConfig: config, name: "name")
+        XCTAssertEqual(path, "account.profile/name/")
     }
 }

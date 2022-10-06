@@ -4,28 +4,30 @@
 //
 
 import Foundation
+
 // swiftlint:disable type_body_length
 public class TealiumDiskStorage: TealiumDiskStorageProtocol {
 
     static let readWriteQueue = ReadWrite("TealiumDiskStorage.label")
     let defaultDirectory = Disk.Directory.applicationSupport
     var currentDirectory: Disk.Directory
-    let filePrefix: String
     let module: String
     let minimumDiskSpace: Int32
     var defaultsStorage: UserDefaults?
     let isCritical: Bool
     let isDiskStorageEnabled: Bool
     var logger: TealiumLoggerProtocol?
-    lazy var filePath: String = {
-        return "\(filePrefix)\(module)/"
-    }()
+    let filePath: String
 
     enum DiskStorageErrors: String {
         case couldNotEncode = "Could not encode data."
         case couldNotDecode = "Could not decode data."
         case insufficientStorage = "Insufficient storage space."
         case diskStorageDisabled = "Disk storage disabled. Could not save."
+    }
+
+    public static func filePath(forConfig config: TealiumConfig, name: String) -> String {
+        "\(config.account).\(config.profile)/\(name)/"
     }
 
     /// - Parameters:
@@ -37,7 +39,7 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
                 isCritical: Bool = false) {
         self.logger = config.logger
         // The subdirectory to use for this data
-        filePrefix = "\(config.account).\(config.profile)/"
+        filePath = Self.filePath(forConfig: config, name: module)
         minimumDiskSpace = config.minimumFreeDiskSpace ?? TealiumValue.defaultMinimumDiskSpace
         self.module = module
         self.isCritical = isCritical
@@ -120,24 +122,6 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
         }
         // make sure we have sufficient disk capacity (20MB)
         return available > minimumDiskSpace
-    }
-
-    /// Gets the total size of all data saved by this module.
-    ///
-    /// - Returns: `String` containing the total size in bytes of data saved by this module
-    public func totalSizeSavedData() -> String? {
-        if let fileUrl = try? Disk.url(for: filePrefix, in: currentDirectory),
-           let contents = try? FileManager.default.contentsOfDirectory(at: fileUrl, includingPropertiesForKeys: nil, options: []) {
-
-            var folderSize: Int64 = 0
-            contents.forEach { file in
-                let fileAttributes = try? FileManager.default.attributesOfItem(atPath: file.path)
-                folderSize += fileAttributes?[FileAttributeKey.size] as? Int64 ?? 0
-            }
-            let fileSizeStr = ByteCountFormatter.string(fromByteCount: folderSize, countStyle: ByteCountFormatter.CountStyle.file)
-            return fileSizeStr
-        }
-        return nil
     }
 
     /// Saves new data to disk, overwriting existing data.

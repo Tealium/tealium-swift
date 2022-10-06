@@ -42,6 +42,14 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
         refreshSession()
     }
 
+    /// Will receive events for data added or updated in the data layer
+    @ToAnyObservable<TealiumPublisher>(TealiumPublisher<[String: Any]>())
+    public var onDataUpdated: TealiumObservable<[String: Any]>
+
+    /// Will receive events for data removed or expired from the data layer
+    @ToAnyObservable<TealiumPublisher>(TealiumPublisher<[String]>())
+    public var onDataRemoved: TealiumObservable<[String]>
+
     /// - Returns: `[String: Any]` containing all stored event data.
     public var all: [String: Any] {
         get {
@@ -95,7 +103,11 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
             }
         }
         set {
-            if let newData = newValue?.removeExpired() {
+            if let newValue = newValue {
+                let newData = newValue.removeExpired()
+                _ = sendRemovedEvent(forKeys: newValue
+                    .filter { !newData.contains($0) }
+                    .map { $0.key })
                 self.diskStorage.save(newData, completion: nil)
             }
         }
@@ -126,6 +138,9 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
     ///   - expiration: `Expiry` level.
     public func add(data: [String: Any],
                     expiry: Expiry = .session) {
+        TealiumQueues.backgroundSerialQueue.async {
+            self._onDataUpdated.publish(data)
+        }
         TealiumQueues.backgroundConcurrentQueue.write {
             let dataToInsert: [String: Any]
             switch expiry {
@@ -155,39 +170,51 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
     /// Deletes specified values from storage.
     /// - Parameter forKeys: `[String]` keys to delete.
     public func delete(for keys: [String]) {
-        keys.forEach {
-            self.deletePersistent(key: $0)
+        let keysToRemove = filterKeysInDataLayer(keys)
+        guard sendRemovedEvent(forKeys: keysToRemove) else { return }
+        keysToRemove.forEach {
+            persistentDataStorage?.remove(key: $0)
         }
         TealiumQueues.backgroundConcurrentQueue.write { [weak self] in
             keys.forEach {
-                self?.deleteRestart(key: $0)
+                self?.restartData.removeValue(forKey: $0)
             }
-        }
-    }
-
-    private func deletePersistent(key: String) {
-        persistentDataStorage?.remove(key: key)
-    }
-
-    private func deleteRestart(key: String) {
-        TealiumQueues.backgroundConcurrentQueue.write { [weak self] in
-            self?.restartData.removeValue(forKey: key)
         }
     }
 
     /// Deletes a value from storage.
     /// - Parameter key: `String` to delete.
     public func delete(for key: String) {
-        deletePersistent(key: key)
-        deleteRestart(key: key)
+        delete(for: [key])
     }
 
     /// Deletes all values from storage.
     public func deleteAll() {
+        guard sendRemovedEvent(forKeys: getAllDataKeys()) else { return }
         persistentDataStorage?.removeAll()
         TealiumQueues.backgroundConcurrentQueue.write { [weak self] in
             self?.restartData.removeAll()
         }
+    }
+
+    /// Filters and returns only the keys that are present in the data layer.
+    func filterKeysInDataLayer(_ keys: [String]) -> [String] {
+        guard keys.count > 0 else { return [] }
+        let allDataKeys = getAllDataKeys()
+        return keys.filter { allDataKeys.contains($0) }
+    }
+
+    private func getAllDataKeys() -> [String] {
+        Array(self.all.keys)
+    }
+
+    /// Sends the removed event if the keys are not empty and returns true, otherwise returns false.
+    func sendRemovedEvent(forKeys keys: [String]) -> Bool {
+        guard keys.count > 0 else {
+            return false
+        }
+        _onDataRemoved.publish(keys)
+        return true
     }
 
     /// - Returns: `String` format of random 16 digit number
