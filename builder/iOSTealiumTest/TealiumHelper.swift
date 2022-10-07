@@ -38,7 +38,7 @@ class TealiumHelper {
     func start() {
         let config = TealiumConfig(account: "tealiummobile",
                                    profile: "demo",
-                                   environment: "dev",
+                                   environment: "prod",
                                    dataSource: "test12",
                                    options: nil)
 
@@ -69,6 +69,7 @@ class TealiumHelper {
             print("Consent expired")
         }
         config.visitorIdentityKey = TealiumDataKey.email
+        config.visitorServiceRefresh = .every(1, .minutes)
         #if os(iOS)
             config.enableBackgroundLocation = true
             config.collectors = [
