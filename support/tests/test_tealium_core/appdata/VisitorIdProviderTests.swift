@@ -23,6 +23,7 @@ class VisitorIdProviderTests: XCTestCase {
         return c
     }()
     lazy var dataLayer: DataLayer = DataLayer(config: config)
+    let onVisitorId = TealiumReplaySubject<String>()
     let diskStorage = mockDiskStorage
     var provider: VisitorIdProvider!
     
@@ -34,7 +35,7 @@ class VisitorIdProviderTests: XCTestCase {
     func changeIdentityValue(to value: String) {
         dataLayer.add(key: identityKey, value: value, expiry: .untilRestart)
     }
-    
+
     func createProvider(config: TealiumConfig? = nil, migrator: VisitorIdMigratorProtocol? = nil) {
         self.provider = nil
         diskStorage.save(VisitorIdStorage(visitorId: visitorId), completion: nil)
