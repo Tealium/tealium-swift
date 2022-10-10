@@ -43,6 +43,7 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
     public var currentVisitorId: String? {
         didSet {
             if let currentVisitorId = currentVisitorId, oldValue != currentVisitorId {
+                lastFetch = nil
                 releaseState()
             }
         }
