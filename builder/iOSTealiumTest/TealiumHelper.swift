@@ -14,12 +14,12 @@ import TealiumVisitorService
 import TealiumAutotracking
 import TealiumInAppPurchase
 #if os(iOS)
+import WebKit
 import TealiumAttribution
 import TealiumLocation
 import TealiumRemoteCommands
 import TealiumTagManagement
 #endif
-import WebKit
 
 extension TealiumDataKey {
     static let email = "email"
