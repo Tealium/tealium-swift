@@ -37,8 +37,8 @@ extension Dictionary where Key == String, Value == Any {
 }
 
 extension DispatchGroup {
-    func tealiumNotify(queue: DispatchQueue, timeout: TimeInterval, execute work: @escaping () -> ()) {
-        var selfDestructingWork: (() -> ())?
+    func tealiumNotify(queue: DispatchQueue, timeout: TimeInterval, execute work: @escaping () -> Void) {
+        var selfDestructingWork: (() -> Void)?
         selfDestructingWork = {
             selfDestructingWork = nil
             work()
