@@ -46,4 +46,14 @@ class TagManagementUtilsTests: XCTestCase {
 
         XCTAssertTrue(eventResult == anyValue)
     }
+
+    func testDispatchGroupTimeout() {
+        let expectation = expectation(description: "Group notifies after timeout")
+        let group = DispatchGroup()
+        group.enter()
+        group.tealiumNotify(queue: .main, timeout: 1.0) {
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 3.0)
+    }
 }

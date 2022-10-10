@@ -35,4 +35,20 @@ extension Dictionary where Key == String, Value == Any {
         return eventType
     }
 }
+
+extension DispatchGroup {
+    func tealiumNotify(queue: DispatchQueue, timeout: TimeInterval, execute work: @escaping () -> ()) {
+        var selfDestructingWork: (() -> ())?
+        selfDestructingWork = {
+            selfDestructingWork = nil
+            work()
+        }
+        self.notify(queue: queue) {
+            selfDestructingWork?()
+        }
+        queue.asyncAfter(deadline: .now() + timeout) {
+            selfDestructingWork?()
+        }
+    }
+}
 #endif
