@@ -97,7 +97,7 @@ class TagManagementWKWebViewTests: XCTestCase {
             dispatchPrecondition(condition: DispatchPredicate.onQueueAsBarrier(TealiumQueues.backgroundSerialQueue))
             expectation.fulfill()
         }
-        waitForExpectations(timeout: 3)
+        waitForExpectations(timeout: 5)
     }
     
     @available(iOS 10.0, *)
@@ -112,7 +112,7 @@ class TagManagementWKWebViewTests: XCTestCase {
             dispatchPrecondition(condition: DispatchPredicate.onQueueAsBarrier(TealiumQueues.backgroundSerialQueue))
             expectation.fulfill()
         }
-        waitForExpectations(timeout: 3)
+        waitForExpectations(timeout: 5)
     }
     
 
@@ -128,7 +128,7 @@ class TagManagementWKWebViewTests: XCTestCase {
             dispatchPrecondition(condition: DispatchPredicate.onQueueAsBarrier(TealiumQueues.backgroundSerialQueue))
             expectation.fulfill()
         }
-        waitForExpectations(timeout: 3)
+        waitForExpectations(timeout: 5)
     }
     
     @available(iOS 10.0, *)

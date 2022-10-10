@@ -19,6 +19,7 @@ import TealiumLocation
 import TealiumRemoteCommands
 import TealiumTagManagement
 #endif
+import WebKit
 
 extension TealiumDataKey {
     static let email = "email"
