@@ -19,7 +19,7 @@ class TagManagementUrlBuilder {
         self.baseURL = baseURL
     }
 
-    func createUrl(completion: @escaping (URL?) -> Void) {
+    func createUrl(timeout: TimeInterval = 5.0, completion: @escaping (URL?) -> Void) {
         guard let providers = modules?.compactMap({ $0 as? QueryParameterProvider }),
                 !providers.isEmpty,
               let baseURL = self.baseURL else {
@@ -37,7 +37,7 @@ class TagManagementUrlBuilder {
                 }
             }
         }
-        group.notify(queue: TealiumQueues.backgroundSerialQueue) {
+        group.tealiumNotify(queue: TealiumQueues.backgroundSerialQueue, timeout: timeout) {
             completion(baseURL.appendingQueryItems(params))
         }
     }
