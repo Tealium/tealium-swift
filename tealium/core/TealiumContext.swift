@@ -28,7 +28,7 @@ public struct TealiumContext: Hashable, TealiumContextProtocol {
         tealium?.zz_internal_modulesManager?.modules
     }
     public var onVisitorId: TealiumObservable<String>? {
-        return tealium?.appDataModule?.onVisitorId
+        return tealium?.onVisitorId
     }
 
     public init(config: TealiumConfig,

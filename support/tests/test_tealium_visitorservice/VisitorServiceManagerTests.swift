@@ -96,6 +96,17 @@ class VisitorServiceManagerTests: XCTestCase {
         XCTAssertFalse(result)
     }
 
+    func testLastFetchGetsResetOnVisitorChange() {
+        let expectation = expectation(description: "fetch completed")
+        visitorServiceManager?.currentVisitorId = "oldId"
+        visitorServiceManager?.fetchProfile(visitorId: "oldId", completion: { _, _ in
+            expectation.fulfill()
+        })
+        waitForExpectations(timeout: 3.0)
+        XCTAssertNotNil(visitorServiceManager?.lastFetch)
+        visitorServiceManager?.currentVisitorId = "newId"
+        XCTAssertNil(visitorServiceManager?.lastFetch)
+    }
 }
 
 extension VisitorServiceManagerTests: VisitorServiceDelegate {

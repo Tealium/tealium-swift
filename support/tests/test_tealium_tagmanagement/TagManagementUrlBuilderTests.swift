@@ -42,4 +42,17 @@ class TagManagementUrlBuilderTests: XCTestCase {
             }
         waitForExpectations(timeout: 3)
     }
+
+    func testTimeout() {
+        let exp = expectation(description: "Completion called with timeout")
+        let baseURL = URL(string: "www.tealium.com")
+        let query1 = [URLQueryItem(name: "firstKey", value: "firstValue"), URLQueryItem(name: "secondKey", value: "secondValue")]
+        let query2 = [URLQueryItem(name: "thirdKey", value: "thirdValue"), URLQueryItem(name: "fourthKey", value: "fourthValue")]
+        TagManagementUrlBuilder(modules: [MockQueryParamsProvider(items: query1, delay: 1), MockQueryParamsProvider(items: query2, delay: 4)], baseURL: baseURL)
+            .createUrl(timeout: 1.0) { url in
+                XCTAssertFalse(url!.absoluteString.contains("firstKey"))
+                exp.fulfill()
+            }
+        waitForExpectations(timeout: 3)
+    }
 }

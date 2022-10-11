@@ -14,6 +14,7 @@ import TealiumVisitorService
 import TealiumAutotracking
 import TealiumInAppPurchase
 #if os(iOS)
+import WebKit
 import TealiumAttribution
 import TealiumLocation
 import TealiumRemoteCommands
