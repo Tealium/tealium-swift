@@ -136,9 +136,11 @@ public class TealiumReplayObservable<Element>: TealiumObservable<Element> {
 
 public class TealiumReplaySubject<Element>: TealiumPublishSubject<Element> {
 
+    // Having a default value here would cause a crash on Carthage
     public init(cacheSize: Int?) {
         super.init(TealiumReplayObservable<Element>(cacheSize: cacheSize))
     }
+
     convenience public init() {
         self.init(cacheSize: 1)
     }
@@ -190,9 +192,13 @@ public class TealiumBufferedObservable<Element>: TealiumObservable<Element> {
 
 public class TealiumBufferedSubject<Element>: TealiumPublishSubject<Element> {
 
-    @inline(never)
-    public init(bufferSize: Int? = 1) {
+    // Having a default value here would cause a crash on Carthage
+    public init(bufferSize: Int?) {
         super.init(TealiumBufferedObservable<Element>(bufferSize: bufferSize))
+    }
+
+    convenience public init() {
+        self.init(bufferSize: 1)
     }
 }
 
