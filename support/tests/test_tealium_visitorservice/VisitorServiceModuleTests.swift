@@ -29,23 +29,39 @@ class VisitorServiceModuleTests: XCTestCase {
     func testRequestVisitorProfileRun() {
         let expect = expectation(description: "testRequestVisitorProfileRunWhenFirstEventSentTrue")
         let module = VisitorServiceModule(context: context, delegate: self, diskStorage: mockDiskStorage, visitorServiceManager: mockVisitorServiceManager)
-        module.retrieveProfileDelayed(visitorId: "test") {
-            XCTAssertEqual(2, self.mockVisitorServiceManager.requestVisitorProfileCount)
-            expect.fulfill()
+        TealiumQueues.backgroundSerialQueue.async {
+            module.retrieveProfileDelayed(visitorId: self.mockVisitorServiceManager.currentVisitorId!) {
+                XCTAssertEqual(2, self.mockVisitorServiceManager.requestVisitorProfileCount)
+                expect.fulfill()
+            }
         }
-        wait(for: [expect], timeout: 3.0)
+        wait(for: [expect], timeout: 5.0)
+    }
+
+    func testRequestVisitorProfileNotRun() {
+        let expect = expectation(description: "visitor profile not requested when visitor id is different")
+        expect.isInverted = true
+        let module = VisitorServiceModule(context: context, delegate: self, diskStorage: mockDiskStorage, visitorServiceManager: mockVisitorServiceManager)
+        TealiumQueues.backgroundSerialQueue.async {
+            module.retrieveProfileDelayed(visitorId: self.mockVisitorServiceManager.currentVisitorId! + "buster") {
+                expect.fulfill()
+            }
+        }
+        wait(for: [expect], timeout: 5.0)
     }
 
     func testBatchTrackRetreiveProfileExecuted() {
         let expect = expectation(description: "testBatchTrackRetreiveProfileExecuted")
         let context = TestTealiumHelper.context(with: config)
         let module = VisitorServiceModule(context: context, delegate: self, diskStorage: mockDiskStorage, visitorServiceManager: mockVisitorServiceManager)
-        let trackRequest = TealiumTrackRequest(data: ["hello": "world", "tealium_visitor_id": "test"])
-        let batchTrackRequest = TealiumBatchTrackRequest(trackRequests: [trackRequest])
-        module.willTrack(request: batchTrackRequest)
-        TealiumQueues.backgroundSerialQueue.asyncAfter(deadline: .now() + 3.0) {
-            XCTAssertEqual(2, self.mockVisitorServiceManager.requestVisitorProfileCount)
-            expect.fulfill()
+        TealiumQueues.backgroundSerialQueue.async {
+            let trackRequest = TealiumTrackRequest(data: ["hello": "world", "tealium_visitor_id": self.mockVisitorServiceManager.currentVisitorId!])
+            let batchTrackRequest = TealiumBatchTrackRequest(trackRequests: [trackRequest])
+            module.willTrack(request: batchTrackRequest)
+            TealiumQueues.backgroundSerialQueue.asyncAfter(deadline: .now() + 3.0) {
+                XCTAssertEqual(2, self.mockVisitorServiceManager.requestVisitorProfileCount)
+                expect.fulfill()
+            }
         }
         wait(for: [expect], timeout: 10.0)
     }
@@ -54,12 +70,14 @@ class VisitorServiceModuleTests: XCTestCase {
         let expect = expectation(description: "testTrackRetreiveProfileExecuted")
         let context = TestTealiumHelper.context(with: config)
         let module = VisitorServiceModule(context: context, delegate: self, diskStorage: mockDiskStorage, visitorServiceManager: mockVisitorServiceManager)
-        let trackRequest = TealiumTrackRequest(data: ["hello": "world", "tealium_visitor_id": "test"])
-        module.willTrack(request: trackRequest)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-            TealiumQueues.backgroundSerialQueue.async {
-                XCTAssertEqual(2, self.mockVisitorServiceManager.requestVisitorProfileCount)
-                expect.fulfill()
+        TealiumQueues.backgroundSerialQueue.async {
+            let trackRequest = TealiumTrackRequest(data: ["hello": "world", "tealium_visitor_id": self.mockVisitorServiceManager.currentVisitorId!])
+            module.willTrack(request: trackRequest)
+            TealiumQueues.backgroundSerialQueue.asyncAfter(deadline: .now() + 3.0) {
+                TealiumQueues.backgroundSerialQueue.async {
+                    XCTAssertEqual(2, self.mockVisitorServiceManager.requestVisitorProfileCount)
+                    expect.fulfill()
+                }
             }
         }
         wait(for: [expect], timeout: 10)

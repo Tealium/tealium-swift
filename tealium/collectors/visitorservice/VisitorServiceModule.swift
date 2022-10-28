@@ -59,7 +59,8 @@ public class VisitorServiceModule: Collector, DispatchListener {
                 else {
                     return
                 }
-                if self.lastVisitorId != nil { // actually changed id
+                let changedVisitorId = self.lastVisitorId != nil
+                if changedVisitorId {
                     self.diskStorage.delete { _, _, _ in
                         self.retrieveProfile(visitorId: visitorId)
                     }
@@ -81,6 +82,7 @@ public class VisitorServiceModule: Collector, DispatchListener {
     func retrieveProfileDelayed(visitorId: String, _ completion: (() -> Void)? = nil) {
         // wait before triggering refresh, to give event time to process
         TealiumQueues.backgroundSerialQueue.asyncAfter(deadline: .now() + 2.1) { [weak self] in
+            guard visitorId == self?.lastVisitorId else { return }
             self?.retrieveProfile(visitorId: visitorId)
             completion?()
         }
