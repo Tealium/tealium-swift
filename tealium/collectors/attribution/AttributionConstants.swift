@@ -29,6 +29,7 @@ extension TealiumDataKey {
     static let adPurchaseDate = "ad_purchase_date"
     static let adCampaignId = "ad_campaign_id"
     static let adCampaignName = "ad_campaign_name"
+    static let adId = "ad_id"
     static let adGroupId = "ad_group_id"
     static let adGroupName = "ad_group_name"
     static let adKeyword = "ad_keyword"
@@ -53,6 +54,7 @@ public struct AttributionKey {
         TealiumDataKey.adPurchaseDate,
         TealiumDataKey.adCampaignId,
         TealiumDataKey.adCampaignName,
+        TealiumDataKey.adId,
         TealiumDataKey.adGroupId,
         TealiumDataKey.adGroupName,
         TealiumDataKey.adKeyword,
@@ -77,6 +79,7 @@ public struct AppleInternalKeys {
         AppleInternalKeys.purchaseDate,
         AppleInternalKeys.conversionDate,
         AppleInternalKeys.conversionType,
+        AppleInternalKeys.adId,
         AppleInternalKeys.adGroupId,
         AppleInternalKeys.adGroupName,
         AppleInternalKeys.keyword,
@@ -95,6 +98,7 @@ public struct AppleInternalKeys {
     static let purchaseDate = "iad-purchase-date" //
     static let conversionDate = "iad-conversion-date"
     static let conversionType = "iad-conversion-type" //
+    static let adId = "adId" //
     static let adGroupId = "iad-adgroup-id"
     static let adGroupName = "iad-adgroup-name"
     static let keyword = "iad-keyword"
@@ -103,6 +107,17 @@ public struct AppleInternalKeys {
     static let creativeSetName = "iad-creativeset-name" //
     static let region = "iad-country-or-region" //
     static let objectVersion = "Version3.1" // This is the root key for the returned data
+
+    enum AAAAttribution: String, CaseIterable {
+        case conversionType
+        case attribution
+        case keywordId
+        case orgId
+        case countryOrRegion
+        case adGroupId
+        case campaignId
+        case adId
+    }
 }
 
 public enum TrackingAuthorizationDescription {

@@ -12,8 +12,8 @@ import XCTest
 import AppTrackingTransparency
 #endif
 
-let attributionValues = Dictionary(uniqueKeysWithValues: AppleInternalKeys.allCases.map { ($0, "mockdata" as NSObject) }) as NSObject
-private let mockAppleAttributionData: [String: NSObject] = ["Version3.1": attributionValues]
+let attributionValues = Dictionary(uniqueKeysWithValues: AppleInternalKeys.allCases.map { ($0, "mockdata" as NSObject) })
+private let mockAppleAttributionData: [String: NSObject] = ["Version3.1": attributionValues as NSObject]
 
 let keyTranslation = [
     AppleInternalKeys.attribution: TealiumDataKey.adClickedWithin30D,
@@ -25,6 +25,7 @@ let keyTranslation = [
     AppleInternalKeys.purchaseDate: TealiumDataKey.adPurchaseDate,
     AppleInternalKeys.conversionDate: TealiumDataKey.adConversionDate,
     AppleInternalKeys.conversionType: TealiumDataKey.adConversionType,
+    AppleInternalKeys.adId: TealiumDataKey.adId,
     AppleInternalKeys.adGroupId: TealiumDataKey.adGroupId,
     AppleInternalKeys.adGroupName: TealiumDataKey.adGroupName,
     AppleInternalKeys.keyword: TealiumDataKey.adKeyword,
@@ -140,6 +141,7 @@ class TealiumAttributionDataTests: XCTestCase {
                 XCTFail("Attribution returned a nil dictionary")
                 return
             }
+            
             guard let attributionValues = attributionValues as? [String: Any] else {
                 XCTFail("Attribution values could not be cast to [String: Any]")
                 return
@@ -346,6 +348,10 @@ public class TestTealiumAdClient: TealiumAdClientProtocol {
     }
 
     public func requestAttributionDetails(_ completionHandler: @escaping ([String: NSObject]?, Error?) -> Void) {
-        completionHandler(mockAppleAttributionData, nil)
+        if #available(iOS 14.3, *) {
+            completionHandler(attributionValues, nil)
+        } else {
+            completionHandler(mockAppleAttributionData, nil)
+        }
     }
 }
