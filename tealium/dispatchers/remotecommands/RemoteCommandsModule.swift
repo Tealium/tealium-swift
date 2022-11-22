@@ -11,6 +11,147 @@ import Foundation
 import TealiumCore
 #endif
 
+import StoreKit
+public protocol ConversionDelegate: AnyObject {
+    func onConversionUpdate(conversionData: ConversionData)
+    func onConversionUpdateCompleted(error: Error?)
+}
+
+public struct ConversionData: Codable {
+    public enum CoarseValue: String, Codable {
+        case high
+        case medium
+        case low
+
+        @available(iOS 16.0, *)
+        var toSKAdValue: SKAdNetwork.CoarseConversionValue {
+            switch self {
+            case .high: return .high
+            case .medium: return .medium
+            case .low: return .low
+            }
+        }
+    }
+    internal(set) public var value: Int
+    internal(set) public var coarseValue: CoarseValue = .low
+    internal(set) public var lockWindow: Bool = false
+}
+
+@available(iOS 11.3, *)
+extension UserDefaults {
+    private var key: String { "Tealium.RemoteCommands.conversionData" }
+    var conversionData: ConversionData? {
+        get {
+            guard let data = self.data(forKey: key),
+                  let conversionData = try? JSONDecoder().decode(ConversionData.self, from: data) else {
+                return nil
+            }
+            return conversionData
+        }
+        set {
+            guard let data = try? JSONEncoder().encode(newValue) else { return }
+            self.set(data, forKey: key)
+        }
+    }
+}
+
+@available(iOS 11.3, *)
+public class ConversionRemoteCommand: RemoteCommand {
+    public weak var conversionDelegate: ConversionDelegate?
+    let userDefaults: UserDefaults
+    var conversionData: ConversionData
+    public init(type: RemoteCommandType, delegate: ConversionDelegate) {
+        conversionDelegate = delegate
+        let defaults = UserDefaults(suiteName: "Tealium.RemoteCommands") ?? .standard
+        self.userDefaults = defaults
+        conversionData = defaults.conversionData ?? ConversionData(value: 0)
+        weak var weakSelf: ConversionRemoteCommand?
+        super.init(commandId: "ConversionCommand", description: "Conversion Value Mapping for SKADNetwork", type: type) { response in
+            print(response)
+            guard let self = weakSelf,
+                  let payload = response.payload else {
+                return
+            }
+            self.handleCompletion(payload: payload)
+        }
+        weakSelf = self
+    }
+
+    func handleCompletion(payload: [String: Any]) {
+        guard let commandIdString = payload["command_name"] as? String else {
+            return
+        }
+        let commands = commandIdString.split(separator: ",")
+        guard commands.count > 0 else { return }
+        commands.forEach { command in
+            handleCommand(String(command), payload: payload)
+        }
+        storeConversionData()
+        updatePostbackConversionValue()
+        conversionDelegate?.onConversionUpdate(conversionData: conversionData)
+    }
+
+    func handleCommand(_ commandId: String, payload: [String: Any]) {
+        switch commandId {
+        case "setconversionbit":
+            guard let bitNumber = getBitNumber(payload: payload) else { return }
+            self.conversionData.value |= (1 << bitNumber)
+        case "resetconversionbit":
+            guard let bitNumber = getBitNumber(payload: payload) else { return }
+            self.conversionData.value &= ~(1 << bitNumber)
+        case "setconversionvalue":
+            guard let conversionValue = payload["conversion_value"] as? Int,
+                  conversionValue >= 0, conversionValue < 64 else {
+                return
+            }
+            self.conversionData.value = conversionValue
+        case "setcoarsevalue":
+            guard let coarseValueString = payload["coarse_value"] as? String,
+                  let coarseValue = ConversionData.CoarseValue(rawValue: coarseValueString) else {
+                return
+            }
+            self.conversionData.coarseValue = coarseValue
+        case "setlockwindow":
+            guard let lockWindow = payload["lock_window"] as? Bool else {
+                return
+            }
+            self.conversionData.lockWindow = lockWindow
+        case "registerappforadnetworkattribution":
+            if #unavailable(iOS 14.0) {
+                SKAdNetwork.registerAppForAdNetworkAttribution()
+            }
+        default:
+            break
+        }
+    }
+
+    func getBitNumber(payload: [String: Any]) -> Int? {
+        guard let bitNumber = payload["bit_number"] as? Int,
+            bitNumber >= 0, bitNumber < 6 else {
+            return nil
+        }
+        return bitNumber
+    }
+
+    func updatePostbackConversionValue() {
+        let completion = self.conversionDelegate?.onConversionUpdateCompleted(error:)
+        if #available(iOS 16.1, *) {
+            SKAdNetwork.updatePostbackConversionValue(conversionData.value,
+                                                      coarseValue: conversionData.coarseValue.toSKAdValue,
+                                                      lockWindow: conversionData.lockWindow,
+                                                      completionHandler: completion)
+        } else if #available(iOS 15.4, *) {
+            SKAdNetwork.updatePostbackConversionValue(conversionData.value, completionHandler: completion)
+        } else if #available(iOS 14.0, *) {
+            SKAdNetwork.updateConversionValue(conversionData.value)
+        }
+    }
+
+    func storeConversionData() {
+        userDefaults.conversionData = conversionData
+    }
+}
+
 public class RemoteCommandsModule: Dispatcher {
 
     public var id: String = ModuleNames.remotecommands
