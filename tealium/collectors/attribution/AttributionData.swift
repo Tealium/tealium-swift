@@ -98,14 +98,36 @@ public class AttributionData: AttributionDataProtocol {
         return all
     }
 
-    /// Requests Apple Search Ads data from AdClient API￼.
-    ///
-    /// - Parameter completion: Completion block to be executed asynchronously when Search Ads data is returned
     // swiftlint:disable cyclomatic_complexity
-    func appleSearchAdsData(_ completion: @escaping (PersistentAttributionData) -> Void) {
+    // swiftlint:disable function_body_length
+    private func getAttributionData(details: [String: NSObject]?) -> PersistentAttributionData {
         var appleAttributionDetails = PersistentAttributionData()
-        let completionHander = { (details: [String: NSObject]?, _: Error?) in
-            // closure callback
+        if #available(iOS 14.3, *) {
+            if let conversionType = details?[AppleInternalKeys.AAAAttribution.conversionType.rawValue] as? String {
+                appleAttributionDetails.conversionType = conversionType
+            }
+            if let clickedWithin30D = details?[AppleInternalKeys.attribution] as? String {
+                appleAttributionDetails.clickedWithin30D = clickedWithin30D
+            }
+            if let keywordId = details?[AppleInternalKeys.AAAAttribution.keywordId.rawValue] as? String {
+                appleAttributionDetails.adKeyword = keywordId
+            }
+            if let orgId = details?[AppleInternalKeys.AAAAttribution.orgId.rawValue] as? String {
+                appleAttributionDetails.orgId = orgId
+            }
+            if let countryOrRegion = details?[AppleInternalKeys.AAAAttribution.countryOrRegion.rawValue] as? String {
+                appleAttributionDetails.region = countryOrRegion
+            }
+            if let adGroupId = details?[AppleInternalKeys.AAAAttribution.adGroupId.rawValue] as? String {
+                appleAttributionDetails.adGroupId = adGroupId
+            }
+            if let campaignId = details?[AppleInternalKeys.AAAAttribution.campaignId.rawValue] as? String {
+                appleAttributionDetails.campaignId = campaignId
+            }
+            if let adId = details?[AppleInternalKeys.AAAAttribution.adId.rawValue] as? String {
+                appleAttributionDetails.adId = adId
+            }
+        } else {
             if let detailsDict = details?[AppleInternalKeys.objectVersion] as? [String: Any] {
                 if let clickedWithin30D = detailsDict[AppleInternalKeys.attribution] as? String {
                     appleAttributionDetails.clickedWithin30D = clickedWithin30D
@@ -156,9 +178,18 @@ public class AttributionData: AttributionDataProtocol {
                     appleAttributionDetails.region = region
                 }
             }
-            completion(appleAttributionDetails)
         }
-        adClient.requestAttributionDetails(completionHander)
+        return appleAttributionDetails
+    }
+
+    /// Requests Apple Search Ads data from AdClient API￼.
+    ///
+    /// - Parameter completion: Completion block to be executed asynchronously when Search Ads data is returned
+    func appleSearchAdsData(_ completion: @escaping (PersistentAttributionData) -> Void) {
+        let completionHandler = { [weak self] (details: [String: NSObject]?, _: Error?) in
+            completion(self?.getAttributionData(details: details) ?? PersistentAttributionData())
+        }
+        adClient.requestAttributionDetails(completionHandler)
     }
 
     public func updateConversionValue(from dispatch: TealiumRequest) {
