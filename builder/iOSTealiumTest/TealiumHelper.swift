@@ -25,7 +25,15 @@ extension TealiumDataKey {
     static let email = "email"
 }
 
-class TealiumHelper {
+class TealiumHelper: ConversionDelegate {
+    func onConversionUpdate(conversionData: TealiumRemoteCommands.ConversionData) {
+        print("Updated Conversion \(conversionData)")
+    }
+    
+    func onConversionUpdateCompleted(error: Error?) {
+        print("Completed Conversion Update with error: \(error?.localizedDescription ?? "none")")
+    }
+    
 
     @ToAnyObservable(TealiumBufferedSubject(bufferSize: 10))
     var onWillTrack: TealiumObservable<[String:Any]>
@@ -113,7 +121,9 @@ class TealiumHelper {
                 Dispatchers.Collect,
             ]
         #endif
-
+        config.remoteCommands = [
+            ConversionRemoteCommand(type: .local(file: "conversionRemoteCommand"), delegate: self)
+        ]
         tealium = Tealium(config: config) { [weak self] response in
             guard let self = self,
                   let teal = self.tealium else {
@@ -145,7 +155,7 @@ class TealiumHelper {
                 }
                 print("Remote Command data: hello = \(hello), key = \(key), tealium = \(tealium) 🎉🎊")
             }
-            remoteCommands.add(display)
+//            remoteCommands.add(display)
             #endif
         }
     }
