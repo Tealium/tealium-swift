@@ -11,6 +11,24 @@ import Foundation
 import TealiumCore
 #endif
 
+extension String {
+    func groups(for regexPattern: String) -> [[String]] {
+        let text = self
+        guard let regex = try? NSRegularExpression(pattern: regexPattern) else { return [] }
+        let matches = regex.matches(in: text,
+                                    range: NSRange(text.startIndex..., in: text))
+        return matches.map { match in
+            return (0..<match.numberOfRanges).map {
+                let rangeBounds = match.range(at: $0)
+                guard let range = Range(rangeBounds, in: text) else {
+                    return ""
+                }
+                return String(text[range])
+            }
+        }
+    }
+}
+
 /// Designed to be subclassed. Allows Remote Commands to be created by host apps,
 /// and called on-demand by the Tag Management module
 open class RemoteCommand: RemoteCommandProtocol {
@@ -135,7 +153,9 @@ open class RemoteCommand: RemoteCommandProtocol {
             completion?((.failure(TealiumRemoteCommandsError.mappingsNotFound), nil))
             return nil
         }
-        var mapped = objectMap(payload: trackData, lookup: mappings)
+        var mapped = objectMap(nestedMapped: mapPayload(trackData,
+                                                        lookup: mappings,
+                                                        statics: commandConfig.statics))
         guard let commandNames = commandConfig.apiCommands else {
             completion?((.failure(TealiumRemoteCommandsError.commandsNotFound), nil))
             return nil
@@ -178,16 +198,35 @@ open class RemoteCommand: RemoteCommandProtocol {
     /// - Parameter payload: `[String: Any]` from tracking call
     /// - Parameter self: `[String: String]` `mappings` key from JSON file definition
     /// - Returns: `[String: Any]` mapped key value pairs for specific remote command vendor
-    public func mapPayload(_ payload: [String: Any], lookup: [String: String]) -> [String: Any] {
+    public func mapPayload(_ payload: [String: Any], lookup: [String: String], statics: [String: Any]?) -> [String: Any] {
         return lookup.reduce(into: [String: Any]()) { result, tuple in
             let values = tuple.value.split(separator: ",")
                 .map { $0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) }
-            if let payload = payload[tuple.key] {
+            if let mappedValue = payload[tuple.key] ?? explodeStaticKey(tuple.key, payload: payload, statics: statics) {
                 values.forEach {
-                    result[$0] = payload
+                    result[$0] = mappedValue
                 }
             }
         }
+    }
+
+    func explodeStaticKey(_ key: String, payload: [String: Any], statics: [String: Any]?) -> Any? {
+        var key = key
+        let staticKey = "static:"
+        let isStatic = key.starts(with: staticKey)
+        guard isStatic else {
+            return nil
+        }
+        key = key.replacingOccurrences(of: staticKey, with: "")
+        let matches = key.groups(for: #"\{(.*)\}"#)
+        matches.filter { $0.count > 1 }
+            .forEach { groups in
+                if let result = payload[groups[1]] {
+                    key = key.replacingOccurrences(of: groups[0],
+                                                   with: String(describing: result))
+                }
+            }
+        return statics?[key]
     }
 
     /// Performs mapping then splits any keys with a `.` present and creates a nested object
@@ -195,8 +234,7 @@ open class RemoteCommand: RemoteCommandProtocol {
     ///  performs mapping as normal using the `mapPayload()` method.
     /// - Parameter payload: `[String: Any]` from track method
     /// - Returns: `[String: Any]` mapped key value pairs for specific remote command vendor
-    public func objectMap(payload: [String: Any], lookup: [String: String]) -> [String: Any] {
-        let nestedMapped = mapPayload(payload, lookup: lookup)
+    public func objectMap(nestedMapped: [String: Any]) -> [String: Any] {
         if nestedMapped.keys.filter({ $0.contains(".") }).count > 0 {
             var output = nestedMapped.filter({ !$0.key.contains(".") })
             let keysToParse = nestedMapped.filter { $0.key.contains(".") }
