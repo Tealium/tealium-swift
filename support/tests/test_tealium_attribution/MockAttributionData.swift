@@ -22,6 +22,7 @@ class MockAttributionData: AttributionDataProtocol {
             TealiumDataKey.adCampaignName: "campaign name",
             TealiumDataKey.adConversionDate: "2020-01-04T17:18:07Z",
             TealiumDataKey.adConversionType: "Download",
+            TealiumDataKey.adId: "12345",
             TealiumDataKey.adClickedDate: "2020-01-04T17:17:00Z",
             TealiumDataKey.adGroupId: "12345678",
             TealiumDataKey.adGroupName: "adgroup name",

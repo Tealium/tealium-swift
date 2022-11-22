@@ -28,7 +28,8 @@ public struct PersistentAttributionData: Codable {
         adKeywordMatchType: String?,
         creativeSetName: String?,
         creativeSetId: String?,
-        region: String?
+        region: String?,
+        adId: String?
 
     public subscript(_ key: String) -> String? {
         return self.dictionary[key]
@@ -44,6 +45,7 @@ public struct PersistentAttributionData: Codable {
         case orgId = "ad_org_id"
         case campaignId = "ad_campaign_id"
         case campaignName = "ad_campaign_name"
+        case adId = "ad_id"
         case adGroupId = "ad_group_id"
         case adGroupName = "ad_group_name"
         case adKeyword = "ad_keyword"
@@ -80,6 +82,7 @@ public struct PersistentAttributionData: Codable {
                                                  TealiumDataKey.adOrgId: orgId ?? "",
                                                  TealiumDataKey.adCampaignId: campaignId ?? "",
                                                  TealiumDataKey.adCampaignName: campaignName ?? "",
+                                                 TealiumDataKey.adId: adId ?? "",
                                                  TealiumDataKey.adGroupId: adGroupId ?? "",
                                                  TealiumDataKey.adGroupName: adGroupName ?? "",
                                                  TealiumDataKey.adKeyword: adKeyword ?? "",
@@ -92,6 +95,10 @@ public struct PersistentAttributionData: Codable {
         return attributionData.filter {
             $0.value != ""
         }
+    }
+    
+    func isEmpty() -> Bool {
+        return dictionary.isEmpty
     }
 
 }

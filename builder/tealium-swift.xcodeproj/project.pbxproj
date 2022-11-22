@@ -190,6 +190,7 @@
 		43DE590D11729BCF1EF22124 /* AnyCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DE5BC83CC9D5129E140244 /* AnyCodable.swift */; };
 		481CBB5B275E3CB1002D678D /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48405B592739B9B20094EA18 /* StoreKit.framework */; };
 		481CBB5C275E3FB6002D678D /* InAppPurchaseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48405B5E273AD7A80094EA18 /* InAppPurchaseExtensions.swift */; };
+		4875191A294CCE2200727162 /* TealiumAdClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48751919294CCE2200727162 /* TealiumAdClientTests.swift */; };
 		48AB1103275E42C30011D4D6 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D788A5A82326AD1100BC6D60 /* MockURLSession.swift */; };
 		48AB1104275E42C30011D4D6 /* CoreMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA558BF24E4E6B200BFBED8 /* CoreMocks.swift */; };
 		48AB1107275E42C30011D4D6 /* MockSessionStarter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7187F1A24768F5000CF0AB0 /* MockSessionStarter.swift */; };
@@ -2260,6 +2261,7 @@
 		48405B5B273AC6B10094EA18 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS15.0.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
 		48405B5D273AD2810094EA18 /* StoreKitTesting.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = StoreKitTesting.storekit; sourceTree = "<group>"; };
 		48405B5E273AD7A80094EA18 /* InAppPurchaseExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchaseExtensions.swift; sourceTree = "<group>"; };
+		48751919294CCE2200727162 /* TealiumAdClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TealiumAdClientTests.swift; sourceTree = "<group>"; };
 		48A13AFF273B02960031E2B5 /* InAppPurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchaseManager.swift; sourceTree = "<group>"; };
 		48A13B18273C29390031E2B5 /* TealiumInAppPurchaseModuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TealiumInAppPurchaseModuleTests.swift; sourceTree = "<group>"; };
 		48A13B22273D62070031E2B5 /* InAppPurchaseConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchaseConstants.swift; sourceTree = "<group>"; };
@@ -3452,6 +3454,7 @@
 				D788A3F42319280B00BC6D60 /* AttributionMockDiskStorage.swift */,
 				CF7F075A24770212003E23B9 /* MockAttributionData.swift */,
 				158CA93626B9478100748A80 /* TealiumASIdentifierManagerTests.swift */,
+				48751919294CCE2200727162 /* TealiumAdClientTests.swift */,
 			);
 			path = test_tealium_attribution;
 			sourceTree = "<group>";
@@ -6677,6 +6680,7 @@
 				D7FF987D24AD0B6F00E87A80 /* MockAttributionData.swift in Sources */,
 				D788A3F32318424600BC6D60 /* TealiumAttributionDataTests.swift in Sources */,
 				CFAD63312541FD88007D4EDB /* MockSessionStarter.swift in Sources */,
+				4875191A294CCE2200727162 /* TealiumAdClientTests.swift in Sources */,
 				CFA55A2B24E5902A00BFBED8 /* TestTealiumHelper.swift in Sources */,
 				158CA93726B9478100748A80 /* TealiumASIdentifierManagerTests.swift in Sources */,
 			);
