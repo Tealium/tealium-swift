@@ -15,6 +15,7 @@ class TealiumSKAdAttributionTests: XCTestCase {
     let mockAdAttribution = MockTealiumSKAdAttribution()
     let mockAttributionData = MockAttributionData()
     var defaultConfig = TestTealiumHelper().getConfig()
+    let adClient = TestTealiumAdClient()
 
     func createModule(from config: TealiumConfig? = nil, attributionData: AttributionDataProtocol? = nil) -> AttributionModule {
         let tealium = Tealium(config: config ?? defaultConfig)
@@ -23,7 +24,7 @@ class TealiumSKAdAttributionTests: XCTestCase {
     }
 
     func createAttributionData(from config: TealiumConfig? = nil, adAttribution: TealiumSKAdAttributionProtocol? = nil) -> AttributionDataProtocol {
-        return AttributionData(config: config ?? defaultConfig, diskStorage: AttributionMockDiskStorage(), identifierManager: TealiumASIdentifierManagerAdTrackingEnabled.shared, adClient: TestTealiumAdClient.shared, adAttribution: adAttribution ?? mockAdAttribution)
+        return AttributionData(config: config ?? defaultConfig, diskStorage: AttributionMockDiskStorage(), identifierManager: TealiumASIdentifierManagerAdTrackingEnabled.shared, adClient: adClient, adAttribution: adAttribution ?? mockAdAttribution)
     }
 
     // MARK: Attributor tests
