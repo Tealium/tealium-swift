@@ -117,6 +117,7 @@ public struct AppleInternalKeys {
         case adGroupId
         case campaignId
         case adId
+        case clickDate
     }
 }
 
