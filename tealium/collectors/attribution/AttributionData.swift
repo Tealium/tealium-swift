@@ -98,96 +98,12 @@ public class AttributionData: AttributionDataProtocol {
         return all
     }
 
-    // swiftlint:disable cyclomatic_complexity
-    // swiftlint:disable function_body_length
-    private func getAttributionData(details: [String: NSObject]?) -> PersistentAttributionData {
-        var appleAttributionDetails = PersistentAttributionData()
-        if #available(iOS 14.3, *) {
-            if let conversionType = details?[AppleInternalKeys.AAAAttribution.conversionType.rawValue] as? String {
-                appleAttributionDetails.conversionType = conversionType
-            }
-            if let clickedWithin30D = details?[AppleInternalKeys.attribution] as? String {
-                appleAttributionDetails.clickedWithin30D = clickedWithin30D
-            }
-            if let keywordId = details?[AppleInternalKeys.AAAAttribution.keywordId.rawValue] as? String {
-                appleAttributionDetails.adKeyword = keywordId
-            }
-            if let orgId = details?[AppleInternalKeys.AAAAttribution.orgId.rawValue] as? String {
-                appleAttributionDetails.orgId = orgId
-            }
-            if let countryOrRegion = details?[AppleInternalKeys.AAAAttribution.countryOrRegion.rawValue] as? String {
-                appleAttributionDetails.region = countryOrRegion
-            }
-            if let adGroupId = details?[AppleInternalKeys.AAAAttribution.adGroupId.rawValue] as? String {
-                appleAttributionDetails.adGroupId = adGroupId
-            }
-            if let campaignId = details?[AppleInternalKeys.AAAAttribution.campaignId.rawValue] as? String {
-                appleAttributionDetails.campaignId = campaignId
-            }
-            if let adId = details?[AppleInternalKeys.AAAAttribution.adId.rawValue] as? String {
-                appleAttributionDetails.adId = adId
-            }
-        } else {
-            if let detailsDict = details?[AppleInternalKeys.objectVersion] as? [String: Any] {
-                if let clickedWithin30D = detailsDict[AppleInternalKeys.attribution] as? String {
-                    appleAttributionDetails.clickedWithin30D = clickedWithin30D
-                }
-                if let clickedDate = detailsDict[AppleInternalKeys.clickDate] as? String {
-                    appleAttributionDetails.clickedDate = clickedDate
-                }
-                if let conversionDate = detailsDict[AppleInternalKeys.conversionDate] as? String {
-                    appleAttributionDetails.conversionDate = conversionDate
-                }
-                if let conversionType = detailsDict[AppleInternalKeys.conversionType] as? String {
-                    appleAttributionDetails.conversionType = conversionType
-                }
-                if let purchaseDate = detailsDict[AppleInternalKeys.purchaseDate] as? String {
-                    appleAttributionDetails.purchaseDate = purchaseDate
-                }
-                if let orgName = detailsDict[AppleInternalKeys.orgName] as? String {
-                    appleAttributionDetails.orgName = orgName
-                }
-                if let orgId = detailsDict[AppleInternalKeys.orgId] as? String {
-                    appleAttributionDetails.orgId = orgId
-                }
-                if let campaignId = detailsDict[AppleInternalKeys.campaignId] as? String {
-                    appleAttributionDetails.campaignId = campaignId
-                }
-                if let campaignName = detailsDict[AppleInternalKeys.campaignName] as? String {
-                    appleAttributionDetails.campaignName = campaignName
-                }
-                if let adGroupId = detailsDict[AppleInternalKeys.adGroupId] as? String {
-                    appleAttributionDetails.adGroupId = adGroupId
-                }
-                if let adGroupName = detailsDict[AppleInternalKeys.adGroupName] as? String {
-                    appleAttributionDetails.adGroupName = adGroupName
-                }
-                if let adKeyword = detailsDict[AppleInternalKeys.keyword] as? String {
-                    appleAttributionDetails.adKeyword = adKeyword
-                }
-                if let adKeywordMatchType = detailsDict[AppleInternalKeys.keywordMatchType] as? String {
-                    appleAttributionDetails.adKeywordMatchType = adKeywordMatchType
-                }
-                if let creativeSetName = detailsDict[AppleInternalKeys.creativeSetName] as? String {
-                    appleAttributionDetails.creativeSetName = creativeSetName
-                }
-                if let creativeSetId = detailsDict[AppleInternalKeys.creativeSetId] as? String {
-                    appleAttributionDetails.creativeSetId = creativeSetId
-                }
-                if let region = detailsDict[AppleInternalKeys.region] as? String {
-                    appleAttributionDetails.region = region
-                }
-            }
-        }
-        return appleAttributionDetails
-    }
-
     /// Requests Apple Search Ads data from AdClient API￼.
     ///
     /// - Parameter completion: Completion block to be executed asynchronously when Search Ads data is returned
     func appleSearchAdsData(_ completion: @escaping (PersistentAttributionData) -> Void) {
-        let completionHandler = { [weak self] (details: [String: NSObject]?, _: Error?) in
-            completion(self?.getAttributionData(details: details) ?? PersistentAttributionData())
+        let completionHandler = { (details: PersistentAttributionData?, _: Error?) in
+            completion(details ?? PersistentAttributionData())
         }
         adClient.requestAttributionDetails(completionHandler)
     }
