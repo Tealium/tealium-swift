@@ -2,22 +2,18 @@
     "config": {
     },
     "mappings": {
-        "static:{tealium_event}2":"bit_number",
-        "asd":"bit_number",
-        "static:{tealium_event}": "conversion_value",
-        "static:{tealium_event}3":"coarse_value",
-        "ssa":"lock_window"
+        "application_bit_number":"bit_number",
+        "application_conversion_value":"conversion_value",
+        "application_coarse_value":"coarse_value",
     },
     "commands": {
-        "sdf":"resetconversionbit",
-        "dfg":"setconversionvalue",
-        "fgh":"setcoarsevalue",
-        "ghj":"setlockwindow",
-        "launch":"registerappforadnetworkattribution,setconversionvalue,setconversionbit,setcoarsevalue"
+        "tealium_event:launch":"registerappforadnetworkattribution,setconversionvalue,setconversionbit,setcoarsevalue",
     },
     "statics": {
-        "launch": 8,
-        "launch2": 2,
-        "launch3": "high"
+        "tealium_event:launch": {
+            "application_bit_number": 2,
+            "application_conversion_value": 8,
+            "application_coarse_value": "medium"
+        }
     }
 }

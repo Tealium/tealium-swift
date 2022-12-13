@@ -57,7 +57,6 @@ public struct RemoteCommandConfig: Codable {
 
         try container.encode(mappings, forKey: .mappings)
         try container.encode(apiCommands, forKey: .apiCommands)
-        
         try container.encode(lastFetch, forKey: .lastFetch)
         try container.encode(commandURL, forKey: .commandURL)
     }
