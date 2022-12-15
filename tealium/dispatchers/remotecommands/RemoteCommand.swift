@@ -184,7 +184,7 @@ open class RemoteCommand: RemoteCommandProtocol {
                 commands.append(commandName)
             }
         }
-        
+
         if var eventType = trackData[TealiumDataKey.eventType] as? String {
             if eventType != TealiumTrackType.view.rawValue {
                 eventType = TealiumTrackType.event.rawValue // Some events change this for utag.js
