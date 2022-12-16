@@ -31,11 +31,17 @@ public class AttributionData: AttributionDataProtocol {
     public init(config: TealiumConfig,
                 diskStorage: TealiumDiskStorageProtocol,
                 identifierManager: TealiumASIdentifierManagerProtocol = TealiumASIdentifierManager.shared,
-                adClient: TealiumAdClientProtocol = TealiumAdClient.shared,
+                adClient: TealiumAdClientProtocol? = nil,
                 adAttribution: TealiumSKAdAttributionProtocol? = nil) {
         self.config = config
         self.identifierManager = identifierManager
-        self.adClient = adClient
+        if let adClient = adClient {
+            self.adClient = adClient
+        } else if #available(iOS 14.3, *) {
+            self.adClient = TealiumHTTPAdClient()
+        } else {
+            self.adClient = TealiumAdClient()
+        }
         self.diskStorage = diskStorage
         if self.config.skAdAttributionEnabled {
             self.adAttribution = adAttribution ?? TealiumSKAdAttribution(config: self.config)
@@ -50,8 +56,10 @@ public class AttributionData: AttributionDataProtocol {
     func setPersistentAttributionData() {
         guard let data = diskStorage.retrieve(as: PersistentAttributionData.self) else {
             self.appleSearchAdsData { data in
-                self.persistentAttributionData = data
-                self.diskStorage.save(self.persistentAttributionData, completion: nil)
+                if let data = data {
+                    self.persistentAttributionData = data
+                    self.diskStorage.save(self.persistentAttributionData, completion: nil)
+                }
             }
             return
         }
@@ -101,9 +109,9 @@ public class AttributionData: AttributionDataProtocol {
     /// Requests Apple Search Ads data from AdClient API￼.
     ///
     /// - Parameter completion: Completion block to be executed asynchronously when Search Ads data is returned
-    func appleSearchAdsData(_ completion: @escaping (PersistentAttributionData) -> Void) {
+    func appleSearchAdsData(_ completion: @escaping (PersistentAttributionData?) -> Void) {
         let completionHandler = { (details: PersistentAttributionData?, _: Error?) in
-            completion(details ?? PersistentAttributionData())
+            completion(details)
         }
         adClient.requestAttributionDetails(completionHandler)
     }
@@ -117,7 +125,5 @@ public class AttributionData: AttributionDataProtocol {
             }
         }
     }
-
-    // swiftlint:enable cyclomatic_complexity
 }
 #endif
