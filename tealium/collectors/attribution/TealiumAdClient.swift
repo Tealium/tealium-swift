@@ -99,6 +99,7 @@ public class TealiumAdClient: TealiumAdClientProtocol {
         appleAttributionDetails.creativeSetName = detailsDict[AppleInternalKeys.creativeSetName] as? String
         appleAttributionDetails.creativeSetId = detailsDict[AppleInternalKeys.creativeSetId] as? String
         appleAttributionDetails.region = detailsDict[AppleInternalKeys.region] as? String
+        appleAttributionDetails.adId = detailsDict[AppleInternalKeys.adId] as? String
         return appleAttributionDetails
     }
 

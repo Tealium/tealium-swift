@@ -54,7 +54,7 @@ public class AttributionData: AttributionDataProtocol {
 
     /// Loads persistent attribution data into memory, or fetches new data if not found.
     func setPersistentAttributionData() {
-        guard let data = diskStorage.retrieve(as: PersistentAttributionData.self) else {
+        guard let currentData = diskStorage.retrieve(as: PersistentAttributionData.self), !currentData.isEmpty() else {
             self.appleSearchAdsData { data in
                 if let data = data {
                     self.persistentAttributionData = data
@@ -63,7 +63,7 @@ public class AttributionData: AttributionDataProtocol {
             }
             return
         }
-        self.persistentAttributionData = data
+        self.persistentAttributionData = currentData
     }
 
     /// - Returns: `String` representation of IDFA
