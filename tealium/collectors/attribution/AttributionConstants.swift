@@ -62,6 +62,7 @@ public struct AttributionKey {
         TealiumDataKey.adCreativeSetId,
         TealiumDataKey.adCreativeSetName,
         TealiumDataKey.adRegion
+        
     ]
 
     // Internal module keys
@@ -86,7 +87,7 @@ public struct AppleInternalKeys {
         AppleInternalKeys.keywordMatchType,
         AppleInternalKeys.creativeSetId,
         AppleInternalKeys.creativeSetName,
-        AppleInternalKeys.region
+        AppleInternalKeys.region,
     ]
 
     static let attribution = "iad-attribution"
@@ -98,7 +99,7 @@ public struct AppleInternalKeys {
     static let purchaseDate = "iad-purchase-date" //
     static let conversionDate = "iad-conversion-date"
     static let conversionType = "iad-conversion-type" //
-    static let adId = "adId" //
+    static let adId = "iad-ad-id" //
     static let adGroupId = "iad-adgroup-id"
     static let adGroupName = "iad-adgroup-name"
     static let keyword = "iad-keyword"
