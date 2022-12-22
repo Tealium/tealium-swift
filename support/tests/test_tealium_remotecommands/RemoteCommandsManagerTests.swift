@@ -168,7 +168,7 @@ class RemoteCommandsManagerTests: XCTestCase {
         let command = RemoteCommand(commandId: "id", description: nil, type: .remote(url: "https://testName.com")) { response in
 
         }
-        command.config = RemoteCommandConfig(config: ["fileName": fileName], mappings: [:], apiCommands: [:], commandName: fileName, commandURL: nil)
+        command.config = RemoteCommandConfig(config: ["fileName": fileName], mappings: [:], apiCommands: [:], statics: [:], commandName: fileName, commandURL: nil)
         XCTAssertNotNil(command.config)
         tealiumRemoteCommandsManager.add(command)
         XCTAssertNotNil(command.config)

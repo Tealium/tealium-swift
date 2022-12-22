@@ -160,6 +160,7 @@
 		15E601BF2728065200CE4FAC /* blocklist.json in Resources */ = {isa = PBXBuildFile; fileRef = 15E601BD2728064500CE4FAC /* blocklist.json */; };
 		15E601C02728065200CE4FAC /* blocklist.json in Resources */ = {isa = PBXBuildFile; fileRef = 15E601BD2728064500CE4FAC /* blocklist.json */; };
 		15E601C12728065300CE4FAC /* blocklist.json in Resources */ = {isa = PBXBuildFile; fileRef = 15E601BD2728064500CE4FAC /* blocklist.json */; };
+		15EDC44929549C6A00499E97 /* JSONRemoteCommandPayloadBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EDC44829549C6A00499E97 /* JSONRemoteCommandPayloadBuilderTests.swift */; };
 		15F115CE28A3FDA300CEF483 /* QueryParameterProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F115CD28A3FDA300CEF483 /* QueryParameterProvider.swift */; };
 		15F383B428EED49D0005CDB6 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F383B028EED49D0005CDB6 /* VideoPlayerView.swift */; };
 		15F383B528EED49D0005CDB6 /* AVPlayer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F383B128EED49D0005CDB6 /* AVPlayer+Extensions.swift */; };
@@ -2226,6 +2227,7 @@
 		15E327142899718E00092C45 /* TagManagementUrlBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagManagementUrlBuilderTests.swift; sourceTree = "<group>"; };
 		15E601B82728036100CE4FAC /* AutotrackingConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutotrackingConfigTests.swift; sourceTree = "<group>"; };
 		15E601BD2728064500CE4FAC /* blocklist.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = blocklist.json; sourceTree = "<group>"; };
+		15EDC44829549C6A00499E97 /* JSONRemoteCommandPayloadBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONRemoteCommandPayloadBuilderTests.swift; sourceTree = "<group>"; };
 		15F115CD28A3FDA300CEF483 /* QueryParameterProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryParameterProvider.swift; sourceTree = "<group>"; };
 		15F383B028EED49D0005CDB6 /* VideoPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
 		15F383B128EED49D0005CDB6 /* AVPlayer+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AVPlayer+Extensions.swift"; sourceTree = "<group>"; };
@@ -3574,6 +3576,7 @@
 				CF6E9E32249AEFD90032A663 /* RemoteCommandExtensionsTests.swift */,
 				CF6E9E30249AEFCE0032A663 /* RemoteCommandResponseTests.swift */,
 				15D7E4DB28180679008E8DA6 /* NameAndVersionRemoteCommandTests.swift */,
+				15EDC44829549C6A00499E97 /* JSONRemoteCommandPayloadBuilderTests.swift */,
 			);
 			path = test_tealium_remotecommands;
 			sourceTree = "<group>";
@@ -6744,6 +6747,7 @@
 				CFA55A4124E5903900BFBED8 /* TestTealiumHelper.swift in Sources */,
 				D788A55823198A0C00BC6D60 /* RemoteHTTPCommandTests.swift in Sources */,
 				CF3A591824DB49C000A4851D /* MockRemoteCommandsDiskStorage.swift in Sources */,
+				15EDC44929549C6A00499E97 /* JSONRemoteCommandPayloadBuilderTests.swift in Sources */,
 				CFD803EF2670213A00299D64 /* RemoteCommandExtensionsTests.swift in Sources */,
 				CFD803F02670213F00299D64 /* RemoteCommandConfigTests.swift in Sources */,
 				CFD803EE2670213600299D64 /* RemoteCommandsManagerTests.swift in Sources */,
