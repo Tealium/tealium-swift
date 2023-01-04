@@ -113,8 +113,6 @@ class TealiumHelper {
                 Dispatchers.Collect,
             ]
         #endif
-        config.remoteCommands = [
-        ]
         tealium = Tealium(config: config) { [weak self] response in
             guard let self = self,
                   let teal = self.tealium else {
