@@ -57,8 +57,7 @@ class JSONRemoteCommandPayloadBuilder {
         guard let statics = statics else { return trackData }
         var payload = trackData
         for staticKey in statics.keys {
-            let keyValues = splitKeysAndValuesToMatch(staticKey)
-            if keysAndValues(keyValues, matchTrackData: payload),
+            if compoundKey(staticKey, matchesTrackData: payload),
                let staticsMap = statics[staticKey] as? [String: Any] {
                 payload += staticsMap
             }
@@ -68,7 +67,7 @@ class JSONRemoteCommandPayloadBuilder {
 
     /// returns: true if all the keys and value match the trackData
     class func keysAndValues(_ keysAndValues: [(String, String)], matchTrackData trackData: [String: Any]) -> Bool {
-        let nonMatchingPair = keysAndValues.first { key, value in
+        let firstNonMatchingPair = keysAndValues.first { key, value in
             guard let payloadValue = trackData[key] else {
                 return true
             }
@@ -77,14 +76,27 @@ class JSONRemoteCommandPayloadBuilder {
             }
             return valueString != value
         }
-        return nonMatchingPair == nil // True if all the pairs match
+        return firstNonMatchingPair == nil // True if all the pairs match
+    }
+
+    /**
+     * Returns true if the tealium_event in the trackData matches the whole compoundKey as is or if all key:values (separated by comma) match the respective values in the trackData.
+     *
+     * Example:
+     * With the key "abc:def,123:456" this method will return true if trackData contains:
+     * ["tealium_event": "abc:def,123:456"] (to prevent breaking previous implementations)
+     * or if it contains:
+     * ["abc": "def", "123": "456"]
+     */
+    class func compoundKey(_ compoundKey: String, matchesTrackData trackData: [String: Any]) -> Bool {
+        keysAndValues([(TealiumDataKey.event, compoundKey)], matchTrackData: trackData) // previous behavior
+        || keysAndValues(splitKeysAndValuesToMatch(compoundKey), matchTrackData: trackData)
     }
 
     class func extractCommandName(trackData: [String: Any], commandNames: [String: String]) -> String? {
         var commands = [String]()
         for commandKey in commandNames.keys {
-            let keyValues = splitKeysAndValuesToMatch(commandKey)
-            if keysAndValues(keyValues, matchTrackData: trackData),
+            if compoundKey(commandKey, matchesTrackData: trackData),
                let commandName = commandNames[commandKey] {
                 commands.append(commandName)
             }

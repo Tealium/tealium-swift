@@ -346,4 +346,18 @@ final class JSONRemoteCommandPayloadBuilderTests: XCTestCase {
         XCTAssertEqual(split[2].1, "someEvent")
         XCTAssertEqual(split.count, 3)
     }
+    
+    func testCompoundKeyMatchesTrackData() {
+        let trackData: [String: Any] = [
+            "abc": "def",
+            "tealium_event":"some,strange,event",
+            "123": 456
+        ]
+        
+        XCTAssertTrue(Builder.compoundKey("abc:def", matchesTrackData: trackData))
+        XCTAssertFalse(Builder.compoundKey("tealium_event:some,strange,event", matchesTrackData: trackData), "Commas are not allowed in compoundKeys except for separating key/values")
+        XCTAssertTrue(Builder.compoundKey("some,strange,event", matchesTrackData: trackData))
+        XCTAssertTrue(Builder.compoundKey("123:456", matchesTrackData: trackData))
+        XCTAssertTrue(Builder.compoundKey("123:456,abc:def", matchesTrackData: trackData))
+    }
 }
