@@ -121,7 +121,7 @@ class RemoteCommandsModuleTests: XCTestCase {
 
     func testDynamicTrackForJSONCommandWhenSomeConfigPartsNil() {
         let request = TealiumRemoteAPIRequest(trackRequest: TealiumTrackRequest(data: ["test": "data"]))
-        let jsonCommandConfig = RemoteCommandConfig(config: ["hello": "world"], mappings: ["map": "this"], apiCommands: ["command": "this"], commandName: nil, commandURL: nil)
+        let jsonCommandConfig = RemoteCommandConfig(config: ["hello": "world"], mappings: ["map": "this"], apiCommands: ["command": "this"], statics: [:], commandName: nil, commandURL: nil)
         let mockJSONCommand = MockJSONRemoteCommand(config: jsonCommandConfig)
         let mockRemoteCommandMgr = MockRemoteCommandsManager(jsonCommand: mockJSONCommand)
         let context = TestTealiumHelper.context(with: config)

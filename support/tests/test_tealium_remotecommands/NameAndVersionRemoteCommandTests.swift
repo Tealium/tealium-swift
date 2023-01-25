@@ -41,14 +41,6 @@ class SomeRemoteCommand: RemoteCommand {
 
 class NameAndVersionRemoteCommandTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
     func testNameAndVersion() throws {
         let testName = "testName"
         let testVersion = "X.Y.Z"

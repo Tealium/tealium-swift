@@ -17,16 +17,19 @@ public struct RemoteCommandConfig: Codable {
     var apiConfig: [String: Any]?
     var mappings: [String: String]?
     var apiCommands: [String: String]?
+    var statics: [String: Any]?
     var lastFetch: Date?
 
     public init(config: [String: Any],
                 mappings: [String: String],
                 apiCommands: [String: String],
+                statics: [String: Any],
                 commandName: String?,
                 commandURL: URL?) {
         self.apiConfig = config
         self.mappings = mappings
         self.apiCommands = apiCommands
+        self.statics = statics
         self.fileName = commandName
         self.commandURL = commandURL
     }
@@ -36,6 +39,7 @@ public struct RemoteCommandConfig: Codable {
         case apiConfig = "config"
         case mappings
         case apiCommands = "commands"
+        case statics
         case lastFetch
         case commandURL
     }
@@ -47,6 +51,9 @@ public struct RemoteCommandConfig: Codable {
         if let apiConfig = apiConfig?.codable {
             try container.encode(apiConfig, forKey: .apiConfig)
         }
+        if let statics = statics?.codable {
+            try container.encode(statics, forKey: .statics)
+        }
 
         try container.encode(mappings, forKey: .mappings)
         try container.encode(apiCommands, forKey: .apiCommands)
@@ -57,9 +64,10 @@ public struct RemoteCommandConfig: Codable {
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         let decoded = try values.decodeIfPresent(AnyDecodable.self, forKey: .apiConfig)
-
+        let decodableStatics = try values.decodeIfPresent(AnyDecodable.self, forKey: .statics)
         fileName = try values.decodeIfPresent(String.self, forKey: .fileName)
         apiConfig = decoded?.value as? [String: Any]
+        statics = decodableStatics?.value as? [String: Any]
         mappings = try values.decodeIfPresent([String: String].self, forKey: .mappings)
         apiCommands = try values.decodeIfPresent([String: String].self, forKey: .apiCommands)
         lastFetch = try values.decodeIfPresent(Date.self, forKey: .lastFetch) ?? Date()
@@ -78,6 +86,7 @@ public struct RemoteCommandConfig: Codable {
             self.apiCommands = config.apiCommands
             self.apiConfig = config.apiConfig
             self.mappings = config.mappings
+            self.statics = config.statics
         } catch {
             logger?.log(TealiumLogRequest(title: "Remote Commands",
                                           message: "Error while trying to process remote command config: \(error.localizedDescription)",

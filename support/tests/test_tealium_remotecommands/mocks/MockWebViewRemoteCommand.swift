@@ -27,6 +27,7 @@ class MockWebViewRemoteCommand: RemoteCommandProtocol {
         config = RemoteCommandConfig(config: ["test": "test"],
                                      mappings: ["test": "test"],
                                      apiCommands: ["test": "test"],
+                                     statics: [:],
                                      commandName: nil,
                                      commandURL: nil)
         completion = { _ in
