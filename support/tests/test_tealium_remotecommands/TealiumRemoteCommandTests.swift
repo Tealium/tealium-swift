@@ -261,45 +261,6 @@ class TealiumRemoteCommandTests: XCTestCase {
         XCTAssertNil(mapped?["config"])
     }
 
-    func testExtractCommandNameFromEvent() {
-        let noConfig = TestTealiumHelper.loadStub(from: "allEventsCommands", type(of: self))
-        let rcConfig = try! JSONDecoder().decode(RemoteCommandConfig.self, from: noConfig)
-        let trackData = TealiumEvent("launch").trackRequest.trackDictionary
-        let commandName = remoteCommand.extractCommandName(trackData: trackData,
-                                         commandNames: rcConfig.apiCommands!)
-        XCTAssertNotNil(commandName)
-        XCTAssertEqual(commandName, "initialize,logevent")
-    }
-
-    func testExtractCommandNameFromAllEvents() {
-        let noConfig = TestTealiumHelper.loadStub(from: "allEventsCommands", type(of: self))
-        let rcConfig = try! JSONDecoder().decode(RemoteCommandConfig.self, from: noConfig)
-        let trackData = TealiumEvent("someOtherEvent").trackRequest.trackDictionary
-        let commandName = remoteCommand.extractCommandName(trackData: trackData,
-                                         commandNames: rcConfig.apiCommands!)
-        XCTAssertNotNil(commandName)
-        XCTAssertEqual(commandName, "logevent")
-    }
-
-    func testExtractCommandNameFromAllViews() {
-        let noConfig = TestTealiumHelper.loadStub(from: "allEventsCommands", type(of: self))
-        let rcConfig = try! JSONDecoder().decode(RemoteCommandConfig.self, from: noConfig)
-        let trackData = TealiumView("someOtherEvent").trackRequest.trackDictionary
-        let commandName = remoteCommand.extractCommandName(trackData: trackData,
-                                         commandNames: rcConfig.apiCommands!)
-        XCTAssertNotNil(commandName)
-        XCTAssertEqual(commandName, "logview")
-    }
-
-    func testExtractCommandNameNil() {
-        let noConfig = TestTealiumHelper.loadStub(from: "exampleNoConfig", type(of: self))
-        let rcConfig = try! JSONDecoder().decode(RemoteCommandConfig.self, from: noConfig)
-        let trackData = TealiumEvent("missingEvent").trackRequest.trackDictionary
-        let commandName = remoteCommand.extractCommandName(trackData: trackData,
-                                         commandNames: rcConfig.apiCommands!)
-        XCTAssertNil(commandName)
-    }
-
 }
 
 extension TealiumRemoteCommandTests: ModuleDelegate {

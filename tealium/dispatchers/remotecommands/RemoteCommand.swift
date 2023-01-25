@@ -66,7 +66,8 @@ open class RemoteCommand: RemoteCommandProtocol {
     public func complete(with trackData: [String: Any], config: RemoteCommandConfig, completion: ModuleCompletion?) {
         if let payload = self.process(trackData: trackData, commandConfig: config, completion: completion) {
             let response = JSONRemoteCommandResponse(with: payload)
-            delegate?.remoteCommandRequestsExecution(self, response: response)
+            delegate?.remoteCommandRequestsExecution(self,
+                                                     response: response)
         }
     }
 
@@ -106,13 +107,9 @@ open class RemoteCommand: RemoteCommandProtocol {
     public class func sendRemoteCommandResponse(for commandId: String,
                                                 response: RemoteCommandResponseProtocol,
                                                 delegate: ModuleDelegate?) {
-        guard let tealiumResponse = response as? RemoteCommandResponse else {
-            return
-        }
-        guard let responseId = tealiumResponse.responseId else {
-            return
-        }
-        guard RemoteCommandsManager.pendingResponses.value[responseId] == true else {
+        guard let tealiumResponse = response as? RemoteCommandResponse,
+              let responseId = tealiumResponse.responseId,
+              RemoteCommandsManager.pendingResponses.value[responseId] == true else {
             return
         }
         RemoteCommandsManager.pendingResponses.value[responseId] = nil
@@ -124,106 +121,10 @@ open class RemoteCommand: RemoteCommandProtocol {
         delegate?.processRemoteCommandRequest(request)
     }
 
-    /// Maps the track call data to the mappings and command names provided in the JSON file
-    ///
-    /// - Parameters:
-    ///   - trackData: `[String: Any]` payload sent in the the track call
-    ///   - commandConfig: `RemoteCommandConfig`decoded data loaded from the file name/url provided during initialization of the JSON command
-    ///   - Returns: `[String: Any]` vendor specific data
     public func process(trackData: [String: Any], commandConfig: RemoteCommandConfig, completion: ModuleCompletion?) -> [String: Any]? {
-        guard let mappings = commandConfig.mappings else {
-            completion?((.failure(TealiumRemoteCommandsError.mappingsNotFound), nil))
-            return nil
-        }
-        var mapped = objectMap(payload: trackData, lookup: mappings)
-        guard let commandNames = commandConfig.apiCommands else {
-            completion?((.failure(TealiumRemoteCommandsError.commandsNotFound), nil))
-            return nil
-        }
-        guard let commandName = extractCommandName(trackData: trackData, commandNames: commandNames) else {
-            completion?((.failure(TealiumRemoteCommandsError.commandNameNotFound), nil))
-            return nil
-        }
-        mapped[RemoteCommandsKey.commandName] = commandName
-        if let config = commandConfig.apiConfig {
-            mapped.merge(config) { _, second in second }
-        }
-        return mapped
+        JSONRemoteCommandPayloadBuilder.process(trackData: trackData,
+                                                commandConfig: commandConfig,
+                                                completion: completion)
     }
-
-    func extractCommandName(trackData: [String: Any], commandNames: [String: String]) -> String? {
-        var commands = [String]()
-        if let tealiumEvent = trackData[TealiumDataKey.event] as? String,
-           let commandName = commandNames[tealiumEvent] {
-            commands.append(commandName)
-        }
-        if var eventType = trackData[TealiumDataKey.eventType] as? String {
-            if eventType != TealiumTrackType.view.rawValue {
-                eventType = TealiumTrackType.event.rawValue // Some events change this for utag.js
-            }
-            if let commandName = commandNames["all_\(eventType)s"] {
-                commands.append(commandName)
-            }
-        }
-        if commands.count > 0 {
-            return commands.joined(separator: ",")
-        } else {
-            return nil
-        }
-    }
-
-    /// Maps the payload recieved from a tracking call to the data specific to the third party
-    /// vendor specified for the remote command. A lookup dictionary is used to determine the
-    /// mapping.
-    /// - Parameter payload: `[String: Any]` from tracking call
-    /// - Parameter self: `[String: String]` `mappings` key from JSON file definition
-    /// - Returns: `[String: Any]` mapped key value pairs for specific remote command vendor
-    public func mapPayload(_ payload: [String: Any], lookup: [String: String]) -> [String: Any] {
-        return lookup.reduce(into: [String: Any]()) { result, tuple in
-            let values = tuple.value.split(separator: ",")
-                .map { $0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) }
-            if let payload = payload[tuple.key] {
-                values.forEach {
-                    result[$0] = payload
-                }
-            }
-        }
-    }
-
-    /// Performs mapping then splits any keys with a `.` present and creates a nested object
-    /// from those keys using the `parseKeys()` method. If no keys with `.` are present,
-    ///  performs mapping as normal using the `mapPayload()` method.
-    /// - Parameter payload: `[String: Any]` from track method
-    /// - Returns: `[String: Any]` mapped key value pairs for specific remote command vendor
-    public func objectMap(payload: [String: Any], lookup: [String: String]) -> [String: Any] {
-        let nestedMapped = mapPayload(payload, lookup: lookup)
-        if nestedMapped.keys.filter({ $0.contains(".") }).count > 0 {
-            var output = nestedMapped.filter({ !$0.key.contains(".") })
-            let keysToParse = nestedMapped.filter { $0.key.contains(".") }
-            _ = output += parseKeys(from: keysToParse)
-            return output
-        }
-        return nestedMapped
-    }
-
-    /// Splits any keys with a `.` present and creates a nested object from those keys.
-    /// e.g. if the key in the JSON was `event.parameter`, an object would be created
-    /// like so: ["event": "parameter": "valueFromTrack"].
-    /// - Returns: `[String: [String: Any]]` containing the new nested objects
-    func parseKeys(from payload: [String: Any]) -> [String: [String: Any]] {
-        payload.reduce(into: [String: [String: Any]]()) { result, dictionary in
-            let key = String(dictionary.key.split(separator: ".")[0])
-            let value = String(dictionary.key.split(separator: ".")[1])
-            if result[key] == nil {
-                result[key] = [value: dictionary.value]
-            } else {
-                if var resultValue = result[key] {
-                    resultValue[value] = dictionary.value
-                    result[key] = resultValue
-                }
-            }
-        }
-    }
-
 }
 #endif

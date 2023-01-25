@@ -82,7 +82,9 @@ public class RemoteCommandsModule: Dispatcher {
                              completion: ModuleCompletion?) {
         switch request {
         case let request as TealiumRemoteCommandRequest:
-            self.remoteCommands.trigger(command: .webview, with: request.data, completion: completion)
+            self.remoteCommands.trigger(command: .webview,
+                                        with: request.data,
+                                        completion: completion)
         case let request as TealiumRemoteAPIRequest:
             self.remoteCommands.jsonCommands.forEach { command in
                 guard let config = command.config,
@@ -91,9 +93,13 @@ public class RemoteCommandsModule: Dispatcher {
                 else {
                     return
                 }
-                self.remoteCommands.refresh(command, url: url, file: name)
+                self.remoteCommands.refresh(command,
+                                            url: url,
+                                            file: name)
             }
-            self.remoteCommands.trigger(command: .JSON, with: request.trackRequest.trackDictionary, completion: completion)
+            self.remoteCommands.trigger(command: .JSON,
+                                        with: request.trackRequest.trackDictionary,
+                                        completion: completion)
         default:
             break
         }
