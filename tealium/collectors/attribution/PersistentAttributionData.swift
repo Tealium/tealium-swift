@@ -96,7 +96,7 @@ public struct PersistentAttributionData: Codable {
             $0.value != ""
         }
     }
-    
+
     func isEmpty() -> Bool {
         return dictionary.isEmpty
     }
