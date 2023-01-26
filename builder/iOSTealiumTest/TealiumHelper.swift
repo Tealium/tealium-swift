@@ -144,7 +144,7 @@ class TealiumHelper {
                 }
                 print("Remote Command data: hello = \(hello), key = \(key), tealium = \(tealium) 🎉🎊")
             }
-//            remoteCommands.add(display)
+            remoteCommands.add(display)
             #endif
         }
     }

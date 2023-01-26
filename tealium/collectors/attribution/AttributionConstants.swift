@@ -62,7 +62,6 @@ public struct AttributionKey {
         TealiumDataKey.adCreativeSetId,
         TealiumDataKey.adCreativeSetName,
         TealiumDataKey.adRegion
-        
     ]
 
     // Internal module keys

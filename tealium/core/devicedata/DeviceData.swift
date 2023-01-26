@@ -89,6 +89,8 @@ public class DeviceData: DeviceDataCollection {
         }
 
         switch subType {
+        case CPU_SUBTYPE_ARM64E:
+            return "ARM64e"
         case CPU_SUBTYPE_ARM64_V8:
             return "ARM64v8"
         case CPU_SUBTYPE_ARM64_ALL:
