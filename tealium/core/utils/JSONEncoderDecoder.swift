@@ -21,6 +21,12 @@ public extension Tealium {
         decoder.dateDecodingStrategy = .formatted(Date.Formatter.iso8601)
         return decoder
     }()
+
+    static let legacyJsonDecoder: JSONDecoder = {
+        let decoder = JSONDecoder()
+        decoder.nonConformingFloatDecodingStrategy = .convertFromString(positiveInfinity: "Infinity", negativeInfinity: "Infinity", nan: "NaN")
+        return decoder
+    }()
 }
 
 public class JSONLoader {
