@@ -12,6 +12,11 @@ class TealiumDiskTests: XCTestCase {
 
     let helper = TestTealiumHelper()
     var config: TealiumConfig!
+    let legacyJsonEncoder: JSONEncoder = {
+        let encoder = JSONEncoder()
+        encoder.nonConformingFloatEncodingStrategy = .convertToString(positiveInfinity: "Infinity", negativeInfinity: "Infinity", nan: "NaN")
+        return encoder
+    }()
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         config = TealiumConfig(account: "account", profile: "profile", environment: "env")
@@ -78,11 +83,6 @@ class TealiumDiskTests: XCTestCase {
     }
 
     func testMigrationDates() {
-        let legacyJsonEncoder: JSONEncoder = {
-            let encoder = JSONEncoder()
-            encoder.nonConformingFloatEncodingStrategy = .convertToString(positiveInfinity: "Infinity", negativeInfinity: "Infinity", nan: "NaN")
-            return encoder
-        }()
         let diskstorage = TealiumDiskStorage(config: config, forModule: "Tests")
         let value = Date()
         do {
@@ -100,11 +100,7 @@ class TealiumDiskTests: XCTestCase {
             self.date = date
         }
     }
-    let legacyJsonEncoder: JSONEncoder = {
-        let encoder = JSONEncoder()
-        encoder.nonConformingFloatEncodingStrategy = .convertToString(positiveInfinity: "Infinity", negativeInfinity: "Infinity", nan: "NaN")
-        return encoder
-    }()
+
     func testMigrationDatesInContainer() {
         let diskstorage = TealiumDiskStorage(config: config, forModule: "Tests")
         let value = CustomObjectWithDate(Date())
