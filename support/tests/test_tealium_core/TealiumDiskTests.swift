@@ -12,6 +12,11 @@ class TealiumDiskTests: XCTestCase {
 
     let helper = TestTealiumHelper()
     var config: TealiumConfig!
+    let legacyJsonEncoder: JSONEncoder = {
+        let encoder = JSONEncoder()
+        encoder.nonConformingFloatEncodingStrategy = .convertToString(positiveInfinity: "Infinity", negativeInfinity: "Infinity", nan: "NaN")
+        return encoder
+    }()
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         config = TealiumConfig(account: "account", profile: "profile", environment: "env")
@@ -67,5 +72,60 @@ class TealiumDiskTests: XCTestCase {
         let config = TealiumConfig(account: "account", profile: "profile", environment: "env")
         let path = TealiumDiskStorage.filePath(forConfig: config, name: "name")
         XCTAssertEqual(path, "account.profile/name/")
+    }
+    
+    func testSaveDates() {
+        let diskstorage = TealiumDiskStorage(config: config, forModule: "Tests")
+        let value: Date = Date()
+        diskstorage.save(value, completion: nil)
+        let data = diskstorage.retrieve(as: Date.self)
+        XCTAssertNotNil(data, "data unexpectedly missing")
+    }
+
+    func testMigrationDates() {
+        let diskstorage = TealiumDiskStorage(config: config, forModule: "Tests")
+        let value = Date()
+        do {
+            try Disk.save(value, to: diskstorage.defaultDirectory, as: diskstorage.filePath(diskstorage.module), encoder: legacyJsonEncoder)
+        } catch {
+            print(error)
+        }
+        let data = diskstorage.retrieve(as: Date.self)
+        XCTAssertNotNil(data, "data unexpectedly missing")
+    }
+    
+    class CustomObjectWithDate: Codable {
+        let date: Date
+        init(_ date: Date) {
+            self.date = date
+        }
+    }
+
+    func testMigrationDatesInContainer() {
+        let diskstorage = TealiumDiskStorage(config: config, forModule: "Tests")
+        let value = CustomObjectWithDate(Date())
+        do {
+            try Disk.save(value, to: diskstorage.defaultDirectory, as: diskstorage.filePath(diskstorage.module), encoder: legacyJsonEncoder)
+        } catch {
+            print(error)
+        }
+        let data = diskstorage.retrieve(as: CustomObjectWithDate.self)
+        XCTAssertNotNil(data, "data unexpectedly missing")
+    }
+    
+    func testDecodeWorksForLegacyAndNewDates() throws {
+        let value = Date()
+        let legacyEncoded = try legacyJsonEncoder.encode(value)
+        let newEncoded = try Tealium.jsonEncoder.encode(value)
+        XCTAssertNoThrow(try Disk.decode(Tealium.jsonDecoder, type: Date.self, from: legacyEncoded))
+        XCTAssertNoThrow(try Disk.decode(Tealium.jsonDecoder, type: Date.self, from: newEncoded))
+    }
+    
+    func testDecodeWorksForLegacyAndNewDatesInContainer() throws {
+        let value = CustomObjectWithDate(Date())
+        let legacyEncoded = try legacyJsonEncoder.encode(value)
+        let newEncoded = try Tealium.jsonEncoder.encode(value)
+        XCTAssertNoThrow(try Disk.decode(Tealium.jsonDecoder, type: CustomObjectWithDate.self, from: legacyEncoded))
+        XCTAssertNoThrow(try Disk.decode(Tealium.jsonDecoder, type: CustomObjectWithDate.self, from: newEncoded))
     }
 }
