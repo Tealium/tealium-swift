@@ -43,6 +43,8 @@ enum RemoteCommandsKey {
     static let commandName = "command_name"
     static let defaultRefreshInterval = Int(3600)
     static let dlePrefix = "https://tags.tiqcdn.com/dle/"
+    static let keysSeparationDelimiter = "keys_separation_delimiter"
+    static let keysEqualityDelimiter = "keys_equality_delimiter"
 }
 
 enum RemoteCommandStatusCode: Int {
