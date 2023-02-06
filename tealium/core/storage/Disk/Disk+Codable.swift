@@ -139,10 +139,18 @@ public extension Disk {
         do {
             let url = try getExistingFileURL(for: path, in: directory)
             let data = try Data(contentsOf: url)
-            let value = try decoder.decode(type, from: data)
+            let value = try decode(decoder, type: type, from: data)
             return value
         } catch {
             throw error
+        }
+    }
+
+    static func decode<T: Decodable>(_ decoder: JSONDecoder, type: T.Type, from data: Data) throws -> T {
+        do {
+            return try decoder.decode(type, from: data)
+        } catch DecodingError.typeMismatch where decoder !== Tealium.legacyJsonDecoder { // Make sure that objects saved with a legacy JSON encoder are still readable
+            return try Tealium.legacyJsonDecoder.decode(type, from: data)
         }
     }
 }
