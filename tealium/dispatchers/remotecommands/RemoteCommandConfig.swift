@@ -20,6 +20,15 @@ public struct RemoteCommandConfig: Codable {
     var statics: [String: Any]?
     var lastFetch: Date?
 
+    struct Delimiters {
+        let keysEqualityDelimiter: String
+        let keysSeparationDelimiter: String
+    }
+    var keysDelimiters: Delimiters {
+        Delimiters(keysEqualityDelimiter: apiConfig?[RemoteCommandsKey.keysEqualityDelimiter] as? String ?? ":",
+                   keysSeparationDelimiter: apiConfig?[RemoteCommandsKey.keysSeparationDelimiter] as? String ?? ",")
+    }
+
     public init(config: [String: Any],
                 mappings: [String: String],
                 apiCommands: [String: String],

@@ -260,6 +260,44 @@ class TealiumRemoteCommandTests: XCTestCase {
         let mapped = remoteCommand.process(trackData: ["tealium_event": "launch"], commandConfig: rcConfig, completion: nil)
         XCTAssertNil(mapped?["config"])
     }
+    
+    func testProcessWithStatics() {
+        let config = TestTealiumHelper.loadStub(from: "statics", type(of: self))
+        let rcConfig = try! JSONDecoder().decode(RemoteCommandConfig.self, from: config)
+        let mapped = remoteCommand.process(trackData: ["tealium_event": "launch"], commandConfig: rcConfig, completion: nil)
+        XCTAssertEqual(mapped?["static_key"] as? String, "launch_value")
+        XCTAssertEqual(mapped?["command_name"] as? String, "command_launch")
+    }
+    
+    func testProcessWithStaticsCompoundKey() {
+        let config = TestTealiumHelper.loadStub(from: "statics", type(of: self))
+        let rcConfig = try! JSONDecoder().decode(RemoteCommandConfig.self, from: config)
+        let mapped1 = remoteCommand.process(trackData: ["tealium_event": "click"], commandConfig: rcConfig, completion: nil)
+        XCTAssertNil(mapped1?["static_key"])
+        XCTAssertNil(mapped1?["command_name"])
+        let mapped2 = remoteCommand.process(trackData: ["tealium_event": "click", "page_name": "home"], commandConfig: rcConfig, completion: nil)
+        XCTAssertEqual(mapped2?["static_key"] as? String, "click_value")
+        XCTAssertEqual(mapped2?["command_name"] as? String, "command_click")
+    }
+    
+    func testProcessWithStaticsKeysDelimiter() {
+        let config = TestTealiumHelper.loadStub(from: "keysDelimiter", type(of: self))
+        let rcConfig = try! JSONDecoder().decode(RemoteCommandConfig.self, from: config)
+        let mapped = remoteCommand.process(trackData: ["tealium_event": "launch"], commandConfig: rcConfig, completion: nil)
+        XCTAssertEqual(mapped?["static_key"] as? String, "launch_value==")
+        XCTAssertEqual(mapped?["command_name"] as? String, "command_launch==")
+    }
+    
+    func testProcessWithStaticsCompoundKeyKeysDelimiter() {
+        let config = TestTealiumHelper.loadStub(from: "keysDelimiter", type(of: self))
+        let rcConfig = try! JSONDecoder().decode(RemoteCommandConfig.self, from: config)
+        let mapped1 = remoteCommand.process(trackData: ["tealium_event": "click"], commandConfig: rcConfig, completion: nil)
+        XCTAssertNil(mapped1?["static_key"])
+        XCTAssertNil(mapped1?["command_name"])
+        let mapped2 = remoteCommand.process(trackData: ["tealium_event": "click", "page_name": "home"], commandConfig: rcConfig, completion: nil)
+        XCTAssertEqual(mapped2?["static_key"] as? String, "click_value==")
+        XCTAssertEqual(mapped2?["command_name"] as? String, "command_click==")
+    }
 
 }
 

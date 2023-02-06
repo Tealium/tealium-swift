@@ -25,13 +25,16 @@ class JSONRemoteCommandPayloadBuilder {
             completion?((.failure(TealiumRemoteCommandsError.mappingsNotFound), nil))
             return nil
         }
-        let payload = payloadWithStatics(trackData: trackData, statics: commandConfig.statics)
+        let delimiters = commandConfig.keysDelimiters
+        let payload = payloadWithStatics(trackData: trackData, statics: commandConfig.statics, delimiters: delimiters)
         var mapped = objectMap(payload: payload, lookup: mappings)
         guard let commandNames = commandConfig.apiCommands else {
             completion?((.failure(TealiumRemoteCommandsError.commandsNotFound), nil))
             return nil
         }
-        guard let commandName = extractCommandName(trackData: trackData, commandNames: commandNames) else {
+        guard let commandName = extractCommandName(trackData: trackData,
+                                                   commandNames: commandNames,
+                                                   delimiters: delimiters) else {
             completion?((.failure(TealiumRemoteCommandsError.commandNameNotFound), nil))
             return nil
         }
@@ -42,10 +45,10 @@ class JSONRemoteCommandPayloadBuilder {
         return mapped
     }
 
-    class func splitKeysAndValuesToMatch(_ key: String) -> [(String, String)] {
-        return key.split(separator: ",")
+    class func splitKeysAndValuesToMatch(_ key: String, delimiters: RemoteCommandConfig.Delimiters) -> [(String, String)] {
+        return key.components(separatedBy: delimiters.keysSeparationDelimiter)
             .map { subKey in
-                var split = subKey.split(separator: ":").map { String($0) }
+                var split = subKey.components(separatedBy: delimiters.keysEqualityDelimiter).map { String($0) }
                 if split.count == 1 {
                     split.insert(TealiumDataKey.event, at: 0)
                 }
@@ -53,11 +56,11 @@ class JSONRemoteCommandPayloadBuilder {
             }
     }
 
-    class func payloadWithStatics(trackData: [String: Any], statics: [String: Any]?) -> [String: Any] {
+    class func payloadWithStatics(trackData: [String: Any], statics: [String: Any]?, delimiters: RemoteCommandConfig.Delimiters) -> [String: Any] {
         guard let statics = statics else { return trackData }
         var payload = trackData
         for staticKey in statics.keys {
-            if compoundKey(staticKey, matchesTrackData: payload),
+            if compoundKey(staticKey, matchesTrackData: payload, delimiters: delimiters),
                let staticsMap = statics[staticKey] as? [String: Any] {
                 payload += staticsMap
             }
@@ -88,15 +91,15 @@ class JSONRemoteCommandPayloadBuilder {
      * or if it contains:
      * ["abc": "def", "123": "456"]
      */
-    class func compoundKey(_ compoundKey: String, matchesTrackData trackData: [String: Any]) -> Bool {
+    class func compoundKey(_ compoundKey: String, matchesTrackData trackData: [String: Any], delimiters: RemoteCommandConfig.Delimiters) -> Bool {
         keysAndValues([(TealiumDataKey.event, compoundKey)], matchTrackData: trackData) // previous behavior
-        || keysAndValues(splitKeysAndValuesToMatch(compoundKey), matchTrackData: trackData)
+        || keysAndValues(splitKeysAndValuesToMatch(compoundKey, delimiters: delimiters), matchTrackData: trackData)
     }
 
-    class func extractCommandName(trackData: [String: Any], commandNames: [String: String]) -> String? {
+    class func extractCommandName(trackData: [String: Any], commandNames: [String: String], delimiters: RemoteCommandConfig.Delimiters) -> String? {
         var commands = [String]()
         for commandKey in commandNames.keys {
-            if compoundKey(commandKey, matchesTrackData: trackData),
+            if compoundKey(commandKey, matchesTrackData: trackData, delimiters: delimiters),
                let commandName = commandNames[commandKey] {
                 commands.append(commandName)
             }

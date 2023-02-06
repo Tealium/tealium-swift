@@ -12,7 +12,10 @@ import TealiumCore
 
 final class JSONRemoteCommandPayloadBuilderTests: XCTestCase {
     typealias Builder = JSONRemoteCommandPayloadBuilder
-    
+    let defaultKeysDelimiters = RemoteCommandConfig.Delimiters(keysEqualityDelimiter: ":",
+                                                               keysSeparationDelimiter: ",")
+    let alternativeDelimiters = RemoteCommandConfig.Delimiters(keysEqualityDelimiter: "==",
+                                                                   keysSeparationDelimiter: "&&")
     func testMapPayload() {
         let payload: [String: Any] = ["product_id": ["ABC123"], "product_name": ["milk chocolate"], "product_brand": ["see's"], "product_unit_price": ["19.99"], "product_quantity": ["1"], "customer_id": "CUST234324", "customer_full_name": "Christina Test", "order_id": "ORD239847", "event_title": "ecommerce_purchase", "order_tax_amount": "1.99", "order_shipping_amount": "5.00"]
         let lookup = ["campaign_keywords": "cp1",
@@ -210,7 +213,8 @@ final class JSONRemoteCommandPayloadBuilderTests: XCTestCase {
         let rcConfig = try! JSONDecoder().decode(RemoteCommandConfig.self, from: noConfig)
         let trackData = TealiumEvent("launch").trackRequest.trackDictionary
         let commandName = Builder.extractCommandName(trackData: trackData,
-                                         commandNames: rcConfig.apiCommands!)
+                                                     commandNames: rcConfig.apiCommands!,
+                                                     delimiters: rcConfig.keysDelimiters)
         XCTAssertNotNil(commandName)
         XCTAssertEqual(commandName, "initialize,logevent")
     }
@@ -220,7 +224,8 @@ final class JSONRemoteCommandPayloadBuilderTests: XCTestCase {
         let rcConfig = try! JSONDecoder().decode(RemoteCommandConfig.self, from: noConfig)
         let trackData = TealiumEvent("someOtherEvent").trackRequest.trackDictionary
         let commandName = Builder.extractCommandName(trackData: trackData,
-                                         commandNames: rcConfig.apiCommands!)
+                                                     commandNames: rcConfig.apiCommands!,
+                                                     delimiters: rcConfig.keysDelimiters)
         XCTAssertNotNil(commandName)
         XCTAssertEqual(commandName, "logevent")
     }
@@ -230,7 +235,8 @@ final class JSONRemoteCommandPayloadBuilderTests: XCTestCase {
         let rcConfig = try! JSONDecoder().decode(RemoteCommandConfig.self, from: noConfig)
         let trackData = TealiumView("someOtherEvent").trackRequest.trackDictionary
         let commandName = Builder.extractCommandName(trackData: trackData,
-                                         commandNames: rcConfig.apiCommands!)
+                                                     commandNames: rcConfig.apiCommands!,
+                                                     delimiters: rcConfig.keysDelimiters)
         XCTAssertNotNil(commandName)
         XCTAssertEqual(commandName, "logview")
     }
@@ -240,7 +246,8 @@ final class JSONRemoteCommandPayloadBuilderTests: XCTestCase {
         let rcConfig = try! JSONDecoder().decode(RemoteCommandConfig.self, from: noConfig)
         let trackData = TealiumEvent("missingEvent").trackRequest.trackDictionary
         let commandName = Builder.extractCommandName(trackData: trackData,
-                                         commandNames: rcConfig.apiCommands!)
+                                                     commandNames: rcConfig.apiCommands!,
+                                                     delimiters: rcConfig.keysDelimiters)
         XCTAssertNil(commandName)
     }
 
@@ -291,7 +298,9 @@ final class JSONRemoteCommandPayloadBuilderTests: XCTestCase {
             "someKey:someValue": [ "staticKey2": "staticValue2"],
             "someKey:someValue,tealium_event:some_event": [ "staticKey3": "staticValue3"]
         ]
-        let payload = Builder.payloadWithStatics(trackData: trackData, statics: statics)
+        let payload = Builder.payloadWithStatics(trackData: trackData,
+                                                 statics: statics,
+                                                 delimiters: defaultKeysDelimiters)
         for keyValue in trackData {
             XCTAssertEqual(payload[keyValue.key] as? String, keyValue.value)
         }
@@ -309,26 +318,31 @@ final class JSONRemoteCommandPayloadBuilderTests: XCTestCase {
             "someKey_missing:someValue": [ "staticKey2": "staticValue2"],
             "someKey:someValue,tealium_event:some_event,missingKey:anyValue": [ "staticKey3": "staticValue3"]
         ]
-        let payload = Builder.payloadWithStatics(trackData: trackData, statics: statics)
+        let payload = Builder.payloadWithStatics(trackData: trackData,
+                                                 statics: statics,
+                                                 delimiters: defaultKeysDelimiters)
         XCTAssertEqual(trackData, payload as? [String: String])
     }
 
     func testSplitKeysAndValuesToMatchDefaultToTealiumEvent() {
-        let split = Builder.splitKeysAndValuesToMatch("someEvent")
+        let split = Builder.splitKeysAndValuesToMatch("someEvent",
+                                                      delimiters: defaultKeysDelimiters)
         XCTAssertEqual(split[0].0, "tealium_event")
         XCTAssertEqual(split[0].1, "someEvent")
         XCTAssertEqual(split.count, 1)
     }
 
     func testSplitKeysAndValuesToMatchKeyValue() {
-        let split = Builder.splitKeysAndValuesToMatch("someKey:someValue")
+        let split = Builder.splitKeysAndValuesToMatch("someKey:someValue",
+                                                      delimiters: defaultKeysDelimiters)
         XCTAssertEqual(split[0].0, "someKey")
         XCTAssertEqual(split[0].1, "someValue")
         XCTAssertEqual(split.count, 1)
     }
 
     func testSplitKeysAndValuesToMatchKeyValuesCommaSeparated() {
-        let split = Builder.splitKeysAndValuesToMatch("someKey1:someValue1,someKey2:someValue2")
+        let split = Builder.splitKeysAndValuesToMatch("someKey1:someValue1,someKey2:someValue2",
+                                                      delimiters: defaultKeysDelimiters)
         XCTAssertEqual(split[0].0, "someKey1")
         XCTAssertEqual(split[0].1, "someValue1")
         XCTAssertEqual(split[1].0, "someKey2")
@@ -337,7 +351,20 @@ final class JSONRemoteCommandPayloadBuilderTests: XCTestCase {
     }
 
     func testSplitKeysAndValuesToMatchKeyValuesCommaSeparatedAndDefaultEvent() {
-        let split = Builder.splitKeysAndValuesToMatch("someKey1:someValue1,someKey2:someValue2,someEvent")
+        let split = Builder.splitKeysAndValuesToMatch("someKey1:someValue1,someKey2:someValue2,someEvent",
+                                                      delimiters: defaultKeysDelimiters)
+        XCTAssertEqual(split[0].0, "someKey1")
+        XCTAssertEqual(split[0].1, "someValue1")
+        XCTAssertEqual(split[1].0, "someKey2")
+        XCTAssertEqual(split[1].1, "someValue2")
+        XCTAssertEqual(split[2].0, "tealium_event")
+        XCTAssertEqual(split[2].1, "someEvent")
+        XCTAssertEqual(split.count, 3)
+    }
+    
+    func testSplitKeysAndValuesToMatchKeyValuesAlternativeDelimiters() {
+        let split = Builder.splitKeysAndValuesToMatch("someKey1==someValue1&&someKey2==someValue2&&someEvent",
+                                                      delimiters: alternativeDelimiters)
         XCTAssertEqual(split[0].0, "someKey1")
         XCTAssertEqual(split[0].1, "someValue1")
         XCTAssertEqual(split[1].0, "someKey2")
@@ -354,10 +381,34 @@ final class JSONRemoteCommandPayloadBuilderTests: XCTestCase {
             "123": 456
         ]
         
-        XCTAssertTrue(Builder.compoundKey("abc:def", matchesTrackData: trackData))
-        XCTAssertFalse(Builder.compoundKey("tealium_event:some,strange,event", matchesTrackData: trackData), "Commas are not allowed in compoundKeys except for separating key/values")
-        XCTAssertTrue(Builder.compoundKey("some,strange,event", matchesTrackData: trackData))
-        XCTAssertTrue(Builder.compoundKey("123:456", matchesTrackData: trackData))
-        XCTAssertTrue(Builder.compoundKey("123:456,abc:def", matchesTrackData: trackData))
+        XCTAssertTrue(Builder.compoundKey("abc:def",
+                                          matchesTrackData: trackData,
+                                          delimiters: defaultKeysDelimiters))
+        XCTAssertTrue(Builder.compoundKey("abc==def",
+                                          matchesTrackData: trackData,
+                                          delimiters: alternativeDelimiters))
+        XCTAssertFalse(Builder.compoundKey("tealium_event:some,strange,event",
+                                           matchesTrackData: trackData,
+                                           delimiters: defaultKeysDelimiters),
+                       "Commas are not allowed in compoundKeys except for separating key/values")
+        XCTAssertTrue(Builder.compoundKey("tealium_event==some,strange,event",
+                                           matchesTrackData: trackData,
+                                           delimiters: alternativeDelimiters),
+                       "Commas are allowed if you have different separator")
+        XCTAssertTrue(Builder.compoundKey("some,strange,event",
+                                          matchesTrackData: trackData,
+                                          delimiters: defaultKeysDelimiters))
+        XCTAssertTrue(Builder.compoundKey("123:456",
+                                          matchesTrackData: trackData,
+                                          delimiters: defaultKeysDelimiters))
+        XCTAssertTrue(Builder.compoundKey("123==456",
+                                          matchesTrackData: trackData,
+                                          delimiters: alternativeDelimiters))
+        XCTAssertTrue(Builder.compoundKey("123:456,abc:def",
+                                          matchesTrackData: trackData,
+                                          delimiters: defaultKeysDelimiters))
+        XCTAssertTrue(Builder.compoundKey("123==456&&abc==def",
+                                          matchesTrackData: trackData,
+                                          delimiters: alternativeDelimiters))
     }
 }
