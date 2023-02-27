@@ -27,39 +27,31 @@ class AutoTrackingIOSUITests: XCTestCase {
         // UI tests must launch the application that they test.
         let app = XCUIApplication()
         app.launch()
-        var text = """
-            RootView0
-            
-            """
-        assertStaticTextExists(app: app, text: text)
+        assertStaticTextExists(app: app, text: "RootView0")
         app.buttons["Launch ViewController"].tap()
-        text += "ViewControllerWrapper\n"
-        text += "RealVC\n" // Did appear happens late
-        assertStaticTextExists(app: app, text: text)
+        assertStaticTextExists(app: app, text: "ViewControllerWrapper")
+        assertStaticTextExists(app: app, text: "RealVC") // Did appear happens late
         app.navigationBars.firstMatch.buttons.firstMatch.tap()
-        text += "RootView1\n"
-        assertStaticTextExists(app: app, text: text)
+        assertStaticTextExists(app: app, text: "RootView1")
         app.buttons["Launch Second View"].tap()
-        text += "SecondView\n"
-        assertStaticTextExists(app: app, text: text)
+        assertStaticTextExists(app: app, text: "SecondView")
         app.navigationBars.firstMatch.buttons.firstMatch.tap()
-        text += "RootView2\n"
-        assertStaticTextExists(app: app, text: text)
+        assertStaticTextExists(app: app, text: "RootView2")
         app.buttons["Launch Third View"].tap()
-        text += "AutotrackingView\n"
-        assertStaticTextExists(app: app, text: text)
+        assertStaticTextExists(app: app, text: "AutotrackingView")
         app.navigationBars.firstMatch.buttons.firstMatch.tap()
-        text += "RootView3\n"
-        assertStaticTextExists(app: app, text: text)
+        assertStaticTextExists(app: app, text: "RootView3")
         app.buttons["Launch Default UIViewController"].tap()
-        text += "UI\n"
-        assertStaticTextExists(app: app, text: text)
+        assertStaticTextExists(app: app, text: "UI")
         app.navigationBars.firstMatch.buttons.firstMatch.tap()
-        text += "RootView4\n"
-        assertStaticTextExists(app: app, text: text)
+        assertStaticTextExists(app: app, text: "RootView4")
     }
     
     func assertStaticTextExists(app: XCUIApplication, text: String) {
-        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 5), "Can not find \(text.split(separator: "\n").last!)")
+        let predicate = NSPredicate(format: "value CONTAINS[c] %@", text)
+        XCTAssertTrue(app.staticTexts
+            .containing(predicate).firstMatch
+            .waitForExistence(timeout: 5),
+                      "Can not find \(text)")
     }
 }

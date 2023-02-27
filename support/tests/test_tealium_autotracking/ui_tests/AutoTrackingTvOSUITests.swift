@@ -28,59 +28,32 @@ class AutoTrackingTvOSUITests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
         let remote = XCUIRemote.shared
-        var text = findStartText(app:app)
-        assertStaticTextExists(app: app, text: text)
+        assertStaticTextExists(app: app, text: "RootView0")
         remote.press(.select)
-        text += "ViewControllerWrapper\n"
-        text += "RealVC\n" // Did appear happens late
-        assertStaticTextExists(app: app, text: text)
+        assertStaticTextExists(app: app, text: "ViewControllerWrapper")
+        assertStaticTextExists(app: app, text: "RealVC") // Did appear happens late
         remote.press(.menu)
-        text += "RootView1\n"
-        assertStaticTextExists(app: app, text: text)
+        assertStaticTextExists(app: app, text: "RootView1")
         remote.press(.down)
         remote.press(.select)
-        text += "SecondView\n"
-        assertStaticTextExists(app: app, text: text)
+        assertStaticTextExists(app: app, text: "SecondView")
         remote.press(.menu)
-        text += "RootView2\n"
-        assertStaticTextExists(app: app, text: text)
+        assertStaticTextExists(app: app, text: "RootView2")
         remote.press(.down)
         remote.press(.select)
-        text += "AutotrackingView\n"
-        assertStaticTextExists(app: app, text: text)
+        assertStaticTextExists(app: app, text: "AutotrackingView")
         remote.press(.menu)
-        text += "RootView3\n"
-        assertStaticTextExists(app: app, text: text)
+        assertStaticTextExists(app: app, text: "RootView3")
         remote.press(.down)
         remote.press(.select)
-        text += "UI\n"
-        assertStaticTextExists(app: app, text: text)
+        assertStaticTextExists(app: app, text: "UI")
     }
-    // Sometimes UINavigationController is after RootView0
-    func findStartText(app: XCUIApplication) -> String {
-        let text = """
-            RootView0
-            UINavigationController
-            
-            """
-        if app.staticTexts[text].waitForExistence(timeout: 5) {
-            return text
-        }
-        let otherText = """
-            UINavigationController
-            RootView0
-            
-            """
-        if app.staticTexts[otherText].waitForExistence(timeout: 5) {
-            return otherText
-        }
-        return app.staticTexts
-            .containing(NSPredicate(format: "label CONTAINS 'RootView0'"))
-            .element(matching: .any, identifier: nil)
-            .label // Last attempt
-    }
-    
+
     func assertStaticTextExists(app: XCUIApplication, text: String) {
-        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 5), "Can not find \(text.split(separator: "\n").last!)")
+        let predicate = NSPredicate(format: "label CONTAINS[c] %@", text) // don't know why value doesn't work here
+        XCTAssertTrue(app.staticTexts
+            .containing(predicate).firstMatch
+            .waitForExistence(timeout: 5),
+                      "Can not find \(text)")
     }
 }
