@@ -28,32 +28,24 @@ class AutoTrackingTvOSUITests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
         let remote = XCUIRemote.shared
-        assertStaticTextExists(app: app, text: "RootView0")
+        app.assertStaticTextExists(text: "RootView0")
         remote.press(.select)
-        assertStaticTextExists(app: app, text: "ViewControllerWrapper")
-        assertStaticTextExists(app: app, text: "RealVC") // Did appear happens late
+        app.assertStaticTextExists(text: "ViewControllerWrapper")
+        app.assertStaticTextExists(text: "RealVC") // Did appear happens late
         remote.press(.menu)
-        assertStaticTextExists(app: app, text: "RootView1")
+        app.assertStaticTextExists(text: "RootView1")
         remote.press(.down)
         remote.press(.select)
-        assertStaticTextExists(app: app, text: "SecondView")
+        app.assertStaticTextExists(text: "SecondView")
         remote.press(.menu)
-        assertStaticTextExists(app: app, text: "RootView2")
+        app.assertStaticTextExists(text: "RootView2")
         remote.press(.down)
         remote.press(.select)
-        assertStaticTextExists(app: app, text: "AutotrackingView")
+        app.assertStaticTextExists(text: "AutotrackingView")
         remote.press(.menu)
-        assertStaticTextExists(app: app, text: "RootView3")
+        app.assertStaticTextExists(text: "RootView3")
         remote.press(.down)
         remote.press(.select)
-        assertStaticTextExists(app: app, text: "UI")
-    }
-
-    func assertStaticTextExists(app: XCUIApplication, text: String) {
-        let predicate = NSPredicate(format: "label CONTAINS[c] %@", text) // don't know why value doesn't work here
-        XCTAssertTrue(app.staticTexts
-            .containing(predicate).firstMatch
-            .waitForExistence(timeout: 5),
-                      "Can not find \(text)")
+        app.assertStaticTextExists(text: "UI")
     }
 }

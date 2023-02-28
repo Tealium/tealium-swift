@@ -27,22 +27,14 @@ class AutoTrackingMacOSUITests: XCTestCase {
         // UI tests must launch the application that they test.
         let app = XCUIApplication()
         app.launch()
-        assertStaticTextExists(app: app, text: "RootView0")
+        app.assertStaticTextExists(text: "RootView0")
         app.buttons["Launch ViewController"].click()
-        assertStaticTextExists(app: app, text: "SomeView")
+        app.assertStaticTextExists(text: "SomeView")
         app.buttons["Launch Second View"].click()
-        assertStaticTextExists(app: app, text: "SecondView")
+        app.assertStaticTextExists(text: "SecondView")
         app.buttons["Launch ViewController"].click()
-        assertStaticTextExists(app: app, text: "SomeView")
+        app.assertStaticTextExists(text: "SomeView")
         app.buttons["Launch Third View"].click()
-        assertStaticTextExists(app: app, text: "AutotrackingView")
-    }
-    
-    func assertStaticTextExists(app: XCUIApplication, text: String) {
-        let predicate = NSPredicate(format: "value CONTAINS[c] %@", text) // don't know why label doesn't work here
-        XCTAssertTrue(app.staticTexts
-            .containing(predicate).firstMatch
-            .waitForExistence(timeout: 5),
-                      "Can not find \(text)")
+        app.assertStaticTextExists(text: "AutotrackingView")
     }
 }

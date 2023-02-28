@@ -27,31 +27,23 @@ class AutoTrackingIOSUITests: XCTestCase {
         // UI tests must launch the application that they test.
         let app = XCUIApplication()
         app.launch()
-        assertStaticTextExists(app: app, text: "RootView0")
+        app.assertStaticTextExists(text: "RootView0")
         app.buttons["Launch ViewController"].tap()
-        assertStaticTextExists(app: app, text: "ViewControllerWrapper")
-        assertStaticTextExists(app: app, text: "RealVC") // Did appear happens late
+        app.assertStaticTextExists(text: "ViewControllerWrapper")
+        app.assertStaticTextExists(text: "RealVC") // Did appear happens late
         app.navigationBars.firstMatch.buttons.firstMatch.tap()
-        assertStaticTextExists(app: app, text: "RootView1")
+        app.assertStaticTextExists(text: "RootView1")
         app.buttons["Launch Second View"].tap()
-        assertStaticTextExists(app: app, text: "SecondView")
+        app.assertStaticTextExists(text: "SecondView")
         app.navigationBars.firstMatch.buttons.firstMatch.tap()
-        assertStaticTextExists(app: app, text: "RootView2")
+        app.assertStaticTextExists(text: "RootView2")
         app.buttons["Launch Third View"].tap()
-        assertStaticTextExists(app: app, text: "AutotrackingView")
+        app.assertStaticTextExists(text: "AutotrackingView")
         app.navigationBars.firstMatch.buttons.firstMatch.tap()
-        assertStaticTextExists(app: app, text: "RootView3")
+        app.assertStaticTextExists(text: "RootView3")
         app.buttons["Launch Default UIViewController"].tap()
-        assertStaticTextExists(app: app, text: "UI")
+        app.assertStaticTextExists(text: "UI")
         app.navigationBars.firstMatch.buttons.firstMatch.tap()
-        assertStaticTextExists(app: app, text: "RootView4")
-    }
-    
-    func assertStaticTextExists(app: XCUIApplication, text: String) {
-        let predicate = NSPredicate(format: "value CONTAINS[c] %@", text)
-        XCTAssertTrue(app.staticTexts
-            .containing(predicate).firstMatch
-            .waitForExistence(timeout: 5),
-                      "Can not find \(text)")
+        app.assertStaticTextExists(text: "RootView4")
     }
 }

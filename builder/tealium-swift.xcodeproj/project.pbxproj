@@ -59,6 +59,9 @@
 		1535101A28EB032E009D9AB9 /* VisitorIdStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1535101928EB032E009D9AB9 /* VisitorIdStorageTests.swift */; };
 		1535101B28EB032E009D9AB9 /* VisitorIdStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1535101928EB032E009D9AB9 /* VisitorIdStorageTests.swift */; };
 		1535101C28EB032E009D9AB9 /* VisitorIdStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1535101928EB032E009D9AB9 /* VisitorIdStorageTests.swift */; };
+		1549A24129AE06340021817D /* XCUIApplication+AssertTextExists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1549A24029AE06340021817D /* XCUIApplication+AssertTextExists.swift */; };
+		1549A24229AE06340021817D /* XCUIApplication+AssertTextExists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1549A24029AE06340021817D /* XCUIApplication+AssertTextExists.swift */; };
+		1549A24329AE06340021817D /* XCUIApplication+AssertTextExists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1549A24029AE06340021817D /* XCUIApplication+AssertTextExists.swift */; };
 		1555F58F26E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1555F58E26E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift */; };
 		1555F59026E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1555F58E26E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift */; };
 		1555F59126E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1555F58E26E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift */; };
@@ -2191,6 +2194,7 @@
 		1535101928EB032E009D9AB9 /* VisitorIdStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorIdStorageTests.swift; sourceTree = "<group>"; };
 		15372735279081B60080D563 /* StoreKitTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKitTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/StoreKitTest.framework; sourceTree = DEVELOPER_DIR; };
 		1537275127908B2D0080D563 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS15.2.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
+		1549A24029AE06340021817D /* XCUIApplication+AssertTextExists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIApplication+AssertTextExists.swift"; sourceTree = "<group>"; };
 		1555F58E26E62DDC00AFDC3D /* TealiumInstanceManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TealiumInstanceManagerTests.swift; sourceTree = "<group>"; };
 		1555F5CA26E6692400AFDC3D /* TealiumAutotrackingTests-macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TealiumAutotrackingTests-macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1555F5CE26E6769E00AFDC3D /* MockInMemoryDataLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockInMemoryDataLayer.swift; sourceTree = "<group>"; };
@@ -3057,6 +3061,7 @@
 				15D43D5B26F20A68004E52FE /* AutoTrackingTvOSUITests.swift */,
 				15F8E24C26F0B3F700C4F6A1 /* AutoTrackingMacOSUITests.swift */,
 				15D4AFD926EB9CE6004316D0 /* AutoTrackingIOSUITests.swift */,
+				1549A24029AE06340021817D /* XCUIApplication+AssertTextExists.swift */,
 			);
 			path = ui_tests;
 			sourceTree = "<group>";
@@ -6116,6 +6121,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1516A2E926EF7FF0003DF8F2 /* AutoTrackingIOSUITests.swift in Sources */,
+				1549A24129AE06340021817D /* XCUIApplication+AssertTextExists.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6196,6 +6202,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				15D43D5C26F20A68004E52FE /* AutoTrackingTvOSUITests.swift in Sources */,
+				1549A24329AE06340021817D /* XCUIApplication+AssertTextExists.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6243,6 +6250,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				15F8E24D26F0B3F700C4F6A1 /* AutoTrackingMacOSUITests.swift in Sources */,
+				1549A24229AE06340021817D /* XCUIApplication+AssertTextExists.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
