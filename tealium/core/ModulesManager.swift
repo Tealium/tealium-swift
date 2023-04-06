@@ -62,15 +62,16 @@ public class ModulesManager {
     }
     var config: TealiumConfig {
         willSet {
-            self.dispatchManager?.config = newValue
-            self.connectivityManager.config = newValue
-            self.logger?.config = newValue
-            self.context.config = newValue
-            self.updateConfig(context: self.context)
-            self.modules.forEach {
-                var module = $0
-                module.config = newValue
+            updateConfig(newValue)
+            if newValue.isCollectEnabled == false {
+                disableModule(id: ModuleNames.collect)
             }
+
+            if newValue.isTagManagementEnabled == false {
+                disableModule(id: ModuleNames.tagmanagement)
+            }
+
+            self.setupDispatchers(context: context)
         }
     }
     private var cachedTrackData: [String: Any]?
@@ -90,10 +91,11 @@ public class ModulesManager {
             self.remotePublishSettingsRetriever = TealiumPublishSettingsRetriever(config: self.config, delegate: self)
             if let remoteConfig = self.remotePublishSettingsRetriever?.cachedSettings?.newConfig(with: self.config) {
                 self.config = remoteConfig
+                self.updateConfig(self.config) // Doesn't get called in the willSet
             }
         }
         self.logger = self.config.logger
-        self.setupDispatchers(context: context)
+        self.setupDispatchers(context: self.context) // use self.context as it might have changed for cached publish settings
         self.setupHostedDataLayer(config: self.config)
         self.setupConsentManagerModule(config: self.config)
         self.setupTimedEventScheduler()
@@ -116,17 +118,15 @@ public class ModulesManager {
         }
     }
 
-    func updateConfig(context: TealiumContext) {
-        let config = context.config
-        if config.isCollectEnabled == false {
-            disableModule(id: ModuleNames.collect)
+    func updateConfig(_ newConfig: TealiumConfig) {
+        self.dispatchManager?.config = newConfig
+        self.connectivityManager.config = newConfig
+        self.logger?.config = newConfig
+        self.context.config = newConfig
+        self.modules.forEach {
+            var module = $0
+            module.config = newConfig
         }
-
-        if config.isTagManagementEnabled == false {
-            disableModule(id: ModuleNames.tagmanagement)
-        }
-
-        self.setupDispatchers(context: context)
     }
 
     func addDispatchListener(_ listener: DispatchListener) {
