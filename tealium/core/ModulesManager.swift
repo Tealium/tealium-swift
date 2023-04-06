@@ -23,7 +23,7 @@ enum ModulesManagerLogMessages {
 public class ModulesManager {
     // must store a copy of the initial config to allow locally-overridden properties to take precedence over remote ones. These would otherwise be lost after the first update.
     var originalConfig: TealiumConfig
-    var remotePublishSettingsRetriever: TealiumPublishSettingsRetriever?
+    var remotePublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol?
     var collectorTypes: [Collector.Type] {
         if let optionalCollectors = config.collectors {
             return [AppDataModule.self] + optionalCollectors
@@ -79,7 +79,8 @@ public class ModulesManager {
 
     init (_ context: TealiumContext,
           optionalCollectors: [String]? = nil,
-          knownDispatchers: [String]? = nil) {
+          knownDispatchers: [String]? = nil,
+          remotePublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol? = nil) {
         self.context = context
         self.originalConfig = context.config.copy
         self.config = context.config
@@ -88,7 +89,7 @@ public class ModulesManager {
         }
         connectivityManager.addConnectivityDelegate(delegate: self)
         if self.config.shouldUseRemotePublishSettings {
-            self.remotePublishSettingsRetriever = TealiumPublishSettingsRetriever(config: self.config, delegate: self)
+            self.remotePublishSettingsRetriever = remotePublishSettingsRetriever ?? TealiumPublishSettingsRetriever(config: self.config, delegate: self)
             if let remoteConfig = self.remotePublishSettingsRetriever?.cachedSettings?.newConfig(with: self.config) {
                 self.config = remoteConfig
                 self.updateConfig(self.config) // Doesn't get called in the willSet

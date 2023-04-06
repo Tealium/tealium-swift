@@ -10,7 +10,12 @@ protocol TealiumPublishSettingsDelegate: AnyObject {
     func didUpdate(_ publishSettings: RemotePublishSettings)
 }
 
-class TealiumPublishSettingsRetriever {
+public protocol TealiumPublishSettingsRetrieverProtocol {
+    var cachedSettings: RemotePublishSettings? { get }
+    func refresh()
+}
+
+class TealiumPublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol {
 
     var diskStorage: TealiumDiskStorageProtocol
     var urlSession: URLSessionProtocol?

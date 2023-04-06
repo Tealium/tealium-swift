@@ -311,6 +311,29 @@ class TealiumModulesManagerTests: XCTestCase {
         let newCachedData = modulesManager.allTrackData(retrieveCachedData: true)
         XCTAssertEqual(newCachedData["tealium_event"] as? String, "someValue")
     }
+    
+    func testModulesManagerPropagatesConfigUpdatesOnPublishSettingsCache() {
+        let defaultSettings = RemotePublishSettings()
+        let retriever = MockPublishSettingsRetriever(cachedSettings: defaultSettings)
+        let config = testTealiumConfig.copy
+        config.dispatchers = [Dispatchers.Collect]
+        let context = TestTealiumHelper.context(with: config)
+        let modulesManager = ModulesManager(context, remotePublishSettingsRetriever: retriever)
+        let collect = modulesManager.dispatchers.first(where: { $0.id == ModuleNames.collect})
+        XCTAssertNotNil(collect)
+        XCTAssertNotEqual(collect?.config, config)
+    }
+    
+    func testModulesManagerStaysTheSameWithoutCachedSettings() {
+        let retriever = MockPublishSettingsRetriever()
+        let config = testTealiumConfig.copy
+        config.dispatchers = [Dispatchers.Collect]
+        let context = TestTealiumHelper.context(with: config)
+        let modulesManager = ModulesManager(context, remotePublishSettingsRetriever: retriever)
+        let collect = modulesManager.dispatchers.first(where: { $0.id == ModuleNames.collect})
+        XCTAssertNotNil(collect)
+        XCTAssertEqual(collect?.config, config)
+    }
 
 }
 
@@ -401,4 +424,13 @@ class DummyDispatchManagerSendTrack: DispatchManagerProtocol {
         return true
     }
 
+}
+
+
+struct MockPublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol {
+    var cachedSettings: RemotePublishSettings?
+    
+    func refresh() {
+        
+    }
 }

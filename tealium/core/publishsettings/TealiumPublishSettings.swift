@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RemotePublishSettings: Codable {
+public struct RemotePublishSettings: Codable {
 
     var batterySaver: Bool
     var dispatchExpiration: Int
@@ -36,6 +36,19 @@ struct RemotePublishSettings: Codable {
         case lastFetch
     }
     // swiftlint:enable identifier_name
+    init() {
+        batterySaver = true
+        dispatchExpiration = 1
+        collectEnabled = true
+        tagManagementEnabled = true
+        batchSize = 1
+        minutesBetweenRefresh = 1
+        dispatchQueueLimit = 1
+        overrideLog = .debug
+        wifiOnlySending = true
+        isEnabled = true
+        lastFetch = Date()
+    }
 
     public init(from decoder: Decoder) throws {
         do {
