@@ -17,11 +17,11 @@ var defaultTealiumConfig: TealiumConfig { TealiumConfig(account: "tealiummobile"
                                                         environment: "dev",
                                                         options: nil)
 }
-
+let config = testTealiumConfig
 class TealiumModulesManagerTests: XCTestCase {
-
+    lazy var context = TestTealiumHelper.context(with: config)
     var modulesManager: ModulesManager {
-        let config = testTealiumConfig
+        let config = context.config
         config.shouldUseRemotePublishSettings = false
         #if os(iOS)
         config.dispatchers = [Dispatchers.TagManagement, Dispatchers.Collect]
@@ -30,9 +30,13 @@ class TealiumModulesManagerTests: XCTestCase {
         #endif
         config.logLevel = TealiumLogLevel.error
         config.loggerType = .print
-        let context = TestTealiumHelper.context(with: config)
-        let modulesManager = ModulesManager(context)
+        return getModulesManager(context, remotePublishSettingsRetriever: nil)
+    }
+    
+    func getModulesManager(_ context: TealiumContext, remotePublishSettingsRetriever retriever: TealiumPublishSettingsRetrieverProtocol?) -> ModulesManager {
+        let modulesManager = ModulesManager(context, remotePublishSettingsRetriever: retriever)
         modulesManager.connectionRestored()
+        modulesManager.dispatchValidators.removeAll() // TimedEvents crashes due to context.config being unowed
         return modulesManager
     }
 
@@ -312,29 +316,95 @@ class TealiumModulesManagerTests: XCTestCase {
         XCTAssertEqual(newCachedData["tealium_event"] as? String, "someValue")
     }
     
-    func testModulesManagerPropagatesConfigUpdatesOnPublishSettingsCache() {
+    func testPropagatesConfigUpdatesOnPublishSettingsCache() {
         let defaultSettings = RemotePublishSettings()
         let retriever = MockPublishSettingsRetriever(cachedSettings: defaultSettings)
-        let config = testTealiumConfig.copy
-        config.dispatchers = [Dispatchers.Collect]
-        let context = TestTealiumHelper.context(with: config)
-        let modulesManager = ModulesManager(context, remotePublishSettingsRetriever: retriever)
-        let collect = modulesManager.dispatchers.first(where: { $0.id == ModuleNames.collect})
-        XCTAssertNotNil(collect)
-        XCTAssertNotEqual(collect?.config, config)
-    }
-    
-    func testModulesManagerStaysTheSameWithoutCachedSettings() {
-        let retriever = MockPublishSettingsRetriever()
-        let config = testTealiumConfig.copy
-        config.dispatchers = [Dispatchers.Collect]
-        let context = TestTealiumHelper.context(with: config)
-        let modulesManager = ModulesManager(context, remotePublishSettingsRetriever: retriever)
-        let collect = modulesManager.dispatchers.first(where: { $0.id == ModuleNames.collect})
-        XCTAssertNotNil(collect)
-        XCTAssertEqual(collect?.config, config)
+        let config = context.config
+        config.shouldUseRemotePublishSettings = true
+        context.config.dispatchers = [Dispatchers.Collect]
+        TealiumQueues.backgroundSerialQueue.sync {
+            let modulesManager = getModulesManager(context, remotePublishSettingsRetriever: retriever)
+            let collect = modulesManager.dispatchers.first(where: { $0.id == ModuleNames.collect})
+            XCTAssertNotNil(collect)
+            XCTAssertNotEqual(collect!.config, context.config)
+        }
     }
 
+    func testConfigStaysTheSameWithoutCachedSettings() {
+        let retriever = MockPublishSettingsRetriever()
+        context.config.dispatchers = [Dispatchers.Collect]
+        config.shouldUseRemotePublishSettings = true
+        TealiumQueues.backgroundSerialQueue.sync {
+            let modulesManager = getModulesManager(context, remotePublishSettingsRetriever: retriever)
+            let collect = modulesManager.dispatchers.first(where: { $0.id == ModuleNames.collect})
+            XCTAssertNotNil(collect)
+            XCTAssertEqual(collect?.config, context.config)
+        }
+    }
+
+    func testCollectIsDisabledWithPublishSettings() {
+        config.shouldUseRemotePublishSettings = true
+        var defaultSettings = RemotePublishSettings()
+        defaultSettings.collectEnabled = false
+        let retriever = MockPublishSettingsRetriever(cachedSettings: defaultSettings)
+        context.config.dispatchers = [Dispatchers.Collect]
+        TealiumQueues.backgroundSerialQueue.sync {
+            let modulesManager = getModulesManager(context, remotePublishSettingsRetriever: retriever)
+            let collect = modulesManager.dispatchers.first(where: { $0.id == ModuleNames.collect})
+            XCTAssertNil(collect)
+        }
+    }
+    #if os(iOS)
+    func testTagManagementIsDisabledWithPublishSettings() {
+        config.shouldUseRemotePublishSettings = true
+        var defaultSettings = RemotePublishSettings()
+        defaultSettings.tagManagementEnabled = false
+        let retriever = MockPublishSettingsRetriever(cachedSettings: defaultSettings)
+        context.config.dispatchers = [Dispatchers.Collect, Dispatchers.TagManagement]
+        TealiumQueues.backgroundSerialQueue.sync {
+            let modulesManager = getModulesManager(context, remotePublishSettingsRetriever: retriever)
+            let collect = modulesManager.dispatchers.first(where: { $0.id == ModuleNames.collect})
+            let tagManagement = modulesManager.dispatchers.first(where: { $0.id == ModuleNames.tagmanagement})
+            XCTAssertNotNil(collect)
+            XCTAssertNil(tagManagement)
+        }
+    }
+    #endif
+
+    func testCollectIsDisabledWhenUpdatingPublishSettings() {
+        config.shouldUseRemotePublishSettings = true
+        var defaultSettings = RemotePublishSettings()
+        let retriever = MockPublishSettingsRetriever(cachedSettings: defaultSettings)
+        context.config.dispatchers = [Dispatchers.Collect]
+        TealiumQueues.backgroundSerialQueue.sync {
+            let modulesManager = getModulesManager(context, remotePublishSettingsRetriever: retriever)
+            let getCollect = {modulesManager.dispatchers.first(where: { $0.id == ModuleNames.collect})}
+            XCTAssertNotNil(getCollect())
+            defaultSettings.collectEnabled = false
+            modulesManager.didUpdate(defaultSettings)
+            XCTAssertNil(getCollect())
+        }
+    }
+    #if os(iOS)
+    func testTagManagementIsDisabledWhenUpdatingPublishSettings() {
+        config.shouldUseRemotePublishSettings = true
+        var defaultSettings = RemotePublishSettings()
+        let retriever = MockPublishSettingsRetriever(cachedSettings: defaultSettings)
+        context.config.dispatchers = [Dispatchers.Collect, Dispatchers.TagManagement]
+        TealiumQueues.backgroundSerialQueue.sync {
+            let modulesManager = getModulesManager(context, remotePublishSettingsRetriever: retriever)
+            let getCollect = {modulesManager.dispatchers.first(where: { $0.id == ModuleNames.collect})}
+            let getTagManagement = {modulesManager.dispatchers.first(where: { $0.id == ModuleNames.tagmanagement})}
+            XCTAssertNotNil(getCollect())
+            XCTAssertNotNil(getTagManagement())
+        
+            defaultSettings.tagManagementEnabled = false
+            modulesManager.didUpdate(defaultSettings)
+            XCTAssertNotNil(getCollect())
+            XCTAssertNil(getTagManagement())
+        }
+    }
+    #endif
 }
 
 extension TealiumModulesManagerTests: ModuleDelegate {
