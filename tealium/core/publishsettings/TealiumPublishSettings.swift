@@ -128,7 +128,10 @@ public struct RemotePublishSettings: Codable {
 
         let overrideLog = config.logLevel
         config.logLevel = (overrideLog ?? self.overrideLog)
-
+        if var logger = config.logger {
+            logger.config = config
+            config.logger = logger
+        }
         return config
     }
 }

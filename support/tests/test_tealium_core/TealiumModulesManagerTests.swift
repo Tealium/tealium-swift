@@ -17,12 +17,13 @@ var defaultTealiumConfig: TealiumConfig { TealiumConfig(account: "tealiummobile"
                                                         environment: "dev",
                                                         options: nil)
 }
-let config = testTealiumConfig
+
+fileprivate let sharedConfig = testTealiumConfig
+
 class TealiumModulesManagerTests: XCTestCase {
-    lazy var context = TestTealiumHelper.context(with: config)
+    lazy var context = contextForConfig(sharedConfig)
     var modulesManager: ModulesManager {
         let config = context.config
-        config.shouldUseRemotePublishSettings = false
         #if os(iOS)
         config.dispatchers = [Dispatchers.TagManagement, Dispatchers.Collect]
         #else
@@ -39,10 +40,16 @@ class TealiumModulesManagerTests: XCTestCase {
         modulesManager.dispatchValidators.removeAll() // TimedEvents crashes due to context.config being unowed
         return modulesManager
     }
-
-    func modulesManagerForConfig(config: TealiumConfig) -> ModulesManager {
-        let context = TestTealiumHelper.context(with: config)
-        return ModulesManager(context)
+    
+    func contextForConfig(_ config: TealiumConfig, dataLayer: DataLayerManagerProtocol? = nil) -> TealiumContext {
+        // Avoid the config passed here to be modified by the Tealium instance created for the context
+        var context = TestTealiumHelper.context(with: testTealiumConfig, dataLayer: dataLayer)
+        context.config = config
+        return context
+    }
+    
+    func modulesManagerForConfig(config: TealiumConfig, dataLayer: DataLayerManagerProtocol? = nil) -> ModulesManager {
+        return getModulesManager(contextForConfig(config, dataLayer: dataLayer), remotePublishSettingsRetriever: nil)
     }
 
     override func setUp() {
@@ -59,7 +66,7 @@ class TealiumModulesManagerTests: XCTestCase {
     func testAddCollector() {
         let config = testTealiumConfig.copy
         config.collectors = [DummyCollector.self, DummyCollector.self]
-        let context = TestTealiumHelper.context(with: config, dataLayer: DummyDataManagerNoData())
+        let context = contextForConfig(config, dataLayer: DummyDataManagerNoData())
         TealiumQueues.backgroundSerialQueue.sync {
             let modulesManager = ModulesManager(context)
             
@@ -75,7 +82,6 @@ class TealiumModulesManagerTests: XCTestCase {
     }
 
     func testDisableModule() {
-        let context = TestTealiumHelper.context(with: testTealiumConfig, dataLayer: DummyDataManagerNoData())
         let collector = DummyCollector(context: context, delegate: self, diskStorage: nil) { _, _ in
 
         }
@@ -186,21 +192,18 @@ class TealiumModulesManagerTests: XCTestCase {
     }
 
     func testConfigPropertyUpdate() {
-        let collector = DummyCollector(context: self.modulesManager.context, delegate: self, diskStorage: nil) { _, _  in
-
-        }
+        let configCopy = testTealiumConfig.copy
+        let collector = DummyCollector(config: configCopy)
+        let modulesManager = self.modulesManager
         TealiumExpectations.expectations["configPropertyUpdate"] = expectation(description: "configPropertyUpdate")
         TealiumExpectations.expectations["configPropertyUpdateModule"] = expectation(description: "configPropertyUpdateModule")
-        let modulesManager = self.modulesManager
 
         modulesManager.collectors = [collector]
         modulesManager.dispatchListeners = []
         modulesManager.dispatchValidators = []
-        let connectivity = ConnectivityModule(context: self.modulesManager.context, delegate: nil, diskStorage: nil) { _ in }
-        modulesManager.dispatchManager = DummyDispatchManagerConfigUpdate(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: connectivity, config: testTealiumConfig)
-        let config = testTealiumConfig
-        config.logLevel = .info
-        modulesManager.config = config
+        let connectivity = ConnectivityModule(context: modulesManager.context, delegate: nil, diskStorage: nil) { _ in }
+        modulesManager.dispatchManager = DummyDispatchManagerConfigUpdate(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: connectivity, config: configCopy)
+        modulesManager.config = configCopy
         XCTAssertEqual(modulesManager.config, modulesManager.dispatchManager!.config)
         if let configPropertyUpdateModule = TealiumExpectations.expectations["configPropertyUpdateModule"] {
             if let configPropertyUpdate = TealiumExpectations.expectations["configPropertyUpdate"] {
@@ -215,10 +218,7 @@ class TealiumModulesManagerTests: XCTestCase {
     }
 
     func testSetModules() {
-        let context = TestTealiumHelper.context(with: testTealiumConfig, dataLayer: DummyDataManagerNoData())
-        let collector = DummyCollector(context: context, delegate: self, diskStorage: nil) { _, _  in
-
-        }
+        let collector = DummyCollector(config: context.config)
         let modulesManager = ModulesManager(context)
         modulesManager.dispatchListeners = []
         modulesManager.dispatchValidators = []
@@ -228,28 +228,23 @@ class TealiumModulesManagerTests: XCTestCase {
     }
 
     func testDispatchValidatorAddedFromConfig() {
-        let validator = DummyCollector(context: self.modulesManager.context, delegate: self, diskStorage: nil) { _, _  in
-
-        }
-        let config = testTealiumConfig
+        let config = testTealiumConfig.copy
+        let validator = DummyCollector(config: config)
         config.dispatchValidators = [validator]
-        let modulesManager = self.modulesManagerForConfig(config: config)
+        let modulesManager = ModulesManager(contextForConfig(config))
         XCTAssertTrue(modulesManager.dispatchValidators.contains(where: { $0.id == "Dummy" }))
     }
 
     func testDispatchListenerAddedFromConfig() {
-        let listener = DummyCollector(context: self.modulesManager.context, delegate: self, diskStorage: nil) { _, _  in
-
-        }
         let config = testTealiumConfig
+        let listener = DummyCollector(config: config)
         config.dispatchListeners = [listener]
         let modulesManager = self.modulesManagerForConfig(config: config)
         XCTAssertTrue(modulesManager.dispatchListeners.contains(where: { ($0 as! DispatchValidator).id == "Dummy" }))
     }
 
     func testGatherTrackData() {
-        let context = TestTealiumHelper.context(with: testTealiumConfig, dataLayer: DummyDataManagerNoData())
-        let modulesManager = ModulesManager(context)
+        let modulesManager = self.modulesManager
         modulesManager.collectors = []
         let collector = DummyCollector(context: context, delegate: self, diskStorage: nil) { _, _  in
 
@@ -293,7 +288,7 @@ class TealiumModulesManagerTests: XCTestCase {
         XCTAssertNotNil(data["migrated_lifecycle"] as! [String: Any])
         XCTAssertEqual(data["consent_status"] as! Int, 1)
     }
-    
+
     func testAllTrackData() {
         let modulesManager = self.modulesManager
         modulesManager.collectors = []
@@ -306,44 +301,49 @@ class TealiumModulesManagerTests: XCTestCase {
         XCTAssertNotNil(data["dummy"])
         XCTAssertNotNil(data["dummyQueue"])
         XCTAssertNotNil(data["sessionData"])
-        
+
         let cachedData = modulesManager.allTrackData(retrieveCachedData: true)
         XCTAssertTrue(data.equal(to: cachedData))
-        
+
         modulesManager.sendTrack(TealiumTrackRequest(data: ["tealium_event": "someValue"]))
-        
+
         let newCachedData = modulesManager.allTrackData(retrieveCachedData: true)
         XCTAssertEqual(newCachedData["tealium_event"] as? String, "someValue")
     }
-    
+
     func testPropagatesConfigUpdatesOnPublishSettingsCache() {
-        let defaultSettings = RemotePublishSettings()
-        let retriever = MockPublishSettingsRetriever(cachedSettings: defaultSettings)
-        let config = context.config
-        config.shouldUseRemotePublishSettings = true
+        let retriever = MockPublishSettingsRetriever(cachedSettings: RemotePublishSettings())
         context.config.dispatchers = [Dispatchers.Collect]
+        context.config.logger = context.config.getNewLogger()
         TealiumQueues.backgroundSerialQueue.sync {
             let modulesManager = getModulesManager(context, remotePublishSettingsRetriever: retriever)
             let collect = modulesManager.dispatchers.first(where: { $0.id == ModuleNames.collect})
             XCTAssertNotNil(collect)
             XCTAssertNotEqual(collect!.config, context.config)
+            XCTAssertNotEqual(modulesManager.connectivityManager.config, context.config)
+            XCTAssertNotEqual(modulesManager.dispatchManager!.config, context.config)
+            XCTAssertNotEqual(modulesManager.logger!.config!, context.config)
+            XCTAssertNotEqual(modulesManager.context.config, context.config)
         }
     }
 
     func testConfigStaysTheSameWithoutCachedSettings() {
         let retriever = MockPublishSettingsRetriever()
         context.config.dispatchers = [Dispatchers.Collect]
-        config.shouldUseRemotePublishSettings = true
+        context.config.logger = context.config.getNewLogger()
         TealiumQueues.backgroundSerialQueue.sync {
             let modulesManager = getModulesManager(context, remotePublishSettingsRetriever: retriever)
             let collect = modulesManager.dispatchers.first(where: { $0.id == ModuleNames.collect})
             XCTAssertNotNil(collect)
             XCTAssertEqual(collect?.config, context.config)
+            XCTAssertEqual(modulesManager.connectivityManager.config, context.config)
+            XCTAssertEqual(modulesManager.dispatchManager!.config, context.config)
+            XCTAssertEqual(modulesManager.logger!.config!, context.config)
+            XCTAssertEqual(modulesManager.context.config, context.config)
         }
     }
 
     func testCollectIsDisabledWithPublishSettings() {
-        config.shouldUseRemotePublishSettings = true
         var defaultSettings = RemotePublishSettings()
         defaultSettings.collectEnabled = false
         let retriever = MockPublishSettingsRetriever(cachedSettings: defaultSettings)
@@ -356,7 +356,6 @@ class TealiumModulesManagerTests: XCTestCase {
     }
     #if os(iOS)
     func testTagManagementIsDisabledWithPublishSettings() {
-        config.shouldUseRemotePublishSettings = true
         var defaultSettings = RemotePublishSettings()
         defaultSettings.tagManagementEnabled = false
         let retriever = MockPublishSettingsRetriever(cachedSettings: defaultSettings)
@@ -372,7 +371,6 @@ class TealiumModulesManagerTests: XCTestCase {
     #endif
 
     func testCollectIsDisabledWhenUpdatingPublishSettings() {
-        config.shouldUseRemotePublishSettings = true
         var defaultSettings = RemotePublishSettings()
         let retriever = MockPublishSettingsRetriever(cachedSettings: defaultSettings)
         context.config.dispatchers = [Dispatchers.Collect]
@@ -387,7 +385,7 @@ class TealiumModulesManagerTests: XCTestCase {
     }
     #if os(iOS)
     func testTagManagementIsDisabledWhenUpdatingPublishSettings() {
-        config.shouldUseRemotePublishSettings = true
+        sharedConfig.shouldUseRemotePublishSettings = true
         var defaultSettings = RemotePublishSettings()
         let retriever = MockPublishSettingsRetriever(cachedSettings: defaultSettings)
         context.config.dispatchers = [Dispatchers.Collect, Dispatchers.TagManagement]
@@ -397,7 +395,7 @@ class TealiumModulesManagerTests: XCTestCase {
             let getTagManagement = {modulesManager.dispatchers.first(where: { $0.id == ModuleNames.tagmanagement})}
             XCTAssertNotNil(getCollect())
             XCTAssertNotNil(getTagManagement())
-        
+
             defaultSettings.tagManagementEnabled = false
             modulesManager.didUpdate(defaultSettings)
             XCTAssertNotNil(getCollect())
@@ -498,6 +496,10 @@ class DummyDispatchManagerSendTrack: DispatchManagerProtocol {
 
 
 struct MockPublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol {
+    init(cachedSettings: RemotePublishSettings? = nil) {
+        sharedConfig.shouldUseRemotePublishSettings = true
+        self.cachedSettings = cachedSettings
+    }
     var cachedSettings: RemotePublishSettings?
     
     func refresh() {
