@@ -6,12 +6,6 @@
 //
 
 import Foundation
-import os.signpost
-
-@available(iOS 15.0, *)
-extension OSSignposter {
-    static let data = OSSignposter(subsystem: "com.tealium", category: "DataLayer")
-}
 
 public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, TimestampCollection {
 
@@ -44,15 +38,8 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
             currentStaticData[TealiumDataKey.dataSource] = dataSource
         }
         add(data: currentStaticData, expiry: .untilRestart)
-        var state: Any?
-        if #available(iOS 15.0, *) {
-            state = OSSignposter.data.beginInterval("Session")
-        }
         TealiumQueues.backgroundSerialQueue.async { // Read the data layer for the session on a background thread
             self.refreshSession()
-        if #available(iOS 15.0, *) {
-            OSSignposter.data.endInterval("Session", state as! OSSignpostIntervalState)
-        }
         }
     }
 
@@ -67,18 +54,10 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
     /// - Returns: `[String: Any]` containing all stored event data.
     public var all: [String: Any] {
         get {
-            var state: Any?
-            if #available(iOS 15.0, *) {
-                state = OSSignposter.data.beginInterval("Reading")
-            }
-            
             var allData = [String: Any]()
             TealiumQueues.backgroundConcurrentQueue.read {
                 allData += self.restartData
                 allData += self.allSessionData
-            }
-            if #available(iOS 15.0, *) {
-                OSSignposter.data.endInterval("Reading", state as! OSSignpostIntervalState)
             }
             return allData
         }
@@ -160,10 +139,6 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
     ///   - expiration: `Expiry` level.
     public func add(data: [String: Any],
                     expiry: Expiry = .session) {
-        var state: Any?
-        if #available(iOS 15.0, *) {
-            state = OSSignposter.data.beginInterval("Writing")
-        }
         TealiumQueues.backgroundSerialQueue.async {
             self._onDataUpdated.publish(data)
         }
@@ -178,9 +153,6 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
                 dataToInsert = data
             }
             self.persistentDataStorage?.insert(from: dataToInsert, expiry: expiry)
-            if #available(iOS 15.0, *) {
-                OSSignposter.data.endInterval("Writing", state as! OSSignpostIntervalState)
-            }
         }
     }
 

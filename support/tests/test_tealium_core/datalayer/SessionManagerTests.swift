@@ -22,6 +22,9 @@ class SessionManagerTests: XCTestCase {
     override func setUpWithError() throws {
         config = TealiumConfig(account: "testAccount", profile: "testProfile", environment: "testEnvironment")
         eventDataManager = DataLayer(config: config, diskStorage: mockDiskStorage, sessionStarter: mockSessionStarter)
+        TealiumQueues.backgroundSerialQueue.sync {
+            print("") // just wait for session to be started
+        }
     }
 
     override func tearDownWithError() throws {

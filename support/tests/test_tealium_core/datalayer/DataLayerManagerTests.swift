@@ -21,6 +21,9 @@ class DataLayerManagerTests: XCTestCase {
         mockDiskStorage = MockDataLayerDiskStorage()
         mockSessionStarter = SessionStarter(config: config, urlSession: MockURLSessionSessionStarter())
         eventDataManager = DataLayer(config: config, diskStorage: mockDiskStorage, sessionStarter: mockSessionStarter)
+        TealiumQueues.backgroundSerialQueue.sync {
+            print("") // just wait for session to be started
+        }
     }
 
     override func tearDownWithError() throws {
