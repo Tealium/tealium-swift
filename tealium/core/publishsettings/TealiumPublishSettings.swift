@@ -19,7 +19,7 @@ public struct RemotePublishSettings: Codable {
     var overrideLog: TealiumLogLevel
     var wifiOnlySending: Bool
     var isEnabled: Bool
-    var lastFetch: Date
+    var etag: String?
     // swiftlint:disable identifier_name
     enum CodingKeys: String, CodingKey {
         case v5 = "5"
@@ -33,7 +33,7 @@ public struct RemotePublishSettings: Codable {
         case override_log
         case wifi_only_sending
         case _is_enabled
-        case lastFetch
+        case etag
     }
     // swiftlint:enable identifier_name
     init() {
@@ -47,7 +47,6 @@ public struct RemotePublishSettings: Codable {
         overrideLog = .debug
         wifiOnlySending = true
         isEnabled = true
-        lastFetch = Date()
     }
 
     public init(from decoder: Decoder) throws {
@@ -78,7 +77,7 @@ public struct RemotePublishSettings: Codable {
 
             self.wifiOnlySending = try v5.decode(String.self, forKey: .wifi_only_sending) == "true" ? true : false
             self.isEnabled = try v5.decode(String.self, forKey: ._is_enabled) == "true" ? true : false
-            self.lastFetch = Date()
+            self.etag = try v5.decodeIfPresent(String.self, forKey: .etag)
         } catch {
             let values = try decoder.container(keyedBy: CodingKeys.self)
             self.batterySaver = try values.decode(Bool.self, forKey: .battery_saver)
@@ -94,7 +93,7 @@ public struct RemotePublishSettings: Codable {
 
             self.wifiOnlySending = try values.decode(Bool.self, forKey: .wifi_only_sending)
             self.isEnabled = try values.decode(Bool.self, forKey: ._is_enabled)
-            self.lastFetch = (try? values.decode(Date.self, forKey: .lastFetch)) ?? Date()
+            self.etag = try values.decodeIfPresent(String.self, forKey: .etag)
         }
     }
 
@@ -110,7 +109,7 @@ public struct RemotePublishSettings: Codable {
         try container.encode(overrideLog.description, forKey: .override_log)
         try container.encode(wifiOnlySending, forKey: .wifi_only_sending)
         try container.encode(isEnabled, forKey: ._is_enabled)
-        try container.encode(lastFetch, forKey: .lastFetch)
+        try container.encode(etag, forKey: .etag)
     }
 
     public func newConfig(with config: TealiumConfig) -> TealiumConfig {

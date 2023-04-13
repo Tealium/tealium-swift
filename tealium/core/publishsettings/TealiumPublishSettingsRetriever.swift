@@ -22,6 +22,7 @@ class TealiumPublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol {
     weak var delegate: TealiumPublishSettingsDelegate?
     var cachedSettings: RemotePublishSettings?
     var config: TealiumConfig
+    var lastFetch: Date?
     var fetching = false
     var publishSettingsURL: URL? {
         if let urlString = config.publishSettingsURL,
@@ -53,7 +54,7 @@ class TealiumPublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol {
             getAndSave()
             return
         }
-        guard let date = cachedSettings.lastFetch.addMinutes(cachedSettings.minutesBetweenRefresh), Date() > date else {
+        guard let date = lastFetch?.addMinutes(cachedSettings.minutesBetweenRefresh), Date() > date else {
             return
         }
         getAndSave()
@@ -71,15 +72,14 @@ class TealiumPublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol {
         }
 
         getRemoteSettings(url: mobileHTML,
-                          lastFetch: cachedSettings?.lastFetch) { settings in
+                          etag: cachedSettings?.etag) { settings in
             TealiumQueues.backgroundSerialQueue.async {
+                self.lastFetch = Date()
                 self.fetching = false
                 if let settings = settings {
                     self.cachedSettings = settings
                     self.diskStorage.save(settings, completion: nil)
                     self.delegate?.didUpdate(settings)
-                } else {
-                    self.cachedSettings?.lastFetch = Date()
                 }
             }
         }
@@ -87,13 +87,13 @@ class TealiumPublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol {
     }
 
     func getRemoteSettings(url: URL,
-                           lastFetch: Date?,
+                           etag: String?,
                            completion: @escaping (RemotePublishSettings?) -> Void) {
 
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        if let lastFetch = lastFetch {
-            request.setValue(lastFetch.httpIfModifiedHeader, forHTTPHeaderField: "If-Modified-Since")
+        if let etag = etag {
+            request.setValue(etag, forHTTPHeaderField: "If-None-Match")
             request.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
         }
 
@@ -106,7 +106,7 @@ class TealiumPublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol {
 
             switch HttpStatusCodes(rawValue: response.statusCode) {
             case .ok:
-                guard let data = data, let publishSettings = self.getPublishSettings(from: data) else {
+                guard let data = data, let publishSettings = self.getPublishSettings(from: data, etag: response.etag) else {
                     completion(nil)
                     return
                 }
@@ -118,7 +118,7 @@ class TealiumPublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol {
         }.resume()
     }
 
-    func getPublishSettings(from data: Data) -> RemotePublishSettings? {
+    func getPublishSettings(from data: Data, etag: String?) -> RemotePublishSettings? {
         guard let dataString = String(data: data, encoding: .utf8),
               let startScript = dataString.range(of: "var mps = ") else {
             return nil
@@ -135,10 +135,27 @@ class TealiumPublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol {
             return nil
         }
 
-        return try? JSONDecoder().decode(RemotePublishSettings.self, from: data)
+        var settings = try? JSONDecoder().decode(RemotePublishSettings.self, from: data)
+        settings?.etag = etag
+        return settings
     }
 
     deinit {
         urlSession?.finishTealiumTasksAndInvalidate()
+    }
+}
+
+extension HTTPURLResponse {
+    private static let etagKey = "Etag"
+    var etag: String? {
+        if #available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, macCatalyst 13.1, *) {
+            return value(forHTTPHeaderField: Self.etagKey)
+        } else {
+            return headerString(field: Self.etagKey)
+        }
+    }
+
+    func headerString(field: String) -> String? {
+        return (self.allHeaderFields as NSDictionary)[field] as? String
     }
 }
