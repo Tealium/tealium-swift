@@ -111,18 +111,23 @@ class PublishSettingsTests: XCTestCase {
     }
     
     func testGetRemoteSettingsRefreshesWithLatestEtag() {
+        PublishSettingsTests.delegateExpectationSuccess = self.expectation(description: "publishsettings")
         let config = testTealiumConfig.copy
         config.shouldUseRemotePublishSettings = true
         let urlSession = MockURLSessionPublishSettings()
+        let delegate = GetSavePublishSettings()
         let publishSettingsRetriever = TealiumPublishSettingsRetriever(config: config,
                                                                        diskStorage: MockTealiumDiskStorage(),
                                                                        urlSession: urlSession,
-                                                                       delegate: self)
+                                                                       delegate: delegate)
         let firstUrlRequest = self.expectation(description: "first urlRequest arrived")
         urlSession.onURLRequest.subscribeOnce { req in
             XCTAssertNil(req.allHTTPHeaderFields?["If-None-Match"])
             firstUrlRequest.fulfill()
         }
+        wait(for: [Self.delegateExpectationSuccess!])
+        Self.delegateExpectationSuccess = nil
+        XCTAssertNotNil(publishSettingsRetriever.cachedSettings?.etag)
         publishSettingsRetriever.refresh()
         let secondUrlRequest = self.expectation(description: "second urlRequest arrived")
         urlSession.onURLRequest.subscribeOnce { req in
@@ -179,7 +184,7 @@ extension PublishSettingsTests: TealiumPublishSettingsDelegate {
 
 class GetSavePublishSettings: TealiumPublishSettingsDelegate {
     func didUpdate(_ publishSettings: RemotePublishSettings) {
-        PublishSettingsTests.delegateExpectationSuccess!.fulfill()
+        PublishSettingsTests.delegateExpectationSuccess?.fulfill()
     }
 
 }
