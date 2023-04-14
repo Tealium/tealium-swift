@@ -10,7 +10,6 @@ import Foundation
 import XCTest
 
 private let settingsUrl = URL(string:"https://tags.tiqcdn.com/utag/tealiummobile/demo/dev/mobile.html")!
-private let settingsEtag = ""
 
 class PublishSettingsTests: XCTestCase {
     static var delegateExpectationSuccess: XCTestExpectation?
@@ -60,10 +59,10 @@ class PublishSettingsTests: XCTestCase {
         config.shouldUseRemotePublishSettings = true
 
         let publishSettingsRetriever = TealiumPublishSettingsRetriever(config: config,
-                                                                       diskStorage: nil,
+                                                                       diskStorage: MockTealiumDiskStorage(),
                                                                        urlSession: MockURLSessionPublishSettings(),
                                                                        delegate: self)
-        publishSettingsRetriever.getRemoteSettings(url: settingsUrl, etag: settingsEtag) { settings in
+        publishSettingsRetriever.getRemoteSettings(url: settingsUrl, etag: nil) { settings in
             guard settings != nil else {
                 XCTFail("Publish settings not returned")
                 return
@@ -79,10 +78,10 @@ class PublishSettingsTests: XCTestCase {
         config.shouldUseRemotePublishSettings = true
 
         let publishSettingsRetriever = TealiumPublishSettingsRetriever(config: config,
-                                                                       diskStorage: nil,
+                                                                       diskStorage: MockTealiumDiskStorage(),
                                                                        urlSession: MockURLSessionPublishSettingsExtraContent(),
                                                                        delegate: self)
-        publishSettingsRetriever.getRemoteSettings(url: settingsUrl, etag: settingsEtag) { settings in
+        publishSettingsRetriever.getRemoteSettings(url: settingsUrl, etag: nil) { settings in
             guard settings != nil else {
                 XCTFail("Publish settings not returned")
                 return
@@ -97,8 +96,11 @@ class PublishSettingsTests: XCTestCase {
         let config = testTealiumConfig.copy
         config.shouldUseRemotePublishSettings = true
 
-        let publishSettingsRetriever = TealiumPublishSettingsRetriever(config: config, diskStorage: nil, urlSession: MockURLSessionPublishSettingsNoContent(), delegate: self)
-        publishSettingsRetriever.getRemoteSettings(url: settingsUrl, etag: settingsEtag) { settings in
+        let publishSettingsRetriever = TealiumPublishSettingsRetriever(config: config,
+                                                                       diskStorage: MockTealiumDiskStorage(),
+                                                                       urlSession: MockURLSessionPublishSettingsNoContent(),
+                                                                       delegate: self)
+        publishSettingsRetriever.getRemoteSettings(url: settingsUrl, etag: nil) { settings in
             guard settings == nil else {
                 XCTFail("Publish settings should be nil")
                 return
@@ -107,13 +109,37 @@ class PublishSettingsTests: XCTestCase {
         }
         wait(for: [expectation], timeout: 5)
     }
+    
+    func testGetRemoteSettingsRefreshesWithLatestEtag() {
+        let config = testTealiumConfig.copy
+        config.shouldUseRemotePublishSettings = true
+        let urlSession = MockURLSessionPublishSettings()
+        let publishSettingsRetriever = TealiumPublishSettingsRetriever(config: config,
+                                                                       diskStorage: MockTealiumDiskStorage(),
+                                                                       urlSession: urlSession,
+                                                                       delegate: self)
+        let firstUrlRequest = self.expectation(description: "first urlRequest arrived")
+        urlSession.onURLRequest.subscribeOnce { req in
+            XCTAssertNil(req.allHTTPHeaderFields?["If-None-Match"])
+            firstUrlRequest.fulfill()
+        }
+        publishSettingsRetriever.refresh()
+        let secondUrlRequest = self.expectation(description: "second urlRequest arrived")
+        urlSession.onURLRequest.subscribeOnce { req in
+            XCTAssertNotNil(req.allHTTPHeaderFields?["If-None-Match"])
+            XCTAssertEqual(req.allHTTPHeaderFields?["If-None-Match"], publishSettingsRetriever.cachedSettings?.etag)
+            secondUrlRequest.fulfill()
+        }
+        waitForExpectations(timeout: 5.0)
+    }
+    
 
     func testGetAndSave() {
         PublishSettingsTests.delegateExpectationSuccess = self.expectation(description: "publishsettings")
         let config = testTealiumConfig.copy
         config.shouldUseRemotePublishSettings = true
         let delegate = GetSavePublishSettings()
-        _ = TealiumPublishSettingsRetriever(config: config, diskStorage: nil, urlSession: MockURLSessionPublishSettings(), delegate: delegate)
+        _ = TealiumPublishSettingsRetriever(config: config, diskStorage: MockTealiumDiskStorage(), urlSession: MockURLSessionPublishSettings(), delegate: delegate)
         wait(for: [PublishSettingsTests.delegateExpectationSuccess!], timeout: 5)
     }
 
@@ -134,7 +160,7 @@ class PublishSettingsTests: XCTestCase {
         let delegate = GetSavePublishSettings()
         TealiumQueues.backgroundSerialQueue.async { // Make sure mock returns after refresh is called 
             let retriver = TealiumPublishSettingsRetriever(config: config,
-                                                           diskStorage: nil,
+                                                           diskStorage: MockTealiumDiskStorage(),
                                                            urlSession: MockURLSessionPublishSettings(),
                                                            delegate: delegate)
             retriver.refresh()
