@@ -9,6 +9,9 @@ import Foundation
 @testable import TealiumCore
 import XCTest
 
+private let settingsUrl = URL(string:"https://tags.tiqcdn.com/utag/tealiummobile/demo/dev/mobile.html")!
+private let settingsEtag = ""
+
 class PublishSettingsTests: XCTestCase {
     static var delegateExpectationSuccess: XCTestExpectation?
 
@@ -38,7 +41,7 @@ class PublishSettingsTests: XCTestCase {
 
         """
         let data = string.data(using: .utf8)
-        let publishSettings = publishSettingsRetriever.getPublishSettings(from: data!)
+        let publishSettings = publishSettingsRetriever.getPublishSettings(from: data!, etag: nil)
         XCTAssertEqual(publishSettings?.batchSize, 4, "Batch size incorrect")
         XCTAssertEqual(publishSettings?.dispatchExpiration, -1, "Batch size incorrect")
         XCTAssertEqual(publishSettings?.wifiOnlySending, true, "Batch size incorrect")
@@ -56,8 +59,11 @@ class PublishSettingsTests: XCTestCase {
         let config = testTealiumConfig.copy
         config.shouldUseRemotePublishSettings = true
 
-        let publishSettingsRetriever = TealiumPublishSettingsRetriever(config: config, diskStorage: nil, urlSession: MockURLSessionPublishSettings(), delegate: self)
-        publishSettingsRetriever.getRemoteSettings(url: URL(string: "https://tags.tiqcdn.com/utag/tealiummobile/demo/dev/mobile.html")!, lastFetch: Date(timeIntervalSince1970: 0)) { settings in
+        let publishSettingsRetriever = TealiumPublishSettingsRetriever(config: config,
+                                                                       diskStorage: nil,
+                                                                       urlSession: MockURLSessionPublishSettings(),
+                                                                       delegate: self)
+        publishSettingsRetriever.getRemoteSettings(url: settingsUrl, etag: settingsEtag) { settings in
             guard settings != nil else {
                 XCTFail("Publish settings not returned")
                 return
@@ -72,8 +78,11 @@ class PublishSettingsTests: XCTestCase {
         let config = testTealiumConfig.copy
         config.shouldUseRemotePublishSettings = true
 
-        let publishSettingsRetriever = TealiumPublishSettingsRetriever(config: config, diskStorage: nil, urlSession: MockURLSessionPublishSettingsExtraContent(), delegate: self)
-        publishSettingsRetriever.getRemoteSettings(url: URL(string: "https://tags.tiqcdn.com/utag/tealiummobile/demo/dev/mobile.html")!, lastFetch: Date(timeIntervalSince1970: 0)) { settings in
+        let publishSettingsRetriever = TealiumPublishSettingsRetriever(config: config,
+                                                                       diskStorage: nil,
+                                                                       urlSession: MockURLSessionPublishSettingsExtraContent(),
+                                                                       delegate: self)
+        publishSettingsRetriever.getRemoteSettings(url: settingsUrl, etag: settingsEtag) { settings in
             guard settings != nil else {
                 XCTFail("Publish settings not returned")
                 return
@@ -89,7 +98,7 @@ class PublishSettingsTests: XCTestCase {
         config.shouldUseRemotePublishSettings = true
 
         let publishSettingsRetriever = TealiumPublishSettingsRetriever(config: config, diskStorage: nil, urlSession: MockURLSessionPublishSettingsNoContent(), delegate: self)
-        publishSettingsRetriever.getRemoteSettings(url: URL(string: "https://tags.tiqcdn.com/utag/tealiummobile/demo/dev/mobile.html")!, lastFetch: Date(timeIntervalSince1970: 0)) { settings in
+        publishSettingsRetriever.getRemoteSettings(url: settingsUrl, etag: settingsEtag) { settings in
             guard settings == nil else {
                 XCTFail("Publish settings should be nil")
                 return
@@ -124,7 +133,10 @@ class PublishSettingsTests: XCTestCase {
         config.shouldUseRemotePublishSettings = true
         let delegate = GetSavePublishSettings()
         TealiumQueues.backgroundSerialQueue.async { // Make sure mock returns after refresh is called 
-            let retriver = TealiumPublishSettingsRetriever(config: config, diskStorage: nil, urlSession: MockURLSessionPublishSettings(), delegate: delegate)
+            let retriver = TealiumPublishSettingsRetriever(config: config,
+                                                           diskStorage: nil,
+                                                           urlSession: MockURLSessionPublishSettings(),
+                                                           delegate: delegate)
             retriver.refresh()
         }
         wait(for: [PublishSettingsTests.delegateExpectationSuccess!], timeout: 15)
