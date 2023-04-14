@@ -125,8 +125,8 @@ class PublishSettingsTests: XCTestCase {
             XCTAssertNil(req.allHTTPHeaderFields?["If-None-Match"])
             firstUrlRequest.fulfill()
         }
-        wait(for: [Self.delegateExpectationSuccess!])
-        Self.delegateExpectationSuccess = nil
+        wait(for: [PublishSettingsTests.delegateExpectationSuccess!], timeout: 5.0)
+        PublishSettingsTests.delegateExpectationSuccess = nil
         XCTAssertNotNil(publishSettingsRetriever.cachedSettings?.etag)
         publishSettingsRetriever.refresh()
         let secondUrlRequest = self.expectation(description: "second urlRequest arrived")
