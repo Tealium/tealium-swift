@@ -11,6 +11,7 @@ import XCTest
 class SessionManagerTests: XCTestCase {
 
     var config: TealiumConfig!
+    @DataLayerSafeAccess
     var eventDataManager: DataLayer!
     var mockSessionStarter = MockTealiumSessionStarter()
     var mockURLSession = MockURLSessionSessionStarter()
@@ -22,9 +23,6 @@ class SessionManagerTests: XCTestCase {
     override func setUpWithError() throws {
         config = TealiumConfig(account: "testAccount", profile: "testProfile", environment: "testEnvironment")
         eventDataManager = DataLayer(config: config, diskStorage: mockDiskStorage, sessionStarter: mockSessionStarter)
-        TealiumQueues.backgroundSerialQueue.sync {
-            print("") // just wait for session to be started
-        }
     }
 
     override func tearDownWithError() throws {
