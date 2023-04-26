@@ -105,7 +105,7 @@ class MigratorTests: XCTestCase {
                                          LifecycleKey.totalSecondsAwake: 3000,
                                          LifecycleKey.totalSleepCount: 8,
                                          LifecycleKey.totalWakeCount: 7,
-                                         LifecycleKey.wakeCount: 7],
+                                         LifecycleKey.wakeCount: 7] as [String : Any],
                                        TealiumDataKey.visitorId: "205CA6D0FE3A4242A3522DBE7F5B75DE",
                                        TealiumDataKey.uuid: "205CA6D0-FE3A-4242-A352-2DBE7F5B75DE",
                                        "custom_persistent_key": "customValue"]
@@ -176,7 +176,7 @@ class MigratorTests: XCTestCase {
                                          TealiumDataKey.totalSecondsAwake: 3000,
                                          TealiumDataKey.totalSleepCount: 8,
                                          TealiumDataKey.totalWakeCount: 7,
-                                         TealiumDataKey.wakeCount: 7],
+                                         TealiumDataKey.wakeCount: 7] as [String : Any],
                                        TealiumDataKey.visitorId: "205CA6D0FE3A4242A3522DBE7F5B75DE",
                                        TealiumDataKey.uuid: "205CA6D0-FE3A-4242-A352-2DBE7F5B75DE",
                                        "custom_persistent_key": "customValue"]

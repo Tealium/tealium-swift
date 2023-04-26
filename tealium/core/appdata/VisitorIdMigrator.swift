@@ -25,8 +25,9 @@ class VisitorIdMigrator: VisitorIdMigratorProtocol {
 
     func getOldPersistentData() -> PersistentAppData? {
         var persistentData: PersistentAppData?
-        if let migratedUUID = dataLayer.all[TealiumDataKey.uuid] as? String,
-           let migratedVisitorId = dataLayer.all[TealiumDataKey.visitorId] as? String {
+        let allData = dataLayer.all
+        if let migratedUUID = allData[TealiumDataKey.uuid] as? String,
+           let migratedVisitorId = allData[TealiumDataKey.visitorId] as? String {
             persistentData = PersistentAppData(visitorId: migratedVisitorId, uuid: migratedUUID)
         } else if let data = diskStorage.retrieve(as: PersistentAppData.self) {
             persistentData = data

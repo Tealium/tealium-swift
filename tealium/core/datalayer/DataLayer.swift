@@ -9,7 +9,6 @@ import Foundation
 
 public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, TimestampCollection {
 
-    var data = Set<DataLayerItem>()
     var diskStorage: TealiumDiskStorageProtocol
     var restartData = [String: Any]()
     var config: TealiumConfig
@@ -39,7 +38,9 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
             currentStaticData[TealiumDataKey.dataSource] = dataSource
         }
         add(data: currentStaticData, expiry: .untilRestart)
-        refreshSession()
+        TealiumQueues.backgroundSerialQueue.async { // Read the data layer for the session on a background thread
+            self.refreshSession()
+        }
     }
 
     /// Will receive events for data added or updated in the data layer

@@ -250,7 +250,7 @@ class ConsentManagerModuleTests: XCTestCase {
         let lastUpdate = module.consentManager?.lastConsentUpdate?.unixTimeMilliseconds
         let expected: [String: Any] = [
             TealiumDataKey.consentStatus: "notConsented",
-            TealiumDataKey.consentCategoriesKey: [],
+            TealiumDataKey.consentCategoriesKey: [String](),
             "test": "track",
             TealiumDataKey.policyKey: "gdpr",
             TealiumDataKey.consentLastUpdated: lastUpdate!
@@ -271,7 +271,7 @@ class ConsentManagerModuleTests: XCTestCase {
         let lastUpdate = module.consentManager?.lastConsentUpdate?.unixTimeMilliseconds
         let expected: [String: Any] = [
             TealiumDataKey.consentStatus: TealiumValue.unknown,
-            TealiumDataKey.consentCategoriesKey: [],
+            TealiumDataKey.consentCategoriesKey: [String](),
             "test": "track",
             TealiumDataKey.policyKey: "gdpr",
             TealiumDataKey.consentLastUpdated: lastUpdate!
