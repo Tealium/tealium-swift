@@ -361,7 +361,7 @@ extension DispatchManager {
         guard canWrite else {
             return (false, nil)
         }
-        #if os (watchOS)
+        #if os(watchOS)
         return (true, [TealiumDataKey.queueReason: TealiumConfigKey.batchingEnabled])
         #else
 
@@ -508,7 +508,7 @@ extension DispatchManager {
                             info: [String: Any]?,
                             success: Bool,
                             error: Error?) {
-        let message = success ? "Successful Track": "Failed with error: \(error?.localizedDescription ?? "")"
+        let message = success ? "Successful Track" : "Failed with error: \(error?.localizedDescription ?? "")"
         let logLevel: TealiumLogLevel = success ? .info : .error
         var uuid: String?
         var event: String?

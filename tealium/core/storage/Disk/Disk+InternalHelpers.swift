@@ -23,9 +23,9 @@
 import Foundation
 
 extension Disk {
-    /// Create and returns a URL constructed from specified directory/path
     // swiftlint:disable function_body_length
     // swiftlint:disable cyclomatic_complexity
+    /// Create and returns a URL constructed from specified directory/path
     static func createURL(for path: String?, in directory: Directory) throws -> URL {
         let filePrefix = "file://"
         var validPath: String?

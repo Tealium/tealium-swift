@@ -39,7 +39,7 @@ open class RemoteCommand: RemoteCommandProtocol {
     public init(commandId: String,
                 description: String?,
                 type: RemoteCommandType = .webview,
-                completion : @escaping (_ response: RemoteCommandResponseProtocol) -> Void) {
+                completion: @escaping (_ response: RemoteCommandResponseProtocol) -> Void) {
 
         self.commandId = commandId
         self.description = description

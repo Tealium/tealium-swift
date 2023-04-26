@@ -54,11 +54,11 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
         }
     }
 
+    // swiftlint:disable identifier_name
     /// - Parameters:
     ///     - from: `Disk.Directory` to migrate data from
     ///     - to: `Disk.Directory` to migrate data from
     ///     - moduleName: `String` name of the module for which to migrate the data
-    // swiftlint:disable identifier_name
     func migrateFrom(_ from: Disk.Directory,
                      to: Disk.Directory,
                      moduleName: String) {

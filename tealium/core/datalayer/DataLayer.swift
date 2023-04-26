@@ -220,7 +220,7 @@ public class DataLayer: DataLayerManagerProtocol, SessionManagerProtocol, Timest
 
     /// - Returns: `String` format of random 16 digit number
     private var random: String {
-        (1..<16).reduce(into: "") { string, _ in string += String(Int(arc4random_uniform(10))) }
+        (1..<16).reduce(into: "") { string, _ in string += String(Int.random(in: 0..<10)) }
     }
 
     deinit {

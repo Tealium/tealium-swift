@@ -11,7 +11,7 @@ import UIKit
 #endif
 import Foundation
 #if os(tvOS)
-#elseif os (watchOS)
+#elseif os(watchOS)
 #else
 import CoreTelephony
 #endif

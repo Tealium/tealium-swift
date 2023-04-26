@@ -83,13 +83,11 @@ private extension TealiumDelegateProxy {
     typealias ApplicationOpenURL = @convention(c) (Any, Selector, UIApplication, URL, [UIApplication.OpenURLOptionsKey: Any]) -> Bool
     typealias ApplicationContinueUserActivity = @convention(c) (Any, Selector, UIApplication, NSUserActivity, @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool
     @available(iOS 13.0, *)
-    // swiftlint:disable attributes
     typealias SceneWillConnectTo = @convention(c) (Any, Selector, UIScene, UISceneSession, UIScene.ConnectionOptions) -> Void
     @available(iOS 13.0, *)
     typealias SceneOpenURLContexts = @convention(c) (Any, Selector, UIScene, Set<UIOpenURLContext>) -> Void
     @available(iOS 13.0, *)
     typealias SceneContinueUserActivity = @convention(c) (Any, Selector, UIScene, NSUserActivity) -> Void
-    // swiftlint:enable attributes
 
     static let ApplicationOperUrlSelector = #selector(application(_:openURL:options:))
     static let ApplicationContinueUserActivitySelector = #selector(application(_:continueUserActivity:restorationHandler:))
@@ -176,7 +174,6 @@ private extension TealiumDelegateProxy {
         return subClass
     }
 
-    // swiftlint:disable function_body_length
     static func createMethodImplementations(
         in subClass: AnyClass,
         withOriginalDelegate originalDelegate: NSObjectProtocol
@@ -233,7 +230,7 @@ private extension TealiumDelegateProxy {
         // Store original implementations
         objc_setAssociatedObject(originalDelegate, &AssociatedObjectKeys.originalImplementations, originalImplementationsStore, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
-    // swiftlint:enable function_body_length
+
     static func overrideDescription(in subClass: AnyClass) {
         // Override the description so the custom class name will not show up.
         self.addInstanceMethod(
