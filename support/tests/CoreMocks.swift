@@ -37,8 +37,12 @@ class DummyCollector: Collector, DispatchListener, DispatchValidator {
         ["dummy": true]
     }
 
-    required init(context: TealiumContext, delegate: ModuleDelegate?, diskStorage: TealiumDiskStorageProtocol?, completion: ((Result<Bool, Error>, [String: Any]?)) -> Void) {
-        self.config = context.config
+    required convenience init(context: TealiumContext, delegate: ModuleDelegate?, diskStorage: TealiumDiskStorageProtocol?, completion: ((Result<Bool, Error>, [String: Any]?)) -> Void) {
+        self.init(config: context.config)
+    }
+    
+    init(config: TealiumConfig) {
+        self.config = config
         self.id = "Dummy"
     }
 

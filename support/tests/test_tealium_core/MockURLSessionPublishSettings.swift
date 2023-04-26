@@ -9,6 +9,7 @@ import Foundation
 import TealiumCore
 
 class MockURLSessionPublishSettings: URLSessionProtocol {
+    let onURLRequest = TealiumReplaySubject<URLRequest>()
     func tealiumDataTask(with url: URL, completionHandler: @escaping (DataTaskResult) -> Void) -> URLSessionDataTaskProtocol {
         return DataTask(completionHandler: { data, response, error in
             if let error = error {
@@ -25,6 +26,7 @@ class MockURLSessionPublishSettings: URLSessionProtocol {
 
     // typealias DataTaskCompletion = (Data?, URLResponse?, Error?) -> Void
     func tealiumDataTask(with request: URLRequest, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol {
+        onURLRequest.publish(request)
         //        let completion = DataTaskCompletion(nil, nil, nil)
         return DataTask(completionHandler: completionHandler, url: request.url!)
     }
@@ -48,14 +50,14 @@ class DataTask: URLSessionDataTaskProtocol {
         <html>
         <head><title>Tealium Mobile Webview</title></head>
         <body>
-        <script type="text/javascript">var utag_cfg_ovrd={noview:true};var mps = {"4":{"_is_enabled":"false","battery_saver":"false","dispatch_expiration":"-1","event_batch_size":"1","ivar_tracking":"false","mobile_companion":"false","offline_dispatch_limit":"-1","ui_auto_tracking":"false","wifi_only_sending":"false"},"5":{"_is_enabled":"true","battery_saver":"false","dispatch_expiration":"-1","enable_collect":"true","enable_s2s_legacy":"false","enable_tag_management":"true","event_batch_size":"4","minutes_between_refresh":"1.0","offline_dispatch_limit":"30","override_log":"dev","wifi_only_sending":"true"},"_firstpublish":"true"}</script>
+        <script type="text/javascript">var utag_cfg_ovrd={noview:true};var mps = {"4":{"_is_enabled":"false","battery_saver":"false","dispatch_expiration":"-1","event_batch_size":"1","ivar_tracking":"false","mobile_companion":"false","offline_dispatch_limit":"-1","ui_auto_tracking":"false","wifi_only_sending":"false"},"5":{"_is_enabled":"true","battery_saver":"false","dispatch_expiration":"-1","enable_collect":"true","enable_s2s_legacy":"false","enable_tag_management":"true","event_batch_size":"4","minutes_between_refresh":"0","offline_dispatch_limit":"30","override_log":"dev","wifi_only_sending":"true"},"_firstpublish":"true"}</script>
         <script type="text/javascript" src="//tags.tiqcdn.com/utag/tealiummobile/demo/dev/utag.js"></script>
         </body>
         </html>
 
         """
         let data = string.data(using: .utf8)!
-        let urlResponse = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "1.1", headerFields: nil)
+        let urlResponse = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "1.1", headerFields: ["etag": "\"someEtag\""])
         completionHandler(data, urlResponse, nil)
     }
 
