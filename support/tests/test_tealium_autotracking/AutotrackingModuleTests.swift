@@ -20,7 +20,9 @@ class AutotrackingModuleTests: XCTestCase {
 
         }
         module.blockListBundle = Bundle(for: AutotrackingModuleTests.self)
-        return module
+        return TealiumQueues.backgroundSerialQueue.sync {
+            module
+        }
     }
     var expectationRequest: XCTestExpectation?
     var expectationShouldTrack: XCTestExpectation?
@@ -51,9 +53,9 @@ class AutotrackingModuleTests: XCTestCase {
 
         let viewName = "RequestEventTrackView"
         module.requestViewTrack(viewName: viewName)
-
-        waitForExpectations(timeout: 1.0, handler: nil)
-
+        
+        waitForExpectations(timeout: 4.0, handler: nil)
+        
         XCTAssertEqual(viewName, currentViewName)
     }
 

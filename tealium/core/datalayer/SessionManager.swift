@@ -9,8 +9,6 @@ import Foundation
 
 public extension DataLayer {
 
-    // swiftlint:enable unused_setter_value
-
     /// - Returns: `String?` session id for the active session.
     var sessionId: String? {
         get {

@@ -375,7 +375,7 @@ public extension TealiumConfig {
         }
 
         set {
-            let size = newValue > TealiumValue.maxEventBatchSize ? TealiumValue.maxEventBatchSize: newValue
+            let size = newValue > TealiumValue.maxEventBatchSize ? TealiumValue.maxEventBatchSize : newValue
             options[TealiumConfigKey.batchSizeKey] = size
         }
 

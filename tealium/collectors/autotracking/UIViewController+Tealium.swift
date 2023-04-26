@@ -21,7 +21,8 @@ private let swizzling: (AnyClass, Selector, Selector) -> Void = { forClass, orig
     method_exchangeImplementations(originalMethod, swizzledMethod)
 }
 
-@objc extension UIViewController {
+@objc
+extension UIViewController {
 
     var viewTitle: String {
         return self.title ?? String(describing: type(of: self)).replacingOccurrences(of: "ViewController", with: "")

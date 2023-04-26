@@ -168,12 +168,12 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
             || webviewCommands.contains { $0.commandId == commandId }
     }
 
+    // swiftlint:disable pattern_matching_keywords
     /// Adds a remote command for later execution.
     ///
     /// If a command with the same commandId has already been added the new one will be ignored.
     ///
     /// - Parameter remoteCommand: `TealiumRemoteCommand` to be added for later execution
-    // swiftlint:disable pattern_matching_keywords
     public func add(_ remoteCommand: RemoteCommandProtocol) {
         guard !isCommandAdded(remoteCommand.commandId) else {
             return
