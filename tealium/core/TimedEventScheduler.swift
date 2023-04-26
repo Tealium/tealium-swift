@@ -19,12 +19,14 @@ public protocol Schedulable: DispatchValidator {
 public class TimedEventScheduler: Schedulable {
 
     public var id: String = "TimedEventScheduler"
-    var context: TealiumContextProtocol
+    let context: TealiumContextProtocol
+    let config: TealiumConfig
     public var events: [String: TimedEvent]
 
     public init(context: TealiumContextProtocol,
                 events: [String: TimedEvent] = [String: TimedEvent]()) {
         self.context = context
+        self.config = context.config
         self.events = events
     }
 
@@ -34,7 +36,7 @@ public class TimedEventScheduler: Schedulable {
             return(false, nil)
         }
 
-        guard let triggers = context.config.timedEventTriggers else {
+        guard let triggers = config.timedEventTriggers else {
             return (false, nil)
         }
 
@@ -106,7 +108,7 @@ public class TimedEventScheduler: Schedulable {
                                         message: message,
                                         logLevel: level,
                                         category: .general)
-        context.config.logger?.log(request)
+        config.logger?.log(request)
     }
 
 }

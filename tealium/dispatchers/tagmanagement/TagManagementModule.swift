@@ -17,7 +17,6 @@ import TealiumCore
 public class TagManagementModule: Dispatcher {
 
     public let id: String = ModuleNames.tagmanagement
-    public var context: TealiumContext
     public var config: TealiumConfig
     var errorCount = AtomicInteger(value: 0)
     var pendingTrackRequests = [(TealiumRequest, ModuleCompletion?)]()
@@ -48,7 +47,6 @@ public class TagManagementModule: Dispatcher {
                          completion: ModuleCompletion?) {
         let config = context.config
         self.config = config
-        self.context = context
         self.delegate = delegate
         self.tagManagement = tagManagement ?? TagManagementWKWebView(config: config, delegate: delegate)
         TealiumQueues.backgroundSerialQueue.async { // This is required cause modules are not present yet

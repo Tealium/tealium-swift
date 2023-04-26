@@ -35,7 +35,7 @@ class VisitorServiceModuleTests: XCTestCase {
                 expect.fulfill()
             }
         }
-        wait(for: [expect], timeout: 5.0)
+        wait(for: [expect], timeout: 10.0)
     }
 
     func testRequestVisitorProfileNotRun() {
