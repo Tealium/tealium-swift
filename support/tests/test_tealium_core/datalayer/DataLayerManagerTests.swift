@@ -8,9 +8,27 @@
 @testable import TealiumCore
 import XCTest
 
+@propertyWrapper
+class DataLayerSafeAccess {
+    private var dataLayer: DataLayer!
+    var wrappedValue: DataLayer! {
+        get {
+            // Needed to make sure session update is complete before we start using the dataLayer
+            TealiumQueues.backgroundSerialQueue.sync {
+                dataLayer
+            }
+        }
+        set {
+            dataLayer = newValue
+        }
+    }
+}
+
 class DataLayerManagerTests: XCTestCase {
 
     var config: TealiumConfig!
+    
+    @DataLayerSafeAccess
     var eventDataManager: DataLayer!
     var mockDiskStorage: TealiumDiskStorageProtocol!
     var mockSessionStarter: SessionStarter!

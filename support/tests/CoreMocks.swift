@@ -450,7 +450,7 @@ class MockMigratedDataLayer: DataLayerManagerProtocol {
                                              LifecycleKey.totalSecondsAwake: 3000,
                                              LifecycleKey.totalSleepCount: 8,
                                              LifecycleKey.totalWakeCount: 7,
-                                             LifecycleKey.wakeCount: 7],
+                                             LifecycleKey.wakeCount: 7] as [String : Any],
                                           TealiumDataKey.visitorId: visitorId,
                                           TealiumDataKey.uuid: uuid,
                                           "custom_persistent_key": "customValue",

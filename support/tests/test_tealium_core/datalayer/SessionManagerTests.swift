@@ -11,6 +11,7 @@ import XCTest
 class SessionManagerTests: XCTestCase {
 
     var config: TealiumConfig!
+    @DataLayerSafeAccess
     var eventDataManager: DataLayer!
     var mockSessionStarter = MockTealiumSessionStarter()
     var mockURLSession = MockURLSessionSessionStarter()
