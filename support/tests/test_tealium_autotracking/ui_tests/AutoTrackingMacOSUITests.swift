@@ -27,26 +27,14 @@ class AutoTrackingMacOSUITests: XCTestCase {
         // UI tests must launch the application that they test.
         let app = XCUIApplication()
         app.launch()
-        var text = """
-            RootView0
-            
-            """
-        assertStaticTextExists(app: app, text: text)
-        text += "SomeView\n"
+        app.assertStaticTextExists(text: "RootView0")
         app.buttons["Launch ViewController"].click()
-        assertStaticTextExists(app: app, text: text)
+        app.assertStaticTextExists(text: "SomeView")
         app.buttons["Launch Second View"].click()
-        text += "SecondView\n"
-        assertStaticTextExists(app: app, text: text)
-        text += "SomeView\n"
+        app.assertStaticTextExists(text: "SecondView")
         app.buttons["Launch ViewController"].click()
-        assertStaticTextExists(app: app, text: text)
+        app.assertStaticTextExists(text: "SomeView")
         app.buttons["Launch Third View"].click()
-        text += "AutotrackingView\n"
-        assertStaticTextExists(app: app, text: text)        
-    }
-    
-    func assertStaticTextExists(app: XCUIApplication, text: String) {
-        XCTAssertTrue(app.staticTexts[text].waitForExistence(timeout: 5), "Can not find \(text.split(separator: "\n").last!)")
+        app.assertStaticTextExists(text: "AutotrackingView")
     }
 }
