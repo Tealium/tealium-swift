@@ -224,6 +224,18 @@ extension TealiumConfig: Equatable, Hashable {
         if lhsKeys.count != rhsKeys.count { return false }
         for (index, key) in lhsKeys.enumerated() {
             if key != rhsKeys[index] { return false }
+            // This is safer than String comparing in case of reference types
+            // But also WKWebConfiguration can only be described as String from main thread or it can crash
+            if let lhsValue = lhs.options[key],
+               type(of: lhsValue) is AnyClass { // If it's a reference type, check the reference instead of the description
+                if let rhsValue = rhs.options[key],
+                   type(of: rhsValue) is AnyClass,
+                   lhsValue as AnyObject === rhsValue as AnyObject {
+                        continue
+                } else { // lhsObj is an obj but rhsObj is nil or not an object or is a different instance
+                    return false
+                }
+            }
             let lhsValue = String(describing: lhs.options[key])
             let rhsValue = String(describing: rhs.options[key])
             if lhsValue != rhsValue { return false }
