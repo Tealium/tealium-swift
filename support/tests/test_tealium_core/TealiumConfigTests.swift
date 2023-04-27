@@ -7,7 +7,10 @@
 
 @testable import TealiumCore
 import XCTest
+
+#if os(iOS)
 import WebKit
+#endif
 
 class TealiumConfigTests: XCTestCase {
 
@@ -98,7 +101,7 @@ class TealiumConfigTests: XCTestCase {
         XCTAssertEqual(config1, config2)
         waitForExpectations(timeout: 1.0)
     }
-    
+    #if os(iOS)
     class MyWebviewConfig: WKWebViewConfiguration {
         var expectation: XCTestExpectation?
         override var description: String {
@@ -118,6 +121,7 @@ class TealiumConfigTests: XCTestCase {
         XCTAssertEqual(config1, config2)
         waitForExpectations(timeout: 1.0)
     }
+    #endif
     
     func testConfigsWithDifferentObjectsAreNotEqual() {
         let config1 = config.copy
