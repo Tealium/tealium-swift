@@ -147,6 +147,19 @@ class TealiumConfigTests: XCTestCase {
         waitForExpectations(timeout: 1.0)
     }
     
+    func testConfigsWithValueTypeAndObjectAreNotEqual() {
+        let config1 = config.copy
+        let config2 = config.copy
+        let expect = expectation(description: "Description should not be used for objects!")
+        expect.isInverted = true
+        let obj = TestObject()
+        obj.expectation = expect
+        config1.options["test_obj"] = "someValue"
+        config2.options["test_obj"] = obj
+        XCTAssertNotEqual(config1, config2)
+        waitForExpectations(timeout: 1.0)
+    }
+    
     func testConfigsWithSameDictionariesAreEqual() {
         let config1 = config.copy
         let config2 = config.copy
