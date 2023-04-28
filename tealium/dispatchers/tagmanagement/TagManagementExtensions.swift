@@ -19,6 +19,7 @@ extension TealiumConfigKey {
     static let uiview = "ui_view"
     static let processPool = "wk_process_pool"
     static let wkConfig = "wk_config"
+    static let webviewInspectionEnabled = "webview_inspection_enabled"
 }
 
 public extension TealiumConfig {
@@ -89,6 +90,22 @@ public extension TealiumConfig {
 
         set {
             options[TealiumConfigKey.uiview] = newValue
+        }
+    }
+    
+    var webviewInspectionEnabled: Bool {
+        get {
+            if let enabled = options[TealiumConfigKey.webviewInspectionEnabled] as? Bool {
+                return enabled
+            }
+            #if DEBUG
+            return true
+            #else
+            return false
+            #endif
+        }
+        set {
+            options[TealiumConfigKey.webviewInspectionEnabled] = newValue
         }
     }
 

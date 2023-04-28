@@ -72,6 +72,7 @@ class TealiumHelper {
         config.visitorIdentityKey = TealiumDataKey.email
         config.visitorServiceRefresh = .every(1, .minutes)
         #if os(iOS)
+            config.webviewInspectionEnabled = true
             config.enableBackgroundLocation = true
             config.collectors = [
                 Collectors.Attribution,
