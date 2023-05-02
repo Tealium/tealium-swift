@@ -60,7 +60,7 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
     func migrateFrom(_ from: Disk.Directory,
                      to: Disk.Directory,
                      moduleName: String) {
-        TealiumDiskStorage.readWriteQueue.read { [weak self] in
+        TealiumDiskStorage.readWriteQueue.write { [weak self] in
             guard let self = self else {
                 return
             }
@@ -76,6 +76,7 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
                     return
                 }
                 try Disk.move(path, in: from, to: to)
+                try Disk.doNotBackup(path, in: to)
             } catch let error {
                 log(error: error.localizedDescription)
             }
