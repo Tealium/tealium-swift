@@ -62,25 +62,27 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
     func migrateFrom(_ from: Disk.Directory,
                      to: Disk.Directory,
                      moduleName: String) {
-        TealiumDiskStorage.readWriteQueue.write { [weak self] in
+        TealiumDiskStorage.readWriteQueue.read { [weak self] in
             guard let self = self else {
                 return
             }
             guard self.isDiskStorageEnabled else {
                 return
             }
-            do {
-                let path = self.filePath(moduleName)
-                guard Disk.exists(path, in: from) else {
-                    return
+            let path = self.filePath(moduleName)
+            guard Disk.exists(path, in: from) else {
+                return
+            }
+            guard Disk.exists(path, in: to) == false else {
+                return
+            }
+            TealiumDiskStorage.readWriteQueue.write { [weak self] in
+                do {
+                    try Disk.move(path, in: from, to: to)
+                    try Disk.doNotBackup(path, in: to)
+                } catch {
+                    self?.log(error: error.localizedDescription)
                 }
-                guard Disk.exists(path, in: to) == false else {
-                    return
-                }
-                try Disk.move(path, in: from, to: to)
-                try Disk.doNotBackup(path, in: to)
-            } catch let error {
-                self.log(error: error.localizedDescription)
             }
         }
     }
