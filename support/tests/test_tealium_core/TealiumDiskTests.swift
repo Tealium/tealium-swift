@@ -85,7 +85,11 @@ class TealiumDiskTests: XCTestCase {
     func testMigrationDates() throws {
         let diskstorage = TealiumDiskStorage(config: config, forModule: "Tests")
         let value = Date()
-        try Disk.save(value, to: diskstorage.defaultDirectory, as: diskstorage.filePath(diskstorage.module), encoder: legacyJsonEncoder)
+        do {
+            try Disk.save(value, to: diskstorage.defaultDirectory, as: diskstorage.filePath(diskstorage.module), encoder: legacyJsonEncoder)
+        } catch {
+            XCTFail("Save on disk failed due to error \(error.localizedDescription)")
+        }
         let data = diskstorage.retrieve(as: Date.self)
         XCTAssertNotNil(data, "data unexpectedly missing")
     }
@@ -100,7 +104,11 @@ class TealiumDiskTests: XCTestCase {
     func testMigrationDatesInContainer() throws {
         let diskstorage = TealiumDiskStorage(config: config, forModule: "Tests")
         let value = CustomObjectWithDate(Date())
-        try Disk.save(value, to: diskstorage.defaultDirectory, as: diskstorage.filePath(diskstorage.module), encoder: legacyJsonEncoder)
+        do {
+            try Disk.save(value, to: diskstorage.defaultDirectory, as: diskstorage.filePath(diskstorage.module), encoder: legacyJsonEncoder)
+        } catch {
+            XCTFail("Save on disk failed due to error \(error.localizedDescription)")
+        }
         let data = diskstorage.retrieve(as: CustomObjectWithDate.self)
         XCTAssertNotNil(data, "data unexpectedly missing")
     }
