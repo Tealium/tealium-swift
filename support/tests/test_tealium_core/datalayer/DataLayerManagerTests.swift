@@ -8,9 +8,27 @@
 @testable import TealiumCore
 import XCTest
 
+@propertyWrapper
+class DataLayerSafeAccess {
+    private var dataLayer: DataLayer!
+    var wrappedValue: DataLayer! {
+        get {
+            // Needed to make sure session update is complete before we start using the dataLayer
+            TealiumQueues.backgroundSerialQueue.sync {
+                dataLayer
+            }
+        }
+        set {
+            dataLayer = newValue
+        }
+    }
+}
+
 class DataLayerManagerTests: XCTestCase {
 
     var config: TealiumConfig!
+    
+    @DataLayerSafeAccess
     var eventDataManager: DataLayer!
     var mockDiskStorage: TealiumDiskStorageProtocol!
     var mockSessionStarter: SessionStarter!
@@ -100,6 +118,17 @@ class DataLayerManagerTests: XCTestCase {
         let retrieved = self.mockDiskStorage.retrieve(as: Set<DataLayerItem>.self)
         XCTAssertTrue(((retrieved?.contains(eventDataItem)) != nil))
     }
+    
+    func testDeleteRestartData() {
+        let restartData: [String: Any] = ["1": "1", "2":"2", "3": "3"]
+        eventDataManager.add(data: restartData, expiry: .untilRestart)
+        let count = eventDataManager.all.count
+        // Delete restart data
+        eventDataManager.delete(for: "1")
+        XCTAssertEqual(eventDataManager.all.count, count-1)
+        eventDataManager.delete(for: ["2", "3"])
+        XCTAssertEqual(eventDataManager.all.count, count-3)
+    }
 
     func testAddForeverData() {
         let foreverData: [String: Any] = ["hello": "forever"]
@@ -137,6 +166,49 @@ class DataLayerManagerTests: XCTestCase {
         eventDataManager.deleteAll()
         let retrieved = mockDiskStorage.retrieve(as: Set<DataLayerItem>.self)
         XCTAssertEqual(retrieved?.count, 0)
+    }
+    
+    func testFilterKeysInDataLayer() {
+        eventDataManager.deleteAll()
+        eventDataManager.add(key: "someRestart", value: "value", expiry: .untilRestart)
+        eventDataManager.add(key: "somePersistent", value: "value", expiry: .forever)
+        let keys = eventDataManager.filterKeysInDataLayer(["somePersistent", "someRestart", "nonPresent"])
+        XCTAssertEqual(keys, ["somePersistent", "someRestart"])
+    }
+
+    func testSendRemovedEventNotTriggered() {
+        let expect = expectation(description: "Data is not removed for empty keys")
+        expect.isInverted = true
+        let sub = eventDataManager.onDataRemoved.subscribe { _ in
+            expect.fulfill()
+        }
+        let removed = eventDataManager.sendRemovedEvent(forKeys: [])
+        XCTAssertFalse(removed)
+        waitForExpectations(timeout: 2)
+        sub.dispose()
+    }
+
+    func testSendRemovedEventTriggered() {
+        let expect = expectation(description: "Data is not removed for empty keys")
+        let sub = eventDataManager.onDataRemoved.subscribe { _ in
+            expect.fulfill()
+        }
+        let removed = eventDataManager.sendRemovedEvent(forKeys: ["someKey"])
+        XCTAssertTrue(removed)
+        waitForExpectations(timeout: 2)
+        sub.dispose()
+    }
+
+    func testExpiredItems() {
+        let key = "expired"
+        let expect = expectation(description: "Data is removed")
+        eventDataManager.onDataRemoved.subscribe { removedKeys in
+            XCTAssertTrue(removedKeys.contains(key))
+            expect.fulfill()
+        }
+        eventDataManager.add(key: key, value: "any", expiry: .after(Date()))
+        XCTAssertFalse(eventDataManager.all.keys.contains(key))
+        waitForExpectations(timeout: 2)
     }
 
     //    func testAddPersistendDataFromBackgroundThread() {

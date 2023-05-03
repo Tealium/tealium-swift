@@ -37,8 +37,12 @@ class DummyCollector: Collector, DispatchListener, DispatchValidator {
         ["dummy": true]
     }
 
-    required init(context: TealiumContext, delegate: ModuleDelegate?, diskStorage: TealiumDiskStorageProtocol?, completion: ((Result<Bool, Error>, [String: Any]?)) -> Void) {
-        self.config = context.config
+    required convenience init(context: TealiumContext, delegate: ModuleDelegate?, diskStorage: TealiumDiskStorageProtocol?, completion: ((Result<Bool, Error>, [String: Any]?)) -> Void) {
+        self.init(config: context.config)
+    }
+    
+    init(config: TealiumConfig) {
+        self.config = config
         self.id = "Dummy"
     }
 
@@ -52,7 +56,8 @@ class DummyCollector: Collector, DispatchListener, DispatchValidator {
 
 class DummyDataManager: DataLayerManagerProtocol {
     var addCount = 0
-
+    var onDataUpdated: TealiumObservable<[String : Any]> = TealiumPublisher<[String:Any]>().asObservable()
+    var onDataRemoved: TealiumObservable<[String]> = TealiumPublisher<[String]>().asObservable()
     var all: [String: Any] = ["eventData": true, "sessionData": true]
 
     var allSessionData: [String: Any] = ["sessionData": true]
@@ -131,7 +136,7 @@ class DummyDispatchManagerConfigUpdate: DispatchManagerProtocol {
         }
     }
 
-    required init(dispatchers: [Dispatcher]?, dispatchValidators: [DispatchValidator]?, dispatchListeners: [DispatchListener]?, connectivityManager: ConnectivityModule, config: TealiumConfig) {
+    required init(dispatchers: [Dispatcher]?, dispatchValidators: [DispatchValidator]?, dispatchListeners: [DispatchListener]?, connectivityManager: ConnectivityModule, config: TealiumConfig, diskStorage: TealiumDiskStorageProtocol? = nil) {
         self.dispatchers = dispatchers
         self.dispatchValidators = dispatchValidators
         self.dispatchListeners = dispatchListeners
@@ -168,7 +173,7 @@ class DummyDispatchManagerdequeue: DispatchManagerProtocol {
         }
     }
 
-    required init(dispatchers: [Dispatcher]?, dispatchValidators: [DispatchValidator]?, dispatchListeners: [DispatchListener]?, connectivityManager: ConnectivityModule, config: TealiumConfig) {
+    required init(dispatchers: [Dispatcher]?, dispatchValidators: [DispatchValidator]?, dispatchListeners: [DispatchListener]?, connectivityManager: ConnectivityModule, config: TealiumConfig, diskStorage: TealiumDiskStorageProtocol? = nil) {
         self.dispatchers = dispatchers
         self.dispatchValidators = dispatchValidators
         self.dispatchListeners = dispatchListeners
@@ -195,7 +200,8 @@ class DummyDispatchManagerdequeue: DispatchManagerProtocol {
 
 class DummyDataManagerNoData: DataLayerManagerProtocol {
     var all: [String: Any] = [:]
-
+    var onDataUpdated: TealiumObservable<[String : Any]> = TealiumPublisher<[String:Any]>().asObservable()
+    var onDataRemoved: TealiumObservable<[String]> = TealiumPublisher<[String]>().asObservable()
     var allSessionData: [String: Any] = [:]
 
     var minutesBetweenSessionIdentifier: TimeInterval = TimeInterval(floatLiteral: 0.0)
@@ -429,8 +435,11 @@ extension DataLayerManagerProtocol {
 
 class MockMigratedDataLayer: DataLayerManagerProtocol {
     
-
+    var onDataUpdated: TealiumObservable<[String : Any]> = TealiumPublisher<[String:Any]>().asObservable()
+    var onDataRemoved: TealiumObservable<[String]> = TealiumPublisher<[String]>().asObservable()
     var deleteCount = 0
+    static let uuid = UUID().uuidString
+    static let visitorId = uuid.replacingOccurrences(of: "-", with: "")
 
     static let mockData: [String: Any] = [LifecycleKey.migratedLifecycle:
                                             [LifecycleKey.firstLaunchDate: "2020-10-12T18:22:12Z",
@@ -445,9 +454,9 @@ class MockMigratedDataLayer: DataLayerManagerProtocol {
                                              LifecycleKey.totalSecondsAwake: 3000,
                                              LifecycleKey.totalSleepCount: 8,
                                              LifecycleKey.totalWakeCount: 7,
-                                             LifecycleKey.wakeCount: 7],
-                                          TealiumDataKey.visitorId: "205CA6D0FE3A4242A3522DBE7F5B75DE",
-                                          TealiumDataKey.uuid: "205CA6D0-FE3A-4242-A352-2DBE7F5B75DE",
+                                             LifecycleKey.wakeCount: 7] as [String : Any],
+                                          TealiumDataKey.visitorId: visitorId,
+                                          TealiumDataKey.uuid: uuid,
                                           "custom_persistent_key": "customValue",
                                           TealiumDataKey.consentStatus: 1,
                                           TealiumDataKey.consentLoggingEnabled: true,
@@ -508,7 +517,8 @@ class MockMigratedDataLayer: DataLayerManagerProtocol {
 }
 
 class MockMigratedDataLayerNoData: DataLayerManagerProtocol {
-
+    var onDataUpdated: TealiumObservable<[String : Any]> = TealiumPublisher<[String:Any]>().asObservable()
+    var onDataRemoved: TealiumObservable<[String]> = TealiumPublisher<[String]>().asObservable()
     var all: [String: Any] {
         get {
             [String: Any]()

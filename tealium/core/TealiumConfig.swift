@@ -136,6 +136,16 @@ open class TealiumConfig {
                              options: options)
     }
 
+    /// Prevents session counting if false
+    public var sessionCountingEnabled: Bool {
+        get {
+            options[TealiumConfigKey.sessionCountingEnabled] as? Bool ?? true
+        }
+        set {
+            options[TealiumConfigKey.sessionCountingEnabled] = newValue
+        }
+    }
+
     /// Convenience constructor.
     ///
     /// - Parameters:
@@ -365,7 +375,7 @@ public extension TealiumConfig {
         }
 
         set {
-            let size = newValue > TealiumValue.maxEventBatchSize ? TealiumValue.maxEventBatchSize: newValue
+            let size = newValue > TealiumValue.maxEventBatchSize ? TealiumValue.maxEventBatchSize : newValue
             options[TealiumConfigKey.batchSizeKey] = size
         }
 
@@ -429,6 +439,16 @@ public extension TealiumConfig {
         }
     }
 
+    /// Allows the Consent Categories key to be overridden
+    var overrideConsentCategoriesKey: String? {
+        get {
+            options[TealiumConfigKey.overrideConsentCategoriesKey] as? String
+        }
+
+        set {
+            options[TealiumConfigKey.overrideConsentCategoriesKey] = newValue
+        }
+    }
 }
 
 // MARK: Deep Linking/QR Trace

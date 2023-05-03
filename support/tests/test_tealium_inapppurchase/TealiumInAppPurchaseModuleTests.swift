@@ -10,6 +10,8 @@
 import StoreKitTest
 import XCTest
 
+// This test needs to be re enabled for tvOS, it seems Xcode 13.3.1 made this test stop working for tvOS only, the test still works on iOS
+
 @available(iOS 14.0, tvOS 14, *)
 class InAppPurchaseModuleTests: XCTestCase {
 

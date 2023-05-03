@@ -20,23 +20,34 @@ public enum VisitorServiceStatus: Int {
 }
 
 public protocol VisitorServiceManagerProtocol {
-    func startProfileUpdates(visitorId: String)
+    var currentVisitorId: String? { get set }
+    var cachedProfile: TealiumVisitorProfile? { get }
+    var lastFetch: Date? { get }
     func requestVisitorProfile()
 }
 
 public class VisitorServiceManager: VisitorServiceManagerProtocol {
 
     weak public var delegate: VisitorServiceDelegate?
-    var visitorServiceRetriever: VisitorServiceRetriever?
+    var visitorServiceRetriever: VisitorServiceRetriever
     var diskStorage: TealiumDiskStorageProtocol
     var timer: TealiumRepeatingTimer?
-    var stateTimer: TealiumRepeatingTimer?
-    var lifetimeEvents = 0.0
+    var lifetimeEvents: Double {
+        cachedProfile?.lifetimeEventCount ?? -1.0
+    }
     var tealiumConfig: TealiumConfig
-    var visitorId: String?
-    var currentState: AtomicInteger = AtomicInteger(value: VisitorServiceStatus.ready.rawValue)
-    var pollingAttempts: AtomicInteger = AtomicInteger(value: 0)
+    var currentState = VisitorServiceStatus.ready
+    var pollingAttempts = 0
     var maxPollingAttempts = 5
+    private(set) public var lastFetch: Date?
+    public var currentVisitorId: String? {
+        didSet {
+            if let currentVisitorId = currentVisitorId, oldValue != currentVisitorId {
+                lastFetch = nil
+                releaseState()
+            }
+        }
+    }
 
     /// Initializes the Visitor Service Manager
     ///
@@ -49,6 +60,7 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
         tealiumConfig = config
         self.delegate = delegate
         self.diskStorage = diskStorage
+        self.visitorServiceRetriever = VisitorServiceRetriever(config: config)
         guard let profile = diskStorage.retrieve(as: TealiumVisitorProfile.self) else {
             return
         }
@@ -61,99 +73,89 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
         diskStorage.retrieve(as: TealiumVisitorProfile.self)
     }
 
-    public func startProfileUpdates(visitorId: String) {
-        self.visitorId = visitorId
-        visitorServiceRetriever = visitorServiceRetriever ?? VisitorServiceRetriever(config: tealiumConfig, visitorId: visitorId)
-        requestVisitorProfile()
+    /// Retrieves and saves the visitor profile for the current visitorId
+    ///
+    /// Use this method to avoid waiting for the `visitorServiceRefresh` interval between polling requests
+    /// if you urgently need an update on the profile.
+    public func requestVisitorProfile() { // This is called from outside
+        TealiumQueues.backgroundSerialQueue.async {
+            // No need to request if no delegates are listening
+            guard let visitorId = self.currentVisitorId,
+                self.delegate != nil else {
+                return
+            }
+            guard self.currentState == VisitorServiceStatus.ready else {
+                return
+            }
+            self.blockState()
+            self.fetchProfileOrRetry(visitorId: visitorId) {
+                self.startPolling(visitorId: visitorId)
+            }
+        }
     }
 
-    public func requestVisitorProfile() {
+    func blockState() {
+        currentState = VisitorServiceStatus.blocked
+    }
+
+    func releaseState() {
+        currentState = VisitorServiceStatus.ready
+    }
+
+    func startPolling(visitorId: String) {
+        if timer != nil {
+            timer = nil
+        }
+        pollingAttempts = 0
         // No need to request if no delegates are listening
         guard delegate != nil else {
+            releaseState()
             return
         }
+        self.timer = TealiumRepeatingTimer(timeInterval: VisitorServiceConstants.pollingInterval)
+        self.timer?.eventHandler = { [weak self] in
+            guard let self = self, self.currentVisitorId == visitorId else {
+                return
+            }
+            self.fetchProfileOrRetry(visitorId: visitorId) {
+                self.pollingAttempts += 1
+                let attempts = self.pollingAttempts
+                if attempts == self.maxPollingAttempts {
+                    self.releaseState()
+                    self.timer?.suspend()
+                    self.pollingAttempts = 0
+                }
+            }
+        }
+        self.timer?.resume()
+    }
 
-        guard currentState.value == VisitorServiceStatus.ready.rawValue,
-              let _ = visitorId else {
-            return
-        }
-        self.blockState()
-        fetchProfile { profile, error in
+    func fetchProfileOrRetry(visitorId: String, onShouldRetry: @escaping () -> Void) {
+        self.fetchProfile(visitorId: visitorId) { profile, error in
             guard error == nil else {
                 self.releaseState()
+                self.timer?.suspend()
                 return
             }
             guard let profile = profile else {
-                self.startPolling()
+                onShouldRetry()
                 return
             }
+            self.timer?.suspend()
             self.releaseState()
             self.diskStorage.save(profile, completion: nil)
             self.didUpdate(visitorProfile: profile)
         }
     }
 
-    func blockState() {
-        currentState.value = VisitorServiceStatus.blocked.rawValue
-        stateTimer = TealiumRepeatingTimer(timeInterval: 10.0)
-        stateTimer?.eventHandler = { [weak self] in
-            guard let self = self else {
-                return
-            }
-            self.releaseState()
-            self.stateTimer?.suspend()
-        }
-        stateTimer?.resume()
-    }
-
-    func releaseState() {
-        currentState.value = VisitorServiceStatus.ready.rawValue
-    }
-
-    func startPolling() {
+    func fetchProfile(visitorId: String, completion: @escaping (TealiumVisitorProfile?, NetworkError?) -> Void) {
         // No need to request if no delegates are listening
         guard delegate != nil else {
+            completion(nil, nil)
             return
         }
-        if timer != nil {
-            timer = nil
-        }
-        pollingAttempts.value = 0
-        self.timer = TealiumRepeatingTimer(timeInterval: VisitorServiceConstants.pollingInterval)
-        self.timer?.eventHandler = { [weak self] in
-            guard let self = self else {
-                return
-            }
-            self.fetchProfile { profile, error in
-                guard error == nil else {
-                    self.releaseState()
-                    self.timer?.suspend()
-                    return
-                }
-                guard let profile = profile else {
-                    let attempts = self.pollingAttempts.incrementAndGet()
-                    if attempts == self.maxPollingAttempts {
-                        self.timer?.suspend()
-                        self.pollingAttempts.resetToZero()
-                    }
-                    return
-                }
-                self.timer?.suspend()
-                self.releaseState()
-                self.diskStorage.save(profile, completion: nil)
-                self.didUpdate(visitorProfile: profile)
-            }
-        }
-        self.timer?.resume()
-    }
-
-    func fetchProfile(completion: @escaping (TealiumVisitorProfile?, NetworkError?) -> Void) {
-        // No need to request if no delegates are listening
-        guard delegate != nil else {
-            return
-        }
-        visitorServiceRetriever?.fetchVisitorProfile { [weak self] result in
-            guard let self = self else { return }
+        visitorServiceRetriever.fetchVisitorProfile(visitorId: visitorId) { [weak self] result in
+            guard let self = self, self.currentVisitorId == visitorId else { return }
             switch result {
             case .success(let profile):
                 guard let profile = profile,
@@ -161,7 +163,8 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
                     completion(nil, nil)
                     return
                 }
-                guard let lifetimeEventCount = profile.numbers?[VisitorServiceConstants.eventCountMetric],
+                self.lastFetch = Date()
+                guard let lifetimeEventCount = profile.lifetimeEventCount,
                       self.lifetimeEventCountHasBeenUpdated(lifetimeEventCount) else {
                     completion(nil, nil)
                     return
@@ -183,7 +186,6 @@ public class VisitorServiceManager: VisitorServiceManagerProtocol {
             return false
         }
         let eventCountUpdated = currentCount > lifetimeEvents
-        lifetimeEvents = currentCount
         return eventCountUpdated
     }
 }
@@ -196,5 +198,11 @@ public extension VisitorServiceManager {
     func didUpdate(visitorProfile: TealiumVisitorProfile) {
         delegate?.didUpdate(visitorProfile: visitorProfile)
     }
+}
 
+extension TealiumVisitorProfile {
+    var lifetimeEventCount: Double? {
+        get { numbers?[VisitorServiceConstants.eventCountMetric] }
+        set { numbers?[VisitorServiceConstants.eventCountMetric] = newValue }
+    }
 }

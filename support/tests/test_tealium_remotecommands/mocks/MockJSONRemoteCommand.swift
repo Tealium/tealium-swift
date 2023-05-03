@@ -25,6 +25,7 @@ class MockJSONRemoteCommand: RemoteCommandProtocol {
         self.config = config ?? RemoteCommandConfig(config: ["test": "test"],
                                                     mappings: ["test": "test"],
                                                     apiCommands: ["test": "test"],
+                                                    statics: [:],
                                                     commandName: "initialize",
                                                     commandURL: URL(string: "https://some.custom.server/firebase.json"))
         completion = { _ in

@@ -163,36 +163,54 @@ class WKWebViewIntegrationTests: XCTestCase {
     func testDispatchTrackCreatesTrackRequest() {
         expect = expectation(description: "trackRequest")
         let context = TestTealiumHelper.context(with: config)
-        module = TagManagementModule(context: context, delegate: TagManagementModuleDelegate(), completion: { _ in })
-        let track = TealiumTrackRequest(data: ["test_track": true])
-        module?.dispatchTrack(track, completion: { result in
-            switch result.0 {
-            case .failure(let error):
-                XCTFail("Unexpected error: \(error.localizedDescription)")
-            case .success(let success):
-                XCTAssertTrue(success)
-                self.expect.fulfill()
-            }
+        module = TagManagementModule(context: context, delegate: TagManagementModuleDelegate(), completion: { [weak self] _ in
+            let track = TealiumTrackRequest(data: ["test_track": true])
+            self?.module?.dispatchTrack(track, completion: { result in
+                switch result.0 {
+                case .failure(let error):
+                    XCTFail("Unexpected error: \(error.localizedDescription)")
+                case .success(let success):
+                    XCTAssertTrue(success)
+                    self?.expect.fulfill()
+                }
+            })
         })
-        wait(for: [expect], timeout: 2.0)
+        
+        wait(for: [expect], timeout: 5.0)
     }
 
     func testDispatchTrackCreatesBatchTrackRequest() {
         expect = expectation(description: "batchTrackRequest")
         let context = TestTealiumHelper.context(with: config)
-        module = TagManagementModule(context: context, delegate: TagManagementModuleDelegate(), completion: { _ in })
-        let track = TealiumTrackRequest(data: ["test_track": true])
-        let batchTrack = TealiumBatchTrackRequest(trackRequests: [track, track, track])
-        module?.dispatchTrack(batchTrack, completion: { result in
-            switch result.0 {
-            case .failure(let error):
-                XCTFail("Unexpected error: \(error.localizedDescription)")
-            case .success(let success):
-                XCTAssertTrue(success)
-                self.expect.fulfill()
-            }
+        module = TagManagementModule(context: context, delegate: TagManagementModuleDelegate(), completion: { [weak self] _ in
+            let track = TealiumTrackRequest(data: ["test_track": true])
+            let batchTrack = TealiumBatchTrackRequest(trackRequests: [track, track, track])
+            self?.module?.dispatchTrack(batchTrack, completion: { result in
+                switch result.0 {
+                case .failure(let error):
+                    XCTFail("Unexpected error: \(error.localizedDescription)")
+                case .success(let success):
+                    XCTAssertTrue(success)
+                    self?.expect.fulfill()
+                }
+            })
         })
-        wait(for: [expect], timeout: 2.0)
+        
+        wait(for: [expect], timeout: 5.0)
+    }
+    
+    func testModuleWithQueryParamProviderChangesUrl() {
+        expect = expectation(description: "Enable complete")
+        let config = self.config.copy
+        config.collectors = [MockQueryParamsProvider.self]
+        let context = TestTealiumHelper.context(with: config)
+        module = TagManagementModule(context: context, delegate: TagManagementModuleDelegate(), completion: { _ in
+            for item in MockQueryParamsProvider.defaultItems {
+                XCTAssertTrue(URLComponents(url: self.module.tagManagement!.url!, resolvingAgainstBaseURL: false)!.queryItems!.contains(item))
+            }
+            self.expect.fulfill()
+        })
+        waitForExpectations(timeout: 5)
     }
 
 }

@@ -14,12 +14,16 @@ import TealiumVisitorService
 import TealiumAutotracking
 import TealiumInAppPurchase
 #if os(iOS)
+import WebKit
 import TealiumAttribution
 import TealiumLocation
 import TealiumRemoteCommands
 import TealiumTagManagement
 #endif
 
+extension TealiumDataKey {
+    static let email = "email"
+}
 
 class TealiumHelper {
 
@@ -35,7 +39,7 @@ class TealiumHelper {
     func start() {
         let config = TealiumConfig(account: "tealiummobile",
                                    profile: "demo",
-                                   environment: "dev",
+                                   environment: "prod",
                                    dataSource: "test12",
                                    options: nil)
 
@@ -65,11 +69,13 @@ class TealiumHelper {
         config.onConsentExpiration = {
             print("Consent expired")
         }
+        config.visitorIdentityKey = TealiumDataKey.email
+        config.visitorServiceRefresh = .every(1, .minutes)
         #if os(iOS)
+            config.enableBackgroundLocation = true
             config.collectors = [
                 Collectors.Attribution,
                 Collectors.Lifecycle,
-                Collectors.AppData,
                 Collectors.Connectivity,
                 Collectors.Device,
                 Collectors.Location,
@@ -107,7 +113,6 @@ class TealiumHelper {
                 Dispatchers.Collect,
             ]
         #endif
-
         tealium = Tealium(config: config) { [weak self] response in
             guard let self = self,
                   let teal = self.tealium else {
@@ -199,7 +204,9 @@ extension TealiumHelper: VisitorServiceDelegate {
 
 extension TealiumHelper: DispatchListener {
     public func willTrack(request: TealiumRequest) {
-        _onWillTrack.publish((request as! TealiumTrackRequest).trackDictionary)
+        if let request = request as? TealiumTrackRequest {
+            _onWillTrack.publish(request.trackDictionary)
+        }
         if self.enableHelperLogs {
             print("helper - willtrack")
         }

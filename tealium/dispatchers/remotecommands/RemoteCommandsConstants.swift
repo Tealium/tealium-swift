@@ -8,6 +8,10 @@
 #if os(iOS)
 import Foundation
 
+#if remotecommands
+import TealiumCore
+#endif
+
 public enum RemoteCommandType {
     case webview
     case remote(url: String)
@@ -39,6 +43,8 @@ enum RemoteCommandsKey {
     static let commandName = "command_name"
     static let defaultRefreshInterval = Int(3600)
     static let dlePrefix = "https://tags.tiqcdn.com/dle/"
+    static let keysSeparationDelimiter = "keys_separation_delimiter"
+    static let keysEqualityDelimiter = "keys_equality_delimiter"
 }
 
 enum RemoteCommandStatusCode: Int {
@@ -49,7 +55,7 @@ enum RemoteCommandStatusCode: Int {
     case failure = 404
 }
 
-public enum TealiumRemoteCommandsError: Error, Equatable {
+public enum TealiumRemoteCommandsError: TealiumErrorEnum, Equatable {
     case invalidScheme
     case commandIdNotFound
     case commandNotFound
@@ -67,7 +73,7 @@ public enum TealiumRemoteCommandsError: Error, Equatable {
     case notModified
 }
 
-enum TealiumRemoteCommandResponseError: Error {
+enum TealiumRemoteCommandResponseError: TealiumErrorEnum {
     case noMappedPayloadData
     case missingURLTarget
     case missingURLMethod

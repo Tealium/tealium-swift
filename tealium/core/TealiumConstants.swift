@@ -15,7 +15,7 @@ public enum Dispatchers {}
 
 public enum TealiumValue {
     public static let libraryName = "swift"
-    public static let libraryVersion = "2.6.0"
+    public static let libraryVersion = "2.9.2"
     // This is the current limit for performance reasons. May be increased in future
     public static let maxEventBatchSize = 10
     public static let defaultMinimumDiskSpace: Int32 = 20_000_000
@@ -113,6 +113,7 @@ public enum TealiumConfigKey {
     static let hostedDataLayerExpiry = "hosted_data_layer_expiry"
     static let consentExpiry = "consent_expiry"
     static let consentExpiryCallback = "consent_expiry_callback"
+    static let overrideConsentCategoriesKey = "override_consent_categories_key"
     static let timedEventTriggers = "timed_event_triggers"
     // number of events in a batch, max 10
     public static let batchSizeKey = "batch_size"
@@ -140,6 +141,7 @@ public enum TealiumConfigKey {
     static let minimumFreeDiskSpace = "min_free_disk_space"
     static let diskStorageEnabled = "disk_storage"
     public static let diskStorageDirectory = "disk_storage_directory"
+    public static let sessionCountingEnabled = "session_counting_enabled"
 }
 
 public enum TealiumKey {
@@ -164,7 +166,7 @@ public enum TealiumKey {
     static let traceIdQueryParam = "tealium_trace_id"
 }
 
-public enum TealiumTrackType {
+public enum TealiumTrackType: String {
     case view           // Whenever content is displayed to the user.
     case event
 
@@ -187,3 +189,12 @@ public enum HttpStatusCodes: Int {
     case ok = 200
 }
 // swiftlint:enable identifier_name
+
+public protocol TealiumErrorEnum: Error {}
+
+// Add default localizedDescription
+extension TealiumErrorEnum {
+    var localizedDescription: String? {
+        return "\(type(of: self)).\(self)"
+    }
+}

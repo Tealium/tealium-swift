@@ -85,4 +85,97 @@ class TagManagementWKWebViewTests: XCTestCase {
         wait(for: [expectation], timeout: 3)
     }
 
+    @available(iOS 10.0, *)
+    func testEnableDispatchQueue() {
+        let config = testTealiumConfig.copy
+        config.dispatchers = [Dispatchers.TagManagement]
+        let tagManagementWV = TagManagementWKWebView(config: config, delegate: nil)
+        let view = UIView()
+        let expectation = expectation(description: "Enable complete")
+        tagManagementWV.enable(webviewURL: testURL, delegates: nil, view: view) { _, error in
+            XCTAssertNil(error)
+            dispatchPrecondition(condition: DispatchPredicate.onQueueAsBarrier(TealiumQueues.backgroundSerialQueue))
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 5)
+    }
+    
+    @available(iOS 10.0, *)
+    func testEnableDispatchQueueWithMissingURL() {
+        let config = testTealiumConfig.copy
+        config.dispatchers = [Dispatchers.TagManagement]
+        let tagManagementWV = TagManagementWKWebView(config: config, delegate: nil)
+        let view = UIView()
+        let expectation = expectation(description: "Enable complete")
+        tagManagementWV.enable(webviewURL: nil, delegates: nil, view: view) { _, error in
+            XCTAssertNotNil(error)
+            dispatchPrecondition(condition: DispatchPredicate.onQueueAsBarrier(TealiumQueues.backgroundSerialQueue))
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 5)
+    }
+    
+
+    @available(iOS 10.0, *)
+    func testReloadDispatchQueue() {
+        let config = testTealiumConfig.copy
+        config.dispatchers = [Dispatchers.TagManagement]
+        let tagManagementWV = TagManagementWKWebView(config: config, delegate: nil)
+        let view = UIView()
+        let expectation = expectation(description: "Reload complete")
+        tagManagementWV.enable(webviewURL: testURL, delegates: nil, view: view) { _, _ in }
+        tagManagementWV.reload { _, _, _ in
+            dispatchPrecondition(condition: DispatchPredicate.onQueueAsBarrier(TealiumQueues.backgroundSerialQueue))
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 5)
+    }
+    
+    @available(iOS 10.0, *)
+    func testReloadMultipleTimesDispatchQueue() {
+        let config = testTealiumConfig.copy
+        config.dispatchers = [Dispatchers.TagManagement]
+        let tagManagementWV = TagManagementWKWebView(config: config, delegate: nil)
+        let view = UIView()
+        let expectation = expectation(description: "Reload complete")
+        expectation.expectedFulfillmentCount = 5
+        tagManagementWV.enable(webviewURL: testURL, delegates: nil, view: view) { _, _ in }
+        for _ in 0..<5 {
+            tagManagementWV.reload { _, _, _ in
+                dispatchPrecondition(condition: DispatchPredicate.onQueueAsBarrier(TealiumQueues.backgroundSerialQueue))
+                expectation.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 3)
+    }
+    
+    @available(iOS 10.0, *)
+    func testTrackDispatchQueue() {
+        let config = testTealiumConfig.copy
+        config.dispatchers = [Dispatchers.TagManagement]
+        let tagManagementWV = TagManagementWKWebView(config: config, delegate: nil)
+        let view = UIView()
+        let expectation = expectation(description: "Track complete")
+        tagManagementWV.enable(webviewURL: testURL, delegates: nil, view: view) { _, _ in }
+        tagManagementWV.track(["something":"value"]) { _, _, _ in
+            dispatchPrecondition(condition: DispatchPredicate.onQueueAsBarrier(TealiumQueues.backgroundSerialQueue))
+                        expectation.fulfill()
+        }
+        waitForExpectations(timeout: 3)
+    }
+
+    @available(iOS 10.0, *)
+    func testTrackMultipleDispatchQueue() {
+        let config = testTealiumConfig.copy
+        config.dispatchers = [Dispatchers.TagManagement]
+        let tagManagementWV = TagManagementWKWebView(config: config, delegate: nil)
+        let view = UIView()
+        let expectation = expectation(description: "TrackMultiple complete")
+        tagManagementWV.enable(webviewURL: testURL, delegates: nil, view: view) { _, _ in }
+        tagManagementWV.trackMultiple([["something":"value"], ["somethingelse": "value"]]) { _, _, _ in
+            dispatchPrecondition(condition: DispatchPredicate.onQueueAsBarrier(TealiumQueues.backgroundSerialQueue))
+                        expectation.fulfill()
+        }
+        waitForExpectations(timeout: 3)
+    }
 }

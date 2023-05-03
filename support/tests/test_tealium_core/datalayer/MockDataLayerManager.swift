@@ -9,13 +9,15 @@ import Foundation
 @testable import TealiumCore
 
 class MockDataLayerManager: DataLayerManagerProtocol {
+    
     var sessionDataBacking = [String: Any]()
     var addSingleCount = 0
     var addMultiCount = 0
     var deleteSingleCount = 0
     var deleteMultiCount = 0
     var deleteAllCount = 0
-
+    var onDataUpdated: TealiumObservable<[String : Any]> = TealiumPublisher<[String:Any]>().asObservable()
+    var onDataRemoved: TealiumObservable<[String]> = TealiumPublisher<[String]>().asObservable()
     var all: [String: Any] {
         get {
             ["all": "eventdata"]

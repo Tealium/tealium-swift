@@ -121,7 +121,7 @@ class RemoteCommandsModuleTests: XCTestCase {
 
     func testDynamicTrackForJSONCommandWhenSomeConfigPartsNil() {
         let request = TealiumRemoteAPIRequest(trackRequest: TealiumTrackRequest(data: ["test": "data"]))
-        let jsonCommandConfig = RemoteCommandConfig(config: ["hello": "world"], mappings: ["map": "this"], apiCommands: ["command": "this"], commandName: nil, commandURL: nil)
+        let jsonCommandConfig = RemoteCommandConfig(config: ["hello": "world"], mappings: ["map": "this"], apiCommands: ["command": "this"], statics: [:], commandName: nil, commandURL: nil)
         let mockJSONCommand = MockJSONRemoteCommand(config: jsonCommandConfig)
         let mockRemoteCommandMgr = MockRemoteCommandsManager(jsonCommand: mockJSONCommand)
         let context = TestTealiumHelper.context(with: config)
@@ -132,9 +132,9 @@ class RemoteCommandsModuleTests: XCTestCase {
     }
     
     func testTealiumEventType() {
-        let request = TealiumRemoteAPIRequest(trackRequest: TealiumTrackRequest(data: ["test": "data"]))
+        let request = TealiumRemoteAPIRequest(trackRequest: TealiumEvent("SomeEvent", dataLayer: ["test": "data"]).trackRequest)
         XCTAssertNil(request.trackRequest.trackDictionary["call_type"])
-        XCTAssertEqual(request.trackRequest.trackDictionary[TealiumDataKey.eventType] as! String, "remote_api")
+        XCTAssertEqual(request.trackRequest.trackDictionary[TealiumDataKey.eventType] as! String, "event", "remote_api is just sent instead of link in tagmanagement")
     }
 
 }

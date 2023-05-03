@@ -20,17 +20,18 @@ enum InternalWebViewState: Int {
     case notYetLoaded = 3
 }
 
+typealias TrackCompletion = ((Bool, [String: Any], Error?) -> Void)
+
 class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStringConverter {
 
     var webview: WKWebView?
     var tealConfig: TealiumConfig
-    var webviewDidFinishLoading = false
     var enableCompletion: ((_ success: Bool, _ error: Error?) -> Void)?
     // current view being used for WKWebView
     weak var view: UIView?
     var url: URL?
     var reloadHandler: TealiumCompletion?
-    var currentState: AtomicInteger = AtomicInteger(value: InternalWebViewState.notYetLoaded.rawValue)
+    var currentState = InternalWebViewState.notYetLoaded
     weak var moduleDelegate: ModuleDelegate?
 
     var delegates: TealiumMulticastDelegate<WKNavigationDelegate>? = TealiumMulticastDelegate<WKNavigationDelegate>()
@@ -60,7 +61,13 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
         if let delegates = delegates {
             setWebViewDelegates(delegates)
         }
-        enableCompletion = completion
+        if let completion = completion {
+            enableCompletion = { success, error in
+                TealiumQueues.backgroundSerialQueue.async {
+                    completion(success, error)
+                }
+            }
+        }
         self.url = webviewURL
         setupWebview(forURL: webviewURL, withSpecificView: view)
     }
@@ -136,14 +143,21 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
         guard let url = url else {
             return
         }
-        reloadHandler = completion
         let request = URLRequest(url: url)
         TealiumQueues.secureMainThreadExecution { [weak self] in
             guard let self = self else {
                 return
             }
-            self.currentState = AtomicInteger(value: InternalWebViewState.isLoading.rawValue)
-            self.webview?.load(request)
+            if let oldHandler = self.reloadHandler {
+                self.reloadHandler = { success, info, error in
+                    oldHandler(success, info, error)
+                    completion(success, info, error)
+                }
+            } else {
+                self.reloadHandler = completion
+                self.currentState = InternalWebViewState.isLoading
+                self.webview?.load(request)
+            }
         }
     }
 
@@ -154,7 +168,7 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
         guard webview != nil else {
             return false
         }
-        return InternalWebViewState(rawValue: currentState.value) == InternalWebViewState.isLoaded
+        return currentState == InternalWebViewState.isLoaded
     }
 
     /// Process event data for UTAG delivery.
@@ -163,7 +177,7 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
     ///     - data: `[String: Any]` representing a track request
     ///     - completion: Optional completion handler to call when call completes.
     func track(_ data: [String: Any],
-               completion: ((Bool, [String: Any], Error?) -> Void)?) {
+               completion: TrackCompletion?) {
         guard let javascriptString = convertData(data, toStringWith: { try $0.tealiumJavaScriptTrackCall() }) else {
             completion?(false,
                         ["original_payload": data, "sanitized_payload": data],
@@ -195,19 +209,21 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
     ///     - data: `[[String: Any]]` of requests
     ///     - completion: Optional completion handler to call when call completes.
     func trackMultiple(_ data: [[String: Any]],
-                       completion: ((Bool, [String: Any], Error?) -> Void)?) {
-        let totalSuccesses = AtomicInteger(value: 0)
+                       completion: TrackCompletion?) {
+        let group = DispatchGroup()
+        var anyError: Error?
+        data.forEach { _ in group.enter() } // Needs to enter every block before any track is started or we risk leaving before the others have entered (cause errors are sync) and therefore notifying
+        group.notify(queue: TealiumQueues.backgroundSerialQueue) {
+            completion?(anyError == nil, [String: Any](), anyError)
+        }
         data.forEach {
-            self.track($0) { success, _, _ in
-                if success {
-                    _ = totalSuccesses.incrementAndGet()
-                } else {
-                    _ = totalSuccesses.decrementAndGet()
+            self.track($0) { _, _, error in
+                if anyError == nil {
+                    anyError = error
                 }
+                group.leave()
             }
         }
-        let allCallsSuccessful = totalSuccesses.value == data.count
-        completion?(allCallsSuccessful, ["": ""], nil)
     }
 
     /// Handles JavaScript evaluation on the WKWebView instance.
@@ -217,7 +233,7 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
     ///     - completion: Optional completion block to be called after the JavaScript call completes
     func evaluateJavascript (_ jsString: String, _ completion: (([String: Any]) -> Void)?) {
         // webview js evaluation must be on main thread
-        TealiumQueues.mainQueue.async { [weak self] in
+        TealiumQueues.secureMainThreadExecution { [weak self] in
             guard let self = self else {
                 return
             }
@@ -225,16 +241,16 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
                 self.attachToUIView(specificView: nil)
             }
             self.webview?.evaluateJavaScript(jsString) { result, error in
-                let info = Atomic(value: [String: Any]())
+                var info = [String: Any]()
                 if let result = result {
-                    info.value += [TealiumDataKey.jsResult: result]
+                    info += [TealiumDataKey.jsResult: result]
                 }
 
                 if let error = error {
-                    info.value += [TealiumDataKey.jsError: error]
+                    info += [TealiumDataKey.jsError: error]
                 }
                 TealiumQueues.backgroundSerialQueue.async {
-                    completion?(info.value)
+                    completion?(info)
                 }
             }
         }
@@ -247,33 +263,18 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
     ///     - error: `Error?`
     func webviewStateDidChange(_ state: WebViewState,
                                withError error: Error?) {
-        switch state {
-        case .loadSuccess:
-            self.currentState = AtomicInteger(value: InternalWebViewState.isLoaded.rawValue)
-            if let reloadHandler = self.reloadHandler {
-                self.webviewDidFinishLoading = true
-                reloadHandler(true, nil, nil)
-                self.reloadHandler = nil
-            } else {
-                guard webviewDidFinishLoading == false else {
-                    return
-                }
-                webviewDidFinishLoading = true
+        let success = state == .loadSuccess
+        self.currentState = success ? .isLoaded : .didFailToLoad
+        let finalError = success ? nil : error
 
-                if let enableCompletion = enableCompletion {
-                    self.enableCompletion = nil
-                    enableCompletion(true, nil)
-                }
-
-            }
-        case .loadFailure:
-            self.currentState = AtomicInteger(value: InternalWebViewState.didFailToLoad.rawValue)
-            if let reloadHandler = self.reloadHandler {
-                self.webviewDidFinishLoading = true
-                reloadHandler(false, nil, error)
-                self.reloadHandler = nil
-            } else {
-                self.enableCompletion?(false, error)
+        if let enableCompletion = enableCompletion {
+            self.enableCompletion = nil
+            enableCompletion(success, finalError)
+        }
+        if let reloadHandler = self.reloadHandler {
+            self.reloadHandler = nil
+            TealiumQueues.backgroundSerialQueue.async {
+                reloadHandler(success, nil, finalError)
             }
         }
     }

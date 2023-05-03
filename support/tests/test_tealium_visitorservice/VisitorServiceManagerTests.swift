@@ -18,27 +18,19 @@ class VisitorServiceManagerTests: XCTestCase {
     let maxRuns = 10 // max runs for each test
     let waiter = XCTWaiter()
     var currentTest: String = ""
+    let visitorId = "abc123"
 
     override func setUp() {
         expectations = [XCTestExpectation]()
         visitorServiceManager = nil
         mockDiskStorage = MockTealiumDiskStorage()
-        visitorServiceManager = VisitorServiceManager(config: TestTealiumHelper().getConfig(), delegate: nil, diskStorage: mockDiskStorage)
-        visitorServiceManager?.visitorServiceRetriever = VisitorServiceRetriever(config: TestTealiumHelper().getConfig(), visitorId: "abc123", urlSession: MockURLSession())
+        let config = TealiumConfig(account: "test", profile: "test", environment: "prod")
+        visitorServiceManager = VisitorServiceManager(config: config, delegate: self, diskStorage: mockDiskStorage)
+        visitorServiceManager?.visitorServiceRetriever = VisitorServiceRetriever(config: TestTealiumHelper().getConfig(), urlSession: MockURLSession())
     }
 
     override func tearDown() {
         visitorServiceManager = nil
-    }
-
-    func getExpectation(forDescription: String) -> XCTestExpectation? {
-        let exp = expectations.filter {
-            $0.description == forDescription
-        }
-        if exp.count > 0 {
-            return exp[0]
-        }
-        return nil
     }
 
     func testInitialVisitorProfileSettingsFromConfig() {
@@ -53,30 +45,35 @@ class VisitorServiceManagerTests: XCTestCase {
         currentTest = "testDelegateDidUpdateViaRequestVisitorProfile"
         expectations.append(expectation)
         visitorServiceManager?.delegate = self
-        visitorServiceManager?.visitorId = "test"
         visitorServiceManager?.requestVisitorProfile()
         waiter.wait(for: expectations, timeout: 5.0)
     }
 
     func testBlockState() {
         visitorServiceManager?.blockState()
-        XCTAssertEqual(visitorServiceManager?.currentState.value, VisitorServiceStatus.blocked.rawValue)
+        XCTAssertEqual(visitorServiceManager?.currentState, VisitorServiceStatus.blocked)
     }
 
     func testReleaseState() {
         visitorServiceManager?.releaseState()
-        XCTAssertEqual(visitorServiceManager?.currentState.value, VisitorServiceStatus.ready.rawValue)
+        XCTAssertEqual(visitorServiceManager?.currentState, VisitorServiceStatus.ready)
     }
 
     func testLifetimeEventCountHasBeenUpdated() {
-        visitorServiceManager?.lifetimeEvents = 4.0
+        let visitor = TestTealiumHelper.loadStub(from: "visitor", type(of: self))
+        var profile = try! JSONDecoder().decode(TealiumVisitorProfile.self, from: visitor)
+        profile.lifetimeEventCount = 4.0
+        visitorServiceManager?.diskStorage.save(profile, completion: nil)
         let result = visitorServiceManager?.lifetimeEventCountHasBeenUpdated(5.0)
         XCTAssertTrue(result!)
     }
 
     func testLifetimeEventCountNotUpdated() {
-        visitorServiceManager?.lifetimeEvents = 4.0
-        let result = visitorServiceManager?.lifetimeEventCountHasBeenUpdated(4.0)
+        let visitor = TestTealiumHelper.loadStub(from: "visitor", type(of: self))
+        var profile = try! JSONDecoder().decode(TealiumVisitorProfile.self, from: visitor)
+        profile.lifetimeEventCount = 4.0
+        visitorServiceManager?.diskStorage.save(profile, completion: nil)
+        let result = self.visitorServiceManager?.lifetimeEventCountHasBeenUpdated(4.0)
         XCTAssertFalse(result!)
     }
 
@@ -99,13 +96,25 @@ class VisitorServiceManagerTests: XCTestCase {
         XCTAssertFalse(result)
     }
 
+    func testLastFetchGetsResetOnVisitorChange() {
+        let expectation = expectation(description: "fetch completed")
+        visitorServiceManager?.currentVisitorId = "oldId"
+        visitorServiceManager?.fetchProfile(visitorId: "oldId", completion: { _, _ in
+            expectation.fulfill()
+        })
+        waitForExpectations(timeout: 3.0)
+        XCTAssertNotNil(visitorServiceManager?.lastFetch)
+        visitorServiceManager?.currentVisitorId = "newId"
+        XCTAssertNil(visitorServiceManager?.lastFetch)
+    }
 }
 
 extension VisitorServiceManagerTests: VisitorServiceDelegate {
 
     func didUpdate(visitorProfile: TealiumVisitorProfile) {
-        self.getExpectation(forDescription: "testDelegateDidUpdateViaRequestVisitorProfile")?.fulfill()
-        self.getExpectation(forDescription: "testPollForVisitorProfile")?.fulfill()
+        for expectation in expectations {
+            expectation.fulfill()
+        }
         visitorServiceManager?.timer?.suspend()
     }
 

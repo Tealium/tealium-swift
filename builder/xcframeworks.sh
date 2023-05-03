@@ -6,7 +6,8 @@
 
 # variable declarations
 BUILD_PATH="build"
-XCFRAMEWORK_PATH="tealium.xcframework"
+XCFRAMEWORK_PATH="tealium-xcframeworks"
+ZIP_PATH="tealium.xcframework.zip"
 XCODE_PROJECT="tealium-swift"
 MACOS_SDKROOT="SDKROOT = macosx;"
 IOS_SDKROOT="SDKROOT = \"iphoneos\";"
@@ -22,7 +23,6 @@ TVOS_DESTINATION="generic/platform=tvOS"
 WATCHOS_SIM_DESTINATION="generic/platform=watchOS Simulator"
 WATCHOS_DESTINATION="generic/platform=watchOS"
 MACOS_DESTINATION="generic/platform=macOS"
-CATALYST_DESTINATION="platform=macOS,variant=Mac Catalyst"
 # xcarchives
 IOS_SIM_ARCHIVE="ios-sim.xcarchive"
 IOS_ARCHIVE="ios.xcarchive"
@@ -31,7 +31,6 @@ TVOS_ARCHIVE="tvos.xcarchive"
 WATCHOS_SIM_ARCHIVE="watchos-sim.xcarchive"
 WATCHOS_ARCHIVE="watchos.xcarchive"
 MACOS_ARCHIVE="macos.xcarchive"
-CATALYST_ARCHIVE="ios-catalyst.xcarchive"
 
 # function declarations
 function define_product_name {
@@ -55,8 +54,8 @@ function clean_build_folder {
     if [[ -d "${XCFRAMEWORK_PATH}" ]]; then
         rm -rf "${XCFRAMEWORK_PATH}"
     fi
-    if [[ -d "${XCFRAMEWORK_PATH}.zip" ]]; then
-        rm "${XCFRAMEWORK_PATH}.zip"
+    if [[ -d "${ZIP_PATH}" ]]; then
+        rm "${ZIP_PATH}"
     fi
     mkdir "${XCFRAMEWORK_PATH}"
 }
@@ -83,7 +82,6 @@ function archive {
     -sdk "${4}" \
     SKIP_INSTALL=NO \
     BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
-    SUPPORTS_MACCATALYST=YES \
     BUILD_SCRIPT=YES
     echo "Archiving ${1} ${2} ${3} ${4}"   
 }
@@ -93,7 +91,6 @@ function create_xcframework_ios_only {
         xcodebuild -create-xcframework \
         -framework "${BUILD_PATH}/${IOS_SIM_ARCHIVE}/Products/Library/Frameworks/${1}.framework" \
         -framework "${BUILD_PATH}/${IOS_ARCHIVE}/Products/Library/Frameworks/${1}.framework" \
-        -framework "${BUILD_PATH}/${CATALYST_ARCHIVE}/Products/Library/Frameworks/${1}.framework" \
         -output "${XCFRAMEWORK_PATH}/${1}".xcframework;
 }
 
@@ -107,7 +104,6 @@ function create_xcframework_all {
     -framework "${BUILD_PATH}/${WATCHOS_SIM_ARCHIVE}/Products/Library/Frameworks/${1}.framework" \
     -framework "${BUILD_PATH}/${WATCHOS_ARCHIVE}/Products/Library/Frameworks/${1}.framework" \
     -framework "${BUILD_PATH}/${MACOS_ARCHIVE}/Products/Library/Frameworks/${1}.framework" \
-    -framework "${BUILD_PATH}/${CATALYST_ARCHIVE}/Products/Library/Frameworks/${1}.framework" \
     -output "${XCFRAMEWORK_PATH}/${1}".xcframework;
 }
 
@@ -124,7 +120,6 @@ function create_xcframework {
 function create_archives_ios_only {
     archive "$1" "${IOS_SIM_DESTINATION}" "${BUILD_PATH}/${IOS_SIM_ARCHIVE}" "iphonesimulator"
     archive "$1" "${IOS_DESTINATION}" "${BUILD_PATH}/${IOS_ARCHIVE}" "iphoneos";
-    archive "$1" "${CATALYST_DESTINATION}" "${BUILD_PATH}/${CATALYST_ARCHIVE}" "iphoneos";
     create_xcframework "$1"
 }
 
@@ -137,7 +132,6 @@ function create_archives_all {
     archive "$1" "${WATCHOS_SIM_DESTINATION}" "${BUILD_PATH}/${WATCHOS_SIM_ARCHIVE}" "watchsimulator"
     archive "$1" "${WATCHOS_DESTINATION}" "${BUILD_PATH}/${WATCHOS_ARCHIVE}" "watchos"
     archive "$1" "${MACOS_DESTINATION}" "${BUILD_PATH}/${MACOS_ARCHIVE}" "macosx"
-    archive "$1" "${CATALYST_DESTINATION}" "${BUILD_PATH}/${CATALYST_ARCHIVE}" "iphoneos";
     create_xcframework "$1" 
 }
 
@@ -163,7 +157,7 @@ function create_archives {
 # zip all the xcframeworks
 function zip_xcframeworks {
     if [[ -d "${XCFRAMEWORK_PATH}" ]]; then
-        zip -r "${XCFRAMEWORK_PATH}.zip" "${XCFRAMEWORK_PATH}"
+        zip -r "${ZIP_PATH}" "${XCFRAMEWORK_PATH}"
         rm -rf "${XCFRAMEWORK_PATH}"
     fi
 }
@@ -175,7 +169,7 @@ clean_build_folder
 create_archives "$1"
 zip_xcframeworks
 
-mv "${XCFRAMEWORK_PATH}.zip" "../"
+mv "${ZIP_PATH}" "../"
 
 echo ""
-echo "Done! Upload ${XCFRAMEWORK_PATH}.zip to GitHub when you create the release."
+echo "Done! Upload ${ZIP_PATH} to GitHub when you create the release."

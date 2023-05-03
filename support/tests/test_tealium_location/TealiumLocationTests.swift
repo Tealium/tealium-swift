@@ -46,6 +46,14 @@ class TealiumLocationTests: XCTestCase {
         let locationManager = TealiumLocationManager(config: config)
         XCTAssertEqual(locationManager.locationManager.desiredAccuracy, kCLLocationAccuracyBestForNavigation)
     }
+    
+    func testEnabledBackgroundLocationIsSet() {
+        let locationManager1 = TealiumLocationManager(config: config)
+        XCTAssertFalse(locationManager1.locationManager.allowsBackgroundLocationUpdates) // default false
+        config.enableBackgroundLocation = true
+        let locationManager2 = TealiumLocationManager(config: config)
+        XCTAssertTrue(locationManager2.locationManager.allowsBackgroundLocationUpdates)
+    }
 
     func testLocationAccuracyEnum() {
         if #available(iOS 14, *) {
@@ -805,17 +813,12 @@ class TealiumLocationTests: XCTestCase {
         }
         wait(for: [expect], timeout: 2.0)
     }
-
+    
     func testIsFullAccuracy() {
         if #available(iOS 14, *) {
-            let expect = expectation(description: "Module latest location called")
             locationModule?.tealiumLocationManager = mockTealiumLocationManager
             _ = locationModule?.isFullAccuracy
-            TealiumQueues.mainQueue.async { [weak self] in
-                XCTAssertEqual(self?.mockTealiumLocationManager.isFullAccuracyCallCount, 1)
-                expect.fulfill()
-            }
-            wait(for: [expect], timeout: 2.0)
+            XCTAssertEqual(self.mockTealiumLocationManager.isFullAccuracyCallCount, 1)
         }
     }
 

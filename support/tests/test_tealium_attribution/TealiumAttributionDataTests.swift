@@ -12,8 +12,8 @@ import XCTest
 import AppTrackingTransparency
 #endif
 
-let attributionValues = Dictionary(uniqueKeysWithValues: AppleInternalKeys.allCases.map { ($0, "mockdata" as NSObject) }) as NSObject
-private let mockAppleAttributionData: [String: NSObject] = ["Version3.1": attributionValues]
+let attributionValues = Dictionary(uniqueKeysWithValues: AppleInternalKeys.allCases.map { ($0, "mockdata" as NSObject) })
+private let mockAppleAttributionData: [String: NSObject] = ["Version3.1": attributionValues as NSObject]
 
 let keyTranslation = [
     AppleInternalKeys.attribution: TealiumDataKey.adClickedWithin30D,
@@ -25,6 +25,7 @@ let keyTranslation = [
     AppleInternalKeys.purchaseDate: TealiumDataKey.adPurchaseDate,
     AppleInternalKeys.conversionDate: TealiumDataKey.adConversionDate,
     AppleInternalKeys.conversionType: TealiumDataKey.adConversionType,
+    AppleInternalKeys.adId: TealiumDataKey.adId,
     AppleInternalKeys.adGroupId: TealiumDataKey.adGroupId,
     AppleInternalKeys.adGroupName: TealiumDataKey.adGroupName,
     AppleInternalKeys.keyword: TealiumDataKey.adKeyword,
@@ -39,13 +40,14 @@ class TealiumAttributionDataTests: XCTestCase {
     var defaultConfig: TealiumConfig!
     let mockDisk = AttributionMockDiskStorage()
     let mockAdAttribution = MockTealiumSKAdAttribution()
+    let mockAdClient = TestTealiumAdClient()
 
     override func setUpWithError() throws {
         defaultConfig = TestTealiumHelper().getConfig()
     }
 
     func createAttributionData(from config: TealiumConfig? = nil, idManager: TealiumASIdentifierManagerProtocol? = nil) -> AttributionData {
-        AttributionData(config: config ?? defaultConfig, diskStorage: mockDisk, identifierManager: idManager ?? TealiumASIdentifierManagerAdTrackingEnabled.shared, adClient: TestTealiumAdClient.shared, adAttribution: mockAdAttribution)
+        AttributionData(config: config ?? defaultConfig, diskStorage: mockDisk, identifierManager: idManager ?? TealiumASIdentifierManagerAdTrackingEnabled.shared, adClient: mockAdClient, adAttribution: mockAdAttribution)
     }
 
     func testVolatileData() {
@@ -134,32 +136,12 @@ class TealiumAttributionDataTests: XCTestCase {
         defaultConfig.searchAdsEnabled = true
         let attributionData = createAttributionData(from: defaultConfig)
         let expectation = self.expectation(description: "search_ads")
-        let waiter = XCTWaiter()
-        attributionData.appleSearchAdsData { _ in
-            guard let appleAttributionDetails = attributionData.persistentAttributionData else {
-                XCTFail("Attribution returned a nil dictionary")
-                return
-            }
-            guard let attributionValues = attributionValues as? [String: Any] else {
-                XCTFail("Attribution values could not be cast to [String: Any]")
-                return
-            }
-
-            XCTAssertEqual(attributionValues.count, appleAttributionDetails.count, "Keys missing in returned attribution data")
-
-            attributionValues.forEach { key, mockValue in
-                guard let tealiumKey = keyTranslation[key],
-                      let mockValue = mockValue as? String,
-                      let tealiumValue = appleAttributionDetails[tealiumKey] else {
-                    XCTFail("Key could not be found")
-                    return
-                }
-                XCTAssertEqual(tealiumValue, mockValue)
-            }
-
+        mockAdClient.mockPersistentData = PersistentAttributionData(withDictionary: ["ad_org_id": "Test"])
+        attributionData.appleSearchAdsData { attributionData in
+            XCTAssertEqual(attributionData?.orgId, "Test")
             expectation.fulfill()
         }
-        waiter.wait(for: [expectation], timeout: 5.0)
+        waitForExpectations(timeout: 5.0)
     }
 
     @available(iOS 14, *)
@@ -338,14 +320,12 @@ public class MockATTrackingManagerTrackingRestricted: TealiumATTrackingManagerPr
 }
 
 public class TestTealiumAdClient: TealiumAdClientProtocol {
-
-    public static var shared: TealiumAdClientProtocol = TestTealiumAdClient()
-
-    private init() {
+    public var mockPersistentData: PersistentAttributionData?
+    init() {
 
     }
-
-    public func requestAttributionDetails(_ completionHandler: @escaping ([String: NSObject]?, Error?) -> Void) {
-        completionHandler(mockAppleAttributionData, nil)
+    
+    public func requestAttributionDetails(_ completionHandler: @escaping (TealiumAttribution.PersistentAttributionData?, Error?) -> Void) {
+        completionHandler(mockPersistentData, nil)
     }
 }

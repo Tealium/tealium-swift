@@ -168,12 +168,12 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
             || webviewCommands.contains { $0.commandId == commandId }
     }
 
+    // swiftlint:disable pattern_matching_keywords
     /// Adds a remote command for later execution.
     ///
     /// If a command with the same commandId has already been added the new one will be ignored.
     ///
     /// - Parameter remoteCommand: `TealiumRemoteCommand` to be added for later execution
-    // swiftlint:disable pattern_matching_keywords
     public func add(_ remoteCommand: RemoteCommandProtocol) {
         guard !isCommandAdded(remoteCommand.commandId) else {
             return
@@ -244,14 +244,22 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
                 guard let config = command.config else {
                     return
                 }
-                guard let payload = data[RemoteCommandsKey.payload] as? [String: Any] else {
-                    command.complete(with: data, config: config, completion: completion)
-                    return
-                }
-                command.complete(with: payload, config: config, completion: completion)
+                command.complete(with: getPayloadData(data: data),
+                                 config: config,
+                                 completion: completion)
             }
         }
+    }
 
+    func getPayloadData(data: [String: Any]) -> [String: Any] {
+        guard var payload = data[RemoteCommandsKey.payload] as? [String: Any] else {
+            return data
+        }
+        let key = TealiumDataKey.eventType
+        if let eventType = data[key] {
+            payload += [key: eventType]
+        }
+        return payload
     }
 
     /// Trigger an associated remote command from a url request.

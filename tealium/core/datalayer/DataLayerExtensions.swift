@@ -7,26 +7,6 @@
 
 import Foundation
 
-public extension Tealium {
-
-    /// - Returns: `String` The Tealium Visitor Id
-    var visitorId: String? {
-        appDataModule?.data?[TealiumDataKey.visitorId] as? String
-    }
-
-    /// Resets the Tealium Visitor Id
-    func resetVisitorId() {
-        appDataModule?.resetVisitorId()
-    }
-
-    private var appDataModule: AppDataModule? {
-        zz_internal_modulesManager?.collectors.first {
-            $0 is AppDataModule
-        } as? AppDataModule
-    }
-
-}
-
 public extension TealiumConfig {
 
     /// Defines lookup keys for the Hosted Data Layer.

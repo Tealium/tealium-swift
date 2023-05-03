@@ -22,7 +22,8 @@ protocol DispatchManagerProtocol {
          dispatchValidators: [DispatchValidator]?,
          dispatchListeners: [DispatchListener]?,
          connectivityManager: ConnectivityModule,
-         config: TealiumConfig)
+         config: TealiumConfig,
+         diskStorage: TealiumDiskStorageProtocol?)
 
     func processTrack(_ request: TealiumTrackRequest)
     func handleDequeueRequest(reason: String)
@@ -56,6 +57,17 @@ class DispatchManager: DispatchManagerProtocol {
             return maxQueueSize
         }
         return TealiumValue.defaultMaxQueueSize
+    }
+
+    var oldestExpirationDate: Date? {
+        guard batchExpirationDays >= 0 else {
+            return nil
+        }
+        let currentDate = Date()
+        var components = DateComponents()
+        components.calendar = Calendar.autoupdatingCurrent
+        components.setValue(-batchExpirationDays, for: .day)
+        return Calendar(identifier: .gregorian).date(byAdding: components, to: currentDate)
     }
 
     // max number of events in a single batch
@@ -96,21 +108,12 @@ class DispatchManager: DispatchManagerProtocol {
     var lowPowerModeEnabled = false
     var lowPowerNotificationObserver: NSObjectProtocol?
 
-    convenience init (dispatchers: [Dispatcher]?,
-                      dispatchValidators: [DispatchValidator]?,
-                      dispatchListeners: [DispatchListener]?,
-                      connectivityManager: ConnectivityModule,
-                      config: TealiumConfig,
-                      diskStorage: TealiumDiskStorageProtocol? = nil) {
-        self.init(dispatchers: dispatchers, dispatchValidators: dispatchValidators, dispatchListeners: dispatchListeners, connectivityManager: connectivityManager, config: config)
-        self.diskStorage = diskStorage
-    }
-
     required init(dispatchers: [Dispatcher]?,
                   dispatchValidators: [DispatchValidator]?,
                   dispatchListeners: [DispatchListener]?,
                   connectivityManager: ConnectivityModule,
-                  config: TealiumConfig) {
+                  config: TealiumConfig,
+                  diskStorage: TealiumDiskStorageProtocol? = nil) {
         self.config = config
         self.connectivityManager = connectivityManager
         self.dispatchers = dispatchers
@@ -122,9 +125,7 @@ class DispatchManager: DispatchManagerProtocol {
         }
 
         // allows overriding for unit tests
-        if self.diskStorage == nil {
-            self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config, forModule: TealiumDispatchQueueConstants.moduleName)
-        }
+        self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config, forModule: TealiumDispatchQueueConstants.moduleName)
         persistentQueue = TealiumPersistentDispatchQueue(diskStorage: self.diskStorage)
         removeOldDispatches()
         if config.lifecycleAutoTrackingEnabled {
@@ -175,7 +176,7 @@ class DispatchManager: DispatchManagerProtocol {
             case .success:
                 let shouldQueue = self.shouldQueue(request: newRequest)
                 if shouldQueue.0 == true {
-                    let batchingReason = shouldQueue.1? [TealiumDataKey.queueReason] as? String ?? TealiumConfigKey.batchingEnabled
+                    let batchingReason = shouldQueue.1?[TealiumDataKey.queueReason] as? String ?? TealiumConfigKey.batchingEnabled
 
                     self.enqueue(newRequest, reason: batchingReason)
                     // batch request and release if necessary
@@ -214,7 +215,7 @@ class DispatchManager: DispatchManagerProtocol {
         }.count > 0
     }
 
-    func runDispatchers (for request: TealiumRequest) {
+    func runDispatchers(for request: TealiumRequest) {
         if request is TealiumTrackRequest || request is TealiumBatchTrackRequest {
             self.dispatchListeners?.forEach {
                 $0.willTrack(request: request)
@@ -236,12 +237,7 @@ class DispatchManager: DispatchManagerProtocol {
     }
 
     func removeOldDispatches() {
-        let currentDate = Date()
-        var components = DateComponents()
-        components.calendar = Calendar.autoupdatingCurrent
-        components.setValue(-batchExpirationDays, for: .day)
-        let sinceDate = Calendar(identifier: .gregorian).date(byAdding: components, to: currentDate)
-        persistentQueue.removeOldDispatches(maxQueueSize, since: sinceDate)
+        persistentQueue.removeOldDispatches(maxQueueSize, since: oldestExpirationDate)
     }
 
     func triggerRemoteAPIRequest(_ request: TealiumTrackRequest) {
@@ -365,7 +361,7 @@ extension DispatchManager {
         guard canWrite else {
             return (false, nil)
         }
-        #if os (watchOS)
+        #if os(watchOS)
         return (true, [TealiumDataKey.queueReason: TealiumConfigKey.batchingEnabled])
         #else
 
@@ -512,7 +508,7 @@ extension DispatchManager {
                             info: [String: Any]?,
                             success: Bool,
                             error: Error?) {
-        let message = success ? "Successful Track": "Failed with error: \(error?.localizedDescription ?? "")"
+        let message = success ? "Successful Track" : "Failed with error: \(error?.localizedDescription ?? "")"
         let logLevel: TealiumLogLevel = success ? .info : .error
         var uuid: String?
         var event: String?

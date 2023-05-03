@@ -29,7 +29,7 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     public var locationAccuracy: String = LocationKey.highAccuracy
     private var _lastLocation: CLLocation?
 
-    @ToAnyObservable(TealiumReplaySubject())
+    @ToAnyObservable<TealiumReplaySubject>(TealiumReplaySubject())
     var onReady: TealiumObservable<Void>
 
     init(config: TealiumConfig,
@@ -53,6 +53,7 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
         self.locationManager.distanceFilter = config.updateDistance
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = CLLocationAccuracy(config.desiredAccuracy)
+        self.locationManager.allowsBackgroundLocationUpdates = config.enableBackgroundLocation
 
         clearMonitoredGeofences()
     }

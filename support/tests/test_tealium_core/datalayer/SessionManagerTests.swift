@@ -11,6 +11,7 @@ import XCTest
 class SessionManagerTests: XCTestCase {
 
     var config: TealiumConfig!
+    @DataLayerSafeAccess
     var eventDataManager: DataLayer!
     var mockSessionStarter = MockTealiumSessionStarter()
     var mockURLSession = MockURLSessionSessionStarter()
@@ -38,6 +39,7 @@ class SessionManagerTests: XCTestCase {
     func testTwoTracksInSecondsBetweenTracksStartsNewSession() {
         eventDataManager.isTagManagementEnabled = true
         eventDataManager.shouldTriggerSessionRequest = true
+        eventDataManager.numberOfTrackRequests = 1
         eventDataManager.lastTrackDate = timeTraveler.travel(by: 20)
         eventDataManager.newTrackRequest()
         XCTAssertEqual(mockSessionStarter.sessionRequestCount, 1)
@@ -92,6 +94,15 @@ class SessionManagerTests: XCTestCase {
         eventDataManager.shouldTriggerSessionRequest = true
         eventDataManager.startNewSession(with: mockSessionStarter)
         XCTAssertEqual(mockSessionStarter.sessionRequestCount, 1)
+    }
+    
+    func testSessionCountingDisabled() {
+        config.sessionCountingEnabled = false
+        eventDataManager.isTagManagementEnabled = true
+        eventDataManager.shouldTriggerSessionRequest = true
+        let count = mockSessionStarter.sessionRequestCount
+        eventDataManager.startNewSession(with: mockSessionStarter)
+        XCTAssertEqual(mockSessionStarter.sessionRequestCount, count)
     }
 
 }

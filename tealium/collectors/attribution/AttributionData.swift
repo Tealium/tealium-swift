@@ -31,11 +31,17 @@ public class AttributionData: AttributionDataProtocol {
     public init(config: TealiumConfig,
                 diskStorage: TealiumDiskStorageProtocol,
                 identifierManager: TealiumASIdentifierManagerProtocol = TealiumASIdentifierManager.shared,
-                adClient: TealiumAdClientProtocol = TealiumAdClient.shared,
+                adClient: TealiumAdClientProtocol? = nil,
                 adAttribution: TealiumSKAdAttributionProtocol? = nil) {
         self.config = config
         self.identifierManager = identifierManager
-        self.adClient = adClient
+        if let adClient = adClient {
+            self.adClient = adClient
+        } else if #available(iOS 14.3, *) {
+            self.adClient = TealiumHTTPAdClient()
+        } else {
+            self.adClient = TealiumAdClient()
+        }
         self.diskStorage = diskStorage
         if self.config.skAdAttributionEnabled {
             self.adAttribution = adAttribution ?? TealiumSKAdAttribution(config: self.config)
@@ -48,14 +54,16 @@ public class AttributionData: AttributionDataProtocol {
 
     /// Loads persistent attribution data into memory, or fetches new data if not found.
     func setPersistentAttributionData() {
-        guard let data = diskStorage.retrieve(as: PersistentAttributionData.self) else {
+        guard let currentData = diskStorage.retrieve(as: PersistentAttributionData.self), !currentData.isEmpty() else {
             self.appleSearchAdsData { data in
-                self.persistentAttributionData = data
-                self.diskStorage.save(self.persistentAttributionData, completion: nil)
+                if let data = data {
+                    self.persistentAttributionData = data
+                    self.diskStorage.save(self.persistentAttributionData, completion: nil)
+                }
             }
             return
         }
-        self.persistentAttributionData = data
+        self.persistentAttributionData = currentData
     }
 
     /// - Returns: `String` representation of IDFA
@@ -101,64 +109,11 @@ public class AttributionData: AttributionDataProtocol {
     /// Requests Apple Search Ads data from AdClient API￼.
     ///
     /// - Parameter completion: Completion block to be executed asynchronously when Search Ads data is returned
-    // swiftlint:disable cyclomatic_complexity
-    func appleSearchAdsData(_ completion: @escaping (PersistentAttributionData) -> Void) {
-        var appleAttributionDetails = PersistentAttributionData()
-        let completionHander = { (details: [String: NSObject]?, _: Error?) in
-            // closure callback
-            if let detailsDict = details?[AppleInternalKeys.objectVersion] as? [String: Any] {
-                if let clickedWithin30D = detailsDict[AppleInternalKeys.attribution] as? String {
-                    appleAttributionDetails.clickedWithin30D = clickedWithin30D
-                }
-                if let clickedDate = detailsDict[AppleInternalKeys.clickDate] as? String {
-                    appleAttributionDetails.clickedDate = clickedDate
-                }
-                if let conversionDate = detailsDict[AppleInternalKeys.conversionDate] as? String {
-                    appleAttributionDetails.conversionDate = conversionDate
-                }
-                if let conversionType = detailsDict[AppleInternalKeys.conversionType] as? String {
-                    appleAttributionDetails.conversionType = conversionType
-                }
-                if let purchaseDate = detailsDict[AppleInternalKeys.purchaseDate] as? String {
-                    appleAttributionDetails.purchaseDate = purchaseDate
-                }
-                if let orgName = detailsDict[AppleInternalKeys.orgName] as? String {
-                    appleAttributionDetails.orgName = orgName
-                }
-                if let orgId = detailsDict[AppleInternalKeys.orgId] as? String {
-                    appleAttributionDetails.orgId = orgId
-                }
-                if let campaignId = detailsDict[AppleInternalKeys.campaignId] as? String {
-                    appleAttributionDetails.campaignId = campaignId
-                }
-                if let campaignName = detailsDict[AppleInternalKeys.campaignName] as? String {
-                    appleAttributionDetails.campaignName = campaignName
-                }
-                if let adGroupId = detailsDict[AppleInternalKeys.adGroupId] as? String {
-                    appleAttributionDetails.adGroupId = adGroupId
-                }
-                if let adGroupName = detailsDict[AppleInternalKeys.adGroupName] as? String {
-                    appleAttributionDetails.adGroupName = adGroupName
-                }
-                if let adKeyword = detailsDict[AppleInternalKeys.keyword] as? String {
-                    appleAttributionDetails.adKeyword = adKeyword
-                }
-                if let adKeywordMatchType = detailsDict[AppleInternalKeys.keywordMatchType] as? String {
-                    appleAttributionDetails.adKeywordMatchType = adKeywordMatchType
-                }
-                if let creativeSetName = detailsDict[AppleInternalKeys.creativeSetName] as? String {
-                    appleAttributionDetails.creativeSetName = creativeSetName
-                }
-                if let creativeSetId = detailsDict[AppleInternalKeys.creativeSetId] as? String {
-                    appleAttributionDetails.creativeSetId = creativeSetId
-                }
-                if let region = detailsDict[AppleInternalKeys.region] as? String {
-                    appleAttributionDetails.region = region
-                }
-            }
-            completion(appleAttributionDetails)
+    func appleSearchAdsData(_ completion: @escaping (PersistentAttributionData?) -> Void) {
+        let completionHandler = { (details: PersistentAttributionData?, _: Error?) in
+            completion(details)
         }
-        adClient.requestAttributionDetails(completionHander)
+        adClient.requestAttributionDetails(completionHandler)
     }
 
     public func updateConversionValue(from dispatch: TealiumRequest) {
@@ -170,7 +125,5 @@ public class AttributionData: AttributionDataProtocol {
             }
         }
     }
-
-    // swiftlint:enable cyclomatic_complexity
 }
 #endif

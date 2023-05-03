@@ -1,0 +1,20 @@
+{
+    "config": {
+    },
+    "mappings": {
+        "static_key": "static_key"
+    },
+    "commands": {
+        "tealium_event:launch": "command_launch",
+        "tealium_event:click,page_name:home": "command_click"
+    },
+    "statics": {
+        "tealium_event:launch": {
+            "static_key":"launch_value"
+        },
+        "tealium_event:click,page_name:home": {
+            "static_key":"click_value"
+        }
+    }
+}
+

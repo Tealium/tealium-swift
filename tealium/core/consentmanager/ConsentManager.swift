@@ -94,11 +94,8 @@ public class ConsentManager {
         let preferences = consentPreferencesStorage?.preferences ?? UserConsentPreferences(consentStatus: .unknown, consentCategories: nil)
 
         self.currentPolicy = ConsentPolicyFactory.create(config.consentPolicy ?? .gdpr, preferences: preferences)
-
-        if preferences.consentStatus != .unknown {
-            // always need to update the consent cookie in TiQ, so this will trigger update_consent_cookie
-            trackUserConsentPreferences()
-        }
+        // Make sure TiQ has a valid consent cookie once the consent manager is started
+        updateTIQCookie()
     }
 
     /// Sends a track call containing the consent settings if consent logging is enabled￼.
@@ -107,15 +104,8 @@ public class ConsentManager {
     func trackUserConsentPreferences() {
         // this track call must only be sent if "Log Consent Changes" is enabled and user has consented
         if consentLoggingEnabled, currentPolicy.shouldLogConsentStatus {
-            // call type must be set to override "link" or "view"
-            let trackData = [
-                TealiumDataKey.event: currentPolicy.consentTrackingEventName,
-                TealiumDataKey.eventType: currentPolicy.consentTrackingEventName
-            ]
-            delegate?.requestTrack(TealiumTrackRequest(data: trackData))
+            delegate?.requestTrack(TealiumEvent(currentPolicy.consentTrackingEventName).trackRequest)
         }
-        // in all cases, update the cookie data in TiQ/webview
-        updateTIQCookie()
     }
 
     /// Sends the track call to update TiQ cookie info. Ignored by Collect module.￼
@@ -123,7 +113,7 @@ public class ConsentManager {
     /// - Parameter consentData: `[String: Any]` containing the consent preferences
     func updateTIQCookie() {
         if currentPolicy.shouldUpdateConsentCookie {
-            // collect module ignores this hit
+            // collect module ignores this hit. Can't change the event type cause it's used to change the track call in the utag.js
             let trackData = [
                 TealiumDataKey.event: currentPolicy.updateConsentCookieEventName,
                 TealiumDataKey.eventType: currentPolicy.updateConsentCookieEventName
@@ -137,6 +127,8 @@ public class ConsentManager {
         currentPolicy.preferences = preferences
         // store data
         consentPreferencesStorage?.preferences = preferences
+        // Send an update to TiQ any time the stored preferences are changed, to keep the cookie in sync
+        updateTIQCookie()
     }
 
     /// Can set both Consent Status and Consent Categories in a single call￼.

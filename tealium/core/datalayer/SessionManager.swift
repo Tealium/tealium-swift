@@ -9,8 +9,6 @@ import Foundation
 
 public extension DataLayer {
 
-    // swiftlint:enable unused_setter_value
-
     /// - Returns: `String?` session id for the active session.
     var sessionId: String? {
         get {
@@ -46,12 +44,17 @@ public extension DataLayer {
         sessionId = existingSessionId
     }
 
+    /// Calculates the number of track calls within the specified `secondsBetweenTrackEvents`
+    /// property that will then determine if a new session shall be generated.
     func newTrackRequest() {
         let current = Date()
         if let lastTrackDate = lastTrackDate {
             if let date = lastTrackDate.addSeconds(secondsBetweenTrackEvents),
                date > current {
-                startNewSession(with: sessionStarter)
+                let tracks = numberOfTrackRequests + 1
+                if tracks == 2 { // To avoid multiple tracks to generate multiple simultaneous session API call
+                    startNewSession(with: sessionStarter)
+                }
             } else {
                 numberOfTrackRequests = 0
             }
@@ -63,7 +66,7 @@ public extension DataLayer {
     /// If the tag management module is enabled and multiple tracks have been sent in given time, a new session is started.
     /// - Parameter sessionStarter: `SessionStarterProtocol`
     func startNewSession(with sessionStarter: SessionStarterProtocol) {
-        if isTagManagementEnabled, shouldTriggerSessionRequest {
+        if isTagManagementEnabled, shouldTriggerSessionRequest, config.sessionCountingEnabled {
             sessionStarter.requestSession { [weak self] result in
                 switch result {
                 case .success:

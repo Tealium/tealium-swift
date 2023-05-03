@@ -23,11 +23,10 @@ enum ModulesManagerLogMessages {
 public class ModulesManager {
     // must store a copy of the initial config to allow locally-overridden properties to take precedence over remote ones. These would otherwise be lost after the first update.
     var originalConfig: TealiumConfig
-    var remotePublishSettingsRetriever: TealiumPublishSettingsRetriever?
+    var remotePublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol?
     var collectorTypes: [Collector.Type] {
         if let optionalCollectors = config.collectors {
-            return [AppDataModule.self
-            ] + optionalCollectors
+            return [AppDataModule.self] + optionalCollectors
         } else {
             return [AppDataModule.self,
                     DeviceDataModule.self,
@@ -55,46 +54,24 @@ public class ModulesManager {
     }
     var dataLayerManager: DataLayerManagerProtocol?
     var sessionManager: SessionManagerProtocol? {
-        get {
-            dataLayerManager as? SessionManagerProtocol
-        }
-        // swiftlint:disable unused_setter_value
-        set { }
-        // swiftlint:enable unused_setter_value
+        dataLayerManager as? SessionManagerProtocol
     }
     var logger: TealiumLoggerProtocol?
     public var modules: [TealiumModule] {
-        get {
-            self.collectors + self.dispatchers
-        }
-
-        set {
-            let modules = newValue
-            dispatchers = []
-            collectors = []
-            modules.forEach {
-                switch $0 {
-                case let module as Dispatcher:
-                    addDispatcher(module)
-                case let module as Collector:
-                    addCollector(module)
-                default:
-                    return
-                }
-            }
-        }
+        self.collectors + self.dispatchers
     }
     var config: TealiumConfig {
         willSet {
-            self.dispatchManager?.config = newValue
-            self.connectivityManager.config = newValue
-            self.logger?.config = newValue
-            self.context.config = newValue
-            self.updateConfig(context: self.context)
-            self.modules.forEach {
-                var module = $0
-                module.config = newValue
+            updateConfig(newValue)
+            if newValue.isCollectEnabled == false {
+                disableModule(id: ModuleNames.collect)
             }
+
+            if newValue.isTagManagementEnabled == false {
+                disableModule(id: ModuleNames.tagmanagement)
+            }
+
+            self.setupDispatchers(context: context)
         }
     }
     private var cachedTrackData: [String: Any]?
@@ -102,7 +79,8 @@ public class ModulesManager {
 
     init (_ context: TealiumContext,
           optionalCollectors: [String]? = nil,
-          knownDispatchers: [String]? = nil) {
+          knownDispatchers: [String]? = nil,
+          remotePublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol? = nil) {
         self.context = context
         self.originalConfig = context.config.copy
         self.config = context.config
@@ -111,13 +89,14 @@ public class ModulesManager {
         }
         connectivityManager.addConnectivityDelegate(delegate: self)
         if self.config.shouldUseRemotePublishSettings {
-            self.remotePublishSettingsRetriever = TealiumPublishSettingsRetriever(config: self.config, delegate: self)
+            self.remotePublishSettingsRetriever = remotePublishSettingsRetriever ?? TealiumPublishSettingsRetriever(config: self.config, delegate: self)
             if let remoteConfig = self.remotePublishSettingsRetriever?.cachedSettings?.newConfig(with: self.config) {
                 self.config = remoteConfig
+                self.updateConfig(self.config) // Doesn't get called in the willSet
             }
         }
         self.logger = self.config.logger
-        self.setupDispatchers(context: context)
+        self.setupDispatchers(context: self.context) // use self.context as it might have changed for cached publish settings
         self.setupHostedDataLayer(config: self.config)
         self.setupConsentManagerModule(config: self.config)
         self.setupTimedEventScheduler()
@@ -130,27 +109,23 @@ public class ModulesManager {
                                                connectivityManager: self.connectivityManager,
                                                config: self.config)
         self.setupCollectors(config: self.config)
-        TealiumQueues.backgroundSerialQueue.async {
-            let logRequest = TealiumLogRequest(title: ModulesManagerLogMessages.modulesManagerInitialized, messages:
-                                                ["\(ModulesManagerLogMessages.collectorsInitialized): \(self.collectors.map { $0.id })",
-                                                 "\(ModulesManagerLogMessages.dispatchValidatorsInitialized): \(self.dispatchValidators.map { $0.id })",
-                                                 "\(ModulesManagerLogMessages.dispatchersInitialized): \(self.dispatchers.map { $0.id })"
-                                                ], info: nil, logLevel: .info, category: .`init`)
-            self.logger?.log(logRequest)
-        }
+        let logRequest = TealiumLogRequest(title: ModulesManagerLogMessages.modulesManagerInitialized, messages:
+                                            ["\(ModulesManagerLogMessages.collectorsInitialized): \(self.collectors.map { $0.id })",
+                                             "\(ModulesManagerLogMessages.dispatchValidatorsInitialized): \(self.dispatchValidators.map { $0.id })",
+                                             "\(ModulesManagerLogMessages.dispatchersInitialized): \(self.dispatchers.map { $0.id })"
+                                            ], info: nil, logLevel: .info, category: .`init`)
+        self.logger?.log(logRequest)
     }
 
-    func updateConfig(context: TealiumContext) {
-        let config = context.config
-        if config.isCollectEnabled == false {
-            disableModule(id: ModuleNames.collect)
+    func updateConfig(_ newConfig: TealiumConfig) {
+        self.dispatchManager?.config = newConfig
+        self.connectivityManager.config = newConfig
+        self.logger?.config = newConfig
+        self.context.config = newConfig
+        self.modules.forEach {
+            var module = $0
+            module.config = newConfig
         }
-
-        if config.isTagManagementEnabled == false {
-            disableModule(id: ModuleNames.tagmanagement)
-        }
-
-        self.setupDispatchers(context: context)
     }
 
     func addDispatchListener(_ listener: DispatchListener) {
@@ -277,17 +252,14 @@ extension ModulesManager {
         if let dispatchValidator = collector as? DispatchValidator {
             addDispatchValidator(dispatchValidator)
         }
-
-        guard collectors.first(where: {
-            type(of: $0) == type(of: collector)
-        }) == nil else {
-            return
-        }
         collectors.append(collector)
     }
 
     func setupCollectors(config: TealiumConfig) {
         collectorTypes.forEach { collector in
+            guard !collectors.contains(where: { type(of: $0) == collector }) else {
+                return
+            }
             if collector == ConnectivityModule.self {
                 addCollector(connectivityManager)
                 return
@@ -304,16 +276,14 @@ extension ModulesManager {
 extension ModulesManager {
 
     func addDispatcher(_ dispatcher: Dispatcher) {
-        guard dispatchers.first(where: {
-            type(of: $0) == type(of: dispatcher)
-        }) == nil else {
-            return
-        }
         dispatchers.append(dispatcher)
     }
 
     func setupDispatchers(context: TealiumContext) {
         self.config.dispatchers?.forEach { dispatcherType in
+            guard !dispatchers.contains(where: { type(of: $0) == dispatcherType }) else {
+                return
+            }
             let config = context.config
             let dispatcherTypeDescription = String(describing: dispatcherType)
 
@@ -348,7 +318,6 @@ extension ModulesManager {
                                                category: .`init`)
             self.logger?.log(logRequest)
         }
-
     }
 }
 

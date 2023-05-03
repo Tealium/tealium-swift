@@ -5,7 +5,7 @@
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 
-import TealiumRemoteCommands
+@testable import TealiumRemoteCommands
 import XCTest
 
 class RemoteCommandConfigTests: XCTestCase {
@@ -29,6 +29,20 @@ class RemoteCommandConfigTests: XCTestCase {
         tealiumRemoteCommandConfig = try! JSONDecoder().decode(RemoteCommandConfig.self, from: exampleStub)
         let encoded = try! JSONEncoder().encode(tealiumRemoteCommandConfig)
         XCTAssertNotNil(encoded)
+    }
+    func testDefaultDelimiters() throws {
+        let config = try JSONDecoder().decode(RemoteCommandConfig.self, from: exampleStub)
+        let delimiters = config.keysDelimiters
+        XCTAssertEqual(delimiters.keysSeparationDelimiter, ",")
+        XCTAssertEqual(delimiters.keysEqualityDelimiter, ":")
+    }
+    
+    func testDelimiters() throws {
+        let data = TestTealiumHelper.loadStub(from: "keysDelimiter", type(of: self))
+        let config = try JSONDecoder().decode(RemoteCommandConfig.self, from: data)
+        let delimiters = config.keysDelimiters
+        XCTAssertEqual(delimiters.keysSeparationDelimiter, "&&")
+        XCTAssertEqual(delimiters.keysEqualityDelimiter, "==")
     }
 
 }

@@ -168,7 +168,7 @@ class RemoteCommandsManagerTests: XCTestCase {
         let command = RemoteCommand(commandId: "id", description: nil, type: .remote(url: "https://testName.com")) { response in
 
         }
-        command.config = RemoteCommandConfig(config: ["fileName": fileName], mappings: [:], apiCommands: [:], commandName: fileName, commandURL: nil)
+        command.config = RemoteCommandConfig(config: ["fileName": fileName], mappings: [:], apiCommands: [:], statics: [:], commandName: fileName, commandURL: nil)
         XCTAssertNotNil(command.config)
         tealiumRemoteCommandsManager.add(command)
         XCTAssertNotNil(command.config)
@@ -401,6 +401,26 @@ class RemoteCommandsManagerTests: XCTestCase {
             XCTAssertNotNil(result)
             XCTAssertFalse(result.payload!.isEmpty)
         }
+    }
+
+    func testGetPayaloadDataWithPayload() {
+        let innerData = ["someKey": "anything"]
+        let data: [String: Any] = [
+            RemoteCommandsKey.payload: innerData,
+            TealiumDataKey.eventType: TealiumTrackType.event.description
+        ]
+        let payload = tealiumRemoteCommandsManager.getPayloadData(data: data)
+        XCTAssertTrue(payload.contains { $0.0 == "someKey"})
+        XCTAssertTrue(payload.contains { $0.0 == TealiumDataKey.eventType})
+    }
+
+    func testGetPayloadDataWithoutPayload() {
+        let data: [String: Any] = [
+            "someKey": "someValue",
+            TealiumDataKey.eventType: TealiumTrackType.event.description
+        ]
+        let payload = tealiumRemoteCommandsManager.getPayloadData(data: data)
+        XCTAssertEqual(payload as? [String: String], data as? [String: String])
     }
 
 }

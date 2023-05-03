@@ -9,6 +9,8 @@ import SwiftUI
 import StoreKit
 import AppTrackingTransparency
 import TealiumAutotracking
+import TealiumCore
+import TealiumVisitorService
 
 class IAPHelper: NSObject, ObservableObject, SKProductsRequestDelegate, SKPaymentTransactionObserver {
     static let shared = IAPHelper()
@@ -67,6 +69,7 @@ struct ContentView: View {
     @ObservedObject var iapHelper = IAPHelper.shared
     @State private var traceId: String = ""
     @State private var showAlert = false
+    @State private var email: String = TealiumHelper.shared.tealium?.dataLayer.all[TealiumDataKey.email] as? String ?? ""
     let name = "Main Screen"
     // Timed event start
     var playButton: some View {
@@ -137,6 +140,18 @@ struct ContentView: View {
                                 iapHelper.buyProduct()
                             }
                         }
+                        TealiumTextField($email, placeholder: "Enter email") {
+                            applyEmail()
+                        }
+                        TealiumTextButton(title: "Clear Stored Visitor IDs") {
+                            TealiumHelper.shared.tealium?.clearStoredVisitorIds()
+                        }
+                        TealiumTextButton(title: "Reset Visitor ID") {
+                            TealiumHelper.shared.tealium?.resetVisitorId()
+                        }
+                        TealiumTextButton(title: "VisitorProfileRequest") {
+                            TealiumHelper.shared.tealium?.visitorService?.requestVisitorProfile()
+                        }
                     }
                     Spacer()
                 }
@@ -156,6 +171,13 @@ struct ContentView: View {
         }
     }
     
+    func applyEmail() {
+        if email.isEmpty {
+            TealiumHelper.shared.tealium?.dataLayer.delete(for: TealiumDataKey.email)
+        } else {
+            TealiumHelper.shared.tealium?.dataLayer.add(key: TealiumDataKey.email, value: email, expiry: .forever)
+        }
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {

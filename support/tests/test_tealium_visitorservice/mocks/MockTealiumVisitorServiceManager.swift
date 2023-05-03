@@ -9,15 +9,16 @@ import Foundation
 @testable import TealiumVisitorService
 
 public class MockTealiumVisitorServiceManager: VisitorServiceManagerProtocol {
-
-    var startProfileUpdatesCount = 0
+    public var lastFetch: Date?
+    
+    public var currentVisitorId: String?
+    
+    public var cachedProfile: TealiumVisitorProfile?
+    
     var requestVisitorProfileCount = 0
-
-    public func startProfileUpdates(visitorId: String) {
-        startProfileUpdatesCount += 1
-    }
 
     public func requestVisitorProfile() {
         requestVisitorProfileCount += 1
+        lastFetch = Date()
     }
 }

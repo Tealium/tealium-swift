@@ -63,9 +63,7 @@ public struct TealiumRemoteAPIRequest: TealiumRequest {
     public var trackRequest: TealiumTrackRequest
 
     public init(trackRequest: TealiumTrackRequest) {
-        var trackRequestData = trackRequest.trackDictionary
-        trackRequestData[TealiumDataKey.eventType] = TealiumKey.remoteAPIEventType
-        self.trackRequest = TealiumTrackRequest(data: trackRequestData)
+        self.trackRequest = trackRequest
     }
 
     public static func instanceTypeId() -> String {

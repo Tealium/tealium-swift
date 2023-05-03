@@ -18,6 +18,7 @@ public class TealiumObservable<Element>: TealiumObservableProtocol {
     private let uuid = UUID().uuidString
     private var count = 0
     fileprivate var observers = [String: Observer]()
+    fileprivate var orderedKeys = [String]()
 
     fileprivate init() {}
 
@@ -26,6 +27,7 @@ public class TealiumObservable<Element>: TealiumObservableProtocol {
         count += 1
         let key = uuid + String(count)
         observers[key] = observer
+        orderedKeys.append(key)
         return TealiumSubscription(self, key: key)
     }
 
@@ -34,15 +36,18 @@ public class TealiumObservable<Element>: TealiumObservableProtocol {
         let key = subscription.key
         if observers[key] != nil {
             observers.removeValue(forKey: key)
+            orderedKeys.removeAll { $0 == key }
             return true
         }
         return false
     }
 
     fileprivate func publish(_ element: Element) {
-        let observers = self.observers.values
-        for observer in observers {
-            observer(element)
+        let orderedKeys = self.orderedKeys
+        for key in orderedKeys {
+            if let observer = observers[key] {
+                observer(element)
+            }
         }
     }
 
@@ -120,15 +125,28 @@ public class TealiumReplayObservable<Element>: TealiumObservable<Element> {
         super.publish(element)
     }
 
-    func last() -> Element? {
+    public func clear() {
+        cache.removeAll()
+    }
+
+    public func last() -> Element? {
         return cache.last
     }
 }
 
 public class TealiumReplaySubject<Element>: TealiumPublishSubject<Element> {
 
-    public init(cacheSize: Int? = 1) {
+    // Having a default value here would cause a crash on Carthage
+    public init(cacheSize: Int?) {
         super.init(TealiumReplayObservable<Element>(cacheSize: cacheSize))
+    }
+
+    convenience public init() {
+        self.init(cacheSize: 1)
+    }
+
+    public func clear() {
+        (observable as? TealiumReplayObservable<Element>)?.clear()
     }
 
     public func last() -> Element? {
@@ -174,8 +192,13 @@ public class TealiumBufferedObservable<Element>: TealiumObservable<Element> {
 
 public class TealiumBufferedSubject<Element>: TealiumPublishSubject<Element> {
 
-    public init(bufferSize: Int? = 1) {
+    // Having a default value here would cause a crash on Carthage
+    public init(bufferSize: Int?) {
         super.init(TealiumBufferedObservable<Element>(bufferSize: bufferSize))
+    }
+
+    convenience public init() {
+        self.init(bufferSize: 1)
     }
 }
 

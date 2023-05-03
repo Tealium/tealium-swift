@@ -32,7 +32,9 @@ public extension TealiumObservableProtocol {
             guard !shouldDispose else {
                 return
             }
-            observer(element)
+            defer {
+                observer(element)
+            }
             if let sub = subscription {
                 sub.dispose()
             } else {
