@@ -70,7 +70,7 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
                 return
             }
             do {
-                let path = filePath(moduleName)
+                let path = self.filePath(moduleName)
                 guard Disk.exists(path, in: from) else {
                     return
                 }
@@ -80,7 +80,7 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
                 try Disk.move(path, in: from, to: to)
                 try Disk.doNotBackup(path, in: to)
             } catch let error {
-                log(error: error.localizedDescription)
+                self.log(error: error.localizedDescription)
             }
         }
     }
