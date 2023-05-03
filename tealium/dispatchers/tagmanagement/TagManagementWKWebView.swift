@@ -118,9 +118,6 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
                 config.processPool = processPool
             }
             self.webview = WKWebView(frame: .zero, configuration: config)
-            if #available(iOS 16.4, *), self.tealConfig.webviewInspectionEnabled {
-                self.webview?.isInspectable = true
-            }
             self.webview?.navigationDelegate = self
             guard let webview = self.webview else {
                 self.enableCompletion?(false, WebviewError.webviewNotInitialized)
