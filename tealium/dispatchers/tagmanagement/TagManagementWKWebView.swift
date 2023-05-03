@@ -24,7 +24,19 @@ typealias TrackCompletion = ((Bool, [String: Any], Error?) -> Void)
 
 class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStringConverter {
 
-    var webview: WKWebView?
+    private let onWebView = TealiumReplaySubject<WKWebView>()
+    var webview: WKWebView? {
+        get {
+            onWebView.last()
+        }
+        set {
+            if let newValue = newValue {
+                onWebView.publish(newValue)
+            } else {
+                onWebView.clear()
+            }
+        }
+    }
     var tealConfig: TealiumConfig
     var enableCompletion: ((_ success: Bool, _ error: Error?) -> Void)?
     // current view being used for WKWebView
@@ -293,6 +305,12 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
             webview.stopLoading()
         }
         self.webview = nil
+    }
+
+    func getWebView(_ completion: @escaping (WKWebView) -> Void) {
+        TealiumQueues.secureMainThreadExecution {
+            self.onWebView.subscribeOnce(completion)
+        }
     }
 
     deinit {
