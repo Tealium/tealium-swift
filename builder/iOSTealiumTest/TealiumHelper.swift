@@ -135,6 +135,11 @@ class TealiumHelper {
                 return
             }
 
+            teal.getTagManagementWebView { webView in
+                if #available(iOS 16.4, *) {
+//                    webView.isInspectable = true // Uncomment to inspect tagManagement webviews on XCode 14.3+ and iOS 16.4+
+                }
+            }
             let display = RemoteCommand(commandId: "display", description: "Test") { response in
                 guard let payload = response.payload,
                       let hello = payload["hello"] as? String,
