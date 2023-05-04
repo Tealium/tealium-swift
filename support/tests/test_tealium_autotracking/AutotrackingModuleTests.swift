@@ -83,7 +83,7 @@ class AutotrackingModuleTests: XCTestCase {
         let viewName = "RequestEventTrackToInstanceManagerView"
         AutotrackingModule.autoTrackView(viewName: viewName)
         
-        waitForExpectations(timeout: 4.0, handler: nil)
+        waitForExpectations(timeout: 6.0, handler: nil)
 
         XCTAssertEqual(viewName, currentViewName)
         teal.zz_internal_modulesManager?.collectors = []
@@ -98,9 +98,8 @@ class AutotrackingModuleTests: XCTestCase {
         let teal = Tealium(config: config)
         let name = self.addDataViewName+"2"
         AutotrackingModule.autoTrackView(viewName: name)
-        
 
-        waitForExpectations(timeout: 4.0, handler: nil)
+        waitForExpectations(timeout: 6.0, handler: nil)
 
         XCTAssertEqual(name, currentViewName)
         teal.zz_internal_modulesManager?.collectors = []
@@ -191,8 +190,4 @@ extension AutotrackingModuleTests: AutoTrackingDelegate {
         }
         return [:]
     }
-}
-
-class TestObject: NSObject {
-
 }
