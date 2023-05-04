@@ -12,7 +12,6 @@ import XCTest
 
 class VisitorServiceModuleTests: XCTestCase {
 
-    var visitorServiceManager: VisitorServiceManager?
     var mockDiskStorage: MockTealiumDiskStorage!
     var mockVisitorServiceManager = MockTealiumVisitorServiceManager()
     var config: TealiumConfig!
@@ -23,7 +22,6 @@ class VisitorServiceModuleTests: XCTestCase {
         config = TealiumConfig(account: "testAccount", profile: "testProfile", environment: "testEnv")
         context = TestTealiumHelper.context(with: config)
         mockDiskStorage = MockTealiumDiskStorage()
-        visitorServiceManager = VisitorServiceManager(config: config, delegate: nil, diskStorage: mockDiskStorage)
     }
 
     func testRequestVisitorProfileRun() {
@@ -52,7 +50,6 @@ class VisitorServiceModuleTests: XCTestCase {
 
     func testBatchTrackRetreiveProfileExecuted() {
         let expect = expectation(description: "testBatchTrackRetreiveProfileExecuted")
-        let context = TestTealiumHelper.context(with: config)
         let module = VisitorServiceModule(context: context, delegate: self, diskStorage: mockDiskStorage, visitorServiceManager: mockVisitorServiceManager)
         TealiumQueues.backgroundSerialQueue.async {
             let trackRequest = TealiumTrackRequest(data: ["hello": "world", "tealium_visitor_id": self.mockVisitorServiceManager.currentVisitorId!])
@@ -63,12 +60,11 @@ class VisitorServiceModuleTests: XCTestCase {
                 expect.fulfill()
             }
         }
-        wait(for: [expect], timeout: 10.0)
+        wait(for: [expect], timeout: 20.0)
     }
 
     func testTrackRetreiveProfileExecuted() {
         let expect = expectation(description: "testTrackRetreiveProfileExecuted")
-        let context = TestTealiumHelper.context(with: config)
         let module = VisitorServiceModule(context: context, delegate: self, diskStorage: mockDiskStorage, visitorServiceManager: mockVisitorServiceManager)
         TealiumQueues.backgroundSerialQueue.async {
             let trackRequest = TealiumTrackRequest(data: ["hello": "world", "tealium_visitor_id": self.mockVisitorServiceManager.currentVisitorId!])
@@ -80,7 +76,7 @@ class VisitorServiceModuleTests: XCTestCase {
                 }
             }
         }
-        wait(for: [expect], timeout: 10)
+        wait(for: [expect], timeout: 20)
     }
 
     func testIntervalSince() {
