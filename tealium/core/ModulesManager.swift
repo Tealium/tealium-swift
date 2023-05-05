@@ -21,6 +21,9 @@ enum ModulesManagerLogMessages {
 }
 
 public class ModulesManager {
+    // notification which is sent right before sending data. Client can subscribe to know exact dictionary to be sent
+    public static let didCreateTealiumTrackRequestNotification = Notification.Name("didCreateTealiumTrackRequestNotification")
+    
     // must store a copy of the initial config to allow locally-overridden properties to take precedence over remote ones. These would otherwise be lost after the first update.
     var originalConfig: TealiumConfig
     var remotePublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol?
@@ -185,6 +188,9 @@ public class ModulesManager {
         }
         let requestData = gatherTrackData(for: request.trackDictionary)
         let newRequest = TealiumTrackRequest(data: requestData)
+        let notification = Notification(name: Self.didCreateTealiumTrackRequestNotification,
+                                        object: newRequest)
+        NotificationCenter.default.post(notification)
         dispatchManager?.processTrack(newRequest)
         cachedTrackData = newRequest.trackDictionary
     }
