@@ -86,11 +86,14 @@ class WKWebViewIntegrationTests: XCTestCase {
         let expectation = self.expectation(description: "testEnableWebView")
         webview.enable(webviewURL: testURL, delegates: nil, view: nil) { _, _ in
             let originalAddress = Unmanaged.passUnretained(WKWebViewIntegrationTests.processPool).toOpaque()
-            let moduleAddress = Unmanaged.passUnretained(webview.webview!.configuration.processPool).toOpaque()
-            XCTAssertEqual(originalAddress, moduleAddress)
-            // check that custom property passed in config is present on Tealium webview. Default for this option is true if not specified.
-            XCTAssertFalse(webview.webview!.configuration.allowsAirPlayForMediaPlayback)
-            expectation.fulfill()
+            DispatchQueue.main.async {
+                let moduleAddress = Unmanaged.passUnretained(webview.webview!.configuration.processPool).toOpaque()
+                
+                XCTAssertEqual(originalAddress, moduleAddress)
+                // check that custom property passed in config is present on Tealium webview. Default for this option is true if not specified.
+                XCTAssertFalse(webview.webview!.configuration.allowsAirPlayForMediaPlayback)
+                expectation.fulfill()
+            }
         }
         self.wait(for: [expectation], timeout: 5.0)
     }

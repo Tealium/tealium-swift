@@ -1160,6 +1160,13 @@
 			remoteGlobalIDString = CF8805732554B74B0020E1B2;
 			remoteInfo = iOSTealiumTest;
 		};
+		15E03E8B2A092B0B00652CAA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CF8805732554B74B0020E1B2;
+			remoteInfo = iOSTealiumTest;
+		};
 		15F76D3D278C82C600C977A5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
@@ -4719,6 +4726,7 @@
 			dependencies = (
 				CFCBFB552524FDA30094C1EC /* PBXTargetDependency */,
 				CFCBFB572524FDA30094C1EC /* PBXTargetDependency */,
+				15E03E8C2A092B0B00652CAA /* PBXTargetDependency */,
 			);
 			name = "TealiumTagManagementIntegrationTests-iOS";
 			productName = "tealium-swift-tests";
@@ -5298,6 +5306,7 @@
 					};
 					CFCBFB542524FDA30094C1EC = {
 						ProvisioningStyle = Manual;
+						TestTargetID = CF8805732554B74B0020E1B2;
 					};
 					CFF242A023CE774C0091B7BF = {
 						CreatedOnToolsVersion = 11.3;
@@ -7178,6 +7187,11 @@
 			isa = PBXTargetDependency;
 			target = CF8805732554B74B0020E1B2 /* iOSTealiumTest */;
 			targetProxy = 15E03E892A091F0100652CAA /* PBXContainerItemProxy */;
+		};
+		15E03E8C2A092B0B00652CAA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CF8805732554B74B0020E1B2 /* iOSTealiumTest */;
+			targetProxy = 15E03E8B2A092B0B00652CAA /* PBXContainerItemProxy */;
 		};
 		15F76D3E278C82C600C977A5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -9638,6 +9652,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Manual;
@@ -9667,6 +9682,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOSTealiumTest.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/iOSTealiumTest";
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
@@ -9676,6 +9692,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CODE_SIGN_STYLE = Manual;
@@ -9700,6 +9717,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOSTealiumTest.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/iOSTealiumTest";
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
