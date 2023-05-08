@@ -10,10 +10,10 @@
 import XCTest
 
 class AutotrackingModuleTests: XCTestCase {
-
+    let delegate = AutotrackingTestDelegate()
     var module: AutotrackingModule {
         let config = testTealiumConfig.copy
-        config.autoTrackingCollectorDelegate = self
+        config.autoTrackingCollectorDelegate = delegate
         config.autoTrackingBlocklistFilename = "blocklist"
         let context = TestTealiumHelper.context(with: config)
         let module = AutotrackingModule(context: context, delegate: self, diskStorage: nil, blockListBundle: Bundle(for: AutotrackingModuleTests.self)) { _ in
@@ -21,12 +21,7 @@ class AutotrackingModuleTests: XCTestCase {
         }
         return module
     }
-    var expectationRequest: XCTestExpectation?
-    var expectationShouldTrack: XCTestExpectation?
-    var expectationDidComplete: XCTestExpectation?
     
-    var currentViewName = ""
-
     var disposeBag = TealiumDisposeBag()
     override func setUp() {
         super.setUp()
@@ -34,9 +29,6 @@ class AutotrackingModuleTests: XCTestCase {
     }
 
     override func tearDown() {
-        expectationRequest = nil
-        expectationDidComplete = nil
-        expectationShouldTrack = nil
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         TealiumInstanceManager.shared.disable()
         disposeBag = TealiumDisposeBag()
@@ -46,26 +38,26 @@ class AutotrackingModuleTests: XCTestCase {
     func testRequestEventTrack() {
         let module = self.module
 
-        expectationRequest = expectation(description: "emptyEventDetected")
+        delegate.expectationRequest = expectation(description: "emptyEventDetected")
 
         let viewName = "RequestEventTrackView"
         module.requestViewTrack(viewName: viewName)
         
         waitForExpectations(timeout: 4.0, handler: nil)
         
-        XCTAssertEqual(viewName, currentViewName)
+        XCTAssertEqual(viewName, delegate.currentViewName)
     }
 
     func testAddCustomData() {
         let module = self.module
 
-        expectationRequest = expectation(description: "customDataRequest1")
-        let name = addDataViewName+"1"
+        delegate.expectationRequest = expectation(description: "customDataRequest1")
+        let name = delegate.addDataViewName+"1"
         module.requestViewTrack(viewName: name)
 
         waitForExpectations(timeout: 4.0, handler: nil)
 
-        XCTAssertEqual(name, currentViewName)
+        XCTAssertEqual(name, delegate.currentViewName)
     }
 
     // Cannot unit test swizzling/SwiftUI
@@ -73,32 +65,32 @@ class AutotrackingModuleTests: XCTestCase {
     func testRequestEventTrackToInstanceManager() {
         let config = testTealiumConfig.copy
         config.collectors = [Collectors.AutoTracking]
-        config.autoTrackingCollectorDelegate = self
+        config.autoTrackingCollectorDelegate = delegate
         let teal = Tealium(config: config)
-        expectationRequest = expectation(description: "emptyEventToManagerDetected")
+        delegate.expectationRequest = expectation(description: "emptyEventToManagerDetected")
 
         let viewName = "RequestEventTrackToInstanceManagerView"
         AutotrackingModule.autoTrackView(viewName: viewName)
         
         waitForExpectations(timeout: 20.0, handler: nil)
 
-        XCTAssertEqual(viewName, currentViewName)
+        XCTAssertEqual(viewName, delegate.currentViewName)
         teal.zz_internal_modulesManager?.collectors = []
     }
     
     func testAddCustomDataToInstanceManager() {
-        expectationRequest = expectation(description: "customDataRequest2")
+        delegate.expectationRequest = expectation(description: "customDataRequest2")
 
         let config = testTealiumConfig.copy
         config.collectors = [Collectors.AutoTracking]
-        config.autoTrackingCollectorDelegate = self
+        config.autoTrackingCollectorDelegate = delegate
         let teal = Tealium(config: config)
-        let name = self.addDataViewName+"2"
+        let name = delegate.addDataViewName+"2"
         AutotrackingModule.autoTrackView(viewName: name)
 
         waitForExpectations(timeout: 20.0, handler: nil)
 
-        XCTAssertEqual(name, currentViewName)
+        XCTAssertEqual(name, delegate.currentViewName)
         teal.zz_internal_modulesManager?.collectors = []
     }
     
@@ -129,33 +121,33 @@ class AutotrackingModuleTests: XCTestCase {
         
         let module = self.module
 
-        expectationRequest = expectation(description: "Only track unblocked views")
-        expectationRequest?.assertForOverFulfill = true
+        delegate.expectationRequest = expectation(description: "Only track unblocked views")
+        delegate.expectationRequest?.assertForOverFulfill = true
         module.requestViewTrack(viewName: viewName)
         module.requestViewTrack(viewName: blockedViewName)
 
         waitForExpectations(timeout: 4.0, handler: nil)
 
-        XCTAssertEqual(viewName, currentViewName)
+        XCTAssertEqual(viewName, delegate.currentViewName)
     }
     
     func testBlockedContains() {
-        let viewName = currentViewName
+        let viewName = delegate.currentViewName
         let blockedViewName1 = "BlOckEd"
         let blockedViewName2 = "UNBlOckEd"
         let blockedViewName3 = "BlOckEdView"
         
         let module = self.module
 
-        expectationRequest = expectation(description: "Don't track any blocked view")
-        expectationRequest?.isInverted = true
+        delegate.expectationRequest = expectation(description: "Don't track any blocked view")
+        delegate.expectationRequest?.isInverted = true
         module.requestViewTrack(viewName: blockedViewName1)
         module.requestViewTrack(viewName: blockedViewName2)
         module.requestViewTrack(viewName: blockedViewName3)
 
         waitForExpectations(timeout: 4.0, handler: nil)
 
-        XCTAssertEqual(viewName, currentViewName)
+        XCTAssertEqual(viewName, delegate.currentViewName)
     }
 }
 
@@ -172,7 +164,9 @@ extension AutotrackingModuleTests: ModuleDelegate {
     }
 }
 
-extension AutotrackingModuleTests: AutoTrackingDelegate {
+class AutotrackingTestDelegate: AutoTrackingDelegate {
+    var currentViewName = ""
+    var expectationRequest: XCTestExpectation?
     var addDataViewName: String {
         "addData"
     }
