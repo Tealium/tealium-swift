@@ -78,15 +78,12 @@ class TealiumMediaIntegrationTests: XCTestCase {
         session.backgroundStatusResumed = true
         module.activeSessions = [session]
         TealiumQueues.backgroundSerialQueue.async {
-            Tealium.lifecycleListeners.onBackgroundStateChange.subscribe { state in
-                guard case .wake = state else { return }
-                module.sleep()
-                TealiumQueues.backgroundSerialQueue.asyncAfter(deadline:
-                        .now() + 6) {
-                            XCTAssertEqual(self.mockMediaService.standardEventCounts[.sessionEnd], 1)
-                            expect.fulfill()
-                        }
-            }
+            module.sleep()
+            TealiumQueues.backgroundSerialQueue.asyncAfter(deadline:
+                    .now() + 6) {
+                        XCTAssertEqual(self.mockMediaService.standardEventCounts[.sessionEnd], 1)
+                        expect.fulfill()
+                    }
         }
         wait(for: [expect], timeout: 12)
     }
