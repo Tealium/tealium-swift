@@ -224,12 +224,31 @@ extension TealiumConfig: Equatable, Hashable {
         if lhsKeys.count != rhsKeys.count { return false }
         for (index, key) in lhsKeys.enumerated() {
             if key != rhsKeys[index] { return false }
-            let lhsValue = String(describing: lhs.options[key])
-            let rhsValue = String(describing: rhs.options[key])
-            if lhsValue != rhsValue { return false }
+            guard let lhsValue = lhs.options[key], let rhsValue = rhs.options[key] else {
+                if lhs.options[key] == nil && rhs.options[key] == nil {
+                    continue
+                } else {
+                    return false
+                }
+            }
+            if !areEqualValues(lhsValue, rhsValue) {
+                return false
+            }
         }
-
         return true
+    }
+
+    private static func areEqualValues(_ lhsValue: Any, _ rhsValue: Any) -> Bool {
+        // This is safer than String comparing in case of reference types
+        // But also WKWebViewConfiguration can only be described as String from main thread or it can crash
+        if type(of: lhsValue) is AnyClass || type(of: rhsValue) is AnyClass { // If one of the values is a reference type, check the reference instead of the description
+            return type(of: lhsValue) is AnyClass &&
+               type(of: rhsValue) is AnyClass &&
+               lhsValue as AnyObject === rhsValue as AnyObject
+        }
+        let lhsString = String(describing: lhsValue)
+        let rhsString = String(describing: rhsValue)
+        return lhsString == rhsString
     }
 
     public func hash(into hasher: inout Hasher) {
