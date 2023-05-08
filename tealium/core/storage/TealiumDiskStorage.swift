@@ -69,17 +69,20 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
             guard self.isDiskStorageEnabled else {
                 return
             }
-            do {
-                let path = filePath(moduleName)
-                guard Disk.exists(path, in: from) else {
-                    return
+            let path = self.filePath(moduleName)
+            guard Disk.exists(path, in: from) else {
+                return
+            }
+            guard Disk.exists(path, in: to) == false else {
+                return
+            }
+            TealiumDiskStorage.readWriteQueue.write { [weak self] in
+                do {
+                    try Disk.move(path, in: from, to: to)
+                    try Disk.doNotBackup(path, in: to)
+                } catch {
+                    self?.log(error: error.localizedDescription)
                 }
-                guard Disk.exists(path, in: to) == false else {
-                    return
-                }
-                try Disk.move(path, in: from, to: to)
-            } catch let error {
-                log(error: error.localizedDescription)
             }
         }
     }
