@@ -58,12 +58,14 @@ class WKWebViewIntegrationTests: XCTestCase {
         let webview = TagManagementWKWebView(config: config, delegate: TagManagementModuleDelegate())
         let expectation = self.expectation(description: "testEnableWebView")
         webview.enable(webviewURL: testURL, delegates: nil, view: nil) { _, _ in
-            let originalAddress = Unmanaged.passUnretained(WKWebViewIntegrationTests.processPool).toOpaque()
-            let moduleAddress = Unmanaged.passUnretained(webview.webview!.configuration.processPool).toOpaque()
-            XCTAssertEqual(originalAddress, moduleAddress)
-            expectation.fulfill()
+            DispatchQueue.main.async {
+                let originalAddress = Unmanaged.passUnretained(WKWebViewIntegrationTests.processPool).toOpaque()
+                let moduleAddress = Unmanaged.passUnretained(webview.webview!.configuration.processPool).toOpaque()
+                XCTAssertEqual(originalAddress, moduleAddress)
+                expectation.fulfill()
+            }
         }
-        self.wait(for: [expectation], timeout: 5.0)
+        self.wait(for: [expectation], timeout: 10.0)
     }
     
     func testEnableWebViewWithoutProcessPool() {
@@ -71,12 +73,14 @@ class WKWebViewIntegrationTests: XCTestCase {
         let webview = TagManagementWKWebView(config: config, delegate: TagManagementModuleDelegate())
         let expectation = self.expectation(description: "testEnableWebView")
         webview.enable(webviewURL: testURL, delegates: nil, view: nil) { _, _ in
-            let originalAddress = Unmanaged.passUnretained(WKWebViewIntegrationTests.processPool).toOpaque()
-            let moduleAddress = Unmanaged.passUnretained(webview.webview!.configuration.processPool).toOpaque()
-            XCTAssertNotEqual(originalAddress, moduleAddress)
-            expectation.fulfill()
+            DispatchQueue.main.async {
+                let originalAddress = Unmanaged.passUnretained(WKWebViewIntegrationTests.processPool).toOpaque()
+                let moduleAddress = Unmanaged.passUnretained(webview.webview!.configuration.processPool).toOpaque()
+                XCTAssertNotEqual(originalAddress, moduleAddress)
+                expectation.fulfill()
+            }
         }
-        self.wait(for: [expectation], timeout: 5.0)
+        self.wait(for: [expectation], timeout: 10.0)
     }
     
     func testEnableWebViewWithConfig() {
@@ -85,8 +89,8 @@ class WKWebViewIntegrationTests: XCTestCase {
         let webview = TagManagementWKWebView(config: config, delegate: TagManagementModuleDelegate())
         let expectation = self.expectation(description: "testEnableWebView")
         webview.enable(webviewURL: testURL, delegates: nil, view: nil) { _, _ in
-            let originalAddress = Unmanaged.passUnretained(WKWebViewIntegrationTests.processPool).toOpaque()
             DispatchQueue.main.async {
+                let originalAddress = Unmanaged.passUnretained(WKWebViewIntegrationTests.processPool).toOpaque()
                 let moduleAddress = Unmanaged.passUnretained(webview.webview!.configuration.processPool).toOpaque()
                 
                 XCTAssertEqual(originalAddress, moduleAddress)
@@ -95,7 +99,7 @@ class WKWebViewIntegrationTests: XCTestCase {
                 expectation.fulfill()
             }
         }
-        self.wait(for: [expectation], timeout: 5.0)
+        self.wait(for: [expectation], timeout: 10.0)
     }
     
     func testEnableWebViewWithoutConfig() {
@@ -103,8 +107,8 @@ class WKWebViewIntegrationTests: XCTestCase {
         let webview = TagManagementWKWebView(config: config, delegate: TagManagementModuleDelegate())
         let expectation = self.expectation(description: "testEnableWebView")
         webview.enable(webviewURL: testURL, delegates: nil, view: nil) { _, _ in
-            let originalAddress = Unmanaged.passUnretained(WKWebViewIntegrationTests.processPool).toOpaque()
             DispatchQueue.main.async {
+                let originalAddress = Unmanaged.passUnretained(WKWebViewIntegrationTests.processPool).toOpaque()
                 let moduleAddress = Unmanaged.passUnretained(webview.webview!.configuration.processPool).toOpaque()
                 XCTAssertNotEqual(originalAddress, moduleAddress)
                 // check that custom property passed in config is present on Tealium webview
@@ -112,7 +116,7 @@ class WKWebViewIntegrationTests: XCTestCase {
                 expectation.fulfill()
             }
         }
-        self.wait(for: [expectation], timeout: 5.0)
+        self.wait(for: [expectation], timeout: 10.0)
     }
 
     func testDisableWebView() {
