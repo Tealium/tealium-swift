@@ -43,7 +43,7 @@ class TealiumAttributionDataTests: XCTestCase {
     let mockAdClient = TestTealiumAdClient()
 
     override func setUpWithError() throws {
-        defaultConfig = TestTealiumHelper().getConfig()
+        defaultConfig = TestTealiumHelper().newConfig()
     }
 
     func createAttributionData(from config: TealiumConfig? = nil, idManager: TealiumASIdentifierManagerProtocol? = nil) -> AttributionData {

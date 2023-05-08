@@ -21,7 +21,7 @@ class RemoteCommandsModuleTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        config = helper.getConfig()
+        config = helper.newConfig()
     }
 
     override func tearDown() {

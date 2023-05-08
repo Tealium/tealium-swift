@@ -32,11 +32,10 @@ enum TealiumTestValue {
 let testStringArrayValue = ["value1", "value2"]
 var testOptionalData = [TealiumTestKey.stringKey: TealiumTestValue.stringValue,
                         TealiumTestKey.stringArrayKey: testStringArrayValue] as [String: Any]
-var testTealiumConfig: TealiumConfig { TealiumConfig(account: TealiumTestValue.account,
+let testTealiumConfig: TealiumConfig = TealiumConfig(account: TealiumTestValue.account,
                                                      profile: TealiumTestValue.profile,
                                                      environment: TealiumTestValue.environment,
                                                      options: testOptionalData as [String: Any])
-}
 
 let testTrackRequest = TealiumTrackRequest(data: [:])
 
@@ -95,8 +94,7 @@ class TestTealiumHelper {
     }
     
     class func context(with config: TealiumConfig, dataLayer: DataLayerManagerProtocol? = nil) -> TealiumContext {
-        let tealium = Tealium(config: config)
-        return TealiumContext(config: config, dataLayer: dataLayer ?? DummyDataManager(), tealium: tealium)
+        return TealiumContext(config: config, dataLayer: dataLayer ?? DummyDataManager())
     }
     
     class func delay(for delay: TimeInterval? = nil,

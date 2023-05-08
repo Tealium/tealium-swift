@@ -131,6 +131,10 @@ class TealiumDelegateProxyTests: XCTestCase {
 }
 
 class DummyDataManagerAppDelegate: DataLayerManagerProtocol {
+    var onDataUpdated: TealiumObservable<[String : Any]> = TealiumPublisher().asObservable()
+    
+    var onDataRemoved: TealiumCore.TealiumObservable<[String]> = TealiumPublisher().asObservable()
+    
     var traceId: String? {
         willSet {
             all["cp.trace_id"] = newValue
@@ -165,7 +169,9 @@ class DummyDataManagerAppDelegate: DataLayerManagerProtocol {
             all[key] = value
             return
         default:
-            XCTFail("Expiry should only be session")
+            if key != "app_uuid" {
+                XCTFail("Expiry should only be session")
+            }
         }
     }
 
