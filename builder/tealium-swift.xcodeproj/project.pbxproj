@@ -1153,6 +1153,13 @@
 			remoteGlobalIDString = D755DC9821945E41003C6BA1;
 			remoteInfo = TealiumCore;
 		};
+		15E03E892A091F0100652CAA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CF8805732554B74B0020E1B2;
+			remoteInfo = iOSTealiumTest;
+		};
 		15F76D3D278C82C600C977A5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
@@ -4304,6 +4311,7 @@
 			dependencies = (
 				15C6016127902B8600497901 /* PBXTargetDependency */,
 				15C6015727902A2900497901 /* PBXTargetDependency */,
+				15E03E8A2A091F0100652CAA /* PBXTargetDependency */,
 			);
 			name = "TealiumMediaIntegrationTests-iOS";
 			productName = "TealiumMediaIntegrationTests-iOS";
@@ -5232,6 +5240,7 @@
 					};
 					15C6015027902A2900497901 = {
 						CreatedOnToolsVersion = 13.2.1;
+						TestTargetID = CF8805732554B74B0020E1B2;
 					};
 					15D43D5826F20A68004E52FE = {
 						CreatedOnToolsVersion = 12.5.1;
@@ -7165,6 +7174,11 @@
 			target = D755DC9821945E41003C6BA1 /* TealiumCore */;
 			targetProxy = 15D4AFCE26EB94A2004316D0 /* PBXContainerItemProxy */;
 		};
+		15E03E8A2A091F0100652CAA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CF8805732554B74B0020E1B2 /* iOSTealiumTest */;
+			targetProxy = 15E03E892A091F0100652CAA /* PBXContainerItemProxy */;
+		};
 		15F76D3E278C82C600C977A5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 48B2842A273D674700FE908D /* TealiumInAppPurchase */;
@@ -8188,6 +8202,7 @@
 		15C6015927902A2900497901 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -8198,6 +8213,11 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = XC939GDC9P;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					"TEST=1",
+				);
 				INFOPLIST_FILE = "TealiumTests-info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				MARKETING_VERSION = 1.0;
@@ -8210,12 +8230,14 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOSTealiumTest.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/iOSTealiumTest";
 			};
 			name = Debug;
 		};
 		15C6015A27902A2900497901 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -8236,6 +8258,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOSTealiumTest.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/iOSTealiumTest";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

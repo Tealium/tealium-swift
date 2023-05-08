@@ -80,23 +80,23 @@ class TealiumMediaIntegrationTests: XCTestCase {
                                    profile: "profile",
                                    environment: "env")
         config.enableBackgroundMediaTracking = true
-        config.backgroundMediaAutoEndSessionTime = 3.0
-        let tealium = Tealium(config: config)
-        let context = TealiumContext(config: config,
-                                      dataLayer: DummyDataManager(),
-                                      tealium: tealium)
+        config.backgroundMediaAutoEndSessionTime = 2.0
+        let context = TestTealiumHelper.context(with: config)
         let module = MediaModule(context: context, delegate: MockModuleDelegate(), diskStorage: nil) { _ in }
         let session = IntervalMediaSession(with: mockMediaService)
         session.backgroundStatusResumed = true
         module.activeSessions = [session]
         
-        module.sleep()
-        TealiumQueues.mainQueue.asyncAfter(deadline:
-                                            .now() + 3.5) {
-            XCTAssertEqual(self.mockMediaService.standardEventCounts[.sessionEnd], 1)
-            expect.fulfill()
+        Tealium.lifecycleListeners.onBackgroundStateChange.subscribe { state in
+            guard case .wake = state else { return }
+            module.sleep()
+            TealiumQueues.mainQueue.asyncAfter(deadline:
+                    .now() + 4) {
+                        XCTAssertEqual(self.mockMediaService.standardEventCounts[.sessionEnd], 1)
+                        expect.fulfill()
+                    }
         }
-        wait(for: [expect], timeout: 3.6)
+        wait(for: [expect], timeout: 6)
     }
     
     func testWake_SetsBackgroundResumedToTrue_WhenBackgroundMediaTrackingEnabled() {
