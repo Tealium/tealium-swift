@@ -59,3 +59,9 @@ custom_rules:
     message: Rule IDs must be all lowercase, snake case and not end with `rule`
     regex: identifier:\s*("\w+_rule"|"\S*[^a-z_]\S*")
     severity: error
+  any_observable_generics:
+    included: ./tealium
+    name: ToAnyObservable Generics
+    message: ToAnyObservable must always specify Generics type to avoid compile issues
+    regex: \@ToAnyObservable\s*\(
+    severity: error

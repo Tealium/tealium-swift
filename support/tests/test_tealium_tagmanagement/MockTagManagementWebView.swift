@@ -72,6 +72,10 @@ class MockTagManagementWebView: TagManagementProtocol {
         return true
     }
 
+    func getWebView(_ completion: @escaping (WKWebView) -> Void) {
+        
+    }
+
 }
 
 class MockQueryParamsProvider: Collector, QueryParameterProvider {

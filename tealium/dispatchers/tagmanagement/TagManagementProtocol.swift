@@ -30,6 +30,9 @@ protocol TagManagementProtocol {
     /// Called when the module needs to disable the webview.
     func disable()
 
+    /// Returns the WebView as soon as it's created
+    func getWebView(_ completion: @escaping (WKWebView) -> Void)
+
     /// Internal webview status check.
     ///
     /// - Returns: `Bool` indicating whether or not the internal webview is ready for dispatching.

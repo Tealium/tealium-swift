@@ -111,6 +111,13 @@ public extension Tealium {
     func updateRootView(_ view: UIView) {
         self.tagManagement?.setRootView(view)
     }
+
+    /// Returns the WebView as soon as it's created
+    ///
+    /// If you are using XCode 14.3+ you can use this WebView instance to change the isInspectable property
+    func getTagManagementWebView(_ completion: @escaping (WKWebView) -> Void) {
+        self.tagManagement?.getWebView(completion)
+    }
 }
 
 public extension Dispatchers {

@@ -94,7 +94,7 @@ class TagManagementWKWebViewTests: XCTestCase {
         let expectation = expectation(description: "Enable complete")
         tagManagementWV.enable(webviewURL: testURL, delegates: nil, view: view) { _, error in
             XCTAssertNil(error)
-            dispatchPrecondition(condition: DispatchPredicate.onQueueAsBarrier(TealiumQueues.backgroundSerialQueue))
+            dispatchPrecondition(condition: .onQueueAsBarrier(TealiumQueues.backgroundSerialQueue))
             expectation.fulfill()
         }
         waitForExpectations(timeout: 5)
@@ -109,7 +109,7 @@ class TagManagementWKWebViewTests: XCTestCase {
         let expectation = expectation(description: "Enable complete")
         tagManagementWV.enable(webviewURL: nil, delegates: nil, view: view) { _, error in
             XCTAssertNotNil(error)
-            dispatchPrecondition(condition: DispatchPredicate.onQueueAsBarrier(TealiumQueues.backgroundSerialQueue))
+            dispatchPrecondition(condition: .onQueueAsBarrier(TealiumQueues.backgroundSerialQueue))
             expectation.fulfill()
         }
         waitForExpectations(timeout: 5)
@@ -125,7 +125,7 @@ class TagManagementWKWebViewTests: XCTestCase {
         let expectation = expectation(description: "Reload complete")
         tagManagementWV.enable(webviewURL: testURL, delegates: nil, view: view) { _, _ in }
         tagManagementWV.reload { _, _, _ in
-            dispatchPrecondition(condition: DispatchPredicate.onQueueAsBarrier(TealiumQueues.backgroundSerialQueue))
+            dispatchPrecondition(condition: .onQueueAsBarrier(TealiumQueues.backgroundSerialQueue))
             expectation.fulfill()
         }
         waitForExpectations(timeout: 5)
@@ -142,7 +142,7 @@ class TagManagementWKWebViewTests: XCTestCase {
         tagManagementWV.enable(webviewURL: testURL, delegates: nil, view: view) { _, _ in }
         for _ in 0..<5 {
             tagManagementWV.reload { _, _, _ in
-                dispatchPrecondition(condition: DispatchPredicate.onQueueAsBarrier(TealiumQueues.backgroundSerialQueue))
+                dispatchPrecondition(condition: .onQueueAsBarrier(TealiumQueues.backgroundSerialQueue))
                 expectation.fulfill()
             }
         }
@@ -158,8 +158,8 @@ class TagManagementWKWebViewTests: XCTestCase {
         let expectation = expectation(description: "Track complete")
         tagManagementWV.enable(webviewURL: testURL, delegates: nil, view: view) { _, _ in }
         tagManagementWV.track(["something":"value"]) { _, _, _ in
-            dispatchPrecondition(condition: DispatchPredicate.onQueueAsBarrier(TealiumQueues.backgroundSerialQueue))
-                        expectation.fulfill()
+            dispatchPrecondition(condition: .onQueueAsBarrier(TealiumQueues.backgroundSerialQueue))
+            expectation.fulfill()
         }
         waitForExpectations(timeout: 3)
     }
@@ -173,9 +173,50 @@ class TagManagementWKWebViewTests: XCTestCase {
         let expectation = expectation(description: "TrackMultiple complete")
         tagManagementWV.enable(webviewURL: testURL, delegates: nil, view: view) { _, _ in }
         tagManagementWV.trackMultiple([["something":"value"], ["somethingelse": "value"]]) { _, _, _ in
-            dispatchPrecondition(condition: DispatchPredicate.onQueueAsBarrier(TealiumQueues.backgroundSerialQueue))
-                        expectation.fulfill()
+            dispatchPrecondition(condition: .onQueueAsBarrier(TealiumQueues.backgroundSerialQueue))
+            expectation.fulfill()
         }
         waitForExpectations(timeout: 3)
+    }
+    
+    @available(iOS 10.0, *)
+    func testGetWebViewBeforeSetup() {
+        let config = testTealiumConfig.copy
+        config.dispatchers = [Dispatchers.TagManagement]
+        let tagManagementWV = TagManagementWKWebView(config: config, delegate: nil)
+        let expect = expectation(description: "Webview is returned when called before the setup")
+        tagManagementWV.getWebView { webView in
+            expect.fulfill()
+            dispatchPrecondition(condition: .onQueue(.main))
+        }
+        
+        tagManagementWV.setupWebview(forURL: URL(string: "https://www.tealium.com"), withSpecificView: nil)
+        waitForExpectations(timeout: 3.0)
+    }
+    
+    @available(iOS 10.0, *)
+    func testGetWebViewAfterSetup() {
+        let config = testTealiumConfig.copy
+        config.dispatchers = [Dispatchers.TagManagement]
+        let tagManagementWV = TagManagementWKWebView(config: config, delegate: nil)
+        let expect = expectation(description: "Webview is returned when called after the setup")
+        tagManagementWV.setupWebview(forURL: URL(string: "https://www.tealium.com"), withSpecificView: nil)
+        tagManagementWV.getWebView { webView in
+            expect.fulfill()
+            dispatchPrecondition(condition: .onQueue(.main))
+        }
+        waitForExpectations(timeout: 3.0)
+    }
+    
+    func testGetWebViewDontReturnWithoutSetup() {
+        let config = testTealiumConfig.copy
+        config.dispatchers = [Dispatchers.TagManagement]
+        let tagManagementWV = TagManagementWKWebView(config: config, delegate: nil)
+        let expect = expectation(description: "Webview is never returned if webview is not setup")
+        expect.isInverted = true
+        tagManagementWV.getWebView { webView in
+            expect.fulfill()
+        }
+        waitForExpectations(timeout: 3.0)
     }
 }
