@@ -16,13 +16,10 @@ class AutotrackingModuleTests: XCTestCase {
         config.autoTrackingCollectorDelegate = self
         config.autoTrackingBlocklistFilename = "blocklist"
         let context = TestTealiumHelper.context(with: config)
-        let module = AutotrackingModule(context: context, delegate: self, diskStorage: nil) { _ in
+        let module = AutotrackingModule(context: context, delegate: self, diskStorage: nil, blockListBundle: Bundle(for: AutotrackingModuleTests.self)) { _ in
 
         }
-        module.blockListBundle = Bundle(for: AutotrackingModuleTests.self)
-        return TealiumQueues.backgroundSerialQueue.sync {
-            module
-        }
+        return module
     }
     var expectationRequest: XCTestExpectation?
     var expectationShouldTrack: XCTestExpectation?

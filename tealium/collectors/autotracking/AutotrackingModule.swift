@@ -28,24 +28,20 @@ public class AutotrackingModule: Collector {
     var disposeBag = TealiumDisposeBag()
     // Lowercased list of blocked view names
     var blockList: [String]?
-    var blockListBundle = Bundle.main
+    let blockListBundle: Bundle
 
     @ToAnyObservable<TealiumReplaySubject>(TealiumReplaySubject())
     private var onReady: TealiumObservable<Void>
 
-    /// Initializes the module
-    ///
-    /// - Parameter context: `TealiumContext` instance
-    /// - Parameter delegate: `ModuleDelegate` instance
-    /// - Parameter diskStorage: `TealiumDiskStorageProtocol` instance
-    /// - Parameter completion: `ModuleCompletion` block to be called when init is finished
-    required public init(context: TealiumContext,
-                         delegate: ModuleDelegate?,
-                         diskStorage: TealiumDiskStorageProtocol?,
-                         completion: ModuleCompletion) {
+    init(context: TealiumContext,
+         delegate: ModuleDelegate?,
+         diskStorage: TealiumDiskStorageProtocol?,
+         blockListBundle: Bundle,
+         completion: ModuleCompletion) {
         self.delegate = delegate
         self.context = context
         self.config = context.config
+        self.blockListBundle = blockListBundle
         loadBlocklist()
         self.autotrackingDelegate = config.autoTrackingCollectorDelegate
         TealiumQueues.secureMainThreadExecution {
@@ -55,6 +51,23 @@ public class AutotrackingModule: Collector {
         }
         completion((.success(true), nil))
     }
+
+    /// Initializes the module
+    ///
+    /// - Parameter context: `TealiumContext` instance
+    /// - Parameter delegate: `ModuleDelegate` instance
+    /// - Parameter diskStorage: `TealiumDiskStorageProtocol` instance
+    /// - Parameter completion: `ModuleCompletion` block to be called when init is finished
+    required public convenience init(context: TealiumContext,
+                                     delegate: ModuleDelegate?,
+                                     diskStorage: TealiumDiskStorageProtocol?,
+                                     completion: ModuleCompletion) {
+        self.init(context: context,
+                  delegate: delegate,
+                  diskStorage: diskStorage,
+                  blockListBundle: Bundle.main,
+                  completion: completion)
+            }
 
     func requestViewTrack(viewName: String) {
         guard lastEvent != viewName else {
