@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+platform :ios, '11.0'
 
 target 'TealiumVisitorProfileDemo' do
   # Comment the next line if you don't want to use dynamic frameworks
@@ -14,5 +14,20 @@ target 'TealiumVisitorProfileDemo' do
   pod 'tealium-swift/Lifecycle', :path=> '../..'
   pod 'tealium-swift/Location', :path=> '../..'
   pod 'tealium-swift/VisitorService', :path=> '../..'
+  
+  post_install do |installer|
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        deployment_target = config.build_settings['IPHONEOS_DEPLOYMENT_TARGET']
+          target_components = deployment_target.split
+            if target_components.length > 0
+              target_initial = target_components[0].to_i
+                if target_initial < 9
+                  config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = "9.0"
+                end
+            end
+      end
+    end
+  end
   
 end
