@@ -15,7 +15,7 @@ class ConsentManagerModuleTests: XCTestCase {
     var track: TealiumTrackRequest!
     
     var module: ConsentManagerModule {
-        let context = TestTealiumHelper.context(with: TestTealiumHelper().getConfig(), dataLayer: MockDataLayerManager())
+        let context = TestTealiumHelper.context(with: config ?? TestTealiumHelper().getConfig(), dataLayer: MockDataLayerManager())
         return ConsentManagerModule(context: context, delegate: self, diskStorage: ConsentMockDiskStorage(), completion: { _ in })
     }
     

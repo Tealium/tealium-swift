@@ -11,7 +11,7 @@ import Foundation
 public class MockTealiumVisitorServiceManager: VisitorServiceManagerProtocol {
     public var lastFetch: Date?
     
-    public var currentVisitorId: String?
+    public var currentVisitorId: String? = "initialId"
     
     public var cachedProfile: TealiumVisitorProfile?
     

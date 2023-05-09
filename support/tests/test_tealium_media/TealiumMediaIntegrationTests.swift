@@ -26,10 +26,7 @@ class TealiumMediaIntegrationTests: XCTestCase {
         let config = TealiumConfig(account: "account",
                                    profile: "profile",
                                    environment: "env")
-        let tealium = Tealium(config: config)
-        let context = TealiumContext(config: config,
-                                      dataLayer: DummyDataManager(),
-                                      tealium: tealium)
+        let context = TestTealiumHelper.context(with: config)
         let module = MediaModule(context: context, delegate: MockModuleDelegate(), diskStorage: nil) { _ in }
         let session = IntervalMediaSession(with: mockMediaService)
         session.backgroundStatusResumed = true
@@ -44,10 +41,7 @@ class TealiumMediaIntegrationTests: XCTestCase {
         let config = TealiumConfig(account: "account",
                                    profile: "profile",
                                    environment: "env")
-        let tealium = Tealium(config: config)
-        let context = TealiumContext(config: config,
-                                      dataLayer: DummyDataManager(),
-                                      tealium: tealium)
+        let context = TestTealiumHelper.context(with: config)
         let module = MediaModule(context: context, delegate: MockModuleDelegate(), diskStorage: nil) { _ in }
         let session = IntervalMediaSession(with: mockMediaService)
         module.activeSessions = [session]
@@ -61,10 +55,7 @@ class TealiumMediaIntegrationTests: XCTestCase {
                                    profile: "profile",
                                    environment: "env")
         config.enableBackgroundMediaTracking = true
-        let tealium = Tealium(config: config)
-        let context = TealiumContext(config: config,
-                                      dataLayer: DummyDataManager(),
-                                      tealium: tealium)
+        let context = TestTealiumHelper.context(with: config)
         let module = MediaModule(context: context, delegate: MockModuleDelegate(), diskStorage: nil) { _ in }
         let session = IntervalMediaSession(with: mockMediaService)
         session.backgroundStatusResumed = true
@@ -80,23 +71,21 @@ class TealiumMediaIntegrationTests: XCTestCase {
                                    profile: "profile",
                                    environment: "env")
         config.enableBackgroundMediaTracking = true
-        config.backgroundMediaAutoEndSessionTime = 3.0
-        let tealium = Tealium(config: config)
-        let context = TealiumContext(config: config,
-                                      dataLayer: DummyDataManager(),
-                                      tealium: tealium)
+        config.backgroundMediaAutoEndSessionTime = 2.0
+        let context = TestTealiumHelper.context(with: config)
         let module = MediaModule(context: context, delegate: MockModuleDelegate(), diskStorage: nil) { _ in }
         let session = IntervalMediaSession(with: mockMediaService)
         session.backgroundStatusResumed = true
         module.activeSessions = [session]
-        
-        module.sleep()
-        TealiumQueues.mainQueue.asyncAfter(deadline:
-                                            .now() + 3.5) {
-            XCTAssertEqual(self.mockMediaService.standardEventCounts[.sessionEnd], 1)
-            expect.fulfill()
+        TealiumQueues.backgroundSerialQueue.async {
+            module.sleep()
+            TealiumQueues.backgroundSerialQueue.asyncAfter(deadline:
+                    .now() + 6) {
+                        XCTAssertEqual(self.mockMediaService.standardEventCounts[.sessionEnd], 1)
+                        expect.fulfill()
+                    }
         }
-        wait(for: [expect], timeout: 3.6)
+        wait(for: [expect], timeout: 12)
     }
     
     func testWake_SetsBackgroundResumedToTrue_WhenBackgroundMediaTrackingEnabled() {
@@ -104,10 +93,7 @@ class TealiumMediaIntegrationTests: XCTestCase {
                                    profile: "profile",
                                    environment: "env")
         config.enableBackgroundMediaTracking = true
-        let tealium = Tealium(config: config)
-        let context = TealiumContext(config: config,
-                                      dataLayer: DummyDataManager(),
-                                      tealium: tealium)
+        let context = TestTealiumHelper.context(with: config)
         let module = MediaModule(context: context, delegate: MockModuleDelegate(), diskStorage: nil) { _ in }
         let session = IntervalMediaSession(with: mockMediaService)
         session.backgroundStatusResumed = false

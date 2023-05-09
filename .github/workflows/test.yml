@@ -26,6 +26,7 @@ jobs:
       matrix:
         destination: ["platform=iOS Simulator,OS=14.5,name=iPhone 12"]
         scheme:
+            - TealiumAppDelegateProxyTests-iOS
             - TealiumAttributionTests-iOS
             - TealiumAutotrackingTests-iOS
             - TealiumCollectTests-iOS
@@ -33,8 +34,10 @@ jobs:
             - TealiumInAppPurchaseTests-iOS
             - TealiumLifecycleTests-iOS
             - TealiumLocationTests-iOS
+            - TealiumMediaIntegrationTests-iOS
             - TealiumMediaTests-iOS
             - TealiumRemoteCommandsTests-iOS
+            - TealiumTagManagementIntegrationTests-iOS
             - TealiumTagManagementTests-iOS
             - TealiumVisitorServiceTests-iOS
     steps:
