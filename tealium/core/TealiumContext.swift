@@ -31,6 +31,12 @@ public struct TealiumContext: Hashable, TealiumContextProtocol {
         return tealium?.onVisitorId
     }
 
+    init(config: TealiumConfig,
+         dataLayer: DataLayerManagerProtocol) {
+        self.config = config
+        self.dataLayer = dataLayer
+    }
+
     public init(config: TealiumConfig,
                 dataLayer: DataLayerManagerProtocol,
                 tealium: Tealium) {

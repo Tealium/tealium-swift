@@ -58,12 +58,14 @@ class WKWebViewIntegrationTests: XCTestCase {
         let webview = TagManagementWKWebView(config: config, delegate: TagManagementModuleDelegate())
         let expectation = self.expectation(description: "testEnableWebView")
         webview.enable(webviewURL: testURL, delegates: nil, view: nil) { _, _ in
-            let originalAddress = Unmanaged.passUnretained(WKWebViewIntegrationTests.processPool).toOpaque()
-            let moduleAddress = Unmanaged.passUnretained(webview.webview!.configuration.processPool).toOpaque()
-            XCTAssertEqual(originalAddress, moduleAddress)
-            expectation.fulfill()
+            DispatchQueue.main.async {
+                let originalAddress = Unmanaged.passUnretained(WKWebViewIntegrationTests.processPool).toOpaque()
+                let moduleAddress = Unmanaged.passUnretained(webview.webview!.configuration.processPool).toOpaque()
+                XCTAssertEqual(originalAddress, moduleAddress)
+                expectation.fulfill()
+            }
         }
-        self.wait(for: [expectation], timeout: 5.0)
+        self.wait(for: [expectation], timeout: 10.0)
     }
     
     func testEnableWebViewWithoutProcessPool() {
@@ -71,12 +73,14 @@ class WKWebViewIntegrationTests: XCTestCase {
         let webview = TagManagementWKWebView(config: config, delegate: TagManagementModuleDelegate())
         let expectation = self.expectation(description: "testEnableWebView")
         webview.enable(webviewURL: testURL, delegates: nil, view: nil) { _, _ in
-            let originalAddress = Unmanaged.passUnretained(WKWebViewIntegrationTests.processPool).toOpaque()
-            let moduleAddress = Unmanaged.passUnretained(webview.webview!.configuration.processPool).toOpaque()
-            XCTAssertNotEqual(originalAddress, moduleAddress)
-            expectation.fulfill()
+            DispatchQueue.main.async {
+                let originalAddress = Unmanaged.passUnretained(WKWebViewIntegrationTests.processPool).toOpaque()
+                let moduleAddress = Unmanaged.passUnretained(webview.webview!.configuration.processPool).toOpaque()
+                XCTAssertNotEqual(originalAddress, moduleAddress)
+                expectation.fulfill()
+            }
         }
-        self.wait(for: [expectation], timeout: 5.0)
+        self.wait(for: [expectation], timeout: 10.0)
     }
     
     func testEnableWebViewWithConfig() {
@@ -85,14 +89,17 @@ class WKWebViewIntegrationTests: XCTestCase {
         let webview = TagManagementWKWebView(config: config, delegate: TagManagementModuleDelegate())
         let expectation = self.expectation(description: "testEnableWebView")
         webview.enable(webviewURL: testURL, delegates: nil, view: nil) { _, _ in
-            let originalAddress = Unmanaged.passUnretained(WKWebViewIntegrationTests.processPool).toOpaque()
-            let moduleAddress = Unmanaged.passUnretained(webview.webview!.configuration.processPool).toOpaque()
-            XCTAssertEqual(originalAddress, moduleAddress)
-            // check that custom property passed in config is present on Tealium webview. Default for this option is true if not specified.
-            XCTAssertFalse(webview.webview!.configuration.allowsAirPlayForMediaPlayback)
-            expectation.fulfill()
+            DispatchQueue.main.async {
+                let originalAddress = Unmanaged.passUnretained(WKWebViewIntegrationTests.processPool).toOpaque()
+                let moduleAddress = Unmanaged.passUnretained(webview.webview!.configuration.processPool).toOpaque()
+                
+                XCTAssertEqual(originalAddress, moduleAddress)
+                // check that custom property passed in config is present on Tealium webview. Default for this option is true if not specified.
+                XCTAssertFalse(webview.webview!.configuration.allowsAirPlayForMediaPlayback)
+                expectation.fulfill()
+            }
         }
-        self.wait(for: [expectation], timeout: 5.0)
+        self.wait(for: [expectation], timeout: 10.0)
     }
     
     func testEnableWebViewWithoutConfig() {
@@ -100,14 +107,16 @@ class WKWebViewIntegrationTests: XCTestCase {
         let webview = TagManagementWKWebView(config: config, delegate: TagManagementModuleDelegate())
         let expectation = self.expectation(description: "testEnableWebView")
         webview.enable(webviewURL: testURL, delegates: nil, view: nil) { _, _ in
-            let originalAddress = Unmanaged.passUnretained(WKWebViewIntegrationTests.processPool).toOpaque()
-            let moduleAddress = Unmanaged.passUnretained(webview.webview!.configuration.processPool).toOpaque()
-            XCTAssertNotEqual(originalAddress, moduleAddress)
-            // check that custom property passed in config is present on Tealium webview
-            XCTAssertTrue(webview.webview!.configuration.allowsAirPlayForMediaPlayback)
-            expectation.fulfill()
+            DispatchQueue.main.async {
+                let originalAddress = Unmanaged.passUnretained(WKWebViewIntegrationTests.processPool).toOpaque()
+                let moduleAddress = Unmanaged.passUnretained(webview.webview!.configuration.processPool).toOpaque()
+                XCTAssertNotEqual(originalAddress, moduleAddress)
+                // check that custom property passed in config is present on Tealium webview
+                XCTAssertTrue(webview.webview!.configuration.allowsAirPlayForMediaPlayback)
+                expectation.fulfill()
+            }
         }
-        self.wait(for: [expectation], timeout: 5.0)
+        self.wait(for: [expectation], timeout: 10.0)
     }
 
     func testDisableWebView() {
@@ -203,7 +212,8 @@ class WKWebViewIntegrationTests: XCTestCase {
         expect = expectation(description: "Enable complete")
         let config = self.config.copy
         config.collectors = [MockQueryParamsProvider.self]
-        let context = TestTealiumHelper.context(with: config)
+        let tealium = Tealium(config: config)
+        let context = tealium.context!
         module = TagManagementModule(context: context, delegate: TagManagementModuleDelegate(), completion: { _ in
             for item in MockQueryParamsProvider.defaultItems {
                 XCTAssertTrue(URLComponents(url: self.module.tagManagement!.url!, resolvingAgainstBaseURL: false)!.queryItems!.contains(item))

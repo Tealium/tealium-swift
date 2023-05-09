@@ -107,7 +107,7 @@ class ConsentManagerTests: XCTestCase {
     }
     
     func testCustomConsentPolicyStatusInfo_SentInTrack() {
-        let config = testTealiumConfig
+        let config = TestTealiumHelper().newConfig()
         config.consentPolicy = .custom(MockCustomConsentPolicy.self)
         let mockConsentDelegate = MockConsentDelegate()
         let expect = expectation(description: "testCustomConsentPolicyStatusInfo_SentInTrack")
