@@ -62,7 +62,6 @@ public struct Migrator: Migratable {
         guard let unarchivedConsentConfiguration = try? unarchive(data: consentConfiguration) as? ConsentConfigurable else {
             return [String: Any]()
         }
-        remove(for: MigrationKey.consentConfiguration)
         return [TealiumDataKey.consentStatus: unarchivedConsentConfiguration.consentStatus,
                 TealiumDataKey.consentCategoriesKey: unarchivedConsentConfiguration.consentCategories,
                 TealiumDataKey.consentLoggingEnabled: unarchivedConsentConfiguration.enableConsentLogging]
@@ -101,6 +100,7 @@ public struct Migrator: Migratable {
                       expiry: .forever)
         dataLayer.delete(for: excludedKeysFromMigration) // For clients that migrated already in the past
         remove(for: instance)
+        remove(for: MigrationKey.consentConfiguration)
     }
 
     func removeExcludedKeys(_ excludedKeys: [String], from data: [String: Any]) -> [String: Any] {

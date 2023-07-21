@@ -40,10 +40,10 @@ class MigratorTests: XCTestCase {
         XCTAssertEqual(mockUserDefaultsConsent.objectCount, 0)
     }
 
-    func testExtractConsentPreferences_userDefaults_removeMethodRun() {
+    func testExtractConsentPreferences_userDefaults_removeMethodNotRun() {
         migrator = Migrator(config: config, userDefaults: mockUserDefaultsConsent, unarchiver: mockUnarchiverConsent)
         _ = migrator.extractConsentPreferences()
-        XCTAssertEqual(mockUserDefaultsConsent.removeCount, 1)
+        XCTAssertEqual(mockUserDefaultsConsent.removeCount, 0, "Remove is only called after the migration happens")
     }
 
     func testExtractConsentPreferences_userDefaults_removeMethodNotRunWithNoData() {
@@ -210,7 +210,7 @@ class MigratorTests: XCTestCase {
         migrator = Migrator(config: config, userDefaults: mockLegacyUserDefaults, unarchiver: mockUnarchiverConsent)
         let dummyDataLayer = DummyDataManager()
         migrator.migratePersistent(dataLayer: dummyDataLayer)
-        XCTAssertEqual(mockLegacyUserDefaults.removeCount, 1)
+        XCTAssertEqual(mockLegacyUserDefaults.removeCount, 2, "Remove should happen for both lifecycle and consent")
     }
 
     func testMigratePersistent_methodRunUponTealiumInit_migrateFlagTrue() {
