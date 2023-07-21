@@ -38,7 +38,12 @@ struct LegacyConsentUnarchiver: ConsentUnarchiver {
 }
 
 public struct Migrator: Migratable {
-
+    /// These are keys that were written to the DataLayer in the past but are now moved to a collector
+    var excludedKeysFromMigration: [String] {
+        [
+            TealiumDataKey.appVersion
+        ]
+    }
     var config: TealiumConfig
     var userDefaults: Storable? = UserDefaults.standard
     var unarchiver: ConsentUnarchiver? = LegacyConsentUnarchiver()
@@ -72,11 +77,8 @@ public struct Migrator: Migratable {
             }
         }
         var result = dictionary.filter { !$0.key.contains(MigrationKey.lifecycle) }
-        guard !result.isEmpty else {
-            return [String: Any]()
-        }
         if !migrated.isEmpty {
-            result += [MigrationKey.migratedLifecycle: migrated]
+            result[MigrationKey.migratedLifecycle] = migrated
         }
         return result
     }
@@ -85,14 +87,20 @@ public struct Migrator: Migratable {
         guard let legacyUserDefaults = retrieve(for: instance) as? [String: Any] else {
             return [String: Any]()
         }
-        remove(for: instance)
         return extractLifecycleData(from: legacyUserDefaults)
     }
 
     public func migratePersistent(dataLayer: DataLayerManagerProtocol) {
         var info = extractUserDefaults()
         info += extractConsentPreferences()
-        dataLayer.add(data: info, expiry: .forever)
+        dataLayer.add(data: removeExcludedKeys(excludedKeysFromMigration, from: info),
+                      expiry: .forever)
+        dataLayer.delete(for: excludedKeysFromMigration) // For clients that migrated already in the past
+        remove(for: instance)
+    }
+
+    func removeExcludedKeys(_ excludedKeys: [String], from data: [String: Any]) -> [String: Any] {
+        data.filter { !excludedKeys.contains($0.key) }
     }
 
     func remove(for key: String) {

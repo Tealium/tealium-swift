@@ -56,6 +56,7 @@ class DummyCollector: Collector, DispatchListener, DispatchValidator {
 
 class DummyDataManager: DataLayerManagerProtocol {
     var addCount = 0
+    var deleteCount = 0
     var onDataUpdated: TealiumObservable<[String : Any]> = TealiumPublisher<[String:Any]>().asObservable()
     var onDataRemoved: TealiumObservable<[String]> = TealiumPublisher<[String]>().asObservable()
     var all: [String: Any] = ["eventData": true, "sessionData": true]
@@ -87,7 +88,7 @@ class DummyDataManager: DataLayerManagerProtocol {
     }
 
     func delete(for Keys: [String]) {
-
+        deleteCount += 1
     }
 
     func delete(for key: String) {

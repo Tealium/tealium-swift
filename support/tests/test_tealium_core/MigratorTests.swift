@@ -148,10 +148,10 @@ class MigratorTests: XCTestCase {
         XCTAssertEqual(mockLegacyUserDefaults.objectCount, 0)
     }
 
-    func testExtractUserDefaults_userDefaults_removeMethodRun() {
+    func testExtractUserDefaults_userDefaults_removeMethodNotRun() {
         migrator = Migrator(config: config, userDefaults: mockLegacyUserDefaults, unarchiver: mockUnarchiverConsent)
         _ = migrator.extractUserDefaults()
-        XCTAssertEqual(mockLegacyUserDefaults.removeCount, 1)
+        XCTAssertEqual(mockLegacyUserDefaults.removeCount, 0, "Remove is only called after the migration happens")
     }
 
     func testExtractUserDefaults_userDefaults_removeMethodNotRunWithNoData() {
@@ -198,6 +198,20 @@ class MigratorTests: XCTestCase {
         migrator.migratePersistent(dataLayer: dummyDataLayer)
         XCTAssertEqual(dummyDataLayer.addCount, 1)
     }
+    
+    func testMigratePersistent_dataLayer_deleteMethodRun() {
+        migrator = Migrator(config: config, userDefaults: mockLegacyUserDefaults, unarchiver: mockUnarchiverConsent)
+        let dummyDataLayer = DummyDataManager()
+        migrator.migratePersistent(dataLayer: dummyDataLayer)
+        XCTAssertEqual(dummyDataLayer.deleteCount, 1)
+    }
+    
+    func testMigratePersistent_removeMethodRun() {
+        migrator = Migrator(config: config, userDefaults: mockLegacyUserDefaults, unarchiver: mockUnarchiverConsent)
+        let dummyDataLayer = DummyDataManager()
+        migrator.migratePersistent(dataLayer: dummyDataLayer)
+        XCTAssertEqual(mockLegacyUserDefaults.removeCount, 1)
+    }
 
     func testMigratePersistent_methodRunUponTealiumInit_migrateFlagTrue() {
         config.shouldMigratePersistentData = true
@@ -214,6 +228,18 @@ class MigratorTests: XCTestCase {
         config.shouldMigratePersistentData = false
         tealium = Tealium(config: config, dataLayer: DummyDataManager(), modulesManager: nil, migrator: mockMigrator, enableCompletion: { _ in })
         XCTAssertEqual(mockMigrator.migrateCount, 0)
+    }
+    
+    func testRemoveExcludedKeys_removesTheKeysFromTheData() {
+        let migrator = Migrator(config: config)
+        let result = migrator.removeExcludedKeys(["removed_key1", "removed_key2"], from: [
+            "removed_key1": "value",
+            "removed_key2": "value",
+            "non_removed_key3": "value"
+        ])
+        XCTAssertEqual(result["non_removed_key3"] as? String, "value")
+        XCTAssertNil(result["removed_key1"])
+        XCTAssertNil(result["removed_key2"])
     }
 
 }
