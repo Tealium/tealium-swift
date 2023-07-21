@@ -38,10 +38,14 @@ struct LegacyConsentUnarchiver: ConsentUnarchiver {
 }
 
 public struct Migrator: Migratable {
-    /// These are keys that were written to the DataLayer in the past but are now moved to a collector
+    /// These are keys that were written to the DataLayer in the past but are now moved to a collector or are entirely removed
     var excludedKeysFromMigration: [String] {
         [
-            TealiumDataKey.appVersion
+            TealiumDataKey.appVersion,
+            "uuid",
+            "visitor_id",
+            "last_track_event",
+            "last_session_created"
         ]
     }
     var config: TealiumConfig
