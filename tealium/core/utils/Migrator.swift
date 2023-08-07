@@ -38,7 +38,16 @@ struct LegacyConsentUnarchiver: ConsentUnarchiver {
 }
 
 public struct Migrator: Migratable {
-
+    /// These are keys that were written to the DataLayer in the past but are now moved to a collector or are entirely removed
+    var excludedKeysFromMigration: [String] {
+        [
+            TealiumDataKey.appVersion,
+            "uuid",
+            "visitor_id",
+            "last_track_event",
+            "last_session_created"
+        ]
+    }
     var config: TealiumConfig
     var userDefaults: Storable? = UserDefaults.standard
     var unarchiver: ConsentUnarchiver? = LegacyConsentUnarchiver()
@@ -53,7 +62,6 @@ public struct Migrator: Migratable {
         guard let unarchivedConsentConfiguration = try? unarchive(data: consentConfiguration) as? ConsentConfigurable else {
             return [String: Any]()
         }
-        remove(for: MigrationKey.consentConfiguration)
         return [TealiumDataKey.consentStatus: unarchivedConsentConfiguration.consentStatus,
                 TealiumDataKey.consentCategoriesKey: unarchivedConsentConfiguration.consentCategories,
                 TealiumDataKey.consentLoggingEnabled: unarchivedConsentConfiguration.enableConsentLogging]
@@ -72,11 +80,8 @@ public struct Migrator: Migratable {
             }
         }
         var result = dictionary.filter { !$0.key.contains(MigrationKey.lifecycle) }
-        guard !result.isEmpty else {
-            return [String: Any]()
-        }
         if !migrated.isEmpty {
-            result += [MigrationKey.migratedLifecycle: migrated]
+            result[MigrationKey.migratedLifecycle] = migrated
         }
         return result
     }
@@ -85,14 +90,21 @@ public struct Migrator: Migratable {
         guard let legacyUserDefaults = retrieve(for: instance) as? [String: Any] else {
             return [String: Any]()
         }
-        remove(for: instance)
         return extractLifecycleData(from: legacyUserDefaults)
     }
 
     public func migratePersistent(dataLayer: DataLayerManagerProtocol) {
         var info = extractUserDefaults()
         info += extractConsentPreferences()
-        dataLayer.add(data: info, expiry: .forever)
+        dataLayer.add(data: removeExcludedKeys(excludedKeysFromMigration, from: info),
+                      expiry: .forever)
+        dataLayer.delete(for: excludedKeysFromMigration) // For clients that migrated already in the past
+        remove(for: instance)
+        remove(for: MigrationKey.consentConfiguration)
+    }
+
+    func removeExcludedKeys(_ excludedKeys: [String], from data: [String: Any]) -> [String: Any] {
+        data.filter { !excludedKeys.contains($0.key) }
     }
 
     func remove(for key: String) {
