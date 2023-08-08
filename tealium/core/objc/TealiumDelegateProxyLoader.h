@@ -1,5 +1,5 @@
 //
-//  TealiumDelegateProxy+Swizzle.h
+//  TealiumDelegateProxyLoader.h
 //  TealiumCore
 //
 //  Created by Enrico Zannini on 18/10/21.
@@ -11,9 +11,9 @@
 
 //NS_ASSUME_NONNULL_BEGIN
 
-//@interface TealiumDelegateProxy (Swizzle)
-//
-//@end
+@interface TealiumDelegateProxyLoader: NSObject
+
+@end
 
 //NS_ASSUME_NONNULL_END
 
