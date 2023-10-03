@@ -26,6 +26,7 @@ public class LifecycleModule: Collector {
     var enabledPrior = false
     var lifecycleData = [String: Any]()
     var lastLifecycleEvent: LifecycleType?
+    let backupStorage: TealiumBackupStorage
     var diskStorage: TealiumDiskStorageProtocol!
     var userDefaults: Storable?
     public var config: TealiumConfig
@@ -47,6 +48,7 @@ public class LifecycleModule: Collector {
                          delegate: ModuleDelegate?,
                          diskStorage: TealiumDiskStorageProtocol?,
                          completion: ModuleCompletion) {
+        self.backupStorage = context.tealiumBackup
         self.config = context.config
         self.delegate = delegate
         self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config,
@@ -79,12 +81,13 @@ public class LifecycleModule: Collector {
     var lifecycle: Lifecycle? {
         get {
             guard let storedData = diskStorage.retrieve(as: Lifecycle.self) else {
-                return Lifecycle()
+                return backupStorage.lifecycle ?? Lifecycle()
             }
             return storedData
         }
         set {
             if let newData = newValue {
+                backupStorage.lifecycle = newData
                 diskStorage.save(newData, completion: nil)
             }
         }

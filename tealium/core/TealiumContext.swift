@@ -30,18 +30,19 @@ public struct TealiumContext: Hashable, TealiumContextProtocol {
     public var onVisitorId: TealiumObservable<String>? {
         return tealium?.onVisitorId
     }
-
+    public let tealiumBackup: TealiumBackupStorage
     init(config: TealiumConfig,
          dataLayer: DataLayerManagerProtocol) {
         self.config = config
         self.dataLayer = dataLayer
+        tealiumBackup = TealiumBackupStorage(account: config.account, profile: config.profile)
     }
 
     public init(config: TealiumConfig,
                 dataLayer: DataLayerManagerProtocol,
                 tealium: Tealium) {
-        self.config = config
-        self.dataLayer = dataLayer
+        self.init(config: config,
+                  dataLayer: dataLayer)
         self.tealium = tealium
     }
 

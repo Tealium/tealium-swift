@@ -78,7 +78,8 @@ public class AppDataModule: Collector {
         self.appDataCollector = AppDataCollector()
         visitorIdProvider = VisitorIdProvider(config: context.config,
                                               dataLayer: context.dataLayer,
-                                              diskStorage: diskStorage)
+                                              diskStorage: diskStorage,
+                                              backupStorage: context.tealiumBackup)
         newVolatileData()
         completion((.success(true), nil))
     }

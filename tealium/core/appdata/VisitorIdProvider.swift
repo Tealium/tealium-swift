@@ -15,8 +15,11 @@ class VisitorIdProvider {
     let diskStorage: TealiumDiskStorageProtocol
     @ToAnyObservable<TealiumReplaySubject<String>>(TealiumReplaySubject<String>())
     var onVisitorId: TealiumObservable<String>
+    let backupStorage: TealiumBackupStorage
 
-    init(config: TealiumConfig, dataLayer: DataLayerManagerProtocol?, diskStorage: TealiumDiskStorageProtocol? = nil, visitorIdMigrator: VisitorIdMigratorProtocol? = nil) {
+    init(config: TealiumConfig, dataLayer: DataLayerManagerProtocol?, diskStorage: TealiumDiskStorageProtocol? = nil, visitorIdMigrator: VisitorIdMigratorProtocol? = nil,
+         backupStorage: TealiumBackupStorage) {
+        self.backupStorage = backupStorage
         self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config, forModule: "VisitorIdStorage")
         guard let dataLayer = dataLayer else {
             self.identityListener = nil
@@ -30,7 +33,8 @@ class VisitorIdProvider {
             self.identityListener = nil
         }
         let migrator = visitorIdMigrator ?? VisitorIdMigrator(dataLayer: dataLayer,
-                                                              config: config)
+                                                              config: config,
+                                                              backupStorage: backupStorage)
         if let oldData = migrator.getOldPersistentData() {
             self.visitorIdStorage = VisitorIdStorage(visitorId: oldData.visitorId)
             dataLayer.add(key: TealiumDataKey.uuid, value: oldData.uuid, expiry: .forever)
@@ -47,6 +51,7 @@ class VisitorIdProvider {
                           value: UUID().uuidString,
                           expiry: .forever)
         }
+        backupStorage.appId = dataLayer.all[TealiumDataKey.uuid] as? String
         publishVisitorId(visitorIdStorage.visitorId, andUpdateStorage: false)
         handleIdentitySwitch()
     }
@@ -103,6 +108,7 @@ class VisitorIdProvider {
     /// Always use this method to publish new visitor IDs so we can also persist them
     func publishVisitorId(_ visitorId: String, andUpdateStorage shouldUpdate: Bool) {
         _onVisitorId.publish(visitorId)
+        backupStorage.visitorId = visitorId
         if shouldUpdate {
             visitorIdStorage.setVisitorIdForCurrentIdentity(visitorId)
             persistStorage()

@@ -37,9 +37,17 @@ class VisitorIdProviderTests: XCTestCase {
     }
 
     func createProvider(config: TealiumConfig? = nil, migrator: VisitorIdMigratorProtocol? = nil) {
+        let config = config ?? self.config
         self.provider = nil
         diskStorage.save(VisitorIdStorage(visitorId: visitorId), completion: nil)
-        provider = VisitorIdProvider(config: config ?? self.config, dataLayer: self.dataLayer, diskStorage: diskStorage, visitorIdMigrator: migrator)
+        let backup = TealiumBackupStorage(account: config.account,
+                                          profile: config.profile)
+        backup.clear()
+        provider = VisitorIdProvider(config: config,
+                                     dataLayer: self.dataLayer,
+                                     diskStorage: diskStorage,
+                                     visitorIdMigrator: migrator,
+                                     backupStorage: backup)
     }
 
     override func tearDownWithError() throws {
@@ -62,7 +70,11 @@ class VisitorIdProviderTests: XCTestCase {
         let oldDiskStorage = MockAppDataDiskStorage()
         oldDiskStorage.save(PersistentAppData(visitorId: "oldVisitorId", uuid: "oldUUID"), completion: nil)
         XCTAssertNotNil(oldDiskStorage.storedData)
-        let migrator = VisitorIdMigrator(dataLayer: MockDataLayerManager(), config: self.config, diskStorage: oldDiskStorage)
+        let migrator = VisitorIdMigrator(dataLayer: MockDataLayerManager(),
+                                         config: self.config,
+                                         diskStorage: oldDiskStorage,
+                                         backupStorage: TealiumBackupStorage(account: config.account,
+                                                                             profile: config.profile))
         createProvider(config: nil, migrator: migrator)
         let data = dataLayer.all
         XCTAssertNil(data[TealiumDataKey.visitorId])

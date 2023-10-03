@@ -16,11 +16,13 @@ protocol VisitorIdMigratorProtocol {
 class VisitorIdMigrator: VisitorIdMigratorProtocol {
     let dataLayer: DataLayerManagerProtocol
     let diskStorage: TealiumDiskStorageProtocol
-    init(dataLayer: DataLayerManagerProtocol, config: TealiumConfig, diskStorage: TealiumDiskStorageProtocol? = nil) {
+    let backupStorage: TealiumBackupStorage
+    init(dataLayer: DataLayerManagerProtocol, config: TealiumConfig, diskStorage: TealiumDiskStorageProtocol? = nil, backupStorage: TealiumBackupStorage) {
         self.dataLayer = dataLayer
         self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config,
                                                              forModule: ModuleNames.appdata.lowercased(),
                                                              isCritical: true)
+        self.backupStorage = backupStorage
     }
 
     func getOldPersistentData() -> PersistentAppData? {
@@ -31,6 +33,9 @@ class VisitorIdMigrator: VisitorIdMigratorProtocol {
             persistentData = PersistentAppData(visitorId: migratedVisitorId, uuid: migratedUUID)
         } else if let data = diskStorage.retrieve(as: PersistentAppData.self) {
             persistentData = data
+        } else if let visitorId = backupStorage.visitorId,
+                  let appId = backupStorage.appId {
+            persistentData = PersistentAppData(visitorId: visitorId, uuid: appId)
         }
         return persistentData
     }

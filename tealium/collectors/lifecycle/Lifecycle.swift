@@ -11,6 +11,28 @@ import Foundation
 import TealiumCore
 #endif
 
+extension TealiumBackupStorage {
+    var lifecycle: Lifecycle? {
+        get {
+            guard let data = userDefaults?.object(forKey: TealiumBacupKey.lifecycle) as? Data else { return nil }
+            return try? JSONDecoder().decode(Lifecycle.self, from: data)
+        }
+        set {
+            guard var newValue = newValue else { return }
+            newValue.sessions = newValue.sessions.suffix(1)
+            do {
+                userDefaults?.set(try JSONEncoder().encode(newValue),
+                                  forKey: TealiumBacupKey.lifecycle)
+            } catch {
+                print(error)
+            }
+        }
+    }
+}
+extension TealiumBacupKey {
+    static let lifecycle = "lifecycle"
+}
+
 // swiftlint:disable type_body_length
 public struct Lifecycle: Codable {
 

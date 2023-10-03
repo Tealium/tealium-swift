@@ -139,6 +139,22 @@ class DataLayerManagerTests: XCTestCase {
         let retrieved = mockDiskStorage.retrieve(as: Set<DataLayerItem>.self)
         XCTAssertTrue(((retrieved?.contains(eventDataItem)) != nil))
     }
+    
+    
+    func testAddDouble() {
+        let foreverData: [String: Any] = ["hello": Double(2.0)]
+        let eventDataItem = DataLayerItem(key: "hello", value: Double(2.0), expiry: .forever)
+        eventDataManager.add(data: foreverData, expiry: .forever)
+        XCTAssertNotNil(eventDataManager.all["hello"])
+        XCTAssertEqual(eventDataManager.all["hello"] as? Double, 2.0)
+        let retrieved = mockDiskStorage.retrieve(as: Set<DataLayerItem>.self)
+        XCTAssertTrue(((retrieved?.contains(eventDataItem)) != nil))
+        let doubleValue = retrieved?.all["hello"]
+        XCTAssertNotNil(doubleValue)
+        print(doubleValue)
+        XCTAssertNotNil((doubleValue as? NSNumber)?.doubleValue)
+        XCTAssertNotNil(doubleValue as? Double)
+    }
 
     func testCurrentTimeStampsExist() {
         var timeStamps = eventDataManager.currentTimeStamps

@@ -13,9 +13,13 @@ private let dataLayer = DataLayer(config: TestTealiumHelper().getConfig())
 class VisitorIdMigratorTests: XCTestCase {
 
     let migrator = VisitorIdMigrator(dataLayer: dataLayer,
-                                     config: dataLayer.config, diskStorage: mockDiskStorage)
+                                     config: dataLayer.config,
+                                     diskStorage: mockDiskStorage,
+                                     backupStorage: TealiumBackupStorage(account: dataLayer.config.account,
+                                                                         profile: dataLayer.config.profile))
     
     override func setUpWithError() throws {
+        migrator.backupStorage.clear()
     }
 
     func testGetOldPersistentDataFromDataLayer() throws {
