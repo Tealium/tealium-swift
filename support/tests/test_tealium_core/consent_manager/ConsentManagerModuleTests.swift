@@ -324,7 +324,7 @@ class ConsentManagerModuleTests: XCTestCase {
         let module = ConsentManagerModule(context: context,
                                           delegate: nil,
                                           diskStorage: ConsentMockDiskStorage()) { _ in }
-        let consentManager = ConsentManager(config: config, delegate: nil, diskStorage: ConsentMockDiskStorage(), dataLayer: nil)
+        let consentManager = ConsentManager(config: config, delegate: nil, diskStorage: ConsentMockDiskStorage(), dataLayer: nil, backupStorage: context.tealiumBackup)
         module.consentManager = consentManager
         module.consentManager?.userConsentStatus = .consented
         module.consentManager?.lastConsentUpdate = nil
@@ -350,7 +350,7 @@ class ConsentManagerModuleTests: XCTestCase {
         let module = ConsentManagerModule(context: context,
                                           delegate: nil,
                                           diskStorage: ConsentMockDiskStorage()) { _ in }
-        let consentManager = ConsentManager(config: config, delegate: nil, diskStorage: ConsentMockDiskStorage(), dataLayer: nil)
+        let consentManager = ConsentManager(config: config, delegate: nil, diskStorage: ConsentMockDiskStorage(), dataLayer: nil, backupStorage: context.tealiumBackup)
         module.consentManager = consentManager
         module.consentManager?.userConsentCategories = TealiumConsentCategories.all
         module.consentManager?.lastConsentUpdate = TimeTraveler().travel(by: -(60 * 60 * 24 + 1))

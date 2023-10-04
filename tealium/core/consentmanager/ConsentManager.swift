@@ -73,12 +73,13 @@ public class ConsentManager {
     public init(config: TealiumConfig,
                 delegate: ModuleDelegate?,
                 diskStorage: TealiumDiskStorageProtocol,
-                dataLayer: DataLayerManagerProtocol?) {
+                dataLayer: DataLayerManagerProtocol?,
+                backupStorage: TealiumBackupStorage) {
         self.diskStorage = diskStorage
         self.config = config
         self.delegate = delegate
         self.onConsentExpiraiton = config.onConsentExpiration
-        consentPreferencesStorage = ConsentPreferencesStorage(diskStorage: diskStorage)
+        consentPreferencesStorage = ConsentPreferencesStorage(diskStorage: diskStorage, backupStorage: backupStorage)
 
         // try to load config from persistent storage first
         if let dataLayer = dataLayer,

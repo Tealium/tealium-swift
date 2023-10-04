@@ -27,7 +27,11 @@ class ConsentManagerModule: DispatchValidator {
         self.dataLayer = context.dataLayer
         self.delegate = delegate
         expireConsent()
-        consentManager = ConsentManager(config: config, delegate: delegate, diskStorage: self.diskStorage, dataLayer: self.dataLayer)
+        consentManager = ConsentManager(config: config,
+                                        delegate: delegate,
+                                        diskStorage: self.diskStorage,
+                                        dataLayer: self.dataLayer,
+                                        backupStorage: context.tealiumBackup)
         completion((.success(true), nil))
     }
 

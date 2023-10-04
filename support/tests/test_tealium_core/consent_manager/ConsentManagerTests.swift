@@ -10,25 +10,25 @@ import Foundation
 import XCTest
 
 class ConsentManagerTests: XCTestCase {
-    
+    let tealiumBackup = TealiumBackupStorage(account: "account", profile: "profile")
     var consentManager: ConsentManager {
         let config = self.config!
-        return ConsentManager(config: config, delegate: self, diskStorage: ConsentMockDiskStorage(), dataLayer: nil)
+        return ConsentManager(config: config, delegate: self, diskStorage: ConsentMockDiskStorage(), dataLayer: nil, backupStorage: tealiumBackup)
     }
 
     var consentManagerEmptyDelegate: ConsentManager {
         let config = self.config!
-        return ConsentManager(config: config, delegate: ConsentManagerDelegate(), diskStorage: ConsentMockDiskStorage(), dataLayer: nil)
+        return ConsentManager(config: config, delegate: ConsentManagerDelegate(), diskStorage: ConsentMockDiskStorage(), dataLayer: nil, backupStorage: tealiumBackup)
     }
 
     var consentManagerCCPA: ConsentManager {
         let config = self.config!
         config.consentPolicy = .ccpa
-        return ConsentManager(config: config, delegate: ConsentManagerDelegate(), diskStorage: ConsentMockDiskStorage(), dataLayer: nil)
+        return ConsentManager(config: config, delegate: ConsentManagerDelegate(), diskStorage: ConsentMockDiskStorage(), dataLayer: nil, backupStorage: tealiumBackup)
     }
 
     func consentManagerForConfig(_ config: TealiumConfig) -> ConsentManager {
-        return ConsentManager(config: config, delegate: ConsentManagerDelegate(), diskStorage: ConsentMockDiskStorage(), dataLayer: nil)
+        return ConsentManager(config: config, delegate: ConsentManagerDelegate(), diskStorage: ConsentMockDiskStorage(), dataLayer: nil, backupStorage: tealiumBackup)
     }
     
     var module: ConsentManagerModule {
@@ -52,10 +52,12 @@ class ConsentManagerTests: XCTestCase {
         super.setUp()
         expectations = [XCTestExpectation]()
         config = tealHelper.getConfig()
+        tealiumBackup.clear()
     }
 
     override func tearDown() {
         super.tearDown()
+        tealiumBackup.clear()
     }
 
     func getExpectation(forDescription: String) -> XCTestExpectation? {
@@ -95,7 +97,7 @@ class ConsentManagerTests: XCTestCase {
         let mockConsentDelegate = MockConsentDelegate()
         let expect = expectation(description: "testConsentGrantedTriggersDequeueRequest")
         mockConsentDelegate.asyncExpectation = expect
-        let consentManager = ConsentManager(config: config, delegate: mockConsentDelegate, diskStorage: ConsentMockDiskStorage(), dataLayer: DummyDataManager())
+        let consentManager = ConsentManager(config: config, delegate: mockConsentDelegate, diskStorage: ConsentMockDiskStorage(), dataLayer: DummyDataManager(), backupStorage: tealiumBackup)
         consentManager.userConsentStatus = .consented
 
         waitForExpectations(timeout: 2) { error in
@@ -112,7 +114,7 @@ class ConsentManagerTests: XCTestCase {
         let mockConsentDelegate = MockConsentDelegate()
         let expect = expectation(description: "testCustomConsentPolicyStatusInfo_SentInTrack")
         mockConsentDelegate.asyncExpectation = expect
-        let consentManager = ConsentManager(config: config, delegate: mockConsentDelegate, diskStorage: ConsentMockDiskStorage(), dataLayer: DummyDataManager())
+        let consentManager = ConsentManager(config: config, delegate: mockConsentDelegate, diskStorage: ConsentMockDiskStorage(), dataLayer: DummyDataManager(), backupStorage: tealiumBackup)
         consentManager.trackUserConsentPreferences()
 
         waitForExpectations(timeout: 2) { error in
@@ -174,7 +176,7 @@ class ConsentManagerTests: XCTestCase {
         let mockConsentDelegate = MockConsentDelegate()
         let expect = expectation(description: "testTrackUserConsentPreferences")
         mockConsentDelegate.asyncExpectation = expect
-        let consentManager = ConsentManager(config: config, delegate: mockConsentDelegate, diskStorage: ConsentMockDiskStorage(), dataLayer: DummyDataManager())
+        let consentManager = ConsentManager(config: config, delegate: mockConsentDelegate, diskStorage: ConsentMockDiskStorage(), dataLayer: DummyDataManager(), backupStorage: tealiumBackup)
         consentManager.trackUserConsentPreferences()
 
         waitForExpectations(timeout: 2) { error in
