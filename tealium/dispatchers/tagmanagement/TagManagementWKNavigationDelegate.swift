@@ -53,9 +53,7 @@ extension TagManagementWKWebView: WKNavigationDelegate {
         if let headerFields = response.allHeaderFields as? [String: String] {
             let cookies = HTTPCookie.cookies(withResponseHeaderFields: headerFields, for: url)
             cookies.forEach { cookie in
-                if #available(iOS 11, *) {
-                    webView.configuration.websiteDataStore.httpCookieStore.setCookie(cookie)
-                }
+                webView.configuration.websiteDataStore.httpCookieStore.setCookie(cookie)
             }
         }
 

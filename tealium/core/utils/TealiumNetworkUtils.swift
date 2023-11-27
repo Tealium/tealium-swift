@@ -9,13 +9,7 @@ import Foundation
 
 public extension Dictionary where Key == String, Value == Any {
     func toJSONString() throws -> String? {
-        var writingOptions: JSONEncoder.OutputFormatting
-
-        if #available(iOS 11.0, tvOS 11.0, watchOS 4.0, OSX 10.13, *) {
-            writingOptions = [.prettyPrinted, .sortedKeys]
-        } else {
-            writingOptions = [.prettyPrinted]
-        }
+        var writingOptions: JSONEncoder.OutputFormatting = [.prettyPrinted, .sortedKeys]
 
         let encoder = Tealium.jsonEncoder
         encoder.outputFormatting = writingOptions
