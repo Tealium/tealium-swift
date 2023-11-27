@@ -12,7 +12,6 @@ import WebKit
 #endif
 import XCTest
 
-@available(iOS 11.0, *)
 class WKWebViewIntegrationTests: XCTestCase {
 
     let tagManagementWKWebView: TagManagementWKWebView = TagManagementWKWebView(config: testTealiumConfig.copy, delegate: TagManagementModuleDelegate())
@@ -223,7 +222,6 @@ class WKWebViewIntegrationTests: XCTestCase {
 
 }
 
-@available(iOS 11.0, *)
 class TagManagementModuleDelegate: ModuleDelegate {
     func requestTrack(_ track: TealiumTrackRequest) {
 

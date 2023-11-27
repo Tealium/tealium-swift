@@ -7,6 +7,7 @@
 
 import Foundation
 @testable import TealiumCore
+import XCTest
 
 enum TealiumTestKey {
     static let stringKey = "keyString"
@@ -242,4 +243,12 @@ extension Dictionary where Key == String, Value == Any {
     func equal(to dictionary: [String: Any] ) -> Bool {
         NSDictionary(dictionary: self).isEqual(to: dictionary)
     }
+}
+
+func XCTAssertString(_ string: String?, contains substring: String, file: StaticString = #filePath, line: UInt = #line) {
+    guard let string = string else {
+        XCTFail("Nil string can't contain \(substring)", file: file, line: line)
+        return
+    }
+    XCTAssertTrue(string.range(of: substring) != nil, "String \(string) does not contain \(substring)", file: file, line: line)
 }

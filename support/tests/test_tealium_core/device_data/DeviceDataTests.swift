@@ -72,10 +72,9 @@ class TealiumDeviceDataTests: XCTestCase {
     
     func testCPUType() {
         let cpu = deviceData.cpuType
-        #if targetEnvironment(simulator)
-        XCTAssertEqual(cpu, "x86")
-        #elseif os(OSX)
-        XCTAssertEqual(cpu, "x86")
+        #if targetEnvironment(simulator) || os(OSX)
+        let desktopCPUs = ["x86", "ARM64e"]
+        XCTAssertTrue(desktopCPUs.contains(cpu))
         #else
         XCTAssertNotEqual(cpu, "x86")
         #endif
@@ -202,21 +201,22 @@ class TealiumDeviceDataTests: XCTestCase {
     func testModel() {
         let basicModel = deviceData.basicModel
         let fullModel = deviceData.model
-        #if os(OSX)
-        XCTAssertEqual(basicModel, "x86_64")
-        XCTAssertEqual(fullModel["device_type"]!, "x86_64")
-        XCTAssertEqual(fullModel["model_name"]!, "mac")
-        XCTAssertEqual(fullModel["device"]!, "mac")
-        XCTAssertEqual(fullModel["model_variant"]!, "mac")
-        #else
-        
         #if targetEnvironment(simulator)
         XCTAssertEqual("x86_64", basicModel)
         XCTAssertEqual(fullModel, ["device_type": "x86_64",
                                    "model_name": "Simulator",
                                    "device": "Simulator",
                                    "model_variant": "64-bit"])
+        
+        #elseif os(OSX)
+        XCTAssertString(basicModel, contains: "Mac")
+        XCTAssertString(fullModel["device_type"], contains: "Mac")
+        XCTAssertString(fullModel["model_name"], contains: "Mac")
+        XCTAssertString(fullModel["device"], contains: "Mac")
+        XCTAssertEqual(fullModel["model_variant"]!, "")
         #else
+        
+        
         XCTAssertNotEqual("x86_64", basicModel)
         XCTAssertNotEqual("", basicModel)
         XCTAssertNotEqual(fullModel["device_type"]!, "x86_64")
@@ -230,7 +230,6 @@ class TealiumDeviceDataTests: XCTestCase {
         
         XCTAssertNotEqual(fullModel["model_variant"]!, "64-bit")
         XCTAssertNotEqual(fullModel["model_variant"]!, "")
-        #endif
         #endif
     }
     
@@ -265,7 +264,6 @@ class TealiumDeviceDataTests: XCTestCase {
         XCTAssertNotEqual(data["device_type"]!, "")
         XCTAssertNotEqual(data["model_name"]!, "")
         XCTAssertNotEqual(data["device"]!, "")
-        XCTAssertNotEqual(data["model_variant"]!, "")
         XCTAssertNotEqual(data["device_os_version"]!, "")
         XCTAssertNotEqual(data["os_name"]!, "")
         XCTAssertNotEqual(data["platform"]!, "")

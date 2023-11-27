@@ -24,16 +24,12 @@ public protocol Migratable {
 struct LegacyConsentUnarchiver: ConsentUnarchiver {
 
     func decodeObject(fromData data: Data) throws -> Any? {
-        if #available(iOS 11.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *) {
-            let unarchiver = try NSKeyedUnarchiver(forReadingFrom: data)
-            unarchiver.setClass(LegacyConsentConfiguration.self, forClassName: MigrationKey.TEALConsentConfiguration)
-            unarchiver.requiresSecureCoding = true
-            let unarchived = unarchiver.decodeObject(of: [LegacyConsentConfiguration.self], forKey: NSKeyedArchiveRootObjectKey)
-            unarchiver.finishDecoding()
-            return unarchived
-        } else {
-            return nil
-        }
+        let unarchiver = try NSKeyedUnarchiver(forReadingFrom: data)
+        unarchiver.setClass(LegacyConsentConfiguration.self, forClassName: MigrationKey.TEALConsentConfiguration)
+        unarchiver.requiresSecureCoding = true
+        let unarchived = unarchiver.decodeObject(of: [LegacyConsentConfiguration.self], forKey: NSKeyedArchiveRootObjectKey)
+        unarchiver.finishDecoding()
+        return unarchived
     }
 }
 
