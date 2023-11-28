@@ -9,7 +9,7 @@ import Foundation
 
 public extension Dictionary where Key == String, Value == Any {
     func toJSONString() throws -> String? {
-        var writingOptions: JSONEncoder.OutputFormatting = [.prettyPrinted, .sortedKeys]
+        let writingOptions: JSONEncoder.OutputFormatting = [.prettyPrinted, .sortedKeys]
 
         let encoder = Tealium.jsonEncoder
         encoder.outputFormatting = writingOptions

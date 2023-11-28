@@ -400,7 +400,7 @@ private extension TealiumDelegateProxy {
     func handleContinueUserActivity(_ userActivity: NSUserActivity) {
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb, let url = userActivity.webpageURL {
             TealiumDelegateProxy.log("Received Deep Link: \(url.absoluteString)")
-            var referrer: Tealium.DeepLinkReferrer? = .fromUrl(userActivity.referrerURL)
+            let referrer = Tealium.DeepLinkReferrer.fromUrl(userActivity.referrerURL)
             TealiumDelegateProxy.handleDeepLink(url, referrer: referrer)
         }
     }
