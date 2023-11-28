@@ -9268,7 +9268,7 @@
 					"TEST=1",
 				);
 				INFOPLIST_FILE = "TealiumTests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@loader_path/Frameworks",
@@ -9302,7 +9302,7 @@
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = "TealiumTests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@loader_path/Frameworks",
@@ -11734,7 +11734,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -11772,7 +11772,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -11806,7 +11806,7 @@
 					"TEST=1",
 				);
 				INFOPLIST_FILE = "TealiumTests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@loader_path/Frameworks",
@@ -11814,7 +11814,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -11827,7 +11827,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
-				TVOS_DEPLOYMENT_TARGET = 11.0;
+				TVOS_DEPLOYMENT_TARGET = 16.0;
 				WATCHOS_DEPLOYMENT_TARGET = 4.0;
 			};
 			name = Debug;
@@ -11846,7 +11846,7 @@
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = "TealiumTests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@loader_path/Frameworks",
@@ -11854,7 +11854,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -11865,7 +11865,7 @@
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator appletvsimulator watchos appletvos macosx";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
-				TVOS_DEPLOYMENT_TARGET = 11.0;
+				TVOS_DEPLOYMENT_TARGET = 16.0;
 				WATCHOS_DEPLOYMENT_TARGET = 4.0;
 			};
 			name = Release;

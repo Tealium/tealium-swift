@@ -72,10 +72,12 @@ class TealiumDeviceDataTests: XCTestCase {
     
     func testCPUType() {
         let cpu = deviceData.cpuType
+        let desktopCPUs = /x86|ARM64e/
         #if targetEnvironment(simulator)
-        XCTAssertEqual(cpu, "x86")
+        
+        XCTAssertTrue(cpu.contains(desktopCPUs))
         #elseif os(OSX)
-        XCTAssertEqual(cpu, "x86")
+        XCTAssertTrue(cpu.contains(desktopCPUs))
         #else
         XCTAssertNotEqual(cpu, "x86")
         #endif
@@ -202,9 +204,10 @@ class TealiumDeviceDataTests: XCTestCase {
     func testModel() {
         let basicModel = deviceData.basicModel
         let fullModel = deviceData.model
+        let desktopCPUs = /x86_64|arm64/
         #if os(OSX)
-        XCTAssertEqual(basicModel, "x86_64")
-        XCTAssertEqual(fullModel["device_type"]!, "x86_64")
+        XCTAssertTrue(basicModel.contains(desktopCPUs))
+        XCTAssertTrue(fullModel["device_type"]!.contains(desktopCPUs))
         XCTAssertEqual(fullModel["model_name"]!, "mac")
         XCTAssertEqual(fullModel["device"]!, "mac")
         XCTAssertEqual(fullModel["model_variant"]!, "mac")
