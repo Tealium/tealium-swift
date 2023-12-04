@@ -2,7 +2,7 @@
  
 
 target 'TealiumSwiftExample' do
-  platform :ios, '11.0'
+  platform :ios, '12.0'
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
@@ -14,7 +14,7 @@ end
 target 'TealiumJSInterfaceExample' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
-  platform :ios, '11.0'
+  platform :ios, '12.0'
   # Pods for TealiumSwiftExample
   pod "tealium-swift", :path=> "../.."
 
@@ -23,7 +23,7 @@ end
 target 'TealiumSwiftWatchExample Extension' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
-  platform :watchos, '4.0'
+  platform :watchos, '6.0'
   # Pods for TealiumSwiftWatchExample Extension
   pod "tealium-swift/Core", :path=> "../.."
   pod "tealium-swift/Collect", :path=> "../.."
@@ -34,7 +34,7 @@ end
 target 'TealiumSwiftTVExample' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
-  platform :tvos, '11.0'
+  platform :tvos, '12.0'
   # Pods for TealiumSwiftWatchExample Extension
   pod "tealium-swift/Core", :path=> "../.."
   pod "tealium-swift/Collect", :path=> "../.."
@@ -45,7 +45,7 @@ end
 target 'WidgetExampleExtension' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
-  platform :ios, '11.0'
+  platform :ios, '12.0'
   # Pods for WidgetExampleExtension Extension
   pod "tealium-swift", :path=> "../.."
 end

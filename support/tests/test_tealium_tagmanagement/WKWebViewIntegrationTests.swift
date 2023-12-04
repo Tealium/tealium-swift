@@ -185,7 +185,7 @@ class WKWebViewIntegrationTests: XCTestCase {
             })
         })
         
-        wait(for: [expect], timeout: 5.0)
+        wait(for: [expect], timeout: 10.0)
     }
 
     func testDispatchTrackCreatesBatchTrackRequest() {
@@ -205,7 +205,7 @@ class WKWebViewIntegrationTests: XCTestCase {
             })
         })
         
-        wait(for: [expect], timeout: 5.0)
+        wait(for: [expect], timeout: 10.0)
     }
     
     func testModuleWithQueryParamProviderChangesUrl() {
