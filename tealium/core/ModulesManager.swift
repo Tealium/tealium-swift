@@ -72,6 +72,7 @@ public class ModulesManager {
             }
 
             self.setupDispatchers(context: context)
+            self.setupCollectors(config: newValue)
         }
     }
     private var cachedTrackData: [String: Any]?

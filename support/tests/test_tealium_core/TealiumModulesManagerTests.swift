@@ -403,6 +403,98 @@ class TealiumModulesManagerTests: XCTestCase {
         }
     }
     #endif
+
+    func testDisableLibraryRemovesAllModules() {
+        sharedConfig.shouldUseRemotePublishSettings = true
+        var defaultSettings = RemotePublishSettings()
+        let retriever = MockPublishSettingsRetriever(cachedSettings: defaultSettings)
+        context.config.dispatchers = [Dispatchers.Collect, Dispatchers.TagManagement]
+        TealiumQueues.backgroundSerialQueue.sync {
+            let modulesManager = getModulesManager(context, remotePublishSettingsRetriever: retriever)
+            XCTAssertNotEqual(modulesManager.dispatchers.count, 0)
+            XCTAssertNotEqual(modulesManager.collectors.count, 0)
+
+            defaultSettings.isEnabled = false
+            modulesManager.didUpdate(defaultSettings)
+            XCTAssertEqual(modulesManager.dispatchers.count, 0)
+            XCTAssertEqual(modulesManager.collectors.count, 0)
+        }
+    }
+
+    func testReEnableLibraryAddsAllModulesBack() {
+        sharedConfig.shouldUseRemotePublishSettings = true
+        var defaultSettings = RemotePublishSettings()
+        let retriever = MockPublishSettingsRetriever(cachedSettings: defaultSettings)
+        context.config.dispatchers = [Dispatchers.Collect, Dispatchers.TagManagement]
+        TealiumQueues.backgroundSerialQueue.sync {
+            let modulesManager = getModulesManager(context, remotePublishSettingsRetriever: retriever)
+            XCTAssertNotEqual(modulesManager.dispatchers.count, 0)
+            XCTAssertNotEqual(modulesManager.collectors.count, 0)
+
+            defaultSettings.isEnabled = false
+            modulesManager.didUpdate(defaultSettings)
+            XCTAssertEqual(modulesManager.dispatchers.count, 0)
+            XCTAssertEqual(modulesManager.collectors.count, 0)
+            
+            defaultSettings.isEnabled = true
+            modulesManager.didUpdate(defaultSettings)
+            XCTAssertNotEqual(modulesManager.dispatchers.count, 0)
+            XCTAssertNotEqual(modulesManager.collectors.count, 0)
+        }
+    }
+
+    func testDisableLibraryStopsFutureTrackingCalls() {
+        let trackNotSent = expectation(description: "Track is not sent")
+        trackNotSent.isInverted = true
+        TealiumExpectations.expectations["sendTrack"] = trackNotSent
+        sharedConfig.shouldUseRemotePublishSettings = true
+        var defaultSettings = RemotePublishSettings()
+        let retriever = MockPublishSettingsRetriever(cachedSettings: defaultSettings)
+        context.config.dispatchers = [Dispatchers.Collect, Dispatchers.TagManagement]
+        TealiumQueues.backgroundSerialQueue.sync {
+            let modulesManager = getModulesManager(context, remotePublishSettingsRetriever: retriever)
+            let connectivity = ConnectivityModule(context: modulesManager.context, delegate: nil, diskStorage: nil) { _ in }
+            modulesManager.dispatchManager = DummyDispatchManagerSendTrack(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: connectivity, config: testTealiumConfig)
+
+            let getCollect = {modulesManager.dispatchers.first(where: { $0.id == ModuleNames.collect})}
+            let getTagManagement = {modulesManager.dispatchers.first(where: { $0.id == ModuleNames.tagmanagement})}
+            XCTAssertNotEqual(modulesManager.dispatchers.count, 0)
+            XCTAssertNotEqual(modulesManager.collectors.count, 0)
+
+            defaultSettings.isEnabled = false
+            modulesManager.didUpdate(defaultSettings)
+            
+            modulesManager.sendTrack(TealiumTrackRequest(data: [:]))
+        }
+        waitForExpectations(timeout: 1.0)
+    }
+
+    func testDisableLibraryDoesntStopRefreshingRemoteSettings() {
+        let refreshSettings = expectation(description: "Settings are refreshed")
+        refreshSettings.assertForOverFulfill = false // other events are also being sent so mulitple refresh are expected when running multiple tests at the same time
+        let notRefreshSettings = expectation(description: "Settings are not refreshed yet")
+        notRefreshSettings.isInverted = true
+        sharedConfig.shouldUseRemotePublishSettings = true
+        var defaultSettings = RemotePublishSettings()
+        let retriever = MockPublishSettingsRetriever(cachedSettings: defaultSettings)
+        context.config.dispatchers = [Dispatchers.Collect, Dispatchers.TagManagement]
+        TealiumQueues.backgroundSerialQueue.sync {
+            let modulesManager = getModulesManager(context, remotePublishSettingsRetriever: retriever)
+            modulesManager.remotePublishSettingsRetriever = MockPublishSettingsRetriever {
+                notRefreshSettings.fulfill()
+            }
+            defaultSettings.isEnabled = false
+            modulesManager.didUpdate(defaultSettings)
+            XCTAssertEqual(modulesManager.dispatchers.count, 0)
+            XCTAssertEqual(modulesManager.collectors.count, 0)
+            wait(for: [notRefreshSettings], timeout: 1.0)
+            modulesManager.remotePublishSettingsRetriever = MockPublishSettingsRetriever {
+                refreshSettings.fulfill()
+            }
+            modulesManager.sendTrack(TealiumTrackRequest(data: [:]))
+            wait(for: [refreshSettings], timeout: 1.0)
+        }
+    }
 }
 
 extension TealiumModulesManagerTests: ModuleDelegate {
@@ -496,13 +588,15 @@ class DummyDispatchManagerSendTrack: DispatchManagerProtocol {
 
 
 struct MockPublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol {
-    init(cachedSettings: RemotePublishSettings? = nil) {
+    let onRefresh: () -> Void
+    init(cachedSettings: RemotePublishSettings? = nil, onRefresh: @escaping () -> Void = { }) {
         sharedConfig.shouldUseRemotePublishSettings = true
+        self.onRefresh = onRefresh
         self.cachedSettings = cachedSettings
     }
     var cachedSettings: RemotePublishSettings?
     
     func refresh() {
-        
+        onRefresh()
     }
 }
