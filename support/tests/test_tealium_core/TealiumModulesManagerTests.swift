@@ -408,7 +408,7 @@ class TealiumModulesManagerTests: XCTestCase {
         sharedConfig.shouldUseRemotePublishSettings = true
         var defaultSettings = RemotePublishSettings()
         let retriever = MockPublishSettingsRetriever(cachedSettings: defaultSettings)
-        context.config.dispatchers = [Dispatchers.Collect, Dispatchers.TagManagement]
+        context.config.dispatchers = [Dispatchers.Collect]
         TealiumQueues.backgroundSerialQueue.sync {
             let modulesManager = getModulesManager(context, remotePublishSettingsRetriever: retriever)
             XCTAssertNotEqual(modulesManager.dispatchers.count, 0)
@@ -425,7 +425,7 @@ class TealiumModulesManagerTests: XCTestCase {
         sharedConfig.shouldUseRemotePublishSettings = true
         var defaultSettings = RemotePublishSettings()
         let retriever = MockPublishSettingsRetriever(cachedSettings: defaultSettings)
-        context.config.dispatchers = [Dispatchers.Collect, Dispatchers.TagManagement]
+        context.config.dispatchers = [Dispatchers.Collect]
         TealiumQueues.backgroundSerialQueue.sync {
             let modulesManager = getModulesManager(context, remotePublishSettingsRetriever: retriever)
             XCTAssertNotEqual(modulesManager.dispatchers.count, 0)
@@ -450,7 +450,7 @@ class TealiumModulesManagerTests: XCTestCase {
         sharedConfig.shouldUseRemotePublishSettings = true
         var defaultSettings = RemotePublishSettings()
         let retriever = MockPublishSettingsRetriever(cachedSettings: defaultSettings)
-        context.config.dispatchers = [Dispatchers.Collect, Dispatchers.TagManagement]
+        context.config.dispatchers = [Dispatchers.Collect]
         TealiumQueues.backgroundSerialQueue.sync {
             let modulesManager = getModulesManager(context, remotePublishSettingsRetriever: retriever)
             let connectivity = ConnectivityModule(context: modulesManager.context, delegate: nil, diskStorage: nil) { _ in }
@@ -470,7 +470,7 @@ class TealiumModulesManagerTests: XCTestCase {
         sharedConfig.shouldUseRemotePublishSettings = true
         var defaultSettings = RemotePublishSettings()
         let retriever = MockPublishSettingsRetriever(cachedSettings: defaultSettings)
-        context.config.dispatchers = [Dispatchers.Collect, Dispatchers.TagManagement]
+        context.config.dispatchers = [Dispatchers.Collect]
         TealiumQueues.backgroundSerialQueue.sync {
             let modulesManager = getModulesManager(context, remotePublishSettingsRetriever: retriever)
             modulesManager.remotePublishSettingsRetriever = MockPublishSettingsRetriever {
