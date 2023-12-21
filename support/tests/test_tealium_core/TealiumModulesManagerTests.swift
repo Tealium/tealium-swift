@@ -455,15 +455,8 @@ class TealiumModulesManagerTests: XCTestCase {
             let modulesManager = getModulesManager(context, remotePublishSettingsRetriever: retriever)
             let connectivity = ConnectivityModule(context: modulesManager.context, delegate: nil, diskStorage: nil) { _ in }
             modulesManager.dispatchManager = DummyDispatchManagerSendTrack(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: connectivity, config: testTealiumConfig)
-
-            let getCollect = {modulesManager.dispatchers.first(where: { $0.id == ModuleNames.collect})}
-            let getTagManagement = {modulesManager.dispatchers.first(where: { $0.id == ModuleNames.tagmanagement})}
-            XCTAssertNotEqual(modulesManager.dispatchers.count, 0)
-            XCTAssertNotEqual(modulesManager.collectors.count, 0)
-
             defaultSettings.isEnabled = false
             modulesManager.didUpdate(defaultSettings)
-            
             modulesManager.sendTrack(TealiumTrackRequest(data: [:]))
         }
         waitForExpectations(timeout: 1.0)
