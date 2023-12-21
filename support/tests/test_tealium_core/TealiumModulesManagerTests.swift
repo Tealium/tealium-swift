@@ -54,6 +54,7 @@ class TealiumModulesManagerTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        sharedConfig.shouldUseRemotePublishSettings = false
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
 
