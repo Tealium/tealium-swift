@@ -9,7 +9,11 @@ import Foundation
 public class TealiumDiskStorage: TealiumDiskStorageProtocol {
 
     static let readWriteQueue = ReadWrite("TealiumDiskStorage.label")
+    #if os(tvOS)
+    let defaultDirectory = Disk.Directory.caches
+    #else
     let defaultDirectory = Disk.Directory.applicationSupport
+    #endif
     var currentDirectory: Disk.Directory
     let module: String
     let minimumDiskSpace: Int32

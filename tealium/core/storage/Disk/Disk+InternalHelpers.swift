@@ -66,9 +66,9 @@ extension Disk {
                     recoverySuggestion: "Check that the app-group name in the entitlement matches the string provided."
                 )
             }
-        #endif
         case .applicationSupport:
             searchPathDirectory = .applicationSupportDirectory
+        #endif
         case .caches:
             searchPathDirectory = .cachesDirectory
         case .temporary:
