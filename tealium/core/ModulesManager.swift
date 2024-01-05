@@ -72,6 +72,7 @@ public class ModulesManager {
             }
 
             self.setupDispatchers(context: context)
+            self.setupCollectors(config: newValue)
         }
     }
     private var cachedTrackData: [String: Any]?
@@ -183,6 +184,7 @@ public class ModulesManager {
         if self.config.shouldUseRemotePublishSettings == true {
             self.remotePublishSettingsRetriever?.refresh()
         }
+        guard config.isEnabled != false else { return }
         let requestData = gatherTrackData(for: request.trackDictionary)
         let newRequest = TealiumTrackRequest(data: requestData)
         dispatchManager?.processTrack(newRequest)
@@ -256,6 +258,10 @@ extension ModulesManager {
     }
 
     func setupCollectors(config: TealiumConfig) {
+        guard context.config.isEnabled != false else {
+            collectors.removeAll()
+            return
+        }
         collectorTypes.forEach { collector in
             guard !collectors.contains(where: { type(of: $0) == collector }) else {
                 return
@@ -280,6 +286,10 @@ extension ModulesManager {
     }
 
     func setupDispatchers(context: TealiumContext) {
+        guard context.config.isEnabled != false else {
+            dispatchers.removeAll()
+            return
+        }
         self.config.dispatchers?.forEach { dispatcherType in
             guard !dispatchers.contains(where: { type(of: $0) == dispatcherType }) else {
                 return
