@@ -49,7 +49,8 @@ let package = Package(
             path: "tealium/core/",
             exclude: ["objc"],
             resources: [
-                .process("devicedata/device-names.json")
+                .process("devicedata/device-names.json"),
+                .process("PrivacyInfo.xcprivacy")
             ]
         ),
         .target(
