@@ -23,10 +23,6 @@ public struct DiskError: Error {
     let errorInfo: [String: Any]
 
     var localizedDescription: String? {
-        var errorDesc = kind.localizedDescription ?? ""
-        if !errorDesc.isEmpty {
-            errorDesc += " "
-        }
-        return errorDesc + String(describing: errorInfo)
+        return kind.localizedDescription + String(describing: errorInfo)
     }
 }

@@ -4,11 +4,10 @@
 //
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
-#if os(iOS)
-import UIKit
-// MARK: VALUES
-#endif
 
+import Foundation
+
+// MARK: VALUES
 public enum Collectors {}
 
 public enum Dispatchers {}

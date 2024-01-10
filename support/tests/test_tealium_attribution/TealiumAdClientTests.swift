@@ -91,4 +91,10 @@ class TealiumAdClientTests: XCTestCase {
         XCTAssertEqual(persistentData?.adId, "542317136")
         XCTAssertEqual(persistentData?.clickedWithin30D, "1")
     }
+
+    @available(iOS 14.3, *)
+    func testAdServiceErrorLocalizedDescription() {
+        let error: Error = TealiumHTTPAdClient.AdServiceErrors.nilData
+        XCTAssertEqual(error.localizedDescription, "AdServiceErrors.nilData")
+    }
 }

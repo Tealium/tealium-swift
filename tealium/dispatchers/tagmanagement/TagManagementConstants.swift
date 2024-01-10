@@ -25,27 +25,19 @@ enum TagManagementKey {
     static let defaultUrlStringPrefix = "https://tags.tiqcdn.com/utag"
 }
 
-enum TagManagementError: String, LocalizedError {
+enum TagManagementError: TealiumErrorEnum {
     case couldNotCreateURL
     case couldNotLoadURL
     case couldNotJSONEncodeData
     case noDataToTrack
     case webViewNotYetReady
     case unknownDispatchError
-
-    public var errorDescription: String? {
-        return self.rawValue
-    }
 }
 
-enum WebviewError: String, LocalizedError {
+enum WebviewError: TealiumErrorEnum {
     case webviewURLMissing
     case invalidURL
     case webviewNotInitialized
-
-    public var errorDescription: String? {
-        return self.rawValue
-    }
 }
 
 enum WebViewState {

@@ -6,7 +6,7 @@
 //
 
 @testable import TealiumCollect
-@testable import TealiumCore
+import TealiumCore
 import XCTest
 
 class CollectModuleTests: XCTestCase {
@@ -240,7 +240,11 @@ class CollectModuleTests: XCTestCase {
             }
         }
     }
-    
+
+    func testCollectErrorLocalizedDescription() {
+        let error: Error = CollectError.collectNotInitialized
+        XCTAssertEqual(error.localizedDescription, "CollectError.collectNotInitialized")
+    }
 }
 
 extension CollectModuleTests: ModuleDelegate {
