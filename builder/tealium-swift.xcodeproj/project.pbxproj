@@ -129,6 +129,9 @@
 		15C88ADB26F3A09A00D56064 /* VisitorServiceConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C88AD826F3A09A00D56064 /* VisitorServiceConfigTests.swift */; };
 		15C88ADD26F3A22200D56064 /* TagManagementConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C88ADC26F3A22200D56064 /* TagManagementConfigTests.swift */; };
 		15C88ADE26F3A22200D56064 /* TagManagementConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C88ADC26F3A22200D56064 /* TagManagementConfigTests.swift */; };
+		15CFC4BA2B5198C30035B00D /* visitor-properties-with-null.json in Resources */ = {isa = PBXBuildFile; fileRef = 155F73092B516B76007EF436 /* visitor-properties-with-null.json */; };
+		15CFC4BB2B5198C30035B00D /* visitor-properties-with-null.json in Resources */ = {isa = PBXBuildFile; fileRef = 155F73092B516B76007EF436 /* visitor-properties-with-null.json */; };
+		15CFC4BC2B5198C40035B00D /* visitor-properties-with-null.json in Resources */ = {isa = PBXBuildFile; fileRef = 155F73092B516B76007EF436 /* visitor-properties-with-null.json */; };
 		15D0C1E12733E13700364B13 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D0C1E02733E13700364B13 /* ContentView.swift */; };
 		15D0C1E22733E13700364B13 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D0C1E02733E13700364B13 /* ContentView.swift */; };
 		15D0C1E32733E13700364B13 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D0C1E02733E13700364B13 /* ContentView.swift */; };
@@ -2145,6 +2148,7 @@
 		1555F5CA26E6692400AFDC3D /* TealiumAutotrackingTests-macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TealiumAutotrackingTests-macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1555F5CE26E6769E00AFDC3D /* MockInMemoryDataLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockInMemoryDataLayer.swift; sourceTree = "<group>"; };
 		1555F5E126E6786100AFDC3D /* TealiumAutotrackingTests-tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TealiumAutotrackingTests-tvOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		155F73092B516B76007EF436 /* visitor-properties-with-null.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "visitor-properties-with-null.json"; sourceTree = "<group>"; };
 		1563CEC826DFAA3300A1DAD1 /* PubSubTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PubSubTests.swift; sourceTree = "<group>"; };
 		1566C23B272C460800FE9A5A /* TealiumDelegateProxyLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TealiumDelegateProxyLoader.h; sourceTree = "<group>"; };
 		1566C23E272C460800FE9A5A /* TealiumDelegateProxyLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TealiumDelegateProxyLoader.m; sourceTree = "<group>"; };
@@ -3903,6 +3907,7 @@
 		D7805853233A68DC00DAD90E /* stubs */ = {
 			isa = PBXGroup;
 			children = (
+				155F73092B516B76007EF436 /* visitor-properties-with-null.json */,
 				D7805854233A68DC00DAD90E /* visitor-all-nil.json */,
 				D7805855233A68DC00DAD90E /* visitor-empties.json */,
 				D7805856233A68DC00DAD90E /* visitor.json */,
@@ -5668,6 +5673,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15CFC4BA2B5198C30035B00D /* visitor-properties-with-null.json in Resources */,
 				D7805867233A68DD00DAD90E /* visitor-nils.json in Resources */,
 				D7805865233A68DD00DAD90E /* visitor-empties.json in Resources */,
 				D7805866233A68DD00DAD90E /* visitor.json in Resources */,
@@ -5765,6 +5771,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15CFC4BB2B5198C30035B00D /* visitor-properties-with-null.json in Resources */,
 				D798C44F2342411E00EE665E /* visitor-nils.json in Resources */,
 				D798C4502342411E00EE665E /* visitor-empties.json in Resources */,
 				D798C4512342411E00EE665E /* visitor.json in Resources */,
@@ -5776,6 +5783,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15CFC4BC2B5198C40035B00D /* visitor-properties-with-null.json in Resources */,
 				D798C4792342416900EE665E /* visitor-nils.json in Resources */,
 				D798C47A2342416900EE665E /* visitor-empties.json in Resources */,
 				D798C47B2342416900EE665E /* visitor.json in Resources */,

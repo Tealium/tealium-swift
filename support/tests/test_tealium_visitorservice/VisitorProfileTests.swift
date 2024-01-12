@@ -15,6 +15,7 @@ class VisitorProfileTests: XCTestCase {
     let visitorEmpties = TestTealiumHelper.loadStub(from: "visitor-empties", VisitorProfileTests.self)
     let visitorNils = TestTealiumHelper.loadStub(from: "visitor-nils", VisitorProfileTests.self)
     let visitorAllNil = TestTealiumHelper.loadStub(from: "visitor-all-nil", VisitorProfileTests.self)
+    let visitorPropertiesWithNull = TestTealiumHelper.loadStub(from: "visitor-properties-with-null", VisitorProfileTests.self)
     let decoder = JSONDecoder()
     
     private func decode(_ data: Data) -> TealiumVisitorProfile {
@@ -317,4 +318,15 @@ class VisitorProfileTests: XCTestCase {
         XCTAssertEqual(countOfCategory4, 1)
     }
 
+    func testNullStringsInVisitorProfile() {
+        let visitor = decode(visitorPropertiesWithNull)
+        XCTAssertNotNil(visitor.strings)
+        XCTAssertEqual(visitor.strings?["8480"], "category 5")
+    }
+
+    func testNullStringsInCurrentVisit() {
+        let visitor = decode(visitorPropertiesWithNull)
+        XCTAssertNotNil(visitor.currentVisit?.strings)
+        XCTAssertEqual(visitor.currentVisit?.strings?["44"], "Chrome")
+    }
 }
