@@ -59,7 +59,6 @@ public extension Disk {
     /// Indicates the amount of space that can be made available  for things the user has explicitly requested in the app's UI (i.e. downloading a video or new level for a game.)
     /// If you need more space than what's available - let user know the request cannot be fulfilled.
     #if os(iOS)
-    @available(iOS 11.0, *)
     static var availableCapacityForImportantUsage: Int? {
         let resourceValues = getVolumeResourceValues(for: .volumeAvailableCapacityForImportantUsageKey)
         if let result = resourceValues?.volumeAvailableCapacityForImportantUsage {
@@ -73,7 +72,6 @@ public extension Disk {
     ///
     /// Indicates the amount of space available for things that the user is likely to want but hasn't explicitly requested (i.e. next episode in video series they're watching, or recently updated documents in a server that they might be likely to open.)
     /// For these types of files you might store them initially in the caches directory until they are actually used, at which point you can move them in app support or documents directory.
-    @available(iOS 11.0, *)
     static var availableCapacityForOpportunisticUsage: Int? {
         let resourceValues = getVolumeResourceValues(for: .volumeAvailableCapacityForOpportunisticUsageKey)
         if let result = resourceValues?.volumeAvailableCapacityForOpportunisticUsage {

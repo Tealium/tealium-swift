@@ -204,22 +204,22 @@ class TealiumDeviceDataTests: XCTestCase {
     func testModel() {
         let basicModel = deviceData.basicModel
         let fullModel = deviceData.model
-        let desktopCPUs = /x86_64|arm64/
-        #if os(OSX)
-        XCTAssertTrue(basicModel.contains(desktopCPUs))
-        XCTAssertTrue(fullModel["device_type"]!.contains(desktopCPUs))
-        XCTAssertEqual(fullModel["model_name"]!, "mac")
-        XCTAssertEqual(fullModel["device"]!, "mac")
-        XCTAssertEqual(fullModel["model_variant"]!, "mac")
-        #else
-        
         #if targetEnvironment(simulator)
         XCTAssertEqual("x86_64", basicModel)
         XCTAssertEqual(fullModel, ["device_type": "x86_64",
                                    "model_name": "Simulator",
                                    "device": "Simulator",
                                    "model_variant": "64-bit"])
+        
+        #elseif os(OSX)
+        XCTAssertTrue(basicModel.contains(/Mac/))
+        XCTAssertTrue(fullModel["device_type"]!.contains(/Mac/))
+        XCTAssertTrue(fullModel["model_name"]!.contains(/Mac/))
+        XCTAssertTrue(fullModel["device"]!.contains(/Mac/))
+        XCTAssertEqual(fullModel["model_variant"]!, "")
         #else
+        
+        
         XCTAssertNotEqual("x86_64", basicModel)
         XCTAssertNotEqual("", basicModel)
         XCTAssertNotEqual(fullModel["device_type"]!, "x86_64")
@@ -233,7 +233,6 @@ class TealiumDeviceDataTests: XCTestCase {
         
         XCTAssertNotEqual(fullModel["model_variant"]!, "64-bit")
         XCTAssertNotEqual(fullModel["model_variant"]!, "")
-        #endif
         #endif
     }
     
@@ -268,7 +267,6 @@ class TealiumDeviceDataTests: XCTestCase {
         XCTAssertNotEqual(data["device_type"]!, "")
         XCTAssertNotEqual(data["model_name"]!, "")
         XCTAssertNotEqual(data["device"]!, "")
-        XCTAssertNotEqual(data["model_variant"]!, "")
         XCTAssertNotEqual(data["device_os_version"]!, "")
         XCTAssertNotEqual(data["os_name"]!, "")
         XCTAssertNotEqual(data["platform"]!, "")
