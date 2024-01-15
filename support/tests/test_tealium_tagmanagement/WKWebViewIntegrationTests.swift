@@ -20,7 +20,7 @@ class WKWebViewIntegrationTests: XCTestCase {
 
     var expect: XCTestExpectation!
     var module: TagManagementModule!
-    var config: TealiumConfig!
+    let config = TealiumConfig(account: "testAccount", profile: "testProfile", environment: "testEnv")
     var mockTagmanagement: MockTagManagementWebView!
     static var processPool = WKProcessPool()
     static var wkConfig: WKWebViewConfiguration = {
@@ -33,7 +33,6 @@ class WKWebViewIntegrationTests: XCTestCase {
     override func setUp() {
         super.setUp()
         userDefaults?.removePersistentDomain(forName: #file)
-        config = TealiumConfig(account: "testAccount", profile: "testProfile", environment: "testEnv")
     }
 
     func testWKWebViewInstance() {
@@ -203,7 +202,6 @@ class WKWebViewIntegrationTests: XCTestCase {
                 }
             })
         })
-        
         wait(for: [expect], timeout: 10.0)
     }
     
