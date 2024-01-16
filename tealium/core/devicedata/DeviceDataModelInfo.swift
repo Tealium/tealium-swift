@@ -7,7 +7,6 @@
 import Foundation
 public extension DeviceData {
 
-
     /// Retrieves the Apple model name, e.g. iPhone11,2.
     ///
     /// - Returns: `String` containing Apple model name
@@ -15,10 +14,10 @@ public extension DeviceData {
         #if os(OSX)
         var size = 0
         sysctlbyname("hw.model", nil, &size, nil, 0)
-        
+
         var modelIdentifier: [CChar] = Array(repeating: 0, count: size)
         sysctlbyname("hw.model", &modelIdentifier, &size, nil, 0)
-        
+
         return String(cString: modelIdentifier)
         #else
         if ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] != nil {
@@ -32,8 +31,6 @@ public extension DeviceData {
         return model.trimmingCharacters(in: .controlCharacters)
         #endif
     }
-    
-
 
     /// Retrieves the full consumer device name, e.g. iPhone SE, and other supplementary info.
     ///
