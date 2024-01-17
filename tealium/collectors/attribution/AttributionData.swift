@@ -37,10 +37,8 @@ public class AttributionData: AttributionDataProtocol {
         self.identifierManager = identifierManager
         if let adClient = adClient {
             self.adClient = adClient
-        } else if #available(iOS 14.3, *) {
-            self.adClient = TealiumHTTPAdClient()
         } else {
-            self.adClient = TealiumAdClient()
+            self.adClient = TealiumHTTPAdClient()
         }
         self.diskStorage = diskStorage
         if self.config.skAdAttributionEnabled {
