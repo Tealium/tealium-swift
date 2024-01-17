@@ -5,9 +5,6 @@
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 
-import Foundation
-
-@testable import TealiumCore
 @testable import TealiumRemoteCommands
 import XCTest
 
@@ -66,5 +63,10 @@ class RemoteCommandExtensionsTests: XCTestCase {
     func testCacheBuster() {
         let urlString = "https://www.tealium.com"
         XCTAssertTrue(urlString.cacheBuster.starts(with: "https://www.tealium.com?_cb="))
+    }
+
+    func testRemoteCommandsErrorLocalizedDescription() {
+        let error: Error = TealiumRemoteCommandsError.commandsNotFound
+        XCTAssertEqual(error.localizedDescription, "TealiumRemoteCommandsError.commandsNotFound")
     }
 }

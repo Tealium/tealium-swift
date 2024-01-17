@@ -123,12 +123,10 @@ public class AutotrackingModule: Collector {
                 }
                 self.blockList = list?.map { $0.lowercased() }
             } catch let error {
-                if let error = error as? LocalizedError {
-                    let logRequest = TealiumLogRequest(title: "Auto Tracking",
-                                                       message: "BlockList could not be loaded. Error: \(error.localizedDescription)",
-                                                       info: nil, logLevel: .error, category: .general)
-                    self.context.log(logRequest)
-                }
+                let logRequest = TealiumLogRequest(title: "Auto Tracking",
+                                                   message: "BlockList could not be loaded. Error: \(error.localizedDescription)",
+                                                   info: nil, logLevel: .error, category: .general)
+                self.context.log(logRequest)
             }
             TealiumQueues.mainQueue.async { [weak self] in
                 self?._onReady.publish()

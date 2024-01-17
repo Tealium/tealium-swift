@@ -9,6 +9,10 @@
 import AdServices
 import Foundation
 
+#if attribution
+import TealiumCore
+#endif
+
 /// Testable replacement for Apple's AdClient.
 public protocol TealiumAdClientProtocol {
     func requestAttributionDetails(_ completionHandler: @escaping (PersistentAttributionData?, Error?) -> Void)
@@ -73,7 +77,7 @@ public class TealiumHTTPAdClient: TealiumAdClientProtocol {
 }
 
 public extension TealiumHTTPAdClient {
-    enum AdServiceErrors: Error {
+    enum AdServiceErrors: TealiumErrorEnum {
         case invalidUrl
         case invalidJson
         case nilData

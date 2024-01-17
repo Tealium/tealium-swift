@@ -56,4 +56,14 @@ class TagManagementUtilsTests: XCTestCase {
         }
         waitForExpectations(timeout: 3.0)
     }
+
+    func testTagManagementErrorLocalizedDescription() {
+        let error: Error = TagManagementError.unknownDispatchError
+        XCTAssertEqual(error.localizedDescription, "TagManagementError.unknownDispatchError")
+    }
+
+    func testWebViewErrorLocalizedDescription() {
+        let error: Error = WebviewError.webviewNotInitialized
+        XCTAssertEqual(error.localizedDescription, "WebviewError.webviewNotInitialized")
+    }
 }

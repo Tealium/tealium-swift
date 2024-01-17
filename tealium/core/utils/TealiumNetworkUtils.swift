@@ -43,7 +43,7 @@ public class NetworkUtils {
     }
 }
 
-public enum NetworkError: String, LocalizedError {
+public enum NetworkError: TealiumErrorEnum {
     case couldNotCreateSession
     case unknownResponseType
     case noInternet
@@ -52,8 +52,4 @@ public enum NetworkError: String, LocalizedError {
     case noDataToTrack
     case unknownIssueWithSend
     case invalidURL
-
-    public var errorDescription: String? {
-        return self.rawValue
-    }
 }
