@@ -5,6 +5,7 @@
 //  Copyright © 2019 Tealium, Inc. All rights reserved.
 //
 
+import TealiumCore
 @testable import TealiumRemoteCommands
 import XCTest
 
@@ -44,5 +45,4 @@ class RemoteCommandConfigTests: XCTestCase {
         XCTAssertEqual(delimiters.keysSeparationDelimiter, "&&")
         XCTAssertEqual(delimiters.keysEqualityDelimiter, "==")
     }
-
 }

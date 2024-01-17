@@ -6,8 +6,11 @@
 //
 
 import Foundation
+#if collect
+import TealiumCore
+#endif
 
-public enum CollectError: String, LocalizedError {
+public enum CollectError: TealiumErrorEnum {
     case collectNotInitialized
     case unknownResponseType
     case xErrorDetected
@@ -17,9 +20,4 @@ public enum CollectError: String, LocalizedError {
     case invalidDispatchURL
     case trackNotApplicableForCollectModule
     case invalidBatchRequest
-
-    public var errorDescription: String? {
-        return self.rawValue
-    }
-
 }

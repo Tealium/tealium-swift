@@ -4,11 +4,10 @@
 //
 //  Copyright © 2016 Tealium, Inc. All rights reserved.
 //
-#if os(iOS)
-import UIKit
-// MARK: VALUES
-#endif
 
+import Foundation
+
+// MARK: VALUES
 public enum Collectors {}
 
 public enum Dispatchers {}
@@ -190,11 +189,11 @@ public enum HttpStatusCodes: Int {
 }
 // swiftlint:enable identifier_name
 
-public protocol TealiumErrorEnum: Error {}
+public protocol TealiumErrorEnum: LocalizedError {}
 
 // Add default localizedDescription
-extension TealiumErrorEnum {
-    var localizedDescription: String? {
+public extension TealiumErrorEnum {
+    var errorDescription: String? {
         return "\(type(of: self)).\(self)"
     }
 }
