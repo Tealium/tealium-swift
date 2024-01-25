@@ -97,7 +97,7 @@ Pod::Spec.new do |s|
     full.tvos.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*","tealium/collectors/autotracking/objc/include/*.{h,m}","tealium/core/objc/**/*"
     full.watchos.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*","tealium/collectors/autotracking/**/*.{h,m}","tealium/core/objc/**/*"
     full.osx.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*","tealium/collectors/autotracking/**/*.{h,m}","tealium/core/objc/**/*"
-    full.resources = "tealium/core/devicedata/device-names.json"
+    full.resources = "tealium/core/devicedata/device-names.json","tealium/core/PrivacyInfo.xcprivacy"
   end
 
   s.subspec "Core" do |core|
@@ -106,7 +106,7 @@ Pod::Spec.new do |s|
     core.tvos.exclude_files = "tealium/core/objc/**/*"
     core.watchos.exclude_files = "tealium/core/objc/**/*"
     core.osx.exclude_files = "tealium/core/objc/**/*"
-    core.resources = "tealium/core/devicedata/device-names.json"
+    core.resources = "tealium/core/devicedata/device-names.json","tealium/core/PrivacyInfo.xcprivacy"
   end
 
   s.subspec "Attribution" do |attribution|
