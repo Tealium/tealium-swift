@@ -46,25 +46,25 @@ public struct TealiumVisitorProfile: Codable {
         numbers = try values.decodeIfPresent([String: Double].self, forKey: .numbers)
         arraysOfNumbers = try values.decodeIfPresent([String: [Double]].self, forKey: .arraysOfNumbers)
         tallies = try values.decodeIfPresent([String: [String: Double]].self, forKey: .tallies)
-        strings = try values.decodeIfPresent([String: String].self, forKey: .strings)
+        strings = try values.decodeIfPresent([String: String?].self, forKey: .strings)?.compactMapValues { $0 }
         arraysOfStrings = try values.decodeIfPresent([String: [String]].self, forKey: .arraysOfStrings)
         setsOfStrings = try values.decodeIfPresent([String: Set<String>].self, forKey: .setsOfStrings)
         currentVisit = try values.decodeIfPresent(TealiumCurrentVisitProfile.self, forKey: .currentVisit)
     }
 
     public var isEmpty: Bool {
-        return self.audiences == nil &&
-            self.badges == nil &&
-            self.currentVisit == nil &&
-            self.dates == nil &&
-            self.booleans == nil &&
-            self.arraysOfBooleans == nil &&
-            self.numbers == nil &&
-            self.arraysOfNumbers == nil &&
-            self.tallies == nil &&
-            self.strings == nil &&
-            self.arraysOfStrings == nil &&
-            self.setsOfStrings == nil
+        self.audiences == nil &&
+        self.badges == nil &&
+        self.currentVisit == nil &&
+        self.dates == nil &&
+        self.booleans == nil &&
+        self.arraysOfBooleans == nil &&
+        self.numbers == nil &&
+        self.arraysOfNumbers == nil &&
+        self.tallies == nil &&
+        self.strings == nil &&
+        self.arraysOfStrings == nil &&
+        self.setsOfStrings == nil
     }
 
 }
@@ -100,7 +100,7 @@ public struct TealiumCurrentVisitProfile: Codable {
         numbers = try values.decodeIfPresent([String: Double].self, forKey: .numbers)
         arraysOfNumbers = try values.decodeIfPresent([String: [Double]].self, forKey: .arraysOfNumbers)
         tallies = try values.decodeIfPresent([String: [String: Double]].self, forKey: .tallies)
-        strings = try values.decodeIfPresent([String: String].self, forKey: .strings)
+        strings = try values.decodeIfPresent([String: String?].self, forKey: .strings)?.compactMapValues { $0 }
         arraysOfStrings = try values.decodeIfPresent([String: [String]].self, forKey: .arraysOfStrings)
         setsOfStrings = try values.decodeIfPresent([String: Set<String>].self, forKey: .setsOfStrings)
     }

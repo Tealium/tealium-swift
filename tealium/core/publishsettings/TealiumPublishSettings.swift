@@ -55,10 +55,10 @@ public struct RemotePublishSettings: Codable {
             // swiftlint:disable identifier_name
             let v5 = try values.nestedContainer(keyedBy: CodingKeys.self, forKey: .v5)
             // swiftlint:enable identifier_name
-            self.batterySaver = try v5.decode(String.self, forKey: .battery_saver) == "true" ? true : false
+            self.batterySaver = try v5.decode(String.self, forKey: .battery_saver) == "true"
             self.dispatchExpiration = Int(try v5.decode(String.self, forKey: .dispatch_expiration), radix: 10) ?? TealiumValue.defaultBatchExpirationDays
-            self.collectEnabled = try v5.decode(String.self, forKey: .enable_collect) == "true" ? true : false
-            self.tagManagementEnabled = try v5.decode(String.self, forKey: .enable_tag_management) == "true" ? true : false
+            self.collectEnabled = try v5.decode(String.self, forKey: .enable_collect) == "true"
+            self.tagManagementEnabled = try v5.decode(String.self, forKey: .enable_tag_management) == "true"
             self.batchSize = Int(try v5.decode(String.self, forKey: .event_batch_size), radix: 10) ?? 1
             self.minutesBetweenRefresh = Double(try v5.decode(String.self, forKey: .minutes_between_refresh)) ?? 15.0
             self.dispatchQueueLimit = Int(try v5.decode(String.self, forKey: .offline_dispatch_limit), radix: 10) ?? TealiumValue.defaultMaxQueueSize
@@ -75,8 +75,8 @@ public struct RemotePublishSettings: Codable {
                 self.overrideLog = .silent
             }
 
-            self.wifiOnlySending = try v5.decode(String.self, forKey: .wifi_only_sending) == "true" ? true : false
-            self.isEnabled = try v5.decode(String.self, forKey: ._is_enabled) == "true" ? true : false
+            self.wifiOnlySending = try v5.decode(String.self, forKey: .wifi_only_sending) == "true"
+            self.isEnabled = try v5.decode(String.self, forKey: ._is_enabled) == "true"
             self.etag = try v5.decodeIfPresent(String.self, forKey: .etag)
         } catch {
             let values = try decoder.container(keyedBy: CodingKeys.self)

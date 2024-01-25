@@ -219,7 +219,7 @@ jobs:
   test_Autotracking_macOS_uiTests:
     needs: install
     name: Test TealiumAutotracking macOS UI Tests
-    runs-on: macos-11
+    runs-on: macos-12
     timeout-minutes: 60
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer

@@ -128,4 +128,13 @@ class TealiumDiskTests: XCTestCase {
         XCTAssertNoThrow(try Disk.decode(Tealium.jsonDecoder, type: CustomObjectWithDate.self, from: legacyEncoded))
         XCTAssertNoThrow(try Disk.decode(Tealium.jsonDecoder, type: CustomObjectWithDate.self, from: newEncoded))
     }
+
+    func testDiskStorageDefaultLocation() {
+        let diskstorage = TealiumDiskStorage(config: config, forModule: "Tests")
+        #if os(tvOS)
+        XCTAssertEqual(diskstorage.currentDirectory, .caches)
+        #else
+        XCTAssertEqual(diskstorage.currentDirectory, .applicationSupport)
+        #endif
+    }
 }

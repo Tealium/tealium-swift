@@ -67,17 +67,9 @@ public extension String {
         return dateFormatter.date(from: self)
     }
     var dateFromISOStringShort: Date? {
-        if #available(iOS 10.0, macOS 10.12, tvOS 10.0, *) {
-            let dateFormatter = ISO8601DateFormatter()
-            dateFormatter.timeZone = TimeZone.autoupdatingCurrent
-            return dateFormatter.date(from: self)
-        } else {
-            let dateFormatter = DateFormatter()
-            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-            dateFormatter.timeZone = TimeZone.autoupdatingCurrent
-            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-            return dateFormatter.date(from: self)
-        }
+        let dateFormatter = ISO8601DateFormatter()
+        dateFormatter.timeZone = TimeZone.autoupdatingCurrent
+        return dateFormatter.date(from: self)
     }
 }
 

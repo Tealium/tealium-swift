@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 
   s.name         = "tealium-swift"
   s.module_name  = "TealiumSwift"
-  s.version      = "2.10.1"
+  s.version      = "2.11.0"
   s.summary      = "Tealium Swift Integration Library"
 
   # This description is used to generate tags and improve search results.
@@ -68,9 +68,9 @@ Pod::Spec.new do |s|
   # Clients can always have the Xcode project on iOS 9, and add a post-install script to lower this ios deployment target, 
   # but they have to specify iOS 11 on their podfile.
   s.ios.deployment_target = "11.0" 
-  s.osx.deployment_target = "10.11"
-  s.watchos.deployment_target = "3.0"
-  s.tvos.deployment_target = "9.0"
+  s.osx.deployment_target = "10.13"
+  s.watchos.deployment_target = "4.0"
+  s.tvos.deployment_target = "11.0"
 
 
   # ――― Source Location ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #

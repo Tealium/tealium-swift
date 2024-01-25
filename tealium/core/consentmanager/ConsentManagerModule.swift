@@ -122,16 +122,16 @@ class ConsentManagerModule: DispatchValidator {
 }
 
 fileprivate extension TealiumTrackRequest {
+    private static let auditEvents = [ConsentKey.consentPartialEventName,
+                                      ConsentKey.consentGrantedEventName,
+                                      ConsentKey.consentDeclinedEventName,
+                                      ConsentKey.gdprConsentCookieEventName,
+                                      ConsentKey.ccpaCookieEventName]
     // allow tracking calls to continue if they are for auditing purposes
     var containsAuditEvent: Bool {
-        if let event = self.trackDictionary[TealiumDataKey.event] as? String,
-           (event == ConsentKey.consentPartialEventName ||
-                event == ConsentKey.consentGrantedEventName ||
-                event == ConsentKey.consentDeclinedEventName ||
-                event == ConsentKey.gdprConsentCookieEventName ||
-                event == ConsentKey.ccpaCookieEventName) {
-            return true
+        guard let event = self.trackDictionary[TealiumDataKey.event] as? String else {
+            return false
         }
-        return false
+        return Self.auditEvents.contains(event)
     }
 }
