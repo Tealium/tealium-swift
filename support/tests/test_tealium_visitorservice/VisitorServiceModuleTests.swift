@@ -87,14 +87,14 @@ class VisitorServiceModuleTests: XCTestCase {
         
         let module = VisitorServiceModule(context: context, delegate: self, diskStorage: mockDiskStorage, visitorServiceManager: mockVisitorServiceManager)
 
-        var actualResult = module.intervalSince(lastFetch: mockedLastFetch)
+        var actualResult = module.intervalSince(lastFetch: mockedLastFetch, timeTraveler.generateDate())
 
         XCTAssertEqual(expectedResult, actualResult)
 
         mockedLastFetch = timeTraveler.travel(by: (60 * 4 + 1) * -1)
         expectedResult = 241_000
 
-        actualResult = module.intervalSince(lastFetch: mockedLastFetch)
+        actualResult = module.intervalSince(lastFetch: mockedLastFetch, timeTraveler.generateDate())
 
         XCTAssertEqual(expectedResult, actualResult)
 
