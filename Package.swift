@@ -4,7 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "TealiumSwift",
-    platforms: [ .iOS(.v11), .macOS(.v10_13), .tvOS(.v11), .watchOS(.v4) ],
+    platforms: [ .iOS(.v12), .macOS(.v10_14), .tvOS(.v12), .watchOS(.v4) ],
     products: [
         .library(
             name: "TealiumAttribution",
