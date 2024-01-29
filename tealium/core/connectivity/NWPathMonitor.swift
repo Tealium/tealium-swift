@@ -11,10 +11,6 @@ import Network
 #endif
 
 #if !os(watchOS)
-@available(iOS 12, *)
-@available(tvOS 12, *)
-@available(macCatalyst 13, *)
-@available(OSX 10.14, *)
 class TealiumNWPathMonitor: ConnectivityMonitorProtocol {
 
     var currentConnnectionType: String? {
