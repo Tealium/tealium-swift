@@ -132,7 +132,6 @@
 				25498382C459750E59AFF627 /* Pods-ConsentManagerDemo.debug.xcconfig */,
 				267CB4A6E2C02C61149C0BB3 /* Pods-ConsentManagerDemo.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -201,7 +200,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = "";
-				ORGANIZATIONNAME = ___FULLUSERNAME___;
+				ORGANIZATIONNAME = "___FULLUSERNAME___";
 				TargetAttributes = {
 					43DE55A6C155C73D2EC3DECF = {
 						DevelopmentTeam = XC939GDC9P;
@@ -374,6 +373,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = ConsentManagerDemoUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.ConsentManagerDemoUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -505,6 +505,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = XC939GDC9P;
 				INFOPLIST_FILE = ConsentManagerDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.ConsentManagerDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -517,6 +518,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = ConsentManagerDemoUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.ConsentManagerDemoUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -533,6 +535,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = XC939GDC9P;
 				INFOPLIST_FILE = ConsentManagerDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.ConsentManagerDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -546,6 +549,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ConsentManagerDemo.app/ConsentManagerDemo";
 				INFOPLIST_FILE = ConsentManagerDemoTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.ConsentManagerDemoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -560,6 +564,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ConsentManagerDemo.app/ConsentManagerDemo";
 				INFOPLIST_FILE = ConsentManagerDemoTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.ConsentManagerDemoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
