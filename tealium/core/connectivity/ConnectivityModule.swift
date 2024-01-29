@@ -63,21 +63,18 @@ public class ConnectivityModule: Collector, ConnectivityDelegate {
         self.config = context.config
 
         #if !os(watchOS)
-        if #available(iOS 12.0, tvOS 12.0, OSX 10.14, *) {
-            self.connectivityMonitor = TealiumNWPathMonitor(config: self.config) { [weak self] result in
-                guard let self = self else {
-                    return
-                }
-                switch result {
-                case .success:
-                    self.connectionRestored()
-                case .failure:
-                    self.connectionLost()
-                }
+        self.connectivityMonitor = TealiumNWPathMonitor(config: self.config) { [weak self] result in
+            guard let self = self else {
+                return
             }
-            return
+            switch result {
+            case .success:
+                self.connectionRestored()
+            case .failure:
+                self.connectionLost()
+            }
         }
-        #endif
+        #else
         self.connectivityMonitor = LegacyConnectivityMonitor(config: self.config) { [weak self] result in
             guard let self = self else {
                 return
@@ -89,6 +86,7 @@ public class ConnectivityModule: Collector, ConnectivityDelegate {
                 self.connectionLost()
             }
         }
+        #endif
     }
 
     func checkIsConnected(completion: @escaping ((Result<Bool, Error>) -> Void)) {

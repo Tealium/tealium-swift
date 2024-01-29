@@ -5,14 +5,14 @@ on: [pull_request]
 jobs:
   build_iOS:
     name: Build iOS
-    runs-on: macos-12
+    runs-on: macos-13
     timeout-minutes: 60
     env: 
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
       working-directory: ./builder
     strategy:
       matrix:
-        destination: ["platform=iOS Simulator,name=iPhone 12"]
+        destination: ["platform=iOS Simulator,name=iPhone 14"]
         scheme: 
           - TealiumCore
           - TealiumCollect
@@ -42,7 +42,7 @@ jobs:
         working-directory: ${{ env.working-directory }}
   build_macOS:
     name: Build macOS
-    runs-on: macos-12
+    runs-on: macos-13
     timeout-minutes: 60
     env: 
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -74,7 +74,7 @@ jobs:
         working-directory: ${{ env.working-directory }}
   build_tvOS:
     name: Build tvOS
-    runs-on: macos-12
+    runs-on: macos-13
     timeout-minutes: 60
     env: 
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -102,7 +102,7 @@ jobs:
         working-directory: ${{ env.working-directory }}
   build_TealiumSwiftExample_iOS:
     name: Build TealiumSwiftExample iOS
-    runs-on: macos-12
+    runs-on: macos-13
     timeout-minutes: 60
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -118,14 +118,14 @@ jobs:
           MAX_ATTEMPT=10
           ATTEMPT=0
           while [ -z $SUCCESS ] && [ "$ATTEMPT" -le "$MAX_ATTEMPT" ]; do
-            xcodebuild clean  -scheme "TealiumSwiftExample" -destination "platform=iOS Simulator,name=iPhone 12" | grep -q "CLEAN SUCCEEDED" && SUCCESS=true
+            xcodebuild clean  -scheme "TealiumSwiftExample" -destination "platform=iOS Simulator,name=iPhone 14" | grep -q "CLEAN SUCCEEDED" && SUCCESS=true
             ATTEMPT=$(($ATTEMPT+1))
           done
-          set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumSwiftExample.xcworkspace -scheme "TealiumSwiftExample" -destination "platform=iOS Simulator,name=iPhone 12" clean build | xcpretty
+          set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumSwiftExample.xcworkspace -scheme "TealiumSwiftExample" -destination "platform=iOS Simulator,name=iPhone 14" clean build | xcpretty
         working-directory: ${{ env.working-directory }}
   build_TealiumSwiftExample_tvOS:
     name: Build TealiumSwiftExample tvOS
-    runs-on: macos-12
+    runs-on: macos-13
     timeout-minutes: 60
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -141,14 +141,14 @@ jobs:
           MAX_ATTEMPT=10
           ATTEMPT=0
           while [ -z $SUCCESS ] && [ "$ATTEMPT" -le "$MAX_ATTEMPT" ]; do
-            xcodebuild clean  -scheme "TealiumSwiftExample" -destination "platform=iOS Simulator,name=iPhone 12" | grep -q "CLEAN SUCCEEDED" && SUCCESS=true
+            xcodebuild clean  -scheme "TealiumSwiftExample" -destination "platform=iOS Simulator,name=iPhone 14" | grep -q "CLEAN SUCCEEDED" && SUCCESS=true
             ATTEMPT=$(($ATTEMPT+1))
           done
           set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumSwiftExample.xcworkspace -scheme "TealiumSwiftTVExample" -destination "platform=tvOS Simulator,name=Apple TV" clean build | xcpretty
         working-directory: ${{ env.working-directory }}
   build_ConsentManagerDemo:
     name: Build ConsentManagerDemo
-    runs-on: macos-12
+    runs-on: macos-13
     timeout-minutes: 60
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -164,14 +164,14 @@ jobs:
           MAX_ATTEMPT=10
           ATTEMPT=0
           while [ -z $SUCCESS ] && [ "$ATTEMPT" -le "$MAX_ATTEMPT" ]; do
-            xcodebuild clean -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" | grep -q "CLEAN SUCCEEDED" && SUCCESS=true
+            xcodebuild clean -scheme "ConsentManagerDemo" -destination "platform=iOS Simulator,name=iPhone 14" | grep -q "CLEAN SUCCEEDED" && SUCCESS=true
             ATTEMPT=$(($ATTEMPT+1))
           done
-          set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace ConsentManagerDemo.xcworkspace -scheme "ConsentManagerDemo" -destination "platform=iOS Simulator,name=iPhone 12" clean build | xcpretty
+          set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace ConsentManagerDemo.xcworkspace -scheme "ConsentManagerDemo" -destination "platform=iOS Simulator,name=iPhone 14" clean build | xcpretty
         working-directory: ${{ env.working-directory }}
   build_VisitorServiceDemo:
     name: Build TealiumVisitorProfileDemo
-    runs-on: macos-12
+    runs-on: macos-13
     timeout-minutes: 60
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -187,8 +187,8 @@ jobs:
           MAX_ATTEMPT=10
           ATTEMPT=0
           while [ -z $SUCCESS ] && [ "$ATTEMPT" -le "$MAX_ATTEMPT" ]; do
-            xcodebuild clean -scheme "${{ matrix.scheme }}" -destination "${{ matrix.destination }}" | grep -q "CLEAN SUCCEEDED" && SUCCESS=true
+            xcodebuild clean -scheme "TealiumVisitorProfileDemo" -destination "platform=iOS Simulator,name=iPhone 14" | grep -q "CLEAN SUCCEEDED" && SUCCESS=true
             ATTEMPT=$(($ATTEMPT+1))
           done
-          set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumVisitorProfileDemo.xcworkspace -scheme "TealiumVisitorProfileDemo" -destination "platform=iOS Simulator,name=iPhone 12" clean build | xcpretty
+          set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumVisitorProfileDemo.xcworkspace -scheme "TealiumVisitorProfileDemo" -destination "platform=iOS Simulator,name=iPhone 14" clean build | xcpretty
         working-directory: ${{ env.working-directory }}                                          
