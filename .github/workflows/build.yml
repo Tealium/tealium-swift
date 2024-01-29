@@ -5,7 +5,7 @@ on: [pull_request]
 jobs:
   build_iOS:
     name: Build iOS
-    runs-on: macos-12
+    runs-on: macos-13
     timeout-minutes: 60
     env: 
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -42,7 +42,7 @@ jobs:
         working-directory: ${{ env.working-directory }}
   build_macOS:
     name: Build macOS
-    runs-on: macos-12
+    runs-on: macos-13
     timeout-minutes: 60
     env: 
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -74,7 +74,7 @@ jobs:
         working-directory: ${{ env.working-directory }}
   build_tvOS:
     name: Build tvOS
-    runs-on: macos-12
+    runs-on: macos-13
     timeout-minutes: 60
     env: 
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -102,7 +102,7 @@ jobs:
         working-directory: ${{ env.working-directory }}
   build_TealiumSwiftExample_iOS:
     name: Build TealiumSwiftExample iOS
-    runs-on: macos-12
+    runs-on: macos-13
     timeout-minutes: 60
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -125,7 +125,7 @@ jobs:
         working-directory: ${{ env.working-directory }}
   build_TealiumSwiftExample_tvOS:
     name: Build TealiumSwiftExample tvOS
-    runs-on: macos-12
+    runs-on: macos-13
     timeout-minutes: 60
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -148,7 +148,7 @@ jobs:
         working-directory: ${{ env.working-directory }}
   build_ConsentManagerDemo:
     name: Build ConsentManagerDemo
-    runs-on: macos-12
+    runs-on: macos-13
     timeout-minutes: 60
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -171,7 +171,7 @@ jobs:
         working-directory: ${{ env.working-directory }}
   build_VisitorServiceDemo:
     name: Build TealiumVisitorProfileDemo
-    runs-on: macos-12
+    runs-on: macos-13
     timeout-minutes: 60
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
