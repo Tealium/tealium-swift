@@ -12,7 +12,7 @@ jobs:
       working-directory: ./builder
     strategy:
       matrix:
-        destination: ["platform=iOS Simulator,name=iPhone 15"]
+        destination: ["platform=iOS Simulator,name=iPhone 14"]
         scheme: 
           - TealiumCore
           - TealiumCollect
@@ -118,10 +118,10 @@ jobs:
           MAX_ATTEMPT=10
           ATTEMPT=0
           while [ -z $SUCCESS ] && [ "$ATTEMPT" -le "$MAX_ATTEMPT" ]; do
-            xcodebuild clean  -scheme "TealiumSwiftExample" -destination "platform=iOS Simulator,name=iPhone 15" | grep -q "CLEAN SUCCEEDED" && SUCCESS=true
+            xcodebuild clean  -scheme "TealiumSwiftExample" -destination "platform=iOS Simulator,name=iPhone 14" | grep -q "CLEAN SUCCEEDED" && SUCCESS=true
             ATTEMPT=$(($ATTEMPT+1))
           done
-          set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumSwiftExample.xcworkspace -scheme "TealiumSwiftExample" -destination "platform=iOS Simulator,name=iPhone 15" clean build | xcpretty
+          set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumSwiftExample.xcworkspace -scheme "TealiumSwiftExample" -destination "platform=iOS Simulator,name=iPhone 14" clean build | xcpretty
         working-directory: ${{ env.working-directory }}
   build_TealiumSwiftExample_tvOS:
     name: Build TealiumSwiftExample tvOS
@@ -141,7 +141,7 @@ jobs:
           MAX_ATTEMPT=10
           ATTEMPT=0
           while [ -z $SUCCESS ] && [ "$ATTEMPT" -le "$MAX_ATTEMPT" ]; do
-            xcodebuild clean  -scheme "TealiumSwiftExample" -destination "platform=iOS Simulator,name=iPhone 15" | grep -q "CLEAN SUCCEEDED" && SUCCESS=true
+            xcodebuild clean  -scheme "TealiumSwiftExample" -destination "platform=iOS Simulator,name=iPhone 14" | grep -q "CLEAN SUCCEEDED" && SUCCESS=true
             ATTEMPT=$(($ATTEMPT+1))
           done
           set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumSwiftExample.xcworkspace -scheme "TealiumSwiftTVExample" -destination "platform=tvOS Simulator,name=Apple TV" clean build | xcpretty
@@ -164,10 +164,10 @@ jobs:
           MAX_ATTEMPT=10
           ATTEMPT=0
           while [ -z $SUCCESS ] && [ "$ATTEMPT" -le "$MAX_ATTEMPT" ]; do
-            xcodebuild clean -scheme "ConsentManagerDemo" -destination "platform=iOS Simulator,name=iPhone 15" | grep -q "CLEAN SUCCEEDED" && SUCCESS=true
+            xcodebuild clean -scheme "ConsentManagerDemo" -destination "platform=iOS Simulator,name=iPhone 14" | grep -q "CLEAN SUCCEEDED" && SUCCESS=true
             ATTEMPT=$(($ATTEMPT+1))
           done
-          set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace ConsentManagerDemo.xcworkspace -scheme "ConsentManagerDemo" -destination "platform=iOS Simulator,name=iPhone 15" clean build | xcpretty
+          set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace ConsentManagerDemo.xcworkspace -scheme "ConsentManagerDemo" -destination "platform=iOS Simulator,name=iPhone 14" clean build | xcpretty
         working-directory: ${{ env.working-directory }}
   build_VisitorServiceDemo:
     name: Build TealiumVisitorProfileDemo
@@ -187,8 +187,8 @@ jobs:
           MAX_ATTEMPT=10
           ATTEMPT=0
           while [ -z $SUCCESS ] && [ "$ATTEMPT" -le "$MAX_ATTEMPT" ]; do
-            xcodebuild clean -scheme "TealiumVisitorProfileDemo" -destination "platform=iOS Simulator,name=iPhone 15" | grep -q "CLEAN SUCCEEDED" && SUCCESS=true
+            xcodebuild clean -scheme "TealiumVisitorProfileDemo" -destination "platform=iOS Simulator,name=iPhone 14" | grep -q "CLEAN SUCCEEDED" && SUCCESS=true
             ATTEMPT=$(($ATTEMPT+1))
           done
-          set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumVisitorProfileDemo.xcworkspace -scheme "TealiumVisitorProfileDemo" -destination "platform=iOS Simulator,name=iPhone 15" clean build | xcpretty
+          set -o pipefail && pod install && env NSUnbufferedIO=YES xcodebuild -workspace TealiumVisitorProfileDemo.xcworkspace -scheme "TealiumVisitorProfileDemo" -destination "platform=iOS Simulator,name=iPhone 14" clean build | xcpretty
         working-directory: ${{ env.working-directory }}                                          

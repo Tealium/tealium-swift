@@ -24,7 +24,7 @@ jobs:
       working-directory: ./builder
     strategy:
       matrix:
-        destination: ["platform=iOS Simulator,OS=14.5,name=iPhone 15"]
+        destination: ["platform=iOS Simulator,OS=14.5,name=iPhone 14"]
         scheme:
             - TealiumAppDelegateProxyTests-iOS
             - TealiumAttributionTests-iOS
@@ -206,7 +206,7 @@ jobs:
       working-directory: ./builder
     strategy:
       matrix:
-        destination: ["platform=iOS Simulator,OS=14.5,name=iPhone 15"]
+        destination: ["platform=iOS Simulator,OS=14.5,name=iPhone 14"]
     steps:
       - name: Setup Xcode version
         uses: maxim-lobanov/setup-xcode@v1.4.1
