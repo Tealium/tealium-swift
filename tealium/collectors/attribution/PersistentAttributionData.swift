@@ -13,6 +13,8 @@ import TealiumCore
 
 public struct PersistentAttributionData: Codable {
 
+    // Some of these keys are left here for backwards compatibility.
+    // Old iAd framework keys might be stored on device and can still be read.
     var clickedWithin30D: String?,
         clickedDate: String?,
         conversionDate: String?,
