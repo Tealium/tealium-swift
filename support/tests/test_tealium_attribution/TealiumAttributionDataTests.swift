@@ -12,29 +12,6 @@ import XCTest
 import AppTrackingTransparency
 #endif
 
-let attributionValues = Dictionary(uniqueKeysWithValues: AppleInternalKeys.allCases.map { ($0, "mockdata" as NSObject) })
-private let mockAppleAttributionData: [String: NSObject] = ["Version3.1": attributionValues as NSObject]
-
-let keyTranslation = [
-    AppleInternalKeys.attribution: TealiumDataKey.adClickedWithin30D,
-    AppleInternalKeys.orgName: TealiumDataKey.adOrgName,
-    AppleInternalKeys.orgId: TealiumDataKey.adOrgId,
-    AppleInternalKeys.campaignId: TealiumDataKey.adCampaignId,
-    AppleInternalKeys.campaignName: TealiumDataKey.adCampaignName,
-    AppleInternalKeys.clickDate: TealiumDataKey.adClickedDate,
-    AppleInternalKeys.purchaseDate: TealiumDataKey.adPurchaseDate,
-    AppleInternalKeys.conversionDate: TealiumDataKey.adConversionDate,
-    AppleInternalKeys.conversionType: TealiumDataKey.adConversionType,
-    AppleInternalKeys.adId: TealiumDataKey.adId,
-    AppleInternalKeys.adGroupId: TealiumDataKey.adGroupId,
-    AppleInternalKeys.adGroupName: TealiumDataKey.adGroupName,
-    AppleInternalKeys.keyword: TealiumDataKey.adKeyword,
-    AppleInternalKeys.keywordMatchType: TealiumDataKey.adKeywordMatchType,
-    AppleInternalKeys.creativeSetId: TealiumDataKey.adCreativeSetId,
-    AppleInternalKeys.creativeSetName: TealiumDataKey.adCreativeSetName,
-    AppleInternalKeys.region: TealiumDataKey.adRegion
-]
-
 class TealiumAttributionDataTests: XCTestCase {
 
     var defaultConfig: TealiumConfig!

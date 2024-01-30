@@ -69,45 +69,6 @@ public struct AttributionKey {
 }
 
 public struct AppleInternalKeys {
-    static let allCases = [
-        AppleInternalKeys.attribution,
-        AppleInternalKeys.orgName,
-        AppleInternalKeys.orgId,
-        AppleInternalKeys.campaignId,
-        AppleInternalKeys.campaignName,
-        AppleInternalKeys.clickDate,
-        AppleInternalKeys.purchaseDate,
-        AppleInternalKeys.conversionDate,
-        AppleInternalKeys.conversionType,
-        AppleInternalKeys.adId,
-        AppleInternalKeys.adGroupId,
-        AppleInternalKeys.adGroupName,
-        AppleInternalKeys.keyword,
-        AppleInternalKeys.keywordMatchType,
-        AppleInternalKeys.creativeSetId,
-        AppleInternalKeys.creativeSetName,
-        AppleInternalKeys.region,
-    ]
-
-    static let attribution = "iad-attribution"
-    static let orgName = "iad-org-name"
-    static let orgId = "iad-org-id" //
-    static let campaignId = "iad-campaign-id"
-    static let campaignName = "iad-campaign-name"
-    static let clickDate = "iad-click-date"
-    static let purchaseDate = "iad-purchase-date" //
-    static let conversionDate = "iad-conversion-date"
-    static let conversionType = "iad-conversion-type" //
-    static let adId = "iad-ad-id" //
-    static let adGroupId = "iad-adgroup-id"
-    static let adGroupName = "iad-adgroup-name"
-    static let keyword = "iad-keyword"
-    static let keywordMatchType = "iad-keyword-matchtype" //
-    static let creativeSetId = "iad-creativeset-id" //
-    static let creativeSetName = "iad-creativeset-name" //
-    static let region = "iad-country-or-region" //
-    static let objectVersion = "Version3.1" // This is the root key for the returned data
-
     enum AAAAttribution: String, CaseIterable {
         case conversionType
         case attribution
