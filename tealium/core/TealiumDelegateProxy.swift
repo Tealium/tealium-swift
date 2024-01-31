@@ -16,8 +16,11 @@ public class TealiumDelegateProxy: NSProxy {
     static var contexts: Set<TealiumContext>?
 
     private struct AssociatedObjectKeys {
-        static var originalClass = "Tealium_OriginalClass"
-        static var originalImplementations = "Tealium_OriginalImplementations"
+        // https://forums.swift.org/t/handling-the-new-forming-unsaferawpointer-warning/65523/7
+        // swiftlint:disable force_unwrapping
+        static let originalClass = malloc(1)!
+        static let originalImplementations = malloc(1)!
+        // swiftlint:enable force_unwrapping
     }
 
     static private(set) var sceneEnabled = false
@@ -160,7 +163,7 @@ private extension TealiumDelegateProxy {
         self.overrideDescription(in: subClass)
 
         // Store the original class
-        objc_setAssociatedObject(originalDelegate, &AssociatedObjectKeys.originalClass, originalClass, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        objc_setAssociatedObject(originalDelegate, AssociatedObjectKeys.originalClass, originalClass, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 
         guard class_getInstanceSize(originalClass) == class_getInstanceSize(subClass) else {
             return nil
@@ -228,7 +231,7 @@ private extension TealiumDelegateProxy {
         }
 
         // Store original implementations
-        objc_setAssociatedObject(originalDelegate, &AssociatedObjectKeys.originalImplementations, originalImplementationsStore, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        objc_setAssociatedObject(originalDelegate, AssociatedObjectKeys.originalImplementations, originalImplementationsStore, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
 
     static func overrideDescription(in subClass: AnyClass) {
@@ -286,7 +289,7 @@ private extension TealiumDelegateProxy {
     }
 
     static func originalMethodImplementation(for selector: Selector, object: Any) -> NSValue? {
-        let originalImplementationsStore = objc_getAssociatedObject(object, &AssociatedObjectKeys.originalImplementations) as? [String: NSValue]
+        let originalImplementationsStore = objc_getAssociatedObject(object, AssociatedObjectKeys.originalImplementations) as? [String: NSValue]
         return originalImplementationsStore?[NSStringFromSelector(selector)]
     }
 }
@@ -328,7 +331,7 @@ private extension TealiumDelegateProxy {
 
     @objc
     func originalDescription() -> String {
-        if let originalClass = objc_getAssociatedObject(self, &AssociatedObjectKeys.originalClass) as? AnyClass {
+        if let originalClass = objc_getAssociatedObject(self, AssociatedObjectKeys.originalClass) as? AnyClass {
             let originalClassName = NSStringFromClass(originalClass)
             let pointerHex = String(format: "%p", unsafeBitCast(self, to: Int.self))
             return "<\(originalClassName): \(pointerHex)>"
