@@ -15,7 +15,7 @@ build/
 .swiftpm/*
 tealium-xcframeworks/
 builder/tealium-xcframeworks/
-builder/tealium-xcframeworks.zip
+tealium.xcframework.zip
 build/
 builder/build/
 veracode/
