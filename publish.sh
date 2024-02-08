@@ -5,7 +5,6 @@
 constants=$(<tealium/core/TealiumConstants.swift)
 regex="^.*public static let libraryVersion \= \"([0-9\.]*)\""
 
-
 if [[ $constants =~ $regex ]]
 then
     versionConstant=${BASH_REMATCH[1]}
@@ -14,6 +13,25 @@ else
     exit 1
 fi
 echo Version Constant $versionConstant
+
+podspecFile=$(<tealium-swift.podspec)
+podspecRegex="^.*s.version[[:space:]]*\= \"([0-9\.]*)\""
+
+if [[ $podspecFile =~ $podspecRegex ]]
+then
+    podspecVersion=${BASH_REMATCH[1]}
+else
+    echo "Couldn't match the podspec version, exiting"
+    exit 1
+fi
+echo Podspec Version  $podspecVersion
+
+if [ $podspecVersion != $versionConstant ]
+then
+  echo "The podspec version \"${podspecVersion}\" is different from the version constant \"${versionConstant}\".\nDid you forget to update one of the two?"
+  exit 1
+fi
+
 branch_name="$(git rev-parse --abbrev-ref HEAD)"
 echo Current branch $branch_name
 if [ $branch_name != "main" ]
@@ -37,6 +55,8 @@ then
   echo "The latest published tag \"${latestTag}\" is different from the version constant \"${versionConstant}\".\nDid you forget to add the tag to the release or did you forget to update the Constant?"
   exit 1
 fi
+
+
 
 echo "All checks are passed, ready to release to CocoaPods"
 
