@@ -97,12 +97,9 @@ class TealiumDelegateProxyTests: XCTestCase {
     }
     
     func waitOnTealiumSerialQueue(_ block: @escaping () -> ()) {
-        let exp = expectation(description: "dispatch")
-        TealiumQueues.backgroundSerialQueue.async {
+        TealiumQueues.backgroundSerialQueue.sync {
             block()
-            exp.fulfill()
         }
-        waitForExpectations(timeout: 2, handler: nil)
     }
     
     func sendOpenUrlEvent(url: URL) {

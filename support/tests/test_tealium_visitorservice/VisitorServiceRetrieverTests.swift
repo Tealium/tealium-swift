@@ -35,7 +35,9 @@ class VisitorServiceRetrieverTests: XCTestCase {
         visitorServiceRetriever.sendURLRequest(request) { _ in
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        TealiumQueues.backgroundSerialQueue.sync {
+            wait(for: [expect], timeout: 1.0)
+        }
     }
 
     func testSendURLRequest_FailureInvalidURL() {
@@ -48,7 +50,9 @@ class VisitorServiceRetrieverTests: XCTestCase {
             }
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 1.0)
+        TealiumQueues.backgroundSerialQueue.sync {
+            wait(for: [expect], timeout: 1.0)
+        }
     }
 
     func testSendURLRequest_Non200Response() {
@@ -61,7 +65,9 @@ class VisitorServiceRetrieverTests: XCTestCase {
             }
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 3.0)
+        TealiumQueues.backgroundSerialQueue.sync {
+            wait(for: [expect], timeout: 1.0)
+        }
     }
 
     func testSendURLRequest_CouldNotCreateSession() {
@@ -75,7 +81,9 @@ class VisitorServiceRetrieverTests: XCTestCase {
             }
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 3.0)
+        TealiumQueues.backgroundSerialQueue.sync {
+            wait(for: [expect], timeout: 1.0)
+        }
     }
 
 }
