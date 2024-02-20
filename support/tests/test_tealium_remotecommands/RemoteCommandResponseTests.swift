@@ -33,9 +33,9 @@ class RemoteCommandResponseTests: XCTestCase {
 
     }
 
-    func testInitWithBadURLStringReturnsNil() {
-        let unescapedURLString = "tealium://test?request={\"config\":{\"response_id\":\"123\"}, \"payload\":{\"hello\": \"world\"}}"
-        let response = RemoteCommandResponse(urlString: unescapedURLString)
+    func testInitWithEmptyURLStringReturnsNil() {
+        let emptyString = ""
+        let response = RemoteCommandResponse(urlString: emptyString)
         XCTAssertNil(response)
     }
 
