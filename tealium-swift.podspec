@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 
   s.name         = "tealium-swift"
   s.module_name  = "TealiumSwift"
-  s.version      = "2.12.1"
+  s.version      = "2.12.2"
   s.summary      = "Tealium Swift Integration Library"
 
   # This description is used to generate tags and improve search results.
@@ -97,7 +97,8 @@ Pod::Spec.new do |s|
     full.tvos.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*","tealium/collectors/autotracking/objc/include/*.{h,m}","tealium/core/objc/**/*"
     full.watchos.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*","tealium/collectors/autotracking/**/*.{h,m}","tealium/core/objc/**/*"
     full.osx.exclude_files = "tealium/dispatchers/tagmanagement/*","tealium/dispatchers/remotecommands/*","tealium/collectors/attribution/*","tealium/scripts/*","tealium/collectors/location/*","tealium/collectors/autotracking/**/*.{h,m}","tealium/core/objc/**/*"
-    full.resources = "tealium/core/devicedata/device-names.json","tealium/core/PrivacyInfo.xcprivacy"
+    full.resources = "tealium/core/devicedata/device-names.json"
+    full.resource_bundles = { "TealiumSwift" => "tealium/core/PrivacyInfo.xcprivacy" }
   end
 
   s.subspec "Core" do |core|
@@ -106,7 +107,8 @@ Pod::Spec.new do |s|
     core.tvos.exclude_files = "tealium/core/objc/**/*"
     core.watchos.exclude_files = "tealium/core/objc/**/*"
     core.osx.exclude_files = "tealium/core/objc/**/*"
-    core.resources = "tealium/core/devicedata/device-names.json","tealium/core/PrivacyInfo.xcprivacy"
+    core.resources = "tealium/core/devicedata/device-names.json"
+    core.resource_bundles = { "TealiumSwift" => "tealium/core/PrivacyInfo.xcprivacy" }
   end
 
   s.subspec "Attribution" do |attribution|
