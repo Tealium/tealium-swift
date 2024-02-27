@@ -3,7 +3,7 @@
 <plist version="1.0">
     <dict>
         <key>output_path</key>
-        <string>sm-frameworks</string>
+        <string>tealium-xcframeworks</string>
         <key>frameworks</key>
         <array>
             <dict>
