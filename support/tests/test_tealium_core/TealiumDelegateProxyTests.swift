@@ -96,7 +96,7 @@ class TealiumDelegateProxyTests: XCTestCase {
         }
     }
     
-    func waitOnTealiumSerialQueue(_ block: @escaping () -> ()) {
+    func waitOnTealiumSerialQueue(_ block: () -> ()) {
         TealiumQueues.backgroundSerialQueue.sync {
             block()
         }

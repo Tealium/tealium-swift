@@ -26,7 +26,11 @@ class VisitorIdProviderTests: XCTestCase {
     let onVisitorId = TealiumReplaySubject<String>()
     let diskStorage = mockDiskStorage
     var provider: VisitorIdProvider!
-    
+    func waitOnTealiumSerialQueue(_ block: () -> ()) {
+        TealiumQueues.backgroundSerialQueue.sync {
+            block()
+        }
+    }
     override func setUpWithError() throws {
         diskStorage.delete(completion: nil)
         dataLayer.deleteAll()
@@ -109,11 +113,11 @@ class VisitorIdProviderTests: XCTestCase {
             }
         }
         changeIdentityValue(to: "someOtherValue")
-        TealiumQueues.backgroundSerialQueue.sync {
+        waitOnTealiumSerialQueue {
             XCTAssertEqual(provider.getVisitorId(forKey: hashedIdentityValue), visitorId, "Old visitorId for old identifier hasn't changed")
         }
         waitForExpectations(timeout: 3)
-        TealiumQueues.backgroundSerialQueue.sync {
+        waitOnTealiumSerialQueue {
             sub.dispose()
         }
     }
@@ -133,18 +137,18 @@ class VisitorIdProviderTests: XCTestCase {
             }
         }
         changeIdentityValue(to: "someOtherValue")
-        TealiumQueues.backgroundSerialQueue.sync {
+        waitOnTealiumSerialQueue {
             XCTAssertEqual(provider.getVisitorId(forKey: hashedIdentityValue), visitorId, "Old visitorId for old identifier hasn't changed")
         }
         changeIdentityValue(to: identityValue)
-        TealiumQueues.backgroundSerialQueue.sync {
+        waitOnTealiumSerialQueue {
             let cachedIdentities = provider.visitorIdStorage.cachedIds.keys
             XCTAssertEqual(cachedIdentities.count, 2)
             XCTAssertTrue(cachedIdentities.contains { $0 == hashedIdentityValue })
             XCTAssertTrue(cachedIdentities.contains { $0 == "someOtherValue".sha256() })
         }
         waitForExpectations(timeout: 10)
-        TealiumQueues.backgroundSerialQueue.sync {
+        waitOnTealiumSerialQueue {
             sub.dispose()
         }
     }
@@ -162,7 +166,7 @@ class VisitorIdProviderTests: XCTestCase {
         }
         changeIdentityValue(to: "someOtherValue")
         waitForExpectations(timeout: 5)
-        TealiumQueues.backgroundSerialQueue.sync {
+        waitOnTealiumSerialQueue {
             sub.dispose()
         }
     }
@@ -177,7 +181,7 @@ class VisitorIdProviderTests: XCTestCase {
         }
         createProvider()
         waitForExpectations(timeout: 3)
-        TealiumQueues.backgroundSerialQueue.sync {
+        waitOnTealiumSerialQueue {
             sub.dispose()
         }
     }
@@ -192,11 +196,13 @@ class VisitorIdProviderTests: XCTestCase {
         XCTAssertNotNil(provider.visitorIdStorage.currentIdentity, "Identity doesn't get cleared if the identity is still in the dataLayer")
         XCTAssertEqual(provider.visitorIdStorage.cachedIds.count, 1)
         dataLayer.delete(for: self.identityKey)
-        provider.clearStoredVisitorIds()
-        XCTAssertNil(provider.getVisitorId(forKey: hashedIdentityValue))
-        XCTAssertNil(provider.getVisitorId(forKey: hashedIdentityValue))
-        XCTAssertNil(provider.visitorIdStorage.currentIdentity, "Identity does get cleared if the identity is cleared from dataLayer")
-        XCTAssertEqual(provider.visitorIdStorage.cachedIds.count, 0)
+        waitOnTealiumSerialQueue {
+            provider.clearStoredVisitorIds()
+            XCTAssertNil(provider.getVisitorId(forKey: hashedIdentityValue))
+            XCTAssertNil(provider.getVisitorId(forKey: hashedIdentityValue))
+            XCTAssertNil(provider.visitorIdStorage.currentIdentity, "Identity does get cleared if the identity is cleared from dataLayer")
+            XCTAssertEqual(provider.visitorIdStorage.cachedIds.count, 0)
+        }
     }
 
     func testPublishVisitorId() {

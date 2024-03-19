@@ -23,6 +23,13 @@ class AutotrackingModuleTests: XCTestCase {
     }
     
     var disposeBag = TealiumDisposeBag()
+    
+    func waitOnTealiumSerialQueue(_ block: () -> ()) {
+        TealiumQueues.backgroundSerialQueue.sync {
+            block()
+        }
+    }
+    
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -38,26 +45,19 @@ class AutotrackingModuleTests: XCTestCase {
     func testRequestEventTrack() {
         let module = self.module
 
-        delegate.expectationRequest = expectation(description: "emptyEventDetected")
+        let emptyEventReceived = expectation(description: "Empty event received")
 
         let viewName = "RequestEventTrackView"
+        delegate._onCollectScreenView = { screenName in
+            XCTAssertEqual(screenName, viewName)
+            emptyEventReceived.fulfill()
+            return [:]
+        }
         module.requestViewTrack(viewName: viewName)
         
-        waitForExpectations(timeout: 4.0, handler: nil)
-        
-        XCTAssertEqual(viewName, delegate.currentViewName)
-    }
-
-    func testAddCustomData() {
-        let module = self.module
-
-        delegate.expectationRequest = expectation(description: "customDataRequest1")
-        let name = delegate.addDataViewName+"1"
-        module.requestViewTrack(viewName: name)
-
-        waitForExpectations(timeout: 4.0, handler: nil)
-
-        XCTAssertEqual(name, delegate.currentViewName)
+        waitOnTealiumSerialQueue {
+            waitForExpectations(timeout: 1.0)
+        }
     }
 
     // Cannot unit test swizzling/SwiftUI
@@ -66,35 +66,31 @@ class AutotrackingModuleTests: XCTestCase {
         let config = testTealiumConfig.copy
         config.collectors = [Collectors.AutoTracking]
         config.autoTrackingCollectorDelegate = delegate
-        let teal = Tealium(config: config)
-        delegate.expectationRequest = expectation(description: "emptyEventToManagerDetected")
+        let tealiumInitialized = expectation(description: "Tealium initialized")
+        let teal = Tealium(config: config) { _ in
+            tealiumInitialized.fulfill()
+        }
 
         let viewName = "RequestEventTrackToInstanceManagerView"
+        
+        let eventToManagerReceived = expectation(description: "emptyEventToManagerDetected")
+        delegate._onCollectScreenView = { screenName in
+            XCTAssertEqual(screenName, viewName)
+            eventToManagerReceived.fulfill()
+            return [:]
+        }
         AutotrackingModule.autoTrackView(viewName: viewName)
         
-        waitForExpectations(timeout: 20.0, handler: nil)
-
-        XCTAssertEqual(viewName, delegate.currentViewName)
+        waitOnTealiumSerialQueue {
+            wait(for: [tealiumInitialized], timeout: 1.0)
+        }
+        waitOnTealiumSerialQueue {
+            wait(for: [eventToManagerReceived], timeout: 1.0)
+        }
         teal.zz_internal_modulesManager?.collectors = []
     }
-    
-    func testAddCustomDataToInstanceManager() {
-        delegate.expectationRequest = expectation(description: "customDataRequest2")
 
-        let config = testTealiumConfig.copy
-        config.collectors = [Collectors.AutoTracking]
-        config.autoTrackingCollectorDelegate = delegate
-        let teal = Tealium(config: config)
-        let name = delegate.addDataViewName+"2"
-        AutotrackingModule.autoTrackView(viewName: name)
-
-        waitForExpectations(timeout: 20.0, handler: nil)
-
-        XCTAssertEqual(name, delegate.currentViewName)
-        teal.zz_internal_modulesManager?.collectors = []
-    }
-    
-    func testView() {
+    func testAutotrackingBufferEvents() {
         let viewName = "testView"
         
         let firstReceiveExp = expectation(description: "Will receive view")
@@ -115,39 +111,49 @@ class AutotrackingModuleTests: XCTestCase {
         wait(for: [firstReceiveExp, secondReceiveExp], timeout: 4.0)
     }
     
-    func testBlocked() {
+    func testBlockedViewsAreDiscarded() {
         let viewName = "testView"
         let blockedViewName = "blocked"
         
         let module = self.module
 
-        delegate.expectationRequest = expectation(description: "Only track unblocked views")
-        delegate.expectationRequest?.assertForOverFulfill = true
+        let trackedUnblockedViews = expectation(description: "Only track unblocked views")
+        
+        delegate._onCollectScreenView = { screenName in
+            XCTAssertEqual(screenName, viewName)
+            trackedUnblockedViews.fulfill()
+            return [:]
+        }
+        
         module.requestViewTrack(viewName: viewName)
         module.requestViewTrack(viewName: blockedViewName)
 
-        waitForExpectations(timeout: 4.0, handler: nil)
-
-        XCTAssertEqual(viewName, delegate.currentViewName)
+        waitOnTealiumSerialQueue {
+            waitForExpectations(timeout: 1.0)
+        }
     }
     
-    func testBlockedContains() {
-        let viewName = delegate.currentViewName
+    func testBlockedViewsAreCaseInsensitiveAndCheckForContains() {
         let blockedViewName1 = "BlOckEd"
         let blockedViewName2 = "UNBlOckEd"
         let blockedViewName3 = "BlOckEdView"
         
         let module = self.module
 
-        delegate.expectationRequest = expectation(description: "Don't track any blocked view")
-        delegate.expectationRequest?.isInverted = true
+        let blockedViewsAreNotTracked = expectation(description: "Blocked views are not tracked")
+        blockedViewsAreNotTracked.isInverted = true
+        delegate._onCollectScreenView = { screenName in
+            blockedViewsAreNotTracked.fulfill()
+            return [:]
+        }
+        
         module.requestViewTrack(viewName: blockedViewName1)
         module.requestViewTrack(viewName: blockedViewName2)
         module.requestViewTrack(viewName: blockedViewName3)
 
-        waitForExpectations(timeout: 4.0, handler: nil)
-
-        XCTAssertEqual(viewName, delegate.currentViewName)
+        waitOnTealiumSerialQueue {
+            waitForExpectations(timeout: 1.0)
+        }
     }
 }
 
@@ -165,20 +171,10 @@ extension AutotrackingModuleTests: ModuleDelegate {
 }
 
 class AutotrackingTestDelegate: AutoTrackingDelegate {
-    var currentViewName = ""
-    var expectationRequest: XCTestExpectation?
-    var addDataViewName: String {
-        "addData"
-    }
-    var addDataDictionary: [String: Any] {
-        ["someKey":"someValue"]
+    var _onCollectScreenView: (String) -> [String: Any] = { _ in
+        [:]
     }
     func onCollectScreenView(screenName: String) -> [String : Any] {
-        self.currentViewName = screenName
-        expectationRequest?.fulfill()
-        if screenName.starts(with: addDataViewName) {
-            return addDataDictionary
-        }
-        return [:]
+        _onCollectScreenView(screenName)
     }
 }

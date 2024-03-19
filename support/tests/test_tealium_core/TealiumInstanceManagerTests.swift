@@ -55,17 +55,13 @@ class TealiumInstanceManagerTests: XCTestCase {
     func testDidOpenUrlToDataLayer() {
         let config = testTealiumConfig.copy
         let tealium = Tealium(config: config, dataLayer: MockInMemoryDataLayer(), modulesManager: nil, migrator: nil, enableCompletion: nil)
-        
-        let expectationRequest = expectation(description: "emptyEventDetected")
         let url = URL(string: "https://www.google.it")!
         TealiumInstanceManager.shared.didOpenUrl(url)
         
-        TealiumQueues.backgroundSerialQueue.async {
+        TealiumQueues.backgroundSerialQueue.sync {
             let dataLayerUrl = tealium.dataLayer.all[TealiumDataKey.deepLinkURL] as? String
-            expectationRequest.fulfill()
             XCTAssertEqual(url.absoluteString, dataLayerUrl)
         }
-        waitForExpectations(timeout: 8.0, handler: nil)
     }
 
 }
