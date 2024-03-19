@@ -35,6 +35,12 @@ class TealiumExtensionTests: XCTestCase {
 
     override func tearDownWithError() throws { }
     
+    func waitOnTealiumSerialQueue<T>(_ block: () -> T) -> T {
+        return TealiumQueues.backgroundSerialQueue.sync {
+            return block()
+        }
+    }
+    
     func testVisitorIdNotNil() {
         let config = TealiumConfig(account: "test", profile: "test", environment: "test")
         let expect = expectation(description: "Visitor id not nil")
@@ -42,51 +48,59 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNotNil(self.tealium.visitorId)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 2.0)
+        waitOnTealiumSerialQueue {
+            wait(for: [expect], timeout: 1.0)
+        }
     }
     
     func testResetVisitorId() {
-        let expect = expectation(description: "Visitor id is reset")
+        let tealiumInitialized = expectation(description: "Tealium is initialized")
         tealium = Tealium(config: defaultTealiumConfig) { _ in
-            let currentVisitorId = self.tealium.visitorId
-            let currentUUID = self.tealium.dataLayer.all[TealiumDataKey.uuid] as? String
-            self.tealium.resetVisitorId()
-            TealiumQueues.backgroundSerialQueue.async {
-                let newVisitorId = self.tealium.visitorId
-                XCTAssertEqual(currentUUID, self.tealium.dataLayer.all[TealiumDataKey.uuid] as? String)
-                XCTAssertEqual(newVisitorId?.count, 32)
-                XCTAssertNotEqual(newVisitorId, currentVisitorId)
-                XCTAssertEqual(self.tealium.visitorId, newVisitorId)
-                expect.fulfill()
-            }
+            tealiumInitialized.fulfill()
         }
-        wait(for: [expect], timeout: 5.0)
+        waitOnTealiumSerialQueue {
+            wait(for: [tealiumInitialized], timeout: 1.0)
+        }
+        let currentVisitorId = self.tealium.visitorId
+        let currentUUID = self.tealium.dataLayer.all[TealiumDataKey.uuid] as? String
+        self.tealium.resetVisitorId()
+        waitOnTealiumSerialQueue {
+            let newVisitorId = self.tealium.visitorId
+            XCTAssertEqual(currentUUID, self.tealium.dataLayer.all[TealiumDataKey.uuid] as? String)
+            XCTAssertEqual(newVisitorId?.count, 32)
+            XCTAssertNotEqual(newVisitorId, currentVisitorId)
+            XCTAssertEqual(self.tealium.visitorId, newVisitorId)
+        }
     }
 
     func testClearStoredVisitorIdsWithoutDeletingFromDataLayer() {
-        let expect = expectation(description: "Visitor id is reset")
+        let tealiumInitialized = expectation(description: "Tealium is initialized")
         let config = defaultTealiumConfig.copy
         config.visitorIdentityKey = "someId"
         let identity = "identity"
         let hashedIdentity = identity.sha256()!
         tealium = Tealium(config: config) { _ in
-            self.tealium.dataLayer.add(key: "someId", value: identity, expiry: .untilRestart)
-            let idProvider = self.tealium.appDataModule!.visitorIdProvider
-            TealiumQueues.backgroundSerialQueue.async {
-                XCTAssertGreaterThan(idProvider.visitorIdStorage.cachedIds.count, 0)
-                let firstId = idProvider.getVisitorId(forKey: hashedIdentity)
-                XCTAssertEqual(firstId, idProvider.visitorIdStorage.visitorId)
-                self.tealium.clearStoredVisitorIds()
-                TealiumQueues.backgroundSerialQueue.async {
-                    XCTAssertNotEqual(idProvider.visitorIdStorage.cachedIds[hashedIdentity], firstId)
-                    XCTAssertEqual(idProvider.getVisitorId(forKey: hashedIdentity), idProvider.visitorIdStorage.visitorId)
-                    XCTAssertNotNil(idProvider.visitorIdStorage.currentIdentity)
-                    XCTAssertEqual(hashedIdentity, idProvider.visitorIdStorage.currentIdentity)
-                    expect.fulfill()
-                }
-            }
+            tealiumInitialized.fulfill()
         }
-        wait(for: [expect], timeout: 5.0)
+        waitOnTealiumSerialQueue {
+            wait(for: [tealiumInitialized], timeout: 1.0)
+        }
+        self.tealium.dataLayer.add(key: "someId", value: identity, expiry: .untilRestart)
+        let idProvider = self.tealium.appDataModule!.visitorIdProvider
+        let firstId = waitOnTealiumSerialQueue {
+            XCTAssertGreaterThan(idProvider.visitorIdStorage.cachedIds.count, 0)
+            let firstId = idProvider.getVisitorId(forKey: hashedIdentity)
+            XCTAssertEqual(firstId, idProvider.visitorIdStorage.visitorId)
+            return firstId
+        }
+        self.tealium.clearStoredVisitorIds()
+            
+        waitOnTealiumSerialQueue {
+            XCTAssertNotEqual(idProvider.visitorIdStorage.cachedIds[hashedIdentity], firstId)
+            XCTAssertEqual(idProvider.getVisitorId(forKey: hashedIdentity), idProvider.visitorIdStorage.visitorId)
+            XCTAssertNotNil(idProvider.visitorIdStorage.currentIdentity)
+            XCTAssertEqual(hashedIdentity, idProvider.visitorIdStorage.currentIdentity)
+        }
     }
 
     func testClearStoredVisitorIdsCorrectly() {
@@ -122,7 +136,9 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNotNil(self.tealium.consentManager)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 2.0)
+        waitOnTealiumSerialQueue {
+            wait(for: [expect], timeout: 1.0)
+        }
     }
 
     func testConsentManagerNilWhenPolicyNotSet() {
@@ -131,7 +147,9 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNil(self.tealium.consentManager)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 2.0)
+        waitOnTealiumSerialQueue {
+            wait(for: [expect], timeout: 1.0)
+        }
     }
 
     func testLoggerNotNil() {
@@ -140,7 +158,9 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNotNil(self.tealium.logger)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 4.0)
+        waitOnTealiumSerialQueue {
+            wait(for: [expect], timeout: 1.0)
+        }
     }
 
     func testVisitorServiceNotNil() {
@@ -150,7 +170,9 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNotNil(self.tealium.visitorService)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 2.0)
+        waitOnTealiumSerialQueue {
+            wait(for: [expect], timeout: 1.0)
+        }
     }
     
     func testMediaServiceNotNilWhenAddedToCollectors() {
@@ -160,7 +182,9 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNotNil(self.tealium.media)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 2.0)
+        waitOnTealiumSerialQueue {
+            wait(for: [expect], timeout: 1.0)
+        }
     }
     
     func testMediaServiceNilWhenAddedToCollectors() {
@@ -169,7 +193,9 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNil(self.tealium.media)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 2.0)
+        waitOnTealiumSerialQueue {
+            wait(for: [expect], timeout: 1.0)
+        }
     }
 
     func testVisitorServiceNilWhenNotSetAsCollector() {
@@ -178,7 +204,9 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNil(self.tealium.visitorService)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 2.0)
+        waitOnTealiumSerialQueue {
+            wait(for: [expect], timeout: 1.0)
+        }
     }
 
     func testLifecycleNotNil() {
@@ -188,7 +216,9 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNotNil(self.tealium.lifecycle)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 2.0)
+        waitOnTealiumSerialQueue {
+            wait(for: [expect], timeout: 1.0)
+        }
     }
 
     func testLifecycleNilWhenNotSetAsCollector() {
@@ -197,7 +227,9 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNil(self.tealium.lifecycle)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 2.0)
+        waitOnTealiumSerialQueue {
+            wait(for: [expect], timeout: 1.0)
+        }
     }
     
     func testStartTimedEventCallsEventSchedulerStart() {
@@ -209,7 +241,9 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertEqual(1, self.mockEventScheduler.startCallCount)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 2.0)
+        waitOnTealiumSerialQueue {
+            wait(for: [expect], timeout: 1.0)
+        }
     }
     
     func testStopTimedEventCallsEventSchedulerStopAndTimedEventInfo() {
@@ -223,7 +257,9 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertEqual(1, self.mockEventScheduler.sendTimedEventCount)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 2.0)
+        waitOnTealiumSerialQueue {
+            wait(for: [expect], timeout: 1.0)
+        }
     }
     
     func testCancelTimedEventCallsEventSchedulerCancel() {
@@ -235,7 +271,9 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertEqual(1, self.mockEventScheduler.cancelCallCount)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 2.0)
+        waitOnTealiumSerialQueue {
+            wait(for: [expect], timeout: 1.0)
+        }
     }
     
     func testClearAllTimedEventsCallsEventSchedulerClearAll() {
@@ -247,7 +285,9 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertEqual(1, self.mockEventScheduler.clearAllCallCount)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 2.0)
+        waitOnTealiumSerialQueue {
+            wait(for: [expect], timeout: 1.0)
+        }
     }
     
 
@@ -259,7 +299,9 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNotNil(self.tealium.location)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 2.0)
+        waitOnTealiumSerialQueue {
+            wait(for: [expect], timeout: 1.0)
+        }
     }
 
     func testLocationNilWhenNotSetAsCollector() {
@@ -268,7 +310,9 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNil(self.tealium.location)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 2.0)
+        waitOnTealiumSerialQueue {
+            wait(for: [expect], timeout: 1.0)
+        }
     }
 
     func testRemoteCommandsNotNil() {
@@ -278,7 +322,9 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNotNil(self.tealium.remoteCommands)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 2.0)
+        waitOnTealiumSerialQueue {
+            wait(for: [expect], timeout: 1.0)
+        }
     }
 
     func testRemoteCommandsNilWhenNotSetAsDispatcher() {
@@ -287,7 +333,9 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNil(self.tealium.remoteCommands)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 2.0)
+        waitOnTealiumSerialQueue {
+            wait(for: [expect], timeout: 1.0)
+        }
     }
 
     func testTagManagementNotNil() {
@@ -298,7 +346,9 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNotNil(self.tealium.tagManagement)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 2.0)
+        waitOnTealiumSerialQueue {
+            wait(for: [expect], timeout: 1.0)
+        }
     }
 
     func testTagManagementNilWhenNotSetAsDispatcher() {
@@ -308,7 +358,9 @@ class TealiumExtensionTests: XCTestCase {
             XCTAssertNil(self.tealium.tagManagement)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 2.0)
+        waitOnTealiumSerialQueue {
+            wait(for: [expect], timeout: 1.0)
+        }
     }
     #endif
 
