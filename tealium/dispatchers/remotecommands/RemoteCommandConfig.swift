@@ -83,14 +83,14 @@ public struct RemoteCommandConfig: Codable {
         commandURL = try values.decodeIfPresent(URL.self, forKey: .commandURL)
     }
 
-    public init?(file name: String, _ logger: TealiumLoggerProtocol?, _ bundle: Bundle?) {
-
+    public init?(file relativePath: String, _ logger: TealiumLoggerProtocol?, _ bundle: Bundle?) {
         let decoder = JSONDecoder()
         do {
-            guard let path = (bundle ?? Bundle.main).path(forResource: name, ofType: "json") else {
+            guard let fullPath = Self.fullPath(from: bundle ?? Bundle.main, 
+                                               relativePath: relativePath) else {
                 return nil
             }
-            let jsonData = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+            let jsonData = try Data(contentsOf: URL(fileURLWithPath: fullPath), options: .mappedIfSafe)
             let config = try decoder.decode(RemoteCommandConfig.self, from: jsonData)
             self.apiCommands = config.apiCommands
             self.apiConfig = config.apiConfig
@@ -105,5 +105,16 @@ public struct RemoteCommandConfig: Codable {
         }
     }
 
+    static func fullPath(from bundle: Bundle, relativePath: String) -> String? {
+        if !relativePath.lowercased().hasSuffix(".json") {
+            // For "name.json" saved, but only "name" passed
+            return bundle.path(forResource: relativePath, ofType: "json") ??
+            // For "name.json"/"name.JSON" saved, and same is passed
+            bundle.path(forResource: relativePath, ofType: nil)
+        } else {
+            // For "name"/"name.otherExtension" saved, and same is passed
+            return bundle.path(forResource: relativePath, ofType: nil)
+        }
+    }
 }
 #endif
