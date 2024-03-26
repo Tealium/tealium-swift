@@ -26,7 +26,6 @@ public extension TealiumDataKey {
 
 public enum LocationKey {
     static let name = "TealiumLocationModule"
-    static let dleBaseUrl = "https://tags.tiqcdn.com/dle/"
     static let fileName = "geofences"
     static let entered = "geofence_entered"
     static let exited = "geofence_exited"

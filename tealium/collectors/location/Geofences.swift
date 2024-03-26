@@ -98,7 +98,7 @@ class GeofenceProvider {
 
     /// Builds a URL from a Tealium config pointing to a hosted JSON file on the Tealium DLE
     private func url(from config: TealiumConfig) -> String {
-        return "\(LocationKey.dleBaseUrl)\(config.account)/\(config.profile)/\(LocationKey.fileName).json"
+        return "\(TealiumValue.tealiumDleBaseURL)\(config.account)/\(config.profile)/\(LocationKey.fileName).json"
     }
 
     func filter(geofences: [Geofence]) -> [Geofence] {
