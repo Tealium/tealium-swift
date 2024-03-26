@@ -43,7 +43,7 @@ public struct SessionStarter: SessionStarterProtocol {
                 return
             }
             guard let response = response as? HTTPURLResponse,
-                  HttpStatusCodes(rawValue: response.statusCode) == .ok else {
+                    (200 ..< 300).contains(response.statusCode) else {
                 completion(.failure(SessionError.invalidResponse))
                 return
             }

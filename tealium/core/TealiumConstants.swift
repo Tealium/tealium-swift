@@ -31,6 +31,7 @@ public enum TealiumValue {
     static let mobile = "mobile"
     public static let unknown = "unknown"
     public static let timedEvent = "timed_event"
+    static let settingsResourceName: String = "tealium-settings"
 }
 
 public enum ModuleNames {
@@ -182,13 +183,6 @@ public enum TealiumTrackType: String {
 }
 
 public typealias TealiumCompletion = ((_ successful: Bool, _ info: [String: Any]?, _ error: Error?) -> Void)
-
-// swiftlint:disable identifier_name
-public enum HttpStatusCodes: Int {
-    case notModified = 304
-    case ok = 200
-}
-// swiftlint:enable identifier_name
 
 public protocol TealiumErrorEnum: LocalizedError {}
 

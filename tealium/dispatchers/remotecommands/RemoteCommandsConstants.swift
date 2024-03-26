@@ -60,16 +60,9 @@ public enum TealiumRemoteCommandsError: TealiumErrorEnum, Equatable {
     case commandNotFound
     case remoteCommandsDisabled
     case requestNotProperlyFormatted
-    case invalidFileName
-    case couldNotConvertData
-    case couldNotDecodeJSON
-    case errorLoadingRemoteJSON
     case mappingsNotFound
     case commandsNotFound
     case commandNameNotFound
-    case noResponse
-    case invalidResponse
-    case notModified
 }
 
 enum TealiumRemoteCommandResponseError: TealiumErrorEnum {

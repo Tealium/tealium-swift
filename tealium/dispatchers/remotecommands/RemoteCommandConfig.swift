@@ -11,14 +11,12 @@ import Foundation
 import TealiumCore
 #endif
 
-public struct RemoteCommandConfig: Codable {
-    var fileName: String? = ""
-    var commandURL: URL?
+public struct RemoteCommandConfig: Codable, EtagResource {
     var apiConfig: [String: Any]?
     var mappings: [String: String]?
     var apiCommands: [String: String]?
     var statics: [String: Any]?
-    var lastFetch: Date?
+    public var etag: String?
 
     struct Delimiters {
         let keysEqualityDelimiter: String
@@ -39,23 +37,18 @@ public struct RemoteCommandConfig: Codable {
         self.mappings = mappings
         self.apiCommands = apiCommands
         self.statics = statics
-        self.fileName = commandName
-        self.commandURL = commandURL
     }
 
     enum CodingKeys: String, CodingKey {
-        case fileName
         case apiConfig = "config"
         case mappings
         case apiCommands = "commands"
         case statics
-        case lastFetch
-        case commandURL
+        case etag
     }
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(fileName, forKey: .fileName)
 
         if let apiConfig = apiConfig?.codable {
             try container.encode(apiConfig, forKey: .apiConfig)
@@ -66,27 +59,24 @@ public struct RemoteCommandConfig: Codable {
 
         try container.encode(mappings, forKey: .mappings)
         try container.encode(apiCommands, forKey: .apiCommands)
-        try container.encode(lastFetch, forKey: .lastFetch)
-        try container.encode(commandURL, forKey: .commandURL)
+        try container.encode(etag, forKey: .etag)
     }
 
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         let decoded = try values.decodeIfPresent(AnyDecodable.self, forKey: .apiConfig)
         let decodableStatics = try values.decodeIfPresent(AnyDecodable.self, forKey: .statics)
-        fileName = try values.decodeIfPresent(String.self, forKey: .fileName)
         apiConfig = decoded?.value as? [String: Any]
         statics = decodableStatics?.value as? [String: Any]
         mappings = try values.decodeIfPresent([String: String].self, forKey: .mappings)
         apiCommands = try values.decodeIfPresent([String: String].self, forKey: .apiCommands)
-        lastFetch = try values.decodeIfPresent(Date.self, forKey: .lastFetch) ?? Date()
-        commandURL = try values.decodeIfPresent(URL.self, forKey: .commandURL)
+        etag = try values.decodeIfPresent(String.self, forKey: .etag)
     }
 
     public init?(file relativePath: String, _ logger: TealiumLoggerProtocol?, _ bundle: Bundle?) {
         let decoder = JSONDecoder()
         do {
-            guard let fullPath = Self.fullPath(from: bundle ?? Bundle.main, 
+            guard let fullPath = Self.fullPath(from: bundle ?? Bundle.main,
                                                relativePath: relativePath) else {
                 return nil
             }
