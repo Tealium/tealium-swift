@@ -44,7 +44,7 @@ class TealiumPublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol, 
         let resourceRetriever = ResourceRetriever(urlSession: urlSession, resourceBuilder: { data, etag in
             Self.getPublishSettings(from: data, etag: etag)
         })
-        let refreshParameters = RefreshParameters<RemotePublishSettings>(id: "settings", url: url, fileName: nil)
+        let refreshParameters = RefreshParameters<RemotePublishSettings>(id: "settings", url: url, fileName: nil, refreshInterval: (cachedSettings?.minutesBetweenRefresh ?? config.minutesBetweenRefresh ?? 15.0) * 60)
         self.resourceRefresher = ResourceRefresher(resourceRetriever: resourceRetriever, diskStorage: diskStorage, refreshParameters: refreshParameters)
         resourceRefresher?.delegate = self
         if cachedSettings == nil,
@@ -84,16 +84,9 @@ class TealiumPublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol, 
         try? JSONLoader.fromFile(TealiumValue.settingsResourceName, bundle: .main)
     }
 
-    func resourceRefresher(_ id: String, didLoad resource: RemotePublishSettings) {
+    func resourceRefresher(_ refresher: ResourceRefresher<RemotePublishSettings>, didLoad resource: RemotePublishSettings) {
         cachedSettings = resource
+        refresher.setRefreshInterval(resource.minutesBetweenRefresh*60)
         delegate?.didUpdate(resource)
-    }
-
-    func resourceRefresher(_ id: String, shouldRefresh lastFetch: Date) -> Bool {
-        guard let settings = cachedSettings,
-            let date = lastFetch.addMinutes(settings.minutesBetweenRefresh) else {
-            return true
-        }
-        return Date() > date
     }
 }

@@ -46,19 +46,7 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
         moduleDelegate = delegate
         let diskStorage = diskStorage ?? TealiumDiskStorage(config: config, forModule: RemoteCommandsKey.moduleName)
         self.diskStorage = diskStorage
-        resourceRetriever = ResourceRetriever(urlSession: urlSession, resourceBuilder: Self.config(from:etag:), logError: { error in
-            guard error.localizedDescription != "notModified" else {
-                let request = TealiumLogRequest(title: "Remote Command", message: "Config not updated because JSON was not modified", info: nil, logLevel: .info, category: .general)
-                config.logger?.log(request)
-                return
-            }
-            let request = TealiumLogRequest(title: "Remote Commands",
-                                            message: "Error while processing the remote command configuration: \(error.localizedDescription)",
-                                            info: nil,
-                                            logLevel: .error,
-                                            category: .general)
-            config.logger?.log(request)
-        })
+        resourceRetriever = ResourceRetriever(urlSession: urlSession, resourceBuilder: Self.config(from:etag:))
     }
 
     /// Fetches and updates the  JSON `RemoteCommandConfig` then saves to PersistentData storage for processing
@@ -99,6 +87,13 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
                 remoteCommand.config = localConfig
                 remove(jsonCommand: remoteCommand.commandId)
                 jsonCommands.append(remoteCommand)
+            } else {
+                let request = TealiumLogRequest(title: "Remote Commands",
+                                                message: "Could not find a valid local JSON command named \(file)",
+                                                info: nil,
+                                                logLevel: .error,
+                                                category: .general)
+                config.logger?.log(request)
             }
         case .remote(let urlString):
             jsonCommands.append(remoteCommand)
@@ -106,10 +101,13 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
                 return
             }
             let fileName = getConfigFilename(forUrl: urlString, commandId: remoteCommand.commandId)
-            let refreshParameters = RefreshParameters<RemoteCommandConfig>(id: remoteCommand.commandId, url: url, fileName: fileName)
+            let parameters = RefreshParameters<RemoteCommandConfig>(id: remoteCommand.commandId,
+                                                                    url: url,
+                                                                    fileName: fileName, 
+                                                                    refreshInterval: config.remoteCommandConfigRefresh.interval)
             let refresher = ResourceRefresher(resourceRetriever: resourceRetriever,
                                               diskStorage: diskStorage,
-                                              refreshParameters: refreshParameters)
+                                              refreshParameters: parameters)
             commandsRefreshers[remoteCommand.commandId] = refresher
             refresher.delegate = self
             if remoteCommand.config == nil, // remoteCommand.config is nil or cached from a previous call
@@ -239,22 +237,25 @@ extension RemoteCommandsManager: RemoteCommandDelegate {
 }
 
 extension RemoteCommandsManager: ResourceRefresherDelegate {
-    public func resourceRefresher(_ id: String, didLoad resource: RemoteCommandConfig) {
-        guard let index = jsonCommands.firstIndex(where: { $0.commandId == id }) else {
+    public func resourceRefresher(_ refresher: ResourceRefresher<Resource>, didLoad resource: RemoteCommandConfig) {
+        guard let index = jsonCommands.firstIndex(where: { $0.commandId == refresher.id }) else {
             return
         }
         jsonCommands[index].config = resource
     }
 
-    public func resourceRefresher(_ id: String, shouldRefresh lastFetch: Date) -> Bool {
-        guard let command = jsonCommands.first(where: { $0.commandId == id }) else {
-            return false // Should never happen
+    public func resourceRefresher(_ refresher: ResourceRefresher<Resource>, didFailToLoadResource error: Error) {
+        guard error.localizedDescription != "notModified" else {
+            let request = TealiumLogRequest(title: "Remote Command", message: "Config not updated because JSON was not modified", info: nil, logLevel: .info, category: .general)
+            config.logger?.log(request)
+            return
         }
-        guard let _ = command.config,
-            let date = lastFetch.addSeconds(self.config.remoteCommandConfigRefresh.interval) else {
-            return true
-        }
-        return Date() > date
+        let request = TealiumLogRequest(title: "Remote Commands",
+                                        message: "Error while processing the remote command configuration: \(error.localizedDescription)",
+                                        info: nil,
+                                        logLevel: .error,
+                                        category: .general)
+        config.logger?.log(request)
     }
 }
 #endif

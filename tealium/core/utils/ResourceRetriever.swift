@@ -35,16 +35,15 @@ public class ResourceRetriever<Resource: Codable> {
     let urlSession: URLSessionProtocol
     public typealias ResourceBuilder = (_ data: Data, _ etag: String?) -> Resource?
     let resourceBuilder: ResourceBuilder
-    let logError: ((Error) -> Void)?
-    public init(urlSession: URLSessionProtocol, resourceBuilder: @escaping ResourceBuilder, logError: ((Error) -> Void)? = nil) {
+    var maxRetries = 5
+    public init(urlSession: URLSessionProtocol, resourceBuilder: @escaping ResourceBuilder) {
         self.urlSession = urlSession
         self.resourceBuilder = resourceBuilder
-        self.logError = logError
     }
 
     public func getResource(url: URL,
                             etag: String?,
-                            completion: @escaping (Resource?) -> Void) {
+                            completion: @escaping (Result<Resource, Error>) -> Void) {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         if let etag = etag {
@@ -55,11 +54,39 @@ public class ResourceRetriever<Resource: Codable> {
                 request.cachePolicy = .reloadIgnoringLocalCacheData
             }
         }
-        sendRequest(request) { result in
-            if case .failure(let error) = result {
-                self.logError?(error)
+        sendRetryableRequest(request, completion: completion)
+    }
+
+    private func isRetryableError(_ error: Error) -> Bool {
+        if let resourceRetrieverError = error as? TealiumResourceRetrieverError {
+            switch resourceRetrieverError {
+            case .emptyBody:
+                return true
+            case let .non200response(statusCode: code):
+                if code == 408 || code == 429 || (500..<600).contains(code) {
+                    return true
+                }
+                return false
+            default:
+                return false
             }
-            completion(try? result.get())
+        }
+        return true
+    }
+
+    private func sendRetryableRequest(_ request: URLRequest, retryCount: Int = 0, completion: @escaping (Result<Resource, Error>) -> Void) {
+        sendRequest(request) { [weak self] result in
+            guard let self = self else { return }
+            if case .failure(let error) = result {
+                if self.isRetryableError(error) && retryCount < self.maxRetries {
+                    let newCount = retryCount + 1
+                    TealiumQueues.backgroundSerialQueue.asyncAfter(deadline: .now() + 0.5 * Double(newCount)) { [weak self] in
+                        self?.sendRetryableRequest(request, retryCount: newCount, completion: completion)
+                    }
+                    return
+                }
+            }
+            completion(result)
         }
     }
 
@@ -101,23 +128,34 @@ public struct RefreshParameters<Resource> {
     let id: String
     let url: URL
     let fileName: String?
-    public init(id: String, url: URL, fileName: String?) {
+    var refreshInterval: Double
+    let errorCooldownInterval: Double
+    public init(id: String, url: URL, fileName: String?, refreshInterval: Double, errorCooldownInterval: Double = 30) {
         self.id = id
         self.url = url
         self.fileName = fileName
+        self.refreshInterval = refreshInterval
+        self.errorCooldownInterval = errorCooldownInterval
     }
 }
 
 public protocol ResourceRefresherDelegate<Resource>: AnyObject {
-    associatedtype Resource
-    func resourceRefresher(_ id: String, didLoad resource: Resource)
-    func resourceRefresher(_ id: String, shouldRefresh lastFetch: Date) -> Bool
+    associatedtype Resource: Codable & EtagResource
+    func resourceRefresher(_ refresher: ResourceRefresher<Resource>, didLoad resource: Resource)
+    func resourceRefresher(_ refresher: ResourceRefresher<Resource>, didFailToLoadResource error: Error)
+}
+
+public extension ResourceRefresherDelegate {
+    func resourceRefresher(_ refresher: ResourceRefresher<Resource>, didFailToLoadResource error: Error) { }
 }
 
 public class ResourceRefresher<Resource: Codable & EtagResource> {
     let resourceRetriever: ResourceRetriever<Resource>
     let diskStorage: TealiumDiskStorageProtocol
-    let parameters: RefreshParameters<Resource>
+    private var parameters: RefreshParameters<Resource>
+    public var id: String {
+        parameters.id
+    }
     public weak var delegate: (any ResourceRefresherDelegate<Resource>)? {
         didSet {
             if let _ = delegate {
@@ -131,6 +169,8 @@ public class ResourceRefresher<Resource: Codable & EtagResource> {
     private var fetching = false
     private var lastFetch: Date?
     private var lastEtag: String?
+    private var lastError: Error?
+    public private(set) var resourceIsCached = false
     public init(resourceRetriever: ResourceRetriever<Resource>,
                 diskStorage: TealiumDiskStorageProtocol,
                 refreshParameters: RefreshParameters<Resource>) {
@@ -146,7 +186,27 @@ public class ResourceRefresher<Resource: Codable & EtagResource> {
         guard let lastFetch = lastFetch else {
             return true
         }
-        return delegate?.resourceRefresher(parameters.id, shouldRefresh: lastFetch) ?? true
+        guard !isInCooldown(lastFetch: lastFetch) else {
+            return false
+        }
+        lastError = nil
+        guard !resourceIsCached else {
+            return true
+        }
+        guard let newFetchMinimumDate = lastFetch.addSeconds(parameters.refreshInterval) else {
+            return true
+        }
+        return newFetchMinimumDate < Date()
+    }
+
+    private func isInCooldown(lastFetch: Date) -> Bool {
+        guard lastError == nil else {
+            return false
+        }
+        guard let cooldownEndDate = lastFetch.addSeconds(parameters.errorCooldownInterval) else {
+            return false
+        }
+        return cooldownEndDate > Date()
     }
 
     public func requestRefresh() {
@@ -158,10 +218,14 @@ public class ResourceRefresher<Resource: Codable & EtagResource> {
 
     private func refresh() {
         fetching = true
-        resourceRetriever.getResource(url: parameters.url, etag: lastEtag) { resource in
-            if let resource = resource {
-                self.onResourceLoaded(resource)
+        resourceRetriever.getResource(url: parameters.url, etag: lastEtag) { result in
+            switch result {
+            case .success(let resource):
                 self.saveResource(resource)
+                self.onResourceLoaded(resource)
+            case .failure(let error):
+                self.delegate?.resourceRefresher(self, didFailToLoadResource: error)
+                self.lastError = error
             }
             self.lastFetch = Date()
             self.fetching = false
@@ -186,6 +250,11 @@ public class ResourceRefresher<Resource: Codable & EtagResource> {
 
     private func onResourceLoaded(_ resource: Resource) {
         lastEtag = resource.etag
-        delegate?.resourceRefresher(parameters.id, didLoad: resource)
+        delegate?.resourceRefresher(self, didLoad: resource)
+        resourceIsCached = true
+    }
+
+    public func setRefreshInterval(_ seconds: Double) {
+        parameters.refreshInterval = seconds
     }
 }
