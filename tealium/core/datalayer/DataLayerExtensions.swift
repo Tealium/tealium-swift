@@ -37,7 +37,7 @@ public extension TealiumConfig {
 public extension TealiumValue {
     static let defaultMinutesBetweenSession = 30
     static let defaultsSecondsBetweenTrackEvents = 30.0
-    static let sessionBaseURL = "\(TealiumValue.tiqBaseURL)/tiqapp/utag.v.js?a="
+    static let sessionBaseURL = "\(TealiumValue.tiqBaseURL)tiqapp/utag.v.js?a="
 }
 
 public extension TealiumDataKey {

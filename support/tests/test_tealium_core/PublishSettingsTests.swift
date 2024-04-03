@@ -27,7 +27,6 @@ class PublishSettingsTests: XCTestCase {
     func testGetPublishSettingsFromJSON() {
         let config = testTealiumConfig.copy
         config.shouldUseRemotePublishSettings = true
-        let publishSettingsRetriever = TealiumPublishSettingsRetriever(config: config, delegate: self)
         let string = """
         <!--tealium tag management - mobile.webview ut4.0.202001151447, Copyright 2020 Tealium.com Inc. All Rights Reserved.-->
         <html>
@@ -40,7 +39,7 @@ class PublishSettingsTests: XCTestCase {
 
         """
         let data = string.data(using: .utf8)
-        let publishSettings = publishSettingsRetriever.getPublishSettings(from: data!, etag: nil)
+        let publishSettings = TealiumPublishSettingsRetriever.getPublishSettings(from: data!, etag: nil)
         XCTAssertEqual(publishSettings?.batchSize, 4, "Batch size incorrect")
         XCTAssertEqual(publishSettings?.dispatchExpiration, -1, "Batch size incorrect")
         XCTAssertEqual(publishSettings?.wifiOnlySending, true, "Batch size incorrect")
@@ -54,7 +53,6 @@ class PublishSettingsTests: XCTestCase {
     }
 
     func testGetRemoteSettings() {
-        let expectation = self.expectation(description: "publishsettings")
         let config = testTealiumConfig.copy
         config.shouldUseRemotePublishSettings = true
 
@@ -62,18 +60,12 @@ class PublishSettingsTests: XCTestCase {
                                                                        diskStorage: MockTealiumDiskStorage(),
                                                                        urlSession: MockURLSessionPublishSettings(),
                                                                        delegate: self)
-        publishSettingsRetriever.getRemoteSettings(url: settingsUrl, etag: nil) { settings in
-            guard settings != nil else {
-                XCTFail("Publish settings not returned")
-                return
-            }
-            expectation.fulfill()
+        TealiumQueues.backgroundSerialQueue.sync {
+            XCTAssertNotNil(publishSettingsRetriever.cachedSettings)
         }
-        wait(for: [expectation], timeout: 5)
     }
 
     func testGetRemoteSettingsExtraContent() {
-        let expectation = self.expectation(description: "publishsettings")
         let config = testTealiumConfig.copy
         config.shouldUseRemotePublishSettings = true
 
@@ -81,18 +73,12 @@ class PublishSettingsTests: XCTestCase {
                                                                        diskStorage: MockTealiumDiskStorage(),
                                                                        urlSession: MockURLSessionPublishSettingsExtraContent(),
                                                                        delegate: self)
-        publishSettingsRetriever.getRemoteSettings(url: settingsUrl, etag: nil) { settings in
-            guard settings != nil else {
-                XCTFail("Publish settings not returned")
-                return
-            }
-            expectation.fulfill()
+        TealiumQueues.backgroundSerialQueue.sync {
+            XCTAssertNotNil(publishSettingsRetriever.cachedSettings)
         }
-        wait(for: [expectation], timeout: 5)
     }
 
     func testGetRemoteSettingsNoContent() {
-        let expectation = self.expectation(description: "publishsettings")
         let config = testTealiumConfig.copy
         config.shouldUseRemotePublishSettings = true
 
@@ -100,14 +86,9 @@ class PublishSettingsTests: XCTestCase {
                                                                        diskStorage: MockTealiumDiskStorage(),
                                                                        urlSession: MockURLSessionPublishSettingsNoContent(),
                                                                        delegate: self)
-        publishSettingsRetriever.getRemoteSettings(url: settingsUrl, etag: nil) { settings in
-            guard settings == nil else {
-                XCTFail("Publish settings should be nil")
-                return
-            }
-            expectation.fulfill()
+        TealiumQueues.backgroundSerialQueue.sync {
+            XCTAssertNil(publishSettingsRetriever.cachedSettings)
         }
-        wait(for: [expectation], timeout: 5)
     }
     
     func testGetRemoteSettingsRefreshesWithLatestEtag() {
@@ -130,12 +111,14 @@ class PublishSettingsTests: XCTestCase {
         XCTAssertNotNil(publishSettingsRetriever.cachedSettings?.etag)
         publishSettingsRetriever.refresh()
         let secondUrlRequest = self.expectation(description: "second urlRequest arrived")
-        urlSession.onURLRequest.subscribeOnce { req in
-            XCTAssertNotNil(req.allHTTPHeaderFields?["If-None-Match"])
-            XCTAssertEqual(req.allHTTPHeaderFields?["If-None-Match"], publishSettingsRetriever.cachedSettings?.etag)
-            secondUrlRequest.fulfill()
+        TealiumQueues.backgroundSerialQueue.sync {
+            urlSession.onURLRequest.subscribeOnce { req in
+                XCTAssertNotNil(req.allHTTPHeaderFields?["If-None-Match"])
+                XCTAssertEqual(req.allHTTPHeaderFields?["If-None-Match"], publishSettingsRetriever.cachedSettings?.etag)
+                secondUrlRequest.fulfill()
+            }
+            waitForExpectations(timeout: 5.0)
         }
-        waitForExpectations(timeout: 5.0)
     }
     
 
@@ -144,33 +127,32 @@ class PublishSettingsTests: XCTestCase {
         let config = testTealiumConfig.copy
         config.shouldUseRemotePublishSettings = true
         let delegate = GetSavePublishSettings()
-        _ = TealiumPublishSettingsRetriever(config: config, diskStorage: MockTealiumDiskStorage(), urlSession: MockURLSessionPublishSettings(), delegate: delegate)
-        wait(for: [PublishSettingsTests.delegateExpectationSuccess!], timeout: 5)
+        let retriever = TealiumPublishSettingsRetriever(config: config, diskStorage: MockTealiumDiskStorage(), urlSession: MockURLSessionPublishSettings(), delegate: delegate)
+        XCTAssertNil(retriever.cachedSettings)
+        TealiumQueues.backgroundSerialQueue.sync {
+            wait(for: [PublishSettingsTests.delegateExpectationSuccess!], timeout: 1)
+        }
     }
 
-    func testRefresh() {
-        PublishSettingsTests.delegateExpectationSuccess = self.expectation(description: "publishsettings")
-        let config = testTealiumConfig.copy
-        config.shouldUseRemotePublishSettings = true
-        let delegate = GetSavePublishSettings()
-        _ = TealiumPublishSettingsRetriever(config: config, diskStorage: nil, urlSession: MockURLSessionPublishSettings(), delegate: delegate)
-        wait(for: [PublishSettingsTests.delegateExpectationSuccess!], timeout: 5)
-    }
     
-    func testMultipleRefresh() {
+    func testMultipleRefreshDontRefreshMultipleTimes() {
         PublishSettingsTests.delegateExpectationSuccess = self.expectation(description: "publishsettings")
         PublishSettingsTests.delegateExpectationSuccess?.assertForOverFulfill = true
         let config = testTealiumConfig.copy
         config.shouldUseRemotePublishSettings = true
         let delegate = GetSavePublishSettings()
-        TealiumQueues.backgroundSerialQueue.async { // Make sure mock returns after refresh is called 
-            let retriver = TealiumPublishSettingsRetriever(config: config,
-                                                           diskStorage: MockTealiumDiskStorage(),
-                                                           urlSession: MockURLSessionPublishSettings(),
-                                                           delegate: delegate)
+        let session = MockURLSessionPublishSettings()
+        session.refreshInterval = 5
+        let retriver = TealiumPublishSettingsRetriever(config: config,
+                                                       diskStorage: MockTealiumDiskStorage(),
+                                                       urlSession: session,
+                                                       delegate: delegate)
+        TealiumQueues.backgroundSerialQueue.sync {
             retriver.refresh()
         }
-        wait(for: [PublishSettingsTests.delegateExpectationSuccess!], timeout: 15)
+        TealiumQueues.backgroundSerialQueue.sync {
+            wait(for: [PublishSettingsTests.delegateExpectationSuccess!], timeout: 1)
+        }
     }
 
 }

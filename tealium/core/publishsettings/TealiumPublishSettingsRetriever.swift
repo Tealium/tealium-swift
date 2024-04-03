@@ -44,12 +44,19 @@ class TealiumPublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol, 
         let resourceRetriever = ResourceRetriever(urlSession: urlSession, resourceBuilder: { data, etag in
             Self.getPublishSettings(from: data, etag: etag)
         })
-        let refreshParameters = RefreshParameters<RemotePublishSettings>(id: "settings", url: url, fileName: nil, refreshInterval: (cachedSettings?.minutesBetweenRefresh ?? config.minutesBetweenRefresh ?? 15.0) * 60)
+        let refreshInterval = (cachedSettings?.minutesBetweenRefresh ?? config.minutesBetweenRefresh ?? 15.0) * 60
+        let refreshParameters = RefreshParameters<RemotePublishSettings>(id: "settings",
+                                                                         url: url,
+                                                                         fileName: nil,
+                                                                         refreshInterval: refreshInterval)
         self.resourceRefresher = ResourceRefresher(resourceRetriever: resourceRetriever, diskStorage: diskStorage, refreshParameters: refreshParameters)
         resourceRefresher?.delegate = self
         if cachedSettings == nil,
            let defaultSettings = loadSettingsFromBundle() {
             cachedSettings = defaultSettings
+        }
+        if let cachedSettings = cachedSettings {
+            delegate.didUpdate(cachedSettings)
         }
         refresh()
     }
@@ -86,7 +93,7 @@ class TealiumPublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol, 
 
     func resourceRefresher(_ refresher: ResourceRefresher<RemotePublishSettings>, didLoad resource: RemotePublishSettings) {
         cachedSettings = resource
-        refresher.setRefreshInterval(resource.minutesBetweenRefresh*60)
+        refresher.setRefreshInterval(resource.minutesBetweenRefresh * 60)
         delegate?.didUpdate(resource)
     }
 }

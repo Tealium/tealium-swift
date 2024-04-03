@@ -103,7 +103,7 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
             let fileName = getConfigFilename(forUrl: urlString, commandId: remoteCommand.commandId)
             let parameters = RefreshParameters<RemoteCommandConfig>(id: remoteCommand.commandId,
                                                                     url: url,
-                                                                    fileName: fileName, 
+                                                                    fileName: fileName,
                                                                     refreshInterval: config.remoteCommandConfigRefresh.interval)
             let refresher = ResourceRefresher(resourceRetriever: resourceRetriever,
                                               diskStorage: diskStorage,

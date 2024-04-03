@@ -22,7 +22,7 @@ class SessionStarterTests: XCTestCase {
 
     func testSessionURL() {
         let sessionURL = sessionStarter.sessionURL
-        XCTAssertEqual(true, sessionURL.hasPrefix("https://tags.tiqcdn.com/utag/tiqapp/utag.v.js?a=ssTestAccount/ssTestProfile/"))
+        XCTAssertTrue(sessionURL.hasPrefix("https://tags.tiqcdn.com/utag/tiqapp/utag.v.js?a=ssTestAccount/ssTestProfile/"))
     }
 
     func testRequestSessionSuccessful() {

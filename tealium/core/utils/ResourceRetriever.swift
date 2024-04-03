@@ -190,7 +190,7 @@ public class ResourceRefresher<Resource: Codable & EtagResource> {
             return false
         }
         lastError = nil
-        guard !resourceIsCached else {
+        guard resourceIsCached else {
             return true
         }
         guard let newFetchMinimumDate = lastFetch.addSeconds(parameters.refreshInterval) else {
@@ -200,7 +200,7 @@ public class ResourceRefresher<Resource: Codable & EtagResource> {
     }
 
     private func isInCooldown(lastFetch: Date) -> Bool {
-        guard lastError == nil else {
+        guard lastError != nil else {
             return false
         }
         guard let cooldownEndDate = lastFetch.addSeconds(parameters.errorCooldownInterval) else {
@@ -246,12 +246,12 @@ public class ResourceRefresher<Resource: Codable & EtagResource> {
         } else {
             self.diskStorage.save(resource, completion: nil)
         }
+        resourceIsCached = true
     }
 
     private func onResourceLoaded(_ resource: Resource) {
         lastEtag = resource.etag
         delegate?.resourceRefresher(self, didLoad: resource)
-        resourceIsCached = true
     }
 
     public func setRefreshInterval(_ seconds: Double) {
