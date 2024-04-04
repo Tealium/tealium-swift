@@ -111,7 +111,8 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
                                               refreshParameters: parameters)
             commandsRefreshers[remoteCommand.commandId] = refresher
             refresher.delegate = self
-            if remoteCommand.config == nil, // remoteCommand.config is nil or cached from a previous call
+            let configCacheFound = remoteCommand.config != nil
+            if !configCacheFound,
                 let defaultConfig = RemoteCommandConfig(file: fileName, logger, nil) {
                 remoteCommand.config = defaultConfig
             }
