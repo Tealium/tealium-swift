@@ -129,8 +129,8 @@ public struct RefreshParameters<Resource> {
     let url: URL
     let fileName: String?
     var refreshInterval: Double
-    let errorCooldownInterval: Double
-    public init(id: String, url: URL, fileName: String?, refreshInterval: Double, errorCooldownInterval: Double = 30) {
+    let errorCooldownInterval: Double?
+    public init(id: String, url: URL, fileName: String?, refreshInterval: Double, errorCooldownInterval: Double? = nil) {
         self.id = id
         self.url = url
         self.fileName = fileName
@@ -169,8 +169,16 @@ public class ResourceRefresher<Resource: Codable & EtagResource> {
     private var fetching = false
     private var lastFetch: Date?
     private var lastEtag: String?
-    private var lastError: Error?
-    public private(set) var resourceIsCached = false
+    private var lastError: Error? {
+        didSet {
+            if let _ = lastError {
+                consecutiveErrorsCount += 1
+            } else {
+                consecutiveErrorsCount = 0
+            }
+        }
+    }
+    private var consecutiveErrorsCount = 0
     public init(resourceRetriever: ResourceRetriever<Resource>,
                 diskStorage: TealiumDiskStorageProtocol,
                 refreshParameters: RefreshParameters<Resource>) {
@@ -190,20 +198,25 @@ public class ResourceRefresher<Resource: Codable & EtagResource> {
             return false
         }
         lastError = nil
-        guard resourceIsCached else {
-            return true
-        }
         guard let newFetchMinimumDate = lastFetch.addSeconds(parameters.refreshInterval) else {
             return true
         }
         return newFetchMinimumDate < Date()
     }
 
+    var cooldownInterval: Double? {
+        guard let cooldownInterval = parameters.errorCooldownInterval else {
+            return nil
+        }
+        return min(parameters.refreshInterval, cooldownInterval * Double(consecutiveErrorsCount))
+    }
+
     private func isInCooldown(lastFetch: Date) -> Bool {
         guard lastError != nil else {
             return false
         }
-        guard let cooldownEndDate = lastFetch.addSeconds(parameters.errorCooldownInterval) else {
+        guard let cooldownInterval = cooldownInterval,
+              let cooldownEndDate = lastFetch.addSeconds(cooldownInterval) else {
             return false
         }
         return cooldownEndDate > Date()
@@ -246,7 +259,6 @@ public class ResourceRefresher<Resource: Codable & EtagResource> {
         } else {
             self.diskStorage.save(resource, completion: nil)
         }
-        resourceIsCached = true
     }
 
     private func onResourceLoaded(_ resource: Resource) {
