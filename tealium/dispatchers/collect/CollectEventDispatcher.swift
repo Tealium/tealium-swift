@@ -12,8 +12,7 @@ import TealiumCore
 
 class CollectEventDispatcher: CollectProtocol, LoggingDataToStringConverter {
 
-    var urlSession: URLSessionProtocol?
-    var urlSessionConfiguration: URLSessionConfiguration?
+    let urlSession: URLSessionProtocol
     var logger: TealiumLoggerProtocol?
     static var defaultDispatchBaseURL = "https://collect.tealiumiq.com"
     static var singleEventPath = "/event/"
@@ -108,29 +107,31 @@ class CollectEventDispatcher: CollectProtocol, LoggingDataToStringConverter {
     ///     - completion: `ModuleCompletion?` Optional completion block to handle success/failure
     func sendURLRequest(_ request: URLRequest,
                         _ completion: ModuleCompletion?) {
-        if let urlSession = self.urlSession {
-            let task = urlSession.tealiumDataTask(with: request) { _, response, error in
-                if let error = error as? URLError {
-                    completion?((.failure(error), nil))
-                } else if let status = response as? HTTPURLResponse {
-                    // error only indicates "no response from server. 400 responses are considered successful
-                    if let errorHeader = status.allHeaderFields[CollectKey.errorHeaderKey] as? String {
-                        completion?((.failure(CollectError.xErrorDetected), ["error": errorHeader]))
-                    } else if status.statusCode != 200 {
-                        completion?((.failure(CollectError.non200Response), nil))
-                    } else {
-                        completion?((.success(true), nil))
-                    }
-                }
+        let task = urlSession.tealiumDataTask(with: request) { _, response, error in
+            if let error = error as? URLError {
+                completion?((.failure(error), nil))
+                return
             }
-            task.resume()
+            guard let status = response as? HTTPURLResponse else {
+                completion?((.failure(CollectError.unknownResponseType), nil))
+                return
+            }
+            // error only indicates "no response from server. 400 responses are considered successful
+            if let errorHeader = status.allHeaderFields[CollectKey.errorHeaderKey] as? String {
+                completion?((.failure(CollectError.xErrorDetected), ["error": errorHeader]))
+                return
+            }
+            guard status.statusCode != 200 else {
+                completion?((.failure(CollectError.non200Response), nil))
+                return
+            }
+            completion?((.success(true), nil))
         }
+        task.resume()
     }
 
     deinit {
-        urlSessionConfiguration = nil
-        urlSession?.finishTealiumTasksAndInvalidate()
-        urlSession = nil
+        urlSession.finishTealiumTasksAndInvalidate()
     }
 
 }
