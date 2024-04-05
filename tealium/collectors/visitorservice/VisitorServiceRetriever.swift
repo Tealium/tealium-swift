@@ -12,7 +12,7 @@ import TealiumCore
 
 public class VisitorServiceRetriever {
 
-    var urlSession: URLSessionProtocol?
+    let urlSession: URLSessionProtocol
     var tealiumConfig: TealiumConfig
 
     enum URLRequestResult {
@@ -50,11 +50,6 @@ public class VisitorServiceRetriever {
     ///     - completion: Optional completion block to handle success/failure
     func sendURLRequest(_ request: URLRequest,
                         _ completion: @escaping (URLRequestResult) -> Void) {
-        guard let urlSession = urlSession else {
-            completion(.failure(.couldNotCreateSession))
-            return
-        }
-
         urlSession.tealiumDataTask(with: request) { data, response, error in
             TealiumQueues.backgroundSerialQueue.async {
                 guard error == nil else {
@@ -65,15 +60,23 @@ public class VisitorServiceRetriever {
                     }
                     return
                 }
-                if let status = response as? HTTPURLResponse {
-                    if let _ = status.allHeaderFields[TealiumKey.errorHeaderKey] as? String {
-                        completion(.failure(.xErrorDetected))
-                    } else if status.statusCode != 200 {
-                        completion(.failure(.non200Response))
-                    } else if let data = data {
-                        completion(.success(data))
-                    }
+                guard let response = response as? HTTPURLResponse else {
+                    completion(.failure(.unknownResponseType))
+                    return
                 }
+                guard response.allHeaderFields[TealiumKey.errorHeaderKey] as? String == nil else {
+                    completion(.failure(.xErrorDetected))
+                    return
+                }
+                guard (200..<300).contains(response.statusCode) else {
+                    completion(.failure(.non200Response))
+                    return
+                }
+                guard let data = data else {
+                    completion(.failure(.noDataToTrack))
+                    return
+                }
+                completion(.success(data))
             }
         }.resume()
     }
@@ -112,8 +115,7 @@ public class VisitorServiceRetriever {
     }
 
     deinit {
-        urlSession?.finishTealiumTasksAndInvalidate()
-        urlSession = nil
+        urlSession.finishTealiumTasksAndInvalidate()
     }
 
 }
