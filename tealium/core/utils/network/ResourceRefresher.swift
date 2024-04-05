@@ -11,11 +11,11 @@ import Foundation
 public protocol ResourceRefresherDelegate<Resource>: AnyObject {
     associatedtype Resource: Codable & EtagResource
     func resourceRefresher(_ refresher: ResourceRefresher<Resource>, didLoad resource: Resource)
-    func resourceRefresher(_ refresher: ResourceRefresher<Resource>, didFailToLoadResource error: Error)
+    func resourceRefresher(_ refresher: ResourceRefresher<Resource>, didFailToLoadResource error: TealiumResourceRetrieverError)
 }
 
 public extension ResourceRefresherDelegate {
-    func resourceRefresher(_ refresher: ResourceRefresher<Resource>, didFailToLoadResource error: Error) { }
+    func resourceRefresher(_ refresher: ResourceRefresher<Resource>, didFailToLoadResource error: TealiumResourceRetrieverError) { }
 }
 
 public class ResourceRefresher<Resource: Codable & EtagResource> {

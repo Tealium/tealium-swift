@@ -24,11 +24,10 @@ extension HTTPURLResponse {
 }
 
 public enum TealiumResourceRetrieverError: TealiumErrorEnum, Equatable {
+    case unknown
     case emptyBody
     case couldNotDecodeJSON
-    case noResponse
-    case notModified
-    case non200response(statusCode: Int)
+    case non200Response(code: Int)
 }
 
 public class ResourceRetriever<Resource: Codable> {
@@ -43,7 +42,7 @@ public class ResourceRetriever<Resource: Codable> {
 
     public func getResource(url: URL,
                             etag: String?,
-                            completion: @escaping (Result<Resource, Error>) -> Void) {
+                            completion: @escaping (Result<Resource, TealiumResourceRetrieverError>) -> Void) {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         if let etag = etag {
@@ -57,24 +56,18 @@ public class ResourceRetriever<Resource: Codable> {
         sendRetryableRequest(request, completion: completion)
     }
 
-    private func isRetryableError(_ error: Error) -> Bool {
-        if let resourceRetrieverError = error as? TealiumResourceRetrieverError {
-            switch resourceRetrieverError {
-            case .emptyBody:
-                return true
-            case let .non200response(statusCode: code):
-                if code == 408 || code == 429 || (500..<600).contains(code) {
-                    return true
-                }
-                return false
-            default:
-                return false
-            }
+    private func isRetryableError(_ error: TealiumResourceRetrieverError) -> Bool {
+        switch error {
+        case .unknown:
+            return true
+        case let .non200Response(code: code):
+            return code == 408 || code == 429 || (500..<600).contains(code)
+        default:
+            return false
         }
-        return true
     }
 
-    private func sendRetryableRequest(_ request: URLRequest, retryCount: Int = 0, completion: @escaping (Result<Resource, Error>) -> Void) {
+    private func sendRetryableRequest(_ request: URLRequest, retryCount: Int = 0, completion: @escaping (Result<Resource, TealiumResourceRetrieverError>) -> Void) {
         sendRequest(request) { [weak self] result in
             guard let self = self else { return }
             if case .failure(let error) = result {
@@ -90,31 +83,22 @@ public class ResourceRetriever<Resource: Codable> {
         }
     }
 
-    private func sendRequest(_ request: URLRequest, completion: @escaping (Result<Resource, Error>) -> Void) {
+    private func sendRequest(_ request: URLRequest, completion: @escaping (Result<Resource, TealiumResourceRetrieverError>) -> Void) {
         urlSession.tealiumDataTask(with: request) { data, response, error in
             TealiumQueues.backgroundSerialQueue.async {
                 guard let response = response as? HTTPURLResponse, error == nil else {
-                    completion(.failure(error ?? TealiumResourceRetrieverError.noResponse))
+                    completion(.failure(.unknown))
                     return
                 }
-                switch response.statusCode {
-                case 200..<300:
-                    guard let data = data else {
-                        completion(.failure(TealiumResourceRetrieverError.emptyBody))
-                        return
-                    }
-                    guard let resource = self.resourceBuilder(data, response.etag) else {
-                        completion(.failure(TealiumResourceRetrieverError.couldNotDecodeJSON))
-                        return
-                    }
-                    completion(.success(resource))
-                case 304:
-                    completion(.failure(TealiumResourceRetrieverError.notModified))
-                    return
-                default:
-                    completion(.failure(TealiumResourceRetrieverError.non200response(statusCode: response.statusCode)))
+                guard (200..<300).contains(response.statusCode) else {
+                    completion(.failure(.non200Response(code: response.statusCode)))
                     return
                 }
+                guard let data = data, let resource = self.resourceBuilder(data, response.etag) else {
+                    completion(.failure(.couldNotDecodeJSON))
+                    return
+                }
+                completion(.success(resource))
             }
         }.resume()
     }

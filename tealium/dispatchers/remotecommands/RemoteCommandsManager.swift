@@ -237,8 +237,8 @@ extension RemoteCommandsManager: ResourceRefresherDelegate {
         jsonCommands[index].config = resource
     }
 
-    public func resourceRefresher(_ refresher: ResourceRefresher<Resource>, didFailToLoadResource error: Error) {
-        guard error.localizedDescription != "notModified" else {
+    public func resourceRefresher(_ refresher: ResourceRefresher<Resource>, didFailToLoadResource error: TealiumResourceRetrieverError) {
+        if case let .non200Response(code) = error, code == 304 {
             let request = TealiumLogRequest(title: "Remote Command", message: "Config not updated because JSON was not modified", info: nil, logLevel: .info, category: .general)
             config.logger?.log(request)
             return
