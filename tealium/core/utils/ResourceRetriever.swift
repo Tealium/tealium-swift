@@ -129,13 +129,13 @@ public struct RefreshParameters<Resource> {
     let url: URL
     let fileName: String?
     var refreshInterval: Double
-    let errorCooldownInterval: Double?
-    public init(id: String, url: URL, fileName: String?, refreshInterval: Double, errorCooldownInterval: Double? = nil) {
+    let errorCooldownBaseInterval: Double?
+    public init(id: String, url: URL, fileName: String?, refreshInterval: Double, errorCooldownBaseInterval: Double? = nil) {
         self.id = id
         self.url = url
         self.fileName = fileName
         self.refreshInterval = refreshInterval
-        self.errorCooldownInterval = errorCooldownInterval
+        self.errorCooldownBaseInterval = errorCooldownBaseInterval
     }
 }
 
@@ -205,10 +205,10 @@ public class ResourceRefresher<Resource: Codable & EtagResource> {
     }
 
     var cooldownInterval: Double? {
-        guard let cooldownInterval = parameters.errorCooldownInterval else {
+        guard let cooldownBaseInterval = parameters.errorCooldownBaseInterval else {
             return nil
         }
-        return min(parameters.refreshInterval, cooldownInterval * Double(consecutiveErrorsCount))
+        return min(parameters.refreshInterval, cooldownBaseInterval * Double(consecutiveErrorsCount))
     }
 
     private func isInCooldown(lastFetch: Date) -> Bool {

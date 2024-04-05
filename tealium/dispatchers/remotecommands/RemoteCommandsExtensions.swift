@@ -33,6 +33,7 @@ extension TealiumConfigKey {
     static let disableHTTP = "disable_remote_command_http"
     static let allCommands = "remote_commands"
     static let refreshInterval = "remote_config_refresh"
+    static let remoteCommandsRemoteConfigBundle = "remote_command_remote_config_bundle"
 }
 
 public extension TealiumConfig {
@@ -75,6 +76,15 @@ public extension TealiumConfig {
         }
         set {
             options[TealiumConfigKey.refreshInterval] = newValue
+        }
+    }
+
+    internal var remoteCommandsRemoteConfigBundle: Bundle {
+        get {
+            return options[TealiumConfigKey.remoteCommandsRemoteConfigBundle] as? Bundle ?? .main
+        }
+        set {
+            options[TealiumConfigKey.remoteCommandsRemoteConfigBundle] = newValue
         }
     }
 
@@ -136,14 +146,5 @@ public extension String {
     var cacheBuster: String {
         return ("\(self)?_cb=\(Int.random(in: 1...10_000))")
     }
-
-    var fileName: String {
-        guard let jsonFile = self.components(separatedBy: "/").last,
-              jsonFile.contains(".json") else {
-            return ""
-        }
-        return jsonFile.components(separatedBy: ".json")[0]
-    }
-
 }
 #endif

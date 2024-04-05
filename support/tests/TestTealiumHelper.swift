@@ -36,7 +36,7 @@ var testOptionalData = [TealiumTestKey.stringKey: TealiumTestValue.stringValue,
 let testTealiumConfig: TealiumConfig = TealiumConfig(account: TealiumTestValue.account,
                                                      profile: TealiumTestValue.profile,
                                                      environment: TealiumTestValue.environment,
-                                                     options: testOptionalData as [String: Any])
+                                                     options: testOptionalData)
 
 let testTrackRequest = TealiumTrackRequest(data: [:])
 

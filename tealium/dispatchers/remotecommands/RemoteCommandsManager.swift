@@ -100,12 +100,11 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
             guard let url = URL(string: urlString.cacheBuster) else {
                 return
             }
-            let fileName = getConfigFilename(forUrl: urlString, commandId: remoteCommand.commandId)
             let parameters = RefreshParameters<RemoteCommandConfig>(id: remoteCommand.commandId,
                                                                     url: url,
-                                                                    fileName: fileName,
+                                                                    fileName: remoteCommand.commandId,
                                                                     refreshInterval: config.remoteCommandConfigRefresh.interval,
-                                                                    errorCooldownInterval: 30)
+                                                                    errorCooldownBaseInterval: 30)
             let refresher = ResourceRefresher(resourceRetriever: resourceRetriever,
                                               diskStorage: diskStorage,
                                               refreshParameters: parameters)
@@ -113,21 +112,13 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
             refresher.delegate = self
             let configCacheFound = remoteCommand.config != nil
             if !configCacheFound,
-                let defaultConfig = RemoteCommandConfig(file: fileName, logger, nil) {
+               let defaultConfig = RemoteCommandConfig(file: remoteCommand.commandId, logger, config.remoteCommandsRemoteConfigBundle) {
                 remoteCommand.config = defaultConfig
             }
             refresher.requestRefresh()
         case .webview:
             webviewCommands.append(remoteCommand)
         }
-    }
-
-    private func getConfigFilename(forUrl url: String, commandId: String) -> String {
-        // check if Tealium DLE URL
-        if url.contains("\(TealiumValue.tealiumDleBaseURL)\(config.account)/\(config.profile)") {
-            return url.fileName
-        }
-        return commandId
     }
 
     /// Removes a `TealiumRemoteCommand` so it can no longer be called.
