@@ -115,6 +115,9 @@
 		15A0E69E2BC406B80077FFEB /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
 		15A0E69F2BC406B80077FFEB /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
 		15A0E6A02BC406B80077FFEB /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
+		15A0E6A22BC43CA10077FFEB /* ResourceRefresherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E6A12BC43CA10077FFEB /* ResourceRefresherTests.swift */; };
+		15A0E6A32BC43CA10077FFEB /* ResourceRefresherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E6A12BC43CA10077FFEB /* ResourceRefresherTests.swift */; };
+		15A0E6A42BC43CA10077FFEB /* ResourceRefresherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E6A12BC43CA10077FFEB /* ResourceRefresherTests.swift */; };
 		15A312382805DAF200653FAF /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
 		15A312392805DAF200653FAF /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
 		15A3123A2805DAF300653FAF /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
@@ -2174,6 +2177,7 @@
 		15A0078227284EFA005E1927 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		15A0078527284EFA005E1927 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		15A0E69D2BC406B80077FFEB /* MockURLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLSession.swift; sourceTree = "<group>"; };
+		15A0E6A12BC43CA10077FFEB /* ResourceRefresherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceRefresherTests.swift; sourceTree = "<group>"; };
 		15B84D7526F206950094DC05 /* AutoTrackingTvOSTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AutoTrackingTvOSTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		15B84D7726F206950094DC05 /* AutoTrackingTvOSTestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoTrackingTvOSTestApp.swift; sourceTree = "<group>"; };
 		15B84D7B26F206960094DC05 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -3060,6 +3064,7 @@
 				1534CDC129E97108005BA9EB /* URLResponseTests.swift */,
 				155806D72BC00DBA00043078 /* ResourceRetrieverTests.swift */,
 				15A0E69D2BC406B80077FFEB /* MockURLSession.swift */,
+				15A0E6A12BC43CA10077FFEB /* ResourceRefresherTests.swift */,
 			);
 			path = network;
 			sourceTree = "<group>";
@@ -6348,6 +6353,7 @@
 				CF880CF02554C9770020E1B2 /* MockURLSessionConnectivity.swift in Sources */,
 				CF880CB82554C96F0020E1B2 /* MockDataLayerManager.swift in Sources */,
 				155806D82BC00DBA00043078 /* ResourceRetrieverTests.swift in Sources */,
+				15A0E6A22BC43CA10077FFEB /* ResourceRefresherTests.swift in Sources */,
 				156CB50C26CD4ACB005EFEDB /* AnyCodableTests.swift in Sources */,
 				CF11608826701B7A00280397 /* TestTealiumHelper.swift in Sources */,
 				CF880CB42554C96F0020E1B2 /* MockHDLDiskStorage.swift in Sources */,
@@ -6943,6 +6949,7 @@
 				D7F2DED9233279A1000D0E0F /* TealiumUtilsTests.swift in Sources */,
 				CFE55FB824FED12200956B9D /* HostedDataLayerTests.swift in Sources */,
 				D719126B2472C21D000FD63E /* DispatchManagerTests.swift in Sources */,
+				15A0E6A32BC43CA10077FFEB /* ResourceRefresherTests.swift in Sources */,
 				CF3C1AFB2473251800A4DEE9 /* ConsentManagerModuleTests.swift in Sources */,
 				150F9FB928BFB86500E75B31 /* VisitorIdProviderTests.swift in Sources */,
 				CF13D8F624FDB66E0024E79A /* MockDataLayerManager.swift in Sources */,
@@ -6994,6 +7001,7 @@
 				CF9F427F24F438E1009B93C2 /* MockConsentDelegate.swift in Sources */,
 				D719126C2472C21F000FD63E /* DispatchManagerTests.swift in Sources */,
 				CF13D8FC24FDB66E0024E79A /* MockDataLayerManager.swift in Sources */,
+				15A0E6A42BC43CA10077FFEB /* ResourceRefresherTests.swift in Sources */,
 				CF3C1AFC2473251900A4DEE9 /* ConsentManagerModuleTests.swift in Sources */,
 				150F9FBA28BFB86500E75B31 /* VisitorIdProviderTests.swift in Sources */,
 				D7F2DF07233279B2000D0E0F /* TealiumDiskTests.swift in Sources */,

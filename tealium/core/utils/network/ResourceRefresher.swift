@@ -29,7 +29,6 @@ public class ResourceRefresher<Resource: Codable & EtagResource> {
         didSet {
             if let _ = delegate {
                 if let resource = readResource() {
-                    lastEtag = resource.etag
                     onResourceLoaded(resource)
                 }
             }
@@ -37,16 +36,9 @@ public class ResourceRefresher<Resource: Codable & EtagResource> {
     }
     private var fetching = false
     private var lastFetch: Date?
+    private var isFileCached: Bool?
     private var lastEtag: String?
-    private var lastError: Error? {
-        didSet {
-            if let _ = lastError {
-                consecutiveErrorsCount += 1
-            } else {
-                consecutiveErrorsCount = 0
-            }
-        }
-    }
+    private var lastCallError: Error?
     private var consecutiveErrorsCount = 0
     public init(resourceRetriever: ResourceRetriever<Resource>,
                 diskStorage: TealiumDiskStorageProtocol,
@@ -56,17 +48,16 @@ public class ResourceRefresher<Resource: Codable & EtagResource> {
         self.parameters = refreshParameters
     }
 
-    private var shouldRefresh: Bool {
+    var shouldRefresh: Bool {
         guard !fetching else {
             return false
         }
         guard let lastFetch = lastFetch else {
             return true
         }
-        guard !isInCooldown(lastFetch: lastFetch) else {
-            return false
+        guard isFileCached ?? checkIfFileIsCached() else {
+            return !isInCooldown(lastFetch: lastFetch)
         }
-        lastError = nil
         guard let newFetchMinimumDate = lastFetch.addSeconds(parameters.refreshInterval) else {
             return true
         }
@@ -80,8 +71,8 @@ public class ResourceRefresher<Resource: Codable & EtagResource> {
         return min(parameters.refreshInterval, cooldownBaseInterval * Double(consecutiveErrorsCount))
     }
 
-    private func isInCooldown(lastFetch: Date) -> Bool {
-        guard lastError != nil else {
+    func isInCooldown(lastFetch: Date) -> Bool {
+        guard lastCallError != nil else {
             return false
         }
         guard let cooldownInterval = cooldownInterval,
@@ -105,9 +96,12 @@ public class ResourceRefresher<Resource: Codable & EtagResource> {
             case .success(let resource):
                 self.saveResource(resource)
                 self.onResourceLoaded(resource)
+                self.lastCallError = nil
+                self.consecutiveErrorsCount = 0
             case .failure(let error):
                 self.delegate?.resourceRefresher(self, didFailToLoadResource: error)
-                self.lastError = error
+                self.lastCallError = error
+                self.consecutiveErrorsCount += 1
             }
             self.lastFetch = Date()
             self.fetching = false
@@ -130,7 +124,14 @@ public class ResourceRefresher<Resource: Codable & EtagResource> {
         }
     }
 
+    private func checkIfFileIsCached() -> Bool {
+        let isCached = readResource() != nil
+        isFileCached = isCached
+        return isCached
+    }
+
     private func onResourceLoaded(_ resource: Resource) {
+        isFileCached = true
         lastEtag = resource.etag
         delegate?.resourceRefresher(self, didLoad: resource)
     }
