@@ -35,6 +35,7 @@ public class ResourceRetriever<Resource: Codable> {
     public typealias ResourceBuilder = (_ data: Data, _ etag: String?) -> Resource?
     let resourceBuilder: ResourceBuilder
     var maxRetries = 5
+    var retryDelay: Double = 0.5
     public init(urlSession: URLSessionProtocol, resourceBuilder: @escaping ResourceBuilder) {
         self.urlSession = urlSession
         self.resourceBuilder = resourceBuilder
@@ -73,7 +74,7 @@ public class ResourceRetriever<Resource: Codable> {
             if case .failure(let error) = result {
                 if self.isRetryableError(error) && retryCount < self.maxRetries {
                     let newCount = retryCount + 1
-                    TealiumQueues.backgroundSerialQueue.asyncAfter(deadline: .now() + 0.5 * Double(newCount)) { [weak self] in
+                    TealiumQueues.backgroundSerialQueue.asyncAfter(deadline: .now() + retryDelay * Double(newCount)) { [weak self] in
                         self?.sendRetryableRequest(request, retryCount: newCount, completion: completion)
                     }
                     return
@@ -94,7 +95,11 @@ public class ResourceRetriever<Resource: Codable> {
                     completion(.failure(.non200Response(code: response.statusCode)))
                     return
                 }
-                guard let data = data, let resource = self.resourceBuilder(data, response.etag) else {
+                guard let data = data else {
+                    completion(.failure(.emptyBody))
+                    return
+                }
+                guard let resource = self.resourceBuilder(data, response.etag) else {
                     completion(.failure(.couldNotDecodeJSON))
                     return
                 }

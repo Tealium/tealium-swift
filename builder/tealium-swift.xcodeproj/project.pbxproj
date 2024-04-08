@@ -112,6 +112,9 @@
 		15A0078D27284F76005E1927 /* ViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BF515225DAC89000AD3A0D /* ViewControllerTest.swift */; };
 		15A0078E27284F7E005E1927 /* TextContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1516A2EC26EF8193003DF8F2 /* TextContent.swift */; };
 		15A007A527285051005E1927 /* TealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8809262554BD490020E1B2 /* TealiumHelper.swift */; };
+		15A0E69E2BC406B80077FFEB /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
+		15A0E69F2BC406B80077FFEB /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
+		15A0E6A02BC406B80077FFEB /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
 		15A312382805DAF200653FAF /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
 		15A312392805DAF200653FAF /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
 		15A3123A2805DAF300653FAF /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
@@ -2170,6 +2173,7 @@
 		15A0077E27284EF9005E1927 /* AutoTrackingIOSTestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoTrackingIOSTestApp.swift; sourceTree = "<group>"; };
 		15A0078227284EFA005E1927 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		15A0078527284EFA005E1927 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		15A0E69D2BC406B80077FFEB /* MockURLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLSession.swift; sourceTree = "<group>"; };
 		15B84D7526F206950094DC05 /* AutoTrackingTvOSTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AutoTrackingTvOSTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		15B84D7726F206950094DC05 /* AutoTrackingTvOSTestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoTrackingTvOSTestApp.swift; sourceTree = "<group>"; };
 		15B84D7B26F206960094DC05 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -3055,6 +3059,7 @@
 			children = (
 				1534CDC129E97108005BA9EB /* URLResponseTests.swift */,
 				155806D72BC00DBA00043078 /* ResourceRetrieverTests.swift */,
+				15A0E69D2BC406B80077FFEB /* MockURLSession.swift */,
 			);
 			path = network;
 			sourceTree = "<group>";
@@ -6308,6 +6313,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15A0E69E2BC406B80077FFEB /* MockURLSession.swift in Sources */,
 				CF880D2F2554C9830020E1B2 /* PublishSettingsTests.swift in Sources */,
 				CF880CB32554C96F0020E1B2 /* SessionStarterTests.swift in Sources */,
 				1563CEC926DFAA3300A1DAD1 /* PubSubTests.swift in Sources */,
@@ -6941,6 +6947,7 @@
 				150F9FB928BFB86500E75B31 /* VisitorIdProviderTests.swift in Sources */,
 				CF13D8F624FDB66E0024E79A /* MockDataLayerManager.swift in Sources */,
 				CF9F427E24F438E1009B93C2 /* MockConsentDelegate.swift in Sources */,
+				15A0E69F2BC406B80077FFEB /* MockURLSession.swift in Sources */,
 				D7885B6324AE579B00ECFEC7 /* TealiumModulesManagerTests.swift in Sources */,
 				150F9FB528BFB3DB00E75B31 /* VisitorIdentityListenerTests.swift in Sources */,
 				CF13D8EE24FDB65B0024E79A /* MockSessionStarter.swift in Sources */,
@@ -6991,6 +6998,7 @@
 				150F9FBA28BFB86500E75B31 /* VisitorIdProviderTests.swift in Sources */,
 				D7F2DF07233279B2000D0E0F /* TealiumDiskTests.swift in Sources */,
 				CF13D8EF24FDB65B0024E79A /* MockSessionStarter.swift in Sources */,
+				15A0E6A02BC406B80077FFEB /* MockURLSession.swift in Sources */,
 				CF13D8FF24FDB66E0024E79A /* SessionManagerTests.swift in Sources */,
 				150F9FB628BFB3DB00E75B31 /* VisitorIdentityListenerTests.swift in Sources */,
 				D7885B6524AE579E00ECFEC7 /* TealiumModulesManagerTests.swift in Sources */,
