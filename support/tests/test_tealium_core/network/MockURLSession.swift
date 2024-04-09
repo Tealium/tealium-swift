@@ -11,14 +11,14 @@ import XCTest
 @testable import TealiumCore
 
 extension DataTaskResult {
-    private static func urlResponse(headerFields: [String: String]?) -> HTTPURLResponse? {
-        HTTPURLResponse(url: URL(string: "someURL")!, statusCode: 200, httpVersion: "1.1", headerFields: headerFields)
+    private static func urlResponse(statusCode: Int, headerFields: [String: String]?) -> HTTPURLResponse? {
+        HTTPURLResponse(url: URL(string: "someURL")!, statusCode: statusCode, httpVersion: "1.1", headerFields: headerFields)
     }
-    static func success(with data: Data?, headers: [String: String]? = nil) -> DataTaskResult {
-        return .success((urlResponse(headerFields: headers), data))
+    static func success(with data: Data?, statusCode: Int = 200, headers: [String: String]? = nil) -> DataTaskResult {
+        return .success((urlResponse(statusCode: statusCode, headerFields: headers), data))
     }
-    static func success<Obj: Codable>(with object: Obj, headers: [String: String]? = nil) -> DataTaskResult {
-        return .success(with: try? JSONEncoder().encode(object), headers: headers)
+    static func success<Obj: Codable>(with object: Obj, statusCode: Int = 200, headers: [String: String]? = nil) -> DataTaskResult {
+        return .success(with: try? JSONEncoder().encode(object), statusCode: statusCode, headers: headers)
     }
 }
 
