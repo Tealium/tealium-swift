@@ -112,16 +112,16 @@ class CollectEventDispatcher: CollectProtocol, LoggingDataToStringConverter {
                 completion?((.failure(error), nil))
                 return
             }
-            guard let status = response as? HTTPURLResponse else {
+            guard let response = response as? HTTPURLResponse else {
                 completion?((.failure(CollectError.unknownResponseType), nil))
                 return
             }
             // error only indicates "no response from server. 400 responses are considered successful
-            if let errorHeader = status.allHeaderFields[CollectKey.errorHeaderKey] as? String {
+            if let errorHeader = response.allHeaderFields[CollectKey.errorHeaderKey] as? String {
                 completion?((.failure(CollectError.xErrorDetected), ["error": errorHeader]))
                 return
             }
-            guard status.statusCode != 200 else {
+            guard (200..<300).contains(response.statusCode) else {
                 completion?((.failure(CollectError.non200Response), nil))
                 return
             }
