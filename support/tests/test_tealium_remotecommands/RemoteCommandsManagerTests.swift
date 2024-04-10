@@ -11,10 +11,11 @@ import XCTest
 
 class RemoteCommandsManagerTests: XCTestCase {
 
-    var mockDiskStorage = MockRemoteCommandsDiskStorage()
+    var mockDiskStorage = MockTealiumDiskStorage()
     var testHelper = TestTealiumHelper()
     let mockURLSession = MockURLSession()
-    lazy var tealiumRemoteCommandsManager = RemoteCommandsManager(config: testHelper.getConfig(), delegate: self, urlSession: mockURLSession, diskStorage: mockDiskStorage)
+    lazy var config = testHelper.getConfig().copy
+    lazy var tealiumRemoteCommandsManager = RemoteCommandsManager(config: config, delegate: self, urlSession: mockURLSession, diskStorage: mockDiskStorage)
     lazy var tealiumLocalJSONCommand = RemoteCommand(commandId: "local", description: "test", type: .local(file: "example", bundle: Bundle(for: type(of: self))), completion: { _ in
         // ....
     })
@@ -38,59 +39,19 @@ class RemoteCommandsManagerTests: XCTestCase {
         }
     }
 
-//    func testRefresh() {
-//        tealiumRemoteCommandsManager.removeAll()
-//        tealiumRemoteCommandsManager.refresh(tealiumRemoteJSONCommand)
-//        XCTAssertTrue(tealiumRemoteCommandsManager.hasFetched)
-//        tealiumRemoteCommandsManager.jsonCommands.forEach { command in
-//            XCTAssertNotNil(command)
-//        }
-//    }
-//
-//    func testGetCachedConfig() {
-//        _ = tealiumRemoteCommandsManager.cachedConfig(for: "firebase")
-//        XCTAssertEqual(2, mockDiskStorage.retrieveCount)
-//    }
-//
-//    func testUpdate() {
-//        tealiumRemoteCommandsManager.update(command: &tealiumRemoteJSONCommand, url: URL(string: "https://tags.tiqcdn.com/dle/services-christina/mobile-test/firebase.json")!, file: "braze")
-//        XCTAssertEqual(tealiumRemoteJSONCommand.config?.fileName, "braze")
-//        XCTAssertEqual(tealiumRemoteJSONCommand.config?.commandURL, URL(string: "https://tags.tiqcdn.com/dle/services-christina/mobile-test/firebase.json")!)
-//    }
-//
-//    func testGetAndSaveCallsHasFetched() {
-//        // Just see if the hasFetched was flipped to true
-//        tealiumRemoteCommandsManager.hasFetched = false
-//        tealiumRemoteCommandsManager.retrieveAndSave(tealiumRemoteJSONCommand, url: URL(string: "https://tags.tiqcdn.com/dle/services-christina/tagbridge/firebase.json")!, file: "firebase")
-//        XCTAssertTrue(tealiumRemoteCommandsManager.hasFetched)
-//    }
-//
-//    func testGetRemoteCommandConfigWith200() {
-//        let url = URL(string: "https://tags.tiqcdn.com/dle/services-christina/tagbridge/firebase.json")!
-//
-//        tealiumRemoteCommandsManager.remoteCommandConfig(from: url, isFirstFetch: false, lastFetch: Date()) { result in
-//            switch result {
-//            case .success(let config):
-//                XCTAssertNotNil(config)
-//            case .failure(let error):
-//                XCTFail("Received error: \(error.localizedDescription)")
-//            }
-//        }
-//    }
-//
-//    func testGetRemoteCommandConfigWith304() {
-//        tealiumRemoteCommandsManager = RemoteCommandsManager(config: testHelper.getConfig(), delegate: self, urlSession: MockURLSession304(), diskStorage: mockDiskStorage)
-//        let url = URL(string: "https://tags.tiqcdn.com/dle/services-christina/tagbridge/firebase.json")!
-//
-//        tealiumRemoteCommandsManager.remoteCommandConfig(from: url, isFirstFetch: false, lastFetch: Date()) { result in
-//            switch result {
-//            case .success:
-//                XCTFail("Should not retrieve successful config")
-//            case .failure(let error):
-//                XCTAssertEqual(error as! TealiumRemoteCommandsError, TealiumRemoteCommandsError.notModified)
-//            }
-//        }
-//    }
+    func testRemoteCommandRefreshedAtStart() {
+        addRemoteCommands(tealiumRemoteJSONCommand)
+        TealiumQueues.backgroundSerialQueue.sync {
+            XCTAssertNotNil(tealiumRemoteJSONCommand.config)
+        }
+    }
+
+    func testRemoteCommandReadFromCacheAtStart() {
+        mockDiskStorage.storedData = AnyCodable(RemoteCommandConfig(config: [:], mappings: [:], apiCommands: [:], statics: [:], commandName: nil, commandURL: nil))
+        mockURLSession.result = .success(withData: nil)
+        addRemoteCommands(tealiumRemoteJSONCommand)
+        XCTAssertNotNil(tealiumRemoteJSONCommand.config)
+    }
 
     func testGetConfigMethodDecodesJSON() {
         let goodStub = TestTealiumHelper.loadStub(from: "example", type(of: self))

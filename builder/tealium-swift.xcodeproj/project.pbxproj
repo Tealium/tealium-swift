@@ -126,6 +126,7 @@
 		1591EC6026EA553100C45781 /* MockInMemoryDataLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1555F5CE26E6769E00AFDC3D /* MockInMemoryDataLayer.swift */; };
 		1591EC6126EA553200C45781 /* MockInMemoryDataLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1555F5CE26E6769E00AFDC3D /* MockInMemoryDataLayer.swift */; };
 		1593AC5126E8E129005B42E3 /* LoggingDataToStringConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1593AC5026E8E129005B42E3 /* LoggingDataToStringConverter.swift */; };
+		1598F4362BC6F7FB00D8C770 /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
 		15A0077F27284EF9005E1927 /* AutoTrackingIOSTestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0077E27284EF9005E1927 /* AutoTrackingIOSTestApp.swift */; };
 		15A0078327284EFA005E1927 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15A0078227284EFA005E1927 /* Assets.xcassets */; };
 		15A0078627284EFA005E1927 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15A0078527284EFA005E1927 /* Preview Assets.xcassets */; };
@@ -329,7 +330,6 @@
 		CF3A590A24DB462500A4851D /* objectMappings.json in Resources */ = {isa = PBXBuildFile; fileRef = CF3A590424DB462400A4851D /* objectMappings.json */; };
 		CF3A590C24DB464C00A4851D /* MockJSONRemoteCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3A590B24DB464C00A4851D /* MockJSONRemoteCommand.swift */; };
 		CF3A591024DB466400A4851D /* MockWebViewRemoteCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3A590F24DB466400A4851D /* MockWebViewRemoteCommand.swift */; };
-		CF3A591824DB49C000A4851D /* MockRemoteCommandsDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3A591724DB49C000A4851D /* MockRemoteCommandsDiskStorage.swift */; };
 		CF3C1AEE2473230300A4DEE9 /* ConsentManagerModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79A2DA620880955001C1F80 /* ConsentManagerModule.swift */; };
 		CF3C1AEF2473230C00A4DEE9 /* ConsentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79A2DAB20880966001C1F80 /* ConsentManager.swift */; };
 		CF3C1AF12473231500A4DEE9 /* ConsentConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7178F5D208A5CE400A21344 /* ConsentConstants.swift */; };
@@ -2342,7 +2342,6 @@
 		CF3A590F24DB466400A4851D /* MockWebViewRemoteCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockWebViewRemoteCommand.swift; sourceTree = "<group>"; };
 		CF3A591124DB469900A4851D /* RemoteCommandsManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteCommandsManagerTests.swift; sourceTree = "<group>"; };
 		CF3A591324DB46AF00A4851D /* RemoteCommandConfigTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteCommandConfigTests.swift; sourceTree = "<group>"; };
-		CF3A591724DB49C000A4851D /* MockRemoteCommandsDiskStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockRemoteCommandsDiskStorage.swift; sourceTree = "<group>"; };
 		CF6E3ADB25F9356900900902 /* Tealium+Encodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tealium+Encodable.swift"; sourceTree = "<group>"; };
 		CF6E9E30249AEFCE0032A663 /* RemoteCommandResponseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteCommandResponseTests.swift; sourceTree = "<group>"; };
 		CF6E9E32249AEFD90032A663 /* RemoteCommandExtensionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteCommandExtensionsTests.swift; sourceTree = "<group>"; };
@@ -3690,7 +3689,6 @@
 				CF3A590B24DB464C00A4851D /* MockJSONRemoteCommand.swift */,
 				CF75E549248827210086FF26 /* MockRemoteCommandsManager.swift */,
 				CF3A590F24DB466400A4851D /* MockWebViewRemoteCommand.swift */,
-				CF3A591724DB49C000A4851D /* MockRemoteCommandsDiskStorage.swift */,
 				CF7A8F152489A12F003AE25D /* MockRemoteCommandDelegate.swift */,
 			);
 			path = mocks;
@@ -6790,6 +6788,7 @@
 			files = (
 				CF7A8F142489A0F8003AE25D /* TealiumRemoteCommandTests.swift in Sources */,
 				15D7E4DC28180679008E8DA6 /* NameAndVersionRemoteCommandTests.swift in Sources */,
+				1598F4362BC6F7FB00D8C770 /* MockDiskStorage.swift in Sources */,
 				CF75E54B248827430086FF26 /* MockRemoteCommandsManager.swift in Sources */,
 				CF83EE48251C17A200188533 /* MockRemoteCommandResponse.swift in Sources */,
 				CFAD63CD2541FD91007D4EDB /* MockSessionStarter.swift in Sources */,
@@ -6797,7 +6796,6 @@
 				CF7A8F162489A12F003AE25D /* MockRemoteCommandDelegate.swift in Sources */,
 				CFA55A4124E5903900BFBED8 /* TestTealiumHelper.swift in Sources */,
 				D788A55823198A0C00BC6D60 /* RemoteHTTPCommandTests.swift in Sources */,
-				CF3A591824DB49C000A4851D /* MockRemoteCommandsDiskStorage.swift in Sources */,
 				15EDC44929549C6A00499E97 /* JSONRemoteCommandPayloadBuilderTests.swift in Sources */,
 				CFD803EF2670213A00299D64 /* RemoteCommandExtensionsTests.swift in Sources */,
 				CFD803F02670213F00299D64 /* RemoteCommandConfigTests.swift in Sources */,
