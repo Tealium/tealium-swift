@@ -38,11 +38,11 @@ public class ResourceRefresher<Resource: Codable & EtagResource> {
     private var lastFetch: Date?
     private(set) var isFileCached: Bool?
     private var lastEtag: String?
-    let errorCooldown: ErrorCooldownProtocol
+    let errorCooldown: ErrorCooldown?
     public init(resourceRetriever: ResourceRetriever<Resource>,
                 diskStorage: TealiumDiskStorageProtocol,
                 refreshParameters: RefreshParameters<Resource>,
-                errorCooldown: ErrorCooldownProtocol? = nil) {
+                errorCooldown: ErrorCooldown? = nil) {
         self.resourceRetriever = resourceRetriever
         self.diskStorage = diskStorage
         self.parameters = refreshParameters
@@ -57,8 +57,8 @@ public class ResourceRefresher<Resource: Codable & EtagResource> {
         guard let lastFetch = lastFetch else {
             return true
         }
-        guard isFileCached ?? checkIfFileIsCached() else {
-            return !errorCooldown.isInCooldown(lastFetch: lastFetch)
+        guard errorCooldown == nil || isFileCached ?? checkIfFileIsCached() else {
+            return errorCooldown?.isInCooldown(lastFetch: lastFetch) == false
         }
         guard let newFetchMinimumDate = lastFetch.addSeconds(parameters.refreshInterval) else {
             return true
@@ -80,10 +80,10 @@ public class ResourceRefresher<Resource: Codable & EtagResource> {
             case .success(let resource):
                 self.saveResource(resource)
                 self.onResourceLoaded(resource)
-                self.errorCooldown.newCooldownEvent(error: nil)
+                self.errorCooldown?.newCooldownEvent(error: nil)
             case .failure(let error):
                 self.delegate?.resourceRefresher(self, didFailToLoadResource: error)
-                self.errorCooldown.newCooldownEvent(error: error)
+                self.errorCooldown?.newCooldownEvent(error: error)
             }
             self.lastFetch = Date()
             self.fetching = false
@@ -120,6 +120,6 @@ public class ResourceRefresher<Resource: Codable & EtagResource> {
 
     public func setRefreshInterval(_ seconds: Double) {
         parameters.refreshInterval = seconds
-        errorCooldown.maxInterval = seconds
+        errorCooldown?.maxInterval = seconds
     }
 }

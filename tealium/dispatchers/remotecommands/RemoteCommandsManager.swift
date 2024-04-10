@@ -104,7 +104,7 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
                                                                     url: url,
                                                                     fileName: remoteCommand.commandId,
                                                                     refreshInterval: config.remoteCommandConfigRefresh.interval,
-                                                                    errorCooldownBaseInterval: 30)
+                                                                    errorCooldownBaseInterval: RemoteCommandsKey.errorCooldownBaseInterval)
             let refresher = ResourceRefresher(resourceRetriever: resourceRetriever,
                                               diskStorage: diskStorage,
                                               refreshParameters: parameters)

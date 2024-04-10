@@ -24,15 +24,20 @@ final class ResourceRefresherTests: XCTestCase {
             return obj
         }
     }
+    
+    func getRefresher(errorCooldown: ErrorCooldown? = nil) -> ResourceRefresher<CustomObject> {
+        ResourceRefresher(resourceRetriever: resourceRetriever,
+                          diskStorage: diskStorage,
+                          refreshParameters: refreshParameters,
+                          errorCooldown: errorCooldown)
+    }
     var refreshParameters = RefreshParameters<CustomObject>(id: "id",
                                                             url: URL(string: "url")!,
                                                             fileName: nil,
                                                             refreshInterval: 10.0,
                                                             errorCooldownBaseInterval: 10)
     lazy var resourceRetriever = getResourceRetriever()
-    lazy var refresher = ResourceRefresher(resourceRetriever: resourceRetriever,
-                                           diskStorage: diskStorage,
-                                           refreshParameters: refreshParameters)
+    lazy var refresher = getRefresher()
     
     func testStartsEmpty() {
         mockUrlSession.result = .success(with: nil)
@@ -160,12 +165,44 @@ final class ResourceRefresherTests: XCTestCase {
         mockUrlSession.onRequestSent.subscribe { _ in
             requestSent.fulfill()
         }
+        refreshParameters = RefreshParameters(id: refreshParameters.id,
+                                              url: refreshParameters.url,
+                                              fileName: refreshParameters.fileName,
+                                              refreshInterval: 0,
+                                              errorCooldownBaseInterval: refreshParameters.errorCooldownBaseInterval)
+        let errorCooldown = ErrorCooldown(baseInterval: 10, maxInterval: 50)
+        refresher = getRefresher(errorCooldown: errorCooldown)
         refresher.requestRefresh()
         TealiumQueues.backgroundSerialQueue.sync {
             refresher.requestRefresh()
         }
         TealiumQueues.backgroundSerialQueue.sync {
             XCTAssertEqual(refresher.isFileCached, false)
+            refresher.requestRefresh()
+        }
+        TealiumQueues.backgroundSerialQueue.sync {
+            waitForExpectations(timeout: 1.0)
+        }
+    }
+
+    func testRequestRefreshIsNotIgnoredAfterErrorsWhenErrorCooldownIsNil() {
+        let requestSent = expectation(description: "Request is sent every time")
+        requestSent.expectedFulfillmentCount = 3
+        refreshParameters = RefreshParameters(id: refreshParameters.id,
+                                              url: refreshParameters.url,
+                                              fileName: refreshParameters.fileName,
+                                              refreshInterval: 0,
+                                              errorCooldownBaseInterval: nil)
+        mockUrlSession.result = .success(with: nil)
+        mockUrlSession.onRequestSent.subscribe { _ in
+            requestSent.fulfill()
+        }
+        refresher.setRefreshInterval(0)
+        refresher.requestRefresh()
+        TealiumQueues.backgroundSerialQueue.sync {
+            refresher.requestRefresh()
+        }
+        TealiumQueues.backgroundSerialQueue.sync {
             refresher.requestRefresh()
         }
         TealiumQueues.backgroundSerialQueue.sync {
