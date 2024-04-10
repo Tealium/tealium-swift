@@ -74,7 +74,7 @@ final class ResourceRetrieverTests: XCTestCase {
 
     func testEmptyBody() {
         let completionCalledWithError = expectation(description: "Completion is called with error")
-        mockUrlSession.result = .success(with: nil)
+        mockUrlSession.result = .success(withData: nil)
         resourceRetriever.getResource(url: URL(string: "someURL")!, etag: nil) { result in
             if case let .failure(error) = result {
                 XCTAssertEqual(error, TealiumResourceRetrieverError.emptyBody)

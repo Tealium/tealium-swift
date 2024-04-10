@@ -14,15 +14,16 @@ extension DataTaskResult {
     private static func urlResponse(statusCode: Int, headerFields: [String: String]?) -> HTTPURLResponse? {
         HTTPURLResponse(url: URL(string: "someURL")!, statusCode: statusCode, httpVersion: "1.1", headerFields: headerFields)
     }
-    static func success(with data: Data?, statusCode: Int = 200, headers: [String: String]? = nil) -> DataTaskResult {
+    static func success(withData data: Data?, statusCode: Int = 200, headers: [String: String]? = nil) -> DataTaskResult {
         return .success((urlResponse(statusCode: statusCode, headerFields: headers), data))
     }
     static func success<Obj: Codable>(with object: Obj, statusCode: Int = 200, headers: [String: String]? = nil) -> DataTaskResult {
-        return .success(with: try? JSONEncoder().encode(object), statusCode: statusCode, headers: headers)
+        return .success(withData: try? JSONEncoder().encode(object), statusCode: statusCode, headers: headers)
     }
 }
 
 class MockURLSession: URLSessionProtocol {
+    var isInvalidated = false
     var result: DataTaskResult?
     @ToAnyObservable<TealiumReplaySubject<URLRequest>>(TealiumReplaySubject<URLRequest>())
     var onRequestSent: TealiumObservable<URLRequest>
@@ -67,7 +68,7 @@ class MockURLSession: URLSessionProtocol {
     }
     
     func finishTealiumTasksAndInvalidate() {
-        
+        isInvalidated = true
     }
     
     

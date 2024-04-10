@@ -95,6 +95,26 @@
 		1563CECB26DFAA3300A1DAD1 /* PubSubTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1563CEC826DFAA3300A1DAD1 /* PubSubTests.swift */; };
 		1566C23F272C460800FE9A5A /* TealiumDelegateProxyLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 1566C23B272C460800FE9A5A /* TealiumDelegateProxyLoader.h */; };
 		1566C241272C460800FE9A5A /* TealiumDelegateProxyLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 1566C23E272C460800FE9A5A /* TealiumDelegateProxyLoader.m */; };
+		1567CB402BC6C57D00E3DBB3 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
+		1567CB412BC6C57E00E3DBB3 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
+		1567CB422BC6C57E00E3DBB3 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
+		1567CB432BC6C57F00E3DBB3 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
+		1567CB442BC6C57F00E3DBB3 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
+		1567CB452BC6C58000E3DBB3 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
+		1567CB462BC6C58200E3DBB3 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
+		1567CB472BC6C58300E3DBB3 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
+		1567CB482BC6C58300E3DBB3 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
+		1567CB492BC6C58300E3DBB3 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
+		1567CB4A2BC6C58400E3DBB3 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
+		1567CB4B2BC6C58400E3DBB3 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
+		1567CB4C2BC6C58500E3DBB3 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
+		1567CB4D2BC6C58600E3DBB3 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
+		1567CB4E2BC6C58600E3DBB3 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
+		1567CB4F2BC6C58700E3DBB3 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
+		1567CB502BC6C58800E3DBB3 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
+		1567CB512BC6C58800E3DBB3 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
+		1567CB522BC6C58800E3DBB3 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
+		1567CB532BC6C58900E3DBB3 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
 		156CB50C26CD4ACB005EFEDB /* AnyCodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156CB50B26CD4ACB005EFEDB /* AnyCodableTests.swift */; };
 		156CB50D26CD4ACB005EFEDB /* AnyCodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156CB50B26CD4ACB005EFEDB /* AnyCodableTests.swift */; };
 		156CB50E26CD4ACB005EFEDB /* AnyCodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156CB50B26CD4ACB005EFEDB /* AnyCodableTests.swift */; };
@@ -308,7 +328,6 @@
 		CF3A590924DB462500A4851D /* noMappingsKey.json in Resources */ = {isa = PBXBuildFile; fileRef = CF3A590324DB462400A4851D /* noMappingsKey.json */; };
 		CF3A590A24DB462500A4851D /* objectMappings.json in Resources */ = {isa = PBXBuildFile; fileRef = CF3A590424DB462400A4851D /* objectMappings.json */; };
 		CF3A590C24DB464C00A4851D /* MockJSONRemoteCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3A590B24DB464C00A4851D /* MockJSONRemoteCommand.swift */; };
-		CF3A590E24DB465300A4851D /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3A590D24DB465300A4851D /* MockURLSession.swift */; };
 		CF3A591024DB466400A4851D /* MockWebViewRemoteCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3A590F24DB466400A4851D /* MockWebViewRemoteCommand.swift */; };
 		CF3A591824DB49C000A4851D /* MockRemoteCommandsDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3A591724DB49C000A4851D /* MockRemoteCommandsDiskStorage.swift */; };
 		CF3C1AEE2473230300A4DEE9 /* ConsentManagerModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79A2DA620880955001C1F80 /* ConsentManagerModule.swift */; };
@@ -2320,7 +2339,6 @@
 		CF3A590324DB462400A4851D /* noMappingsKey.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = noMappingsKey.json; sourceTree = "<group>"; };
 		CF3A590424DB462400A4851D /* objectMappings.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = objectMappings.json; sourceTree = "<group>"; };
 		CF3A590B24DB464C00A4851D /* MockJSONRemoteCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockJSONRemoteCommand.swift; sourceTree = "<group>"; };
-		CF3A590D24DB465300A4851D /* MockURLSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockURLSession.swift; sourceTree = "<group>"; };
 		CF3A590F24DB466400A4851D /* MockWebViewRemoteCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockWebViewRemoteCommand.swift; sourceTree = "<group>"; };
 		CF3A591124DB469900A4851D /* RemoteCommandsManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteCommandsManagerTests.swift; sourceTree = "<group>"; };
 		CF3A591324DB46AF00A4851D /* RemoteCommandConfigTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteCommandConfigTests.swift; sourceTree = "<group>"; };
@@ -3069,7 +3087,6 @@
 			children = (
 				1534CDC129E97108005BA9EB /* URLResponseTests.swift */,
 				155806D72BC00DBA00043078 /* ResourceRetrieverTests.swift */,
-				15A0E69D2BC406B80077FFEB /* MockURLSession.swift */,
 				15A0E6A12BC43CA10077FFEB /* ResourceRefresherTests.swift */,
 				15FF6E7E2BC5A627007B41BC /* ErrorCooldownTests.swift */,
 			);
@@ -3300,6 +3317,7 @@
 				CFA558BF24E4E6B200BFBED8 /* CoreMocks.swift */,
 				D7187F1A24768F5000CF0AB0 /* MockSessionStarter.swift */,
 				D780585B233A68DD00DAD90E /* MockDiskStorage.swift */,
+				15A0E69D2BC406B80077FFEB /* MockURLSession.swift */,
 			);
 			name = tests;
 			path = ../support/tests;
@@ -3673,7 +3691,6 @@
 				CF75E549248827210086FF26 /* MockRemoteCommandsManager.swift */,
 				CF3A590F24DB466400A4851D /* MockWebViewRemoteCommand.swift */,
 				CF3A591724DB49C000A4851D /* MockRemoteCommandsDiskStorage.swift */,
-				CF3A590D24DB465300A4851D /* MockURLSession.swift */,
 				CF7A8F152489A12F003AE25D /* MockRemoteCommandDelegate.swift */,
 			);
 			path = mocks;
@@ -6106,6 +6123,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1567CB502BC6C58800E3DBB3 /* MockURLSession.swift in Sources */,
 				15274FA92791927F009F645A /* TestTealiumHelper.swift in Sources */,
 				15274FA827919279009F645A /* MockSessionStarter.swift in Sources */,
 				15274FA72791926F009F645A /* MockURLSession.swift in Sources */,
@@ -6118,6 +6136,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1567CB422BC6C57E00E3DBB3 /* MockURLSession.swift in Sources */,
 				1555F5C126E6692400AFDC3D /* AutotrackingModuleTests.swift in Sources */,
 				1555F5C226E6692400AFDC3D /* TestTealiumHelper.swift in Sources */,
 				15E601BA2728036100CE4FAC /* AutotrackingConfigTests.swift in Sources */,
@@ -6130,6 +6149,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1567CB452BC6C58000E3DBB3 /* MockURLSession.swift in Sources */,
 				1555F5D726E6786100AFDC3D /* AutotrackingModuleTests.swift in Sources */,
 				1555F5D826E6786100AFDC3D /* TestTealiumHelper.swift in Sources */,
 				15E601BB2728036100CE4FAC /* AutotrackingConfigTests.swift in Sources */,
@@ -6166,6 +6186,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1567CB4E2BC6C58600E3DBB3 /* MockURLSession.swift in Sources */,
 				15C6015F27902ACA00497901 /* MockSessionStarter.swift in Sources */,
 				15C6015E27902AC000497901 /* CoreMocks.swift in Sources */,
 				15C6015D27902AB800497901 /* TestTealiumHelper.swift in Sources */,
@@ -6187,6 +6208,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1567CB442BC6C57F00E3DBB3 /* MockURLSession.swift in Sources */,
 				15D4AFD226EB9506004316D0 /* CoreMocks.swift in Sources */,
 				15D4AFD126EB94FE004316D0 /* MockSessionStarter.swift in Sources */,
 				15E601BC2728036100CE4FAC /* AutotrackingConfigTests.swift in Sources */,
@@ -6219,6 +6241,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1567CB4F2BC6C58700E3DBB3 /* MockURLSession.swift in Sources */,
 				48AB1112275E43A00011D4D6 /* TealiumInAppPurchaseModuleTests.swift in Sources */,
 				48AB1103275E42C30011D4D6 /* MockURLSession.swift in Sources */,
 				48AB1104275E42C30011D4D6 /* CoreMocks.swift in Sources */,
@@ -6248,6 +6271,7 @@
 				CFAD62BF2541FCFF007D4EDB /* CoreMocks.swift in Sources */,
 				15D3D1E926F4EA71004D9BFC /* UIApplication+ManualContinueActivity.m in Sources */,
 				CF13D83524FD5FE30024E79A /* TealiumDelegateProxyTests.swift in Sources */,
+				1567CB402BC6C57D00E3DBB3 /* MockURLSession.swift in Sources */,
 				CFAD630C2541FD87007D4EDB /* MockSessionStarter.swift in Sources */,
 				CF13D83824FD5FE30024E79A /* TestTealiumHelper.swift in Sources */,
 			);
@@ -6260,6 +6284,7 @@
 				CF13D87224FD61F80024E79A /* TestTealiumHelper.swift in Sources */,
 				CFACF63625E986540065E65E /* TealiumTraceTests.swift in Sources */,
 				CFAD63F42541FD93007D4EDB /* MockSessionStarter.swift in Sources */,
+				1567CB462BC6C58200E3DBB3 /* MockURLSession.swift in Sources */,
 				CFAD62B42541FCFE007D4EDB /* CoreMocks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -6400,6 +6425,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1567CB4B2BC6C58400E3DBB3 /* MockURLSession.swift in Sources */,
 				CFAD9E8B25A66D470079B19A /* TealiumMediaTests.swift in Sources */,
 				CFADA55725AD26DD0079B19A /* MockMediaService.swift in Sources */,
 				CFAC004A25AFBF5400CD51C6 /* CoreMocks.swift in Sources */,
@@ -6415,6 +6441,7 @@
 				CFADA55825AD26DE0079B19A /* MockMediaService.swift in Sources */,
 				CFAD9EB725A66D540079B19A /* TestTealiumHelper.swift in Sources */,
 				CFAD9EB925A66D540079B19A /* CoreMocks.swift in Sources */,
+				1567CB4D2BC6C58600E3DBB3 /* MockURLSession.swift in Sources */,
 				CFAD9EBD25A66D540079B19A /* MockSessionStarter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -6426,6 +6453,7 @@
 				CFADA55925AD26DF0079B19A /* MockMediaService.swift in Sources */,
 				CFAD9F5E25A66D700079B19A /* TestTealiumHelper.swift in Sources */,
 				CFAD9F6025A66D700079B19A /* CoreMocks.swift in Sources */,
+				1567CB4C2BC6C58500E3DBB3 /* MockURLSession.swift in Sources */,
 				CFAD9F6425A66D700079B19A /* MockSessionStarter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -6438,6 +6466,7 @@
 				CFA33394252BB877006238B1 /* WKWebViewIntegrationTests.swift in Sources */,
 				CFCBFCBF2524FF0D0094C1EC /* MockTagManagementWebView.swift in Sources */,
 				15C88ADE26F3A22200D56064 /* TagManagementConfigTests.swift in Sources */,
+				1567CB532BC6C58900E3DBB3 /* MockURLSession.swift in Sources */,
 				CFAD63F32541FD92007D4EDB /* MockSessionStarter.swift in Sources */,
 				CFCBFB5D2524FDA30094C1EC /* TestTealiumHelper.swift in Sources */,
 			);
@@ -6626,6 +6655,7 @@
 				CFF242ED23CE78390091B7BF /* MockLocationManager.swift in Sources */,
 				CF7F948724650FB500399774 /* MockLocationDiskStorage.swift in Sources */,
 				CF9F423A24F05980009B93C2 /* MockLocationDelegate.swift in Sources */,
+				1567CB4A2BC6C58400E3DBB3 /* MockURLSession.swift in Sources */,
 				CFA55A3F24E5903800BFBED8 /* TestTealiumHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -6698,6 +6728,7 @@
 				CF9A35D125473BCF000B420D /* TealiumSKAdAttributionTests.swift in Sources */,
 				D788A3F62319280B00BC6D60 /* AttributionMockDiskStorage.swift in Sources */,
 				D788A3F22318424600BC6D60 /* TealiumAttributionModuleTests.swift in Sources */,
+				1567CB412BC6C57E00E3DBB3 /* MockURLSession.swift in Sources */,
 				CFAD62B72541FCFE007D4EDB /* CoreMocks.swift in Sources */,
 				D7FF987D24AD0B6F00E87A80 /* MockAttributionData.swift in Sources */,
 				D788A3F32318424600BC6D60 /* TealiumAttributionDataTests.swift in Sources */,
@@ -6712,6 +6743,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1567CB432BC6C57F00E3DBB3 /* MockURLSession.swift in Sources */,
 				D788A58C23198E8300BC6D60 /* AutotrackingModuleTests.swift in Sources */,
 				CFA55A2C24E5902B00BFBED8 /* TestTealiumHelper.swift in Sources */,
 				15E601B92728036100CE4FAC /* AutotrackingConfigTests.swift in Sources */,
@@ -6737,6 +6769,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1567CB472BC6C58300E3DBB3 /* MockURLSession.swift in Sources */,
 				D788A5092319890300BC6D60 /* LifecycleModuleTests.swift in Sources */,
 				CFAD63A52541FD8F007D4EDB /* MockSessionStarter.swift in Sources */,
 				CF11609026701FFA00280397 /* LifecycleStubs.swift in Sources */,
@@ -6760,7 +6793,6 @@
 				CF75E54B248827430086FF26 /* MockRemoteCommandsManager.swift in Sources */,
 				CF83EE48251C17A200188533 /* MockRemoteCommandResponse.swift in Sources */,
 				CFAD63CD2541FD91007D4EDB /* MockSessionStarter.swift in Sources */,
-				CF3A590E24DB465300A4851D /* MockURLSession.swift in Sources */,
 				CF6E9E31249AEFCE0032A663 /* RemoteCommandResponseTests.swift in Sources */,
 				CF7A8F162489A12F003AE25D /* MockRemoteCommandDelegate.swift in Sources */,
 				CFA55A4124E5903900BFBED8 /* TestTealiumHelper.swift in Sources */,
@@ -6772,6 +6804,7 @@
 				CFD803EE2670213600299D64 /* RemoteCommandsManagerTests.swift in Sources */,
 				CFD803ED2670213400299D64 /* RemoteCommandsModuleTests.swift in Sources */,
 				CFD803EC2670211F00299D64 /* CoreMocks.swift in Sources */,
+				1567CB512BC6C58800E3DBB3 /* MockURLSession.swift in Sources */,
 				CF3A590C24DB464C00A4851D /* MockJSONRemoteCommand.swift in Sources */,
 				CF3A591024DB466400A4851D /* MockWebViewRemoteCommand.swift in Sources */,
 			);
@@ -6789,6 +6822,7 @@
 				CFD803F3267021AC00299D64 /* CoreMocks.swift in Sources */,
 				1519DFF526E23389000C71B4 /* TagManagementWKWebViewTests.swift in Sources */,
 				CFA55A4224E5903A00BFBED8 /* TestTealiumHelper.swift in Sources */,
+				1567CB522BC6C58800E3DBB3 /* MockURLSession.swift in Sources */,
 				15E327152899718E00092C45 /* TagManagementUrlBuilderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -6823,6 +6857,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1567CB482BC6C58300E3DBB3 /* MockURLSession.swift in Sources */,
 				D798C3C0234240E000EE665E /* LifecycleModuleTests.swift in Sources */,
 				CF1160972670206300280397 /* LifecycleStubs.swift in Sources */,
 				CFAD62B62541FCFE007D4EDB /* CoreMocks.swift in Sources */,
@@ -6841,6 +6876,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1567CB492BC6C58300E3DBB3 /* MockURLSession.swift in Sources */,
 				D798C3D7234240E300EE665E /* LifecycleModuleTests.swift in Sources */,
 				CFAD62C12541FCFF007D4EDB /* CoreMocks.swift in Sources */,
 				CF11609F2670208C00280397 /* LifecycleStubsExpected.swift in Sources */,

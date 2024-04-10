@@ -40,12 +40,12 @@ final class ResourceRefresherTests: XCTestCase {
     lazy var refresher = getRefresher()
     
     func testStartsEmpty() {
-        mockUrlSession.result = .success(with: nil)
+        mockUrlSession.result = .success(withData: nil)
         XCTAssertNil(refresher.readResource())
     }
 
     func testShouldRefreshAtStart() {
-        mockUrlSession.result = .success(with: nil)
+        mockUrlSession.result = .success(withData: nil)
         XCTAssertTrue(refresher.shouldRefresh)
     }
 
@@ -105,7 +105,7 @@ final class ResourceRefresherTests: XCTestCase {
         let updatedResourceLoadedNotCalled = expectation(description: "Updated resource is not loaded")
         updatedResourceLoadedNotCalled.isInverted = true
         let failedToLoad = expectation(description: "Resource failed to load")
-        mockUrlSession.result = .success(with: nil, statusCode: 304)
+        mockUrlSession.result = .success(withData: nil, statusCode: 304)
         let delegate = RefresherDelegate()
         delegate.onDidLoadResource.subscribeOnce { loadedObj in
             updatedResourceLoadedNotCalled.fulfill()
@@ -125,7 +125,7 @@ final class ResourceRefresherTests: XCTestCase {
         let updatedResourceLoadedNotCalled = expectation(description: "Updated resource is not loaded")
         updatedResourceLoadedNotCalled.isInverted = true
         let failedToLoad = expectation(description: "Resource failed to load")
-        mockUrlSession.result = .success(with: nil)
+        mockUrlSession.result = .success(withData: nil)
         let delegate = RefresherDelegate()
         delegate.onDidLoadResource.subscribeOnce { loadedObj in
             updatedResourceLoadedNotCalled.fulfill()
@@ -161,7 +161,7 @@ final class ResourceRefresherTests: XCTestCase {
 
     func testRequestRefreshIsIgnoredWhenInErrorCooldown() {
         let requestSent = expectation(description: "Request is sent only once")
-        mockUrlSession.result = .success(with: nil)
+        mockUrlSession.result = .success(withData: nil)
         mockUrlSession.onRequestSent.subscribe { _ in
             requestSent.fulfill()
         }
@@ -193,7 +193,7 @@ final class ResourceRefresherTests: XCTestCase {
                                               fileName: refreshParameters.fileName,
                                               refreshInterval: 0,
                                               errorCooldownBaseInterval: nil)
-        mockUrlSession.result = .success(with: nil)
+        mockUrlSession.result = .success(withData: nil)
         mockUrlSession.onRequestSent.subscribe { _ in
             requestSent.fulfill()
         }
