@@ -51,13 +51,6 @@ class TealiumPublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol, 
                                                                          refreshInterval: refreshInterval)
         self.resourceRefresher = ResourceRefresher(resourceRetriever: resourceRetriever, diskStorage: diskStorage, refreshParameters: refreshParameters)
         resourceRefresher?.delegate = self
-        if cachedSettings == nil,
-           let defaultSettings = loadSettingsFromBundle() {
-            cachedSettings = defaultSettings
-        }
-        if let cachedSettings = cachedSettings {
-            delegate.didUpdate(cachedSettings)
-        }
         refresh()
     }
 
@@ -85,10 +78,6 @@ class TealiumPublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol, 
         var settings = try? JSONDecoder().decode(RemotePublishSettings.self, from: data)
         settings?.etag = etag
         return settings
-    }
-
-    func loadSettingsFromBundle() -> RemotePublishSettings? {
-        try? JSONLoader.fromFile(TealiumValue.settingsResourceName, bundle: .main)
     }
 
     func resourceRefresher(_ refresher: ResourceRefresher<RemotePublishSettings>, didLoad resource: RemotePublishSettings) {
