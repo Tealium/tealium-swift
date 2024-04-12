@@ -213,7 +213,7 @@ class WKWebViewIntegrationTests: XCTestCase {
         let context = tealium.context!
         module = TagManagementModule(context: context, delegate: TagManagementModuleDelegate(), completion: { _ in
             for item in MockQueryParamsProvider.defaultItems {
-                XCTAssertTrue(URLComponents(url: self.module.tagManagement!.url!, resolvingAgainstBaseURL: false)!.queryItems!.contains(item))
+                XCTAssertTrue(URLComponents(url: self.module.tagManagement.url!, resolvingAgainstBaseURL: false)!.queryItems!.contains(item))
             }
             self.expect.fulfill()
         })

@@ -23,31 +23,26 @@ class TagManagementModuleTests: XCTestCase {
         mockTagmanagement = MockTagManagementWebView(success: true)
         let context = TestTealiumHelper.context(with: config)
         module = TagManagementModule(context: context, delegate: self, tagManagement: mockTagmanagement)
-        module?.errorCount = AtomicInteger(value: 1)
+        module.webViewState = .loadFailure
         let track = TealiumTrackRequest(data: ["test_track": true])
         module?.dynamicTrack(track, completion: nil)
         XCTAssertEqual(mockTagmanagement.reloadCallCount, 1)
-        TealiumQueues.backgroundSerialQueue.sync {
-            XCTAssertEqual(self.module.errorCount.value, 0)
-        }
     }
 
     func testDynamicTrackWithErrorReloadsAndFails() {
         mockTagmanagement = MockTagManagementWebView(success: false)
         let context = TestTealiumHelper.context(with: config)
         module = TagManagementModule(context: context, delegate: self, tagManagement: mockTagmanagement)
-        module?.errorCount = AtomicInteger(value: 1)
+        module.webViewState = .loadFailure
         let track = TealiumTrackRequest(data: ["test_track": true])
         module?.dynamicTrack(track, completion: nil)
         XCTAssertEqual(mockTagmanagement.reloadCallCount, 1)
-        TealiumQueues.backgroundSerialQueue.sync {
-            XCTAssertEqual(self.module.errorCount.value, 2)
-        }
     }
 
     func testEnqueueWhenRequestIsAcceptable() {
+        mockTagmanagement = MockTagManagementWebView(success: true)
         let context = TestTealiumHelper.context(with: config)
-        module = TagManagementModule(context: context, delegate: self, completion: nil)
+        module = TagManagementModule(context: context, delegate: self, tagManagement: mockTagmanagement)
         let track = TealiumTrackRequest(data: ["test": "track"])
         let batch = TealiumBatchTrackRequest(trackRequests: [track, track, track])
         let remote = TealiumRemoteAPIRequest(trackRequest: track)
@@ -58,7 +53,7 @@ class TagManagementModuleTests: XCTestCase {
             XCTAssertEqual(request.trackDictionary["test"] as! String, "track")
         }
 
-        module = TagManagementModule(context: context, delegate: self, completion: nil)
+        module = TagManagementModule(context: context, delegate: self, tagManagement: mockTagmanagement)
 
         module.enqueue(batch, completion: nil)
         XCTAssertEqual(module.pendingTrackRequests.count, 1)
@@ -66,7 +61,7 @@ class TagManagementModuleTests: XCTestCase {
             XCTAssertEqual(request.trackDictionary["test"] as! String, "track")
         }
 
-        module = TagManagementModule(context: context, delegate: self, completion: nil)
+        module = TagManagementModule(context: context, delegate: self, tagManagement: mockTagmanagement)
 
         module.enqueue(remote, completion: nil)
         XCTAssertEqual(module.pendingTrackRequests.count, 1)
@@ -77,7 +72,8 @@ class TagManagementModuleTests: XCTestCase {
 
     func testEnqueueWhenRequestIsNotAcceptable() {
         let context = TestTealiumHelper.context(with: config)
-        module = TagManagementModule(context: context, delegate: self, completion: nil)
+        mockTagmanagement = MockTagManagementWebView(success: true)
+        module = TagManagementModule(context: context, delegate: self, tagManagement: mockTagmanagement)
         let req = TealiumEnqueueRequest(data: TealiumTrackRequest(data: ["test": "track"]))
 
         module.enqueue(req, completion: nil)
@@ -102,7 +98,6 @@ class TagManagementModuleTests: XCTestCase {
         module = TagManagementModule(context: context, delegate: self, tagManagement: mockTagmanagement)
         let track = TealiumTrackRequest(data: ["test": "track"])
         module.pendingTrackRequests.append((track, nil))
-        module.webViewState = .loadSuccess
         module.flushQueue()
 
         XCTAssertEqual(module.pendingTrackRequests.count, 1)
@@ -111,7 +106,8 @@ class TagManagementModuleTests: XCTestCase {
     func testPrepareforDispatchAddsModuleName() {
         let incomingTrack = TealiumTrackRequest(data: ["incoming": "track"])
         let context = TestTealiumHelper.context(with: config)
-        module = TagManagementModule(context: context, delegate: self, completion: nil)
+        mockTagmanagement = MockTagManagementWebView(success: true)
+        module = TagManagementModule(context: context, delegate: self, tagManagement: mockTagmanagement)
         let result = module.prepareForDispatch(incomingTrack).trackDictionary
         XCTAssertEqual(result[TealiumDataKey.dispatchService] as! String, TagManagementKey.moduleName)
     }
