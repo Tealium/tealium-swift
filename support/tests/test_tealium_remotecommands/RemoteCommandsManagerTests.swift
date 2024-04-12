@@ -53,6 +53,31 @@ class RemoteCommandsManagerTests: XCTestCase {
         XCTAssertNotNil(tealiumRemoteJSONCommand.config)
     }
 
+    func testRemoteCommandReadFromBundleAtStart() {
+        config.remoteCommandsRemoteConfigBundle = Bundle(for: type(of: self))
+        mockURLSession.result = .success(withData: nil)
+        addRemoteCommands(tealiumRemoteJSONCommand)
+        XCTAssertNotNil(tealiumRemoteJSONCommand.config)
+    }
+
+    func testRemoteCommandGetsRefreshed() {
+        config.remoteCommandConfigRefresh = .every(0, .seconds)
+        var config = RemoteCommandConfig(config: ["key": "value1"], mappings: [:], apiCommands: [:], statics: [:], commandName: nil, commandURL: nil)
+        mockURLSession.result = .success(with: config)
+        addRemoteCommands(tealiumRemoteJSONCommand)
+        TealiumQueues.backgroundSerialQueue.sync {
+            XCTAssertNotNil(tealiumRemoteJSONCommand.config)
+            XCTAssertEqual(tealiumRemoteJSONCommand.config?.apiConfig?["key"] as? String, "value1")
+            config.apiConfig?["key"] = "value2"
+            mockURLSession.result = .success(with: config)
+            tealiumRemoteCommandsManager.refresh(tealiumRemoteJSONCommand)
+        }
+        TealiumQueues.backgroundSerialQueue.sync {
+            XCTAssertNotNil(tealiumRemoteJSONCommand.config)
+            XCTAssertEqual(tealiumRemoteJSONCommand.config?.apiConfig?["key"] as? String, "value2")
+        }
+    }
+
     func testGetConfigMethodDecodesJSON() {
         let goodStub = TestTealiumHelper.loadStub(from: "example", type(of: self))
         let config = RemoteCommandsManager.config(from: goodStub, etag: nil)!
