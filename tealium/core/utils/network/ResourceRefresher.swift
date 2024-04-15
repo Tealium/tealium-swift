@@ -18,6 +18,14 @@ public extension ResourceRefresherDelegate {
     func resourceRefresher(_ refresher: ResourceRefresher<Resource>, didFailToLoadResource error: TealiumResourceRetrieverError) { }
 }
 
+/**
+ * An object that refreshes a single resource at regular intervals.
+ *
+ * Refresh is requested from the outside, but it's ignored unless the required intervals have passed.
+ * The resource is cached locally and it's re-read only on initialization.
+ *
+ * You can pass a delegate to be informed on current and future loaded resources, as well as errors.
+ */
 public class ResourceRefresher<Resource: Codable & EtagResource> {
     let resourceRetriever: ResourceRetriever<Resource>
     let diskStorage: TealiumDiskStorageProtocol
@@ -36,7 +44,8 @@ public class ResourceRefresher<Resource: Codable & EtagResource> {
     }
     private var fetching = false
     private var lastFetch: Date?
-    private(set) var isFileCached: Bool?
+    /// An in memory state to remember if the file is cached, to avoiding reading from disk every time
+    lazy private(set) var isFileCached: Bool = readResource() != nil
     private var lastEtag: String?
     let errorCooldown: ErrorCooldown?
     public init(resourceRetriever: ResourceRetriever<Resource>,
@@ -57,7 +66,7 @@ public class ResourceRefresher<Resource: Codable & EtagResource> {
         guard let lastFetch = lastFetch else {
             return true
         }
-        guard errorCooldown == nil || isFileCached ?? checkIfFileIsCached() else {
+        guard errorCooldown == nil || isFileCached else {
             return errorCooldown?.isInCooldown(lastFetch: lastFetch) == false
         }
         guard let newFetchMinimumDate = lastFetch.addSeconds(parameters.refreshInterval) else {
@@ -104,12 +113,6 @@ public class ResourceRefresher<Resource: Codable & EtagResource> {
         } else {
             self.diskStorage.save(resource, completion: nil)
         }
-    }
-
-    func checkIfFileIsCached() -> Bool {
-        let isCached = readResource() != nil
-        isFileCached = isCached
-        return isCached
     }
 
     private func onResourceLoaded(_ resource: Resource) {

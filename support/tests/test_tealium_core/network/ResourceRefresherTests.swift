@@ -177,7 +177,7 @@ final class ResourceRefresherTests: XCTestCase {
             refresher.requestRefresh()
         }
         TealiumQueues.backgroundSerialQueue.sync {
-            XCTAssertEqual(refresher.isFileCached, false)
+            XCTAssertFalse(refresher.isFileCached)
             refresher.requestRefresh()
         }
         TealiumQueues.backgroundSerialQueue.sync {

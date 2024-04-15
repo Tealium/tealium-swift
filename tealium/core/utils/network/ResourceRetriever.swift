@@ -30,6 +30,11 @@ public enum TealiumResourceRetrieverError: TealiumErrorEnum, Equatable {
     case non200Response(code: Int)
 }
 
+/**
+ * An object used to send GET requests to download a JSON and build a Codable resource.
+ *
+ * Automatically handles retries with an exponential backoff and adds `if-none-match` header if `etag` is provided.
+ */
 public class ResourceRetriever<Resource: Codable> {
     let urlSession: URLSessionProtocol
     public typealias ResourceBuilder = (_ data: Data, _ etag: String?) -> Resource?

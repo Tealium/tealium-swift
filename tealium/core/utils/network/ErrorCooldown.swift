@@ -8,6 +8,7 @@
 
 import Foundation
 
+///An object that increases a cooldown for every error event, and resets the cooldown to 0 when a non-error event happens.
 public class ErrorCooldown {
     let baseInterval: Double
     var maxInterval: Double
