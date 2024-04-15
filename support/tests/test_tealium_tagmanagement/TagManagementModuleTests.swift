@@ -112,6 +112,46 @@ class TagManagementModuleTests: XCTestCase {
         XCTAssertEqual(result[TealiumDataKey.dispatchService] as! String, TagManagementKey.moduleName)
     }
 
+    func testReloadDoesntHappenAfterSessionBeignResetToTheSameValue() {
+        mockTagmanagement = MockTagManagementWebView(success: true)
+        let dataLayer = MockDataLayerManager()
+        let context = TestTealiumHelper.context(with: config, dataLayer: dataLayer)
+        dataLayer.add(key: TealiumDataKey.sessionId, value: "123", expiration: .forever)
+        module = TagManagementModule(context: context, delegate: self, tagManagement: mockTagmanagement)
+        TealiumQueues.backgroundSerialQueue.sync {
+            let track = TealiumTrackRequest(data: ["test_track": true])
+            dataLayer.add(key: TealiumDataKey.sessionId, value: "123", expiration: .forever)
+            module?.dynamicTrack(track, completion: nil)
+            XCTAssertEqual(mockTagmanagement.reloadCallCount, 0)
+        }
+    }
+
+    func testReloadAfterSessionChange() {
+        mockTagmanagement = MockTagManagementWebView(success: true)
+        let dataLayer = MockDataLayerManager()
+        let context = TestTealiumHelper.context(with: config, dataLayer: dataLayer)
+        dataLayer.add(key: TealiumDataKey.sessionId, value: "123", expiration: .forever)
+        module = TagManagementModule(context: context, delegate: self, tagManagement: mockTagmanagement)
+        TealiumQueues.backgroundSerialQueue.sync {
+            let track = TealiumTrackRequest(data: ["test_track": true])
+            dataLayer.add(key: TealiumDataKey.sessionId, value: "456", expiration: .forever)
+            module?.dynamicTrack(track, completion: nil)
+            XCTAssertEqual(mockTagmanagement.reloadCallCount, 1)
+        }
+    }
+
+    func testReloadDoesntHappenForFirstSession() {
+        mockTagmanagement = MockTagManagementWebView(success: true)
+        let dataLayer = MockDataLayerManager()
+        let context = TestTealiumHelper.context(with: config, dataLayer: dataLayer)
+        module = TagManagementModule(context: context, delegate: self, tagManagement: mockTagmanagement)
+        TealiumQueues.backgroundSerialQueue.sync {
+            let track = TealiumTrackRequest(data: ["test_track": true])
+            dataLayer.add(key: TealiumDataKey.sessionId, value: "123", expiration: .forever)
+            module?.dynamicTrack(track, completion: nil)
+            XCTAssertEqual(mockTagmanagement.reloadCallCount, 0)
+        }
+    }
 }
 
 extension TagManagementModuleTests: ModuleDelegate {

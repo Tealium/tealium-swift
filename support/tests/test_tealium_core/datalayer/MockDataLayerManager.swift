@@ -16,20 +16,12 @@ class MockDataLayerManager: DataLayerManagerProtocol {
     var deleteSingleCount = 0
     var deleteMultiCount = 0
     var deleteAllCount = 0
-    var onDataUpdated: TealiumObservable<[String : Any]> = TealiumPublisher<[String:Any]>().asObservable()
+    var _onDataUpdated = TealiumPublisher<[String:Any]>()
+    var onDataUpdated: TealiumObservable<[String : Any]> { _onDataUpdated.asObservable() }
     var onDataRemoved: TealiumObservable<[String]> = TealiumPublisher<[String]>().asObservable()
-    var all: [String: Any] {
-        get {
-            ["all": "eventdata"]
-        }
-        set {
-            self.add(data: newValue, expiration: .forever)
-        }
-    }
+    var all: [String: Any] = ["all": "eventdata"]
 
-    var allSessionData: [String: Any] {
-        ["all": "sessiondata"]
-    }
+    var allSessionData: [String: Any] = ["all": "sessiondata"]
 
     var minutesBetweenSessionIdentifier: TimeInterval = 1.0
 
@@ -37,10 +29,10 @@ class MockDataLayerManager: DataLayerManagerProtocol {
 
     var sessionId: String? {
         get {
-            "testsessionid"
+            all[TealiumDataKey.sessionId] as? String
         }
         set {
-            self.add(data: ["sessionId": newValue!], expiration: .session)
+            self.add(data: [TealiumDataKey.sessionId: newValue as Any], expiration: .session)
         }
     }
 
@@ -61,10 +53,16 @@ class MockDataLayerManager: DataLayerManagerProtocol {
 
     func add(data: [String: Any], expiration: Expiry) {
         addMultiCount += 1
+        for kv in data {
+            all[kv.key] = kv.value
+        }
+        _onDataUpdated.publish(data)
     }
 
     func add(key: String, value: Any, expiration: Expiry) {
         addSingleCount += 1
+        all[key] = value
+        _onDataUpdated.publish([key: value])
     }
 
     func joinTrace(id: String) {

@@ -22,6 +22,7 @@ public class TagManagementModule: Dispatcher {
     let tagManagement: TagManagementProtocol
     var webViewState: WebViewState?
     weak var delegate: ModuleDelegate?
+    let disposeBag = TealiumDisposeBag()
 
     /// Provided for unit testing￼.
     ///
@@ -53,6 +54,22 @@ public class TagManagementModule: Dispatcher {
                         }
                     }
                 }
+            var currentSessionId: String? = context.dataLayer?.sessionId
+            context.dataLayer?.onDataUpdated.subscribe { [weak self] updatedData in
+                guard let self = self,
+                      let newSessionId = updatedData[TealiumDataKey.sessionId] as? String,
+                      currentSessionId != newSessionId else {
+                    return
+                }
+                defer { currentSessionId = newSessionId }
+                guard currentSessionId != nil else {
+                    return
+                }
+                guard self.webViewState == .loadSuccess else {
+                    return
+                }
+                self.webViewState = .loadFailure // Force reload on next track
+            }.toDisposeBag(self.disposeBag)
         }
     }
 

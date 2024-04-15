@@ -10,6 +10,7 @@
 		15046A0F28C8CBF000B0535E /* allEventsCommands.json in Resources */ = {isa = PBXBuildFile; fileRef = 15046A0E28C8CBF000B0535E /* allEventsCommands.json */; };
 		15062EEB270758EC00734060 /* large-event-data.json in Resources */ = {isa = PBXBuildFile; fileRef = D7187F1524768F5000CF0AB0 /* large-event-data.json */; };
 		15062EEC270758EC00734060 /* big-visitor.json in Resources */ = {isa = PBXBuildFile; fileRef = CF8FF2C524466FD90081C1A9 /* big-visitor.json */; };
+		150E382D2BCD6CF50066D1A6 /* MockDataLayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7187F1B24768F5000CF0AB0 /* MockDataLayerManager.swift */; };
 		150F9FB428BFB3DB00E75B31 /* VisitorIdentityListenerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150F9FB328BFB3DB00E75B31 /* VisitorIdentityListenerTests.swift */; };
 		150F9FB528BFB3DB00E75B31 /* VisitorIdentityListenerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150F9FB328BFB3DB00E75B31 /* VisitorIdentityListenerTests.swift */; };
 		150F9FB628BFB3DB00E75B31 /* VisitorIdentityListenerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150F9FB328BFB3DB00E75B31 /* VisitorIdentityListenerTests.swift */; };
@@ -6818,6 +6819,7 @@
 				CFD803F2267021AA00299D64 /* TagManagementUtilsTests.swift in Sources */,
 				15C88ADD26F3A22200D56064 /* TagManagementConfigTests.swift in Sources */,
 				CFD803F3267021AC00299D64 /* CoreMocks.swift in Sources */,
+				150E382D2BCD6CF50066D1A6 /* MockDataLayerManager.swift in Sources */,
 				1519DFF526E23389000C71B4 /* TagManagementWKWebViewTests.swift in Sources */,
 				CFA55A4224E5903A00BFBED8 /* TestTealiumHelper.swift in Sources */,
 				1567CB522BC6C58800E3DBB3 /* MockURLSession.swift in Sources */,

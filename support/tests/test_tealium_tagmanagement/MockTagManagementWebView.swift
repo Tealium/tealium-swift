@@ -23,7 +23,7 @@ class MockTagManagementWebView: TagManagementProtocol {
     }
 
     func enable(webviewURL: URL?, delegates: [WKNavigationDelegate]?, view: UIView?, completion: ((Bool, Error?) -> Void)?) {
-
+        completion?(success, nil)
     }
 
     func disable() {
