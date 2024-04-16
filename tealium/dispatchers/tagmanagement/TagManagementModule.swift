@@ -135,18 +135,18 @@ public class TagManagementModule: Dispatcher {
     /// - Parameter completion: `ModuleCompletion?` block to be called when the request has been processed
     public func dynamicTrack(_ track: TealiumRequest,
                              completion: ModuleCompletion?) {
-        guard webViewState == .loadSuccess else {
-            guard webViewState == nil else {
-                self.reload { success in
-                    if success {
-                        self.dynamicTrack(track, completion: completion)
-                    } else {
-                        self.enqueue(track, completion: completion)
-                    }
-                }
-                return
-            }
+        guard webViewState != nil else {
             self.enqueue(track, completion: completion)
+            return
+        }
+        guard webViewState == .loadSuccess else {
+            self.reload { success in
+                if success {
+                    self.dynamicTrack(track, completion: completion)
+                } else {
+                    self.enqueue(track, completion: completion)
+                }
+            }
             return
         }
         flushQueue()
