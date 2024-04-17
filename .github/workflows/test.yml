@@ -5,7 +5,7 @@ on: [pull_request]
 jobs:
   install:
     name: Setup Fastlane
-    runs-on: macos-15
+    runs-on: macos-14
     steps:
       - uses: actions/checkout@v2
       - uses: ruby/setup-ruby@v1
