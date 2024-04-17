@@ -45,6 +45,7 @@ public enum ModuleNames {
     public static let lifecycle = "Lifecycle"
     public static let inapppurchase = "InAppPurchase"
     public static let location = "Location"
+    public static let momentsapi = "MomentsAPI"
     public static let remotecommands = "RemoteCommands"
     public static let tagmanagement = "TagManagement"
     public static let visitorservice = "VisitorService"
