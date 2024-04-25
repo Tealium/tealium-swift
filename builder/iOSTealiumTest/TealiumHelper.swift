@@ -10,9 +10,10 @@ import Foundation
 import TealiumCollect
 import TealiumCore
 import TealiumLifecycle
-import TealiumVisitorService
+//import TealiumVisitorService
 import TealiumAutotracking
 import TealiumInAppPurchase
+import TealiumMoments
 #if os(iOS)
 import WebKit
 import TealiumAttribution
@@ -45,7 +46,7 @@ class TealiumHelper {
 
         config.connectivityRefreshInterval = 5
         config.loggerType = .os
-        config.logLevel = .info
+        config.logLevel = .debug
         config.consentPolicy = .gdpr
         config.consentLoggingEnabled = true
 //        config.remoteHTTPCommandDisabled = false
@@ -57,7 +58,7 @@ class TealiumHelper {
         // config.batchSize = 5
         config.memoryReportingEnabled = true
         config.diskStorageEnabled = true
-        config.visitorServiceDelegate = self
+//        config.visitorServiceDelegate = self
         config.memoryReportingEnabled = true
         config.autoTrackingCollectorDelegate = self
         config.batterySaverEnabled = true
@@ -79,7 +80,8 @@ class TealiumHelper {
                 Collectors.Connectivity,
                 Collectors.Device,
                 Collectors.Location,
-                Collectors.VisitorService,
+                Collectors.Moments,
+//                Collectors.VisitorService,
                 Collectors.InAppPurchase,
                 Collectors.AutoTracking
             ]
@@ -99,6 +101,7 @@ class TealiumHelper {
             config.geofenceUrl = "https://tags.tiqcdn.com/dle/tealiummobile/location/geofences.json"
             config.desiredAccuracy = .best
             config.updateDistance = 100.0
+            config.momentsAPIRegion = .us_east
         #else
             config.collectors = [
                 Collectors.Lifecycle,
@@ -170,8 +173,20 @@ class TealiumHelper {
             }
         }
     }
-
+    
+    //https://personalization-api.us-east-1.prod.tealiumapis.com/personalization/accounts/tealiummobile/profiles/demo/engines/4625fd31-cd87-444e-9470-7467f2e963ba/visitors/{{tealium_visitor_id}}
     func track(title: String, data: [String: Any]?) {
+        self.tealium?.moments?.api?.fetchEngineResponse(engineID: "4625fd31-cd87-444e-9470-7467f2e963ba", completion: { engineResponse in
+            switch engineResponse {
+            case .success(let engineResponse):
+                print("Moments fetched successfully:", engineResponse)
+                print("Moments fetched successfully Audiences:", engineResponse.audiences)
+                print("Moments fetched successfully Attributes:", engineResponse.strings)
+                print("Moments fetched successfully Badges:", engineResponse.badges)
+            case .failure(let error):
+                print("Error fetching moments:", error.localizedDescription)
+            }
+        })
         let dispatch = TealiumEvent(title, dataLayer: data)
         tealium?.track(dispatch)
     }
@@ -195,17 +210,17 @@ class TealiumHelper {
 
 }
 
-extension TealiumHelper: VisitorServiceDelegate {
-    func didUpdate(visitorProfile: TealiumVisitorProfile) {
-        if let json = try? JSONEncoder().encode(visitorProfile),
-           let string = String(data: json, encoding: .utf8) {
-            if self.enableHelperLogs {
-                print("Visitor Profile: \(string)")
-            }
-        }
-    }
-
-}
+//extension TealiumHelper: VisitorServiceDelegate {
+//    func didUpdate(visitorProfile: TealiumVisitorProfile) {
+//        if let json = try? JSONEncoder().encode(visitorProfile),
+//           let string = String(data: json, encoding: .utf8) {
+//            if self.enableHelperLogs {
+//                print("Visitor Profile: \(string)")
+//            }
+//        }
+//    }
+//
+//}
 
 extension TealiumHelper: DispatchListener {
     public func willTrack(request: TealiumRequest) {

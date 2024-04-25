@@ -18,6 +18,8 @@ enum ModulesManagerLogMessages {
     static let noDispatchersEnabled = "No dispatchers are enabled. Please check remote publish settings."
     static let noConnectionDispatchersDisabled = "Internet connection not available. Dispatchers could not be enabled. Will retry when connection available."
     static let connectionLost = "Internet connection lost. Events will be queued until connection restored."
+    static let collectorInitializedSuccessfully = "Collector initialized successfully."
+    static let collectorFailedToInitialize = "Collector failed to initialize."
 }
 
 public class ModulesManager {
@@ -271,7 +273,26 @@ extension ModulesManager {
                 return
             }
 
-            let collector = collector.init(context: context, delegate: self, diskStorage: nil) { _, _  in }
+            let collector = collector.init(context: context, delegate: self, diskStorage: nil) { result, info  in
+                switch result {
+                case .success:
+                    let logRequest = TealiumLogRequest(title: ModulesManagerLogMessages.system,
+                                                       message: "\(ModulesManagerLogMessages.collectorInitializedSuccessfully)",
+                                                       info: nil,
+                                                       logLevel: .info,
+                                                       category: .`init`)
+                    self.logger?.log(logRequest)
+                case .failure(let error):
+                    let logRequest = TealiumLogRequest(title: ModulesManagerLogMessages.system,
+                                                       message: "\(ModulesManagerLogMessages.collectorFailedToInitialize) with error: \((error as! LocalizedError).localizedDescription)",
+                                                       info: nil,
+                                                       logLevel: .info,
+                                                       category: .`init`)
+                    self.logger?.log(logRequest)
+                }
+                
+            }
+
 
             addCollector(collector)
         }

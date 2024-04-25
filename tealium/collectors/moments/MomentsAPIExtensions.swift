@@ -11,8 +11,21 @@ import TealiumCore
 
 extension TealiumConfigKey {
     static let momentsAPIRegion = "moments_api_region"
-    static let momentsAPIEngineID = "moments_api_engine_id"
+}
+
+enum MomentsError: Error, LocalizedError {
+    case missingRegion
+    case missingVisitorID
     
+    
+    public var errorDescription: String? {
+        switch self {
+        case .missingRegion:
+            return NSLocalizedString("Missing Region", comment: "Set momentsAPIRegion property on TealiumConfig.")
+        case .missingVisitorID:
+            return NSLocalizedString("Missing Visitor ID", comment: "Tealium Anonymous Visitor ID could not be determined. This is likely to be a temporary error, and should resolve itself.")
+        }
+    }
 }
 
 public enum MomentsAPIRegion: String {
@@ -35,19 +48,7 @@ public extension TealiumConfig {
         set {
             options[TealiumConfigKey.momentsAPIRegion] = newValue
         }
-    }
-    
-    /// Sets the region for calls to the Moments API endpoint
-    var momentsAPIEngineID: String? {
-        get {
-            options[TealiumConfigKey.momentsAPIEngineID] as? String
-        }
-        
-        set {
-            options[TealiumConfigKey.momentsAPIEngineID] = newValue
-        }
-    }
-    
+    }    
 }
 
 public extension Tealium {
@@ -61,17 +62,15 @@ public extension Tealium {
             }) as? TealiumMomentsAPIModule
         }
         
-        /// Links a known visitor ID to an ECID
+        /// Fetches a response from a configured Moments API Engine
         /// - Parameters:
-        ///    - knownId: `String` containing the custom visitor ID (e.g. email address or other known visitor ID)
-        ///    - authState: `AdobeVisitorAuthState?` the visitor's current authentication state
-        ///    - completion: `AdobeVisitorCompletion` Optional completion block to be called when a response has been received from the Adobe Visitor API
-        ///         - result: `Result<AdobeVisitor, Error>` Result type to receive a valid Adobe Visitor or an error
-        public func fetchMoments(completion: @escaping (Result<[TealiumVisitorProfile], Error>) -> Void) {
+        ///    - completion: `Result<EngineResponse, Error>` Optional completion block to be called when a response has been received from the Adobe Visitor API
+        ///         - result: `Result<EngineResponse, Error>` Result type to receive a valid Adobe Visitor or an error
+        public func fetchEngineResponse(engineID: String, completion: @escaping (Result<EngineResponse, Error>) -> Void) {
             guard let module = module else {
                 return
             }
-            module.momentsAPI?.fetchMoments(completion: completion)
+            module.momentsAPI?.fetchEngineResponse(engineID: engineID, completion: completion)
         }
 
         
@@ -79,10 +78,17 @@ public extension Tealium {
             self.tealium = tealium
         }
     }
+
+    class MomentsWrapper {
+        public var api: MomentsAPIWrapper?
+        init(api: MomentsAPIWrapper? = nil) {
+            self.api = api
+        }
+    }
     
     /// Provides API methods to interact with the Adobe Visitor API module
-    var adobeVisitorApi: MomentsAPIWrapper? {
-        return MomentsAPIWrapper(tealium: self)
+    var moments: MomentsWrapper? {
+        return MomentsWrapper(api: MomentsAPIWrapper(tealium: self))
     }
 
 }

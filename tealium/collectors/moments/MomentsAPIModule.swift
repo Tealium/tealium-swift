@@ -42,11 +42,14 @@ public class TealiumMomentsAPIModule: Collector {
                          diskStorage: TealiumDiskStorageProtocol?,
                          completion: ModuleCompletion) {
         self.config = context.config
-        guard let momentsAPIRegion = config.momentsAPIRegion, let momentsAPIEngineID = config.momentsAPIEngineID  else {
-            completion((.success(false), nil))
+        guard let momentsAPIRegion = config.momentsAPIRegion else {
+            completion((.failure(MomentsError.missingRegion), nil))
             return
         }
-        self.momentsAPI = TealiumMomentsAPI(region: momentsAPIRegion, account: config.account, profile: config.profile, environment: config.environment, engineID: momentsAPIEngineID)
+        self.momentsAPI = TealiumMomentsAPI(region: momentsAPIRegion, 
+                                            account: config.account,
+                                            profile: config.profile,
+                                            environment: config.environment)
         TealiumQueues.backgroundSerialQueue.async {
             context.onVisitorId?.subscribe { [weak self] visitorId in
                 guard let self = self else {
@@ -58,4 +61,8 @@ public class TealiumMomentsAPIModule: Collector {
         completion((.success(true), nil))
     }
 
+}
+
+public extension Collectors {
+    static let Moments = TealiumMomentsAPIModule.self
 }
