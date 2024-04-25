@@ -22,13 +22,14 @@ public struct EngineResponse: Codable {
             $0.value.boolValue
         }
     }
-    public var dates: [Int64] = [] {
+    
+    public var dates: [Int]  {
         attributes.compactMap {
             $0.value.intValue
         }
     }
     
-    public var numbers: [Double] = [] {
+    public var numbers: [Double] {
         attributes.compactMap {
             $0.value.doubleValue
         }
