@@ -40,6 +40,8 @@ public class ErrorCooldown {
     func newCooldownEvent(error: Error?) {
         if let _ = error {
             consecutiveErrorsCount += 1
+        } else {
+            consecutiveErrorsCount = 0
         }
         lastCallError = error
     }
