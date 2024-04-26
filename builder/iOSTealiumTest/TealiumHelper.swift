@@ -173,16 +173,17 @@ class TealiumHelper {
             }
         }
     }
-    
-    //https://personalization-api.us-east-1.prod.tealiumapis.com/personalization/accounts/tealiummobile/profiles/demo/engines/4625fd31-cd87-444e-9470-7467f2e963ba/visitors/{{tealium_visitor_id}}
+
     func track(title: String, data: [String: Any]?) {
         self.tealium?.moments?.api?.fetchEngineResponse(engineID: "4625fd31-cd87-444e-9470-7467f2e963ba", completion: { engineResponse in
             switch engineResponse {
             case .success(let engineResponse):
                 print("Moments fetched successfully:", engineResponse)
-                print("Moments fetched successfully Audiences:", engineResponse.audiences)
-                print("Moments fetched successfully Attributes:", engineResponse.strings)
-                print("Moments fetched successfully Badges:", engineResponse.badges)
+                print("Moments fetched successfully - String attributes:", engineResponse.strings)
+                print("Moments fetched successfully - Audiences:", engineResponse.audiences)
+                print("Moments fetched successfully - Date attributes:", engineResponse.dates)
+                print("Moments fetched successfully - Badges:", engineResponse.badges)
+                print("Moments fetched successfully - Numbers:", engineResponse.numbers)
             case .failure(let error):
                 print("Error fetching moments:", error.localizedDescription)
             }

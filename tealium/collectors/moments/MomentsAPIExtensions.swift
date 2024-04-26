@@ -13,6 +13,12 @@ extension TealiumConfigKey {
     static let momentsAPIRegion = "moments_api_region"
 }
 
+//enum MomentsAPIHTTPError: Int {
+//    case 400
+//    case 403
+//    case 404
+//}
+
 enum MomentsError: Error, LocalizedError {
     case missingRegion
     case missingVisitorID
