@@ -106,7 +106,9 @@ class PublishSettingsTests: XCTestCase {
             XCTAssertNil(req.allHTTPHeaderFields?["If-None-Match"])
             firstUrlRequest.fulfill()
         }
-        wait(for: [PublishSettingsTests.delegateExpectationSuccess!], timeout: 5.0)
+        TealiumQueues.backgroundSerialQueue.sync {
+            wait(for: [PublishSettingsTests.delegateExpectationSuccess!], timeout: 5.0)
+        }
         PublishSettingsTests.delegateExpectationSuccess = nil
         XCTAssertNotNil(publishSettingsRetriever.cachedSettings?.etag)
         publishSettingsRetriever.refresh()
