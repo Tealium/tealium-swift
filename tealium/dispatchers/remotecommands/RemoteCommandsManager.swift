@@ -126,14 +126,14 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
     /// - Parameter commandWithId: `String` containing the command ID to be removed
     public func remove(commandWithId commandId: String) {
         remove(jsonCommand: commandId)
-        webviewCommands = webviewCommands.filter { $0.commandId != commandId }
+        webviewCommands.removeAll { $0.commandId == commandId }
     }
 
     /// Removes a JSON `TealiumRemoteCommand` so it can no longer be called.
     ///
     /// - Parameter jsonCommand: `String` containing the commandId to be removed
     public func remove(jsonCommand commandId: String) {
-        jsonCommands = jsonCommands.filter { $0.commandId != commandId }
+        jsonCommands.removeAll { $0.commandId == commandId }
     }
 
     /// Removes all previously-added Remote Commands so they can no longer be executed.

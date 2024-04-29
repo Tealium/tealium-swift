@@ -89,14 +89,23 @@ public class ResourceRefresher<Resource: Codable & EtagResource> {
             case .success(let resource):
                 self.saveResource(resource)
                 self.onResourceLoaded(resource)
+                self.updateErrorCooldown(for: nil)
                 self.errorCooldown?.newCooldownEvent(error: nil)
             case .failure(let error):
                 self.delegate?.resourceRefresher(self, didFailToLoadResource: error)
-                self.errorCooldown?.newCooldownEvent(error: error)
+                self.updateErrorCooldown(for: error)
             }
             self.lastFetch = Date()
             self.fetching = false
         }
+    }
+
+    private func updateErrorCooldown(for error: TealiumResourceRetrieverError?) {
+        var error = error
+        if case let .non200Response(code) = error, code == 304 {
+            error = nil
+        }
+        errorCooldown?.newCooldownEvent(error: error)
     }
 
     public func readResource() -> Resource? {

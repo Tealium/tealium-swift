@@ -27,7 +27,7 @@ public struct RefreshParameters<Resource> {
      *  - url: The URL used to send the GET requests
      *  - fileName: the name used to store the resource on disk
      *  - refreshInterval: the interval in seconds used to refresh the resource after the initial refresh
-     *  - errorCooldownBaseInterval: if present, it's the interval that it's used, instead of the `refreshInterval`, in case of no resource found in the cache. It must be lower then `refreshInterval` if provided.
+     *  - errorCooldownBaseInterval: if present, it's the interval that is used, instead of the `refreshInterval`, in case of no resource found in the cache. It must be lower then `refreshInterval` if provided.
      */
     public init(id: String, url: URL, fileName: String?, refreshInterval: Double, errorCooldownBaseInterval: Double? = nil) {
         self.id = id

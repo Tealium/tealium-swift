@@ -209,6 +209,27 @@ final class ResourceRefresherTests: XCTestCase {
             waitForExpectations(timeout: 1.0)
         }
     }
+
+    func testRequestRefreshIsNotIgnoredAfter304Error() {
+        let requestSent = expectation(description: "Request is sent every time")
+        requestSent.expectedFulfillmentCount = 3
+        mockUrlSession.result = .success(withData: nil, statusCode: 304)
+        _ = refresher
+        refreshParameters.refreshInterval = 0
+        mockUrlSession.onRequestSent.subscribe { _ in
+            requestSent.fulfill()
+        }
+        refresher.requestRefresh()
+        TealiumQueues.backgroundSerialQueue.sync {
+            refresher.requestRefresh()
+        }
+        TealiumQueues.backgroundSerialQueue.sync {
+            refresher.requestRefresh()
+        }
+        TealiumQueues.backgroundSerialQueue.sync {
+            waitForExpectations(timeout: 1.0)
+        }
+    }
     
     class RefresherDelegate: ResourceRefresherDelegate {
         typealias Resource = CustomObject
