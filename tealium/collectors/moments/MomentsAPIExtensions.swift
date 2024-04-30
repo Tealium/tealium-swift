@@ -11,28 +11,9 @@ import TealiumCore
 
 extension TealiumConfigKey {
     static let momentsAPIRegion = "moments_api_region"
+    static let momentsAPIReferer = "moments_api_referer"
 }
 
-//enum MomentsAPIHTTPError: Int {
-//    case 400
-//    case 403
-//    case 404
-//}
-
-enum MomentsError: Error, LocalizedError {
-    case missingRegion
-    case missingVisitorID
-    
-    
-    public var errorDescription: String? {
-        switch self {
-        case .missingRegion:
-            return NSLocalizedString("Missing Region", comment: "Set momentsAPIRegion property on TealiumConfig.")
-        case .missingVisitorID:
-            return NSLocalizedString("Missing Visitor ID", comment: "Tealium Anonymous Visitor ID could not be determined. This is likely to be a temporary error, and should resolve itself.")
-        }
-    }
-}
 
 public enum MomentsAPIRegion: String {
     case germany = "eu-central-1"
@@ -55,6 +36,19 @@ public extension TealiumConfig {
             options[TealiumConfigKey.momentsAPIRegion] = newValue
         }
     }    
+    
+    /// Sets the region for calls to the Moments API endpoint
+    var momentsAPIReferer: String? {
+        get {
+            options[TealiumConfigKey.momentsAPIReferer] as? String
+        }
+        
+        set {
+            options[TealiumConfigKey.momentsAPIReferer] = newValue
+        }
+    }
+    
+    
 }
 
 public extension Tealium {

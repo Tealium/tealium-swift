@@ -101,7 +101,7 @@ class TealiumHelper {
             config.geofenceUrl = "https://tags.tiqcdn.com/dle/tealiummobile/location/geofences.json"
             config.desiredAccuracy = .best
             config.updateDistance = 100.0
-            config.momentsAPIRegion = .us_east
+//            config.momentsAPIRegion = .us_east
         #else
             config.collectors = [
                 Collectors.Lifecycle,
@@ -186,6 +186,10 @@ class TealiumHelper {
                 print("Moments fetched successfully - Numbers:", engineResponse.numbers)
             case .failure(let error):
                 print("Error fetching moments:", error.localizedDescription)
+                if let suggestion = (error as? LocalizedError)?.recoverySuggestion {
+                    print("Recovery suggestion:", suggestion)
+                }
+                
             }
         })
         let dispatch = TealiumEvent(title, dataLayer: data)

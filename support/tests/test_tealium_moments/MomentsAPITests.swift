@@ -19,7 +19,7 @@ class MomentsAPITests: XCTestCase {
     {
         "audiences": ["VIP", "Women's Apparel", "Lifetime visit count"],
         "badges": ["13", "26", "52"],
-        "attributes": {"5063": 6.1, "6021": "banner_007", "6022": "voucher_614", "6023": "https://domain.com/example.html"}
+        "properties": {"5063": 6.1, "6021": "banner_007", "6022": "voucher_614", "6023": "https://domain.com/example.html"}
     }
     """.data(using: .utf8)!
         session.data = jsonData
@@ -36,6 +36,78 @@ class MomentsAPITests: XCTestCase {
                 expectation.fulfill()
             case .failure:
                 XCTFail("Expected successful engine response, got failure")
+            }
+        }
+        
+        wait(for: [expectation], timeout: 1.0)
+    }
+    
+    func testFetchEngineResponseForbidden() {
+        let session = MockURLSession()
+        let api = TealiumMomentsAPI(region: .us_east, account: "testAccount", profile: "testProfile", environment: "dev", session: session)
+        let jsonData = "".data(using: .utf8)!
+        session.data = jsonData
+        session.response = HTTPURLResponse(url: URL(string: "https://example.com")!, statusCode: 403, httpVersion: nil, headerFields: nil)
+        session.error = nil
+        
+        let expectation = XCTestExpectation(description: "Fetch engine response fails")
+        
+        api.visitorId = "12345"
+        api.fetchEngineResponse(engineID: "engine123") { result in
+            switch result {
+            case .success:
+                XCTFail("Expected error, got success.")
+            case .failure(let error):
+                XCTAssertEqual((error as! MomentsAPIHTTPError), MomentsAPIHTTPError.forbidden, "Unexpected error type returned.")
+                expectation.fulfill()
+            }
+        }
+        
+        wait(for: [expectation], timeout: 1.0)
+    }
+    
+    func testFetchEngineResponseBadRequest() {
+        let session = MockURLSession()
+        let api = TealiumMomentsAPI(region: .us_east, account: "testAccount", profile: "testProfile", environment: "dev", session: session)
+        let jsonData = "".data(using: .utf8)!
+        session.data = jsonData
+        session.response = HTTPURLResponse(url: URL(string: "https://example.com")!, statusCode: 400, httpVersion: nil, headerFields: nil)
+        session.error = nil
+        
+        let expectation = XCTestExpectation(description: "Fetch engine response fails")
+        
+        api.visitorId = "12345"
+        api.fetchEngineResponse(engineID: "engine123") { result in
+            switch result {
+            case .success:
+                XCTFail("Expected error, got success.")
+            case .failure(let error):
+                XCTAssertEqual((error as! MomentsAPIHTTPError), MomentsAPIHTTPError.badRequest, "Unexpected error type returned.")
+                expectation.fulfill()
+            }
+        }
+        
+        wait(for: [expectation], timeout: 1.0)
+    }
+    
+    func testFetchEngineResponseNotFound() {
+        let session = MockURLSession()
+        let api = TealiumMomentsAPI(region: .us_east, account: "testAccount", profile: "testProfile", environment: "dev", session: session)
+        let jsonData = "".data(using: .utf8)!
+        session.data = jsonData
+        session.response = HTTPURLResponse(url: URL(string: "https://example.com")!, statusCode: 404, httpVersion: nil, headerFields: nil)
+        session.error = nil
+        
+        let expectation = XCTestExpectation(description: "Fetch engine response fails")
+        
+        api.visitorId = "12345"
+        api.fetchEngineResponse(engineID: "engine123") { result in
+            switch result {
+            case .success:
+                XCTFail("Expected error, got success.")
+            case .failure(let error):
+                XCTAssertEqual((error as! MomentsAPIHTTPError), MomentsAPIHTTPError.notFound, "Unexpected error type returned.")
+                expectation.fulfill()
             }
         }
         

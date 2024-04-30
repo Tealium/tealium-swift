@@ -49,7 +49,8 @@ public class TealiumMomentsAPIModule: Collector {
         self.momentsAPI = TealiumMomentsAPI(region: momentsAPIRegion, 
                                             account: config.account,
                                             profile: config.profile,
-                                            environment: config.environment)
+                                            environment: config.environment,
+                                            referer: config.momentsAPIReferer)
         TealiumQueues.backgroundSerialQueue.async {
             context.onVisitorId?.subscribe { [weak self] visitorId in
                 guard let self = self else {

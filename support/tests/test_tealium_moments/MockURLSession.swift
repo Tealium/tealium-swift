@@ -30,19 +30,19 @@ class MockURLSession: URLSessionProtocol {
         } else if let response = response {
             result = .success((response, data))
         } else {
-            result = .failure(HTTPError.unknown)  // Assuming HTTPError.unknown exists in your project
+            result = .failure(HTTPError.unknown)
         }
         completionHandler(result)
         return MockURLSessionDataTask()
     }
     
     func finishTealiumTasksAndInvalidate() {
-        // In the mock, this function can be left empty or used to reset mock states if needed.
+
     }
     
     private class MockURLSessionDataTask: URLSessionDataTaskProtocol {
         func resume() {
-            // This method is intentionally left blank in the mock implementation.
+
         }
     }
 }

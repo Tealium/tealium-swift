@@ -283,12 +283,20 @@ extension ModulesManager {
                                                        category: .`init`)
                     self.logger?.log(logRequest)
                 case .failure(let error):
-                    let logRequest = TealiumLogRequest(title: ModulesManagerLogMessages.system,
-                                                       message: "\(ModulesManagerLogMessages.collectorFailedToInitialize) with error: \((error as! LocalizedError).localizedDescription)",
-                                                       info: nil,
-                                                       logLevel: .info,
-                                                       category: .`init`)
-                    self.logger?.log(logRequest)
+                    if let error = error as? LocalizedError {
+                        var message = "\(ModulesManagerLogMessages.collectorFailedToInitialize) with error: \((error).localizedDescription)"
+                        
+                        if let recoverySuggestion = error.recoverySuggestion {
+                            message = message + "\nRecovery suggestion: \(recoverySuggestion)"
+                        }
+                        
+                        let logRequest = TealiumLogRequest(title: ModulesManagerLogMessages.system,
+                                                           message: message,
+                                                           info: nil,
+                                                           logLevel: .info,
+                                                           category: .`init`)
+                        self.logger?.log(logRequest)
+                    }
                 }
                 
             }

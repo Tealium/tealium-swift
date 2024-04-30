@@ -9,11 +9,11 @@
 import Foundation
 
 public struct EngineResponse: Codable {
-    /// The complete set of attributes. Types must be inferred, as the original JSON response is a heterogenous object
+    /// The complete set of attributes. Types must be inferred, as the original JSON response is a heterogenous object.
     public var attributes: [String: DynamicType] = [:]
     /// The complete list of audiences the visitor is currently assigned to. Could be the audience name, or just the ID, depending on the options specified in the UI.
     public var audiences: [String] = []
-    /// The complete list of badges assigned to the visitor.. Could be the badge name, or just the ID, depending on the options specified in the UI.
+    /// The complete list of badges assigned to the visitor. Could be the badge name, or just the ID, depending on the options specified in the UI.
     public var badges: [String] = []
     
     /// All audiencestream `String` attributes currently assigned to the visitor
@@ -62,7 +62,9 @@ public struct EngineResponse: Codable {
 
     enum CodingKeys: String, CodingKey {
         // allows for the properties object to be updated to another keyname later, which may happen to disambiguate string properties from general attributes
-        case attributes = "properties", audiences, badges
+        case attributes = "properties", 
+             audiences,
+             badges
     }
 }
 
@@ -108,7 +110,7 @@ public enum DynamicType: Codable {
         return nil
     }
 
-    // number types in AudienceStream should always be floating point numbers
+    // Number types in AudienceStream should always be floating point numbers
     public var doubleValue: Double? {
         if case .double(let value) = self {
             return value
@@ -116,7 +118,7 @@ public enum DynamicType: Codable {
         return nil
     }
 
-    // this should represent the AudienceStream String attribute
+    // Represents the AudienceStream String attribute
     public var stringValue: String? {
         if case .string(let value) = self {
             return value
@@ -124,7 +126,7 @@ public enum DynamicType: Codable {
         return nil
     }
 
-    // this should represent the AudienceStream Boolean attribute
+    // Represents the AudienceStream Boolean attribute
     public var boolValue: Bool? {
         if case .bool(let value) = self {
             return value

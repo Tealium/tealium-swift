@@ -17,6 +17,10 @@
 		08191EDB2BD16EF5003EEE36 /* MomentsAPIEngineResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08191EDA2BD16EF5003EEE36 /* MomentsAPIEngineResponse.swift */; };
 		08191EFD2BD2C555003EEE36 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08191ED92BD15F4A003EEE36 /* MockURLSession.swift */; };
 		08191EFE2BD2C555003EEE36 /* MomentsAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08191EDC2BD2C21F003EEE36 /* MomentsAPITests.swift */; };
+		08191F292BDFAB08003EEE36 /* MomentsAPIHTTPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08191F282BDFAB08003EEE36 /* MomentsAPIHTTPError.swift */; };
+		08191F2B2BDFEA24003EEE36 /* MomentsAPIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08191F2A2BDFEA24003EEE36 /* MomentsAPIError.swift */; };
+		08191F2D2BE10451003EEE36 /* MomentsAPIModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08191F2C2BE10451003EEE36 /* MomentsAPIModuleTests.swift */; };
+		08191F2E2BE10451003EEE36 /* MomentsAPIModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08191F2C2BE10451003EEE36 /* MomentsAPIModuleTests.swift */; };
 		15046A0F28C8CBF000B0535E /* allEventsCommands.json in Resources */ = {isa = PBXBuildFile; fileRef = 15046A0E28C8CBF000B0535E /* allEventsCommands.json */; };
 		15062EEB270758EC00734060 /* large-event-data.json in Resources */ = {isa = PBXBuildFile; fileRef = D7187F1524768F5000CF0AB0 /* large-event-data.json */; };
 		15062EEC270758EC00734060 /* big-visitor.json in Resources */ = {isa = PBXBuildFile; fileRef = CF8FF2C524466FD90081C1A9 /* big-visitor.json */; };
@@ -2205,6 +2209,9 @@
 		08191EDC2BD2C21F003EEE36 /* MomentsAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomentsAPITests.swift; sourceTree = "<group>"; };
 		08191EF92BD2C4F4003EEE36 /* TealiumMomentsAPITests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TealiumMomentsAPITests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		08191EFA2BD2C4F4003EEE36 /* TealiumMomentsAPITests-iOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "TealiumMomentsAPITests-iOS-Info.plist"; path = "/Users/craig.rouse/mobiledev/swift-library/tealium-swift/builder/TealiumMomentsAPITests-iOS-Info.plist"; sourceTree = "<absolute>"; };
+		08191F282BDFAB08003EEE36 /* MomentsAPIHTTPError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomentsAPIHTTPError.swift; sourceTree = "<group>"; };
+		08191F2A2BDFEA24003EEE36 /* MomentsAPIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomentsAPIError.swift; sourceTree = "<group>"; };
+		08191F2C2BE10451003EEE36 /* MomentsAPIModuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomentsAPIModuleTests.swift; sourceTree = "<group>"; };
 		15046A0E28C8CBF000B0535E /* allEventsCommands.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = allEventsCommands.json; sourceTree = "<group>"; };
 		150F9FB328BFB3DB00E75B31 /* VisitorIdentityListenerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorIdentityListenerTests.swift; sourceTree = "<group>"; };
 		150F9FB728BFB86500E75B31 /* VisitorIdProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorIdProviderTests.swift; sourceTree = "<group>"; };
@@ -3109,6 +3116,8 @@
 				08191ED22BD00F55003EEE36 /* MomentsAPIModule.swift */,
 				08191EBA2BCE890C003EEE36 /* MomentsAPIExtensions.swift */,
 				08191EDA2BD16EF5003EEE36 /* MomentsAPIEngineResponse.swift */,
+				08191F282BDFAB08003EEE36 /* MomentsAPIHTTPError.swift */,
+				08191F2A2BDFEA24003EEE36 /* MomentsAPIError.swift */,
 			);
 			path = moments;
 			sourceTree = "<group>";
@@ -3118,6 +3127,7 @@
 			children = (
 				08191ED92BD15F4A003EEE36 /* MockURLSession.swift */,
 				08191EDC2BD2C21F003EEE36 /* MomentsAPITests.swift */,
+				08191F2C2BE10451003EEE36 /* MomentsAPIModuleTests.swift */,
 			);
 			path = test_tealium_moments;
 			sourceTree = "<group>";
@@ -6279,8 +6289,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08191F292BDFAB08003EEE36 /* MomentsAPIHTTPError.swift in Sources */,
 				08191ED32BD00F55003EEE36 /* MomentsAPIModule.swift in Sources */,
 				08191EDB2BD16EF5003EEE36 /* MomentsAPIEngineResponse.swift in Sources */,
+				08191F2D2BE10451003EEE36 /* MomentsAPIModuleTests.swift in Sources */,
+				08191F2B2BDFEA24003EEE36 /* MomentsAPIError.swift in Sources */,
 				08191ECF2BCEC1C9003EEE36 /* MomentsAPI.swift in Sources */,
 				08191ED02BCEC1C9003EEE36 /* MomentsAPIExtensions.swift in Sources */,
 			);
@@ -6290,6 +6303,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08191F2E2BE10451003EEE36 /* MomentsAPIModuleTests.swift in Sources */,
 				08191EFD2BD2C555003EEE36 /* MockURLSession.swift in Sources */,
 				08191EFE2BD2C555003EEE36 /* MomentsAPITests.swift in Sources */,
 			);
