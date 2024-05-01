@@ -1,8 +1,7 @@
 //
-//  MomentsAPIError.swift
-//  TealiumMoments
+//  MomentsError.swift
+//  tealium-swift
 //
-//  Created by Craig Rouse on 29/04/2024.
 //  Copyright © 2024 Tealium, Inc. All rights reserved.
 //
 

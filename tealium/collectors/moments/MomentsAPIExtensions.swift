@@ -14,7 +14,6 @@ extension TealiumConfigKey {
     static let momentsAPIReferer = "moments_api_referer"
 }
 
-
 public enum MomentsAPIRegion: String {
     case germany = "eu-central-1"
     case us_east = "us-east-1"
@@ -47,8 +46,6 @@ public extension TealiumConfig {
             options[TealiumConfigKey.momentsAPIReferer] = newValue
         }
     }
-    
-    
 }
 
 public extension Tealium {
@@ -64,8 +61,8 @@ public extension Tealium {
         
         /// Fetches a response from a configured Moments API Engine
         /// - Parameters:
-        ///    - completion: `Result<EngineResponse, Error>` Optional completion block to be called when a response has been received from the Adobe Visitor API
-        ///         - result: `Result<EngineResponse, Error>` Result type to receive a valid Adobe Visitor or an error
+        ///    - completion: `Result<EngineResponse, Error>` Optional completion block to be called when a response has been received from the Moments API
+        ///         - result: `Result<EngineResponse, Error>` Result type to receive a valid Moments API Engine Response or an error
         public func fetchEngineResponse(engineID: String, completion: @escaping (Result<EngineResponse, Error>) -> Void) {
             guard let module = module else {
                 return
@@ -80,13 +77,14 @@ public extension Tealium {
     }
 
     class MomentsWrapper {
+        // Other APIs in the Moments suite may be added in future
         public var api: MomentsAPIWrapper?
         init(api: MomentsAPIWrapper? = nil) {
             self.api = api
         }
     }
     
-    /// Provides API methods to interact with the Adobe Visitor API module
+    /// Provides API methods to interact with the Moments module
     var moments: MomentsWrapper? {
         return MomentsWrapper(api: MomentsAPIWrapper(tealium: self))
     }

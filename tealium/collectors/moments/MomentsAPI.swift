@@ -1,3 +1,10 @@
+//
+//  MomentsAPI.swift
+//  tealium-swift
+//
+//  Copyright © 2024 Tealium, Inc. All rights reserved.
+//
+
 import Foundation
 import TealiumCore
 
@@ -46,7 +53,7 @@ private extension TealiumMomentsAPI {
 
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.setValue("\(referer)", forHTTPHeaderField: "Referer")
+        request.setValue(referer, forHTTPHeaderField: "Referer")
 
         session.tealiumDataTask(with: request) { data, response, error in
             self.handleResponse(data: data, response: response, error: error, completion: completion)
@@ -59,25 +66,19 @@ private extension TealiumMomentsAPI {
     }
 
     func handleResponse(data: Data?, response: URLResponse?, error: Error?, completion: @escaping (Result<EngineResponse, Error>) -> Void) {
-        // Handle networking errors
-        if let error = error as? URLError, 
-            let customError = mapStatus(forStatusCode: error.code.rawValue) {
-            completion(.failure(customError))
+        // URLError would usually indicate a connection error
+        if let urlError = error as? URLError {
+            completion(.failure(urlError))
             return
         }
-        
-        // Handle any other unknown error
-        if let error = error as? NSError,
-            let customError = mapStatus(forStatusCode: error.code) {
-            // return the original error to be handled by the caller
-            completion(.failure(error))
-            return
-        }
-        
-        // Handle errors based on response status code
-        if let response = response as? HTTPURLResponse, let error = mapStatus(forStatusCode: response.statusCode) {
-            completion(.failure(error))
-            return
+
+        // Check for known HTTP response errors
+        if let httpResponse = response as? HTTPURLResponse {
+            let statusCode = httpResponse.statusCode
+            if let customError = mapStatus(forStatusCode: statusCode) {
+                completion(.failure(customError))
+                return
+            }
         }
 
         guard let data = data else {
@@ -94,7 +95,7 @@ private extension TealiumMomentsAPI {
     }
 
     func mapStatus(forStatusCode statusCode: Int) -> MomentsAPIHTTPError? {
-        let status = MomentsAPIHTTPError(statusCode: statusCode)
+        let status = MomentsAPIHTTPError(rawValue: statusCode)
         guard status != .success else {
             return nil
         }

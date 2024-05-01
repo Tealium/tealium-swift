@@ -19,8 +19,11 @@
 		08191EFE2BD2C555003EEE36 /* MomentsAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08191EDC2BD2C21F003EEE36 /* MomentsAPITests.swift */; };
 		08191F292BDFAB08003EEE36 /* MomentsAPIHTTPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08191F282BDFAB08003EEE36 /* MomentsAPIHTTPError.swift */; };
 		08191F2B2BDFEA24003EEE36 /* MomentsAPIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08191F2A2BDFEA24003EEE36 /* MomentsAPIError.swift */; };
-		08191F2D2BE10451003EEE36 /* MomentsAPIModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08191F2C2BE10451003EEE36 /* MomentsAPIModuleTests.swift */; };
 		08191F2E2BE10451003EEE36 /* MomentsAPIModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08191F2C2BE10451003EEE36 /* MomentsAPIModuleTests.swift */; };
+		08CA23D52BE2437D002AC47A /* TestTealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716C7D1B1DDBC3A500512C99 /* TestTealiumHelper.swift */; };
+		08CA23D62BE245CF002AC47A /* CoreMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA558BF24E4E6B200BFBED8 /* CoreMocks.swift */; };
+		08CA23D72BE245E1002AC47A /* MockSessionStarter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7187F1A24768F5000CF0AB0 /* MockSessionStarter.swift */; };
+		08CA23D82BE24DA3002AC47A /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
 		15046A0F28C8CBF000B0535E /* allEventsCommands.json in Resources */ = {isa = PBXBuildFile; fileRef = 15046A0E28C8CBF000B0535E /* allEventsCommands.json */; };
 		15062EEB270758EC00734060 /* large-event-data.json in Resources */ = {isa = PBXBuildFile; fileRef = D7187F1524768F5000CF0AB0 /* large-event-data.json */; };
 		15062EEC270758EC00734060 /* big-visitor.json in Resources */ = {isa = PBXBuildFile; fileRef = CF8FF2C524466FD90081C1A9 /* big-visitor.json */; };
@@ -6292,7 +6295,6 @@
 				08191F292BDFAB08003EEE36 /* MomentsAPIHTTPError.swift in Sources */,
 				08191ED32BD00F55003EEE36 /* MomentsAPIModule.swift in Sources */,
 				08191EDB2BD16EF5003EEE36 /* MomentsAPIEngineResponse.swift in Sources */,
-				08191F2D2BE10451003EEE36 /* MomentsAPIModuleTests.swift in Sources */,
 				08191F2B2BDFEA24003EEE36 /* MomentsAPIError.swift in Sources */,
 				08191ECF2BCEC1C9003EEE36 /* MomentsAPI.swift in Sources */,
 				08191ED02BCEC1C9003EEE36 /* MomentsAPIExtensions.swift in Sources */,
@@ -6304,8 +6306,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				08191F2E2BE10451003EEE36 /* MomentsAPIModuleTests.swift in Sources */,
+				08CA23D82BE24DA3002AC47A /* MockDiskStorage.swift in Sources */,
+				08CA23D62BE245CF002AC47A /* CoreMocks.swift in Sources */,
 				08191EFD2BD2C555003EEE36 /* MockURLSession.swift in Sources */,
 				08191EFE2BD2C555003EEE36 /* MomentsAPITests.swift in Sources */,
+				08CA23D72BE245E1002AC47A /* MockSessionStarter.swift in Sources */,
+				08CA23D52BE2437D002AC47A /* TestTealiumHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

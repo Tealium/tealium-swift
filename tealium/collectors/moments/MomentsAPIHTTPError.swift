@@ -1,26 +1,17 @@
+//
+//  MomentsAPIHTTPError.swift
+//  tealium-swift
+//
+//  Copyright © 2024 Tealium, Inc. All rights reserved.
+//
+
 import Foundation
 
-enum MomentsAPIHTTPError: Error, LocalizedError, Equatable {
-    case success
-    case badRequest
-    case forbidden
-    case notFound
-    case unknown(statusCode: Int)
-
-    init(statusCode: Int) {
-        switch statusCode {
-        case 200:
-            self = .success
-        case 400:
-            self = .badRequest
-        case 403:
-            self = .forbidden
-        case 404:
-            self = .notFound
-        default:
-            self = .unknown(statusCode: statusCode)
-        }
-    }
+enum MomentsAPIHTTPError: Int, Error, LocalizedError {
+    case success = 200
+    case badRequest = 400
+    case forbidden = 403
+    case notFound = 404
 
     var errorDescription: String? {
         switch self {
@@ -32,8 +23,6 @@ enum MomentsAPIHTTPError: Error, LocalizedError, Equatable {
             return "The Moments API engine is not enabled. Please check your configuration."
         case .notFound:
             return "Not Found. The Tealium visitor ID does not have moments stored in the database."
-        case .unknown(let statusCode):
-            return "An unknown error occurred with status code \(statusCode)."
         }
     }
 
@@ -47,8 +36,6 @@ enum MomentsAPIHTTPError: Error, LocalizedError, Equatable {
             return "Ensure that the Moments API engine is properly configured and enabled."
         case .notFound:
             return "Check the Tealium visitor ID."
-        case .unknown:
-            return "Please consult the documentation or contact support for further assistance."
         }
     }
 }

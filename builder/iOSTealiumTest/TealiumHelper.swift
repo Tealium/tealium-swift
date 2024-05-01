@@ -101,7 +101,7 @@ class TealiumHelper {
             config.geofenceUrl = "https://tags.tiqcdn.com/dle/tealiummobile/location/geofences.json"
             config.desiredAccuracy = .best
             config.updateDistance = 100.0
-//            config.momentsAPIRegion = .us_east
+            config.momentsAPIRegion = .us_east
         #else
             config.collectors = [
                 Collectors.Lifecycle,

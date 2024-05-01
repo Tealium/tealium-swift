@@ -21,16 +21,6 @@ public class TealiumMomentsAPIModule: Collector {
     var momentsAPI: MomentsAPI?
     private var bag = TealiumDisposeBag()
 
-    /// Provided for unit testing￼.
-    ///
-    /// - Parameter visitorServiceManager: Class instance conforming to `VisitorServiceManagerProtocol`
-    convenience init (context: TealiumContext,
-                      delegate: ModuleDelegate?,
-                      diskStorage: TealiumDiskStorageProtocol?,
-                      visitorServiceManager: MomentsAPI) {
-        self.init(context: context, delegate: delegate, diskStorage: diskStorage) { _ in }
-    }
-
     /// Initializes the module
     ///
     /// - Parameter context: `TealiumContext` instance
