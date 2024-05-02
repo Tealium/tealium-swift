@@ -5,7 +5,7 @@ on: [pull_request]
 jobs:
   install:
     name: Setup Fastlane
-    runs-on: macos-13
+    runs-on: macos-14
     steps:
       - uses: actions/checkout@v2
       - uses: ruby/setup-ruby@v1
@@ -17,7 +17,7 @@ jobs:
   test_iOS:
     needs: install
     name: iOS Tests
-    runs-on: macos-13
+    runs-on: macos-14
     timeout-minutes: 60
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -79,7 +79,7 @@ jobs:
   test_macOS:
     needs: install
     name: macOS Tests
-    runs-on: macos-13
+    runs-on: macos-14
     timeout-minutes: 60
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -131,7 +131,7 @@ jobs:
   test_tvOS:
     needs: install
     name: tvOS Tests
-    runs-on: macos-13
+    runs-on: macos-14
     timeout-minutes: 60
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -199,7 +199,7 @@ jobs:
   #       working-directory: ${{ env.working-directory }}
   test_Autotracking_iOS_uiTests:
     name: Test TealiumAutotracking iOS UI Tests
-    runs-on: macos-13
+    runs-on: macos-14
     timeout-minutes: 60
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -219,7 +219,7 @@ jobs:
   test_Autotracking_macOS_uiTests:
     needs: install
     name: Test TealiumAutotracking macOS UI Tests
-    runs-on: macos-13
+    runs-on: macos-14
     timeout-minutes: 60
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -239,7 +239,7 @@ jobs:
   test_Autotracking_tvOS_uiTests:
     needs: install
     name: Test TealiumAutotracking tvOS UI Tests
-    runs-on: macos-13
+    runs-on: macos-14
     timeout-minutes: 60
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer

@@ -87,15 +87,7 @@ public class RemoteCommandsModule: Dispatcher {
                                         completion: completion)
         case let request as TealiumRemoteAPIRequest:
             self.remoteCommands.jsonCommands.forEach { command in
-                guard let config = command.config,
-                      let url = config.commandURL,
-                      let name = config.fileName
-                else {
-                    return
-                }
-                self.remoteCommands.refresh(command,
-                                            url: url,
-                                            file: name)
+                self.remoteCommands.refresh(command)
             }
             self.remoteCommands.trigger(command: .JSON,
                                         with: request.trackRequest.trackDictionary,

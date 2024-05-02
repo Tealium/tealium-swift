@@ -13,12 +13,12 @@ import TealiumCore
 
 public protocol RemoteCommandsManagerProtocol {
     var onCommandsChanged: TealiumObservable<[RemoteCommandProtocol]> { get }
-    var jsonCommands: [RemoteCommandProtocol] { get set }
-    var webviewCommands: [RemoteCommandProtocol] { get set }
-    var moduleDelegate: ModuleDelegate? { get set }
+    var jsonCommands: [RemoteCommandProtocol] { get }
+    var webviewCommands: [RemoteCommandProtocol] { get }
+    var moduleDelegate: ModuleDelegate? { get }
     var urlSession: URLSessionProtocol { get }
     func add(_ remoteCommand: RemoteCommandProtocol)
-    func refresh(_ command: RemoteCommandProtocol, url: URL, file: String)
+    func refresh(_ command: RemoteCommandProtocol)
     func remove(commandWithId: String)
     func remove(jsonCommand name: String)
     func removeAll()

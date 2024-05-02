@@ -69,21 +69,4 @@ class VisitorServiceRetrieverTests: XCTestCase {
             wait(for: [expect], timeout: 1.0)
         }
     }
-
-    func testSendURLRequest_CouldNotCreateSession() {
-        let expect = expectation(description: "unsuccessful url request")
-        let url = URL(string: "https://tealium.com/asdf/asdf.html")!
-        let request = URLRequest(url: url)
-        visitorServiceRetriever.urlSession = nil
-        visitorServiceRetriever.sendURLRequest(request) { result in
-            if case .failure(let error) = result {
-                XCTAssertEqual(error, NetworkError.couldNotCreateSession)
-            }
-            expect.fulfill()
-        }
-        TealiumQueues.backgroundSerialQueue.sync {
-            wait(for: [expect], timeout: 1.0)
-        }
-    }
-
 }

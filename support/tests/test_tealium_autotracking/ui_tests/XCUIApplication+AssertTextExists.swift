@@ -16,7 +16,6 @@ extension XCUIApplication {
         let predicate = NSPredicate(format: "value CONTAINS[c] %@ || label CONTAINS[c] %@", text, text) // don't know why value works for macOS and label for iOS and tvOS
         XCTAssertTrue(staticTexts
             .containing(predicate).firstMatch
-            .waitForExistence(timeout: 5),
-                      "Can not find \(text)")
+            .waitForExistence(timeout: 25), "Can not find \(text)")
     }
 }

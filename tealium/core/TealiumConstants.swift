@@ -18,6 +18,7 @@ public enum TealiumValue {
     // This is the current limit for performance reasons. May be increased in future
     public static let maxEventBatchSize = 10
     public static let defaultMinimumDiskSpace: Int32 = 20_000_000
+    public static let tealiumDleBaseURL = "https://tags.tiqcdn.com/dle/"
     public static let tiqBaseURL = "https://tags.tiqcdn.com/utag/"
     public static let tiqURLSuffix = "mobile.html?sdk_session_count=true"
     public static let defaultBatchExpirationDays = 7
@@ -181,13 +182,6 @@ public enum TealiumTrackType: String {
 }
 
 public typealias TealiumCompletion = ((_ successful: Bool, _ info: [String: Any]?, _ error: Error?) -> Void)
-
-// swiftlint:disable identifier_name
-public enum HttpStatusCodes: Int {
-    case notModified = 304
-    case ok = 200
-}
-// swiftlint:enable identifier_name
 
 public protocol TealiumErrorEnum: LocalizedError {}
 

@@ -42,7 +42,7 @@ public class HostedDataLayer: HostedDataLayerProtocol {
     var failingDataLayerItems = Set<String>()
     weak var delegate: ModuleDelegate?
     var baseURL: String {
-        return "https://tags.tiqcdn.com/dle/\(config.account)/\(config.profile)/"
+        return "\(TealiumValue.tealiumDleBaseURL)\(config.account)/\(config.profile)/"
     }
 
     required public init(config: TealiumConfig, delegate: ModuleDelegate?, diskStorage: TealiumDiskStorageProtocol?, completion: (Result<Bool, Error>, [String: Any]?) -> Void) {

@@ -18,23 +18,59 @@ public class TagManagementModule: Dispatcher {
 
     public let id: String = ModuleNames.tagmanagement
     public var config: TealiumConfig
-    var errorCount = AtomicInteger(value: 0)
     var pendingTrackRequests = [(TealiumRequest, ModuleCompletion?)]()
-    var tagManagement: TagManagementProtocol?
+    let tagManagement: TagManagementProtocol
     var webViewState: WebViewState?
     weak var delegate: ModuleDelegate?
+    let disposeBag = TealiumDisposeBag()
 
     /// Provided for unit testing￼.
     ///
     /// - Parameter context: `TealiumContext` instance
     /// - Parameter delegate: `ModuleDelegate` instance
     /// - Parameter tagManagement: Class instance conforming to `TealiumTagManagementProtocol`
-    convenience init(context: TealiumContext,
-                     delegate: ModuleDelegate,
-                     tagManagement: TagManagementProtocol) {
-        self.init(context: context, delegate: delegate) { _ in
-        }
+    init(context: TealiumContext,
+         delegate: ModuleDelegate,
+         tagManagement: TagManagementProtocol,
+         completion: ModuleCompletion? = nil) {
+        let config = context.config
+        self.config = config
+        self.delegate = delegate
         self.tagManagement = tagManagement
+        TealiumQueues.backgroundSerialQueue.async { // This is required cause modules are not present yet
+            TagManagementUrlBuilder(modules: context.modules, baseURL: config.webviewURL)
+                .createUrl { [weak self] url in
+                    self?.tagManagement.enable(webviewURL: url,
+                                               delegates: config.webViewDelegates,
+                                               view: config.rootView) { [weak self] _, error in
+                        guard let self = self else { return }
+                        if error != nil {
+                            self.webViewState = .loadFailure
+                            completion?((.failure(TagManagementError.webViewNotYetReady), nil))
+                        } else {
+                            self.webViewState = .loadSuccess
+                            self.flushQueue()
+                            completion?((.success(true), nil))
+                        }
+                    }
+                }
+            var currentSessionId: String? = context.dataLayer?.sessionId
+            context.dataLayer?.onDataUpdated.subscribe { [weak self] updatedData in
+                guard let self = self,
+                      let newSessionId = updatedData[TealiumDataKey.sessionId] as? String,
+                      currentSessionId != newSessionId else {
+                    return
+                }
+                defer { currentSessionId = newSessionId }
+                guard currentSessionId != nil else {
+                    return
+                }
+                guard self.webViewState == .loadSuccess else {
+                    return
+                }
+                self.webViewState = .loadFailure // Force reload on next track
+            }.toDisposeBag(self.disposeBag)
+        }
     }
 
     /// Initializes the module
@@ -42,33 +78,13 @@ public class TagManagementModule: Dispatcher {
     /// - Parameter config: `TealiumConfig` instance
     /// - Parameter delegate: `ModuleDelegate` instance
     /// - Parameter completion: `ModuleCompletion?` block to be called when init is finished
-    public required init(context: TealiumContext,
-                         delegate: ModuleDelegate,
-                         completion: ModuleCompletion?) {
-        let config = context.config
-        self.config = config
-        self.delegate = delegate
-        self.tagManagement = tagManagement ?? TagManagementWKWebView(config: config, delegate: delegate)
-        TealiumQueues.backgroundSerialQueue.async { // This is required cause modules are not present yet
-            TagManagementUrlBuilder(modules: context.modules, baseURL: config.webviewURL)
-                .createUrl { [weak self] url in
-                    self?.tagManagement?.enable(webviewURL: url,
-                                                delegates: config.webViewDelegates,
-                                                view: config.rootView) { [weak self] _, error in
-                        guard let self = self else { return }
-                        if error != nil {
-                            self.errorCount.incrementAndGet()
-                            self.webViewState = .loadFailure
-                            completion?((.failure(TagManagementError.webViewNotYetReady), nil))
-                        } else {
-                            self.errorCount.resetToZero()
-                            self.webViewState = .loadSuccess
-                            self.flushQueue()
-                            completion?((.success(true), nil))
-                        }
-                    }
-                }
-        }
+    public required convenience init(context: TealiumContext,
+                                     delegate: ModuleDelegate,
+                                     completion: ModuleCompletion?) {
+        self.init(context: context,
+                  delegate: delegate,
+                  tagManagement: TagManagementWKWebView(config: context.config, delegate: delegate),
+                  completion: completion)
     }
 
     /// Sends the track request to the webview.
@@ -93,15 +109,23 @@ public class TagManagementModule: Dispatcher {
             }
             #if TEST
             #else
-            self.tagManagement?.trackMultiple(allTrackData, completion: block)
+            self.tagManagement.trackMultiple(allTrackData, completion: block)
             #endif
         case let track as TealiumTrackRequest:
             #if TEST
             #else
-            self.tagManagement?.track(track.trackDictionary, completion: block)
+            self.tagManagement.track(track.trackDictionary, completion: block)
             #endif
         default:
             return
+        }
+    }
+
+    func reload(completion: @escaping (Bool) -> Void) {
+        self.tagManagement.reload { [weak self] success, _, _ in
+            guard let self = self else { return }
+            self.webViewState = success ? .loadSuccess : .loadFailure
+            completion(success)
         }
     }
 
@@ -111,23 +135,20 @@ public class TagManagementModule: Dispatcher {
     /// - Parameter completion: `ModuleCompletion?` block to be called when the request has been processed
     public func dynamicTrack(_ track: TealiumRequest,
                              completion: ModuleCompletion?) {
-        if self.errorCount.value > 0 {
-            self.tagManagement?.reload { success, _, _ in
-                if success {
-                    self.errorCount.value = 0
-                    self.dynamicTrack(track, completion: completion)
-                } else {
-                    _ = self.errorCount.incrementAndGet()
-                    self.enqueue(track, completion: completion)
-                    completion?((.failure(TagManagementError.couldNotLoadURL), nil))
-                }
-            }
-            return
-        } else if self.webViewState == nil || self.tagManagement?.isWebViewReady == false {
+        guard webViewState != nil else {
             self.enqueue(track, completion: completion)
             return
         }
-
+        guard webViewState == .loadSuccess else {
+            self.reload { success in
+                if success {
+                    self.dynamicTrack(track, completion: completion)
+                } else {
+                    self.enqueue(track, completion: completion)
+                }
+            }
+            return
+        }
         flushQueue()
 
         switch track {
@@ -146,7 +167,7 @@ public class TagManagementModule: Dispatcher {
                     .replacingOccurrences(of: "\\", with: "")
                     .replacingOccurrences(of: "\n", with: "")
                     .trimmingCharacters(in: .whitespaces)
-                self.tagManagement?.evaluateJavascript(jsCommand, nil)
+                self.tagManagement.evaluateJavascript(jsCommand, nil)
             }
             return
         default:

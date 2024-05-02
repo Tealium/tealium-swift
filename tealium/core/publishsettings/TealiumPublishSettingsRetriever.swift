@@ -15,16 +15,13 @@ public protocol TealiumPublishSettingsRetrieverProtocol {
     func refresh()
 }
 
-class TealiumPublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol {
-
-    var diskStorage: TealiumDiskStorageProtocol
-    var urlSession: URLSessionProtocol?
+class TealiumPublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol, ResourceRefresherDelegate {
+    typealias Resource = RemotePublishSettings
+    let resourceRefresher: ResourceRefresher<RemotePublishSettings>?
     weak var delegate: TealiumPublishSettingsDelegate?
     var cachedSettings: RemotePublishSettings?
-    var config: TealiumConfig
-    var lastFetch: Date?
-    var fetching = false
-    var publishSettingsURL: URL? {
+
+    static func publishSettingsURL(config: TealiumConfig) -> URL? {
         if let urlString = config.publishSettingsURL,
            let url = URL(string: urlString) {
             return url
@@ -36,89 +33,32 @@ class TealiumPublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol {
 
     init(config: TealiumConfig,
          diskStorage: TealiumDiskStorageProtocol? = nil,
-         urlSession: URLSessionProtocol? = URLSession(configuration: .ephemeral),
+         urlSession: URLSessionProtocol = URLSession(configuration: .ephemeral),
          delegate: TealiumPublishSettingsDelegate) {
-        self.config = config
-        self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config, forModule: "publishsettings", isCritical: true)
-        self.cachedSettings = getCachedSettings()
-        self.urlSession = urlSession
+        let diskStorage = diskStorage ?? TealiumDiskStorage(config: config, forModule: "publishsettings", isCritical: true)
         self.delegate = delegate
-        getAndSave()
+        guard let url = Self.publishSettingsURL(config: config) else {
+            self.resourceRefresher = nil
+            return
+        }
+        let resourceRetriever = ResourceRetriever(urlSession: urlSession, resourceBuilder: { data, etag in
+            Self.getPublishSettings(from: data, etag: etag)
+        })
+        let refreshInterval = (cachedSettings?.minutesBetweenRefresh ?? config.minutesBetweenRefresh ?? 15.0) * 60
+        let refreshParameters = RefreshParameters<RemotePublishSettings>(id: "settings",
+                                                                         url: url,
+                                                                         fileName: nil,
+                                                                         refreshInterval: refreshInterval)
+        self.resourceRefresher = ResourceRefresher(resourceRetriever: resourceRetriever, diskStorage: diskStorage, refreshParameters: refreshParameters)
+        resourceRefresher?.delegate = self
+        refresh()
     }
 
     func refresh() {
-        guard !fetching else {
-            return
-        }
-        guard let cachedSettings = cachedSettings else {
-            getAndSave()
-            return
-        }
-        guard let date = lastFetch?.addMinutes(cachedSettings.minutesBetweenRefresh), Date() > date else {
-            return
-        }
-        getAndSave()
+        resourceRefresher?.requestRefresh()
     }
 
-    func getCachedSettings() -> RemotePublishSettings? {
-        let settings = diskStorage.retrieve(as: RemotePublishSettings.self)
-        return settings
-    }
-
-    func getAndSave() {
-        fetching = true
-        guard let mobileHTML = publishSettingsURL else {
-            return
-        }
-
-        getRemoteSettings(url: mobileHTML,
-                          etag: cachedSettings?.etag) { settings in
-            TealiumQueues.backgroundSerialQueue.async {
-                self.lastFetch = Date()
-                self.fetching = false
-                if let settings = settings {
-                    self.cachedSettings = settings
-                    self.diskStorage.save(settings, completion: nil)
-                    self.delegate?.didUpdate(settings)
-                }
-            }
-        }
-
-    }
-
-    func getRemoteSettings(url: URL,
-                           etag: String?,
-                           completion: @escaping (RemotePublishSettings?) -> Void) {
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        if let etag = etag {
-            request.setValue(etag, forHTTPHeaderField: "If-None-Match")
-            request.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
-        }
-
-        urlSession?.tealiumDataTask(with: request) { data, response, _ in
-
-            guard let response = response as? HTTPURLResponse else {
-                completion(nil)
-                return
-            }
-
-            switch HttpStatusCodes(rawValue: response.statusCode) {
-            case .ok:
-                guard let data = data, let publishSettings = self.getPublishSettings(from: data, etag: response.etag) else {
-                    completion(nil)
-                    return
-                }
-                completion(publishSettings)
-            default:
-                completion(nil)
-                return
-            }
-        }.resume()
-    }
-
-    func getPublishSettings(from data: Data, etag: String?) -> RemotePublishSettings? {
+    static func getPublishSettings(from data: Data, etag: String?) -> RemotePublishSettings? {
         guard let dataString = String(data: data, encoding: .utf8),
               let startScript = dataString.range(of: "var mps = ") else {
             return nil
@@ -140,22 +80,9 @@ class TealiumPublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol {
         return settings
     }
 
-    deinit {
-        urlSession?.finishTealiumTasksAndInvalidate()
-    }
-}
-
-extension HTTPURLResponse {
-    private static let etagKey = "Etag"
-    var etag: String? {
-        if #available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, macCatalyst 13.1, *) {
-            return value(forHTTPHeaderField: Self.etagKey)
-        } else {
-            return headerString(field: Self.etagKey)
-        }
-    }
-
-    func headerString(field: String) -> String? {
-        return (self.allHeaderFields as NSDictionary)[field] as? String
+    func resourceRefresher(_ refresher: ResourceRefresher<RemotePublishSettings>, didLoad resource: RemotePublishSettings) {
+        cachedSettings = resource
+        refresher.setRefreshInterval(resource.minutesBetweenRefresh * 60)
+        delegate?.didUpdate(resource)
     }
 }

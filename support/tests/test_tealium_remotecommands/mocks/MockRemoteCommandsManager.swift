@@ -30,7 +30,7 @@ class MockRemoteCommandsManager: RemoteCommandsManagerProtocol {
         jsonCommands.append(jsonCommand ?? mockJSONCommand)
     }
 
-    func refresh(_ command: RemoteCommandProtocol, url: URL, file: String) {
+    func refresh(_ command: RemoteCommandProtocol) {
         refreshCount += 1
     }
 

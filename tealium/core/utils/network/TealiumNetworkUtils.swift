@@ -44,7 +44,6 @@ public class NetworkUtils {
 }
 
 public enum NetworkError: TealiumErrorEnum {
-    case couldNotCreateSession
     case unknownResponseType
     case noInternet
     case xErrorDetected

@@ -36,7 +36,7 @@ class DataLayerTests: XCTestCase {
     
     func testInsertSingleExpiresAfterASecond() {
         eventData = Set<DataLayerItem>()
-        eventData.insert(key: "itemOne", value: "test1", expiry: .after(Date().addSeconds(1)!))
+        eventData.insert(key: "itemOne", value: "test1", expiry: .after(Date().addingTimeInterval(1)))
         var eventDataExpired = eventData.removeExpired()
         XCTAssertEqual(eventDataExpired.count, 1)
         let exp = expectation(description: "waiting")
