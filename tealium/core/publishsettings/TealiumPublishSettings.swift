@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct RemotePublishSettings: Codable {
+public struct RemotePublishSettings: Codable, EtagResource {
 
     var batterySaver: Bool
     var dispatchExpiration: Int
@@ -19,7 +19,7 @@ public struct RemotePublishSettings: Codable {
     var overrideLog: TealiumLogLevel
     var wifiOnlySending: Bool
     var isEnabled: Bool
-    var etag: String?
+    public var etag: String?
     // swiftlint:disable identifier_name
     enum CodingKeys: String, CodingKey {
         case v5 = "5"

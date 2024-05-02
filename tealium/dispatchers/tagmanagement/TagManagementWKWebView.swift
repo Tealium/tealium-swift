@@ -142,9 +142,7 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
                 return
             }
             let request = URLRequest(url: url)
-            TealiumQueues.mainQueue.async {
-                webview.load(request)
-            }
+            webview.load(request)
         }
     }
 
@@ -167,7 +165,7 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
                 }
             } else {
                 self.reloadHandler = completion
-                self.currentState = InternalWebViewState.isLoading
+                self.currentState = .isLoading
                 self.webview?.load(request)
             }
         }

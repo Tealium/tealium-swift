@@ -41,10 +41,10 @@ enum RemoteCommandsKey {
     static let commandId = "_http"
     static let jsCommand = "js"
     static let commandName = "command_name"
-    static let defaultRefreshInterval = Int(3600)
-    static let dlePrefix = "https://tags.tiqcdn.com/dle/"
+    static let defaultRefreshInterval = 3600
     static let keysSeparationDelimiter = "keys_separation_delimiter"
     static let keysEqualityDelimiter = "keys_equality_delimiter"
+    static let errorCooldownBaseInterval: Double = 30
 }
 
 enum RemoteCommandStatusCode: Int {
@@ -61,16 +61,9 @@ public enum TealiumRemoteCommandsError: TealiumErrorEnum, Equatable {
     case commandNotFound
     case remoteCommandsDisabled
     case requestNotProperlyFormatted
-    case invalidFileName
-    case couldNotConvertData
-    case couldNotDecodeJSON
-    case errorLoadingRemoteJSON
     case mappingsNotFound
     case commandsNotFound
     case commandNameNotFound
-    case noResponse
-    case invalidResponse
-    case notModified
 }
 
 enum TealiumRemoteCommandResponseError: TealiumErrorEnum {

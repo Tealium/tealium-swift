@@ -45,4 +45,14 @@ class RemoteCommandConfigTests: XCTestCase {
         XCTAssertEqual(delimiters.keysSeparationDelimiter, "&&")
         XCTAssertEqual(delimiters.keysEqualityDelimiter, "==")
     }
+
+    func testPathWithoutTypeExtension() {
+        let fullPath = RemoteCommandConfig.fullPath(from: Bundle(for: type(of: self)), relativePath: "example")
+        XCTAssertNotNil(fullPath)
+    }
+
+    func testPathWithTypeExtension() {
+        let fullPath = RemoteCommandConfig.fullPath(from: Bundle(for: type(of: self)), relativePath: "example.json")
+        XCTAssertNotNil(fullPath)
+    }
 }

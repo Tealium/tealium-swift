@@ -11,14 +11,12 @@ import Foundation
 import TealiumCore
 #endif
 
-public struct RemoteCommandConfig: Codable {
-    var fileName: String? = ""
-    var commandURL: URL?
+public struct RemoteCommandConfig: Codable, EtagResource {
     var apiConfig: [String: Any]?
     var mappings: [String: String]?
     var apiCommands: [String: String]?
     var statics: [String: Any]?
-    var lastFetch: Date?
+    public var etag: String?
 
     struct Delimiters {
         let keysEqualityDelimiter: String
@@ -39,23 +37,18 @@ public struct RemoteCommandConfig: Codable {
         self.mappings = mappings
         self.apiCommands = apiCommands
         self.statics = statics
-        self.fileName = commandName
-        self.commandURL = commandURL
     }
 
     enum CodingKeys: String, CodingKey {
-        case fileName
         case apiConfig = "config"
         case mappings
         case apiCommands = "commands"
         case statics
-        case lastFetch
-        case commandURL
+        case etag
     }
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(fileName, forKey: .fileName)
 
         if let apiConfig = apiConfig?.codable {
             try container.encode(apiConfig, forKey: .apiConfig)
@@ -66,31 +59,28 @@ public struct RemoteCommandConfig: Codable {
 
         try container.encode(mappings, forKey: .mappings)
         try container.encode(apiCommands, forKey: .apiCommands)
-        try container.encode(lastFetch, forKey: .lastFetch)
-        try container.encode(commandURL, forKey: .commandURL)
+        try container.encode(etag, forKey: .etag)
     }
 
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         let decoded = try values.decodeIfPresent(AnyDecodable.self, forKey: .apiConfig)
         let decodableStatics = try values.decodeIfPresent(AnyDecodable.self, forKey: .statics)
-        fileName = try values.decodeIfPresent(String.self, forKey: .fileName)
         apiConfig = decoded?.value as? [String: Any]
         statics = decodableStatics?.value as? [String: Any]
         mappings = try values.decodeIfPresent([String: String].self, forKey: .mappings)
         apiCommands = try values.decodeIfPresent([String: String].self, forKey: .apiCommands)
-        lastFetch = try values.decodeIfPresent(Date.self, forKey: .lastFetch) ?? Date()
-        commandURL = try values.decodeIfPresent(URL.self, forKey: .commandURL)
+        etag = try values.decodeIfPresent(String.self, forKey: .etag)
     }
 
-    public init?(file name: String, _ logger: TealiumLoggerProtocol?, _ bundle: Bundle?) {
-
+    public init?(file relativePath: String, _ logger: TealiumLoggerProtocol?, _ bundle: Bundle?) {
         let decoder = JSONDecoder()
         do {
-            guard let path = (bundle ?? Bundle.main).path(forResource: name, ofType: "json") else {
+            guard let fullPath = Self.fullPath(from: bundle ?? Bundle.main,
+                                               relativePath: relativePath) else {
                 return nil
             }
-            let jsonData = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+            let jsonData = try Data(contentsOf: URL(fileURLWithPath: fullPath), options: .mappedIfSafe)
             let config = try decoder.decode(RemoteCommandConfig.self, from: jsonData)
             self.apiCommands = config.apiCommands
             self.apiConfig = config.apiConfig
@@ -105,5 +95,16 @@ public struct RemoteCommandConfig: Codable {
         }
     }
 
+    static func fullPath(from bundle: Bundle, relativePath: String) -> String? {
+        if !relativePath.lowercased().hasSuffix(".json") {
+            // For "name.json" saved, but only "name" passed
+            return bundle.path(forResource: relativePath, ofType: "json") ??
+            // For "name.json"/"name.JSON" saved, and same is passed
+            bundle.path(forResource: relativePath, ofType: nil)
+        } else {
+            // For "name"/"name.otherExtension" saved, and same is passed
+            return bundle.path(forResource: relativePath, ofType: nil)
+        }
+    }
 }
 #endif

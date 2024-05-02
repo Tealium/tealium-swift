@@ -122,8 +122,12 @@ class TagManagementWKWebViewTests: XCTestCase {
         config.dispatchers = [Dispatchers.TagManagement]
         let tagManagementWV = TagManagementWKWebView(config: config, delegate: nil)
         let view = UIView()
+        let enableComplete = expectation(description: "Enable complete")
+        tagManagementWV.enable(webviewURL: testURL, delegates: nil, view: view) { _, error in
+            enableComplete.fulfill()
+        }
+        waitForExpectations(timeout: 5)
         let expectation = expectation(description: "Reload complete")
-        tagManagementWV.enable(webviewURL: testURL, delegates: nil, view: view) { _, _ in }
         tagManagementWV.reload { _, _, _ in
             dispatchPrecondition(condition: .onQueueAsBarrier(TealiumQueues.backgroundSerialQueue))
             expectation.fulfill()
@@ -137,9 +141,13 @@ class TagManagementWKWebViewTests: XCTestCase {
         config.dispatchers = [Dispatchers.TagManagement]
         let tagManagementWV = TagManagementWKWebView(config: config, delegate: nil)
         let view = UIView()
+        let enableComplete = expectation(description: "Enable complete")
+        tagManagementWV.enable(webviewURL: testURL, delegates: nil, view: view) { _, error in
+            enableComplete.fulfill()
+        }
+        waitForExpectations(timeout: 5)
         let expectation = expectation(description: "Reload complete")
         expectation.expectedFulfillmentCount = 5
-        tagManagementWV.enable(webviewURL: testURL, delegates: nil, view: view) { _, _ in }
         for _ in 0..<5 {
             tagManagementWV.reload { _, _, _ in
                 dispatchPrecondition(condition: .onQueueAsBarrier(TealiumQueues.backgroundSerialQueue))
@@ -155,8 +163,12 @@ class TagManagementWKWebViewTests: XCTestCase {
         config.dispatchers = [Dispatchers.TagManagement]
         let tagManagementWV = TagManagementWKWebView(config: config, delegate: nil)
         let view = UIView()
+        let enableComplete = expectation(description: "Enable complete")
+        tagManagementWV.enable(webviewURL: testURL, delegates: nil, view: view) { _, error in
+            enableComplete.fulfill()
+        }
+        waitForExpectations(timeout: 5)
         let expectation = expectation(description: "Track complete")
-        tagManagementWV.enable(webviewURL: testURL, delegates: nil, view: view) { _, _ in }
         tagManagementWV.track(["something":"value"]) { _, _, _ in
             dispatchPrecondition(condition: .onQueueAsBarrier(TealiumQueues.backgroundSerialQueue))
             expectation.fulfill()
@@ -170,8 +182,12 @@ class TagManagementWKWebViewTests: XCTestCase {
         config.dispatchers = [Dispatchers.TagManagement]
         let tagManagementWV = TagManagementWKWebView(config: config, delegate: nil)
         let view = UIView()
+        let enableComplete = expectation(description: "Enable complete")
+        tagManagementWV.enable(webviewURL: testURL, delegates: nil, view: view) { _, error in
+            enableComplete.fulfill()
+        }
+        waitForExpectations(timeout: 5)
         let expectation = expectation(description: "TrackMultiple complete")
-        tagManagementWV.enable(webviewURL: testURL, delegates: nil, view: view) { _, _ in }
         tagManagementWV.trackMultiple([["something":"value"], ["somethingelse": "value"]]) { _, _, _ in
             dispatchPrecondition(condition: .onQueueAsBarrier(TealiumQueues.backgroundSerialQueue))
             expectation.fulfill()
@@ -189,7 +205,6 @@ class TagManagementWKWebViewTests: XCTestCase {
             expect.fulfill()
             dispatchPrecondition(condition: .onQueue(.main))
         }
-        
         tagManagementWV.setupWebview(forURL: URL(string: "https://www.tealium.com"), withSpecificView: nil)
         waitForExpectations(timeout: 3.0)
     }

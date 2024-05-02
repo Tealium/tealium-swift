@@ -9,9 +9,10 @@ import Foundation
 import TealiumCore
 
 class MockURLSessionPublishSettings: URLSessionProtocol {
+    var refreshInterval: Int = 0
     let onURLRequest = TealiumReplaySubject<URLRequest>()
     func tealiumDataTask(with url: URL, completionHandler: @escaping (DataTaskResult) -> Void) -> URLSessionDataTaskProtocol {
-        return DataTask(completionHandler: { data, response, error in
+        return DataTask(refreshInterval: refreshInterval, completionHandler: { data, response, error in
             if let error = error {
                 completionHandler(.failure(error))
             } else if let data = data, let response = response {
@@ -21,14 +22,14 @@ class MockURLSessionPublishSettings: URLSessionProtocol {
     }
 
     func tealiumDataTask(with url: URL, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol {
-        return DataTask(completionHandler: completionHandler, url: url)
+        return DataTask(refreshInterval: refreshInterval, completionHandler: completionHandler, url: url)
     }
 
     // typealias DataTaskCompletion = (Data?, URLResponse?, Error?) -> Void
     func tealiumDataTask(with request: URLRequest, completionHandler: @escaping DataTaskCompletion) -> URLSessionDataTaskProtocol {
         onURLRequest.publish(request)
         //        let completion = DataTaskCompletion(nil, nil, nil)
-        return DataTask(completionHandler: completionHandler, url: request.url!)
+        return DataTask(refreshInterval: refreshInterval, completionHandler: completionHandler, url: request.url!)
     }
 
     func finishTealiumTasksAndInvalidate() {
@@ -39,10 +40,12 @@ class MockURLSessionPublishSettings: URLSessionProtocol {
 class DataTask: URLSessionDataTaskProtocol {
     let completionHandler: DataTaskCompletion
     let url: URL
-    init(completionHandler: @escaping DataTaskCompletion,
+    let refreshInterval: Int
+    init(refreshInterval: Int, completionHandler: @escaping DataTaskCompletion,
          url: URL) {
         self.completionHandler = completionHandler
         self.url = url
+        self.refreshInterval = refreshInterval
     }
     func resume() {
         let string = """
@@ -50,7 +53,7 @@ class DataTask: URLSessionDataTaskProtocol {
         <html>
         <head><title>Tealium Mobile Webview</title></head>
         <body>
-        <script type="text/javascript">var utag_cfg_ovrd={noview:true};var mps = {"4":{"_is_enabled":"false","battery_saver":"false","dispatch_expiration":"-1","event_batch_size":"1","ivar_tracking":"false","mobile_companion":"false","offline_dispatch_limit":"-1","ui_auto_tracking":"false","wifi_only_sending":"false"},"5":{"_is_enabled":"true","battery_saver":"false","dispatch_expiration":"-1","enable_collect":"true","enable_s2s_legacy":"false","enable_tag_management":"true","event_batch_size":"4","minutes_between_refresh":"0","offline_dispatch_limit":"30","override_log":"dev","wifi_only_sending":"true"},"_firstpublish":"true"}</script>
+        <script type="text/javascript">var utag_cfg_ovrd={noview:true};var mps = {"4":{"_is_enabled":"false","battery_saver":"false","dispatch_expiration":"-1","event_batch_size":"1","ivar_tracking":"false","mobile_companion":"false","offline_dispatch_limit":"-1","ui_auto_tracking":"false","wifi_only_sending":"false"},"5":{"_is_enabled":"true","battery_saver":"false","dispatch_expiration":"-1","enable_collect":"true","enable_s2s_legacy":"false","enable_tag_management":"true","event_batch_size":"4","minutes_between_refresh":"\(refreshInterval).0","offline_dispatch_limit":"30","override_log":"dev","wifi_only_sending":"true"},"_firstpublish":"true"}</script>
         <script type="text/javascript" src="//tags.tiqcdn.com/utag/tealiummobile/demo/dev/utag.js"></script>
         </body>
         </html>
