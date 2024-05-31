@@ -46,7 +46,10 @@ struct MomentsView: View {
                 switch engineResponse {
                 case .success(let engineResponse):
                     stringsContent = engineResponse.strings
-                        .joined(separator: "\n")
+                        .sorted(by: { $0.key < $1.key })
+                        .compactMap {
+                        "\($0.key) : \($0.value)"
+                    }.joined(separator: "\n")
                     audiencesContent = engineResponse.audiences
                         .joined(separator: "\n")
                     badgesContent = engineResponse.badges
