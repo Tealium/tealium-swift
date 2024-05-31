@@ -1,8 +1,7 @@
 //
 //  MomentsAPIModule.swift
-//  TealiumMoments
+//  tealium-swift
 //
-//  Created by Craig Rouse on 17/04/2024.
 //  Copyright © 2024 Tealium, Inc. All rights reserved.
 //
 
@@ -51,7 +50,6 @@ public class TealiumMomentsAPIModule: Collector {
         }
         completion((.success(true), nil))
     }
-
 }
 
 public extension Collectors {

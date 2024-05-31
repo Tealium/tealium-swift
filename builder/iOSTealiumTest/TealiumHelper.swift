@@ -8,9 +8,10 @@
 import Foundation
 
 import TealiumCollect
+import Combine
 import TealiumCore
 import TealiumLifecycle
-//import TealiumVisitorService
+import TealiumVisitorService
 import TealiumAutotracking
 import TealiumInAppPurchase
 import TealiumMoments
@@ -26,11 +27,11 @@ extension TealiumDataKey {
     static let email = "email"
 }
 
-class TealiumHelper {
+class TealiumHelper: ObservableObject {
 
     @ToAnyObservable(TealiumBufferedSubject(bufferSize: 10))
     var onWillTrack: TealiumObservable<[String:Any]>
-    
+    @Published var visitorProfile: TealiumVisitorProfile?
     static let shared = TealiumHelper()
     var tealium: Tealium?
     var enableHelperLogs = true
@@ -58,7 +59,7 @@ class TealiumHelper {
         // config.batchSize = 5
         config.memoryReportingEnabled = true
         config.diskStorageEnabled = true
-//        config.visitorServiceDelegate = self
+        config.visitorServiceDelegate = self
         config.memoryReportingEnabled = true
         config.autoTrackingCollectorDelegate = self
         config.batterySaverEnabled = true
@@ -71,7 +72,7 @@ class TealiumHelper {
             print("Consent expired")
         }
         config.visitorIdentityKey = TealiumDataKey.email
-        config.visitorServiceRefresh = .every(1, .minutes)
+        config.visitorServiceRefresh = .every(0, .seconds)
         #if os(iOS)
             config.enableBackgroundLocation = true
             config.collectors = [
@@ -81,7 +82,7 @@ class TealiumHelper {
                 Collectors.Device,
                 Collectors.Location,
                 Collectors.Moments,
-//                Collectors.VisitorService,
+                Collectors.VisitorService,
                 Collectors.InAppPurchase,
                 Collectors.AutoTracking
             ]
@@ -120,7 +121,6 @@ class TealiumHelper {
             guard let self = self,
                   let teal = self.tealium else {
                 return
-
             }
 
             let dataLayer = teal.dataLayer
@@ -175,25 +175,30 @@ class TealiumHelper {
     }
 
     func track(title: String, data: [String: Any]?) {
-        self.tealium?.moments?.api?.fetchEngineResponse(engineID: "4625fd31-cd87-444e-9470-7467f2e963ba", completion: { engineResponse in
-            switch engineResponse {
-            case .success(let engineResponse):
-                print("Moments fetched successfully:", engineResponse)
-                print("Moments fetched successfully - String attributes:", engineResponse.strings)
-                print("Moments fetched successfully - Audiences:", engineResponse.audiences)
-                print("Moments fetched successfully - Date attributes:", engineResponse.dates)
-                print("Moments fetched successfully - Badges:", engineResponse.badges)
-                print("Moments fetched successfully - Numbers:", engineResponse.numbers)
-            case .failure(let error):
-                print("Error fetching moments:", error.localizedDescription)
-                if let suggestion = (error as? LocalizedError)?.recoverySuggestion {
-                    print("Recovery suggestion:", suggestion)
-                }
-                
-            }
-        })
         let dispatch = TealiumEvent(title, dataLayer: data)
         tealium?.track(dispatch)
+    }
+    
+    func fetchMoments(completion: @escaping (Result<EngineResponse, Error>) -> ()){
+//        tealium?.momentsAPI?.fetchEngineResponse(engineID: "<your-engine-id>", completion: completion)
+//
+//        example showing all the different types of attributes
+        tealium?.momentsAPI?.fetchEngineResponse(engineID: "4625fd31-cd87-444e-9470-7467f2e963ba", completion: { engineResponse in
+                    switch engineResponse {
+                    case .success(let engineResponse):
+                        print("Moments fetched successfully - String attributes:", engineResponse.strings)
+                        print("Moments fetched successfully - Audiences:", engineResponse.audiences)
+                        print("Moments fetched successfully - Date attributes:", engineResponse.dates)
+                        print("Moments fetched successfully - Badges:", engineResponse.badges)
+                        print("Moments fetched successfully - Numbers:", engineResponse.numbers)
+                    case .failure(let error):
+                        print("Error fetching moments:", error.localizedDescription)
+                        if let suggestion = (error as? LocalizedError)?.recoverySuggestion {
+                            print("Recovery suggestion:", suggestion)
+                        }
+                    }
+            completion(engineResponse)
+                })
     }
 
     func trackView(title: String, data: [String: Any]?) {
@@ -215,17 +220,19 @@ class TealiumHelper {
 
 }
 
-//extension TealiumHelper: VisitorServiceDelegate {
-//    func didUpdate(visitorProfile: TealiumVisitorProfile) {
-//        if let json = try? JSONEncoder().encode(visitorProfile),
-//           let string = String(data: json, encoding: .utf8) {
-//            if self.enableHelperLogs {
-//                print("Visitor Profile: \(string)")
-//            }
-//        }
-//    }
-//
-//}
+extension TealiumHelper: VisitorServiceDelegate {
+    func didUpdate(visitorProfile: TealiumVisitorProfile) {
+        DispatchQueue.main.async{
+            self.visitorProfile = visitorProfile
+        }
+        if let json = try? JSONEncoder().encode(visitorProfile),
+           let string = String(data: json, encoding: .utf8) {
+            if self.enableHelperLogs {
+                print("Visitor Profile: \(string)")
+            }
+        }
+    }
+}
 
 extension TealiumHelper: DispatchListener {
     public func willTrack(request: TealiumRequest) {

@@ -2,7 +2,6 @@
 //  MomentsAPIExtensions.swift
 //  tealium-swift
 //
-//  Created by Craig Rouse on 16/04/2024.
 //  Copyright © 2024 Tealium, Inc. All rights reserved.
 //
 
@@ -75,18 +74,10 @@ public extension Tealium {
             self.tealium = tealium
         }
     }
-
-    class MomentsWrapper {
-        // Other APIs in the Moments suite may be added in future
-        public var api: MomentsAPIWrapper?
-        init(api: MomentsAPIWrapper? = nil) {
-            self.api = api
-        }
-    }
     
     /// Provides API methods to interact with the Moments module
-    var moments: MomentsWrapper? {
-        return MomentsWrapper(api: MomentsAPIWrapper(tealium: self))
+    var momentsAPI: MomentsAPIWrapper? {
+        return MomentsAPIWrapper(tealium: self)
     }
 
 }

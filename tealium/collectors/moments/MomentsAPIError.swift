@@ -1,5 +1,5 @@
 //
-//  MomentsError.swift
+//  MomentsAPIError.swift
 //  tealium-swift
 //
 //  Copyright © 2024 Tealium, Inc. All rights reserved.

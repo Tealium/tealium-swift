@@ -1,8 +1,7 @@
 //
-//  EngineResponse.swift
-//  TealiumMoments
+//  MomentsAPIEngineResponse.swift
+//  tealium-swift
 //
-//  Created by Craig Rouse on 18/04/2024.
 //  Copyright © 2024 Tealium, Inc. All rights reserved.
 //
 
@@ -12,7 +11,7 @@ public struct EngineResponse: Codable {
     /// The complete set of attributes. Types must be inferred, as the original JSON response is a heterogenous object.
     public var attributes: [String: DynamicType] = [:]
     /// The complete list of audiences the visitor is currently assigned to. Could be the audience name, or just the ID, depending on the options specified in the UI.
-    public var audiences: [String] = []
+    public var audiences: [String] = [] 
     /// The complete list of badges assigned to the visitor. Could be the badge name, or just the ID, depending on the options specified in the UI.
     public var badges: [String] = []
     
@@ -37,7 +36,6 @@ public struct EngineResponse: Codable {
         attributes.reduce(into: [String: Int]()) { result, attribute in
             if let doubleValue = attribute.value.doubleValue {
                 let intValue = Int(doubleValue)
-                
                 // This will also catch integers of 13 digits which are not millisecond timestamps,
                 // but the chances of encountering such a value are infinitesimally small in Tealium
                 if String(intValue).count == 13  {
