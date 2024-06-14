@@ -36,7 +36,7 @@ class TealiumMomentsAPIModuleTests: XCTestCase {
 
     func testModuleInitializationWithMissingRegion() {
         let configWithoutRegion = TealiumContext(config: testTealiumConfig, dataLayer: mockDataLayer)
-        let failingModule = TealiumMomentsAPIModule(context: configWithoutRegion, delegate: nil, diskStorage: nil) { result in
+        let _ = TealiumMomentsAPIModule(context: configWithoutRegion, delegate: nil, diskStorage: nil) { result in
             switch result.0 {
             case .failure(let error):
                 XCTAssertEqual(error as! MomentsError, MomentsError.missingRegion, "Expected MomentsError for missing region")
