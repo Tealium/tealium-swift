@@ -35,6 +35,8 @@
 	<array>
 		<string>Intent</string>
 	</array>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

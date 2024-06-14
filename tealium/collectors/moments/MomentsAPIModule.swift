@@ -10,9 +10,7 @@ import Foundation
 import TealiumCore
 #endif
 
-
 public class TealiumMomentsAPIModule: Collector {
-
     public let id: String = ModuleNames.momentsapi
     public var config: TealiumConfig
     public var data: [String: Any]?
@@ -35,7 +33,7 @@ public class TealiumMomentsAPIModule: Collector {
             completion((.failure(MomentsError.missingRegion), nil))
             return
         }
-        self.momentsAPI = TealiumMomentsAPI(region: momentsAPIRegion, 
+        self.momentsAPI = TealiumMomentsAPI(region: momentsAPIRegion,
                                             account: config.account,
                                             profile: config.profile,
                                             environment: config.environment,

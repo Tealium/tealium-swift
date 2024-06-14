@@ -9,7 +9,7 @@ import Foundation
 
 public struct EngineResponse: Codable {
     /// The complete list of audiences the visitor is currently assigned to. Could be the audience name, or just the ID, depending on the options specified in the UI.
-    public var audiences: [String] = [] 
+    public var audiences: [String] = []
     /// The complete list of badges assigned to the visitor. Could be the badge name, or just the ID, depending on the options specified in the UI.
     public var badges: [String] = []
     /// All audiencestream `Boolean` attributes currently assigned to the visitor
@@ -20,9 +20,7 @@ public struct EngineResponse: Codable {
     public var numbers: [String: Double] = [:]
     /// All audiencestream `String` attributes currently assigned to the visitor
     public var strings: [String: String] = [:]
-    
     enum CodingKeys: String, CodingKey {
-        // allows for the properties object to be updated to another keyname later, which may happen to disambiguate string properties from general attributes
         case audiences,
              badges,
              booleans = "flags",
@@ -31,4 +29,3 @@ public struct EngineResponse: Codable {
              strings = "properties"
     }
 }
-

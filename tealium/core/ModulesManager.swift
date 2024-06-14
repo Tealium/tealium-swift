@@ -273,7 +273,7 @@ extension ModulesManager {
                 return
             }
 
-            let collector = collector.init(context: context, delegate: self, diskStorage: nil) { result, info  in
+            let collector = collector.init(context: context, delegate: self, diskStorage: nil) { result, _  in
                 switch result {
                 case .success:
                     let logRequest = TealiumLogRequest(title: ModulesManagerLogMessages.system,
@@ -285,11 +285,11 @@ extension ModulesManager {
                 case .failure(let error):
                     if let error = error as? LocalizedError {
                         var message = "\(ModulesManagerLogMessages.collectorFailedToInitialize) with error: \((error).localizedDescription)"
-                        
+
                         if let recoverySuggestion = error.recoverySuggestion {
-                            message = message + "\nRecovery suggestion: \(recoverySuggestion)"
+                            message += "\nRecovery suggestion: \(recoverySuggestion)"
                         }
-                        
+
                         let logRequest = TealiumLogRequest(title: ModulesManagerLogMessages.system,
                                                            message: message,
                                                            info: nil,
@@ -298,9 +298,8 @@ extension ModulesManager {
                         self.logger?.log(logRequest)
                     }
                 }
-                
-            }
 
+            }
 
             addCollector(collector)
         }

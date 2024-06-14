@@ -61,8 +61,9 @@ private extension TealiumMomentsAPI {
     }
 
     func constructURL(forEngineID engineID: String, visitorID: String) -> URL? {
-        let urlString = "https://personalization-api.\(region.rawValue).prod.tealiumapis.com/personalization/accounts/\(account)/profiles/\(profile)/engines/\(engineID)/visitors/\(visitorID)?ignoreTapid=true"
-        return URL(string: urlString)
+        // swiftlint:disable line_length
+        return URL(string: "https://personalization-api.\(region.rawValue).prod.tealiumapis.com/personalization/accounts/\(account)/profiles/\(profile)/engines/\(engineID)/visitors/\(visitorID)?ignoreTapid=true")
+        // swiftlint:enable line_length
     }
 
     func handleResponse(data: Data?, response: URLResponse?, error: Error?, completion: @escaping (Result<EngineResponse, Error>) -> Void) {
@@ -73,12 +74,9 @@ private extension TealiumMomentsAPI {
         }
 
         // Check for known HTTP response errors
-        if let httpResponse = response as? HTTPURLResponse {
-            let statusCode = httpResponse.statusCode
-            if let customError = mapStatus(forStatusCode: statusCode) {
-                completion(.failure(customError))
-                return
-            }
+        if let httpResponse = response as? HTTPURLResponse, let customError = mapStatus(forStatusCode: httpResponse.statusCode) {
+            completion(.failure(customError))
+            return
         }
 
         guard let data = data else {
@@ -95,8 +93,7 @@ private extension TealiumMomentsAPI {
     }
 
     func mapStatus(forStatusCode statusCode: Int) -> MomentsAPIHTTPError? {
-        let status = MomentsAPIHTTPError(rawValue: statusCode)
-        guard status != .success else {
+        guard let status = MomentsAPIHTTPError(rawValue: statusCode), status != .success else {
             return nil
         }
         return status

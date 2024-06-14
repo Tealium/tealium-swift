@@ -10,7 +10,6 @@ import Foundation
 enum MomentsError: Error, LocalizedError {
     case missingRegion
     case missingVisitorID
-    
     public var errorDescription: String? {
         switch self {
         case .missingRegion:
@@ -19,7 +18,6 @@ enum MomentsError: Error, LocalizedError {
             return "Missing Visitor ID."
         }
     }
-    
     var recoverySuggestion: String? {
         switch self {
         case .missingRegion:

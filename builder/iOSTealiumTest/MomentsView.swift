@@ -14,15 +14,12 @@ struct MomentsView: View {
     @State private var numbersContent = "Awaiting API request"
     @State private var datesContent = "Awaiting API request"
     @State private var stringsContent = "Awaiting API request"
-
+    
     var body: some View {
         NavigationView {
             VStack {
                 Button("Moments API Request") {
-                    TealiumHelper.shared.track(title: "Some Event", data: [:])
-                    DispatchQueue.main.asyncAfter(deadline: .now()+1.0) {
                         loadData()
-                    }
                 }
                 .padding()
                 .foregroundColor(.white)
@@ -37,7 +34,9 @@ struct MomentsView: View {
                     RowView(label: "Strings", content: $stringsContent)
                 }
             }
-            .navigationBarTitle("Mobile Moments Matter")
+            .navigationBarTitle("Moments API")
+        }.onAppear {
+            TealiumHelper.shared.trackView(title: "Moments API View", data: nil)
         }
     }
 

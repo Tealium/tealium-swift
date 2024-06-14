@@ -14,33 +14,35 @@ extension TealiumConfigKey {
 }
 
 public enum MomentsAPIRegion: String {
+    // swiftlint:disable identifier_name
     case germany = "eu-central-1"
     case us_east = "us-east-1"
     case sydney = "ap-southeast-2"
     case oregon = "us-west-2"
     case tokyo = "ap-northeast-1"
     case hong_kong = "ap-east-1"
+    // swiftlint:enable identifier_name
 }
 
 public extension TealiumConfig {
-    
+
     /// Sets the region for calls to the Moments API endpoint
     var momentsAPIRegion: MomentsAPIRegion? {
         get {
             options[TealiumConfigKey.momentsAPIRegion] as? MomentsAPIRegion
         }
-        
+
         set {
             options[TealiumConfigKey.momentsAPIRegion] = newValue
         }
-    }    
-    
+    }
+
     /// Sets the region for calls to the Moments API endpoint
     var momentsAPIReferer: String? {
         get {
             options[TealiumConfigKey.momentsAPIReferer] as? String
         }
-        
+
         set {
             options[TealiumConfigKey.momentsAPIReferer] = newValue
         }
@@ -51,13 +53,13 @@ public extension Tealium {
 
     class MomentsAPIWrapper {
         private unowned var tealium: Tealium
-        
+
         private var module: TealiumMomentsAPIModule? {
             (tealium.zz_internal_modulesManager?.modules.first {
                 $0 is TealiumMomentsAPIModule
             }) as? TealiumMomentsAPIModule
         }
-        
+
         /// Fetches a response from a configured Moments API Engine
         /// - Parameters:
         ///    - completion: `Result<EngineResponse, Error>` Optional completion block to be called when a response has been received from the Moments API
@@ -69,12 +71,11 @@ public extension Tealium {
             module.momentsAPI?.fetchEngineResponse(engineID: engineID, completion: completion)
         }
 
-        
         init(tealium: Tealium) {
             self.tealium = tealium
         }
     }
-    
+
     /// Provides API methods to interact with the Moments module
     var momentsAPI: MomentsAPIWrapper? {
         return MomentsAPIWrapper(tealium: self)

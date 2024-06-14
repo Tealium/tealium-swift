@@ -22,12 +22,13 @@ class MomentsAPITests: XCTestCase {
         let session = MockURLSession()
         let api = TealiumMomentsAPI(region: .us_east, account: MomentsAPITests.account, profile: MomentsAPITests.profile, environment: MomentsAPITests.environment, session: session)
         let jsonData = """
-    {
-        "audiences": ["VIP", "Women's Apparel", "Lifetime visit count"],
-        "badges": ["13", "26", "52"],
-        "properties": {"5063": 6.1, "6021": "banner_007", "6022": "voucher_614", "6023": "https://domain.com/example.html"}
-    }
-    """.data(using: .utf8)!
+        {"audiences":["VIP", "Women's Apparel", "Lifetime visit count"],
+         "badges":["13", "26", "52"],
+         "properties":{"54":"other","58":"other","60":"mobile application","5123":"set","5240":"Visitor: String Attribute","5688":"1970-01-01"},
+         "metrics":{"15":5,"21":5,"22":43,"25":2.7933666666666666},
+         "flags":{"27":true,"5152":true,"5242":false},
+         "dates":{"23":1718202502203,"24":1718357687966,"5244":1718360309656,"5690":0}}
+        """.data(using: .utf8)!
         session.data = jsonData
         session.response = HTTPURLResponse(url: URL(string: "https://example.com")!, statusCode: 200, httpVersion: nil, headerFields: nil)
         session.error = nil
@@ -39,6 +40,14 @@ class MomentsAPITests: XCTestCase {
             switch result {
             case .success(let response):
                 XCTAssertEqual(response.audiences.count, 3)
+                XCTAssertEqual(response.dates.count, 4)
+                XCTAssertEqual(response.badges.count, 3)
+                XCTAssertEqual(response.strings.count, 6)
+                XCTAssertEqual(response.booleans.count, 3)
+                XCTAssertEqual(response.numbers.count, 4)
+                XCTAssertEqual(response.numbers["25"]!, 2.7933666666666666)
+                XCTAssertEqual(response.booleans["5242"]!, false)
+                
                 expectation.fulfill()
             case .failure:
                 XCTFail("Expected successful engine response, got failure")
