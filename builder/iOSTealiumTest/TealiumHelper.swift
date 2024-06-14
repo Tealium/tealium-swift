@@ -180,13 +180,12 @@ class TealiumHelper: ObservableObject {
     }
     
     func fetchMoments(completion: @escaping (Result<EngineResponse, Error>) -> ()){
-//        tealium?.momentsAPI?.fetchEngineResponse(engineID: "<your-engine-id>", completion: completion)
-//
-//        example showing all the different types of attributes
-        tealium?.momentsAPI?.fetchEngineResponse(engineID: "4625fd31-cd87-444e-9470-7467f2e963ba", completion: { engineResponse in
+        // example showing all the different types of attributes
+        tealium?.momentsAPI?.fetchEngineResponse(engineID: "<your-engine-id>", completion: { engineResponse in
                     switch engineResponse {
                     case .success(let engineResponse):
                         print("Moments fetched successfully - String attributes:", engineResponse.strings)
+                        print("Moments fetched successfully - Boolean attributes:", engineResponse.booleans)
                         print("Moments fetched successfully - Audiences:", engineResponse.audiences)
                         print("Moments fetched successfully - Date attributes:", engineResponse.dates)
                         print("Moments fetched successfully - Badges:", engineResponse.badges)
