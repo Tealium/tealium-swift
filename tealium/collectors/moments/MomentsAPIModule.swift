@@ -51,5 +51,5 @@ public class TealiumMomentsAPIModule: Collector {
 }
 
 public extension Collectors {
-    static let Moments = TealiumMomentsAPIModule.self
+    static let MomentsAPI = TealiumMomentsAPIModule.self
 }

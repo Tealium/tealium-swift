@@ -8,7 +8,7 @@
 import Foundation
 
 import TealiumCollect
-import Combine
+//import Combine
 import TealiumCore
 import TealiumLifecycle
 import TealiumVisitorService
@@ -67,7 +67,7 @@ class TealiumHelper: ObservableObject {
         config.timedEventTriggers = [TimedEventTrigger(start: "product_view", end: "order_complete"),
                                      TimedEventTrigger(start: "start_game", end: "buy_coins")]
 
-        config.consentExpiry = (time: 2, unit: .minutes)
+        config.consentExpiry = (time: 2, unit: .years)
         config.onConsentExpiration = {
             print("Consent expired")
         }
@@ -81,7 +81,7 @@ class TealiumHelper: ObservableObject {
                 Collectors.Connectivity,
                 Collectors.Device,
                 Collectors.Location,
-                Collectors.Moments,
+                Collectors.MomentsAPI,
                 Collectors.VisitorService,
                 Collectors.InAppPurchase,
                 Collectors.AutoTracking
