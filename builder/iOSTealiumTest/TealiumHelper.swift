@@ -8,13 +8,12 @@
 import Foundation
 
 import TealiumCollect
-//import Combine
 import TealiumCore
 import TealiumLifecycle
 import TealiumVisitorService
 import TealiumAutotracking
 import TealiumInAppPurchase
-import TealiumMoments
+import TealiumMomentsAPI
 #if os(iOS)
 import WebKit
 import TealiumAttribution

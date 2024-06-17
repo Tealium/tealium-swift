@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "08191EBB2BCEC1AB003EEE36"
-               BuildableName = "TealiumMoments.framework"
-               BlueprintName = "TealiumMoments"
+               BuildableName = "TealiumMomentsAPI.framework"
+               BlueprintName = "TealiumMomentsAPI"
                ReferencedContainer = "container:tealium-swift.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -50,8 +50,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "08191EBB2BCEC1AB003EEE36"
-            BuildableName = "TealiumMoments.framework"
-            BlueprintName = "TealiumMoments"
+            BuildableName = "TealiumMomentsAPI.framework"
+            BlueprintName = "TealiumMomentsAPI"
             ReferencedContainer = "container:tealium-swift.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
