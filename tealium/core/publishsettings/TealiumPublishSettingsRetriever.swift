@@ -58,65 +58,7 @@ class TealiumPublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol, 
         resourceRefresher?.requestRefresh()
     }
 
-    func getCachedSettings() -> RemotePublishSettings? {
-        let settings = diskStorage.retrieve(as: RemotePublishSettings.self)
-        return settings
-    }
-
-    func getAndSave() {
-        fetching = true
-        guard let mobileHTML = publishSettingsURL else {
-            return
-        }
-
-        getRemoteSettings(url: mobileHTML,
-                          etag: cachedSettings?.etag) { settings in
-            TealiumQueues.backgroundSerialQueue.async {
-                self.lastFetch = Date()
-                self.fetching = false
-                if let settings = settings {
-                    self.cachedSettings = settings
-                    self.diskStorage.save(settings, completion: nil)
-                    self.delegate?.didUpdate(settings)
-                }
-            }
-        }
-
-    }
-
-    func getRemoteSettings(url: URL,
-                           etag: String?,
-                           completion: @escaping (RemotePublishSettings?) -> Void) {
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        if let etag = etag {
-            request.setValue(etag, forHTTPHeaderField: "If-None-Match")
-            request.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
-        }
-
-        urlSession?.tealiumDataTask(with: request) { data, response, _ in
-
-            guard let response = response as? HTTPURLResponse else {
-                completion(nil)
-                return
-            }
-
-            switch HttpStatusCodes(rawValue: response.statusCode) {
-            case .ok:
-                guard let data = data, let publishSettings = self.getPublishSettings(from: data, etag: response.etag) else {
-                    completion(nil)
-                    return
-                }
-                completion(publishSettings)
-            default:
-                completion(nil)
-                return
-            }
-        }.resume()
-    }
-
-    func getPublishSettings(from data: Data, etag: String?) -> RemotePublishSettings? {
+    static func getPublishSettings(from data: Data, etag: String?) -> RemotePublishSettings? {
         let dataString = String(decoding: data, as: UTF8.self)
         guard let startScript = dataString.range(of: "var mps = ") else {
             return nil
