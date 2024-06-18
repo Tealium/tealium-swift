@@ -6,7 +6,9 @@
 //
 
 import Foundation
+#if momentsapi
 import TealiumCore
+#endif
 
 extension TealiumConfigKey {
     static let momentsAPIRegion = "moments_api_region"

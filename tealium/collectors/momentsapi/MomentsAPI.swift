@@ -6,8 +6,9 @@
 //
 
 import Foundation
+#if momentsapi
 import TealiumCore
-
+#endif
 protocol MomentsAPI {
     func fetchEngineResponse(engineID: String, completion: @escaping (Result<EngineResponse, Error>) -> Void)
     var visitorId: String? { get set }

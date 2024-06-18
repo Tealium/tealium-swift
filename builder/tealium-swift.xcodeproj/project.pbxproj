@@ -3234,7 +3234,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		08191EB82BCE8894003EEE36 /* moments */ = {
+		08191EB82BCE8894003EEE36 /* momentsapi */ = {
 			isa = PBXGroup;
 			children = (
 				08191EB92BCE88B2003EEE36 /* MomentsAPI.swift */,
@@ -3244,7 +3244,7 @@
 				08191F282BDFAB08003EEE36 /* MomentsAPIHTTPError.swift */,
 				08191F2A2BDFEA24003EEE36 /* MomentsAPIError.swift */,
 			);
-			path = moments;
+			path = momentsapi;
 			sourceTree = "<group>";
 		};
 		08191ED82BD15F22003EEE36 /* test_tealium_moments */ = {
@@ -4115,7 +4115,7 @@
 			isa = PBXGroup;
 			children = (
 				D780586F233A68E900DAD90E /* visitorservice */,
-				08191EB82BCE8894003EEE36 /* moments */,
+				08191EB82BCE8894003EEE36 /* momentsapi */,
 				48405B362739B9690094EA18 /* inapppurchase */,
 				CFAD9D5B25A66C040079B19A /* media */,
 				CFF242BF23CE77F10091B7BF /* location */,
