@@ -627,6 +627,77 @@
                     </dict>
                 </array>
             </dict>
+            <dict>
+                <key>name</key>
+                <string>TealiumMomentsAPI</string>
+                <key>targets</key>
+                <array>
+                    <dict>
+                        <key>sdk</key>
+                        <string>iOS</string>
+                        <key>workspace</key>
+                        <string>tealium-swift.xcworkspace</string>
+                        <key>scheme</key>
+                        <string>TealiumMomentsAPI</string>
+                    </dict>
+                    <dict>
+                        <key>sdk</key>
+                        <string>iOSSimulator</string>
+                        <key>workspace</key>
+                        <string>tealium-swift.xcworkspace</string>
+                        <key>scheme</key>
+                        <string>TealiumMomentsAPI</string>
+                    </dict>
+                    <dict>
+                        <key>sdk</key>
+                        <string>watchSimulator</string>
+                        <key>workspace</key>
+                        <string>tealium-swift.xcworkspace</string>
+                        <key>scheme</key>
+                        <string>TealiumMomentsAPI</string>
+                    </dict>
+                    <dict>
+                        <key>sdk</key>
+                        <string>watchOS</string>
+                        <key>workspace</key>
+                        <string>tealium-swift.xcworkspace</string>
+                        <key>scheme</key>
+                        <string>TealiumMomentsAPI</string>
+                    </dict>
+                    <dict>
+                        <key>sdk</key>
+                        <string>macOS</string>
+                        <key>workspace</key>
+                        <string>tealium-swift.xcworkspace</string>
+                        <key>scheme</key>
+                        <string>TealiumMomentsAPI</string>
+                    </dict>
+                    <dict>
+                        <key>sdk</key>
+                        <string>macOSCatalyst</string>
+                        <key>workspace</key>
+                        <string>tealium-swift.xcworkspace</string>
+                        <key>scheme</key>
+                        <string>TealiumMomentsAPI</string>
+                    </dict>
+                    <dict>
+                        <key>sdk</key>
+                        <string>tvOS</string>
+                        <key>workspace</key>
+                        <string>tealium-swift.xcworkspace</string>
+                        <key>scheme</key>
+                        <string>TealiumMomentsAPI</string>
+                    </dict>
+                    <dict>
+                        <key>sdk</key>
+                        <string>tvOSSimulator</string>
+                        <key>workspace</key>
+                        <string>tealium-swift.xcworkspace</string>
+                        <key>scheme</key>
+                        <string>TealiumMomentsAPI</string>
+                    </dict>
+                </array>
+            </dict>
         </array>
         <key>finalActions</key>
         <array>

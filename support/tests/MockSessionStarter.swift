@@ -149,7 +149,7 @@ class SessionStarterDataTaskError: URLSessionDataTaskProtocol {
 enum MockSessionStarterRequestError: Error, LocalizedError {
     case somethingWentWrong
 
-    public var localizedDescription: String {
+    public var errorDescription: String? {
         switch self {
         case .somethingWentWrong:
             return NSLocalizedString("Something Went Wrong.", comment: "MockSessionStarterRequestError")

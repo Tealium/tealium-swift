@@ -13,6 +13,7 @@ import TealiumLifecycle
 import TealiumVisitorService
 import TealiumAutotracking
 import TealiumInAppPurchase
+import TealiumMomentsAPI
 #if os(iOS)
 import WebKit
 import TealiumAttribution
@@ -25,11 +26,11 @@ extension TealiumDataKey {
     static let email = "email"
 }
 
-class TealiumHelper {
+class TealiumHelper: ObservableObject {
 
     @ToAnyObservable(TealiumBufferedSubject(bufferSize: 10))
     var onWillTrack: TealiumObservable<[String:Any]>
-    
+    @Published var visitorProfile: TealiumVisitorProfile?
     static let shared = TealiumHelper()
     var tealium: Tealium?
     var enableHelperLogs = true
@@ -45,7 +46,7 @@ class TealiumHelper {
 
         config.connectivityRefreshInterval = 5
         config.loggerType = .os
-        config.logLevel = .info
+        config.logLevel = .debug
         config.consentPolicy = .gdpr
         config.consentLoggingEnabled = true
 //        config.remoteHTTPCommandDisabled = false
@@ -65,12 +66,12 @@ class TealiumHelper {
         config.timedEventTriggers = [TimedEventTrigger(start: "product_view", end: "order_complete"),
                                      TimedEventTrigger(start: "start_game", end: "buy_coins")]
 
-        config.consentExpiry = (time: 2, unit: .minutes)
+        config.consentExpiry = (time: 2, unit: .years)
         config.onConsentExpiration = {
             print("Consent expired")
         }
         config.visitorIdentityKey = TealiumDataKey.email
-        config.visitorServiceRefresh = .every(1, .minutes)
+        config.visitorServiceRefresh = .every(0, .seconds)
         #if os(iOS)
             config.enableBackgroundLocation = true
             config.collectors = [
@@ -79,6 +80,7 @@ class TealiumHelper {
                 Collectors.Connectivity,
                 Collectors.Device,
                 Collectors.Location,
+                Collectors.MomentsAPI,
                 Collectors.VisitorService,
                 Collectors.InAppPurchase,
                 Collectors.AutoTracking
@@ -99,6 +101,7 @@ class TealiumHelper {
             config.geofenceUrl = "https://tags.tiqcdn.com/dle/tealiummobile/location/geofences.json"
             config.desiredAccuracy = .best
             config.updateDistance = 100.0
+            config.momentsAPIRegion = .us_east
         #else
             config.collectors = [
                 Collectors.Lifecycle,
@@ -117,7 +120,6 @@ class TealiumHelper {
             guard let self = self,
                   let teal = self.tealium else {
                 return
-
             }
 
             let dataLayer = teal.dataLayer
@@ -175,6 +177,27 @@ class TealiumHelper {
         let dispatch = TealiumEvent(title, dataLayer: data)
         tealium?.track(dispatch)
     }
+    
+    func fetchMoments(completion: @escaping (Result<EngineResponse, Error>) -> ()){
+        // example showing all the different types of attributes
+        tealium?.momentsAPI?.fetchEngineResponse(engineID: "<your-engine-id>", completion: { engineResponse in
+                    switch engineResponse {
+                    case .success(let engineResponse):
+                        print("Moments fetched successfully - String attributes:", engineResponse.strings)
+                        print("Moments fetched successfully - Boolean attributes:", engineResponse.booleans)
+                        print("Moments fetched successfully - Audiences:", engineResponse.audiences)
+                        print("Moments fetched successfully - Date attributes:", engineResponse.dates)
+                        print("Moments fetched successfully - Badges:", engineResponse.badges)
+                        print("Moments fetched successfully - Numbers:", engineResponse.numbers)
+                    case .failure(let error):
+                        print("Error fetching moments:", error.localizedDescription)
+                        if let suggestion = (error as? LocalizedError)?.recoverySuggestion {
+                            print("Recovery suggestion:", suggestion)
+                        }
+                    }
+            completion(engineResponse)
+                })
+    }
 
     func trackView(title: String, data: [String: Any]?) {
         let dispatch = TealiumView(title, dataLayer: data)
@@ -197,6 +220,9 @@ class TealiumHelper {
 
 extension TealiumHelper: VisitorServiceDelegate {
     func didUpdate(visitorProfile: TealiumVisitorProfile) {
+        DispatchQueue.main.async{
+            self.visitorProfile = visitorProfile
+        }
         if let json = try? JSONEncoder().encode(visitorProfile),
            let string = String(data: json, encoding: .utf8) {
             if self.enableHelperLogs {
@@ -204,7 +230,6 @@ extension TealiumHelper: VisitorServiceDelegate {
             }
         }
     }
-
 }
 
 extension TealiumHelper: DispatchListener {

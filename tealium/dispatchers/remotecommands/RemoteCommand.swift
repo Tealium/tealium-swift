@@ -84,11 +84,7 @@ open class RemoteCommand: RemoteCommandProtocol {
         }
         var responseStr: String
         if let responseData = response.data {
-            if let encodedResponse = String(data: responseData, encoding: .utf8) {
-                responseStr = encodedResponse
-            } else {
-                responseStr = "(null)"
-            }
+            responseStr = String(decoding: responseData, as: UTF8.self)
         } else {
             // keep previous behavior from obj-c library
             responseStr = "(null)"

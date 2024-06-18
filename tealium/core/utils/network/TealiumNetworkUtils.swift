@@ -15,7 +15,7 @@ public extension Dictionary where Key == String, Value == Any {
         encoder.outputFormatting = writingOptions
         let encodable = self.encodable
         let jsonData = try encoder.encode(encodable)
-        return String(data: jsonData, encoding: .utf8)
+        return String(decoding: jsonData, as: UTF8.self)
     }
 }
 
