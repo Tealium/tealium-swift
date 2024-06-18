@@ -48,6 +48,8 @@
 		08DAC3D62C2093C400089032 /* TealiumMomentsAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 08191ECD2BCEC1AB003EEE36 /* TealiumMomentsAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		08DAC3DF2C20997300089032 /* TealiumMomentsAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08191ECD2BCEC1AB003EEE36 /* TealiumMomentsAPI.framework */; };
 		08DAC3E02C20997300089032 /* TealiumMomentsAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 08191ECD2BCEC1AB003EEE36 /* TealiumMomentsAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		08DAC3E32C21E49000089032 /* TealiumMomentsAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08191ECD2BCEC1AB003EEE36 /* TealiumMomentsAPI.framework */; };
+		08DAC3E42C21E49000089032 /* TealiumMomentsAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 08191ECD2BCEC1AB003EEE36 /* TealiumMomentsAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		15046A0F28C8CBF000B0535E /* allEventsCommands.json in Resources */ = {isa = PBXBuildFile; fileRef = 15046A0E28C8CBF000B0535E /* allEventsCommands.json */; };
 		15062EEB270758EC00734060 /* large-event-data.json in Resources */ = {isa = PBXBuildFile; fileRef = D7187F1524768F5000CF0AB0 /* large-event-data.json */; };
 		15062EEC270758EC00734060 /* big-visitor.json in Resources */ = {isa = PBXBuildFile; fileRef = CF8FF2C524466FD90081C1A9 /* big-visitor.json */; };
@@ -987,6 +989,13 @@
 			remoteInfo = TealiumMoments;
 		};
 		08DAC3E12C20997300089032 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 08191EBB2BCEC1AB003EEE36;
+			remoteInfo = TealiumMomentsAPI;
+		};
+		08DAC3E52C21E49000089032 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
 			proxyType = 1;
@@ -2263,6 +2272,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				08DAC3E42C21E49000089032 /* TealiumMomentsAPI.framework in Embed Frameworks */,
 				1561915227904E1000A73543 /* TealiumInAppPurchase.framework in Embed Frameworks */,
 				CF8807CF2554BB480020E1B2 /* TealiumLifecycle.framework in Embed Frameworks */,
 				CF8807D32554BB480020E1B2 /* TealiumVisitorService.framework in Embed Frameworks */,
@@ -2982,6 +2992,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08DAC3E32C21E49000089032 /* TealiumMomentsAPI.framework in Frameworks */,
 				1561915127904E0800A73543 /* TealiumInAppPurchase.framework in Frameworks */,
 				CF8807CE2554BB480020E1B2 /* TealiumLifecycle.framework in Frameworks */,
 				CF8807D22554BB480020E1B2 /* TealiumVisitorService.framework in Frameworks */,
@@ -4986,6 +4997,7 @@
 				CF8807D12554BB480020E1B2 /* PBXTargetDependency */,
 				CF8807D52554BB480020E1B2 /* PBXTargetDependency */,
 				1555F59926E64C7900AFDC3D /* PBXTargetDependency */,
+				08DAC3E62C21E49000089032 /* PBXTargetDependency */,
 			);
 			name = tvOSTealiumTest;
 			productName = tvOSTealiumTest;
@@ -7576,6 +7588,11 @@
 			isa = PBXTargetDependency;
 			target = 08191EBB2BCEC1AB003EEE36 /* TealiumMomentsAPI */;
 			targetProxy = 08DAC3E12C20997300089032 /* PBXContainerItemProxy */;
+		};
+		08DAC3E62C21E49000089032 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 08191EBB2BCEC1AB003EEE36 /* TealiumMomentsAPI */;
+			targetProxy = 08DAC3E52C21E49000089032 /* PBXContainerItemProxy */;
 		};
 		150334B327907D600014CD63 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
