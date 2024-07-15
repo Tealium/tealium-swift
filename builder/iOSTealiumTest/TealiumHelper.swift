@@ -6,20 +6,20 @@
 //
 
 import Foundation
-
+import TealiumAutotracking
 import TealiumCollect
 import TealiumCore
-import TealiumLifecycle
-import TealiumVisitorService
-import TealiumAutotracking
 import TealiumInAppPurchase
+import TealiumLifecycle
 import TealiumMomentsAPI
+import TealiumVisitorService
+
 #if os(iOS)
-import WebKit
-import TealiumAttribution
-import TealiumLocation
-import TealiumRemoteCommands
-import TealiumTagManagement
+    import WebKit
+    import TealiumAttribution
+    import TealiumLocation
+    import TealiumRemoteCommands
+    import TealiumTagManagement
 #endif
 
 extension TealiumDataKey {
@@ -29,27 +29,28 @@ extension TealiumDataKey {
 class TealiumHelper: ObservableObject {
 
     @ToAnyObservable(TealiumBufferedSubject(bufferSize: 10))
-    var onWillTrack: TealiumObservable<[String:Any]>
+    var onWillTrack: TealiumObservable<[String: Any]>
     @Published var visitorProfile: TealiumVisitorProfile?
     static let shared = TealiumHelper()
     var tealium: Tealium?
     var enableHelperLogs = true
 
-    private init() { }
+    private init() {}
 
     func start() {
-        let config = TealiumConfig(account: "tealiummobile",
-                                   profile: "demo",
-                                   environment: "prod",
-                                   dataSource: "test12",
-                                   options: nil)
+        let config = TealiumConfig(
+            account: "tealiummobile",
+            profile: "demo",
+            environment: "prod",
+            dataSource: "test12",
+            options: nil)
 
         config.connectivityRefreshInterval = 5
         config.loggerType = .os
         config.logLevel = .debug
         config.consentPolicy = .gdpr
         config.consentLoggingEnabled = true
-//        config.remoteHTTPCommandDisabled = false
+        //        config.remoteHTTPCommandDisabled = false
         config.dispatchListeners = [self]
         config.dispatchValidators = [self]
         config.shouldUseRemotePublishSettings = false
@@ -63,15 +64,17 @@ class TealiumHelper: ObservableObject {
         config.autoTrackingCollectorDelegate = self
         config.batterySaverEnabled = true
         config.hostedDataLayerKeys = ["hdl-test": "product_id"]
-        config.timedEventTriggers = [TimedEventTrigger(start: "product_view", end: "order_complete"),
-                                     TimedEventTrigger(start: "start_game", end: "buy_coins")]
+        config.timedEventTriggers = [
+            TimedEventTrigger(start: "product_view", end: "order_complete"),
+            TimedEventTrigger(start: "start_game", end: "buy_coins"),
+        ]
 
         config.consentExpiry = (time: 2, unit: .years)
         config.onConsentExpiration = {
             print("Consent expired")
         }
         config.visitorIdentityKey = TealiumDataKey.email
-        config.visitorServiceRefresh = .every(0, .seconds)
+        config.visitorServiceRefresh = .every(1, .minutes)
         #if os(iOS)
             config.enableBackgroundLocation = true
             config.collectors = [
@@ -83,15 +86,15 @@ class TealiumHelper: ObservableObject {
                 Collectors.MomentsAPI,
                 Collectors.VisitorService,
                 Collectors.InAppPurchase,
-                Collectors.AutoTracking
+                Collectors.AutoTracking,
             ]
-        
+
             config.dispatchers = [
                 Dispatchers.Collect,
-//                Dispatchers.TagManagement,
-                Dispatchers.RemoteCommands
+                //                Dispatchers.TagManagement,
+                Dispatchers.RemoteCommands,
             ]
-            
+
             // config.appDelegateProxyEnabled = false
             config.remoteAPIEnabled = true
             config.remoteCommandConfigRefresh = .every(24, .hours)
@@ -110,15 +113,16 @@ class TealiumHelper: ObservableObject {
                 Collectors.Device,
                 Collectors.VisitorService,
                 Collectors.AutoTracking,
-                Collectors.InAppPurchase
+                Collectors.InAppPurchase,
             ]
             config.dispatchers = [
-                Dispatchers.Collect,
+                Dispatchers.Collect
             ]
         #endif
         tealium = Tealium(config: config) { [weak self] response in
             guard let self = self,
-                  let teal = self.tealium else {
+                let teal = self.tealium
+            else {
                 return
             }
 
@@ -126,32 +130,35 @@ class TealiumHelper: ObservableObject {
             teal.consentManager?.userConsentStatus = .consented
             dataLayer.add(key: "myvarforever", value: 123_456, expiry: .forever)
             dataLayer.add(data: ["some_key1": "some_val1"], expiry: .session)
-            dataLayer.add(data: ["some_key_forever": "some_val_forever"], expiry: .forever) // forever
+            dataLayer.add(data: ["some_key_forever": "some_val_forever"], expiry: .forever)  // forever
             dataLayer.add(data: ["until": "restart"], expiry: .untilRestart)
             dataLayer.add(data: ["custom": "expire in 3 min"], expiry: .afterCustom((.minutes, 3)))
 
             #if os(iOS)
-            teal.location?.requestAuthorization()
+                teal.location?.requestAuthorization()
 
-            guard let remoteCommands = self.tealium?.remoteCommands else {
-                return
-            }
-
-            teal.getTagManagementWebView { webView in
-                if #available(iOS 16.4, *) {
-//                    webView.isInspectable = true // Uncomment to inspect tagManagement webviews on XCode 14.3+ and iOS 16.4+
-                }
-            }
-            let display = RemoteCommand(commandId: "display", description: "Test") { response in
-                guard let payload = response.payload,
-                      let hello = payload["hello"] as? String,
-                      let key = payload["key"] as? String,
-                      let tealium = payload["tealium"] as? String else {
+                guard let remoteCommands = self.tealium?.remoteCommands else {
                     return
                 }
-                print("Remote Command data: hello = \(hello), key = \(key), tealium = \(tealium) 🎉🎊")
-            }
-            remoteCommands.add(display)
+
+                teal.getTagManagementWebView { webView in
+                    if #available(iOS 16.4, *) {
+                        //                    webView.isInspectable = true // Uncomment to inspect tagManagement webviews on XCode 14.3+ and iOS 16.4+
+                    }
+                }
+                let display = RemoteCommand(commandId: "display", description: "Test") { response in
+                    guard let payload = response.payload,
+                        let hello = payload["hello"] as? String,
+                        let key = payload["key"] as? String,
+                        let tealium = payload["tealium"] as? String
+                    else {
+                        return
+                    }
+                    print(
+                        "Remote Command data: hello = \(hello), key = \(key), tealium = \(tealium) 🎉🎊"
+                    )
+                }
+                remoteCommands.add(display)
             #endif
         }
     }
@@ -164,7 +171,9 @@ class TealiumHelper: ObservableObject {
         if let consentStatus = tealium?.consentManager?.userConsentStatus {
             switch consentStatus {
             case .notConsented:
-                TealiumHelper.shared.tealium?.consentManager?.userConsentCategories = [.affiliates, .analytics, .bigData]
+                TealiumHelper.shared.tealium?.consentManager?.userConsentCategories = [
+                    .affiliates, .analytics, .bigData,
+                ]
             case .unknown:
                 TealiumHelper.shared.tealium?.consentManager?.userConsentStatus = .consented
             default:
@@ -177,26 +186,31 @@ class TealiumHelper: ObservableObject {
         let dispatch = TealiumEvent(title, dataLayer: data)
         tealium?.track(dispatch)
     }
-    
-    func fetchMoments(completion: @escaping (Result<EngineResponse, Error>) -> ()){
+
+    func fetchMoments(completion: @escaping (Result<EngineResponse, Error>) -> Void) {
         // example showing all the different types of attributes
-        tealium?.momentsAPI?.fetchEngineResponse(engineID: "<your-engine-id>", completion: { engineResponse in
-                    switch engineResponse {
-                    case .success(let engineResponse):
-                        print("Moments fetched successfully - String attributes:", engineResponse.strings)
-                        print("Moments fetched successfully - Boolean attributes:", engineResponse.booleans)
-                        print("Moments fetched successfully - Audiences:", engineResponse.audiences)
-                        print("Moments fetched successfully - Date attributes:", engineResponse.dates)
-                        print("Moments fetched successfully - Badges:", engineResponse.badges)
-                        print("Moments fetched successfully - Numbers:", engineResponse.numbers)
-                    case .failure(let error):
-                        print("Error fetching moments:", error.localizedDescription)
-                        if let suggestion = (error as? LocalizedError)?.recoverySuggestion {
-                            print("Recovery suggestion:", suggestion)
-                        }
+        tealium?.momentsAPI?.fetchEngineResponse(
+            engineID: "<your-engine-id>",
+            completion: { engineResponse in
+                switch engineResponse {
+                case .success(let engineResponse):
+                    print(
+                        "Moments fetched successfully - String attributes:", engineResponse.strings)
+                    print(
+                        "Moments fetched successfully - Boolean attributes:",
+                        engineResponse.booleans)
+                    print("Moments fetched successfully - Audiences:", engineResponse.audiences)
+                    print("Moments fetched successfully - Date attributes:", engineResponse.dates)
+                    print("Moments fetched successfully - Badges:", engineResponse.badges)
+                    print("Moments fetched successfully - Numbers:", engineResponse.numbers)
+                case .failure(let error):
+                    print("Error fetching moments:", error.localizedDescription)
+                    if let suggestion = (error as? LocalizedError)?.recoverySuggestion {
+                        print("Recovery suggestion:", suggestion)
                     }
-            completion(engineResponse)
-                })
+                }
+                completion(engineResponse)
+            })
     }
 
     func trackView(title: String, data: [String: Any]?) {
@@ -213,18 +227,21 @@ class TealiumHelper: ObservableObject {
     }
 
     func crash() {
-        NSException.raise(NSExceptionName(rawValue: "Exception"), format: "This is a test exception", arguments: getVaList(["nil"]))
+        NSException.raise(
+            NSExceptionName(rawValue: "Exception"), format: "This is a test exception",
+            arguments: getVaList(["nil"]))
     }
 
 }
 
 extension TealiumHelper: VisitorServiceDelegate {
     func didUpdate(visitorProfile: TealiumVisitorProfile) {
-        DispatchQueue.main.async{
+        DispatchQueue.main.async {
             self.visitorProfile = visitorProfile
         }
         if let json = try? JSONEncoder().encode(visitorProfile),
-           let string = String(data: json, encoding: .utf8) {
+            let string = String(data: json, encoding: .utf8)
+        {
             if self.enableHelperLogs {
                 print("Visitor Profile: \(string)")
             }
@@ -244,7 +261,7 @@ extension TealiumHelper: DispatchListener {
 }
 
 extension TealiumHelper: DispatchValidator {
-    
+
     var id: String {
         return "Helper"
     }
@@ -263,7 +280,7 @@ extension TealiumHelper: DispatchValidator {
 }
 
 extension TealiumHelper: AutoTrackingDelegate {
-    func onCollectScreenView(screenName: String) -> [String : Any] {
+    func onCollectScreenView(screenName: String) -> [String: Any] {
         return ["from_delegate": "true"]
     }
 }
@@ -278,10 +295,12 @@ class MyDateCollector: Collector {
 
     var config: TealiumConfig
 
-    required init(context: TealiumContext,
-                  delegate: ModuleDelegate?,
-                  diskStorage: TealiumDiskStorageProtocol?,
-                  completion: ((Result<Bool, Error>, [String: Any]?)) -> Void) {
+    required init(
+        context: TealiumContext,
+        delegate: ModuleDelegate?,
+        diskStorage: TealiumDiskStorageProtocol?,
+        completion: ((Result<Bool, Error>, [String: Any]?)) -> Void
+    ) {
         self.config = context.config
     }
 
@@ -296,7 +315,8 @@ class MyCustomDispatcher: Dispatcher {
 
     var config: TealiumConfig
 
-    required init(context: TealiumContext, delegate: ModuleDelegate, completion: ModuleCompletion?) {
+    required init(context: TealiumContext, delegate: ModuleDelegate, completion: ModuleCompletion?)
+    {
         self.config = context.config
     }
 
@@ -306,12 +326,12 @@ class MyCustomDispatcher: Dispatcher {
             if TealiumHelper.shared.enableHelperLogs {
                 print("Track received: \(request.event ?? "no event name")")
             }
-            // perform track action, e.g. send to custom endpoint
+        // perform track action, e.g. send to custom endpoint
         case _ as TealiumBatchTrackRequest:
             if TealiumHelper.shared.enableHelperLogs {
                 print("Batch track received")
             }
-            // perform batch track action, e.g. send to custom endpoint
+        // perform batch track action, e.g. send to custom endpoint
         default:
             return
         }

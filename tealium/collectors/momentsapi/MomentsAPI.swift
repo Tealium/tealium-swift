@@ -9,6 +9,7 @@ import Foundation
 #if momentsapi
 import TealiumCore
 #endif
+
 protocol MomentsAPI {
     func fetchEngineResponse(engineID: String, completion: @escaping (Result<EngineResponse, Error>) -> Void)
     var visitorId: String? { get set }
@@ -62,20 +63,21 @@ private extension TealiumMomentsAPI {
     }
 
     func constructURL(forEngineID engineID: String, visitorID: String) -> URL? {
-        // swiftlint:disable line_length
-        return URL(string: "https://personalization-api.\(region.rawValue).prod.tealiumapis.com/personalization/accounts/\(account)/profiles/\(profile)/engines/\(engineID)/visitors/\(visitorID)?ignoreTapid=true")
-        // swiftlint:enable line_length
+        var engineUrl: String {
+            """
+            https://personalization-api.\(region.rawValue).prod.tealiumapis.com/personalization/accounts/\(account)/profiles/\(profile)/engines/\(engineID)/visitors/\(visitorID)?ignoreTapid=true
+            """
+        }
+        return URL(string: engineUrl)
     }
 
     func handleResponse(data: Data?, response: URLResponse?, error: Error?, completion: @escaping (Result<EngineResponse, Error>) -> Void) {
-        // URLError would usually indicate a connection error
-        if let urlError = error as? URLError {
-            completion(.failure(urlError))
+        if let error = error {
+            completion(.failure(error))
             return
         }
 
-        // Check for known HTTP response errors
-        if let httpResponse = response as? HTTPURLResponse, let customError = mapStatus(forStatusCode: httpResponse.statusCode) {
+        if let httpResponse = response as? HTTPURLResponse, let customError = MomentsAPIHTTPError(rawValue: httpResponse.statusCode) {
             completion(.failure(customError))
             return
         }
@@ -91,12 +93,5 @@ private extension TealiumMomentsAPI {
         } catch {
             completion(.failure(error))
         }
-    }
-
-    func mapStatus(forStatusCode statusCode: Int) -> MomentsAPIHTTPError? {
-        guard let status = MomentsAPIHTTPError(rawValue: statusCode), status != .success else {
-            return nil
-        }
-        return status
     }
 }

@@ -50,6 +50,9 @@
 		08DAC3E02C20997300089032 /* TealiumMomentsAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 08191ECD2BCEC1AB003EEE36 /* TealiumMomentsAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		08DAC3E32C21E49000089032 /* TealiumMomentsAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08191ECD2BCEC1AB003EEE36 /* TealiumMomentsAPI.framework */; };
 		08DAC3E42C21E49000089032 /* TealiumMomentsAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 08191ECD2BCEC1AB003EEE36 /* TealiumMomentsAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		08EFB6D82C418341006459F6 /* MockAppDataDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE69B0E20126B91000759D8 /* MockAppDataDiskStorage.swift */; };
+		08EFB6D92C418341006459F6 /* MockAppDataDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE69B0E20126B91000759D8 /* MockAppDataDiskStorage.swift */; };
+		08EFB6DA2C418342006459F6 /* MockAppDataDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE69B0E20126B91000759D8 /* MockAppDataDiskStorage.swift */; };
 		15046A0F28C8CBF000B0535E /* allEventsCommands.json in Resources */ = {isa = PBXBuildFile; fileRef = 15046A0E28C8CBF000B0535E /* allEventsCommands.json */; };
 		15062EEB270758EC00734060 /* large-event-data.json in Resources */ = {isa = PBXBuildFile; fileRef = D7187F1524768F5000CF0AB0 /* large-event-data.json */; };
 		15062EEC270758EC00734060 /* big-visitor.json in Resources */ = {isa = PBXBuildFile; fileRef = CF8FF2C524466FD90081C1A9 /* big-visitor.json */; };
@@ -6511,6 +6514,7 @@
 				08CA23D82BE24DA3002AC47A /* MockDiskStorage.swift in Sources */,
 				08CA23D62BE245CF002AC47A /* CoreMocks.swift in Sources */,
 				08191EFD2BD2C555003EEE36 /* MockURLSession.swift in Sources */,
+				08EFB6D82C418341006459F6 /* MockAppDataDiskStorage.swift in Sources */,
 				08191EFE2BD2C555003EEE36 /* MomentsAPITests.swift in Sources */,
 				08CA23D72BE245E1002AC47A /* MockSessionStarter.swift in Sources */,
 				08CA23D52BE2437D002AC47A /* TestTealiumHelper.swift in Sources */,
@@ -6525,6 +6529,7 @@
 				08CA23E42BE50019002AC47A /* MockDiskStorage.swift in Sources */,
 				08CA23E52BE50019002AC47A /* CoreMocks.swift in Sources */,
 				08CA23E62BE50019002AC47A /* MockURLSession.swift in Sources */,
+				08EFB6D92C418341006459F6 /* MockAppDataDiskStorage.swift in Sources */,
 				08CA23E72BE50019002AC47A /* MomentsAPITests.swift in Sources */,
 				08CA23E82BE50019002AC47A /* MockSessionStarter.swift in Sources */,
 				08CA23E92BE50019002AC47A /* TestTealiumHelper.swift in Sources */,
@@ -6539,6 +6544,7 @@
 				08CA23F82BE50022002AC47A /* MockDiskStorage.swift in Sources */,
 				08CA23F92BE50022002AC47A /* CoreMocks.swift in Sources */,
 				08CA23FA2BE50022002AC47A /* MockURLSession.swift in Sources */,
+				08EFB6DA2C418342006459F6 /* MockAppDataDiskStorage.swift in Sources */,
 				08CA23FB2BE50022002AC47A /* MomentsAPITests.swift in Sources */,
 				08CA23FC2BE50022002AC47A /* MockSessionStarter.swift in Sources */,
 				08CA23FD2BE50022002AC47A /* TestTealiumHelper.swift in Sources */,

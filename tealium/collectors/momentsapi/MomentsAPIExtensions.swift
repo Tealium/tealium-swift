@@ -15,14 +15,34 @@ extension TealiumConfigKey {
     static let momentsAPIReferer = "moments_api_referer"
 }
 
-public enum MomentsAPIRegion: String {
+public enum MomentsAPIRegion {
     // swiftlint:disable identifier_name
-    case germany = "eu-central-1"
-    case us_east = "us-east-1"
-    case sydney = "ap-southeast-2"
-    case oregon = "us-west-2"
-    case tokyo = "ap-northeast-1"
-    case hong_kong = "ap-east-1"
+    case germany
+    case us_east
+    case sydney
+    case oregon
+    case tokyo
+    case hong_kong
+    case custom(String)
+
+    var rawValue: String {
+        switch self {
+        case .germany:
+            return "eu-central-1"
+        case .us_east:
+            return "us-east-1"
+        case .sydney:
+            return "ap-southeast-2"
+        case .oregon:
+            return "us-west-2"
+        case .tokyo:
+            return "ap-northeast-1"
+        case .hong_kong:
+            return "ap-east-1"
+        case .custom(let regionString):
+            return regionString
+        }
+    }
     // swiftlint:enable identifier_name
 }
 
@@ -54,10 +74,10 @@ public extension TealiumConfig {
 public extension Tealium {
 
     class MomentsAPIWrapper {
-        private unowned var tealium: Tealium
+        private weak var tealium: Tealium?
 
         private var module: TealiumMomentsAPIModule? {
-            (tealium.zz_internal_modulesManager?.modules.first {
+            (tealium?.zz_internal_modulesManager?.modules.first {
                 $0 is TealiumMomentsAPIModule
             }) as? TealiumMomentsAPIModule
         }
@@ -70,7 +90,13 @@ public extension Tealium {
             guard let module = module else {
                 return
             }
-            module.momentsAPI?.fetchEngineResponse(engineID: engineID, completion: completion)
+            guard tealium != nil else {
+                completion(.failure(MomentsError.tealiumNotInitialized))
+                return
+            }
+            TealiumQueues.backgroundSerialQueue.async(qos: .userInitiated) {
+                module.momentsAPI?.fetchEngineResponse(engineID: engineID, completion: completion)
+            }
         }
 
         init(tealium: Tealium) {

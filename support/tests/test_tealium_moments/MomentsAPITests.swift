@@ -7,7 +7,7 @@
 
 import Foundation
 @testable import TealiumCore
-@testable import TealiumMoments
+@testable import TealiumMomentsAPI
 import XCTest
 
 class MomentsAPITests: XCTestCase {

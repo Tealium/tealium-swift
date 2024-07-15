@@ -14,7 +14,6 @@ public class TealiumMomentsAPIModule: Collector {
     public let id: String = ModuleNames.momentsapi
     public var config: TealiumConfig
     public var data: [String: Any]?
-    var diskStorage: TealiumDiskStorageProtocol!
     var momentsAPI: MomentsAPI?
     private var bag = TealiumDisposeBag()
 
