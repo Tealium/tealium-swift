@@ -187,10 +187,10 @@ class TealiumHelper: ObservableObject {
         tealium?.track(dispatch)
     }
 
-    func fetchMoments(completion: @escaping (Result<EngineResponse, Error>) -> Void) {
+    func fetchMoments(engineId: String, completion: @escaping (Result<EngineResponse, Error>) -> Void) {
         // example showing all the different types of attributes
         tealium?.momentsAPI?.fetchEngineResponse(
-            engineID: "<your-engine-id>",
+            engineID: engineId,
             completion: { engineResponse in
                 switch engineResponse {
                 case .success(let engineResponse):
