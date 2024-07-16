@@ -40,6 +40,7 @@ jobs:
             - TealiumTagManagementIntegrationTests-iOS
             - TealiumTagManagementTests-iOS
             - TealiumVisitorServiceTests-iOS
+            - TealiumMomentsAPITests-iOS
     steps:
       - name: Setup Xcode version
         uses: maxim-lobanov/setup-xcode@v1.4.1
@@ -94,6 +95,7 @@ jobs:
           - TealiumLifecycleTests-macOS
           - TealiumMediaTests-macOS
           - TealiumVisitorServiceTests-macOS
+          - TealiumMomentsAPITests-macOS
     steps:
       - name: Setup Xcode version
         uses: maxim-lobanov/setup-xcode@v1.4.1
@@ -147,6 +149,7 @@ jobs:
           - TealiumLifecycleTests-tvOS
           - TealiumMediaTests-tvOS
           - TealiumVisitorServiceTests-tvOS
+          - TealiumMomentsAPITests-tvOS
     steps:
       - name: Setup Xcode version
         uses: maxim-lobanov/setup-xcode@v1.4.1

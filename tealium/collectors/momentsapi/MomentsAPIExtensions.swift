@@ -91,7 +91,6 @@ public extension Tealium {
                 guard let module = self.module else {
                     return
                 }
-            
                 module.momentsAPI?.fetchEngineResponse(engineID: engineID, completion: completion)
             }
         }

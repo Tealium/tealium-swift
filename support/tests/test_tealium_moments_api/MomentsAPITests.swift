@@ -17,10 +17,11 @@ class MomentsAPITests: XCTestCase {
     static let profile = "testProfile"
     static let environment = "dev"
     static let standardReferer = "https://tags.tiqcdn.com/utag/\(account)/\(profile)/\(environment)/mobile.html"
+    let mockURLSession = MockURLSession()
     
     func testFetchEngineResponseSuccess() {
-        let session = MockURLSession()
-        let api = TealiumMomentsAPI(region: .us_east, account: MomentsAPITests.account, profile: MomentsAPITests.profile, environment: MomentsAPITests.environment, session: session)
+        let api = TealiumMomentsAPI(region: .us_east, account: MomentsAPITests.account, profile: MomentsAPITests.profile, environment: MomentsAPITests.environment, session: mockURLSession)
+        
         let jsonData = """
         {"audiences":["VIP", "Women's Apparel", "Lifetime visit count"],
          "badges":["13", "26", "52"],
@@ -29,9 +30,8 @@ class MomentsAPITests: XCTestCase {
          "flags":{"27":true,"5152":true,"5242":false},
          "dates":{"23":1718202502203,"24":1718357687966,"5244":1718360309656,"5690":0}}
         """.data(using: .utf8)!
-        session.data = jsonData
-        session.response = HTTPURLResponse(url: URL(string: "https://example.com")!, statusCode: 200, httpVersion: nil, headerFields: nil)
-        session.error = nil
+        
+        mockURLSession.result = .success(withData: jsonData, statusCode: 200)
         
         let expectation = XCTestExpectation(description: "Fetch engine response succeeds")
         
@@ -58,12 +58,9 @@ class MomentsAPITests: XCTestCase {
     }
     
     func testFetchEngineResponseForbidden() {
-        let session = MockURLSession()
-        let api = TealiumMomentsAPI(region: .us_east, account: MomentsAPITests.account, profile: MomentsAPITests.profile, environment: MomentsAPITests.environment, session: session)
-        let jsonData = "".data(using: .utf8)!
-        session.data = jsonData
-        session.response = HTTPURLResponse(url: URL(string: "https://example.com")!, statusCode: 403, httpVersion: nil, headerFields: nil)
-        session.error = nil
+        let api = TealiumMomentsAPI(region: .us_east, account: MomentsAPITests.account, profile: MomentsAPITests.profile, environment: MomentsAPITests.environment, session: mockURLSession)
+        
+        mockURLSession.result = .success(withData: nil, statusCode: 403)
         
         let expectation = XCTestExpectation(description: "Fetch engine response fails")
         
@@ -82,12 +79,9 @@ class MomentsAPITests: XCTestCase {
     }
     
     func testFetchEngineResponseBadRequest() {
-        let session = MockURLSession()
-        let api = TealiumMomentsAPI(region: .us_east, account: MomentsAPITests.account, profile: MomentsAPITests.profile, environment: MomentsAPITests.environment, session: session)
-        let jsonData = "".data(using: .utf8)!
-        session.data = jsonData
-        session.response = HTTPURLResponse(url: URL(string: "https://example.com")!, statusCode: 400, httpVersion: nil, headerFields: nil)
-        session.error = nil
+        let api = TealiumMomentsAPI(region: .us_east, account: MomentsAPITests.account, profile: MomentsAPITests.profile, environment: MomentsAPITests.environment, session: mockURLSession)
+        
+        mockURLSession.result = .success(withData: nil, statusCode: 400)
         
         let expectation = XCTestExpectation(description: "Fetch engine response fails")
         
@@ -106,12 +100,15 @@ class MomentsAPITests: XCTestCase {
     }
     
     func testFetchEngineResponseCustomReferer() {
-        let session = MockURLSessionCustomReferer()
-        let api = TealiumMomentsAPI(region: .us_east, account: MomentsAPITests.account, profile: MomentsAPITests.profile, environment: MomentsAPITests.environment, referer: "https://tealium.com/", session: session)
-        let jsonData = "".data(using: .utf8)!
-        session.data = jsonData
-        session.response = HTTPURLResponse(url: URL(string: "https://example.com")!, statusCode: 400, httpVersion: nil, headerFields: nil)
-        session.error = nil
+        let api = TealiumMomentsAPI(region: .us_east, account: MomentsAPITests.account, profile: MomentsAPITests.profile, environment: MomentsAPITests.environment, referer: MomentsAPITests.customReferer, session: mockURLSession)
+        
+        mockURLSession.result = .success(withData: nil, statusCode: 200)
+        
+        let requestSent = expectation(description: "Request sent")
+        mockURLSession.onRequestSent.subscribeOnce { request in
+            XCTAssertEqual(request.value(forHTTPHeaderField: "Referer"), MomentsAPITests.customReferer)
+            requestSent.fulfill()
+        }
         
         let expectation = XCTestExpectation(description: "Custom referer is correctly set")
         
@@ -120,16 +117,13 @@ class MomentsAPITests: XCTestCase {
             expectation.fulfill()
         }
         
-        wait(for: [expectation], timeout: 1.0)
+        wait(for: [expectation, requestSent], timeout: 1.0)
     }
     
     func testFetchEngineResponseNotFound() {
-        let session = MockURLSession()
-        let api = TealiumMomentsAPI(region: .us_east, account: MomentsAPITests.account, profile: MomentsAPITests.profile, environment: MomentsAPITests.environment, session: session)
-        let jsonData = "".data(using: .utf8)!
-        session.data = jsonData
-        session.response = HTTPURLResponse(url: URL(string: "https://example.com")!, statusCode: 404, httpVersion: nil, headerFields: nil)
-        session.error = nil
+        let api = TealiumMomentsAPI(region: .us_east, account: MomentsAPITests.account, profile: MomentsAPITests.profile, environment: MomentsAPITests.environment, session: mockURLSession)
+        
+        mockURLSession.result = .success(withData: nil, statusCode: 404)
         
         let expectation = XCTestExpectation(description: "Fetch engine response fails")
         
@@ -148,8 +142,8 @@ class MomentsAPITests: XCTestCase {
     }
     
     func testFetchEngineResponseFailureMissingVisitorID() {
-        let session = MockURLSession()
-        let api = TealiumMomentsAPI(region: .us_east, account: MomentsAPITests.account, profile: MomentsAPITests.profile, environment: MomentsAPITests.environment, session: session)
+        let api = TealiumMomentsAPI(region: .us_east, account: MomentsAPITests.account, profile: MomentsAPITests.profile, environment: MomentsAPITests.environment, session: mockURLSession)
+        
         let expectation = XCTestExpectation(description: "Fetch engine response fails due to missing visitor ID")
         
         api.fetchEngineResponse(engineID: "engine123") { result in
@@ -164,15 +158,15 @@ class MomentsAPITests: XCTestCase {
     }
     
     func testFetchEngineResponseNetworkError() {
-        let session = MockURLSession()
-        let api = TealiumMomentsAPI(region: .us_east, account: MomentsAPITests.account, profile: MomentsAPITests.profile, environment: MomentsAPITests.environment, session: session)
-        session.error = URLError(URLError.Code.notConnectedToInternet)
+        let api = TealiumMomentsAPI(region: .us_east, account: MomentsAPITests.account, profile: MomentsAPITests.profile, environment: MomentsAPITests.environment, session: mockURLSession)
+        
+        mockURLSession.result = .failure(URLError(URLError.Code.notConnectedToInternet))
         
         let expectation = XCTestExpectation(description: "Fetch engine response fails due to network error")
         
         api.visitorId = "12345"
         api.fetchEngineResponse(engineID: "engine123") { result in
-            if case .failure(let error as URLError) = result, error.errorCode == -1009 {
+            if case .failure(let error as URLError) = result, error.code == .notConnectedToInternet {
                 expectation.fulfill()
             } else {
                 XCTFail("Expected network error, got other error")
@@ -182,3 +176,4 @@ class MomentsAPITests: XCTestCase {
         wait(for: [expectation], timeout: 1.0)
     }
 }
+
