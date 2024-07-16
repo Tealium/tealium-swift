@@ -87,14 +87,11 @@ public extension Tealium {
         ///    - completion: `Result<EngineResponse, Error>` Optional completion block to be called when a response has been received from the Moments API
         ///         - result: `Result<EngineResponse, Error>` Result type to receive a valid Moments API Engine Response or an error
         public func fetchEngineResponse(engineID: String, completion: @escaping (Result<EngineResponse, Error>) -> Void) {
-            guard let module = module else {
-                return
-            }
-            guard tealium != nil else {
-                completion(.failure(MomentsError.tealiumNotInitialized))
-                return
-            }
             TealiumQueues.backgroundSerialQueue.async(qos: .userInitiated) {
+                guard let module = self.module else {
+                    return
+                }
+            
                 module.momentsAPI?.fetchEngineResponse(engineID: engineID, completion: completion)
             }
         }

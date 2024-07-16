@@ -14,7 +14,7 @@ public class TealiumMomentsAPIModule: Collector {
     public let id: String = ModuleNames.momentsapi
     public var config: TealiumConfig
     public var data: [String: Any]?
-    var momentsAPI: MomentsAPI?
+    let momentsAPI: MomentsAPI?
     private var bag = TealiumDisposeBag()
 
     /// Initializes the module
@@ -29,6 +29,7 @@ public class TealiumMomentsAPIModule: Collector {
                          completion: ModuleCompletion) {
         self.config = context.config
         guard let momentsAPIRegion = config.momentsAPIRegion else {
+            self.momentsAPI = nil
             completion((.failure(MomentsError.missingRegion), nil))
             return
         }
