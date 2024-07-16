@@ -10,7 +10,7 @@ import Foundation
 import TealiumCore
 #endif
 
-protocol MomentsAPI {
+protocol MomentsAPI: AnyObject {
     func fetchEngineResponse(engineID: String, completion: @escaping (Result<EngineResponse, Error>) -> Void)
     var visitorId: String? { get set }
 }
