@@ -90,23 +90,23 @@ struct MomentsView: View {
             isLoading = false
             switch engineResponse {
             case .success(let engineResponse):
-                stringsContent = engineResponse.strings
+                stringsContent = (engineResponse.strings ?? [:])
                     .sorted(by: { $0.key < $1.key })
                     .compactMap {
                         "\($0.key) : \($0.value)"
                     }
                     .joined(separator: "\n")
-                audiencesContent = engineResponse.audiences
+                audiencesContent = (engineResponse.audiences ?? [])
                     .joined(separator: "\n")
-                badgesContent = engineResponse.badges
+                badgesContent = (engineResponse.badges ?? [])
                     .joined(separator: "\n")
-                datesContent = engineResponse.dates
+                datesContent = (engineResponse.dates ?? [String: Int64]())
                     .sorted(by: { $0.key < $1.key })
                     .compactMap {
                         "\($0.key) : \($0.value)"
                     }
                     .joined(separator: "\n")
-                numbersContent = engineResponse.numbers
+                numbersContent = (engineResponse.numbers ?? [String: Double]())
                     .sorted(by: { $0.key < $1.key })
                     .compactMap {
                         "\($0.key) : \(String(format: "%.2f", $0.value))"

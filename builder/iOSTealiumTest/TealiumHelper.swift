@@ -195,14 +195,14 @@ class TealiumHelper: ObservableObject {
                 switch engineResponse {
                 case .success(let engineResponse):
                     print(
-                        "Moments fetched successfully - String attributes:", engineResponse.strings)
+                        "Moments fetched successfully - String attributes:", engineResponse.strings ?? [])
                     print(
                         "Moments fetched successfully - Boolean attributes:",
-                        engineResponse.booleans)
-                    print("Moments fetched successfully - Audiences:", engineResponse.audiences)
-                    print("Moments fetched successfully - Date attributes:", engineResponse.dates)
-                    print("Moments fetched successfully - Badges:", engineResponse.badges)
-                    print("Moments fetched successfully - Numbers:", engineResponse.numbers)
+                        engineResponse.booleans ?? [])
+                    print("Moments fetched successfully - Audiences:", engineResponse.audiences ?? [])
+                    print("Moments fetched successfully - Date attributes:", engineResponse.dates ?? [String: Int64]())
+                    print("Moments fetched successfully - Badges:", engineResponse.badges ?? [])
+                    print("Moments fetched successfully - Numbers:", engineResponse.numbers ?? [String: Double]())
                 case .failure(let error):
                     print("Error fetching moments:", error.localizedDescription)
                     if let suggestion = (error as? LocalizedError)?.recoverySuggestion {

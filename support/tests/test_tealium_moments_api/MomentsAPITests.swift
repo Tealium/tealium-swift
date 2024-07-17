@@ -39,14 +39,14 @@ class MomentsAPITests: XCTestCase {
         api.fetchEngineResponse(engineID: "engine123") { result in
             switch result {
             case .success(let response):
-                XCTAssertEqual(response.audiences.count, 3)
-                XCTAssertEqual(response.dates.count, 4)
-                XCTAssertEqual(response.badges.count, 3)
-                XCTAssertEqual(response.strings.count, 6)
-                XCTAssertEqual(response.booleans.count, 3)
-                XCTAssertEqual(response.numbers.count, 4)
-                XCTAssertEqual(response.numbers["25"]!, 2.7933666666666666)
-                XCTAssertEqual(response.booleans["5242"]!, false)
+                XCTAssertEqual(response.audiences!.count, 3)
+                XCTAssertEqual(response.dates!.count, 4)
+                XCTAssertEqual(response.badges!.count, 3)
+                XCTAssertEqual(response.strings!.count, 6)
+                XCTAssertEqual(response.booleans!.count, 3)
+                XCTAssertEqual(response.numbers!.count, 4)
+                XCTAssertEqual(response.numbers!["25"]!, 2.7933666666666666)
+                XCTAssertEqual(response.booleans!["5242"]!, false)
                 
                 expectation.fulfill()
             case .failure:
@@ -63,8 +63,8 @@ class MomentsAPITests: XCTestCase {
         let jsonData = """
         {"audiences":["VIP", "Women's Apparel", "Lifetime visit count"],
          "badges":["13", "26", "52"],
-         "metrics":{"15":null},
-         "flags":{"27":true,"5152":true,"5242":false}}
+         "flags":{"27":true,"5152":true,"5242":false},
+         "properties": {"1234":null}}
         """.data(using: .utf8)!
         
         mockURLSession.result = .success(withData: jsonData, statusCode: 200)
@@ -75,13 +75,13 @@ class MomentsAPITests: XCTestCase {
         api.fetchEngineResponse(engineID: "engine123") { result in
             switch result {
             case .success(let response):
-                XCTAssertEqual(response.audiences.count, 3)
-                XCTAssertEqual(response.dates.count, 0)
-                XCTAssertEqual(response.badges.count, 3)
-                XCTAssertEqual(response.strings.count, 0)
-                XCTAssertEqual(response.booleans.count, 3)
-                XCTAssertEqual(response.numbers.count, 0)
-                XCTAssertEqual(response.booleans["5242"]!, false)
+                XCTAssertEqual(response.audiences!.count, 3)
+                XCTAssertNil(response.dates)
+                XCTAssertEqual(response.badges!.count, 3)
+                XCTAssertNil(response.strings)
+                XCTAssertEqual(response.booleans!.count, 3)
+                XCTAssertNil(response.numbers)
+                XCTAssertEqual(response.booleans!["5242"]!, false)
                 
                 expectation.fulfill()
             case .failure:
