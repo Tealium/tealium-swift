@@ -89,6 +89,7 @@ public extension Tealium {
         public func fetchEngineResponse(engineID: String, completion: @escaping (Result<EngineResponse, Error>) -> Void) {
             TealiumQueues.backgroundSerialQueue.async(qos: .userInitiated) {
                 guard let module = self.module else {
+                    completion(.failure(MomentsError.moduleNotFound))
                     return
                 }
                 module.momentsAPI?.fetchEngineResponse(engineID: engineID, completion: completion)

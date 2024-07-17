@@ -57,6 +57,42 @@ class MomentsAPITests: XCTestCase {
         wait(for: [expectation], timeout: 1.0)
     }
     
+    func testFetchEngineResponsePartialData() {
+        let api = TealiumMomentsAPI(region: .us_east, account: MomentsAPITests.account, profile: MomentsAPITests.profile, environment: MomentsAPITests.environment, session: mockURLSession)
+        
+        let jsonData = """
+        {"audiences":["VIP", "Women's Apparel", "Lifetime visit count"],
+         "badges":["13", "26", "52"],
+         "metrics":{"15":null},
+         "flags":{"27":true,"5152":true,"5242":false}}
+        """.data(using: .utf8)!
+        
+        mockURLSession.result = .success(withData: jsonData, statusCode: 200)
+        
+        let expectation = XCTestExpectation(description: "Fetch engine response succeeds")
+        
+        api.visitorId = "12345"
+        api.fetchEngineResponse(engineID: "engine123") { result in
+            switch result {
+            case .success(let response):
+                XCTAssertEqual(response.audiences.count, 3)
+                XCTAssertEqual(response.dates.count, 0)
+                XCTAssertEqual(response.badges.count, 3)
+                XCTAssertEqual(response.strings.count, 0)
+                XCTAssertEqual(response.booleans.count, 3)
+                XCTAssertEqual(response.numbers.count, 0)
+                XCTAssertEqual(response.booleans["5242"]!, false)
+                
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Expected successful engine response, got failure")
+            }
+        }
+        
+        wait(for: [expectation], timeout: 1.0)
+    }
+    
+    
     func testFetchEngineResponseForbidden() {
         let api = TealiumMomentsAPI(region: .us_east, account: MomentsAPITests.account, profile: MomentsAPITests.profile, environment: MomentsAPITests.environment, session: mockURLSession)
         
@@ -104,13 +140,13 @@ class MomentsAPITests: XCTestCase {
         
         mockURLSession.result = .success(withData: nil, statusCode: 200)
         
-        let requestSent = expectation(description: "Request sent")
+        let requestSent = expectation(description: "Request sent and custom referer is correctly set")
         mockURLSession.onRequestSent.subscribeOnce { request in
             XCTAssertEqual(request.value(forHTTPHeaderField: "Referer"), MomentsAPITests.customReferer)
             requestSent.fulfill()
         }
         
-        let expectation = XCTestExpectation(description: "Custom referer is correctly set")
+        let expectation = XCTestExpectation(description: "Fetch engine response completes")
         
         api.visitorId = "12345"
         api.fetchEngineResponse(engineID: "engine123") { result in
