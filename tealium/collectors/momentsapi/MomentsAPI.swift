@@ -20,19 +20,19 @@ class TealiumMomentsAPI: MomentsAPI {
     private let region: MomentsAPIRegion
     private let account: String
     private let profile: String
-    private let referer: String
+    private let referrer: String
     var visitorId: String?
 
     init(region: MomentsAPIRegion,
          account: String,
          profile: String,
          environment: String,
-         referer: String? = nil,
+         referrer: String? = nil,
          session: URLSessionProtocol = URLSession(configuration: .ephemeral)) {
         self.region = region
         self.account = account
         self.profile = profile
-        self.referer = referer ?? "https://tags.tiqcdn.com/utag/\(account)/\(profile)/\(environment)/mobile.html"
+        self.referrer = referrer ?? "https://tags.tiqcdn.com/utag/\(account)/\(profile)/\(environment)/mobile.html"
         self.session = session
     }
 
@@ -55,7 +55,7 @@ private extension TealiumMomentsAPI {
 
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.setValue(referer, forHTTPHeaderField: "Referer")
+        request.setValue(referrer, forHTTPHeaderField: "Referer")
 
         session.tealiumDataTask(with: request) { data, response, error in
             self.handleResponse(data: data, response: response, error: error, completion: completion)

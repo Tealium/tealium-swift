@@ -12,11 +12,11 @@ import XCTest
 
 class MomentsAPITests: XCTestCase {
     
-    static let customReferer = "https://tealium.com/"
+    static let customReferrer = "https://tealium.com/"
     static let account = "testAccount"
     static let profile = "testProfile"
     static let environment = "dev"
-    static let standardReferer = "https://tags.tiqcdn.com/utag/\(account)/\(profile)/\(environment)/mobile.html"
+    static let standardReferrer = "https://tags.tiqcdn.com/utag/\(account)/\(profile)/\(environment)/mobile.html"
     let mockURLSession = MockURLSession()
     
     func testFetchEngineResponseSuccess() {
@@ -135,14 +135,14 @@ class MomentsAPITests: XCTestCase {
         wait(for: [expectation], timeout: 1.0)
     }
     
-    func testFetchEngineResponseCustomReferer() {
-        let api = TealiumMomentsAPI(region: .us_east, account: MomentsAPITests.account, profile: MomentsAPITests.profile, environment: MomentsAPITests.environment, referer: MomentsAPITests.customReferer, session: mockURLSession)
+    func testFetchEngineResponseCustomReferrer() {
+        let api = TealiumMomentsAPI(region: .us_east, account: MomentsAPITests.account, profile: MomentsAPITests.profile, environment: MomentsAPITests.environment, referrer: MomentsAPITests.customReferrer, session: mockURLSession)
         
         mockURLSession.result = .success(withData: nil, statusCode: 200)
         
-        let requestSent = expectation(description: "Request sent and custom referer is correctly set")
+        let requestSent = expectation(description: "Request sent and custom referrer is correctly set")
         mockURLSession.onRequestSent.subscribeOnce { request in
-            XCTAssertEqual(request.value(forHTTPHeaderField: "Referer"), MomentsAPITests.customReferer)
+            XCTAssertEqual(request.value(forHTTPHeaderField: "Referer"), MomentsAPITests.customReferrer)
             requestSent.fulfill()
         }
         

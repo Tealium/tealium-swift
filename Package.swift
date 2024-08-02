@@ -38,7 +38,10 @@ let package = Package(
             targets: ["TealiumTagManagement"]),
         .library(
             name: "TealiumVisitorService",
-            targets: ["TealiumVisitorService"])
+            targets: ["TealiumVisitorService"]),
+        .library(
+            name: "TealiumMomentsAPI",
+            targets: ["TealiumMomentsAPI"])
                 
     ],
     dependencies: [
@@ -123,6 +126,12 @@ let package = Package(
             dependencies: ["TealiumCore"],
             path: "tealium/collectors/visitorservice/",
             swiftSettings: [.define("visitorservice")]
+        ),
+        .target(
+            name: "TealiumMomentsAPI",
+            dependencies: ["TealiumCore"],
+            path: "tealium/collectors/momentsapi/",
+            swiftSettings: [.define("momentsapi")]
         ),
     ]
 )

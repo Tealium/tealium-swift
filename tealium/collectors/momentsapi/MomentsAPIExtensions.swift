@@ -12,7 +12,7 @@ import TealiumCore
 
 extension TealiumConfigKey {
     static let momentsAPIRegion = "moments_api_region"
-    static let momentsAPIReferer = "moments_api_referer"
+    static let momentsAPIReferrer = "moments_api_referrer"
 }
 
 public enum MomentsAPIRegion {
@@ -60,13 +60,13 @@ public extension TealiumConfig {
     }
 
     /// Sets the region for calls to the Moments API endpoint
-    var momentsAPIReferer: String? {
+    var momentsAPIReferrer: String? {
         get {
-            options[TealiumConfigKey.momentsAPIReferer] as? String
+            options[TealiumConfigKey.momentsAPIReferrer] as? String
         }
 
         set {
-            options[TealiumConfigKey.momentsAPIReferer] = newValue
+            options[TealiumConfigKey.momentsAPIReferrer] = newValue
         }
     }
 }

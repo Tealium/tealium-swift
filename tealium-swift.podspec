@@ -150,6 +150,11 @@ Pod::Spec.new do |s|
     media.dependency "tealium-swift/Core"
   end
 
+  s.subspec "MomentsAPI" do |momentsapi|
+    momentsapi.source_files = "tealium/collectors/momentsapi/*"
+    momentsapi.dependency "tealium-swift/Core"
+  end
+
   s.subspec "RemoteCommands" do |remotecommands|
     remotecommands.source_files = "tealium/dispatchers/remotecommands/*"
     remotecommands.dependency "tealium-swift/Core"
