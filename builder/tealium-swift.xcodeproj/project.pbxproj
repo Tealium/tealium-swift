@@ -963,13 +963,6 @@
 			remoteGlobalIDString = D755DC9821945E41003C6BA1;
 			remoteInfo = TealiumCore;
 		};
-		08CA24192BE50810002AC47A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = CF8805732554B74B0020E1B2;
-			remoteInfo = iOSTealiumTest;
-		};
 		08DAC3CE2C2093B800089032 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
@@ -4540,7 +4533,6 @@
 			dependencies = (
 				08191EFC2BD2C547003EEE36 /* PBXTargetDependency */,
 				08191EDF2BD2C4F4003EEE36 /* PBXTargetDependency */,
-				08CA241A2BE50810002AC47A /* PBXTargetDependency */,
 			);
 			name = "TealiumMomentsAPITests-iOS";
 			packageProductDependencies = (
@@ -7567,11 +7559,6 @@
 			);
 			target = D755DC9821945E41003C6BA1 /* TealiumCore */;
 			targetProxy = 08CA23F52BE50022002AC47A /* PBXContainerItemProxy */;
-		};
-		08CA241A2BE50810002AC47A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = CF8805732554B74B0020E1B2 /* iOSTealiumTest */;
-			targetProxy = 08CA24192BE50810002AC47A /* PBXContainerItemProxy */;
 		};
 		08DAC3CF2C2093B800089032 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

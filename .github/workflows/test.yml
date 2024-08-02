@@ -24,7 +24,6 @@ jobs:
       working-directory: ./builder
     strategy:
       matrix:
-        destination: ["platform=iOS Simulator"]
         scheme:
             - TealiumAppDelegateProxyTests-iOS
             - TealiumAttributionTests-iOS
@@ -48,7 +47,7 @@ jobs:
           xcode-version: latest-stable
       - uses: actions/checkout@v2
       - name: Test - "${{ matrix.scheme }}"
-        run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}".html
+        run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}" --destination "platform=iOS Simulator" --derived-data-path "./build" --skip_build true --result_bundle true --output_types junit --xcodebuild_formatter "xcbeautify -q --is-ci"
         working-directory: ${{env.working-directory}}
       - name: Archive Code Coverage Report
         uses: actions/upload-artifact@v2
