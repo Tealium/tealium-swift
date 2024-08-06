@@ -103,7 +103,7 @@ jobs:
           xcode-version: latest-stable
       - uses: actions/checkout@v2
       - name: Test - "${{ matrix.scheme }}"
-        run: rm -rf output && fastlane scan --scheme "${{ matrix.scheme }}" --derived_data_path ./output --code_coverage true --skip_build true --platform "${{ matrix.destination }}"
+        run: rm -rf output && fastlane scan --scheme "${{ matrix.scheme }}" --derived_data_path ./output --code_coverage true --skip_build true --destination "${{ matrix.destination }}"
         working-directory: ${{env.working-directory}}
       - name: Archive Code Coverage Report
         uses: actions/upload-artifact@v2
@@ -157,7 +157,7 @@ jobs:
           xcode-version: latest-stable
       - uses: actions/checkout@v2
       - name: Test - "${{ matrix.scheme }}"
-        run: rm -rf output && fastlane scan --scheme "${{ matrix.scheme }}" --derived_data_path ./output --code_coverage true --skip_build true
+        run: rm -rf output && fastlane scan --scheme "${{ matrix.scheme }}" --derived_data_path ./output --code_coverage true --skip_build true  --destination "${{ matrix.destination }}"
         working-directory: ${{env.working-directory}}
       - name: Archive Code Coverage Report
         uses: actions/upload-artifact@v2
@@ -217,7 +217,7 @@ jobs:
           xcode-version: latest-stable
       - uses: actions/checkout@v2
       - name: Test TealiumAutotracking iOS UI Tests
-        run: rm -rf output && fastlane scan --scheme "TealiumAutotrackingUITests-iOS" --derived_data_path ./output --code_coverage false --skip_build true
+        run: rm -rf output && fastlane scan --scheme "TealiumAutotrackingUITests-iOS" --derived_data_path ./output --code_coverage false --skip_build true --destination "${{ matrix.destination }}"
         working-directory: ${{ env.working-directory }}
   test_Autotracking_macOS_uiTests:
     needs: install
@@ -237,7 +237,7 @@ jobs:
           xcode-version: latest-stable
       - uses: actions/checkout@v2
       - name: Test TealiumAutotracking macOS UI Tests
-        run: rm -rf output && fastlane scan --scheme "TealiumAutotrackingUITests-macOS" --derived_data_path ./output --code_coverage false --skip_build true
+        run: rm -rf output && fastlane scan --scheme "TealiumAutotrackingUITests-macOS" --derived_data_path ./output --code_coverage false --skip_build true --destination "${{ matrix.destination }}"
         working-directory: ${{ env.working-directory }}
   test_Autotracking_tvOS_uiTests:
     needs: install
@@ -257,5 +257,5 @@ jobs:
           xcode-version: latest-stable
       - uses: actions/checkout@v2
       - name: Test TealiumAutotracking tvOS UI Tests
-        run: rm -rf output && fastlane scan --scheme "TealiumAutotrackingUITests-tvOS" --derived_data_path ./output --code_coverage false --skip_build true  --platform "${{ matrix.destination }}"
+        run: rm -rf output && fastlane scan --scheme "TealiumAutotrackingUITests-tvOS" --derived_data_path ./output --code_coverage false --skip_build true  --destination "${{ matrix.destination }}"
         working-directory: ${{ env.working-directory }}
