@@ -231,7 +231,6 @@ class DispatchManager: DispatchManagerProtocol {
                 case .success:
                     self.logModuleResponse(for: moduleId, request: request, info: data, success: true, error: nil)
                 }
-
             }
         }
     }

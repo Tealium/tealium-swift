@@ -69,6 +69,8 @@ struct ContentView: View {
     @ObservedObject var iapHelper = IAPHelper.shared
     @State private var traceId: String = ""
     @State private var showAlert = false
+    @State private var navigateToMoments = false
+    @State private var navigateToVisitorService = false
     @State private var email: String = TealiumHelper.shared.tealium?.dataLayer.all[TealiumDataKey.email] as? String ?? ""
     let name = "Main Screen"
     // Timed event start
@@ -151,6 +153,18 @@ struct ContentView: View {
                         }
                         TealiumTextButton(title: "VisitorProfileRequest") {
                             TealiumHelper.shared.tealium?.visitorService?.requestVisitorProfile()
+                        }
+                        TealiumTextButton(title: "Moments API") {
+                            navigateToMoments = true
+                        }
+                        TealiumTextButton(title: "Visitor Service") {
+                            navigateToVisitorService = true
+                        }
+                        NavigationLink(destination: MomentsView(), isActive: $navigateToMoments) {
+                              EmptyView()
+                        }
+                        NavigationLink(destination: VisitorServiceView(), isActive: $navigateToVisitorService) {
+                              EmptyView()
                         }
                     }
                     Spacer()

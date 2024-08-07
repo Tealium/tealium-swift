@@ -14,7 +14,7 @@ public enum Dispatchers {}
 
 public enum TealiumValue {
     public static let libraryName = "swift"
-    public static let libraryVersion = "2.13.0"
+    public static let libraryVersion = "2.14.0"
     // This is the current limit for performance reasons. May be increased in future
     public static let maxEventBatchSize = 10
     public static let defaultMinimumDiskSpace: Int32 = 20_000_000
@@ -45,6 +45,7 @@ public enum ModuleNames {
     public static let lifecycle = "Lifecycle"
     public static let inapppurchase = "InAppPurchase"
     public static let location = "Location"
+    public static let momentsapi = "MomentsAPI"
     public static let remotecommands = "RemoteCommands"
     public static let tagmanagement = "TagManagement"
     public static let visitorservice = "VisitorService"
