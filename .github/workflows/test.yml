@@ -24,7 +24,7 @@ jobs:
       working-directory: ./builder
     strategy:
       matrix:
-        destination: ["platform=iOS Simulator"]
+        destination: ["platform=iOS Simulator,OS=17.5,name=iPhone 15 Pro"]
         scheme:
             - TealiumAppDelegateProxyTests-iOS
             - TealiumAttributionTests-iOS
