@@ -3,10 +3,56 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 55;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		08191EC72BCEC1AB003EEE36 /* TealiumCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D755DD0D21945E41003C6BA1 /* TealiumCore.framework */; };
+		08191EC92BCEC1AB003EEE36 /* VisitorServiceModule.swift in Headers */ = {isa = PBXBuildFile; fileRef = D7805876233A691800DAD90E /* VisitorServiceModule.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		08191ECF2BCEC1C9003EEE36 /* MomentsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08191EB92BCE88B2003EEE36 /* MomentsAPI.swift */; };
+		08191ED02BCEC1C9003EEE36 /* MomentsAPIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08191EBA2BCE890C003EEE36 /* MomentsAPIExtensions.swift */; };
+		08191ED32BD00F55003EEE36 /* MomentsAPIModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08191ED22BD00F55003EEE36 /* MomentsAPIModule.swift */; };
+		08191ED42BD031E7003EEE36 /* TealiumMomentsAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08191ECD2BCEC1AB003EEE36 /* TealiumMomentsAPI.framework */; };
+		08191ED52BD031E7003EEE36 /* TealiumMomentsAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 08191ECD2BCEC1AB003EEE36 /* TealiumMomentsAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		08191EDB2BD16EF5003EEE36 /* MomentsAPIEngineResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08191EDA2BD16EF5003EEE36 /* MomentsAPIEngineResponse.swift */; };
+		08191EFE2BD2C555003EEE36 /* MomentsAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08191EDC2BD2C21F003EEE36 /* MomentsAPITests.swift */; };
+		08191F292BDFAB08003EEE36 /* MomentsAPIHTTPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08191F282BDFAB08003EEE36 /* MomentsAPIHTTPError.swift */; };
+		08191F2B2BDFEA24003EEE36 /* MomentsAPIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08191F2A2BDFEA24003EEE36 /* MomentsAPIError.swift */; };
+		08191F2E2BE10451003EEE36 /* MomentsAPIModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08191F2C2BE10451003EEE36 /* MomentsAPIModuleTests.swift */; };
+		087AA34D2C46C62B00ADC001 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
+		087AA34E2C46C62C00ADC001 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
+		087AA34F2C46C62C00ADC001 /* MockURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0E69D2BC406B80077FFEB /* MockURLSession.swift */; };
+		08CA23D52BE2437D002AC47A /* TestTealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716C7D1B1DDBC3A500512C99 /* TestTealiumHelper.swift */; };
+		08CA23D62BE245CF002AC47A /* CoreMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA558BF24E4E6B200BFBED8 /* CoreMocks.swift */; };
+		08CA23D72BE245E1002AC47A /* MockSessionStarter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7187F1A24768F5000CF0AB0 /* MockSessionStarter.swift */; };
+		08CA23D82BE24DA3002AC47A /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
+		08CA23DA2BE39905002AC47A /* MomentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CA23D92BE39905002AC47A /* MomentsView.swift */; };
+		08CA23DC2BE3ABCA002AC47A /* VisitorServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CA23DB2BE3ABCA002AC47A /* VisitorServiceView.swift */; };
+		08CA23E32BE50019002AC47A /* MomentsAPIModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08191F2C2BE10451003EEE36 /* MomentsAPIModuleTests.swift */; };
+		08CA23E42BE50019002AC47A /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
+		08CA23E52BE50019002AC47A /* CoreMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA558BF24E4E6B200BFBED8 /* CoreMocks.swift */; };
+		08CA23E72BE50019002AC47A /* MomentsAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08191EDC2BD2C21F003EEE36 /* MomentsAPITests.swift */; };
+		08CA23E82BE50019002AC47A /* MockSessionStarter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7187F1A24768F5000CF0AB0 /* MockSessionStarter.swift */; };
+		08CA23E92BE50019002AC47A /* TestTealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716C7D1B1DDBC3A500512C99 /* TestTealiumHelper.swift */; };
+		08CA23F72BE50022002AC47A /* MomentsAPIModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08191F2C2BE10451003EEE36 /* MomentsAPIModuleTests.swift */; };
+		08CA23F82BE50022002AC47A /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
+		08CA23F92BE50022002AC47A /* CoreMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA558BF24E4E6B200BFBED8 /* CoreMocks.swift */; };
+		08CA23FB2BE50022002AC47A /* MomentsAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08191EDC2BD2C21F003EEE36 /* MomentsAPITests.swift */; };
+		08CA23FC2BE50022002AC47A /* MockSessionStarter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7187F1A24768F5000CF0AB0 /* MockSessionStarter.swift */; };
+		08CA23FD2BE50022002AC47A /* TestTealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716C7D1B1DDBC3A500512C99 /* TestTealiumHelper.swift */; };
+		08DAC3CC2C2093B800089032 /* TealiumMomentsAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08191ECD2BCEC1AB003EEE36 /* TealiumMomentsAPI.framework */; };
+		08DAC3CD2C2093B800089032 /* TealiumMomentsAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 08191ECD2BCEC1AB003EEE36 /* TealiumMomentsAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		08DAC3D02C2093BF00089032 /* TealiumMomentsAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08191ECD2BCEC1AB003EEE36 /* TealiumMomentsAPI.framework */; };
+		08DAC3D12C2093BF00089032 /* TealiumMomentsAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 08191ECD2BCEC1AB003EEE36 /* TealiumMomentsAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		08DAC3D52C2093C400089032 /* TealiumMomentsAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08191ECD2BCEC1AB003EEE36 /* TealiumMomentsAPI.framework */; };
+		08DAC3D62C2093C400089032 /* TealiumMomentsAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 08191ECD2BCEC1AB003EEE36 /* TealiumMomentsAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		08DAC3DF2C20997300089032 /* TealiumMomentsAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08191ECD2BCEC1AB003EEE36 /* TealiumMomentsAPI.framework */; };
+		08DAC3E02C20997300089032 /* TealiumMomentsAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 08191ECD2BCEC1AB003EEE36 /* TealiumMomentsAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		08DAC3E32C21E49000089032 /* TealiumMomentsAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08191ECD2BCEC1AB003EEE36 /* TealiumMomentsAPI.framework */; };
+		08DAC3E42C21E49000089032 /* TealiumMomentsAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 08191ECD2BCEC1AB003EEE36 /* TealiumMomentsAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		08EFB6D82C418341006459F6 /* MockAppDataDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE69B0E20126B91000759D8 /* MockAppDataDiskStorage.swift */; };
+		08EFB6D92C418341006459F6 /* MockAppDataDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE69B0E20126B91000759D8 /* MockAppDataDiskStorage.swift */; };
+		08EFB6DA2C418342006459F6 /* MockAppDataDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE69B0E20126B91000759D8 /* MockAppDataDiskStorage.swift */; };
 		15046A0F28C8CBF000B0535E /* allEventsCommands.json in Resources */ = {isa = PBXBuildFile; fileRef = 15046A0E28C8CBF000B0535E /* allEventsCommands.json */; };
 		15062EEB270758EC00734060 /* large-event-data.json in Resources */ = {isa = PBXBuildFile; fileRef = D7187F1524768F5000CF0AB0 /* large-event-data.json */; };
 		15062EEC270758EC00734060 /* big-visitor.json in Resources */ = {isa = PBXBuildFile; fileRef = CF8FF2C524466FD90081C1A9 /* big-visitor.json */; };
@@ -861,6 +907,97 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		08191EBD2BCEC1AB003EEE36 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D755DC9821945E41003C6BA1;
+			remoteInfo = TealiumCore;
+		};
+		08191ED62BD031E7003EEE36 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 08191EBB2BCEC1AB003EEE36;
+			remoteInfo = TealiumMoments;
+		};
+		08191EE02BD2C4F4003EEE36 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D755DC9821945E41003C6BA1;
+			remoteInfo = TealiumCore;
+		};
+		08191EFB2BD2C547003EEE36 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 08191EBB2BCEC1AB003EEE36;
+			remoteInfo = TealiumMoments;
+		};
+		08CA23DF2BE50019002AC47A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 08191EBB2BCEC1AB003EEE36;
+			remoteInfo = TealiumMoments;
+		};
+		08CA23E12BE50019002AC47A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D755DC9821945E41003C6BA1;
+			remoteInfo = TealiumCore;
+		};
+		08CA23F32BE50022002AC47A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 08191EBB2BCEC1AB003EEE36;
+			remoteInfo = TealiumMoments;
+		};
+		08CA23F52BE50022002AC47A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D755DC9821945E41003C6BA1;
+			remoteInfo = TealiumCore;
+		};
+		08DAC3CE2C2093B800089032 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 08191EBB2BCEC1AB003EEE36;
+			remoteInfo = TealiumMoments;
+		};
+		08DAC3D22C2093BF00089032 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 08191EBB2BCEC1AB003EEE36;
+			remoteInfo = TealiumMoments;
+		};
+		08DAC3D72C2093C400089032 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 08191EBB2BCEC1AB003EEE36;
+			remoteInfo = TealiumMoments;
+		};
+		08DAC3E12C20997300089032 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 08191EBB2BCEC1AB003EEE36;
+			remoteInfo = TealiumMomentsAPI;
+		};
+		08DAC3E52C21E49000089032 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 08191EBB2BCEC1AB003EEE36;
+			remoteInfo = TealiumMomentsAPI;
+		};
 		150334B227907D600014CD63 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7182DD011D77492D0001A95B /* Project object */;
@@ -2033,6 +2170,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		08DAC3D42C2093BF00089032 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				08DAC3D12C2093BF00089032 /* TealiumMomentsAPI.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1510990A273D5B150022AD66 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2047,6 +2195,7 @@
 				15109903273D5B150022AD66 /* TealiumTagManagement.framework in Embed Frameworks */,
 				151098F3273D5B150022AD66 /* TealiumLifecycle.framework in Embed Frameworks */,
 				151098F7273D5B150022AD66 /* TealiumLocation.framework in Embed Frameworks */,
+				08DAC3CD2C2093B800089032 /* TealiumMomentsAPI.framework in Embed Frameworks */,
 				151098EB273D5B150022AD66 /* TealiumCollect.framework in Embed Frameworks */,
 				151098EF273D5B150022AD66 /* TealiumCore.framework in Embed Frameworks */,
 				151098FB273D5B150022AD66 /* TealiumMedia.framework in Embed Frameworks */,
@@ -2060,6 +2209,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				08DAC3D62C2093C400089032 /* TealiumMomentsAPI.framework in Embed Frameworks */,
 				1561915927904E5E00A73543 /* TealiumInAppPurchase.framework in Embed Frameworks */,
 				15D43D4126F20869004E52FE /* TealiumCore.framework in Embed Frameworks */,
 				15D43D5126F20869004E52FE /* TealiumVisitorService.framework in Embed Frameworks */,
@@ -2104,6 +2254,7 @@
 				CF8807B62554BB3B0020E1B2 /* TealiumLocation.framework in Embed Frameworks */,
 				48B28449273D67D700FE908D /* TealiumInAppPurchase.framework in Embed Frameworks */,
 				CF8807BE2554BB3B0020E1B2 /* TealiumTagManagement.framework in Embed Frameworks */,
+				08191ED52BD031E7003EEE36 /* TealiumMomentsAPI.framework in Embed Frameworks */,
 				CF8807AA2554BB3B0020E1B2 /* TealiumCollect.framework in Embed Frameworks */,
 				CF8807BA2554BB3B0020E1B2 /* TealiumRemoteCommands.framework in Embed Frameworks */,
 				CF8807AE2554BB3B0020E1B2 /* TealiumCore.framework in Embed Frameworks */,
@@ -2117,6 +2268,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				08DAC3E42C21E49000089032 /* TealiumMomentsAPI.framework in Embed Frameworks */,
 				1561915227904E1000A73543 /* TealiumInAppPurchase.framework in Embed Frameworks */,
 				CF8807CF2554BB480020E1B2 /* TealiumLifecycle.framework in Embed Frameworks */,
 				CF8807D32554BB480020E1B2 /* TealiumVisitorService.framework in Embed Frameworks */,
@@ -2133,6 +2285,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				08DAC3E02C20997300089032 /* TealiumMomentsAPI.framework in Embed Frameworks */,
 				15755DDB27904DA200F894CA /* TealiumInAppPurchase.framework in Embed Frameworks */,
 				CF8807E02554BB600020E1B2 /* TealiumLifecycle.framework in Embed Frameworks */,
 				CF8807E42554BB600020E1B2 /* TealiumVisitorService.framework in Embed Frameworks */,
@@ -2156,6 +2309,21 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		08191EB92BCE88B2003EEE36 /* MomentsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomentsAPI.swift; sourceTree = "<group>"; };
+		08191EBA2BCE890C003EEE36 /* MomentsAPIExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomentsAPIExtensions.swift; sourceTree = "<group>"; };
+		08191ECD2BCEC1AB003EEE36 /* TealiumMomentsAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TealiumMomentsAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		08191ECE2BCEC1AC003EEE36 /* TealiumMoments-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "TealiumMoments-Info.plist"; path = "/Users/craig.rouse/mobiledev/swift-library/tealium-swift/builder/TealiumMoments-Info.plist"; sourceTree = "<absolute>"; };
+		08191ED22BD00F55003EEE36 /* MomentsAPIModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomentsAPIModule.swift; sourceTree = "<group>"; };
+		08191EDA2BD16EF5003EEE36 /* MomentsAPIEngineResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomentsAPIEngineResponse.swift; sourceTree = "<group>"; };
+		08191EDC2BD2C21F003EEE36 /* MomentsAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomentsAPITests.swift; sourceTree = "<group>"; };
+		08191EF92BD2C4F4003EEE36 /* TealiumMomentsAPITests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TealiumMomentsAPITests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		08191F282BDFAB08003EEE36 /* MomentsAPIHTTPError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomentsAPIHTTPError.swift; sourceTree = "<group>"; };
+		08191F2A2BDFEA24003EEE36 /* MomentsAPIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomentsAPIError.swift; sourceTree = "<group>"; };
+		08191F2C2BE10451003EEE36 /* MomentsAPIModuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomentsAPIModuleTests.swift; sourceTree = "<group>"; };
+		08CA23D92BE39905002AC47A /* MomentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomentsView.swift; sourceTree = "<group>"; };
+		08CA23DB2BE3ABCA002AC47A /* VisitorServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorServiceView.swift; sourceTree = "<group>"; };
+		08CA23EF2BE50019002AC47A /* TealiumMomentsAPITests-tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TealiumMomentsAPITests-tvOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		08CA24032BE50022002AC47A /* TealiumMomentsAPITests-macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TealiumMomentsAPITests-macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		15046A0E28C8CBF000B0535E /* allEventsCommands.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = allEventsCommands.json; sourceTree = "<group>"; };
 		150F9FB328BFB3DB00E75B31 /* VisitorIdentityListenerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorIdentityListenerTests.swift; sourceTree = "<group>"; };
 		150F9FB728BFB86500E75B31 /* VisitorIdProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorIdProviderTests.swift; sourceTree = "<group>"; };
@@ -2615,6 +2783,35 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		08191EC62BCEC1AB003EEE36 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				08191EC72BCEC1AB003EEE36 /* TealiumCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		08191EEF2BD2C4F4003EEE36 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		08CA23EA2BE50019002AC47A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		08CA23FE2BE50022002AC47A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1516A2DB26EF7F26003DF8F2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -2655,6 +2852,7 @@
 				15109902273D5B150022AD66 /* TealiumTagManagement.framework in Frameworks */,
 				151098F2273D5B150022AD66 /* TealiumLifecycle.framework in Frameworks */,
 				151098F6273D5B150022AD66 /* TealiumLocation.framework in Frameworks */,
+				08DAC3CC2C2093B800089032 /* TealiumMomentsAPI.framework in Frameworks */,
 				151098EA273D5B150022AD66 /* TealiumCollect.framework in Frameworks */,
 				151098EE273D5B150022AD66 /* TealiumCore.framework in Frameworks */,
 				151098FA273D5B150022AD66 /* TealiumMedia.framework in Frameworks */,
@@ -2665,6 +2863,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08DAC3D52C2093C400089032 /* TealiumMomentsAPI.framework in Frameworks */,
 				1561915827904E5600A73543 /* TealiumInAppPurchase.framework in Frameworks */,
 				15D43D4026F20869004E52FE /* TealiumCore.framework in Frameworks */,
 				15D43D5026F20869004E52FE /* TealiumVisitorService.framework in Frameworks */,
@@ -2701,6 +2900,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08DAC3D02C2093BF00089032 /* TealiumMomentsAPI.framework in Frameworks */,
 				1561915527904E4100A73543 /* TealiumInAppPurchase.framework in Frameworks */,
 				15D43D3126F207FA004E52FE /* TealiumCollect.framework in Frameworks */,
 				15D43D3226F207FA004E52FE /* TealiumLifecycle.framework in Frameworks */,
@@ -2776,6 +2976,7 @@
 				CF8807B52554BB3B0020E1B2 /* TealiumLocation.framework in Frameworks */,
 				48B28448273D67D600FE908D /* TealiumInAppPurchase.framework in Frameworks */,
 				CF8807BD2554BB3B0020E1B2 /* TealiumTagManagement.framework in Frameworks */,
+				08191ED42BD031E7003EEE36 /* TealiumMomentsAPI.framework in Frameworks */,
 				CF8807A92554BB3B0020E1B2 /* TealiumCollect.framework in Frameworks */,
 				CF8807B92554BB3B0020E1B2 /* TealiumRemoteCommands.framework in Frameworks */,
 				CF8807AD2554BB3B0020E1B2 /* TealiumCore.framework in Frameworks */,
@@ -2786,6 +2987,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08DAC3E32C21E49000089032 /* TealiumMomentsAPI.framework in Frameworks */,
 				1561915127904E0800A73543 /* TealiumInAppPurchase.framework in Frameworks */,
 				CF8807CE2554BB480020E1B2 /* TealiumLifecycle.framework in Frameworks */,
 				CF8807D22554BB480020E1B2 /* TealiumVisitorService.framework in Frameworks */,
@@ -2799,6 +3001,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08DAC3DF2C20997300089032 /* TealiumMomentsAPI.framework in Frameworks */,
 				15755DDA27904D9200F894CA /* TealiumInAppPurchase.framework in Frameworks */,
 				CF8807DF2554BB600020E1B2 /* TealiumLifecycle.framework in Frameworks */,
 				CF8807E32554BB600020E1B2 /* TealiumVisitorService.framework in Frameworks */,
@@ -3037,6 +3240,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		08191EB82BCE8894003EEE36 /* momentsapi */ = {
+			isa = PBXGroup;
+			children = (
+				08191EB92BCE88B2003EEE36 /* MomentsAPI.swift */,
+				08191ED22BD00F55003EEE36 /* MomentsAPIModule.swift */,
+				08191EBA2BCE890C003EEE36 /* MomentsAPIExtensions.swift */,
+				08191EDA2BD16EF5003EEE36 /* MomentsAPIEngineResponse.swift */,
+				08191F282BDFAB08003EEE36 /* MomentsAPIHTTPError.swift */,
+				08191F2A2BDFEA24003EEE36 /* MomentsAPIError.swift */,
+			);
+			path = momentsapi;
+			sourceTree = "<group>";
+		};
+		08191ED82BD15F22003EEE36 /* test_tealium_moments_api */ = {
+			isa = PBXGroup;
+			children = (
+				08191EDC2BD2C21F003EEE36 /* MomentsAPITests.swift */,
+				08191F2C2BE10451003EEE36 /* MomentsAPIModuleTests.swift */,
+			);
+			path = test_tealium_moments_api;
+			sourceTree = "<group>";
+		};
 		1516A2E826EF7F6A003DF8F2 /* ui_tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -3300,6 +3525,7 @@
 		716C7D0B1DDBC3A500512C99 /* tests */ = {
 			isa = PBXGroup;
 			children = (
+				08191ED82BD15F22003EEE36 /* test_tealium_moments_api */,
 				48A13B01273C22800031E2B5 /* test_tealium_inapppurchase */,
 				71EBA7541DDCD63D00813470 /* test_tealium_attribution */,
 				7102BF6E1E0CF03300ED5783 /* test_tealium_autotracking */,
@@ -3390,6 +3616,7 @@
 				15B84D7626F206950094DC05 /* AutoTrackingTvOSTest */,
 				7182DD0A1D77492D0001A95B /* Products */,
 				D79876C11FACE5B100FFA96B /* Frameworks */,
+				08191ECE2BCEC1AC003EEE36 /* TealiumMoments-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -3446,6 +3673,10 @@
 				48AB110E275E42C30011D4D6 /* TealiumInAppPurchaseTests-iOS.xctest */,
 				15C6015127902A2900497901 /* TealiumMediaIntegrationTests-iOS.xctest */,
 				15274F97279191E0009F645A /* TealiumInAppPurchaseTests-tvOS.xctest */,
+				08191ECD2BCEC1AB003EEE36 /* TealiumMomentsAPI.framework */,
+				08191EF92BD2C4F4003EEE36 /* TealiumMomentsAPITests-iOS.xctest */,
+				08CA23EF2BE50019002AC47A /* TealiumMomentsAPITests-tvOS.xctest */,
+				08CA24032BE50022002AC47A /* TealiumMomentsAPITests-macOS.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3743,6 +3974,8 @@
 				CF8809272554BD490020E1B2 /* iOSTealiumTestApp.swift */,
 				CF8809282554BD490020E1B2 /* Assets.xcassets */,
 				CF88092B2554BD490020E1B2 /* ContentView.swift */,
+				08CA23D92BE39905002AC47A /* MomentsView.swift */,
+				08CA23DB2BE3ABCA002AC47A /* VisitorServiceView.swift */,
 				CF88092C2554BD490020E1B2 /* Info.plist */,
 				CF88092D2554BD490020E1B2 /* iOSTealiumTest.entitlements */,
 				CF88092E2554BD490020E1B2 /* Supporting Views */,
@@ -3886,9 +4119,10 @@
 		D70FC7AD24508146004AD838 /* collectors */ = {
 			isa = PBXGroup;
 			children = (
+				D780586F233A68E900DAD90E /* visitorservice */,
+				08191EB82BCE8894003EEE36 /* momentsapi */,
 				48405B362739B9690094EA18 /* inapppurchase */,
 				CFAD9D5B25A66C040079B19A /* media */,
-				D780586F233A68E900DAD90E /* visitorservice */,
 				CFF242BF23CE77F10091B7BF /* location */,
 				71F085BD1DDE154C008850C8 /* attribution */,
 				71D2B34C1E2FE3670049BCF3 /* autotracking */,
@@ -4120,6 +4354,14 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		08191EC82BCEC1AB003EEE36 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				08191EC92BCEC1AB003EEE36 /* VisitorServiceModule.swift in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		48B2843A273D674700FE908D /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -4259,6 +4501,88 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		08191EBB2BCEC1AB003EEE36 /* TealiumMomentsAPI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 08191ECA2BCEC1AB003EEE36 /* Build configuration list for PBXNativeTarget "TealiumMomentsAPI" */;
+			buildPhases = (
+				08191EBE2BCEC1AB003EEE36 /* SwiftLint */,
+				08191EBF2BCEC1AB003EEE36 /* Sources */,
+				08191EC62BCEC1AB003EEE36 /* Frameworks */,
+				08191EC82BCEC1AB003EEE36 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				08191EBC2BCEC1AB003EEE36 /* PBXTargetDependency */,
+			);
+			name = TealiumMomentsAPI;
+			productName = ios;
+			productReference = 08191ECD2BCEC1AB003EEE36 /* TealiumMomentsAPI.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		08191EDE2BD2C4F4003EEE36 /* TealiumMomentsAPITests-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 08191EF62BD2C4F4003EEE36 /* Build configuration list for PBXNativeTarget "TealiumMomentsAPITests-iOS" */;
+			buildPhases = (
+				08191EE32BD2C4F4003EEE36 /* Sources */,
+				08191EEF2BD2C4F4003EEE36 /* Frameworks */,
+				08191EF02BD2C4F4003EEE36 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				08191EFC2BD2C547003EEE36 /* PBXTargetDependency */,
+				08191EDF2BD2C4F4003EEE36 /* PBXTargetDependency */,
+			);
+			name = "TealiumMomentsAPITests-iOS";
+			packageProductDependencies = (
+			);
+			productName = "tealium-swift-tests";
+			productReference = 08191EF92BD2C4F4003EEE36 /* TealiumMomentsAPITests-iOS.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		08CA23DD2BE50019002AC47A /* TealiumMomentsAPITests-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 08CA23EC2BE50019002AC47A /* Build configuration list for PBXNativeTarget "TealiumMomentsAPITests-tvOS" */;
+			buildPhases = (
+				08CA23E22BE50019002AC47A /* Sources */,
+				08CA23EA2BE50019002AC47A /* Frameworks */,
+				08CA23EB2BE50019002AC47A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				08CA23DE2BE50019002AC47A /* PBXTargetDependency */,
+				08CA23E02BE50019002AC47A /* PBXTargetDependency */,
+			);
+			name = "TealiumMomentsAPITests-tvOS";
+			packageProductDependencies = (
+			);
+			productName = "tealium-swift-tests";
+			productReference = 08CA23EF2BE50019002AC47A /* TealiumMomentsAPITests-tvOS.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		08CA23F12BE50022002AC47A /* TealiumMomentsAPITests-macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 08CA24002BE50022002AC47A /* Build configuration list for PBXNativeTarget "TealiumMomentsAPITests-macOS" */;
+			buildPhases = (
+				08CA23F62BE50022002AC47A /* Sources */,
+				08CA23FE2BE50022002AC47A /* Frameworks */,
+				08CA23FF2BE50022002AC47A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				08CA23F22BE50022002AC47A /* PBXTargetDependency */,
+				08CA23F42BE50022002AC47A /* PBXTargetDependency */,
+			);
+			name = "TealiumMomentsAPITests-macOS";
+			packageProductDependencies = (
+			);
+			productName = "tealium-swift-tests";
+			productReference = 08CA24032BE50022002AC47A /* TealiumMomentsAPITests-macOS.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		1516A2DD26EF7F26003DF8F2 /* TealiumAutotrackingUITests-iOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1516A2E526EF7F26003DF8F2 /* Build configuration list for PBXNativeTarget "TealiumAutotrackingUITests-iOS" */;
@@ -4359,6 +4683,7 @@
 				15109901273D5B150022AD66 /* PBXTargetDependency */,
 				15109905273D5B150022AD66 /* PBXTargetDependency */,
 				15109909273D5B150022AD66 /* PBXTargetDependency */,
+				08DAC3CF2C2093B800089032 /* PBXTargetDependency */,
 			);
 			name = AutoTrackingIOSTest;
 			productName = AutoTrackingIOSTest;
@@ -4384,6 +4709,7 @@
 				15D43D4726F20869004E52FE /* PBXTargetDependency */,
 				15D43D4F26F20869004E52FE /* PBXTargetDependency */,
 				15D43D5326F20869004E52FE /* PBXTargetDependency */,
+				08DAC3D82C2093C400089032 /* PBXTargetDependency */,
 			);
 			name = AutoTrackingTvOSTest;
 			productName = AutoTrackingTvOSTest;
@@ -4455,6 +4781,7 @@
 				15F8E22026F0AF5900C4F6A1 /* Sources */,
 				15F8E22126F0AF5900C4F6A1 /* Frameworks */,
 				15F8E22226F0AF5900C4F6A1 /* Resources */,
+				08DAC3D42C2093BF00089032 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -4466,6 +4793,7 @@
 				15D43D2F26F207EE004E52FE /* PBXTargetDependency */,
 				15D43D1F26F207CF004E52FE /* PBXTargetDependency */,
 				15D43D1D26F207C5004E52FE /* PBXTargetDependency */,
+				08DAC3D32C2093BF00089032 /* PBXTargetDependency */,
 			);
 			name = AutoTrackingMacOSTest;
 			productName = AutoTrackingMacOSTest;
@@ -4635,6 +4963,7 @@
 				CF8807C42554BB3B0020E1B2 /* PBXTargetDependency */,
 				CFAD9D3025A66BE90079B19A /* PBXTargetDependency */,
 				48B2844B273D67D700FE908D /* PBXTargetDependency */,
+				08191ED72BD031E7003EEE36 /* PBXTargetDependency */,
 			);
 			name = iOSTealiumTest;
 			packageProductDependencies = (
@@ -4661,6 +4990,7 @@
 				CF8807D12554BB480020E1B2 /* PBXTargetDependency */,
 				CF8807D52554BB480020E1B2 /* PBXTargetDependency */,
 				1555F59926E64C7900AFDC3D /* PBXTargetDependency */,
+				08DAC3E62C21E49000089032 /* PBXTargetDependency */,
 			);
 			name = tvOSTealiumTest;
 			productName = tvOSTealiumTest;
@@ -4685,6 +5015,7 @@
 				CF8807E22554BB600020E1B2 /* PBXTargetDependency */,
 				CF8807E62554BB600020E1B2 /* PBXTargetDependency */,
 				1555F59526E64C7000AFDC3D /* PBXTargetDependency */,
+				08DAC3E22C20997300089032 /* PBXTargetDependency */,
 			);
 			name = macOSTealiumTest;
 			productName = macOSTealiumTest;
@@ -5313,8 +5644,9 @@
 		7182DD011D77492D0001A95B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1320;
-				LastUpgradeCheck = 1100;
+				LastUpgradeCheck = 1540;
 				ORGANIZATIONNAME = "Tealium, Inc";
 				TargetAttributes = {
 					1516A2DD26EF7F26003DF8F2 = {
@@ -5495,6 +5827,7 @@
 				D7881EF121998DAD002CDCC1 /* TealiumLifecycle */,
 				CFF242A023CE774C0091B7BF /* TealiumLocation */,
 				CFAD9D1B25A66BE80079B19A /* TealiumMedia */,
+				08191EBB2BCEC1AB003EEE36 /* TealiumMomentsAPI */,
 				D7B04D08219994D400C87E22 /* TealiumRemoteCommands */,
 				D755DD1121945F99003C6BA1 /* TealiumTagManagement */,
 				D7805825233A65FB00DAD90E /* TealiumVisitorService */,
@@ -5538,11 +5871,35 @@
 				15A0077B27284EF9005E1927 /* AutoTrackingIOSTest */,
 				15F8E22326F0AF5900C4F6A1 /* AutoTrackingMacOSTest */,
 				15B84D7426F206950094DC05 /* AutoTrackingTvOSTest */,
+				08191EDE2BD2C4F4003EEE36 /* TealiumMomentsAPITests-iOS */,
+				08CA23DD2BE50019002AC47A /* TealiumMomentsAPITests-tvOS */,
+				08CA23F12BE50022002AC47A /* TealiumMomentsAPITests-macOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		08191EF02BD2C4F4003EEE36 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		08CA23EB2BE50019002AC47A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		08CA23FF2BE50022002AC47A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1516A2DC26EF7F26003DF8F2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -5895,6 +6252,25 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		08191EBE2BCEC1AB003EEE36 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\nswiftlint --config \"$PROJECT_DIR\"/../.swiftlint.yml\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
 		15037B9F2982904400EB8175 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -6107,6 +6483,64 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		08191EBF2BCEC1AB003EEE36 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				08191F292BDFAB08003EEE36 /* MomentsAPIHTTPError.swift in Sources */,
+				08191ED32BD00F55003EEE36 /* MomentsAPIModule.swift in Sources */,
+				08191EDB2BD16EF5003EEE36 /* MomentsAPIEngineResponse.swift in Sources */,
+				08191F2B2BDFEA24003EEE36 /* MomentsAPIError.swift in Sources */,
+				08191ECF2BCEC1C9003EEE36 /* MomentsAPI.swift in Sources */,
+				08191ED02BCEC1C9003EEE36 /* MomentsAPIExtensions.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		08191EE32BD2C4F4003EEE36 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				087AA34D2C46C62B00ADC001 /* MockURLSession.swift in Sources */,
+				08191F2E2BE10451003EEE36 /* MomentsAPIModuleTests.swift in Sources */,
+				08CA23D82BE24DA3002AC47A /* MockDiskStorage.swift in Sources */,
+				08CA23D62BE245CF002AC47A /* CoreMocks.swift in Sources */,
+				08EFB6D82C418341006459F6 /* MockAppDataDiskStorage.swift in Sources */,
+				08191EFE2BD2C555003EEE36 /* MomentsAPITests.swift in Sources */,
+				08CA23D72BE245E1002AC47A /* MockSessionStarter.swift in Sources */,
+				08CA23D52BE2437D002AC47A /* TestTealiumHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		08CA23E22BE50019002AC47A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				087AA34E2C46C62C00ADC001 /* MockURLSession.swift in Sources */,
+				08CA23E32BE50019002AC47A /* MomentsAPIModuleTests.swift in Sources */,
+				08CA23E42BE50019002AC47A /* MockDiskStorage.swift in Sources */,
+				08CA23E52BE50019002AC47A /* CoreMocks.swift in Sources */,
+				08EFB6D92C418341006459F6 /* MockAppDataDiskStorage.swift in Sources */,
+				08CA23E72BE50019002AC47A /* MomentsAPITests.swift in Sources */,
+				08CA23E82BE50019002AC47A /* MockSessionStarter.swift in Sources */,
+				08CA23E92BE50019002AC47A /* TestTealiumHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		08CA23F62BE50022002AC47A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				087AA34F2C46C62C00ADC001 /* MockURLSession.swift in Sources */,
+				08CA23F72BE50022002AC47A /* MomentsAPIModuleTests.swift in Sources */,
+				08CA23F82BE50022002AC47A /* MockDiskStorage.swift in Sources */,
+				08CA23F92BE50022002AC47A /* CoreMocks.swift in Sources */,
+				08EFB6DA2C418342006459F6 /* MockAppDataDiskStorage.swift in Sources */,
+				08CA23FB2BE50022002AC47A /* MomentsAPITests.swift in Sources */,
+				08CA23FC2BE50022002AC47A /* MockSessionStarter.swift in Sources */,
+				08CA23FD2BE50022002AC47A /* TestTealiumHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1516A2DA26EF7F26003DF8F2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -6312,6 +6746,8 @@
 			files = (
 				CF8809312554BD510020E1B2 /* TealiumHelper.swift in Sources */,
 				CFB6B53B2679119B00D62D87 /* Colors.swift in Sources */,
+				08CA23DC2BE3ABCA002AC47A /* VisitorServiceView.swift in Sources */,
+				08CA23DA2BE39905002AC47A /* MomentsView.swift in Sources */,
 				CFB6B53A2679119B00D62D87 /* UIColor+Hex.swift in Sources */,
 				CF88094A2554BD560020E1B2 /* iOSTealiumTestApp.swift in Sources */,
 				CFB6B5372679119B00D62D87 /* ButtonViews.swift in Sources */,
@@ -7064,6 +7500,91 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		08191EBC2BCEC1AB003EEE36 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D755DC9821945E41003C6BA1 /* TealiumCore */;
+			targetProxy = 08191EBD2BCEC1AB003EEE36 /* PBXContainerItemProxy */;
+		};
+		08191ED72BD031E7003EEE36 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 08191EBB2BCEC1AB003EEE36 /* TealiumMomentsAPI */;
+			targetProxy = 08191ED62BD031E7003EEE36 /* PBXContainerItemProxy */;
+		};
+		08191EDF2BD2C4F4003EEE36 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D755DC9821945E41003C6BA1 /* TealiumCore */;
+			targetProxy = 08191EE02BD2C4F4003EEE36 /* PBXContainerItemProxy */;
+		};
+		08191EFC2BD2C547003EEE36 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 08191EBB2BCEC1AB003EEE36 /* TealiumMomentsAPI */;
+			targetProxy = 08191EFB2BD2C547003EEE36 /* PBXContainerItemProxy */;
+		};
+		08CA23DE2BE50019002AC47A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilters = (
+				ios,
+				maccatalyst,
+				tvos,
+			);
+			target = 08191EBB2BCEC1AB003EEE36 /* TealiumMomentsAPI */;
+			targetProxy = 08CA23DF2BE50019002AC47A /* PBXContainerItemProxy */;
+		};
+		08CA23E02BE50019002AC47A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilters = (
+				ios,
+				maccatalyst,
+				tvos,
+			);
+			target = D755DC9821945E41003C6BA1 /* TealiumCore */;
+			targetProxy = 08CA23E12BE50019002AC47A /* PBXContainerItemProxy */;
+		};
+		08CA23F22BE50022002AC47A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilters = (
+				ios,
+				maccatalyst,
+				macos,
+			);
+			target = 08191EBB2BCEC1AB003EEE36 /* TealiumMomentsAPI */;
+			targetProxy = 08CA23F32BE50022002AC47A /* PBXContainerItemProxy */;
+		};
+		08CA23F42BE50022002AC47A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilters = (
+				ios,
+				maccatalyst,
+				macos,
+			);
+			target = D755DC9821945E41003C6BA1 /* TealiumCore */;
+			targetProxy = 08CA23F52BE50022002AC47A /* PBXContainerItemProxy */;
+		};
+		08DAC3CF2C2093B800089032 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 08191EBB2BCEC1AB003EEE36 /* TealiumMomentsAPI */;
+			targetProxy = 08DAC3CE2C2093B800089032 /* PBXContainerItemProxy */;
+		};
+		08DAC3D32C2093BF00089032 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 08191EBB2BCEC1AB003EEE36 /* TealiumMomentsAPI */;
+			targetProxy = 08DAC3D22C2093BF00089032 /* PBXContainerItemProxy */;
+		};
+		08DAC3D82C2093C400089032 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 08191EBB2BCEC1AB003EEE36 /* TealiumMomentsAPI */;
+			targetProxy = 08DAC3D72C2093C400089032 /* PBXContainerItemProxy */;
+		};
+		08DAC3E22C20997300089032 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 08191EBB2BCEC1AB003EEE36 /* TealiumMomentsAPI */;
+			targetProxy = 08DAC3E12C20997300089032 /* PBXContainerItemProxy */;
+		};
+		08DAC3E62C21E49000089032 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 08191EBB2BCEC1AB003EEE36 /* TealiumMomentsAPI */;
+			targetProxy = 08DAC3E52C21E49000089032 /* PBXContainerItemProxy */;
+		};
 		150334B327907D600014CD63 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = CF8806D92554B8620020E1B2 /* macOSTealiumTest */;
@@ -7772,11 +8293,19 @@
 		};
 		D788A4F2231988B000BC6D60 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilters = (
+				ios,
+				maccatalyst,
+			);
 			target = D755DC9821945E41003C6BA1 /* TealiumCore */;
 			targetProxy = D788A4F3231988B000BC6D60 /* PBXContainerItemProxy */;
 		};
 		D788A507231988F000BC6D60 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilters = (
+				ios,
+				maccatalyst,
+			);
 			target = D7881EF121998DAD002CDCC1 /* TealiumLifecycle */;
 			targetProxy = D788A506231988F000BC6D60 /* PBXContainerItemProxy */;
 		};
@@ -7914,6 +8443,356 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		08191ECB2BCEC1AB003EEE36 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				BUILD_SCRIPT = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				EXCLUDED_ARCHS = "";
+				FRAMEWORK_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "TealiumMoments-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = tealium.ios.moments;
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = NO;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator appletvsimulator watchos appletvos macosx";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "momentsapi DEBUG";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,3,4,6";
+				TVOS_DEPLOYMENT_TARGET = 12.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+			};
+			name = Debug;
+		};
+		08191ECC2BCEC1AB003EEE36 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				BUILD_SCRIPT = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				EXCLUDED_ARCHS = "";
+				FRAMEWORK_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "TealiumMoments-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
+				OTHER_LDFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = tealium.ios.moments;
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = NO;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchsimulator appletvsimulator watchos appletvos macosx";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = momentsapi;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,3,4,6";
+				TVOS_DEPLOYMENT_TARGET = 12.0;
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+			};
+			name = Release;
+		};
+		08191EF72BD2C4F4003EEE36 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = XC939GDC9P;
+				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					"TEST=1",
+				);
+				INFOPLIST_FILE = "TealiumTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@loader_path/Frameworks",
+					"@loader_path/../Frameworks",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				OTHER_LDFLAGS = "";
+				OTHER_SWIFT_FLAGS = "-DTEST";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		08191EF82BD2C4F4003EEE36 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = XC939GDC9P;
+				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				INFOPLIST_FILE = "TealiumTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@loader_path/Frameworks",
+					"@loader_path/../Frameworks",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				OTHER_LDFLAGS = "";
+				OTHER_SWIFT_FLAGS = "-DTEST";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		08CA23ED2BE50019002AC47A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = XC939GDC9P;
+				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					"TEST=1",
+				);
+				INFOPLIST_FILE = "TealiumTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@loader_path/Frameworks",
+					"@loader_path/../Frameworks",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				OTHER_LDFLAGS = "";
+				OTHER_SWIFT_FLAGS = "-DTEST";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "appletvos appletvsimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Debug;
+		};
+		08CA23EE2BE50019002AC47A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = XC939GDC9P;
+				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				INFOPLIST_FILE = "TealiumTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@loader_path/Frameworks",
+					"@loader_path/../Frameworks",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				OTHER_LDFLAGS = "";
+				OTHER_SWIFT_FLAGS = "-DTEST";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "appletvos appletvsimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Release;
+		};
+		08CA24012BE50022002AC47A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = XC939GDC9P;
+				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					"TEST=1",
+				);
+				INFOPLIST_FILE = "TealiumTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@loader_path/Frameworks",
+					"@loader_path/../Frameworks",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				OTHER_LDFLAGS = "";
+				OTHER_SWIFT_FLAGS = "-DTEST";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		08CA24022BE50022002AC47A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = XC939GDC9P;
+				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				INFOPLIST_FILE = "TealiumTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@loader_path/Frameworks",
+					"@loader_path/../Frameworks",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				OTHER_LDFLAGS = "";
+				OTHER_SWIFT_FLAGS = "-DTEST";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		1516A2E626EF7F26003DF8F2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -7932,6 +8811,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -7962,6 +8842,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7988,6 +8869,7 @@
 				DEVELOPMENT_TEAM = XC939GDC9P;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -8018,6 +8900,7 @@
 				DEVELOPMENT_TEAM = XC939GDC9P;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tealium.TealiumInAppPurchaseTests-tvOS";
@@ -8056,7 +8939,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -8090,7 +8973,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -8127,6 +9010,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -8161,6 +9045,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -8206,6 +9091,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -8251,6 +9137,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.AutoTrackingIOSTest;
@@ -8285,6 +9172,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.AutoTrackingTvOSTest;
@@ -8319,6 +9207,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.AutoTrackingTvOSTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -8350,6 +9239,7 @@
 				);
 				INFOPLIST_FILE = "TealiumTests-info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -8378,6 +9268,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "TealiumTests-info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -8407,6 +9298,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -8437,6 +9329,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -8466,6 +9359,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -8495,6 +9389,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -8520,6 +9415,7 @@
 				CODE_SIGN_ENTITLEMENTS = AutoTrackingMacOSTest/AutoTrackingMacOSTest.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"AutoTrackingMacOSTest/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -8553,6 +9449,7 @@
 				CODE_SIGN_ENTITLEMENTS = AutoTrackingMacOSTest/AutoTrackingMacOSTest.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"AutoTrackingMacOSTest/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -8581,6 +9478,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "TealiumTests-info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -8611,6 +9509,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "TealiumTests-info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -8654,6 +9553,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -8690,6 +9590,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -8713,8 +9614,7 @@
 				BUILD_SCRIPT = NO;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -8723,6 +9623,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
@@ -8735,7 +9636,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = tealium.ios.inapppurchase;
 				PRODUCT_MODULE_NAME = TealiumInAppPurchase;
@@ -8766,8 +9668,7 @@
 				BUILD_SCRIPT = NO;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -8775,6 +9676,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
@@ -8787,7 +9689,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = tealium.ios.inapppurchase;
 				PRODUCT_MODULE_NAME = TealiumInAppPurchase;
@@ -8833,6 +9736,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -8840,6 +9744,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -8859,7 +9764,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -8896,6 +9801,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -8903,6 +9809,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -8916,7 +9823,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -8952,6 +9859,7 @@
 					"@loader_path/../Frameworks",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -8983,6 +9891,7 @@
 					"@loader_path/../Frameworks",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9023,6 +9932,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -9061,6 +9971,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -9098,6 +10009,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.iOSTealiumMediaTest;
@@ -9132,6 +10044,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.iOSTealiumMediaTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9169,6 +10082,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -9210,6 +10124,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.iOSTealiumTestApp;
@@ -9244,6 +10159,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.tvOSTealiumTest;
@@ -9278,6 +10194,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.tvOSTealiumTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9304,6 +10221,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = XC939GDC9P;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -9340,6 +10258,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = XC939GDC9P;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -9384,6 +10303,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9417,6 +10337,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9440,8 +10361,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -9450,6 +10370,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "TealiumMedia-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -9459,7 +10380,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.media;
@@ -9492,8 +10414,7 @@
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = iOSTealiumTest/iOSTealiumTest.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -9501,6 +10422,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "TealiumMedia-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -9510,7 +10432,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.media;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -9557,6 +10480,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tealium.tealium-swift-tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9592,6 +10516,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tealium.tealium-swift-tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9627,6 +10552,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9667,6 +10593,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9705,7 +10632,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tealium.tealium-swift-tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9746,7 +10673,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tealium.tealium-swift-tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9785,6 +10712,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -9821,6 +10749,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -9846,8 +10775,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -9856,6 +10784,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "TealiumLocation-Info.plist";
@@ -9866,7 +10795,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.location;
@@ -9898,8 +10828,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -9907,6 +10836,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "TealiumLocation-Info.plist";
@@ -9917,7 +10847,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.location;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -9946,9 +10877,7 @@
 				BUILD_SCRIPT = NO;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -9957,6 +10886,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
@@ -9969,7 +10899,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = tealium.ios.collect;
 				PRODUCT_MODULE_NAME = TealiumCollect;
@@ -9998,9 +10929,7 @@
 				BUILD_SCRIPT = NO;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -10008,6 +10937,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
@@ -10020,7 +10950,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = tealium.ios.collect;
 				PRODUCT_MODULE_NAME = TealiumCollect;
@@ -10051,8 +10982,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -10061,6 +10991,8 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "TealiumCore-Info.plist";
@@ -10071,7 +11003,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = tealium.ios.core;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME)";
@@ -10102,8 +11035,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -10111,6 +11043,8 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "TealiumCore-Info.plist";
@@ -10121,7 +11055,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = tealium.ios.core;
@@ -10152,9 +11087,7 @@
 				BUILD_SCRIPT = NO;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -10163,6 +11096,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "TealiumTagManagement-Info.plist";
@@ -10173,7 +11107,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = tealium.ios.tagmanagement;
 				PRODUCT_MODULE_NAME = "${PRODUCT_NAME}";
@@ -10186,7 +11121,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "tagmanagement DEBUG";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TVOS_DEPLOYMENT_TARGET = 11.0;
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 				WATCHOS_DEPLOYMENT_TARGET = 4.0;
@@ -10202,9 +11137,7 @@
 				BUILD_SCRIPT = NO;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -10212,6 +11145,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "TealiumTagManagement-Info.plist";
@@ -10222,7 +11156,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = tealium.ios.tagmanagement;
 				PRODUCT_MODULE_NAME = "${PRODUCT_NAME}";
@@ -10235,7 +11170,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = tagmanagement;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TVOS_DEPLOYMENT_TARGET = 11.0;
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -10268,6 +11203,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -10303,6 +11239,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -10325,8 +11262,7 @@
 				BUILD_SCRIPT = NO;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -10335,6 +11271,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
@@ -10347,7 +11284,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = tealium.ios.attribution;
 				PRODUCT_MODULE_NAME = TealiumAttribution;
@@ -10376,8 +11314,7 @@
 				BUILD_SCRIPT = NO;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -10385,6 +11322,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
@@ -10397,7 +11335,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = tealium.ios.attribution;
 				PRODUCT_MODULE_NAME = TealiumAttribution;
@@ -10428,9 +11367,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -10439,6 +11376,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "TealiumVisitorService-Info.plist";
@@ -10449,7 +11387,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
@@ -10482,9 +11421,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -10492,6 +11429,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "TealiumVisitorService-Info.plist";
@@ -10502,7 +11440,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = tealium.ios.visitorservice;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME)";
@@ -10549,6 +11488,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -10584,6 +11524,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -10605,9 +11546,7 @@
 				BUILD_SCRIPT = NO;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -10616,6 +11555,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
@@ -10628,7 +11568,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = tealium.ios.lifecycle;
 				PRODUCT_MODULE_NAME = TealiumLifecycle;
@@ -10658,9 +11599,7 @@
 				BUILD_SCRIPT = NO;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -10668,6 +11607,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
@@ -10680,7 +11620,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = tealium.ios.lifecycle;
 				PRODUCT_MODULE_NAME = TealiumLifecycle;
@@ -10728,6 +11669,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -10737,7 +11679,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TVOS_DEPLOYMENT_TARGET = 9.0;
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Debug;
@@ -10764,6 +11706,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -10772,7 +11715,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
-				TVOS_DEPLOYMENT_TARGET = 9.0;
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = Release;
@@ -10802,6 +11745,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -10835,6 +11779,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -10871,6 +11816,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -10905,6 +11851,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -10942,12 +11889,16 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -10976,12 +11927,16 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -11013,6 +11968,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -11047,6 +12003,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -11084,6 +12041,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -11119,6 +12077,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -11156,6 +12115,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -11190,6 +12150,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -11227,7 +12188,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "-fprofile-instr-generate";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -11262,7 +12223,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "-fprofile-instr-generate";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -11299,6 +12260,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -11333,6 +12295,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -11370,7 +12333,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -11405,7 +12368,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -11443,6 +12406,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -11477,6 +12441,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -11515,7 +12480,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -11551,7 +12516,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -11575,9 +12540,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -11586,6 +12549,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				EXCLUDED_ARCHS = "$(inherited) $(EXCLUDED_ARCHS__IS_MACCATALYST_$(IS_MACCATALYST)__NATIVE_ARCH_64_BIT_$(NATIVE_ARCH_64_BIT))";
 				EXCLUDED_ARCHS__IS_MACCATALYST_YES__NATIVE_ARCH_64_BIT_x86_64 = "arm64 arm64e armv7 armv7s armv6 armv8";
 				FRAMEWORK_SEARCH_PATHS = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
@@ -11599,7 +12563,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = tealium.ios.remotecommands;
 				PRODUCT_MODULE_NAME = TealiumRemoteCommands;
@@ -11614,7 +12579,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.3.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TVOS_DEPLOYMENT_TARGET = 11.0;
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 				WATCHOS_DEPLOYMENT_TARGET = 4.0;
@@ -11631,9 +12596,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -11641,6 +12604,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				EXCLUDED_ARCHS = "$(inherited) $(EXCLUDED_ARCHS__IS_MACCATALYST_$(IS_MACCATALYST)__NATIVE_ARCH_64_BIT_$(NATIVE_ARCH_64_BIT))";
 				EXCLUDED_ARCHS__IS_MACCATALYST_YES__NATIVE_ARCH_64_BIT_x86_64 = "arm64 arm64e armv7 armv7s armv6 armv8";
 				FRAMEWORK_SEARCH_PATHS = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
@@ -11654,7 +12618,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = tealium.ios.remotecommands;
@@ -11669,7 +12634,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = remotecommands;
 				SWIFT_VERSION = 5.3.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TVOS_DEPLOYMENT_TARGET = 11.0;
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -11686,9 +12651,7 @@
 				BUILD_SCRIPT = NO;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -11697,6 +12660,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				EXCLUDED_ARCHS = "$(inherited) $(EXCLUDED_ARCHS__IS_MACCATALYST_$(IS_MACCATALYST)__NATIVE_ARCH_64_BIT_$(NATIVE_ARCH_64_BIT))";
 				EXCLUDED_ARCHS__IS_MACCATALYST_YES__NATIVE_ARCH_64_BIT_x86_64 = "arm64 arm64e armv7 armv7s armv6 armv8";
 				FRAMEWORK_SEARCH_PATHS = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
@@ -11710,7 +12674,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = tealium.ios.autotracking;
@@ -11741,9 +12706,7 @@
 				BUILD_SCRIPT = NO;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -11751,6 +12714,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				EXCLUDED_ARCHS = "$(inherited) $(EXCLUDED_ARCHS__IS_MACCATALYST_$(IS_MACCATALYST)__NATIVE_ARCH_64_BIT_$(NATIVE_ARCH_64_BIT))";
 				EXCLUDED_ARCHS__IS_MACCATALYST_YES__NATIVE_ARCH_64_BIT_x86_64 = "arm64 arm64e armv7 armv7s armv6 armv8";
 				FRAMEWORK_SEARCH_PATHS = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
@@ -11764,7 +12728,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = tealium.ios.autotracking;
@@ -11889,6 +12854,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -11926,6 +12892,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-DTEST";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tealium.TealiumTests;
@@ -11944,6 +12911,42 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		08191ECA2BCEC1AB003EEE36 /* Build configuration list for PBXNativeTarget "TealiumMomentsAPI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				08191ECB2BCEC1AB003EEE36 /* Debug */,
+				08191ECC2BCEC1AB003EEE36 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		08191EF62BD2C4F4003EEE36 /* Build configuration list for PBXNativeTarget "TealiumMomentsAPITests-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				08191EF72BD2C4F4003EEE36 /* Debug */,
+				08191EF82BD2C4F4003EEE36 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		08CA23EC2BE50019002AC47A /* Build configuration list for PBXNativeTarget "TealiumMomentsAPITests-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				08CA23ED2BE50019002AC47A /* Debug */,
+				08CA23EE2BE50019002AC47A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		08CA24002BE50022002AC47A /* Build configuration list for PBXNativeTarget "TealiumMomentsAPITests-macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				08CA24012BE50022002AC47A /* Debug */,
+				08CA24022BE50022002AC47A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		1516A2E526EF7F26003DF8F2 /* Build configuration list for PBXNativeTarget "TealiumAutotrackingUITests-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
