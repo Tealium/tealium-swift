@@ -9,7 +9,7 @@
 import XCTest
 
 @available(iOS 13, *)
-class SceneDelegateProxyTests: TealiumDelegateProxyTests {
+class SceneDelegateProxyTests: BaseProxyTests {
     
     func testConnectSessionOperUrl() throws {
         let teal = tealium!
