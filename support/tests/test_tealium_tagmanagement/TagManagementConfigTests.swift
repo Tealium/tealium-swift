@@ -12,15 +12,6 @@ import WebKit
 @testable import TealiumTagManagement
 
 class TagManagementConfigTests: XCTestCase {
-    
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
 
     func testWeakDelegate() throws {
         let config = TealiumConfig(account: "", profile: "", environment: "")
@@ -31,6 +22,11 @@ class TagManagementConfigTests: XCTestCase {
         XCTAssertTrue(config.webViewDelegates![0] is NavigationDelegate)
         delegate = nil
         XCTAssertEqual(config.webViewDelegates!.count, 0)
+    }
+
+    func testWebviewUrlIsWellConstructed() {
+        let config = TealiumConfig(account: "account", profile: "profile", environment: "environment")
+        XCTAssertEqual(config.webviewURL?.absoluteString, "https://tags.tiqcdn.com/utag/account/profile/environment/mobile.html?sdk_session_count=true")
     }
 
 }
