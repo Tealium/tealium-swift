@@ -22,7 +22,6 @@ public extension TealiumDataKey {
 
 enum TagManagementKey {
     static let moduleName = "tagmanagement"
-    static let defaultUrlStringPrefix = TealiumValue.tiqBaseURL
 }
 
 enum TagManagementError: TealiumErrorEnum {
