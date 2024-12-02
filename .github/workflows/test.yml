@@ -50,33 +50,6 @@ jobs:
       - name: Test - "${{ matrix.scheme }}"
         run: fastlane scan --scheme "${{ matrix.scheme }}" --output_files "${{ matrix.scheme }}" --derived-data-path "./build" --skip_build true --result_bundle true --output_types junit --xcodebuild_formatter "xcbeautify -q --is-ci"  --destination "${{ matrix.destination }}"
         working-directory: ${{env.working-directory}}
-      - name: Archive Code Coverage Report
-        uses: actions/upload-artifact@v2
-        with:
-          name: code-coverage-report
-          path: ${{env.working-directory}}/test_output/"${{ matrix.scheme }}".html
-
-      ### The following will upload the code coverage reports to Codecov.io ###
-
-      # - name: Upload to Codecov - "${{ matrix.scheme }}"
-      #   run: bash <(curl -s https://codecov.io/bash)
-      #   working-directory: ${{env.working-directory}}
-
-      ### The following will manually parse the Xcode code coverage report, read the percentage, then either pass or fail
-      ### based on a given percentage. We have elected not to use this right now, but might in the future. ###
-
-      #   run: rm -rf output && fastlane scan --scheme "${{ matrix.scheme }}" --derived_data_path ./output --code_coverage true --skip_build true
-      #   working-directory: ${{env.working-directory}}
-      # - name: Save Code Coverage Report - "${{ matrix.scheme }}"
-      #   run: xcrun xccov view --report --only-targets ./output/Logs/Test/*.xcresult >> "${{ matrix.scheme }}".txt
-      #   working-directory: ${{env.working-directory}}
-      # - name: Setup Python
-      #   uses: actions/setup-python@v2
-      #   with:
-      #     python-version: '3.8'
-      # - name: Validate Code Coverage - "${{ matrix.scheme }}"
-      #   run: python3 coverage.py "${{ matrix.scheme }}".txt && exit $(echo $?)
-      #   working-directory: ${{env.working-directory}}
   test_macOS:
     needs: install
     name: macOS Tests
@@ -105,31 +78,6 @@ jobs:
       - name: Test - "${{ matrix.scheme }}"
         run: rm -rf output && fastlane scan --scheme "${{ matrix.scheme }}" --derived_data_path ./output --code_coverage true --skip_build true --destination "${{ matrix.destination }}"
         working-directory: ${{env.working-directory}}
-      - name: Archive Code Coverage Report
-        uses: actions/upload-artifact@v2
-        with:
-          name: code-coverage-report
-          path: ${{env.working-directory}}/test_output/"${{ matrix.scheme }}".html
-
-      ### The following will upload the code coverage reports to Codecov.io ###
-
-      # - name: Upload to Codecov - "${{ matrix.scheme }}"
-      #   run: bash <(curl -s https://codecov.io/bash)
-      #   working-directory: ${{env.working-directory}}
-
-      ### The following will manually parse the Xcode code coverage report, read the percentage, then either pass or fail
-      ### based on a given percentage. We have elected not to use this right now, but might in the future. ###
-
-      # - name: Save Code Coverage Report - "${{ matrix.scheme }}"
-      #   run: xcrun xccov view --report --only-targets ./output/Logs/Test/*.xcresult >> "${{ matrix.scheme }}".txt
-      #   working-directory: ${{env.working-directory}}
-      # - name: Setup Python
-      #   uses: actions/setup-python@v2
-      #   with:
-      #     python-version: '3.8'
-      # - name: Validate Code Coverage - "${{ matrix.scheme }}"
-      #   run: python3 coverage.py "${{ matrix.scheme }}".txt && exit $(echo $?)
-      #   working-directory: ${{env.working-directory}}
   test_tvOS:
     needs: install
     name: tvOS Tests
@@ -159,47 +107,6 @@ jobs:
       - name: Test - "${{ matrix.scheme }}"
         run: rm -rf output && fastlane scan --scheme "${{ matrix.scheme }}" --derived_data_path ./output --code_coverage true --skip_build true  --destination "${{ matrix.destination }}"
         working-directory: ${{env.working-directory}}
-      - name: Archive Code Coverage Report
-        uses: actions/upload-artifact@v2
-        with:
-          name: code-coverage-report
-          path: ${{env.working-directory}}/test_output/"${{ matrix.scheme }}".html
-
-      ### The following will upload the code coverage reports to Codecov.io ###
-
-      # - name: Upload to Codecov - "${{ matrix.scheme }}"
-      #   run: bash <(curl -s https://codecov.io/bash)
-      #   working-directory: ${{env.working-directory}}
-
-      ### The following will manually parse the Xcode code coverage report, read the percentage, then either pass or fail
-      ### based on a given percentage. We have elected not to use this right now, but might in the future. ###
-
-      # - name: Save Code Coverage Report - "${{ matrix.scheme }}"
-      #   run: xcrun xccov view --report --only-targets ./output/Logs/Test/*.xcresult >> "${{ matrix.scheme }}".txt
-      #   working-directory: ${{env.working-directory}}
-      # - name: Setup Python
-      #   uses: actions/setup-python@v2
-      #   with:
-      #     python-version: '3.8'
-      # - name: Validate Code Coverage - "${{ matrix.scheme }}"
-      #   run: python3 coverage.py "${{ matrix.scheme }}".txt && exit $(echo $?)
-      #   working-directory: ${{env.working-directory}}
-  # test_VisitorServiceDemo_uiTests:
-  #   name: Test TealiumVisitorProfileDemo UI Tests
-  #   runs-on: macos-11
-  #   timeout-minutes: 60
-  #   env:
-  #     DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-  #     working-directory: ./samples/VisitorServiceDemo
-  #   steps:
-  #     - name: Setup Xcode version
-  #       uses: maxim-lobanov/setup-xcode@v1.3.0
-  #       with:
-  #         xcode-version: latest-stable
-  #     - uses: actions/checkout@v2
-  #     - name: Test TealiumVisitorProfileDemo UI Tests iOS
-  #       run: rm -rf output && pod install && fastlane scan --scheme "TealiumVisitorProfileDemoUITests" --derived_data_path ./output --code_coverage false --skip_build true
-  #       working-directory: ${{ env.working-directory }}
   test_Autotracking_iOS_uiTests:
     name: Test TealiumAutotracking iOS UI Tests
     runs-on: macos-14

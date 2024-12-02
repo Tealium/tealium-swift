@@ -9,8 +9,7 @@
 @testable import TealiumCore
 import XCTest
 
-class TealiumDelegateProxyTests: XCTestCase {
-
+class BaseProxyTests: XCTestCase {
     let mockDataLayer = DummyDataManagerAppDelegate()
     var semaphore: DispatchSemaphore!
     static var testNumber = 0
@@ -44,7 +43,40 @@ class TealiumDelegateProxyTests: XCTestCase {
         TealiumInstanceManager.shared.removeInstance(config: config)
         tealium = nil
     }
+
+    func waitOnTealiumSerialQueue(_ block: () -> ()) {
+        TealiumQueues.backgroundSerialQueue.sync {
+            block()
+        }
+    }
     
+    func sendOpenUrlEvent(url: URL) {
+        if #available(iOS 13.0, *), TealiumDelegateProxy.sceneEnabled {
+            let scene = UIApplication.shared.connectedScenes.first!
+            let sceneDelegate = scene.delegate!
+            
+            sceneDelegate.scene?(scene, openURLContexts: Set<UIOpenURLContext>.init([MockOpenUrlContext(url: url)]))
+            
+        } else {
+            let appDelegate = UIApplication.shared.delegate!
+            _ = appDelegate.application?(UIApplication.shared, open: url, options: [:])
+        }
+    }
+    
+    func sendContinueUserActivityEvent(url: URL) {
+        let activity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
+        activity.webpageURL = url
+        
+        if #available(iOS 13.0, *), TealiumDelegateProxy.sceneEnabled {
+            UIApplication.shared.manualSceneContinueUserActivity(activity)
+        } else {
+            UIApplication.shared.manualContinueUserActivity(activity)
+        }
+    }
+}
+
+class TealiumDelegateProxyTests: BaseProxyTests {
+
     func testOpenURL() {
         let teal = tealium!
         let url = URL(string: "https://my-test-app.com/?test_param=true")!
@@ -93,36 +125,6 @@ class TealiumDelegateProxyTests: XCTestCase {
         tealium = nil
         waitOnTealiumSerialQueue {
             XCTAssertFalse(TealiumDelegateProxy.contexts!.contains(context))
-        }
-    }
-    
-    func waitOnTealiumSerialQueue(_ block: () -> ()) {
-        TealiumQueues.backgroundSerialQueue.sync {
-            block()
-        }
-    }
-    
-    func sendOpenUrlEvent(url: URL) {
-        if #available(iOS 13.0, *), TealiumDelegateProxy.sceneEnabled {
-            let scene = UIApplication.shared.connectedScenes.first!
-            let sceneDelegate = scene.delegate!
-            
-            sceneDelegate.scene?(scene, openURLContexts: Set<UIOpenURLContext>.init([MockOpenUrlContext(url: url)]))
-            
-        } else {
-            let appDelegate = UIApplication.shared.delegate!
-            _ = appDelegate.application?(UIApplication.shared, open: url, options: [:])
-        }
-    }
-    
-    func sendContinueUserActivityEvent(url: URL) {
-        let activity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
-        activity.webpageURL = url
-        
-        if #available(iOS 13.0, *), TealiumDelegateProxy.sceneEnabled {
-            UIApplication.shared.manualSceneContinueUserActivity(activity)
-        } else {
-            UIApplication.shared.manualContinueUserActivity(activity)
         }
     }
 }
