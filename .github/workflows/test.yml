@@ -43,7 +43,7 @@ jobs:
             - TealiumMomentsAPITests-iOS
     steps:
       - name: Setup Xcode version
-        uses: maxim-lobanov/setup-xcode@v1.4.1
+        uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: latest-stable
       - uses: actions/checkout@v2
@@ -71,7 +71,7 @@ jobs:
           - TealiumMomentsAPITests-macOS
     steps:
       - name: Setup Xcode version
-        uses: maxim-lobanov/setup-xcode@v1.4.1
+        uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: latest-stable
       - uses: actions/checkout@v2
@@ -100,7 +100,7 @@ jobs:
           - TealiumMomentsAPITests-tvOS
     steps:
       - name: Setup Xcode version
-        uses: maxim-lobanov/setup-xcode@v1.4.1
+        uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: latest-stable
       - uses: actions/checkout@v2
@@ -119,7 +119,7 @@ jobs:
         destination: ["platform=iOS Simulator,OS=17.5,name=iPhone 15 Pro"]
     steps:
       - name: Setup Xcode version
-        uses: maxim-lobanov/setup-xcode@v1.4.1
+        uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: latest-stable
       - uses: actions/checkout@v2
@@ -159,7 +159,7 @@ jobs:
         destination: ["platform=tvOS Simulator,name=Apple TV"]
     steps:
       - name: Setup Xcode version
-        uses: maxim-lobanov/setup-xcode@v1.4.1
+        uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: latest-stable
       - uses: actions/checkout@v2
