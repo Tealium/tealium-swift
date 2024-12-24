@@ -905,6 +905,7 @@
 		D7F8D8E7246079F500796E12 /* ModuleDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7596C9A2451D6E1003AB939 /* ModuleDelegate.swift */; };
 		D7FF987D24AD0B6F00E87A80 /* MockAttributionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7F075A24770212003E23B9 /* MockAttributionData.swift */; };
 		ECF1B0732D11D25D002DB84E /* TealiumConfig+PublishSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF1B0722D11D25D002DB84E /* TealiumConfig+PublishSettings.swift */; };
+		ECF1B0742D19DAF0002DB84E /* TealiumTraceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79EFE5924E4100100F43375 /* TealiumTraceTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -6785,6 +6786,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECF1B0742D19DAF0002DB84E /* TealiumTraceTests.swift in Sources */,
 				15A0E69E2BC406B80077FFEB /* MockURLSession.swift in Sources */,
 				CF880D2F2554C9830020E1B2 /* PublishSettingsTests.swift in Sources */,
 				CF880CB32554C96F0020E1B2 /* SessionStarterTests.swift in Sources */,

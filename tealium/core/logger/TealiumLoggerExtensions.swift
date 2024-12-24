@@ -37,5 +37,4 @@ public extension TealiumConfig {
             options[TealiumConfigKey.logLevel] = newValue
         }
     }
-
 }

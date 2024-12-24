@@ -61,5 +61,4 @@ public class TealiumInstanceManager {
     func didOpenUrl(_ url: URL) {
         _onOpenUrl.publish(url)
     }
-
 }

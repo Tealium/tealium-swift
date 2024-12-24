@@ -288,6 +288,16 @@ public extension TealiumConfig {
         }
     }
 
+    var sendDeepLinkEvent: Bool {
+        get {
+            options[TealiumConfigKey.sendDeepLinkEvent] as? Bool ?? false
+        }
+
+        set {
+            options[TealiumConfigKey.sendDeepLinkEvent] = newValue
+        }
+    }
+
     var qrTraceEnabled: Bool {
         get {
             options[TealiumConfigKey.qrTraceEnabled] as? Bool ?? true

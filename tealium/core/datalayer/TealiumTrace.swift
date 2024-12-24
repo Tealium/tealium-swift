@@ -109,6 +109,9 @@ public extension Tealium {
                     dataLayer["\(TealiumDataKey.deepLinkQueryPrefix)_\($0.name)"] = value
                 }
                 self.dataLayer.add(data: dataLayer, expiry: .session)
+                if self.zz_internal_modulesManager?.config.sendDeepLinkEvent == true {
+                    self.track(TealiumEvent(TealiumDataKey.deepLink, dataLayer: dataLayer))
+                }
             }
         }
     }
