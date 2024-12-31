@@ -41,6 +41,7 @@ jobs:
             - TealiumTagManagementTests-iOS
             - TealiumVisitorServiceTests-iOS
             - TealiumMomentsAPITests-iOS
+            - TealiumTraceTests-iOS
     steps:
       - name: Setup Xcode version
         uses: maxim-lobanov/setup-xcode@v1

@@ -47,7 +47,6 @@ class TealiumTraceTests: XCTestCase {
 
     var tealium: Tealium!
     override func setUpWithError() throws {
-        TealiumInstanceManager.shared = TealiumInstanceManager()
         semaphore = DispatchSemaphore(value: 0)
         tealium = testTealium
         semaphore.wait()
