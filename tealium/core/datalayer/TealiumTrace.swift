@@ -110,7 +110,7 @@ public extension Tealium {
                 }
                 self.dataLayer.add(data: dataLayer, expiry: .session)
                 if self.zz_internal_modulesManager?.config.sendDeepLinkEvent == true {
-                    self.track(TealiumEvent(TealiumDataKey.deepLink, dataLayer: dataLayer))
+                    self.track(TealiumEvent(TealiumKey.deepLink, dataLayer: dataLayer))
                 }
             }
         }

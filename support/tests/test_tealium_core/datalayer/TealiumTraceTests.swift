@@ -212,7 +212,7 @@ class TealiumTraceTests: XCTestCase {
         config.batchingEnabled = false
         config.sendDeepLinkEvent = true
         config.dispatchListeners = [MockDispatchListener(trackHandler: {request in
-            if let event = request.event, event == TealiumDataKey.deepLink {
+            if let event = request.event, event == TealiumKey.deepLink {
                 deepLinkEventSent.fulfill()
             }
         })]

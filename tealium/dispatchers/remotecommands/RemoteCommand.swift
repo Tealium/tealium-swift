@@ -34,7 +34,7 @@ open class RemoteCommand: RemoteCommandProtocol {
     /// - Parameters:
     ///     - commandId: `String` identifier for command block.
     ///     - description: `String?` description of command.
-    ///     - urlSession: `URLSessionProtocol`
+    ///     - type: `RemoteCommandType` one of three types defining the RC configuration source
     ///     - completion: The completion block to run when this remote command is triggered.
     public init(commandId: String,
                 description: String?,
