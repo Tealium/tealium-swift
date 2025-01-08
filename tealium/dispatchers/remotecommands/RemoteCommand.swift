@@ -34,7 +34,7 @@ open class RemoteCommand: RemoteCommandProtocol {
     /// - Parameters:
     ///     - commandId: `String` identifier for command block.
     ///     - description: `String?` description of command.
-    ///     - type: `RemoteCommandType` one of three types defining the RC configuration source
+    ///     - type: `RemoteCommandType` one of three types defining the RC config source that will be used to build vendor specific data
     ///     - completion: The completion block to run when this remote command is triggered.
     public init(commandId: String,
                 description: String?,
