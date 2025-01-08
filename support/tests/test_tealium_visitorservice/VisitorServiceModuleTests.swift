@@ -13,7 +13,7 @@ import XCTest
 class VisitorServiceModuleTests: XCTestCase {
 
     var mockDiskStorage: MockTealiumDiskStorage!
-    var mockVisitorServiceManager = MockTealiumVisitorServiceManager()
+    var mockVisitorServiceManager: MockTealiumVisitorServiceManager!
     var config: TealiumConfig!
     var context: TealiumContext!
 
@@ -22,6 +22,7 @@ class VisitorServiceModuleTests: XCTestCase {
         config = TealiumConfig(account: "testAccount", profile: "testProfile", environment: "testEnv")
         context = TestTealiumHelper.context(with: config)
         mockDiskStorage = MockTealiumDiskStorage()
+        mockVisitorServiceManager = MockTealiumVisitorServiceManager()
     }
 
     func testRequestVisitorProfileRun() {
