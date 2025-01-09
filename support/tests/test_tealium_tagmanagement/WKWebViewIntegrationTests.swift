@@ -211,7 +211,7 @@ class WKWebViewIntegrationTests: XCTestCase {
             }
             expectation.fulfill()
         })
-        waitForExpectations(timeout: 5)
+        wait(for: [expectation], timeout: 5.0)
     }
 
 }
