@@ -32,12 +32,7 @@ class TealiumLocationTests: XCTestCase {
 
         self.locationManager = locationManager
         TealiumLocationTests.expectations = [XCTestExpectation]()
-        config = TealiumConfig(account: "tealiummobile", profile: "location", environment: "dev")
         locationModule = createModule(with: config)
-    }
-
-    override func tearDown() {
-        TealiumLocationTests.expectations = [XCTestExpectation]()
     }
 
     // MARK: Tealium Location Tests
@@ -825,7 +820,7 @@ class TealiumLocationTests: XCTestCase {
     func testModuleCreatedGeofences() {
         let expect = expectation(description: "Module created geofences")
         locationModule?.tealiumLocationManager = mockTealiumLocationManager
-        _ = locationModule?.createdGeofences
+        _ = locationModule?.getCreatedGeofences(completion: { _ in })
         TealiumQueues.mainQueue.async { [weak self] in
             XCTAssertEqual(self?.mockTealiumLocationManager.createdGeofencesCallCount, 1)
             expect.fulfill()
@@ -836,7 +831,7 @@ class TealiumLocationTests: XCTestCase {
     func testModuleLatestLocation() {
         let expect = expectation(description: "Module latest location called")
         locationModule?.tealiumLocationManager = mockTealiumLocationManager
-        _ = locationModule?.lastLocation
+        _ = locationModule?.getLastLocation(completion: { _ in })
         TealiumQueues.mainQueue.async { [weak self] in
             XCTAssertEqual(self?.mockTealiumLocationManager.lastLocationCallCount, 1)
             expect.fulfill()
@@ -847,7 +842,7 @@ class TealiumLocationTests: XCTestCase {
     func testModuleMonitoredGeofences() {
         let expect = expectation(description: "Module latest location called")
         locationModule?.tealiumLocationManager = mockTealiumLocationManager
-        _ = locationModule?.monitoredGeofences
+        _ = locationModule?.getMonitoredGeofences(completion: { _ in })
         TealiumQueues.mainQueue.async { [weak self] in
             XCTAssertEqual(self?.mockTealiumLocationManager.monitoredGeofencesCallCount, 1)
             expect.fulfill()
