@@ -16,25 +16,15 @@ public class VisitorServiceModule: Collector, DispatchListener {
     public var config: TealiumConfig
     public var data: [String: Any]?
     var diskStorage: TealiumDiskStorageProtocol!
-    var visitorServiceManager: VisitorServiceManagerProtocol?
+    let visitorServiceManager: VisitorServiceManagerProtocol
     private var bag = TealiumDisposeBag()
     private var lastVisitorId: String? {
         get {
-            self.visitorServiceManager?.currentVisitorId
+            self.visitorServiceManager.currentVisitorId
         }
         set {
-            self.visitorServiceManager?.currentVisitorId = newValue
+            self.visitorServiceManager.currentVisitorId = newValue
         }
-    }
-    /// Provided for unit testing￼.
-    ///
-    /// - Parameter visitorServiceManager: Class instance conforming to `VisitorServiceManagerProtocol`
-    convenience init (context: TealiumContext,
-                      delegate: ModuleDelegate?,
-                      diskStorage: TealiumDiskStorageProtocol?,
-                      visitorServiceManager: VisitorServiceManagerProtocol) {
-        self.init(context: context, delegate: delegate, diskStorage: diskStorage) { _ in }
-        self.visitorServiceManager = visitorServiceManager
     }
 
     /// Initializes the module
@@ -43,15 +33,26 @@ public class VisitorServiceModule: Collector, DispatchListener {
     /// - Parameter delegate: `ModuleDelegate?` instance
     /// - Parameter diskStorage: `TealiumDiskStorageProtocol?` instance
     /// - Parameter completion: `ModuleCompletion` block to be called when init is finished
-    required public init(context: TealiumContext,
-                         delegate: ModuleDelegate?,
-                         diskStorage: TealiumDiskStorageProtocol?,
-                         completion: ModuleCompletion) {
+    public required convenience init(context: TealiumContext,
+                                     delegate: ModuleDelegate?,
+                                     diskStorage: TealiumDiskStorageProtocol?,
+                                     completion: ModuleCompletion) {
+        self.init(context: context, delegate: delegate, diskStorage: diskStorage, visitorServiceManager: nil)
+        completion((.success(true), nil))
+    }
+
+    /// Provided for unit testing￼.
+    ///
+    /// - Parameter visitorServiceManager: Class instance conforming to `VisitorServiceManagerProtocol`
+    init(context: TealiumContext,
+         delegate: ModuleDelegate?,
+         diskStorage: TealiumDiskStorageProtocol?,
+         visitorServiceManager: VisitorServiceManagerProtocol?) {
         self.config = context.config
         self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config, forModule: ModuleNames.visitorservice.lowercased(), isCritical: false)
-        self.visitorServiceManager = VisitorServiceManager(config: config,
-                                                           delegate: config.visitorServiceDelegate,
-                                                           diskStorage: self.diskStorage)
+        self.visitorServiceManager = visitorServiceManager ?? VisitorServiceManager(config: config,
+                                                                                    delegate: config.visitorServiceDelegate,
+                                                                                    diskStorage: self.diskStorage)
         TealiumQueues.backgroundSerialQueue.async {
             context.onVisitorId?.subscribe { [weak self] visitorId in
                 guard let self = self,
@@ -69,13 +70,12 @@ public class VisitorServiceModule: Collector, DispatchListener {
                 }
             }.toDisposeBag(self.bag)
         }
-        completion((.success(true), nil))
     }
 
     func retrieveProfile(visitorId: String) {
         self.lastVisitorId = visitorId
         if shouldFetchVisitorProfile {
-            self.visitorServiceManager?.requestVisitorProfile()
+            self.visitorServiceManager.requestVisitorProfile()
         }
     }
 
@@ -108,7 +108,7 @@ public class VisitorServiceModule: Collector, DispatchListener {
 
     /// Should fetch visitor profile based on interval set in the config or defaults to every 5 minutes
     public var shouldFetchVisitorProfile: Bool {
-        let lastFetch = visitorServiceManager?.lastFetch
+        let lastFetch = visitorServiceManager.lastFetch
         guard let refresh = config.visitorServiceRefresh else {
             return shouldFetch(basedOn: lastFetch, interval: VisitorServiceConstants.defaultRefreshInterval.milliseconds, environment: config.environment)
         }
