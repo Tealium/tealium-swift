@@ -904,6 +904,7 @@
 		D7F2DF07233279B2000D0E0F /* TealiumDiskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D719955F22B8E47D005BE543 /* TealiumDiskTests.swift */; };
 		D7F8D8E7246079F500796E12 /* ModuleDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7596C9A2451D6E1003AB939 /* ModuleDelegate.swift */; };
 		D7FF987D24AD0B6F00E87A80 /* MockAttributionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7F075A24770212003E23B9 /* MockAttributionData.swift */; };
+		ECF1B0732D11D25D002DB84E /* TealiumConfig+PublishSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF1B0722D11D25D002DB84E /* TealiumConfig+PublishSettings.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2780,6 +2781,7 @@
 		D7F2DF0F233279B2000D0E0F /* TealiumCoreTests-tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TealiumCoreTests-tvOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7FE15A022E61080000ABF56 /* TealiumDispatchQueueExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TealiumDispatchQueueExtensions.swift; sourceTree = "<group>"; };
 		D7FF987B24ACBD1300E87A80 /* AutoTrackingExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoTrackingExtensions.swift; sourceTree = "<group>"; };
+		ECF1B0722D11D25D002DB84E /* TealiumConfig+PublishSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TealiumConfig+PublishSettings.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3796,6 +3798,7 @@
 				CF8B6894255DC5E10055D72E /* TimedEventScheduler.swift */,
 				15F573ED2721827E00194733 /* UIScene+TealiumDelegateGetter.swift */,
 				1563CD4C2B458FFD00A04015 /* PrivacyInfo.xcprivacy */,
+				ECF1B0722D11D25D002DB84E /* TealiumConfig+PublishSettings.swift */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -6269,7 +6272,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\nswiftlint --config \"$PROJECT_DIR\"/../.swiftlint.yml\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]\nthen\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif command -v swiftlint >/dev/null 2>&1\nthen\n    swiftlint --config \"$PROJECT_DIR\"/../.swiftlint.yml\nelse\n    echo \"warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions.\"\nfi\n";
 		};
 		15037B9F2982904400EB8175 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6288,7 +6291,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\nswiftlint --config \"$PROJECT_DIR\"/../.swiftlint.yml\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]\nthen\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif command -v swiftlint >/dev/null 2>&1\nthen\n    swiftlint --config \"$PROJECT_DIR\"/../.swiftlint.yml\nelse\n    echo \"warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions.\"\nfi\n";
 		};
 		15831B6627441AC700C0E8FC /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6307,7 +6310,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\nswiftlint --config \"$PROJECT_DIR\"/../.swiftlint.yml\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]\nthen\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif command -v swiftlint >/dev/null 2>&1\nthen\n    swiftlint --config \"$PROJECT_DIR\"/../.swiftlint.yml\nelse\n    echo \"warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions.\"\nfi\n";
 		};
 		15831B6727441B7900C0E8FC /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6326,7 +6329,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\nswiftlint --config \"$PROJECT_DIR\"/../.swiftlint.yml\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]\nthen\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif command -v swiftlint >/dev/null 2>&1\nthen\n    swiftlint --config \"$PROJECT_DIR\"/../.swiftlint.yml\nelse\n    echo \"warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions.\"\nfi\n";
 		};
 		15831B6827441B9100C0E8FC /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6345,7 +6348,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\nswiftlint --config \"$PROJECT_DIR\"/../.swiftlint.yml\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]\nthen\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif command -v swiftlint >/dev/null 2>&1\nthen\n    swiftlint --config \"$PROJECT_DIR\"/../.swiftlint.yml\nelse\n    echo \"warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions.\"\nfi\n\n";
 		};
 		15831B6927441B9D00C0E8FC /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6364,7 +6367,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\nswiftlint --config \"$PROJECT_DIR\"/../.swiftlint.yml\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]\nthen\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif command -v swiftlint >/dev/null 2>&1\nthen\n    swiftlint --config \"$PROJECT_DIR\"/../.swiftlint.yml\nelse\n    echo \"warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions.\"\nfi\n";
 		};
 		15831B6A27441BB700C0E8FC /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6383,7 +6386,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\nswiftlint --config \"$PROJECT_DIR\"/../.swiftlint.yml\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]\nthen\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif command -v swiftlint >/dev/null 2>&1\nthen\n    swiftlint --config \"$PROJECT_DIR\"/../.swiftlint.yml\nelse\n    echo \"warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions.\"\nfi\n";
 		};
 		15831B6B27441BC400C0E8FC /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6402,7 +6405,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\nswiftlint --config \"$PROJECT_DIR\"/../.swiftlint.yml\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]\nthen\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif command -v swiftlint >/dev/null 2>&1\nthen\n    swiftlint --config \"$PROJECT_DIR\"/../.swiftlint.yml\nelse\n    echo \"warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions.\"\nfi\n";
 		};
 		15831B6C27441C5700C0E8FC /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6421,7 +6424,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\nswiftlint --config \"$PROJECT_DIR\"/../.swiftlint.yml\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]\nthen\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif command -v swiftlint >/dev/null 2>&1\nthen\n    swiftlint --config \"$PROJECT_DIR\"/../.swiftlint.yml\nelse\n    echo \"warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions.\"\nfi\n";
 		};
 		15831B6D27441C6300C0E8FC /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6440,7 +6443,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\nswiftlint --config \"$PROJECT_DIR\"/../.swiftlint.yml\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]\nthen\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif command -v swiftlint >/dev/null 2>&1\nthen\n    swiftlint --config \"$PROJECT_DIR\"/../.swiftlint.yml\nelse\n    echo \"warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions.\"\nfi\n";
 		};
 		15831B6E27441C6E00C0E8FC /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6459,7 +6462,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\nswiftlint --config \"$PROJECT_DIR\"/../.swiftlint.yml\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]\nthen\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif command -v swiftlint >/dev/null 2>&1\nthen\n    swiftlint --config \"$PROJECT_DIR\"/../.swiftlint.yml\nelse\n    echo \"warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions.\"\nfi\n";
 		};
 		48290E3C273426B4008906AD /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6478,7 +6481,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\nswiftlint --config \"$PROJECT_DIR\"/../.swiftlint.yml\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]\nthen\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif command -v swiftlint >/dev/null 2>&1\nthen\n    swiftlint --config \"$PROJECT_DIR\"/../.swiftlint.yml\nelse\n    echo \"warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions.\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -7042,6 +7045,7 @@
 				D70FC793244EF8ED004AD838 /* Collector.swift in Sources */,
 				CFB1ED89244F908D005CC6F1 /* DataLayer.swift in Sources */,
 				CF3C1AF32473231E00A4DEE9 /* ConsentPreferencesStorage.swift in Sources */,
+				ECF1B0732D11D25D002DB84E /* TealiumConfig+PublishSettings.swift in Sources */,
 				43DE52D26A133BFF85D1845F /* AnyDecodable.swift in Sources */,
 				1519E00626E2689C000C71B4 /* ToAnyObservable.swift in Sources */,
 				D70FC7AA244F2C3D004AD838 /* AppDataConstants.swift in Sources */,

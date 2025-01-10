@@ -12,9 +12,15 @@ import Foundation
 import TealiumCore
 #endif
 
+/// This enum defines how the RemoteCommand is configured by the user.
+///
+/// The configuration will be used for mapping events data into vendor specific data.
 public enum RemoteCommandType {
+    /// A RemoteCommand that is configured via TiQ tag in the webview. The tag handles the mapping for this type.
     case webview
+    /// A RemoteCommand that is configured via JSON file hosted remotely. The RemoteCommand module handles the mapping for this type using the JSON config.
     case remote(url: String)
+    /// A RemoteCommand that is configured via JSON file bundled in the user app. The RemoteCommand module handles the mapping for this type using the JSON config.
     case local(file: String, bundle: Bundle? = nil)
 }
 

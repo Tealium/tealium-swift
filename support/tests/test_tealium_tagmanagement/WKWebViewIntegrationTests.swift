@@ -14,17 +14,15 @@ import XCTest
 
 class WKWebViewIntegrationTests: XCTestCase {
 
-    let tagManagementWKWebView: TagManagementWKWebView = TagManagementWKWebView(config: testTealiumConfig.copy, delegate: TagManagementModuleDelegate())
-    let testURL = TestTealiumHelper().newConfig().webviewURL
-    let userDefaults = UserDefaults(suiteName: #file)
-
-    var expect: XCTestExpectation!
-    var module: TagManagementModule!
     let config = TealiumConfig(account: "testAccount", profile: "testProfile", environment: "testEnv")
+    lazy var tagManagementWKWebView: TagManagementWKWebView = TagManagementWKWebView(config: config.copy, delegate: TagManagementModuleDelegate())
+    lazy var testURL = config.webviewURL
+    let userDefaults = UserDefaults(suiteName: #file)
+    var module: TagManagementModule!
     var mockTagmanagement: MockTagManagementWebView!
     static var processPool = WKProcessPool()
     static var wkConfig: WKWebViewConfiguration = {
-      let config = WKWebViewConfiguration()
+        let config = WKWebViewConfiguration()
         config.processPool = WKWebViewIntegrationTests.processPool
         config.allowsAirPlayForMediaPlayback = false
         return config
@@ -42,7 +40,7 @@ class WKWebViewIntegrationTests: XCTestCase {
     }
 
     func testEnableWebView() {
-        let expectation = self.expectation(description: "testEnableWebView")
+        let expectation = expectation(description: "testEnableWebView")
         tagManagementWKWebView.enable(webviewURL: testURL, delegates: nil, view: nil) { _, _ in
             XCTAssertNotNil(self.tagManagementWKWebView.webview, "Webview instance was unexpectedly nil")
             expectation.fulfill()
@@ -51,10 +49,9 @@ class WKWebViewIntegrationTests: XCTestCase {
     }
     
     func testEnableWebViewWithProcessPool() {
-        let config = self.config.copy
         config.webviewProcessPool = WKWebViewIntegrationTests.processPool
         let webview = TagManagementWKWebView(config: config, delegate: TagManagementModuleDelegate())
-        let expectation = self.expectation(description: "testEnableWebView")
+        let expectation = expectation(description: "testEnableWebView")
         webview.enable(webviewURL: testURL, delegates: nil, view: nil) { _, _ in
             DispatchQueue.main.async {
                 let originalAddress = Unmanaged.passUnretained(WKWebViewIntegrationTests.processPool).toOpaque()
@@ -67,7 +64,6 @@ class WKWebViewIntegrationTests: XCTestCase {
     }
     
     func testEnableWebViewWithoutProcessPool() {
-        let config = self.config.copy
         let webview = TagManagementWKWebView(config: config, delegate: TagManagementModuleDelegate())
         let expectation = self.expectation(description: "testEnableWebView")
         webview.enable(webviewURL: testURL, delegates: nil, view: nil) { _, _ in
@@ -82,7 +78,6 @@ class WKWebViewIntegrationTests: XCTestCase {
     }
     
     func testEnableWebViewWithConfig() {
-        let config = self.config.copy
         config.webviewConfig = WKWebViewIntegrationTests.wkConfig
         let webview = TagManagementWKWebView(config: config, delegate: TagManagementModuleDelegate())
         let expectation = self.expectation(description: "testEnableWebView")
@@ -101,7 +96,6 @@ class WKWebViewIntegrationTests: XCTestCase {
     }
     
     func testEnableWebViewWithoutConfig() {
-        let config = self.config.copy
         let webview = TagManagementWKWebView(config: config, delegate: TagManagementModuleDelegate())
         let expectation = self.expectation(description: "testEnableWebView")
         webview.enable(webviewURL: testURL, delegates: nil, view: nil) { _, _ in
@@ -168,7 +162,7 @@ class WKWebViewIntegrationTests: XCTestCase {
     }
 
     func testDispatchTrackCreatesTrackRequest() {
-        expect = expectation(description: "trackRequest")
+        let expectation = expectation(description: "trackRequest")
         let context = TestTealiumHelper.context(with: config)
         module = TagManagementModule(context: context, delegate: TagManagementModuleDelegate(), completion: { [weak self] _ in
             let track = TealiumTrackRequest(data: ["test_track": true])
@@ -178,16 +172,16 @@ class WKWebViewIntegrationTests: XCTestCase {
                     XCTFail("Unexpected error: \(error.localizedDescription)")
                 case .success(let success):
                     XCTAssertTrue(success)
-                    self?.expect.fulfill()
+                    expectation.fulfill()
                 }
             })
         })
         
-        wait(for: [expect], timeout: 5.0)
+        wait(for: [expectation], timeout: 5.0)
     }
 
     func testDispatchTrackCreatesBatchTrackRequest() {
-        expect = expectation(description: "batchTrackRequest")
+        let expectation = expectation(description: "batchTrackRequest")
         let context = TestTealiumHelper.context(with: config)
         module = TagManagementModule(context: context, delegate: TagManagementModuleDelegate(), completion: { [weak self] _ in
             let track = TealiumTrackRequest(data: ["test_track": true])
@@ -198,15 +192,15 @@ class WKWebViewIntegrationTests: XCTestCase {
                     XCTFail("Unexpected error: \(error.localizedDescription)")
                 case .success(let success):
                     XCTAssertTrue(success)
-                    self?.expect.fulfill()
+                    expectation.fulfill()
                 }
             })
         })
-        wait(for: [expect], timeout: 10.0)
+        wait(for: [expectation], timeout: 10.0)
     }
     
     func testModuleWithQueryParamProviderChangesUrl() {
-        expect = expectation(description: "Enable complete")
+        let expectation = expectation(description: "Enable complete")
         let config = self.config.copy
         config.collectors = [MockQueryParamsProvider.self]
         let tealium = Tealium(config: config)
@@ -215,9 +209,9 @@ class WKWebViewIntegrationTests: XCTestCase {
             for item in MockQueryParamsProvider.defaultItems {
                 XCTAssertTrue(URLComponents(url: self.module.tagManagement.url!, resolvingAgainstBaseURL: false)!.queryItems!.contains(item))
             }
-            self.expect.fulfill()
+            expectation.fulfill()
         })
-        waitForExpectations(timeout: 5)
+        wait(for: [expectation], timeout: 5.0)
     }
 
 }

@@ -32,12 +32,7 @@ class TealiumLocationTests: XCTestCase {
 
         self.locationManager = locationManager
         TealiumLocationTests.expectations = [XCTestExpectation]()
-        config = TealiumConfig(account: "tealiummobile", profile: "location", environment: "dev")
         locationModule = createModule(with: config)
-    }
-
-    override func tearDown() {
-        TealiumLocationTests.expectations = [XCTestExpectation]()
     }
 
     // MARK: Tealium Location Tests
@@ -823,140 +818,98 @@ class TealiumLocationTests: XCTestCase {
     }
 
     func testModuleCreatedGeofences() {
-        let expect = expectation(description: "Module created geofences")
         locationModule?.tealiumLocationManager = mockTealiumLocationManager
         _ = locationModule?.createdGeofences
-        TealiumQueues.mainQueue.async { [weak self] in
-            XCTAssertEqual(self?.mockTealiumLocationManager.createdGeofencesCallCount, 1)
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 2.0)
+        XCTAssertEqual(self.mockTealiumLocationManager.createdGeofencesCallCount, 1)
     }
 
-    func testModuleLatestLocation() {
-        let expect = expectation(description: "Module latest location called")
+    func testModuleGetCreatedGeofences() {
+        locationModule?.tealiumLocationManager = mockTealiumLocationManager
+        _ = locationModule?.getCreatedGeofences(completion: { _ in })
+        XCTAssertEqual(self.mockTealiumLocationManager.createdGeofencesCallCount, 1)
+    }
+
+    func testModuleLastLocation() {
         locationModule?.tealiumLocationManager = mockTealiumLocationManager
         _ = locationModule?.lastLocation
-        TealiumQueues.mainQueue.async { [weak self] in
-            XCTAssertEqual(self?.mockTealiumLocationManager.lastLocationCallCount, 1)
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 2.0)
+        XCTAssertEqual(self.mockTealiumLocationManager.lastLocationCallCount, 1)
+    }
+
+    func testModuleGetLastLocation() {
+        locationModule?.tealiumLocationManager = mockTealiumLocationManager
+        _ = locationModule?.getLastLocation(completion: { _ in })
+        XCTAssertEqual(self.mockTealiumLocationManager.lastLocationCallCount, 1)
     }
 
     func testModuleMonitoredGeofences() {
-        let expect = expectation(description: "Module latest location called")
         locationModule?.tealiumLocationManager = mockTealiumLocationManager
         _ = locationModule?.monitoredGeofences
-        TealiumQueues.mainQueue.async { [weak self] in
-            XCTAssertEqual(self?.mockTealiumLocationManager.monitoredGeofencesCallCount, 1)
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 2.0)
+        XCTAssertEqual(self.mockTealiumLocationManager.monitoredGeofencesCallCount, 1)
+    }
+
+    func testModuleGetMonitoredGeofences() {
+        locationModule?.tealiumLocationManager = mockTealiumLocationManager
+        _ = locationModule?.getMonitoredGeofences(completion: { _ in })
+        XCTAssertEqual(self.mockTealiumLocationManager.monitoredGeofencesCallCount, 1)
     }
 
     func testModuleClearMonitoredGeofences() {
-        let expect = expectation(description: "Module latest location called")
         locationModule?.tealiumLocationManager = mockTealiumLocationManager
         locationModule?.clearMonitoredGeofences()
-        TealiumQueues.mainQueue.async { [weak self] in
-            XCTAssertEqual(self?.mockTealiumLocationManager.clearMonitoredGeofencesCallCount, 1)
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 2.0)
+        XCTAssertEqual(self.mockTealiumLocationManager.clearMonitoredGeofencesCallCount, 1)
     }
 
     func testModuleDisable() {
-        let expect = expectation(description: "Module latest location called")
         locationModule?.tealiumLocationManager = mockTealiumLocationManager
         locationModule?.disable()
-        TealiumQueues.mainQueue.async { [weak self] in
-            XCTAssertEqual(self?.mockTealiumLocationManager.disableCallCount, 1)
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 2.0)
+        XCTAssertEqual(self.mockTealiumLocationManager.disableCallCount, 1)
     }
 
     func testModuleRequestAuthorization() {
-        let expect = expectation(description: "Module latest location called")
         locationModule?.tealiumLocationManager = mockTealiumLocationManager
         locationModule?.requestAuthorization()
-        TealiumQueues.mainQueue.async { [weak self] in
-            XCTAssertEqual(self?.mockTealiumLocationManager.requestAuthorizationCallCount, 1)
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 2.0)
+        XCTAssertEqual(self.mockTealiumLocationManager.requestAuthorizationCallCount, 1)
     }
 
     func testModuleRequestTemporaryFullAccuracyAuthorization() {
         if #available(iOS 14, *) {
-            let expect = expectation(description: "Module latest location called")
             let purpose = "Because I said so"
             locationModule?.tealiumLocationManager = mockTealiumLocationManager
             locationModule?.requestTemporaryFullAccuracyAuthorization(purposeKey: purpose)
-            TealiumQueues.mainQueue.async { [weak self] in
-                XCTAssertEqual(self?.mockTealiumLocationManager.requestTemporaryFullAccuracyAuthorizationCallCount, 1)
-                expect.fulfill()
-            }
-            wait(for: [expect], timeout: 2.0)
+            XCTAssertEqual(self.mockTealiumLocationManager.requestTemporaryFullAccuracyAuthorizationCallCount, 1)
         }
     }
 
     func testModuleSendGeofenceTrackingEvent() {
-        let expect = expectation(description: "Module latest location called")
         locationModule?.tealiumLocationManager = mockTealiumLocationManager
         locationModule?.sendGeofenceTrackingEvent(region: CLRegion(), triggeredTransition: "test")
-        TealiumQueues.mainQueue.async { [weak self] in
-            XCTAssertEqual(self?.mockTealiumLocationManager.sendGeofenceTrackingEventCallCount, 1)
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 2.0)
+        XCTAssertEqual(self.mockTealiumLocationManager.sendGeofenceTrackingEventCallCount, 1)
     }
 
     func testModuleStartLocationUpdates() {
-        let expect = expectation(description: "Module latest location called")
         locationModule?.tealiumLocationManager = mockTealiumLocationManager
         locationModule?.startLocationUpdates()
-        TealiumQueues.mainQueue.async { [weak self] in
-            XCTAssertEqual(self?.mockTealiumLocationManager.startLocationUpdatesCallCount, 1)
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 2.0)
+        XCTAssertEqual(self.mockTealiumLocationManager.startLocationUpdatesCallCount, 1)
     }
 
     func testModuleStartMonitoring() {
-        let expect = expectation(description: "Module latest location called")
         locationModule?.tealiumLocationManager = mockTealiumLocationManager
         let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0), radius: CLLocationDistance(100.0), identifier: "Good_Geofence")
         locationModule?.startMonitoring(geofences: [region])
-        TealiumQueues.mainQueue.async { [weak self] in
-            XCTAssertEqual(self?.mockTealiumLocationManager.startMonitoringCallCount, 1)
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 2.0)
+        XCTAssertEqual(self.mockTealiumLocationManager.startMonitoringCallCount, 1)
     }
 
     func testModuleStopLocationUpdates() {
-        let expect = expectation(description: "Module latest location called")
         locationModule?.tealiumLocationManager = mockTealiumLocationManager
         locationModule?.stopLocationUpdates()
-        TealiumQueues.mainQueue.async { [weak self] in
-            XCTAssertEqual(self?.mockTealiumLocationManager.stopLocationUpdatesCallCount, 1)
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 2.0)
+        XCTAssertEqual(self.mockTealiumLocationManager.stopLocationUpdatesCallCount, 1)
     }
 
     func testModuleStopMonitoring() {
-        let expect = expectation(description: "Module latest location called")
         locationModule?.tealiumLocationManager = mockTealiumLocationManager
         let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0), radius: CLLocationDistance(100.0), identifier: "Good_Geofence")
         locationModule?.stopMonitoring(geofences: [region])
-        TealiumQueues.mainQueue.async { [weak self] in
-            XCTAssertEqual(self?.mockTealiumLocationManager.stopMonitoringCallCount, 1)
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 2.0)
+        XCTAssertEqual(self.mockTealiumLocationManager.stopMonitoringCallCount, 1)
     }
 
 }
