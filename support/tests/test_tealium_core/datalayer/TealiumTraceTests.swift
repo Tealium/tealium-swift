@@ -119,7 +119,6 @@ class TealiumTraceTests: XCTestCase {
                 TealiumTraceTests.expectation.fulfill()
             }
         }
-
         wait(for: [TealiumTraceTests.expectation], timeout: 3.0)
     }
 
@@ -203,8 +202,25 @@ class TealiumTraceTests: XCTestCase {
                 TealiumTraceTests.expectation.fulfill()
             }
         }
-
         wait(for: [TealiumTraceTests.expectation], timeout: 3.0)
+    }
+    
+    func testHandleDeepLinkSendsDeepLinkEventIfEnabled() {
+        let deepLinkEventSent = expectation(description: "Deep link event was sent")
+        let config = defaultTealiumConfig
+        config.dispatchers = [Dispatchers.Collect]
+        config.batchingEnabled = false
+        config.sendDeepLinkEvent = true
+        config.dispatchListeners = [MockDispatchListener(trackHandler: {request in
+            if let event = request.event, event == TealiumKey.deepLink {
+                deepLinkEventSent.fulfill()
+            }
+        })]
+        tealiumForConfig(config: config) { tealium in
+            let link = URL(string: "https://tealium.com?tealium_trace_id=\(testTraceId)&utm_param_1=hello&utm_param_2=test")!
+            tealium.handleDeepLink(link)
+        }
+        wait(for: [deepLinkEventSent], timeout: 3.0)
     }
     
     func testHandleDeepLinkWithReferrerUrl() {
@@ -250,6 +266,18 @@ class TealiumTraceTests: XCTestCase {
     }
 }
 
+class MockDispatchListener: DispatchListener {
+    let trackHandler: (TealiumTrackRequest) -> Void
+    
+    init(trackHandler: @escaping (TealiumTrackRequest) -> Void) {
+        self.trackHandler = trackHandler
+    }
+    
+    func willTrack(request: TealiumRequest) {
+        trackHandler(request as! TealiumTrackRequest)
+    }
+}
+
 extension TealiumTraceTests: DispatchListener {
     func willTrack(request: TealiumRequest) {
         let request = request as! TealiumTrackRequest
@@ -260,6 +288,11 @@ extension TealiumTraceTests: DispatchListener {
 }
 
 class DummyDataManagerTrace: DataLayerManagerProtocol {
+    @ToAnyObservable(TealiumPublisher())
+    var onDataUpdated: TealiumObservable<[String : Any]>
+    
+    @ToAnyObservable(TealiumPublisher())
+    var onDataRemoved: TealiumObservable<[String]>
 
     var traceId: String? {
         willSet {
@@ -287,13 +320,15 @@ class DummyDataManagerTrace: DataLayerManagerProtocol {
     var isTagManagementEnabled: Bool = true
 
     func add(data: [String: Any], expiry: Expiry) {
-
+        data.forEach { (key: String, value: Any) in
+            add(key: key, value: value, expiry: expiry)
+        }
     }
 
     func add(key: String, value: Any, expiry: Expiry) {
         all[key] = value
         switch expiry {
-        case .session:
+        case .session, .forever:
             return
         default:
             XCTFail()
@@ -315,7 +350,7 @@ class DummyDataManagerTrace: DataLayerManagerProtocol {
     }
 
     func deleteAll() {
-
+        all.removeAll()
     }
 
     func leaveTrace() {
@@ -333,5 +368,4 @@ class DummyDataManagerTrace: DataLayerManagerProtocol {
     func startNewSession(with sessionStarter: SessionStarterProtocol) {
 
     }
-
 }

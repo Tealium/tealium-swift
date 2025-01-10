@@ -26,7 +26,7 @@ jobs:
           - TealiumAutotracking
     steps:
       - name: Setup Xcode version
-        uses: maxim-lobanov/setup-xcode@v1.4.1
+        uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: latest-stable
       - uses: actions/checkout@v2
@@ -58,7 +58,7 @@ jobs:
           - TealiumVisitorService
     steps:
       - name: Setup Xcode version
-        uses: maxim-lobanov/setup-xcode@v1.4.1
+        uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: latest-stable
       - uses: actions/checkout@v2
@@ -109,7 +109,7 @@ jobs:
       working-directory: ./samples/TealiumSwiftExample
     steps:
       - name: Setup Xcode version
-        uses: maxim-lobanov/setup-xcode@v1.4.1
+        uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: latest-stable
       - uses: actions/checkout@v2
@@ -132,7 +132,7 @@ jobs:
       working-directory: ./samples/TealiumSwiftExample
     steps:
       - name: Setup Xcode version
-        uses: maxim-lobanov/setup-xcode@v1.4.1
+        uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: latest-stable
       - uses: actions/checkout@v2
@@ -155,7 +155,7 @@ jobs:
       working-directory: ./samples/ConsentManagerDemo
     steps:
       - name: Setup Xcode version
-        uses: maxim-lobanov/setup-xcode@v1.4.1
+        uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: latest-stable
       - uses: actions/checkout@v2
@@ -178,7 +178,7 @@ jobs:
       working-directory: ./samples/VisitorServiceDemo
     steps:
       - name: Setup Xcode version
-        uses: maxim-lobanov/setup-xcode@v1.4.1
+        uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: latest-stable
       - uses: actions/checkout@v2

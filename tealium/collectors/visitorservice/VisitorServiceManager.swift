@@ -19,7 +19,7 @@ public enum VisitorServiceStatus: Int {
     case blocked = 1
 }
 
-public protocol VisitorServiceManagerProtocol {
+public protocol VisitorServiceManagerProtocol: AnyObject {
     var currentVisitorId: String? { get set }
     var cachedProfile: TealiumVisitorProfile? { get }
     var lastFetch: Date? { get }
