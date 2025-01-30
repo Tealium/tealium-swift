@@ -367,7 +367,9 @@ extension ModulesManager: ModuleDelegate {
     }
 
     public func requestDequeue(reason: String) {
-        self.dispatchManager?.handleDequeueRequest(reason: reason)
+        TealiumQueues.backgroundSerialQueue.async {
+            self.dispatchManager?.handleDequeueRequest(reason: reason)
+        }
     }
 
     public func processRemoteCommandRequest(_ request: TealiumRequest) {
