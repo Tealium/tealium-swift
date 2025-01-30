@@ -13,7 +13,7 @@ import Network
 #if !os(watchOS)
 class TealiumNWPathMonitor: ConnectivityMonitorProtocol {
 
-    var currentConnnectionType: String? {
+    var currentConnectionType: String? {
         guard isConnected == true else {
             return ConnectivityKey.connectionTypeNone
         }

@@ -11,7 +11,7 @@ protocol ConnectivityMonitorProtocol {
     init(config: TealiumConfig,
          completion: @escaping ((Result<Bool, Error>) -> Void))
     var config: TealiumConfig { get set }
-    var currentConnnectionType: String? { get }
+    var currentConnectionType: String? { get }
     var isConnected: Bool? { get }
     var isExpensive: Bool? { get }
     var isCellular: Bool? { get }
@@ -24,7 +24,7 @@ public class ConnectivityModule: Collector, ConnectivityDelegate {
     public var id: String = ModuleNames.connectivity
 
     public var data: [String: Any]? {
-        if let connectionType = self.connectivityMonitor?.currentConnnectionType {
+        if let connectionType = self.connectivityMonitor?.currentConnectionType {
             return [ConnectivityKey.connectionType: connectionType,
             ]
         } else {
