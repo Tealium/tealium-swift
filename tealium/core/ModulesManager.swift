@@ -182,48 +182,59 @@ public class ModulesManager {
         }
     }
 
-    func sendTrack(_ request: TealiumTrackRequest) {
+    private func refreshSettings() {
         if self.config.shouldUseRemotePublishSettings == true {
             self.remotePublishSettingsRetriever?.refresh()
         }
-        guard config.isEnabled != false else { return }
+    }
+
+    private func enrichRequest(_ request: TealiumTrackRequest) -> TealiumTrackRequest {
         let requestData = gatherTrackData(for: request.trackDictionary)
         let newRequest = TealiumTrackRequest(data: requestData)
+        return newRequest
+    }
+
+    private func updateCachedTrackData(_ request: TealiumTrackRequest) {
+        cachedTrackData = request.trackDictionary
+    }
+
+    func sendTrack(_ request: TealiumTrackRequest) {
+        guard config.isEnabled != false else { return }
+        let newRequest = enrichRequest(request)
         dispatchManager?.processTrack(newRequest)
-        cachedTrackData = newRequest.trackDictionary
+        updateCachedTrackData(newRequest)
     }
 
     func allTrackData(retrieveCachedData: Bool) -> [String: Any] {
         if retrieveCachedData, let cachedData = self.cachedTrackData {
             return cachedData
         }
-        let data = gatherTrackData(for: TealiumTrackRequest(data: [:]).trackDictionary)
-        var request = TealiumTrackRequest(data: data)
+        var request = enrichRequest(TealiumTrackRequest(data: [:]))
         _ = dispatchManager?.checkShouldQueue(request: &request)
-        cachedTrackData = request.trackDictionary
+        updateCachedTrackData(request)
         return request.trackDictionary
     }
 
     func gatherTrackData(for data: [String: Any]?) -> [String: Any] {
-        let allData = Atomic(value: [String: Any]())
+        var allData = [String: Any]()
         self.collectors.forEach {
             guard let data = $0.data else {
                 return
             }
-            allData.value += data
+            allData += data
         }
 
-        allData.value[TealiumDataKey.enabledModules] = modules.sorted { $0.id < $1.id }.map { $0.id }
+        allData[TealiumDataKey.enabledModules] = modules.sorted { $0.id < $1.id }.map { $0.id }
 
         sessionManager?.refreshSession()
         if let dataLayer = dataLayerManager?.all {
-            allData.value += dataLayer
+            allData += dataLayer
         }
 
         if let data = data {
-            allData.value += data
+            allData += data
         }
-        return allData.value
+        return allData
     }
 
     func disableModule(id: String) {
