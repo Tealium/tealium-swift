@@ -199,6 +199,7 @@ public class ModulesManager {
     }
 
     func sendTrack(_ request: TealiumTrackRequest) {
+        refreshSettings()
         guard config.isEnabled != false else { return }
         let newRequest = enrichRequest(request)
         dispatchManager?.processTrack(newRequest)
