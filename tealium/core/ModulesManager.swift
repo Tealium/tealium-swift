@@ -198,12 +198,16 @@ public class ModulesManager {
         cachedTrackData = request.trackDictionary
     }
 
-    func sendTrack(_ request: TealiumTrackRequest) {
-        refreshSettings()
-        guard config.isEnabled != false else { return }
+    private func enrichAndTrack(_ request: TealiumTrackRequest) {
         let newRequest = enrichRequest(request)
         dispatchManager?.processTrack(newRequest)
         updateCachedTrackData(newRequest)
+    }
+
+    func sendTrack(_ request: TealiumTrackRequest) {
+        refreshSettings()
+        guard config.isEnabled != false else { return }
+        enrichAndTrack(request)
     }
 
     func allTrackData(retrieveCachedData: Bool) -> [String: Any] {
