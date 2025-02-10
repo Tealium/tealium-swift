@@ -10,7 +10,7 @@ import XCTest
 @testable import TealiumCore
 
 class NoDelayRetriever<T: Codable>: ResourceRetriever<T> {
-    override func delayBlock(count: Int, _ block: @escaping () -> Void) {
+    override func delayBlock(delayMultiplier: Double, _ block: @escaping () -> Void) {
         block()
     }
 }
