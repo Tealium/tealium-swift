@@ -73,13 +73,19 @@ public class ResourceRetriever<Resource: Codable> {
         }
     }
 
+    func delayBlock(count: Int, _ block: @escaping () -> Void) {
+        TealiumQueues.backgroundSerialQueue.asyncAfter(deadline: .now() + retryDelay * Double(count)) {
+            block()
+        }
+    }
+
     private func sendRetryableRequest(_ request: URLRequest, retryCount: Int = 0, completion: @escaping (Result<Resource, TealiumResourceRetrieverError>) -> Void) {
         sendRequest(request) { [weak self] result in
             guard let self = self else { return }
             if case .failure(let error) = result {
                 if self.isRetryableError(error) && retryCount < self.maxRetries {
                     let newCount = retryCount + 1
-                    TealiumQueues.backgroundSerialQueue.asyncAfter(deadline: .now() + retryDelay * Double(newCount)) { [weak self] in
+                    self.delayBlock(count: newCount) { [weak self] in
                         self?.sendRetryableRequest(request, retryCount: newCount, completion: completion)
                     }
                     return

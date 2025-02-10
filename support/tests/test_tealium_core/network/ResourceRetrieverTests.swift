@@ -9,6 +9,12 @@
 import XCTest
 @testable import TealiumCore
 
+class NoDelayRetriever<T: Codable>: ResourceRetriever<T> {
+    override func delayBlock(count: Int, _ block: @escaping () -> Void) {
+        block()
+    }
+}
+
 final class ResourceRetrieverTests: XCTestCase {
 
     struct CustomObject: Codable, EtagResource, Equatable {
@@ -18,7 +24,7 @@ final class ResourceRetrieverTests: XCTestCase {
     }
     let mockUrlSession = MockURLSession()
     func getResourceRetriever() -> ResourceRetriever<CustomObject> {
-        ResourceRetriever(urlSession: mockUrlSession) { data, etag in
+        NoDelayRetriever(urlSession: mockUrlSession) { data, etag in
             var obj = try? JSONDecoder().decode(CustomObject.self, from: data)
             obj?.etag = etag
             return obj
@@ -122,7 +128,6 @@ final class ResourceRetrieverTests: XCTestCase {
         let completionCalledWithError = expectation(description: "Completion is called with error")
         let requestSent5Times = expectation(description: "Request sent 5 times")
         requestSent5Times.expectedFulfillmentCount = 6
-        resourceRetriever.retryDelay = 0
         mockUrlSession.result = .success((HTTPURLResponse(url: URL(string:"url")!,
                                                           statusCode: 408,
                                                           httpVersion: "1.1",
