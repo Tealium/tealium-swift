@@ -13,6 +13,7 @@ import TealiumCore
 public class VisitorServiceModule: Collector, DispatchListener {
 
     public let id: String = ModuleNames.visitorservice
+    public let delayBlock: ((@escaping () -> Void)) -> Void
     public var config: TealiumConfig
     public var data: [String: Any]?
     var diskStorage: TealiumDiskStorageProtocol!
@@ -37,7 +38,11 @@ public class VisitorServiceModule: Collector, DispatchListener {
                                      delegate: ModuleDelegate?,
                                      diskStorage: TealiumDiskStorageProtocol?,
                                      completion: ModuleCompletion) {
-        self.init(context: context, delegate: delegate, diskStorage: diskStorage, visitorServiceManager: nil)
+        self.init(context: context, delegate: delegate, diskStorage: diskStorage, visitorServiceManager: nil) { block in
+            TealiumQueues.backgroundSerialQueue.asyncAfter(deadline: .now() + 2.1) {
+                block()
+            }
+        }
         completion((.success(true), nil))
     }
 
@@ -47,8 +52,10 @@ public class VisitorServiceModule: Collector, DispatchListener {
     init(context: TealiumContext,
          delegate: ModuleDelegate?,
          diskStorage: TealiumDiskStorageProtocol?,
-         visitorServiceManager: VisitorServiceManagerProtocol?) {
+         visitorServiceManager: VisitorServiceManagerProtocol?,
+         delayBlock: @escaping ((@escaping () -> Void)) -> Void) {
         self.config = context.config
+        self.delayBlock = delayBlock
         self.diskStorage = diskStorage ?? TealiumDiskStorage(config: config, forModule: ModuleNames.visitorservice.lowercased(), isCritical: false)
         self.visitorServiceManager = visitorServiceManager ?? VisitorServiceManager(config: config,
                                                                                     delegate: config.visitorServiceDelegate,
@@ -81,7 +88,7 @@ public class VisitorServiceModule: Collector, DispatchListener {
 
     func retrieveProfileDelayed(visitorId: String, _ completion: (() -> Void)? = nil) {
         // wait before triggering refresh, to give event time to process
-        TealiumQueues.backgroundSerialQueue.asyncAfter(deadline: .now() + 2.1) { [weak self] in
+        delayBlock { [weak self] in
             guard visitorId == self?.lastVisitorId else { return }
             self?.retrieveProfile(visitorId: visitorId)
             completion?()
