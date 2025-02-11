@@ -5,10 +5,9 @@
 #######################################################
 
 # variable declarations
-BUILD_PATH="build"
 XCFRAMEWORK_PATH="tealium-xcframeworks"
 ZIP_PATH="tealium.xcframework.zip"
-TEAM_NAME=XC939GDC9P
+CERTIFICATE="Apple Distribution: Tealium (XC939GDC9P)"
 
 # zip all the xcframeworks
 function zip_xcframeworks {
@@ -22,10 +21,10 @@ function zip_xcframeworks {
 surmagic xcf
 
 # Code Sign
-for frameworkname in $XCFRAMEWORK_PATH/*.xcframework; do
+for frameworkname in "$XCFRAMEWORK_PATH"/*.xcframework; do
     echo "Codesigning $frameworkname"
-    codesign --timestamp -s $TEAM_NAME $frameworkname --verbose
-    codesign -v $frameworkname --verbose
+    codesign --timestamp -s "$CERTIFICATE" "$frameworkname" --verbose
+    codesign -v "$frameworkname" --verbose
 done
 
 zip_xcframeworks

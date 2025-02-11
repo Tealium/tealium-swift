@@ -1,6 +1,6 @@
+#!/bin/bash
+
 # A script to verify that the repo is up to date and the versions are correct and then runs the pod trunk push command
-
-
 
 constants=$(<tealium/core/TealiumConstants.swift)
 regex="^.*public static let libraryVersion \= \"([0-9\.]*)\""
