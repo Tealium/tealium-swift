@@ -16,50 +16,39 @@ class VisitorServiceModuleTests: XCTestCase {
     let mockVisitorServiceManager = MockTealiumVisitorServiceManager()
     let config = TealiumConfig(account: "testAccount", profile: "testProfile", environment: "testEnv")
     lazy var context = TestTealiumHelper.context(with: config)
+    lazy var module = VisitorServiceModule(context: context, delegate: self, diskStorage: mockDiskStorage, visitorServiceManager: mockVisitorServiceManager) { block in
+        block()
+    }
 
     func testRequestVisitorProfileRun() {
         let expect = expectation(description: "testRequestVisitorProfileRunWhenFirstEventSentTrue")
-        let module = VisitorServiceModule(context: context, delegate: self, diskStorage: mockDiskStorage, visitorServiceManager: mockVisitorServiceManager)
         module.retrieveProfileDelayed(visitorId: self.mockVisitorServiceManager.currentVisitorId!) {
             XCTAssertEqual(1, self.mockVisitorServiceManager.requestVisitorProfileCount)
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 10.0)
+        waitForExpectations(timeout: 0.1)
     }
 
     func testRequestVisitorProfileNotRun() {
         let expect = expectation(description: "visitor profile not requested when visitor id is different")
         expect.isInverted = true
-        let module = VisitorServiceModule(context: context, delegate: self, diskStorage: mockDiskStorage, visitorServiceManager: mockVisitorServiceManager)
         module.retrieveProfileDelayed(visitorId: self.mockVisitorServiceManager.currentVisitorId! + "buster") {
             expect.fulfill()
         }
-        wait(for: [expect], timeout: 5.0)
+        waitForExpectations(timeout: 0.1)
     }
 
     func testBatchTrackRetreiveProfileExecuted() {
-        let expect = expectation(description: "testBatchTrackRetreiveProfileExecuted")
-        let module = VisitorServiceModule(context: context, delegate: self, diskStorage: mockDiskStorage, visitorServiceManager: mockVisitorServiceManager)
         let trackRequest = TealiumTrackRequest(data: ["hello": "world", "tealium_visitor_id": self.mockVisitorServiceManager.currentVisitorId!])
         let batchTrackRequest = TealiumBatchTrackRequest(trackRequests: [trackRequest])
         module.willTrack(request: batchTrackRequest)
-        TealiumQueues.backgroundSerialQueue.asyncAfter(deadline: .now() + 3.0) {
-            XCTAssertEqual(1, self.mockVisitorServiceManager.requestVisitorProfileCount)
-            expect.fulfill()
-        }
-        wait(for: [expect], timeout: 12.0)
+        XCTAssertEqual(1, self.mockVisitorServiceManager.requestVisitorProfileCount)
     }
 
     func testTrackRetreiveProfileExecuted() {
-        let expect = expectation(description: "testTrackRetreiveProfileExecuted")
-        let module = VisitorServiceModule(context: context, delegate: self, diskStorage: mockDiskStorage, visitorServiceManager: mockVisitorServiceManager)
-            let trackRequest = TealiumTrackRequest(data: ["hello": "world", "tealium_visitor_id": self.mockVisitorServiceManager.currentVisitorId!])
-            module.willTrack(request: trackRequest)
-            TealiumQueues.backgroundSerialQueue.asyncAfter(deadline: .now() + 3.0) {
-                    XCTAssertEqual(1, self.mockVisitorServiceManager.requestVisitorProfileCount)
-                    expect.fulfill()
-            }
-        wait(for: [expect], timeout: 12)
+        let trackRequest = TealiumTrackRequest(data: ["hello": "world", "tealium_visitor_id": self.mockVisitorServiceManager.currentVisitorId!])
+        module.willTrack(request: trackRequest)
+        XCTAssertEqual(1, self.mockVisitorServiceManager.requestVisitorProfileCount)
     }
 
     func testIntervalSince() {
@@ -67,8 +56,6 @@ class VisitorServiceModuleTests: XCTestCase {
 
         var mockedLastFetch = timeTraveler.travel(by: (60 * 5 + 1) * -1)
         var expectedResult: Int64 = 301_000
-        
-        let module = VisitorServiceModule(context: context, delegate: self, diskStorage: mockDiskStorage, visitorServiceManager: mockVisitorServiceManager)
 
         var actualResult = module.intervalSince(lastFetch: mockedLastFetch, timeTraveler.generateDate())
 
@@ -84,8 +71,6 @@ class VisitorServiceModuleTests: XCTestCase {
     }
 
     func testShouldFetch() {
-        
-        let module = VisitorServiceModule(context: context, delegate: self, diskStorage: mockDiskStorage, visitorServiceManager: mockVisitorServiceManager)
         var result = module.shouldFetch(basedOn: Date(), interval: 300_000, environment: "dev")
         XCTAssertTrue(result)
 
@@ -106,8 +91,6 @@ class VisitorServiceModuleTests: XCTestCase {
         let timeTraveler = TimeTraveler()
 
         var tealConfig = TealiumConfig(account: "test", profile: "test", environment: "dev")
-        
-        let module = VisitorServiceModule(context: context, delegate: self, diskStorage: mockDiskStorage, visitorServiceManager: mockVisitorServiceManager)
         module.config = tealConfig
         mockVisitorServiceManager.lastFetch = timeTraveler.travel(by: (60 * 2 + 1) * -1)
         XCTAssertTrue(module.shouldFetchVisitorProfile)

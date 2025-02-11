@@ -12,7 +12,7 @@ import SystemConfiguration
 #endif
 
 class LegacyConnectivityMonitor: ConnectivityMonitorProtocol {
-    var currentConnnectionType: String? {
+    var currentConnectionType: String? {
         #if os(watchOS)
         return TealiumValue.unknown
         #else
@@ -30,7 +30,7 @@ class LegacyConnectivityMonitor: ConnectivityMonitorProtocol {
         return false
         #else
         let connected = isConnectedToNetwork()
-        if config.wifiOnlySending == true, currentConnnectionType != ConnectivityKey.connectionTypeWifi {
+        if config.wifiOnlySending == true, currentConnectionType != ConnectivityKey.connectionTypeWifi {
             return false
         } else {
             return connected
@@ -43,7 +43,7 @@ class LegacyConnectivityMonitor: ConnectivityMonitorProtocol {
     }
 
     var isCellular: Bool? {
-        currentConnnectionType == ConnectivityKey.connectionTypeCell
+        currentConnectionType == ConnectivityKey.connectionTypeCell
     }
 
     var isWired: Bool? {

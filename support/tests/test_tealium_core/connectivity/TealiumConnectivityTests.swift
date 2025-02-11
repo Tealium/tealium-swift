@@ -236,7 +236,7 @@ class MockConnectivityMonitorIsConnectedWifi: ConnectivityMonitorProtocol {
         self.config = config
     }
 
-    var currentConnnectionType: String? = "wifi"
+    var currentConnectionType: String? = "wifi"
     
     var isConnected: Bool? = true
     
@@ -260,7 +260,7 @@ class MockConnectivityMonitorIsConnectedWired: ConnectivityMonitorProtocol {
         self.config = config
     }
 
-    var currentConnnectionType: String? = "wired"
+    var currentConnectionType: String? = "wired"
     
     var isConnected: Bool? = true
     
@@ -285,7 +285,7 @@ class MockConnectivityMonitorIsConnectedCellular: ConnectivityMonitorProtocol {
         self.config = config
     }
 
-    var currentConnnectionType: String? = "cellular"
+    var currentConnectionType: String? = "cellular"
     
     var isConnected: Bool? = true
     
@@ -310,7 +310,7 @@ class MockConnectivityMonitorNotConnected: ConnectivityMonitorProtocol {
         self.config = config
     }
 
-    var currentConnnectionType: String? = "none"
+    var currentConnectionType: String? = "none"
     
     var isConnected: Bool? = false
     
