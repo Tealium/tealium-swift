@@ -7,6 +7,7 @@
 
 import Foundation
 @testable import TealiumLocation
+import TealiumCore
 import XCTest
 
 class MockLocationDelegate: LocationDelegate {
@@ -27,6 +28,10 @@ class MockLocationDelegate: LocationDelegate {
     func didExitGeofence(_ data: [String: Any]) {
         locationData = data
         didExit(data)
+        let expected: [String: Any] = [TealiumDataKey.event: LocationKey.exited,
+                                       TealiumDataKey.geofenceName: "testRegion",
+                                       TealiumDataKey.geofenceTransition: LocationKey.exited]
+        XCTAssertEqual(NSDictionary(dictionary: data), NSDictionary(dictionary: expected))
     }
 
 }

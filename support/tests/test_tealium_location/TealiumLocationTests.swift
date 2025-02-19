@@ -114,7 +114,6 @@ class TealiumLocationTests: XCTestCase {
     }
 
     func testLastLocationNilUponInit() throws {
-        locationManager.locationDelegate = self
         mockManager.delegate = locationManager
         XCTAssertNil(locationManager.lastLocation)
     }
@@ -332,12 +331,7 @@ class TealiumLocationTests: XCTestCase {
                                            TealiumDataKey.locationTimestamp: "2020-01-15 06:31:00 +0000",
                                            TealiumDataKey.locationSpeed: "40.0",
                                            TealiumDataKey.locationAccuracyExtended: "reduced"]
-            XCTAssertEqual(expected.keys.sorted(), result.keys.sorted())
-            result.forEach {
-                guard let value = $0.value as? String,
-                      let expected = expected[$0.key] as? String else { return }
-                XCTAssertEqual(expected, value)
-            }
+            XCTAssertEqual(NSDictionary(dictionary: result), NSDictionary(dictionary: expected))
         }
     }
 
@@ -383,12 +377,7 @@ class TealiumLocationTests: XCTestCase {
             let expected: [String: Any] = [TealiumDataKey.event: LocationKey.exited,
                                            TealiumDataKey.geofenceName: "testRegion",
                                            TealiumDataKey.geofenceTransition: LocationKey.exited]
-            XCTAssertEqual(expected.keys, result.keys)
-            result.forEach {
-                guard let value = $0.value as? String,
-                      let expected = expected[$0.key] as? String else { return }
-                XCTAssertEqual(expected, value)
-            }
+            XCTAssertEqual(NSDictionary(dictionary: result), NSDictionary(dictionary: expected))
         }
     }
 
@@ -494,7 +483,8 @@ class TealiumLocationTests: XCTestCase {
     }
 
     func testLastLocationPopulated() {
-        locationManager.locationDelegate = self
+        let locationDelegate = MockLocationDelegate()
+        locationManager.locationDelegate = locationDelegate
         mockManager.delegate = locationManager
 
         let coordinate = CLLocationCoordinate2D(latitude: 37.3317, longitude: -122.032_508_6)
@@ -780,45 +770,4 @@ class TealiumLocationTests: XCTestCase {
         XCTAssertEqual(self.mockTealiumLocationManager.stopMonitoringCallCount, 1)
     }
 
-}
-
-extension TealiumLocationTests: LocationDelegate {
-
-    func didEnterGeofence(_ data: [String: Any]) {
-        let tz = TimeZone.current
-        var timestamp = ""
-        if tz.identifier.contains("London") {
-            timestamp = "2020-01-15 13:31:00 +0000"
-        } else if tz.identifier.contains("Phoenix") {
-            timestamp = "2020-01-15 05:31:00 +0000"
-        } else {
-            timestamp = "2020-01-15 06:31:00 +0000"
-        }
-        let expected: [String: Any] = [TealiumDataKey.event: LocationKey.entered,
-                                       TealiumDataKey.locationAccuracy: "reduced",
-                                       TealiumDataKey.geofenceName: "testRegion",
-                                       TealiumDataKey.geofenceTransition: LocationKey.entered,
-                                       TealiumDataKey.deviceLatitude: "37.3317",
-                                       TealiumDataKey.deviceLongitude: "-122.0325086",
-                                       TealiumDataKey.locationTimestamp: timestamp,
-                                       TealiumDataKey.locationSpeed: "40.0"]
-        XCTAssertEqual(expected.keys.sorted(), data.keys.sorted())
-        data.forEach {
-            guard let value = $0.value as? String,
-                  let expected = expected[$0.key] as? String else { return }
-            XCTAssertEqual(expected, value)
-        }
-    }
-
-    func didExitGeofence(_ data: [String: Any]) {
-        let expected: [String: Any] = [TealiumDataKey.event: LocationKey.exited,
-                                       TealiumDataKey.geofenceName: "testRegion",
-                                       TealiumDataKey.geofenceTransition: LocationKey.exited]
-        XCTAssertEqual(expected.keys, data.keys)
-        data.forEach {
-            guard let value = $0.value as? String,
-                  let expected = expected[$0.key] as? String else { return }
-            XCTAssertEqual(expected, value)
-        }
-    }
 }
