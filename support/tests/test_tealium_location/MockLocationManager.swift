@@ -31,14 +31,12 @@ class MockLocationManager: LocationManagerProtocol {
     var monitoredRegions: Set<CLRegion> = Set<CLRegion>()
     var pausesLocationUpdatesAutomatically: Bool = true
     var allowsBackgroundLocationUpdates: Bool = false
-    init?(config: TealiumConfig, enableServices: Bool = false, delegateClass: CLLocationManagerDelegate?) {
-
+    init?(config: TealiumConfig, delegateClass: CLLocationManagerDelegate?) {
         self.distanceFilter = config.updateDistance
         guard distanceFilter > 0.0 else {
             return nil
         }
         self.delegate = delegateClass
-        MockLocationManager.enableLocationServices = enableServices
     }
 
     var accuracyAuthorization: CLAccuracyAuthorization {

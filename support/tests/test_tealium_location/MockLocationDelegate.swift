@@ -12,24 +12,21 @@ import XCTest
 class MockLocationDelegate: LocationDelegate {
 
     var locationData: [String: Any]?
-    var asyncExpectation: XCTestExpectation?
+    let didEnter: ([String: Any]) -> Void
+    let didExit: ([String: Any]) -> Void
+    init(didEnter: @escaping ([String: Any]) -> Void = { _ in }, didExit: @escaping ([String: Any]) -> Void = { _ in }) {
+        self.didExit = didExit
+        self.didEnter = didEnter
+    }
 
     func didEnterGeofence(_ data: [String: Any]) {
-        guard let expectation = asyncExpectation else {
-            XCTFail("MockLocationDelegate was not setup correctly. Missing XCTExpectation reference")
-            return
-        }
         locationData = data
-        expectation.fulfill()
+        didEnter(data)
     }
 
     func didExitGeofence(_ data: [String: Any]) {
-        guard let expectation = asyncExpectation else {
-            XCTFail("MockLocationDelegate was not setup correctly. Missing XCTExpectation reference")
-            return
-        }
         locationData = data
-        expectation.fulfill()
+        didExit(data)
     }
 
 }

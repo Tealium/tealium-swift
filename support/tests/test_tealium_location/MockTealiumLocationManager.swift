@@ -9,7 +9,7 @@ import CoreLocation
 import Foundation
 @testable import TealiumLocation
 
-class MockTealiumLocaitonManager: TealiumLocationManagerProtocol {
+class MockTealiumLocationManager: TealiumLocationManagerProtocol {
 
     var createdGeofencesCallCount = 0
     var isAuthorizedCallCount = 0

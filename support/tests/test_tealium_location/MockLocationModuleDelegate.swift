@@ -12,15 +12,14 @@ import XCTest
 class MockLocationModuleDelegate: ModuleDelegate {
 
     var trackRequest: TealiumTrackRequest?
-    var asyncExpectation: XCTestExpectation?
+    let didRequestTrack: (TealiumTrackRequest) -> Void
+    init(didRequestTrack: @escaping (TealiumTrackRequest) -> Void) {
+        self.didRequestTrack = didRequestTrack
+    }
 
     func requestTrack(_ track: TealiumTrackRequest) {
-        guard let expectation = asyncExpectation else {
-            XCTFail("MockLocationDelegate was not setup correctly. Missing XCTExpectation reference")
-            return
-        }
         trackRequest = track
-        expectation.fulfill()
+        didRequestTrack(track)
     }
 
     func requestDequeue(reason: String) {

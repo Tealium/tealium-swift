@@ -14,7 +14,7 @@ class MockLocationDiskStorage: TealiumDiskStorageProtocol {
     var locationData: TealiumLocationManager!
 
     init(config: TealiumConfig) {
-        locationData = TealiumLocationManager(config: config)
+        locationData = TealiumLocationManager(config: config, diskStorage: self)
     }
 
     func save(_ data: AnyCodable, completion: TealiumCompletion?) {
