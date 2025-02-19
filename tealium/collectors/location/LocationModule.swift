@@ -52,7 +52,12 @@ public class LocationModule: Collector {
             guard let self = self else {
                 return
             }
-            self.tealiumLocationManager = TealiumLocationManager(config: self.config, locationDelegate: self)
+            let storage = diskStorage ?? TealiumDiskStorage(config: config,
+                                                            forModule: ModuleNames.location.lowercased(),
+                                                            isCritical: false)
+            self.tealiumLocationManager = TealiumLocationManager(config: self.config,
+                                                                 diskStorage: storage,
+                                                                 locationDelegate: self)
         }
     }
 

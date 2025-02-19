@@ -12,8 +12,7 @@ import Foundation
 import TealiumCore
 #endif
 
-public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, TealiumLocationManagerProtocol {
-
+public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, TealiumLocationManagerProtocol, GeofenceProviderDelegate {
     var config: TealiumConfig
     var logger: TealiumLoggerProtocol? {
         config.logger
@@ -28,33 +27,26 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     weak var locationDelegate: LocationDelegate?
     public var locationAccuracy: String = LocationKey.highAccuracy
     private var _lastLocation: CLLocation?
-
+    let geofenceProvider: GeofenceProvider
     @ToAnyObservable<TealiumReplaySubject>(TealiumReplaySubject())
     var onReady: TealiumObservable<Void>
 
     init(config: TealiumConfig,
          bundle: Bundle = Bundle.main,
+         diskStorage: TealiumDiskStorageProtocol,
          locationDelegate: LocationDelegate? = nil,
          locationManager: LocationManagerProtocol = CLLocationManager()) {
         self.config = config
         self.locationDelegate = locationDelegate
         self.locationManager = locationManager
         self.locationAccuracy = config.useHighAccuracy ? LocationKey.highAccuracy : LocationKey.lowAccuracy
-
+        self.geofenceProvider = GeofenceProvider(config: config, bundle: bundle, diskStorage: diskStorage)
         super.init()
-
-        let provider = GeofenceProvider(config: config, bundle: bundle)
-        provider.getGeofencesAsync { [weak self] geofences in
-            guard let self = self else { return }
-            self.geofences = geofences
-            self._onReady.publish()
-        }
-
         self.locationManager.distanceFilter = config.updateDistance
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = CLLocationAccuracy(config.desiredAccuracy)
         self.locationManager.allowsBackgroundLocationUpdates = config.enableBackgroundLocation
-
+        self.geofenceProvider.delegate = self
         clearMonitoredGeofences()
     }
 
@@ -378,6 +370,12 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
         logger?.log(logRequest)
     }
 
+    func didLoadGeofences(_ geofences: [Geofence]) {
+        TealiumQueues.secureMainThreadExecution {
+            self.geofences = geofences
+            self._onReady.publish()
+        }
+    }
 }
 
 extension CLLocationAccuracy {
