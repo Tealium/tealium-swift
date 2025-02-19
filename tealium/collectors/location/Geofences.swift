@@ -79,7 +79,14 @@ class GeofenceProvider {
                 }
                 return GeofenceFile(etag: etag, geofences: geofences)
             }
-            let refresher = ResourceRefresher(resourceRetriever: resourceRetriever, diskStorage: diskStorage, refreshParameters: RefreshParameters(id: "geofences", url: geofenceUrl, fileName: "geofences", refreshInterval: Double.infinity))
+            let parameters = RefreshParameters<GeofenceFile>(id: "geofences",
+                                                             url: geofenceUrl,
+                                                             fileName: "geofences",
+                                                             refreshInterval: Double.infinity,
+                                                             errorCooldownBaseInterval: Double.infinity)
+            let refresher = ResourceRefresher(resourceRetriever: resourceRetriever,
+                                              diskStorage: diskStorage,
+                                              refreshParameters: parameters)
             return refresher
         }
 
