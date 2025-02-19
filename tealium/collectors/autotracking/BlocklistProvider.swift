@@ -45,7 +45,7 @@ class BlocklistProvider {
             }
             let parameters = RefreshParameters<BlocklistFile>(id: "blocklist",
                                                               url: blocklistUrl,
-                                                              fileName: "blocklist",
+                                                              fileName: nil,
                                                               refreshInterval: Double.infinity,
                                                               errorCooldownBaseInterval: Double.infinity)
             let refresher = ResourceRefresher(resourceRetriever: resourceRetriever,

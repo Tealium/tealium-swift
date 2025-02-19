@@ -81,7 +81,7 @@ class GeofenceProvider {
             }
             let parameters = RefreshParameters<GeofenceFile>(id: "geofences",
                                                              url: geofenceUrl,
-                                                             fileName: "geofences",
+                                                             fileName: nil,
                                                              refreshInterval: Double.infinity,
                                                              errorCooldownBaseInterval: Double.infinity)
             let refresher = ResourceRefresher(resourceRetriever: resourceRetriever,
