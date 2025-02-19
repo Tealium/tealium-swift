@@ -63,6 +63,10 @@ public class JSONLoader {
         return converted
     }
 
+    @available(macOS, deprecated, message: "Synchronous load of data from a URL is not recommended. Use `URLSession` instead.")
+    @available(iOS, deprecated, message: "Synchronous load of data from a URL is not recommended. Use `URLSession` instead.")
+    @available(tvOS, deprecated, message: "Synchronous load of data from a URL is not recommended. Use `URLSession` instead.")
+    @available(watchOS, deprecated, message: "Synchronous load of data from a URL is not recommended. Use `URLSession` instead.")
     public static func fromURL<T: Codable>(url: String,
                                            logger: TealiumLoggerProtocol? = nil) throws -> T {
         guard !url.isEmpty else {

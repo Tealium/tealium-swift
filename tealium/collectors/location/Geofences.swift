@@ -155,7 +155,7 @@ class GeofenceProvider {
 
     func reportLoadedGeofences(geofences: [Geofence]) {
         logInfo(message: "🌎🌎 \(String(describing: geofences.count)) Geofences Created 🌎🌎")
-        delegate?.didLoadGeofences(geofences)
+        delegate?.didLoadGeofences(filter(geofences: geofences))
     }
 
 }
