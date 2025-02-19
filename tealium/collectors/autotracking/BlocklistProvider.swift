@@ -66,10 +66,12 @@ class BlocklistProvider {
     func loadBlocklist(delegate: BlocklistProviderDelegate) {
         self.delegate = delegate
         if let file = config.autoTrackingBlocklistFilename {
-            self.loadLocalBlocklist(file: file)
+            loadLocalBlocklist(file: file)
+        } else if let resourceRefresher {
+            resourceRefresher.delegate = self
+            resourceRefresher.requestRefresh()
         } else {
-            self.resourceRefresher?.delegate = self
-            self.resourceRefresher?.requestRefresh()
+            reportLoadedBlocklist([])
         }
     }
 
