@@ -46,7 +46,7 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = CLLocationAccuracy(config.desiredAccuracy)
         self.locationManager.allowsBackgroundLocationUpdates = config.enableBackgroundLocation
-        self.geofenceProvider.delegate = self
+        self.geofenceProvider.loadGeofences(delegate: self)
         clearMonitoredGeofences()
     }
 
@@ -180,14 +180,14 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     /// If the location client encounters an error, location updates are stopped
     ///
     /// - parameter manager: `CLLocationManager` instance
-    /// - parameter error: `error` an error that has occured
+    /// - parameter error: `error` an error that has occurred
     public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         if let error = error as? CLError,
            error.code == .denied {
             logError(message: "🌎🌎 Location Authorization Denied 🌎🌎")
             locationManager.stopUpdatingLocation()
         } else {
-            logError(message: "🌎🌎 An Error Has Occured: \(String(describing: error.localizedDescription)) 🌎🌎")
+            logError(message: "🌎🌎 An Error Has Occurred: \(String(describing: error.localizedDescription)) 🌎🌎")
         }
     }
 
@@ -226,7 +226,7 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     /// Sends a Tealium tracking event, appending geofence data to the track.
     ///
     /// - parameter region: `CLRegion` that was entered
-    /// - parameter triggeredTransition: `String` Type of transition that occured
+    /// - parameter triggeredTransition: `String` Type of transition that occurred
     public func sendGeofenceTrackingEvent(region: CLRegion, triggeredTransition: String) {
         guard geofenceTrackingEnabled else {
             return
@@ -356,14 +356,14 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
         self.geofences = [Geofence]()
     }
 
-    /// Logs errors about events occuring in the `TealiumLocation` module
+    /// Logs errors about events occurring in the `TealiumLocation` module
     /// - Parameter message: `String` message to log to the console
     func logError(message: String) {
         let logRequest = TealiumLogRequest(title: "Tealium Location", message: message, info: nil, logLevel: .error, category: .general)
         logger?.log(logRequest)
     }
 
-    /// Logs verbose information about events occuring in the `TealiumLocation` module
+    /// Logs verbose information about events occurring in the `TealiumLocation` module
     /// - Parameter message: `String` message to log to the console
     func logInfo(message: String) {
         let logRequest = TealiumLogRequest(title: "Tealium Location", message: message, info: nil, logLevel: .debug, category: .general)

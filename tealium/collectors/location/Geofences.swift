@@ -60,8 +60,8 @@ class GeofenceProvider {
     }
     private let bundle: Bundle
     private let config: TealiumConfig
-    let resourceRefresher: ResourceRefresher<GeofenceFile>?
-    weak var delegate: GeofenceProviderDelegate?
+    private let resourceRefresher: ResourceRefresher<GeofenceFile>?
+    weak private var delegate: GeofenceProviderDelegate?
     init(config: TealiumConfig,
          bundle: Bundle,
          urlSession: URLSessionProtocol = URLSession(configuration: .ephemeral),
@@ -97,17 +97,22 @@ class GeofenceProvider {
             self.resourceRefresher = createRefresher(urlString: Self.url(from: config))
         case .customUrl(let string):
             self.resourceRefresher = createRefresher(urlString: string)
-        case .localFile(let file):
-            self.resourceRefresher = nil
-            loadLocalGeofences(file: file)
         default:
             self.resourceRefresher = nil
         }
-        resourceRefresher?.delegate = self
-        resourceRefresher?.requestRefresh()
     }
 
-    func loadLocalGeofences(file: String) {
+    func loadGeofences(delegate: GeofenceProviderDelegate) {
+        self.delegate = delegate
+        if let resourceRefresher {
+            resourceRefresher.delegate = self
+            resourceRefresher.requestRefresh()
+        } else if case let .localFile(file) = config.initializeGeofenceDataFrom {
+            loadLocalGeofences(file: file)
+        }
+    }
+
+    private func loadLocalGeofences(file: String) {
         do {
             let geofences: [Geofence] = try JSONLoader.fromFile(file, bundle: bundle, logger: logger)
             reportLoadedGeofences(geofences: geofences)
@@ -121,7 +126,7 @@ class GeofenceProvider {
         return "\(TealiumValue.tealiumDleBaseURL)\(config.account)/\(config.profile)/\(LocationKey.fileName).json"
     }
 
-    func filter(geofences: [Geofence]) -> [Geofence] {
+    private func filter(geofences: [Geofence]) -> [Geofence] {
         return geofences.filter {
             $0.name.count > 0
                 && $0.latitude >= -90.0 && $0.latitude <= 90.0
@@ -130,9 +135,9 @@ class GeofenceProvider {
         }
     }
 
-    /// Logs verbose information about events occuring in the `TealiumLocation` module
+    /// Logs verbose information about events occurring in the `TealiumLocation` module
     /// - Parameter message: `String` message to log to the console
-    func logError(message: String) {
+    private func logError(message: String) {
         let logRequest = TealiumLogRequest(title: "Tealium Location",
                                            message: message, info: nil,
                                            logLevel: .error, category: .general)
@@ -141,19 +146,19 @@ class GeofenceProvider {
 
     /// Logs verbose information about events occurring in the `TealiumLocation` module
     /// - Parameter message: `String` message to log to the console
-    func logInfo(message: String) {
+    private func logInfo(message: String) {
         let logRequest = TealiumLogRequest(title: "Tealium Location",
                                            message: message, info: nil,
                                            logLevel: .debug, category: .general)
         logger?.log(logRequest)
     }
 
-    func reportFailedToLoad(error: Error) {
+    private func reportFailedToLoad(error: Error) {
         logError(message: "Failed to load local geofences with error:\n" + error.localizedDescription)
         delegate?.didLoadGeofences([])
     }
 
-    func reportLoadedGeofences(geofences: [Geofence]) {
+    private func reportLoadedGeofences(geofences: [Geofence]) {
         logInfo(message: "🌎🌎 \(String(describing: geofences.count)) Geofences Created 🌎🌎")
         delegate?.didLoadGeofences(filter(geofences: geofences))
     }
@@ -167,11 +172,12 @@ extension GeofenceProvider: ResourceRefresherDelegate {
     }
 
     func resourceRefresher(_ refresher: ResourceRefresher<GeofenceFile>, didFailToLoadResource error: TealiumResourceRetrieverError) {
-        guard let geofences = refresher.readResource()?.geofences, !geofences.isEmpty else {
-            reportFailedToLoad(error: error)
+        if case .non200Response(let code) = error, code != 304 {
             return
         }
-        reportLoadedGeofences(geofences: geofences)
+        if refresher.readResource() == nil {
+            reportFailedToLoad(error: error)
+        }
     }
 }
 #else

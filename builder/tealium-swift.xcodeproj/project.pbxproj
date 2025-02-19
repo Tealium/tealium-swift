@@ -304,6 +304,7 @@
 		4BD9036E24F5CDEC0041EFA0 /* Array+Tealium.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD9036D24F5CDEC0041EFA0 /* Array+Tealium.swift */; };
 		4BD9037024F5CE100041EFA0 /* Dictionary+Tealium.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD9036F24F5CE100041EFA0 /* Dictionary+Tealium.swift */; };
 		4BD9037224F5CED40041EFA0 /* Double+Tealium.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD9037124F5CED40041EFA0 /* Double+Tealium.swift */; };
+		87F69D602D6601B50036BC1C /* BlocklistProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F69D5F2D6601AA0036BC1C /* BlocklistProvider.swift */; };
 		CF073BD02535203800E45AFA /* LegacyConsentConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF073BCF2535203800E45AFA /* LegacyConsentConfiguration.swift */; };
 		CF11608826701B7A00280397 /* TestTealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716C7D1B1DDBC3A500512C99 /* TestTealiumHelper.swift */; };
 		CF11609026701FFA00280397 /* LifecycleStubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF9F3F6024EDC02800C9D19E /* LifecycleStubs.swift */; };
@@ -2481,6 +2482,7 @@
 		71F085C61DDE154C008850C8 /* TealiumConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumConfig.swift; sourceTree = "<group>"; };
 		71F085C71DDE154C008850C8 /* TealiumConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumConstants.swift; sourceTree = "<group>"; };
 		71F63A571E79B073006A723F /* RemoteCommandsModuleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteCommandsModuleTests.swift; sourceTree = "<group>"; };
+		87F69D5F2D6601AA0036BC1C /* BlocklistProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlocklistProvider.swift; sourceTree = "<group>"; };
 		CF073BCF2535203800E45AFA /* LegacyConsentConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyConsentConfiguration.swift; sourceTree = "<group>"; };
 		CF116064266FF04500280397 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		CF116069266FF10000280397 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.5.sdk/System/Library/Frameworks/CoreTelephony.framework; sourceTree = DEVELOPER_DIR; };
@@ -3686,6 +3688,7 @@
 		71D2B34C1E2FE3670049BCF3 /* autotracking */ = {
 			isa = PBXGroup;
 			children = (
+				87F69D5F2D6601AA0036BC1C /* BlocklistProvider.swift */,
 				1566C242272C4E2800FE9A5A /* objc */,
 				D7FF987B24ACBD1300E87A80 /* AutoTrackingExtensions.swift */,
 				71D2B34E1E2FE3670049BCF3 /* AutotrackingModule.swift */,
@@ -7387,6 +7390,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7CED26721932DF200ACD291 /* AutotrackingModule.swift in Sources */,
+				87F69D602D6601B50036BC1C /* BlocklistProvider.swift in Sources */,
 				D7A2704525DBCD61009D8340 /* UIViewController+Tealium.swift in Sources */,
 				D7ECB90B25E6B6E10043BA83 /* AutoTrackingExtensions.swift in Sources */,
 				D7CED26921932DF200ACD291 /* UIViewController+TealiumTracker.m in Sources */,
