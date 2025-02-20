@@ -12,7 +12,7 @@ import Foundation
 import TealiumCore
 #endif
 
-public struct Geofence: Codable {
+public struct Geofence: Codable, Equatable {
     let name: String
     let latitude: Double
     let longitude: Double
@@ -46,7 +46,7 @@ public extension Array where Element == Geofence {
     }
 }
 
-struct GeofenceFile: Codable, EtagResource {
+struct GeofenceFile: Codable, EtagResource, Equatable {
     let etag: String?
     let geofences: [Geofence]
 }
@@ -172,7 +172,7 @@ extension GeofenceProvider: ResourceRefresherDelegate {
     }
 
     func resourceRefresher(_ refresher: ResourceRefresher<GeofenceFile>, didFailToLoadResource error: TealiumResourceRetrieverError) {
-        if case .non200Response(let code) = error, code != 304 {
+        if case .non200Response(let code) = error, code == 304 {
             return
         }
         if refresher.readResource() == nil {

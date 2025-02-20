@@ -17,12 +17,12 @@ class TealiumLocationTests: XCTestCase {
     var mockTealiumLocationManager = MockTealiumLocationManager()
     lazy var locationManager = TealiumLocationManager(config: config,
                                                       bundle: Bundle(for: type(of: self)),
-                                                      diskStorage: MockLocationDiskStorage(config: config),
+                                                      diskStorage: MockTealiumDiskStorage(),
                                                       locationManager: mockManager)
 
     func createModule(with config: TealiumConfig? = nil, delegate: ModuleDelegate? = nil) -> LocationModule {
         let context = TestTealiumHelper.context(with: config ?? TestTealiumHelper().getConfig())
-        return LocationModule(context: context, delegate: delegate ?? MockLocationModuleDelegate(didRequestTrack: {_ in }), diskStorage: MockLocationDiskStorage(config: config ?? TestTealiumHelper().getConfig()), completion: { _ in })
+        return LocationModule(context: context, delegate: delegate ?? MockLocationModuleDelegate(didRequestTrack: {_ in }), diskStorage: MockTealiumDiskStorage(), completion: { _ in })
     }
 
     override func setUp() {
@@ -44,7 +44,7 @@ class TealiumLocationTests: XCTestCase {
     func testEnabledBackgroundLocationIsSet() {
         XCTAssertFalse(locationManager.locationManager.allowsBackgroundLocationUpdates) // default false
         config.enableBackgroundLocation = true
-        let locationManager2 = TealiumLocationManager(config: config, diskStorage: MockLocationDiskStorage(config: config))
+        let locationManager2 = TealiumLocationManager(config: config, diskStorage: MockTealiumDiskStorage())
         XCTAssertTrue(locationManager2.locationManager.allowsBackgroundLocationUpdates)
     }
 

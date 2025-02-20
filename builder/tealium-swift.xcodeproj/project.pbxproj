@@ -305,6 +305,8 @@
 		4BD9037024F5CE100041EFA0 /* Dictionary+Tealium.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD9036F24F5CE100041EFA0 /* Dictionary+Tealium.swift */; };
 		4BD9037224F5CED40041EFA0 /* Double+Tealium.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD9037124F5CED40041EFA0 /* Double+Tealium.swift */; };
 		87F69D602D6601B50036BC1C /* BlocklistProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F69D5F2D6601AA0036BC1C /* BlocklistProvider.swift */; };
+		87F69D622D6744C40036BC1C /* GeofenceProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F69D612D6744C40036BC1C /* GeofenceProviderTests.swift */; };
+		87F69D632D67588E0036BC1C /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
 		CF073BD02535203800E45AFA /* LegacyConsentConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF073BCF2535203800E45AFA /* LegacyConsentConfiguration.swift */; };
 		CF11608826701B7A00280397 /* TestTealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716C7D1B1DDBC3A500512C99 /* TestTealiumHelper.swift */; };
 		CF11609026701FFA00280397 /* LifecycleStubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF9F3F6024EDC02800C9D19E /* LifecycleStubs.swift */; };
@@ -405,7 +407,6 @@
 		CF7C34532549D891001A4E94 /* VisitorServiceModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7805852233A68DC00DAD90E /* VisitorServiceModuleTests.swift */; };
 		CF7C34542549D891001A4E94 /* VisitorServiceModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7805852233A68DC00DAD90E /* VisitorServiceModuleTests.swift */; };
 		CF7F947A2464A06600399774 /* MockTagManagementWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7F94782464A03200399774 /* MockTagManagementWebView.swift */; };
-		CF7F948724650FB500399774 /* MockLocationDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7F948324650F9300399774 /* MockLocationDiskStorage.swift */; };
 		CF83EE48251C17A200188533 /* MockRemoteCommandResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF83EE47251C17A200188533 /* MockRemoteCommandResponse.swift */; };
 		CF8807A12554BB3B0020E1B2 /* TealiumAttribution.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D76FE19D2193093A00D73EC5 /* TealiumAttribution.framework */; };
 		CF8807A22554BB3B0020E1B2 /* TealiumAttribution.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D76FE19D2193093A00D73EC5 /* TealiumAttribution.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -2483,6 +2484,7 @@
 		71F085C71DDE154C008850C8 /* TealiumConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumConstants.swift; sourceTree = "<group>"; };
 		71F63A571E79B073006A723F /* RemoteCommandsModuleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteCommandsModuleTests.swift; sourceTree = "<group>"; };
 		87F69D5F2D6601AA0036BC1C /* BlocklistProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlocklistProvider.swift; sourceTree = "<group>"; };
+		87F69D612D6744C40036BC1C /* GeofenceProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeofenceProviderTests.swift; sourceTree = "<group>"; };
 		CF073BCF2535203800E45AFA /* LegacyConsentConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyConsentConfiguration.swift; sourceTree = "<group>"; };
 		CF116064266FF04500280397 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		CF116069266FF10000280397 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.5.sdk/System/Library/Frameworks/CoreTelephony.framework; sourceTree = DEVELOPER_DIR; };
@@ -2521,7 +2523,6 @@
 		CF7D92662624ADB4007A24FF /* macOSTealiumTestRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOSTealiumTestRelease.entitlements; sourceTree = "<group>"; };
 		CF7F075A24770212003E23B9 /* MockAttributionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAttributionData.swift; sourceTree = "<group>"; };
 		CF7F94782464A03200399774 /* MockTagManagementWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTagManagementWebView.swift; sourceTree = "<group>"; };
-		CF7F948324650F9300399774 /* MockLocationDiskStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocationDiskStorage.swift; sourceTree = "<group>"; };
 		CF7F94892469E98500399774 /* PerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceTests.swift; sourceTree = "<group>"; };
 		CF83EE47251C17A200188533 /* MockRemoteCommandResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockRemoteCommandResponse.swift; sourceTree = "<group>"; };
 		CF8805742554B74B0020E1B2 /* iOSTealiumTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSTealiumTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3688,8 +3689,8 @@
 		71D2B34C1E2FE3670049BCF3 /* autotracking */ = {
 			isa = PBXGroup;
 			children = (
-				87F69D5F2D6601AA0036BC1C /* BlocklistProvider.swift */,
 				1566C242272C4E2800FE9A5A /* objc */,
+				87F69D5F2D6601AA0036BC1C /* BlocklistProvider.swift */,
 				D7FF987B24ACBD1300E87A80 /* AutoTrackingExtensions.swift */,
 				71D2B34E1E2FE3670049BCF3 /* AutotrackingModule.swift */,
 				43DE5575164A11F5497A9EF7 /* TealiumViewController.swift */,
@@ -4087,10 +4088,10 @@
 				CFF242DA23CE78390091B7BF /* invalidGeofences.json */,
 				CFF242DB23CE78390091B7BF /* MockLocationManager.swift */,
 				CFF242D923CE78390091B7BF /* TealiumLocationTests.swift */,
-				CF7F948324650F9300399774 /* MockLocationDiskStorage.swift */,
 				CFE5D85F24D09BC0007E092C /* MockTealiumLocationManager.swift */,
 				CF9F423824F0597F009B93C2 /* MockLocationDelegate.swift */,
 				CF9F423724F0597F009B93C2 /* MockLocationModuleDelegate.swift */,
+				87F69D612D6744C40036BC1C /* GeofenceProviderTests.swift */,
 			);
 			path = test_tealium_location;
 			sourceTree = "<group>";
@@ -7088,12 +7089,13 @@
 				CFAD62B82541FCFE007D4EDB /* CoreMocks.swift in Sources */,
 				CFE5D86224D09C1C007E092C /* MockTealiumLocationManager.swift in Sources */,
 				CFF242E723CE78390091B7BF /* TealiumLocationTests.swift in Sources */,
+				87F69D622D6744C40036BC1C /* GeofenceProviderTests.swift in Sources */,
 				CF9F423924F05980009B93C2 /* MockLocationModuleDelegate.swift in Sources */,
 				CFAD63CC2541FD91007D4EDB /* MockSessionStarter.swift in Sources */,
 				CFF242ED23CE78390091B7BF /* MockLocationManager.swift in Sources */,
-				CF7F948724650FB500399774 /* MockLocationDiskStorage.swift in Sources */,
 				CF9F423A24F05980009B93C2 /* MockLocationDelegate.swift in Sources */,
 				1567CB4A2BC6C58400E3DBB3 /* MockURLSession.swift in Sources */,
+				87F69D632D67588E0036BC1C /* MockDiskStorage.swift in Sources */,
 				CFA55A3F24E5903800BFBED8 /* TestTealiumHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -11222,7 +11224,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOSTealiumTest.app/iOSTealiumTest";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOSTealiumTest.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/iOSTealiumTest";
 			};
 			name = Debug;
 		};
@@ -11257,7 +11259,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOSTealiumTest.app/iOSTealiumTest";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOSTealiumTest.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/iOSTealiumTest";
 			};
 			name = Release;
 		};
