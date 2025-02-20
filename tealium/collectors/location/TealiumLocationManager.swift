@@ -46,7 +46,9 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = CLLocationAccuracy(config.desiredAccuracy)
         self.locationManager.allowsBackgroundLocationUpdates = config.enableBackgroundLocation
-        self.geofenceProvider.loadItems(delegate: self)
+        TealiumQueues.backgroundSerialQueue.async { // Avoid loading local geofences from main thread
+            self.geofenceProvider.loadItems(delegate: self)
+        }
         clearMonitoredGeofences()
     }
 
@@ -126,9 +128,7 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     /// Update frequency is dependant on config.useHighAccuracy, a parameter passed on initialization of this class.
     public func startLocationUpdates() {
         onReady.subscribeOnce { [weak self] in
-            guard let self = self else {
-                return
-            }
+            guard let self = self else { return }
             guard self.isAuthorized else {
                 self.logInfo(message: "🌎🌎 Location Updates Service Not Enabled 🌎🌎")
                 return
@@ -182,8 +182,7 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     /// - parameter manager: `CLLocationManager` instance
     /// - parameter error: `error` an error that has occurred
     public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        if let error = error as? CLError,
-           error.code == .denied {
+        if let error = error as? CLError, error.code == .denied {
             logError(message: "🌎🌎 Location Authorization Denied 🌎🌎")
             locationManager.stopUpdatingLocation()
         } else {
