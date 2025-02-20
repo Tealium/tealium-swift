@@ -10,16 +10,17 @@ import XCTest
 @testable import TealiumCore
 @testable import TealiumAutotracking
 
-class MockProviderDelegate: BlocklistProviderDelegate {
+class MockProviderDelegate: ItemsProviderDelegate {
     @ToAnyObservable<TealiumReplaySubject<[String]>>(TealiumReplaySubject<[String]>())
     var blocklist: TealiumObservable<[String]>
 
-    func didLoadBlocklist(_ blocklist: [String]) {
+    func didLoadItems(_ blocklist: [String]) {
         _blocklist.publish(blocklist)
     }
 }
 
 final class BlocklistProviderTests: XCTestCase {
+    typealias BlocklistFile = ItemsFile<String>
     let config = {
         let config = TealiumConfig(account: "test", profile: "test", environment: "dev")
         config.autoTrackingBlocklistURL = "someUrl"
@@ -42,7 +43,7 @@ final class BlocklistProviderTests: XCTestCase {
             XCTAssertEqual(result, Self.blocklist)
             blocklistLoaded.fulfill()
         }
-        provider.loadBlocklist(delegate: delegate)
+        provider.loadItems(delegate: delegate)
         waitForExpectations(timeout: 0.1)
     }
 
@@ -55,7 +56,7 @@ final class BlocklistProviderTests: XCTestCase {
             XCTAssertEqual(result, [])
             blocklistLoaded.fulfill()
         }
-        provider.loadBlocklist(delegate: delegate)
+        provider.loadItems(delegate: delegate)
         waitForExpectations(timeout: 0.1)
     }
 
@@ -63,7 +64,7 @@ final class BlocklistProviderTests: XCTestCase {
         let blocklistLoaded = expectation(description: "blocklist loaded")
         // 429 causes retries so won't report immediately in the refresher
         urlSession.result = .success(withData: Data(), statusCode: 429)
-        let file = BlocklistFile(etag: nil, blocklist: Self.blocklist)
+        let file = BlocklistFile(etag: nil, items: Self.blocklist)
         diskStorage.save(file) { _,_,_ in }
         XCTAssertEqual(diskStorage.retrieve(as: BlocklistFile.self), file)
         let delegate = MockProviderDelegate()
@@ -71,7 +72,7 @@ final class BlocklistProviderTests: XCTestCase {
             XCTAssertEqual(result, Self.blocklist)
             blocklistLoaded.fulfill()
         }
-        provider.loadBlocklist(delegate: delegate)
+        provider.loadItems(delegate: delegate)
         waitForExpectations(timeout: 0.1)
     }
 
@@ -80,7 +81,7 @@ final class BlocklistProviderTests: XCTestCase {
         let blocklistLoaded = expectation(description: "blocklist loaded")
         blocklistLoaded.expectedFulfillmentCount = 2
         urlSession.result = .success(with: Self.blocklist, statusCode: 200)
-        let file = BlocklistFile(etag: nil, blocklist: [])
+        let file = BlocklistFile(etag: nil, items: [])
         diskStorage.save(file) { _,_,_ in }
         XCTAssertEqual(diskStorage.retrieve(as: BlocklistFile.self), file)
         let delegate = MockProviderDelegate()
@@ -94,14 +95,14 @@ final class BlocklistProviderTests: XCTestCase {
             count += 1
             blocklistLoaded.fulfill()
         }
-        provider.loadBlocklist(delegate: delegate)
+        provider.loadItems(delegate: delegate)
         waitForExpectations(timeout: 0.1)
     }
 
     func testBlocklistLoadedFromCacheWhenAvailableAndFailsFromRemote() {
         let blocklistLoaded = expectation(description: "blocklist loaded")
         urlSession.result = .success(withData: Data(), statusCode: 404)
-        let file = BlocklistFile(etag: nil, blocklist: Self.blocklist)
+        let file = BlocklistFile(etag: nil, items: Self.blocklist)
         diskStorage.save(file) { _,_,_ in }
         XCTAssertEqual(diskStorage.retrieve(as: BlocklistFile.self), file)
         let delegate = MockProviderDelegate()
@@ -109,7 +110,7 @@ final class BlocklistProviderTests: XCTestCase {
             XCTAssertEqual(result, Self.blocklist)
             blocklistLoaded.fulfill()
         }
-        provider.loadBlocklist(delegate: delegate)
+        provider.loadItems(delegate: delegate)
         waitForExpectations(timeout: 0.1)
     }
 
@@ -123,7 +124,7 @@ final class BlocklistProviderTests: XCTestCase {
             XCTAssertEqual(result, expected)
             blocklistLoaded.fulfill()
         }
-        provider.loadBlocklist(delegate: delegate)
+        provider.loadItems(delegate: delegate)
         waitForExpectations(timeout: 0.1)
     }
 }

@@ -12,7 +12,7 @@ import Foundation
 import TealiumCore
 #endif
 
-public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, TealiumLocationManagerProtocol, GeofenceProviderDelegate {
+public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, TealiumLocationManagerProtocol, ItemsProviderDelegate {
     var config: TealiumConfig
     var logger: TealiumLoggerProtocol? {
         config.logger
@@ -46,7 +46,7 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = CLLocationAccuracy(config.desiredAccuracy)
         self.locationManager.allowsBackgroundLocationUpdates = config.enableBackgroundLocation
-        self.geofenceProvider.loadGeofences(delegate: self)
+        self.geofenceProvider.loadItems(delegate: self)
         clearMonitoredGeofences()
     }
 
@@ -370,7 +370,7 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
         logger?.log(logRequest)
     }
 
-    func didLoadGeofences(_ geofences: [Geofence]) {
+    public func didLoadItems(_ geofences: [Geofence]) {
         TealiumQueues.secureMainThreadExecution {
             self.geofences = geofences
             self._onReady.publish()

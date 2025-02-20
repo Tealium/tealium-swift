@@ -46,84 +46,37 @@ public extension Array where Element == Geofence {
     }
 }
 
-struct GeofenceFile: Codable, EtagResource, Equatable {
-    let etag: String?
-    let geofences: [Geofence]
-}
-protocol GeofenceProviderDelegate: AnyObject {
-    func didLoadGeofences(_ geofences: [Geofence])
-}
-
-class GeofenceProvider {
-    private var logger: TealiumLoggerProtocol? {
-        config.logger
+class GeofenceProvider: ItemsProvider<Geofence> {
+    /// Builds a URL from a Tealium config pointing to a hosted JSON file on the Tealium DLE
+    private static func url(from config: TealiumConfig) -> String {
+        return "\(TealiumValue.tealiumDleBaseURL)\(config.account)/\(config.profile)/\(LocationKey.fileName).json"
     }
-    private let bundle: Bundle
-    private let config: TealiumConfig
-    private let resourceRefresher: ResourceRefresher<GeofenceFile>?
-    weak private var delegate: GeofenceProviderDelegate?
+    private static func itemLocation(from config: TealiumConfig) -> ItemsFileLocation {
+        switch config.initializeGeofenceDataFrom {
+        case .tealium:
+            return .remote(self.url(from: config))
+        case .localFile(let string):
+            return .local(string)
+        case .customUrl(let string):
+            return .remote(string)
+        default:
+            return .none
+        }
+    }
     init(config: TealiumConfig,
          bundle: Bundle,
          urlSession: URLSessionProtocol = URLSession(configuration: .ephemeral),
          diskStorage: TealiumDiskStorageProtocol) {
-
-        func createRefresher(urlString: String?) -> ResourceRefresher<GeofenceFile>? {
-            guard let urlString,
-                !urlString.isEmpty,
-                  let geofenceUrl = URL(string: urlString) else {
-                return nil
-            }
-            let resourceRetriever = ResourceRetriever<GeofenceFile>(urlSession: urlSession) { data, etag in
-                guard let geofences = try? JSONDecoder().decode([Geofence].self, from: data) else {
-                    return nil
-                }
-                return GeofenceFile(etag: etag, geofences: geofences)
-            }
-            let parameters = RefreshParameters<GeofenceFile>(id: "geofences",
-                                                             url: geofenceUrl,
-                                                             fileName: nil,
-                                                             refreshInterval: Double.infinity,
-                                                             errorCooldownBaseInterval: Double.infinity)
-            let refresher = ResourceRefresher(resourceRetriever: resourceRetriever,
-                                              diskStorage: diskStorage,
-                                              refreshParameters: parameters)
-            return refresher
-        }
-
-        self.config = config
-        self.bundle = bundle
-        switch config.initializeGeofenceDataFrom {
-        case .tealium:
-            self.resourceRefresher = createRefresher(urlString: Self.url(from: config))
-        case .customUrl(let string):
-            self.resourceRefresher = createRefresher(urlString: string)
-        default:
-            self.resourceRefresher = nil
-        }
+        super.init(id: "geofences",
+                   location: Self.itemLocation(from: config),
+                   bundle: bundle,
+                   urlSession: urlSession,
+                   diskStorage: diskStorage,
+                   logger: config.logger)
     }
 
-    func loadGeofences(delegate: GeofenceProviderDelegate) {
-        self.delegate = delegate
-        if let resourceRefresher {
-            resourceRefresher.delegate = self
-            resourceRefresher.requestRefresh()
-        } else if case let .localFile(file) = config.initializeGeofenceDataFrom {
-            loadLocalGeofences(file: file)
-        }
-    }
-
-    private func loadLocalGeofences(file: String) {
-        do {
-            let geofences: [Geofence] = try JSONLoader.fromFile(file, bundle: bundle, logger: logger)
-            reportLoadedGeofences(geofences: geofences)
-        } catch {
-            reportFailedToLoad(error: error)
-        }
-    }
-
-    /// Builds a URL from a Tealium config pointing to a hosted JSON file on the Tealium DLE
-    private static func url(from config: TealiumConfig) -> String {
-        return "\(TealiumValue.tealiumDleBaseURL)\(config.account)/\(config.profile)/\(LocationKey.fileName).json"
+    override func reportLoadedItems(items: [Geofence]) {
+        super.reportLoadedItems(items: filter(geofences: items))
     }
 
     private func filter(geofences: [Geofence]) -> [Geofence] {
@@ -134,51 +87,7 @@ class GeofenceProvider {
                 && $0.radius > 0
         }
     }
-
-    /// Logs verbose information about events occurring in the `TealiumLocation` module
-    /// - Parameter message: `String` message to log to the console
-    private func logError(message: String) {
-        let logRequest = TealiumLogRequest(title: "Tealium Location",
-                                           message: message, info: nil,
-                                           logLevel: .error, category: .general)
-        logger?.log(logRequest)
-    }
-
-    /// Logs verbose information about events occurring in the `TealiumLocation` module
-    /// - Parameter message: `String` message to log to the console
-    private func logInfo(message: String) {
-        let logRequest = TealiumLogRequest(title: "Tealium Location",
-                                           message: message, info: nil,
-                                           logLevel: .debug, category: .general)
-        logger?.log(logRequest)
-    }
-
-    private func reportFailedToLoad(error: Error) {
-        logError(message: "Failed to load local geofences with error:\n" + error.localizedDescription)
-        delegate?.didLoadGeofences([])
-    }
-
-    private func reportLoadedGeofences(geofences: [Geofence]) {
-        logInfo(message: "🌎🌎 \(String(describing: geofences.count)) Geofences Created 🌎🌎")
-        delegate?.didLoadGeofences(filter(geofences: geofences))
-    }
-
 }
 
-extension GeofenceProvider: ResourceRefresherDelegate {
-    typealias Resource = GeofenceFile
-    func resourceRefresher(_ refresher: ResourceRefresher<GeofenceFile>, didLoad resource: GeofenceFile) {
-        reportLoadedGeofences(geofences: resource.geofences)
-    }
-
-    func resourceRefresher(_ refresher: ResourceRefresher<GeofenceFile>, didFailToLoadResource error: TealiumResourceRetrieverError) {
-        if case .non200Response(let code) = error, code == 304 {
-            return
-        }
-        if refresher.readResource() == nil {
-            reportFailedToLoad(error: error)
-        }
-    }
-}
 #else
 #endif

@@ -312,6 +312,7 @@
 		8709594C2D676EDF008BCF10 /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
 		8709594D2D676EDF008BCF10 /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
 		8709594E2D676EDF008BCF10 /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
+		870959512D678D8F008BCF10 /* ItemsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870959502D678D8F008BCF10 /* ItemsProvider.swift */; };
 		87F69D602D6601B50036BC1C /* BlocklistProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F69D5F2D6601AA0036BC1C /* BlocklistProvider.swift */; };
 		87F69D622D6744C40036BC1C /* GeofenceProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F69D612D6744C40036BC1C /* GeofenceProviderTests.swift */; };
 		87F69D632D67588E0036BC1C /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
@@ -2492,6 +2493,7 @@
 		71F085C71DDE154C008850C8 /* TealiumConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumConstants.swift; sourceTree = "<group>"; };
 		71F63A571E79B073006A723F /* RemoteCommandsModuleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteCommandsModuleTests.swift; sourceTree = "<group>"; };
 		870959462D676E66008BCF10 /* BlocklistProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlocklistProviderTests.swift; sourceTree = "<group>"; };
+		870959502D678D8F008BCF10 /* ItemsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsProvider.swift; sourceTree = "<group>"; };
 		87F69D5F2D6601AA0036BC1C /* BlocklistProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlocklistProvider.swift; sourceTree = "<group>"; };
 		87F69D612D6744C40036BC1C /* GeofenceProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeofenceProviderTests.swift; sourceTree = "<group>"; };
 		CF073BCF2535203800E45AFA /* LegacyConsentConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyConsentConfiguration.swift; sourceTree = "<group>"; };
@@ -3340,6 +3342,7 @@
 				155806DC2BC00E8000043078 /* RefreshParameters.swift */,
 				155806DE2BC00E9200043078 /* ResourceRefresher.swift */,
 				15FF6E7C2BC59EB7007B41BC /* ErrorCooldown.swift */,
+				870959502D678D8F008BCF10 /* ItemsProvider.swift */,
 			);
 			path = network;
 			sourceTree = "<group>";
@@ -7067,6 +7070,7 @@
 				CF3C1AF32473231E00A4DEE9 /* ConsentPreferencesStorage.swift in Sources */,
 				ECF1B0732D11D25D002DB84E /* TealiumConfig+PublishSettings.swift in Sources */,
 				43DE52D26A133BFF85D1845F /* AnyDecodable.swift in Sources */,
+				870959512D678D8F008BCF10 /* ItemsProvider.swift in Sources */,
 				1519E00626E2689C000C71B4 /* ToAnyObservable.swift in Sources */,
 				D70FC7AA244F2C3D004AD838 /* AppDataConstants.swift in Sources */,
 				CFA19E2F24575F3200C455EA /* SessionStarter.swift in Sources */,

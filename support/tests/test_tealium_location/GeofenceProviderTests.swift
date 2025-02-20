@@ -10,16 +10,17 @@ import XCTest
 @testable import TealiumCore
 @testable import TealiumLocation
 
-class MockProviderDelegate: GeofenceProviderDelegate {
+class MockProviderDelegate: ItemsProviderDelegate {
     @ToAnyObservable<TealiumReplaySubject<[Geofence]>>(TealiumReplaySubject<[Geofence]>())
     var geofences: TealiumObservable<[Geofence]>
 
-    func didLoadGeofences(_ geofences: [Geofence]) {
+    func didLoadItems(_ geofences: [Geofence]) {
         _geofences.publish(geofences)
     }
 }
 
 final class GeofenceProviderTests: XCTestCase {
+    typealias GeofenceFile = ItemsFile<Geofence>
     let config = TealiumConfig(account: "test", profile: "test", environment: "dev")
     let urlSession = MockURLSession()
     lazy var diskStorage = MockTealiumDiskStorage()
@@ -41,7 +42,7 @@ final class GeofenceProviderTests: XCTestCase {
             XCTAssertEqual(result, Self.geofences)
             geofencesLoaded.fulfill()
         }
-        provider.loadGeofences(delegate: delegate)
+        provider.loadItems(delegate: delegate)
         waitForExpectations(timeout: 0.1)
     }
 
@@ -58,7 +59,7 @@ final class GeofenceProviderTests: XCTestCase {
             XCTAssertEqual(result, Self.geofences)
             geofencesLoaded.fulfill()
         }
-        provider.loadGeofences(delegate: delegate)
+        provider.loadItems(delegate: delegate)
         waitForExpectations(timeout: 0.1)
     }
 
@@ -71,7 +72,7 @@ final class GeofenceProviderTests: XCTestCase {
             XCTAssertEqual(result, [])
             geofencesLoaded.fulfill()
         }
-        provider.loadGeofences(delegate: delegate)
+        provider.loadItems(delegate: delegate)
         waitForExpectations(timeout: 0.1)
     }
 
@@ -79,7 +80,7 @@ final class GeofenceProviderTests: XCTestCase {
         let geofencesLoaded = expectation(description: "geofences loaded")
         // 429 causes retries so won't report immediately in the refresher
         urlSession.result = .success(withData: Data(), statusCode: 429)
-        let file = GeofenceFile(etag: nil, geofences: Self.geofences)
+        let file = GeofenceFile(etag: nil, items: Self.geofences)
         diskStorage.save(file) { _,_,_ in }
         XCTAssertEqual(diskStorage.retrieve(as: GeofenceFile.self), file)
         let delegate = MockProviderDelegate()
@@ -87,7 +88,7 @@ final class GeofenceProviderTests: XCTestCase {
             XCTAssertEqual(result, Self.geofences)
             geofencesLoaded.fulfill()
         }
-        provider.loadGeofences(delegate: delegate)
+        provider.loadItems(delegate: delegate)
         waitForExpectations(timeout: 0.1)
     }
 
@@ -96,7 +97,7 @@ final class GeofenceProviderTests: XCTestCase {
         let geofencesLoaded = expectation(description: "geofences loaded")
         geofencesLoaded.expectedFulfillmentCount = 2
         urlSession.result = .success(with: Self.geofences, statusCode: 200)
-        let file = GeofenceFile(etag: nil, geofences: [])
+        let file = GeofenceFile(etag: nil, items: [])
         diskStorage.save(file) { _,_,_ in }
         XCTAssertEqual(diskStorage.retrieve(as: GeofenceFile.self), file)
         let delegate = MockProviderDelegate()
@@ -110,14 +111,14 @@ final class GeofenceProviderTests: XCTestCase {
             count += 1
             geofencesLoaded.fulfill()
         }
-        provider.loadGeofences(delegate: delegate)
+        provider.loadItems(delegate: delegate)
         waitForExpectations(timeout: 0.1)
     }
 
     func testGeofencesLoadedFromCacheWhenAvailableAndFailsFromRemote() {
         let geofencesLoaded = expectation(description: "geofences loaded")
         urlSession.result = .success(withData: Data(), statusCode: 404)
-        let file = GeofenceFile(etag: nil, geofences: Self.geofences)
+        let file = GeofenceFile(etag: nil, items: Self.geofences)
         diskStorage.save(file) { _,_,_ in }
         XCTAssertEqual(diskStorage.retrieve(as: GeofenceFile.self), file)
         let delegate = MockProviderDelegate()
@@ -125,7 +126,7 @@ final class GeofenceProviderTests: XCTestCase {
             XCTAssertEqual(result, Self.geofences)
             geofencesLoaded.fulfill()
         }
-        provider.loadGeofences(delegate: delegate)
+        provider.loadItems(delegate: delegate)
         waitForExpectations(timeout: 0.1)
     }
 
@@ -142,7 +143,7 @@ final class GeofenceProviderTests: XCTestCase {
             XCTAssertEqual(result, expected)
             geofencesLoaded.fulfill()
         }
-        provider.loadGeofences(delegate: delegate)
+        provider.loadItems(delegate: delegate)
         waitForExpectations(timeout: 0.1)
     }
 }

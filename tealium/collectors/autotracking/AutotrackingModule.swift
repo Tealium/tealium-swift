@@ -13,7 +13,8 @@ import UIKit
 import TealiumCore
 #endif
 
-public class AutotrackingModule: Collector, BlocklistProviderDelegate {
+public class AutotrackingModule: Collector, ItemsProviderDelegate {
+    public typealias Item = String
 
     @ToAnyObservable<TealiumBufferedSubject>(TealiumBufferedSubject(bufferSize: 10))
     static var onAutoTrackView: TealiumObservable<String>
@@ -49,7 +50,7 @@ public class AutotrackingModule: Collector, BlocklistProviderDelegate {
                                                    diskStorage: diskStorage ?? TealiumDiskStorage(config: config,
                                                                                                   forModule: ModuleNames.autotracking.lowercased(),
                                                                                                   isCritical: false))
-        blocklistProvider.loadBlocklist(delegate: self)
+        blocklistProvider.loadItems(delegate: self)
         TealiumQueues.secureMainThreadExecution {
             AutotrackingModule.onAutoTrackView.subscribe { [weak self] viewName in
                 self?.requestViewTrack(viewName: viewName)
@@ -117,7 +118,7 @@ public class AutotrackingModule: Collector, BlocklistProviderDelegate {
         _onAutoTrackView.publish(viewName)
     }
 
-    func didLoadBlocklist(_ blocklist: [String]) {
+    public func didLoadItems(_ blocklist: [String]) {
         self.blockList = blocklist
         TealiumQueues.mainQueue.async { [weak self] in
             self?._onReady.publish()
