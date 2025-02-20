@@ -304,6 +304,14 @@
 		4BD9036E24F5CDEC0041EFA0 /* Array+Tealium.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD9036D24F5CDEC0041EFA0 /* Array+Tealium.swift */; };
 		4BD9037024F5CE100041EFA0 /* Dictionary+Tealium.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD9036F24F5CE100041EFA0 /* Dictionary+Tealium.swift */; };
 		4BD9037224F5CED40041EFA0 /* Double+Tealium.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD9037124F5CED40041EFA0 /* Double+Tealium.swift */; };
+		870959472D676E66008BCF10 /* BlocklistProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870959462D676E66008BCF10 /* BlocklistProviderTests.swift */; };
+		870959482D676E66008BCF10 /* BlocklistProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870959462D676E66008BCF10 /* BlocklistProviderTests.swift */; };
+		870959492D676E66008BCF10 /* BlocklistProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870959462D676E66008BCF10 /* BlocklistProviderTests.swift */; };
+		8709594A2D676E66008BCF10 /* BlocklistProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870959462D676E66008BCF10 /* BlocklistProviderTests.swift */; };
+		8709594B2D676EDF008BCF10 /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
+		8709594C2D676EDF008BCF10 /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
+		8709594D2D676EDF008BCF10 /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
+		8709594E2D676EDF008BCF10 /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
 		87F69D602D6601B50036BC1C /* BlocklistProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F69D5F2D6601AA0036BC1C /* BlocklistProvider.swift */; };
 		87F69D622D6744C40036BC1C /* GeofenceProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F69D612D6744C40036BC1C /* GeofenceProviderTests.swift */; };
 		87F69D632D67588E0036BC1C /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
@@ -2483,6 +2491,7 @@
 		71F085C61DDE154C008850C8 /* TealiumConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumConfig.swift; sourceTree = "<group>"; };
 		71F085C71DDE154C008850C8 /* TealiumConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumConstants.swift; sourceTree = "<group>"; };
 		71F63A571E79B073006A723F /* RemoteCommandsModuleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteCommandsModuleTests.swift; sourceTree = "<group>"; };
+		870959462D676E66008BCF10 /* BlocklistProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlocklistProviderTests.swift; sourceTree = "<group>"; };
 		87F69D5F2D6601AA0036BC1C /* BlocklistProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlocklistProvider.swift; sourceTree = "<group>"; };
 		87F69D612D6744C40036BC1C /* GeofenceProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeofenceProviderTests.swift; sourceTree = "<group>"; };
 		CF073BCF2535203800E45AFA /* LegacyConsentConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyConsentConfiguration.swift; sourceTree = "<group>"; };
@@ -3463,6 +3472,7 @@
 				7102BF6F1E0CF05700ED5783 /* AutotrackingModuleTests.swift */,
 				15E601B82728036100CE4FAC /* AutotrackingConfigTests.swift */,
 				15E601BD2728064500CE4FAC /* blocklist.json */,
+				870959462D676E66008BCF10 /* BlocklistProviderTests.swift */,
 			);
 			path = test_tealium_autotracking;
 			sourceTree = "<group>";
@@ -6573,7 +6583,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8709594A2D676E66008BCF10 /* BlocklistProviderTests.swift in Sources */,
 				1567CB422BC6C57E00E3DBB3 /* MockURLSession.swift in Sources */,
+				8709594C2D676EDF008BCF10 /* MockDiskStorage.swift in Sources */,
 				1555F5C126E6692400AFDC3D /* AutotrackingModuleTests.swift in Sources */,
 				1555F5C226E6692400AFDC3D /* TestTealiumHelper.swift in Sources */,
 				15E601BA2728036100CE4FAC /* AutotrackingConfigTests.swift in Sources */,
@@ -6586,7 +6598,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				870959482D676E66008BCF10 /* BlocklistProviderTests.swift in Sources */,
 				1567CB452BC6C58000E3DBB3 /* MockURLSession.swift in Sources */,
+				8709594D2D676EDF008BCF10 /* MockDiskStorage.swift in Sources */,
 				1555F5D726E6786100AFDC3D /* AutotrackingModuleTests.swift in Sources */,
 				1555F5D826E6786100AFDC3D /* TestTealiumHelper.swift in Sources */,
 				15E601BB2728036100CE4FAC /* AutotrackingConfigTests.swift in Sources */,
@@ -6645,7 +6659,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				870959492D676E66008BCF10 /* BlocklistProviderTests.swift in Sources */,
 				1567CB442BC6C57F00E3DBB3 /* MockURLSession.swift in Sources */,
+				8709594E2D676EDF008BCF10 /* MockDiskStorage.swift in Sources */,
 				15D4AFD226EB9506004316D0 /* CoreMocks.swift in Sources */,
 				15D4AFD126EB94FE004316D0 /* MockSessionStarter.swift in Sources */,
 				15E601BC2728036100CE4FAC /* AutotrackingConfigTests.swift in Sources */,
@@ -7183,7 +7199,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				870959472D676E66008BCF10 /* BlocklistProviderTests.swift in Sources */,
 				1567CB432BC6C57F00E3DBB3 /* MockURLSession.swift in Sources */,
+				8709594B2D676EDF008BCF10 /* MockDiskStorage.swift in Sources */,
 				D788A58C23198E8300BC6D60 /* AutotrackingModuleTests.swift in Sources */,
 				CFA55A2C24E5902B00BFBED8 /* TestTealiumHelper.swift in Sources */,
 				15E601B92728036100CE4FAC /* AutotrackingConfigTests.swift in Sources */,

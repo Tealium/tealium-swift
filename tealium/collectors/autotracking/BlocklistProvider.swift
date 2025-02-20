@@ -10,7 +10,7 @@ import Foundation
 import TealiumCore
 #endif
 
-struct BlocklistFile: Codable, EtagResource {
+struct BlocklistFile: Codable, EtagResource, Equatable {
     let etag: String?
     let blocklist: [String]
 }
@@ -120,7 +120,7 @@ extension BlocklistProvider: ResourceRefresherDelegate {
     }
 
     func resourceRefresher(_ refresher: ResourceRefresher<BlocklistFile>, didFailToLoadResource error: TealiumResourceRetrieverError) {
-        if case .non200Response(let code) = error, code != 304 {
+        if case .non200Response(let code) = error, code == 304 {
             return
         }
         if refresher.readResource() == nil {
