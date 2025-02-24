@@ -46,29 +46,33 @@ public extension Array where Element == Geofence {
     }
 }
 
-class GeofenceProvider: ItemsProvider<Geofence> {
+extension ItemsFileLocation {
     /// Builds a URL from a Tealium config pointing to a hosted JSON file on the Tealium DLE
     private static func url(from config: TealiumConfig) -> String {
         return "\(TealiumValue.tealiumDleBaseURL)\(config.account)/\(config.profile)/\(LocationKey.fileName).json"
     }
-    private static func itemLocation(from config: TealiumConfig) -> ItemsFileLocation {
+    init(geofenceConfiguration config: TealiumConfig) {
         switch config.initializeGeofenceDataFrom {
         case .tealium:
-            return .remote(self.url(from: config))
+            self = .remote(Self.url(from: config))
         case .localFile(let string):
-            return .local(string)
+            self = .local(string)
         case .customUrl(let string):
-            return .remote(string)
+            self = .remote(string)
         default:
-            return .none
+            self = .none
         }
     }
+}
+
+class GeofenceProvider: ItemsProvider<Geofence> {
+
     init(config: TealiumConfig,
          bundle: Bundle,
          urlSession: URLSessionProtocol = URLSession(configuration: .ephemeral),
          diskStorage: TealiumDiskStorageProtocol) {
         super.init(id: "geofences",
-                   location: Self.itemLocation(from: config),
+                   location: ItemsFileLocation(geofenceConfiguration: config),
                    bundle: bundle,
                    urlSession: urlSession,
                    diskStorage: diskStorage,
