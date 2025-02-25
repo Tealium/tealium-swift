@@ -14,7 +14,6 @@ import TealiumCore
 #endif
 
 public class AutotrackingModule: Collector, ItemsProviderDelegate {
-    public typealias Item = String
 
     @ToAnyObservable<TealiumBufferedSubject>(TealiumBufferedSubject(bufferSize: 10))
     static var onAutoTrackView: TealiumObservable<String>
@@ -74,7 +73,7 @@ public class AutotrackingModule: Collector, ItemsProviderDelegate {
                   diskStorage: diskStorage,
                   blockListBundle: Bundle.main,
                   completion: completion)
-            }
+    }
 
     func requestViewTrack(viewName: String) {
         guard lastEvent != viewName else {
@@ -119,8 +118,8 @@ public class AutotrackingModule: Collector, ItemsProviderDelegate {
     }
 
     public func didLoadItems(_ blocklist: [String]) {
-        self.blockList = blocklist
-        TealiumQueues.mainQueue.async { [weak self] in
+        TealiumQueues.secureMainThreadExecution { [weak self] in
+            self?.blockList = blocklist
             self?._onReady.publish()
         }
     }
