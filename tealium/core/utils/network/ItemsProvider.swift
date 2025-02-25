@@ -8,22 +8,34 @@
 
 import Foundation
 
+/// A representation of a downloaded and cached local File.
 public struct ItemsFile<Item: Codable & Equatable>: Codable, EtagResource, Equatable {
+    /// It will be used to avoid downloading that file again in case it's not updated.
     public let etag: String?
+    /// A list of generic items
     public let items: [Item]
 }
 
+/// A delegate that will receive an array of items when they are downloaded,
+/// or an empty array if the download failed and there's no items in the cache
 public protocol ItemsProviderDelegate<Item>: AnyObject {
     associatedtype Item
     func didLoadItems(_ items: [Item])
 }
 
+/// A standardized enum to express location of a file that could be local (into the assets) or remote (at a given url)
 public enum ItemsFileLocation {
     case local(String)
     case remote(String)
     case none
 }
 
+/**
+ * A class that provides an array of items to it's delegate, downloading them and caching them for future launches.
+ *
+ * It internally uses a ResourceRefresher, but it doesn't refresh items during the same launch.
+ * Items are refreshed only on a new launch and the file is only downloaded if the etag changed.
+ */
 open class ItemsProvider<Item: Codable & Equatable> {
     public typealias Resource = ItemsFile<Item>
 
@@ -74,6 +86,11 @@ open class ItemsProvider<Item: Codable & Equatable> {
         }
     }
 
+    /**
+     * Loads the items and receives the list in the delegate provided as a parameter.
+     *
+     * - parameter delegate: The `ItemsProviderDelegate` that will receive the items when they are loaded.
+     */
     public func loadItems(delegate: any ItemsProviderDelegate<Item>) {
         self.delegate = delegate
         if let refresher = resourceRefresher {
@@ -102,7 +119,7 @@ open class ItemsProvider<Item: Codable & Equatable> {
         logInfo(message: "\(String(describing: items.count)) \(id) Created")
         delegate?.didLoadItems(items)
     }
-    /// Logs verbose information
+    /// Logs verbose information about an error
     /// - Parameter message: `String` message to log to the console
     private func logError(message: String) {
         let logRequest = TealiumLogRequest(title: "Tealium \(id)",
@@ -111,7 +128,7 @@ open class ItemsProvider<Item: Codable & Equatable> {
         logger?.log(logRequest)
     }
 
-    /// Logs verbose information about events occurring in the `TealiumLocation` module
+    /// Logs verbose information about an event
     /// - Parameter message: `String` message to log to the console
     private func logInfo(message: String) {
         let logRequest = TealiumLogRequest(title: "Tealium \(id)",
