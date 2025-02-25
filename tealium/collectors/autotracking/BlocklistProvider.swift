@@ -10,18 +10,6 @@ import Foundation
 import TealiumCore
 #endif
 
-extension ItemsFileLocation {
-    init(blocklistConfiguration config: TealiumConfig) {
-        if let file = config.autoTrackingBlocklistFilename {
-            self = .local(file)
-        } else if let url = config.autoTrackingBlocklistURL {
-            self = .remote(url)
-        } else {
-            self = .none
-        }
-    }
-}
-
 class BlocklistProvider: ItemsProvider<String> {
     init(config: TealiumConfig,
          bundle: Bundle,
