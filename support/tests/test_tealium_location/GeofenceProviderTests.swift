@@ -33,6 +33,12 @@ final class GeofenceProviderTests: XCTestCase {
         Geofence(name: "456", latitude: 45, longitude: 45, radius: 45, triggerOnEnter: false, triggerOnExit: false)
     ]
 
+    func waitOnTealiumSerialQueue(_ block: () -> ()) {
+        TealiumQueues.backgroundSerialQueue.sync {
+            block()
+        }
+    }
+
     func testGeofencesLoaded() {
         let geofencesLoaded = expectation(description: "geofences loaded")
 
@@ -43,7 +49,9 @@ final class GeofenceProviderTests: XCTestCase {
             geofencesLoaded.fulfill()
         }
         provider.loadItems(delegate: delegate)
-        waitForExpectations(timeout: 0.1)
+        waitOnTealiumSerialQueue {
+            waitForExpectations(timeout: 0.1)
+        }
     }
 
     func testInvalidGeofencesAreFilteredOut() {
@@ -60,7 +68,9 @@ final class GeofenceProviderTests: XCTestCase {
             geofencesLoaded.fulfill()
         }
         provider.loadItems(delegate: delegate)
-        waitForExpectations(timeout: 0.1)
+        waitOnTealiumSerialQueue {
+            waitForExpectations(timeout: 0.1)
+        }
     }
 
     func testGeofencesLoadedEmptyWhenRequestFails() {
@@ -73,7 +83,9 @@ final class GeofenceProviderTests: XCTestCase {
             geofencesLoaded.fulfill()
         }
         provider.loadItems(delegate: delegate)
-        waitForExpectations(timeout: 0.1)
+        waitOnTealiumSerialQueue {
+            waitForExpectations(timeout: 0.1)
+        }
     }
 
     func testGeofencesLoadedFromCacheWhenAvailable() {
@@ -89,7 +101,9 @@ final class GeofenceProviderTests: XCTestCase {
             geofencesLoaded.fulfill()
         }
         provider.loadItems(delegate: delegate)
-        waitForExpectations(timeout: 0.1)
+        waitOnTealiumSerialQueue {
+            waitForExpectations(timeout: 0.1)
+        }
     }
 
     // Test cached + remote success
@@ -112,7 +126,9 @@ final class GeofenceProviderTests: XCTestCase {
             geofencesLoaded.fulfill()
         }
         provider.loadItems(delegate: delegate)
-        waitForExpectations(timeout: 0.1)
+        waitOnTealiumSerialQueue {
+            waitForExpectations(timeout: 0.1)
+        }
     }
 
     func testGeofencesLoadedFromCacheWhenAvailableAndFailsFromRemote() {
@@ -127,7 +143,9 @@ final class GeofenceProviderTests: XCTestCase {
             geofencesLoaded.fulfill()
         }
         provider.loadItems(delegate: delegate)
-        waitForExpectations(timeout: 0.1)
+        waitOnTealiumSerialQueue {
+            waitForExpectations(timeout: 0.1)
+        }
     }
 
     func testLocalGeofencesFile() {
@@ -144,6 +162,8 @@ final class GeofenceProviderTests: XCTestCase {
             geofencesLoaded.fulfill()
         }
         provider.loadItems(delegate: delegate)
-        waitForExpectations(timeout: 0.1)
+        waitOnTealiumSerialQueue {
+            waitForExpectations(timeout: 0.1)
+        }
     }
 }

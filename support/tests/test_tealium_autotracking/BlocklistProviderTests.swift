@@ -34,6 +34,12 @@ final class BlocklistProviderTests: XCTestCase {
                                          diskStorage: diskStorage)
     static let blocklist = ["123", "456"]
 
+    func waitOnTealiumSerialQueue(_ block: () -> ()) {
+        TealiumQueues.backgroundSerialQueue.sync {
+            block()
+        }
+    }
+
     func testBlocklistLoaded() {
         let blocklistLoaded = expectation(description: "blocklist loaded")
 
@@ -44,7 +50,9 @@ final class BlocklistProviderTests: XCTestCase {
             blocklistLoaded.fulfill()
         }
         provider.loadItems(delegate: delegate)
-        waitForExpectations(timeout: 0.1)
+        waitOnTealiumSerialQueue {
+            waitForExpectations(timeout: 0.1)
+        }
     }
 
     func testBlocklistLoadedEmptyWhenRequestFails() {
@@ -57,7 +65,9 @@ final class BlocklistProviderTests: XCTestCase {
             blocklistLoaded.fulfill()
         }
         provider.loadItems(delegate: delegate)
-        waitForExpectations(timeout: 0.1)
+        waitOnTealiumSerialQueue {
+            waitForExpectations(timeout: 0.1)
+        }
     }
 
     func testBlocklistLoadedFromCacheWhenAvailable() {
@@ -73,7 +83,9 @@ final class BlocklistProviderTests: XCTestCase {
             blocklistLoaded.fulfill()
         }
         provider.loadItems(delegate: delegate)
-        waitForExpectations(timeout: 0.1)
+        waitOnTealiumSerialQueue {
+            waitForExpectations(timeout: 0.1)
+        }
     }
 
     // Test cached + remote success
@@ -96,7 +108,9 @@ final class BlocklistProviderTests: XCTestCase {
             blocklistLoaded.fulfill()
         }
         provider.loadItems(delegate: delegate)
-        waitForExpectations(timeout: 0.1)
+        waitOnTealiumSerialQueue {
+            waitForExpectations(timeout: 0.1)
+        }
     }
 
     func testBlocklistLoadedFromCacheWhenAvailableAndFailsFromRemote() {
@@ -111,7 +125,9 @@ final class BlocklistProviderTests: XCTestCase {
             blocklistLoaded.fulfill()
         }
         provider.loadItems(delegate: delegate)
-        waitForExpectations(timeout: 0.1)
+        waitOnTealiumSerialQueue {
+            waitForExpectations(timeout: 0.1)
+        }
     }
 
     func testLocalBlocklistFile() {
@@ -125,6 +141,8 @@ final class BlocklistProviderTests: XCTestCase {
             blocklistLoaded.fulfill()
         }
         provider.loadItems(delegate: delegate)
-        waitForExpectations(timeout: 0.1)
+        waitOnTealiumSerialQueue {
+            waitForExpectations(timeout: 0.1)
+        }
     }
 }
