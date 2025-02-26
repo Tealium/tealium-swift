@@ -1,8 +1,8 @@
 PODS:
   - Eureka (5.3.1)
-  - tealium-swift (2.15.1):
-    - tealium-swift/TealiumFull (= 2.15.1)
-  - tealium-swift/TealiumFull (2.15.1)
+  - tealium-swift (2.16.0):
+    - tealium-swift/TealiumFull (= 2.16.0)
+  - tealium-swift/TealiumFull (2.16.0)
 
 DEPENDENCIES:
   - Eureka (~> 5.3)
@@ -18,8 +18,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Eureka: 859877ab1e85661b6b7e810015d430e937d9cc7d
-  tealium-swift: a7e87d5cc3cba379678bf4e456fa7d32072eeb9b
+  tealium-swift: f359f1f7c2747e21906f83783c7031a5d9bf7812
 
 PODFILE CHECKSUM: a08a1d1cef2344f90eb2215ef34bbdf985d4db40
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2

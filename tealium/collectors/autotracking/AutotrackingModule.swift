@@ -13,7 +13,7 @@ import UIKit
 import TealiumCore
 #endif
 
-public class AutotrackingModule: Collector {
+public class AutotrackingModule: Collector, ItemsProviderDelegate {
 
     @ToAnyObservable<TealiumBufferedSubject>(TealiumBufferedSubject(bufferSize: 10))
     static var onAutoTrackView: TealiumObservable<String>
@@ -29,6 +29,7 @@ public class AutotrackingModule: Collector {
     // Lowercased list of blocked view names
     var blockList: [String]?
     let blockListBundle: Bundle
+    let blocklistProvider: BlocklistProvider
 
     @ToAnyObservable<TealiumReplaySubject>(TealiumReplaySubject())
     private var onReady: TealiumObservable<Void>
@@ -42,8 +43,13 @@ public class AutotrackingModule: Collector {
         self.context = context
         self.config = context.config
         self.blockListBundle = blockListBundle
-        loadBlocklist()
         self.autotrackingDelegate = config.autoTrackingCollectorDelegate
+        self.blocklistProvider = BlocklistProvider(config: config,
+                                                   bundle: blockListBundle,
+                                                   diskStorage: diskStorage ?? TealiumDiskStorage(config: config,
+                                                                                                  forModule: ModuleNames.autotracking.lowercased(),
+                                                                                                  isCritical: false))
+        blocklistProvider.loadItems(delegate: self)
         TealiumQueues.secureMainThreadExecution {
             AutotrackingModule.onAutoTrackView.subscribe { [weak self] viewName in
                 self?.requestViewTrack(viewName: viewName)
@@ -67,7 +73,7 @@ public class AutotrackingModule: Collector {
                   diskStorage: diskStorage,
                   blockListBundle: Bundle.main,
                   completion: completion)
-            }
+    }
 
     func requestViewTrack(viewName: String) {
         guard lastEvent != viewName else {
@@ -107,35 +113,14 @@ public class AutotrackingModule: Collector {
         }
     }
 
-    func loadBlocklist() {
-        TealiumQueues.backgroundSerialQueue.async { [weak self] in
-            guard let self = self else {
-                return
-            }
-            do {
-                var list: [String]?
-                if let file = self.config.autoTrackingBlocklistFilename,
-                   let blockList: [String] = try JSONLoader.fromFile(file, bundle: self.blockListBundle, logger: nil) {
-                    list = blockList
-                } else if let url = self.config.autoTrackingBlocklistURL,
-                          let blockList: [String] = try JSONLoader.fromURL(url: url, logger: nil) {
-                    list = blockList
-                }
-                self.blockList = list?.map { $0.lowercased() }
-            } catch let error {
-                let logRequest = TealiumLogRequest(title: "Auto Tracking",
-                                                   message: "BlockList could not be loaded. Error: \(error.localizedDescription)",
-                                                   info: nil, logLevel: .error, category: .general)
-                self.context.log(logRequest)
-            }
-            TealiumQueues.mainQueue.async { [weak self] in
-                self?._onReady.publish()
-            }
-        }
-    }
-
     static func autoTrackView(viewName: String) {
         _onAutoTrackView.publish(viewName)
     }
 
+    public func didLoadItems(_ blocklist: [String]) {
+        TealiumQueues.secureMainThreadExecution { [weak self] in
+            self?.blockList = blocklist
+            self?._onReady.publish()
+        }
+    }
 }

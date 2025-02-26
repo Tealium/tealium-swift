@@ -12,7 +12,7 @@ import Foundation
 import TealiumCore
 #endif
 
-public struct Geofence: Codable {
+public struct Geofence: Codable, Equatable {
     let name: String
     let latitude: Double
     let longitude: Double
@@ -46,62 +46,25 @@ public extension Array where Element == Geofence {
     }
 }
 
-class GeofenceProvider {
-    private var logger: TealiumLoggerProtocol? {
-        config.logger
-    }
-    private let bundle: Bundle
-    private let config: TealiumConfig
-    init(config: TealiumConfig, bundle: Bundle) {
-        self.config = config
-        self.bundle = bundle
+class GeofenceProvider: ItemsProvider<Geofence> {
+
+    init(config: TealiumConfig,
+         bundle: Bundle,
+         urlSession: URLSessionProtocol = URLSession(configuration: .ephemeral),
+         diskStorage: TealiumDiskStorageProtocol) {
+        super.init(id: "geofences",
+                   location: ItemsFileLocation(geofenceConfiguration: config),
+                   bundle: bundle,
+                   urlSession: urlSession,
+                   diskStorage: diskStorage,
+                   logger: config.logger)
     }
 
-    func getGeofencesAsync(completion: @escaping ([Geofence]) -> Void) {
-        guard config.initializeGeofenceDataFrom != nil else {
-            completion([])
-            return
-        }
-        TealiumQueues.backgroundSerialQueue.async {
-            let geofences = self.getGeofences()
-            TealiumQueues.mainQueue.async {
-                completion(geofences)
-            }
-        }
+    override func reportLoadedItems(items: [Geofence]) {
+        super.reportLoadedItems(items: filter(geofences: items))
     }
 
-    private func getGeofences() -> [Geofence] {
-        do {
-            let geofenceData = try fetchGeofences()
-            let geofences = filter(geofences: geofenceData)
-            logInfo(message: "🌎🌎 \(String(describing: geofences.count)) Geofences Created 🌎🌎")
-            return geofences
-        } catch {
-            logError(message: error.localizedDescription)
-            return []
-        }
-    }
-
-    private func fetchGeofences() throws -> [Geofence] {
-        guard let locationConfig = config.initializeGeofenceDataFrom else {
-            return []
-        }
-        switch locationConfig {
-        case .localFile(let file):
-            return try JSONLoader.fromFile(file, bundle: bundle)
-        case .customUrl(let url):
-            return try JSONLoader.fromURL(url: url)
-        default:
-            return try JSONLoader.fromURL(url: self.url(from: config))
-        }
-    }
-
-    /// Builds a URL from a Tealium config pointing to a hosted JSON file on the Tealium DLE
-    private func url(from config: TealiumConfig) -> String {
-        return "\(TealiumValue.tealiumDleBaseURL)\(config.account)/\(config.profile)/\(LocationKey.fileName).json"
-    }
-
-    func filter(geofences: [Geofence]) -> [Geofence] {
+    private func filter(geofences: [Geofence]) -> [Geofence] {
         return geofences.filter {
             $0.name.count > 0
                 && $0.latitude >= -90.0 && $0.latitude <= 90.0
@@ -109,25 +72,7 @@ class GeofenceProvider {
                 && $0.radius > 0
         }
     }
-
-    /// Logs verbose information about events occuring in the `TealiumLocation` module
-    /// - Parameter message: `String` message to log to the console
-    func logError(message: String) {
-        let logRequest = TealiumLogRequest(title: "Tealium Location",
-                                           message: message, info: nil,
-                                           logLevel: .error, category: .general)
-        logger?.log(logRequest)
-    }
-
-    /// Logs verbose information about events occuring in the `TealiumLocation` module
-    /// - Parameter message: `String` message to log to the console
-    func logInfo(message: String) {
-        let logRequest = TealiumLogRequest(title: "Tealium Location",
-                                           message: message, info: nil,
-                                           logLevel: .debug, category: .general)
-        logger?.log(logRequest)
-    }
-
 }
+
 #else
 #endif

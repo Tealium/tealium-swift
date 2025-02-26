@@ -54,7 +54,6 @@ class TealiumHelper: ObservableObject {
         config.dispatchListeners = [self]
         config.dispatchValidators = [self]
         config.shouldUseRemotePublishSettings = false
-        config.autoTrackingBlocklistFilename = "blocklist"
         // config.batchingEnabled = true
         // config.batchSize = 5
         config.memoryReportingEnabled = true

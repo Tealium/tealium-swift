@@ -304,6 +304,20 @@
 		4BD9036E24F5CDEC0041EFA0 /* Array+Tealium.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD9036D24F5CDEC0041EFA0 /* Array+Tealium.swift */; };
 		4BD9037024F5CE100041EFA0 /* Dictionary+Tealium.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD9036F24F5CE100041EFA0 /* Dictionary+Tealium.swift */; };
 		4BD9037224F5CED40041EFA0 /* Double+Tealium.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD9037124F5CED40041EFA0 /* Double+Tealium.swift */; };
+		870959472D676E66008BCF10 /* BlocklistProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870959462D676E66008BCF10 /* BlocklistProviderTests.swift */; };
+		870959482D676E66008BCF10 /* BlocklistProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870959462D676E66008BCF10 /* BlocklistProviderTests.swift */; };
+		870959492D676E66008BCF10 /* BlocklistProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870959462D676E66008BCF10 /* BlocklistProviderTests.swift */; };
+		8709594A2D676E66008BCF10 /* BlocklistProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870959462D676E66008BCF10 /* BlocklistProviderTests.swift */; };
+		8709594B2D676EDF008BCF10 /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
+		8709594C2D676EDF008BCF10 /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
+		8709594D2D676EDF008BCF10 /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
+		8709594E2D676EDF008BCF10 /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
+		870959512D678D8F008BCF10 /* ItemsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870959502D678D8F008BCF10 /* ItemsProvider.swift */; };
+		877BB6072D6DCBF9007071D3 /* ItemsFileLocation+Geofence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 877BB6062D6DCBF9007071D3 /* ItemsFileLocation+Geofence.swift */; };
+		877BB6092D6DCDA1007071D3 /* ItemsFileLocation+Blocklist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 877BB6082D6DCDA1007071D3 /* ItemsFileLocation+Blocklist.swift */; };
+		87F69D602D6601B50036BC1C /* BlocklistProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F69D5F2D6601AA0036BC1C /* BlocklistProvider.swift */; };
+		87F69D622D6744C40036BC1C /* GeofenceProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F69D612D6744C40036BC1C /* GeofenceProviderTests.swift */; };
+		87F69D632D67588E0036BC1C /* MockDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D780585B233A68DD00DAD90E /* MockDiskStorage.swift */; };
 		CF073BD02535203800E45AFA /* LegacyConsentConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF073BCF2535203800E45AFA /* LegacyConsentConfiguration.swift */; };
 		CF11608826701B7A00280397 /* TestTealiumHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716C7D1B1DDBC3A500512C99 /* TestTealiumHelper.swift */; };
 		CF11609026701FFA00280397 /* LifecycleStubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF9F3F6024EDC02800C9D19E /* LifecycleStubs.swift */; };
@@ -404,7 +418,6 @@
 		CF7C34532549D891001A4E94 /* VisitorServiceModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7805852233A68DC00DAD90E /* VisitorServiceModuleTests.swift */; };
 		CF7C34542549D891001A4E94 /* VisitorServiceModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7805852233A68DC00DAD90E /* VisitorServiceModuleTests.swift */; };
 		CF7F947A2464A06600399774 /* MockTagManagementWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7F94782464A03200399774 /* MockTagManagementWebView.swift */; };
-		CF7F948724650FB500399774 /* MockLocationDiskStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7F948324650F9300399774 /* MockLocationDiskStorage.swift */; };
 		CF83EE48251C17A200188533 /* MockRemoteCommandResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF83EE47251C17A200188533 /* MockRemoteCommandResponse.swift */; };
 		CF8807A12554BB3B0020E1B2 /* TealiumAttribution.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D76FE19D2193093A00D73EC5 /* TealiumAttribution.framework */; };
 		CF8807A22554BB3B0020E1B2 /* TealiumAttribution.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D76FE19D2193093A00D73EC5 /* TealiumAttribution.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -2481,6 +2494,12 @@
 		71F085C61DDE154C008850C8 /* TealiumConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumConfig.swift; sourceTree = "<group>"; };
 		71F085C71DDE154C008850C8 /* TealiumConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TealiumConstants.swift; sourceTree = "<group>"; };
 		71F63A571E79B073006A723F /* RemoteCommandsModuleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteCommandsModuleTests.swift; sourceTree = "<group>"; };
+		870959462D676E66008BCF10 /* BlocklistProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlocklistProviderTests.swift; sourceTree = "<group>"; };
+		870959502D678D8F008BCF10 /* ItemsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsProvider.swift; sourceTree = "<group>"; };
+		877BB6062D6DCBF9007071D3 /* ItemsFileLocation+Geofence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemsFileLocation+Geofence.swift"; sourceTree = "<group>"; };
+		877BB6082D6DCDA1007071D3 /* ItemsFileLocation+Blocklist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemsFileLocation+Blocklist.swift"; sourceTree = "<group>"; };
+		87F69D5F2D6601AA0036BC1C /* BlocklistProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlocklistProvider.swift; sourceTree = "<group>"; };
+		87F69D612D6744C40036BC1C /* GeofenceProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeofenceProviderTests.swift; sourceTree = "<group>"; };
 		CF073BCF2535203800E45AFA /* LegacyConsentConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyConsentConfiguration.swift; sourceTree = "<group>"; };
 		CF116064266FF04500280397 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		CF116069266FF10000280397 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.5.sdk/System/Library/Frameworks/CoreTelephony.framework; sourceTree = DEVELOPER_DIR; };
@@ -2519,7 +2538,6 @@
 		CF7D92662624ADB4007A24FF /* macOSTealiumTestRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOSTealiumTestRelease.entitlements; sourceTree = "<group>"; };
 		CF7F075A24770212003E23B9 /* MockAttributionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAttributionData.swift; sourceTree = "<group>"; };
 		CF7F94782464A03200399774 /* MockTagManagementWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTagManagementWebView.swift; sourceTree = "<group>"; };
-		CF7F948324650F9300399774 /* MockLocationDiskStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocationDiskStorage.swift; sourceTree = "<group>"; };
 		CF7F94892469E98500399774 /* PerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceTests.swift; sourceTree = "<group>"; };
 		CF83EE47251C17A200188533 /* MockRemoteCommandResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockRemoteCommandResponse.swift; sourceTree = "<group>"; };
 		CF8805742554B74B0020E1B2 /* iOSTealiumTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSTealiumTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3328,6 +3346,7 @@
 				155806DC2BC00E8000043078 /* RefreshParameters.swift */,
 				155806DE2BC00E9200043078 /* ResourceRefresher.swift */,
 				15FF6E7C2BC59EB7007B41BC /* ErrorCooldown.swift */,
+				870959502D678D8F008BCF10 /* ItemsProvider.swift */,
 			);
 			path = network;
 			sourceTree = "<group>";
@@ -3460,6 +3479,7 @@
 				7102BF6F1E0CF05700ED5783 /* AutotrackingModuleTests.swift */,
 				15E601B82728036100CE4FAC /* AutotrackingConfigTests.swift */,
 				15E601BD2728064500CE4FAC /* blocklist.json */,
+				870959462D676E66008BCF10 /* BlocklistProviderTests.swift */,
 			);
 			path = test_tealium_autotracking;
 			sourceTree = "<group>";
@@ -3687,11 +3707,13 @@
 			isa = PBXGroup;
 			children = (
 				1566C242272C4E2800FE9A5A /* objc */,
+				87F69D5F2D6601AA0036BC1C /* BlocklistProvider.swift */,
 				D7FF987B24ACBD1300E87A80 /* AutoTrackingExtensions.swift */,
 				71D2B34E1E2FE3670049BCF3 /* AutotrackingModule.swift */,
 				43DE5575164A11F5497A9EF7 /* TealiumViewController.swift */,
 				D7A2704425DBCD61009D8340 /* UIViewController+Tealium.swift */,
 				D7A2706725DBCD8E009D8340 /* TealiumViewTrackable.swift */,
+				877BB6082D6DCDA1007071D3 /* ItemsFileLocation+Blocklist.swift */,
 			);
 			path = autotracking;
 			sourceTree = "<group>";
@@ -4071,6 +4093,7 @@
 				CFF242C423CE77F10091B7BF /* TealiumLocationManager.swift */,
 				CFF242C523CE77F10091B7BF /* LocationDelegate.swift */,
 				CFF242C623CE77F10091B7BF /* TealiumLocationConstants.swift */,
+				877BB6062D6DCBF9007071D3 /* ItemsFileLocation+Geofence.swift */,
 			);
 			path = location;
 			sourceTree = "<group>";
@@ -4084,10 +4107,10 @@
 				CFF242DA23CE78390091B7BF /* invalidGeofences.json */,
 				CFF242DB23CE78390091B7BF /* MockLocationManager.swift */,
 				CFF242D923CE78390091B7BF /* TealiumLocationTests.swift */,
-				CF7F948324650F9300399774 /* MockLocationDiskStorage.swift */,
 				CFE5D85F24D09BC0007E092C /* MockTealiumLocationManager.swift */,
 				CF9F423824F0597F009B93C2 /* MockLocationDelegate.swift */,
 				CF9F423724F0597F009B93C2 /* MockLocationModuleDelegate.swift */,
+				87F69D612D6744C40036BC1C /* GeofenceProviderTests.swift */,
 			);
 			path = test_tealium_location;
 			sourceTree = "<group>";
@@ -6569,7 +6592,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8709594A2D676E66008BCF10 /* BlocklistProviderTests.swift in Sources */,
 				1567CB422BC6C57E00E3DBB3 /* MockURLSession.swift in Sources */,
+				8709594C2D676EDF008BCF10 /* MockDiskStorage.swift in Sources */,
 				1555F5C126E6692400AFDC3D /* AutotrackingModuleTests.swift in Sources */,
 				1555F5C226E6692400AFDC3D /* TestTealiumHelper.swift in Sources */,
 				15E601BA2728036100CE4FAC /* AutotrackingConfigTests.swift in Sources */,
@@ -6582,7 +6607,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				870959482D676E66008BCF10 /* BlocklistProviderTests.swift in Sources */,
 				1567CB452BC6C58000E3DBB3 /* MockURLSession.swift in Sources */,
+				8709594D2D676EDF008BCF10 /* MockDiskStorage.swift in Sources */,
 				1555F5D726E6786100AFDC3D /* AutotrackingModuleTests.swift in Sources */,
 				1555F5D826E6786100AFDC3D /* TestTealiumHelper.swift in Sources */,
 				15E601BB2728036100CE4FAC /* AutotrackingConfigTests.swift in Sources */,
@@ -6641,7 +6668,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				870959492D676E66008BCF10 /* BlocklistProviderTests.swift in Sources */,
 				1567CB442BC6C57F00E3DBB3 /* MockURLSession.swift in Sources */,
+				8709594E2D676EDF008BCF10 /* MockDiskStorage.swift in Sources */,
 				15D4AFD226EB9506004316D0 /* CoreMocks.swift in Sources */,
 				15D4AFD126EB94FE004316D0 /* MockSessionStarter.swift in Sources */,
 				15E601BC2728036100CE4FAC /* AutotrackingConfigTests.swift in Sources */,
@@ -6912,6 +6941,7 @@
 			files = (
 				CFF242D223CE77F10091B7BF /* LocationDelegate.swift in Sources */,
 				CFF242C823CE77F10091B7BF /* LocationModule.swift in Sources */,
+				877BB6072D6DCBF9007071D3 /* ItemsFileLocation+Geofence.swift in Sources */,
 				CFF242CC23CE77F10091B7BF /* TealiumLocationExtensions.swift in Sources */,
 				CFF242CE23CE77F10091B7BF /* LocationManagerProtocols.swift in Sources */,
 				CFF242D423CE77F10091B7BF /* TealiumLocationConstants.swift in Sources */,
@@ -7047,6 +7077,7 @@
 				CF3C1AF32473231E00A4DEE9 /* ConsentPreferencesStorage.swift in Sources */,
 				ECF1B0732D11D25D002DB84E /* TealiumConfig+PublishSettings.swift in Sources */,
 				43DE52D26A133BFF85D1845F /* AnyDecodable.swift in Sources */,
+				870959512D678D8F008BCF10 /* ItemsProvider.swift in Sources */,
 				1519E00626E2689C000C71B4 /* ToAnyObservable.swift in Sources */,
 				D70FC7AA244F2C3D004AD838 /* AppDataConstants.swift in Sources */,
 				CFA19E2F24575F3200C455EA /* SessionStarter.swift in Sources */,
@@ -7085,12 +7116,13 @@
 				CFAD62B82541FCFE007D4EDB /* CoreMocks.swift in Sources */,
 				CFE5D86224D09C1C007E092C /* MockTealiumLocationManager.swift in Sources */,
 				CFF242E723CE78390091B7BF /* TealiumLocationTests.swift in Sources */,
+				87F69D622D6744C40036BC1C /* GeofenceProviderTests.swift in Sources */,
 				CF9F423924F05980009B93C2 /* MockLocationModuleDelegate.swift in Sources */,
 				CFAD63CC2541FD91007D4EDB /* MockSessionStarter.swift in Sources */,
 				CFF242ED23CE78390091B7BF /* MockLocationManager.swift in Sources */,
-				CF7F948724650FB500399774 /* MockLocationDiskStorage.swift in Sources */,
 				CF9F423A24F05980009B93C2 /* MockLocationDelegate.swift in Sources */,
 				1567CB4A2BC6C58400E3DBB3 /* MockURLSession.swift in Sources */,
+				87F69D632D67588E0036BC1C /* MockDiskStorage.swift in Sources */,
 				CFA55A3F24E5903800BFBED8 /* TestTealiumHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7178,7 +7210,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				870959472D676E66008BCF10 /* BlocklistProviderTests.swift in Sources */,
 				1567CB432BC6C57F00E3DBB3 /* MockURLSession.swift in Sources */,
+				8709594B2D676EDF008BCF10 /* MockDiskStorage.swift in Sources */,
 				D788A58C23198E8300BC6D60 /* AutotrackingModuleTests.swift in Sources */,
 				CFA55A2C24E5902B00BFBED8 /* TestTealiumHelper.swift in Sources */,
 				15E601B92728036100CE4FAC /* AutotrackingConfigTests.swift in Sources */,
@@ -7387,9 +7421,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7CED26721932DF200ACD291 /* AutotrackingModule.swift in Sources */,
+				87F69D602D6601B50036BC1C /* BlocklistProvider.swift in Sources */,
 				D7A2704525DBCD61009D8340 /* UIViewController+Tealium.swift in Sources */,
 				D7ECB90B25E6B6E10043BA83 /* AutoTrackingExtensions.swift in Sources */,
 				D7CED26921932DF200ACD291 /* UIViewController+TealiumTracker.m in Sources */,
+				877BB6092D6DCDA1007071D3 /* ItemsFileLocation+Blocklist.swift in Sources */,
 				D7A2706825DBCD8E009D8340 /* TealiumViewTrackable.swift in Sources */,
 				43DE54F76F9322D6A7244367 /* TealiumViewController.swift in Sources */,
 			);
@@ -11218,7 +11254,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOSTealiumTest.app/iOSTealiumTest";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOSTealiumTest.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/iOSTealiumTest";
 			};
 			name = Debug;
 		};
@@ -11253,7 +11289,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOSTealiumTest.app/iOSTealiumTest";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOSTealiumTest.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/iOSTealiumTest";
 			};
 			name = Release;
 		};

@@ -52,7 +52,12 @@ public class LocationModule: Collector {
             guard let self = self else {
                 return
             }
-            self.tealiumLocationManager = TealiumLocationManager(config: self.config, locationDelegate: self)
+            let storage = diskStorage ?? TealiumDiskStorage(config: config,
+                                                            forModule: ModuleNames.location.lowercased(),
+                                                            isCritical: false)
+            self.tealiumLocationManager = TealiumLocationManager(config: self.config,
+                                                                 diskStorage: storage,
+                                                                 locationDelegate: self)
         }
     }
 
@@ -185,7 +190,7 @@ public class LocationModule: Collector {
     /// Sends a Tealium tracking event, appending geofence data to the track.
     ///
     /// - parameter region: `CLRegion` that was entered
-    /// - parameter triggeredTransition: `String` Type of transition that occured
+    /// - parameter triggeredTransition: `String` Type of transition that occurred
     public func sendGeofenceTrackingEvent(region: CLRegion, triggeredTransition: String) {
         TealiumQueues.secureMainThreadExecution { [weak self] in
             guard let self = self else {
@@ -196,7 +201,7 @@ public class LocationModule: Collector {
     }
 
     /// Enables regular updates of location data through the location client
-    /// Update frequency is dependant on config.useHighAccuracy, a parameter passed on initisalizatuion of this class.
+    /// Update frequency is dependant on config.useHighAccuracy, a parameter passed on initisalization of this class.
     public func startLocationUpdates() {
         TealiumQueues.secureMainThreadExecution { [weak self] in
             guard let self = self else {
