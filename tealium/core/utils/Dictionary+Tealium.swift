@@ -21,11 +21,6 @@ public func += <K, V>(left: inout [K: V], right: [K: V]) {
     }
 }
 
-/// Extend use of == to dictionaries.
-public func == (lhs: [String: Any], rhs: [String: Any] ) -> Bool {
-    NSDictionary(dictionary: lhs).isEqual(to: rhs)
-}
-
 public extension Dictionary where Key == String, Value == Any {
 
     var codable: AnyCodable {

@@ -67,7 +67,7 @@ class DispatchQueueTests: XCTestCase {
         savedTrackData.forEach {
             let savedData = $0.trackDictionary
             let testData = track.trackDictionary
-            XCTAssertTrue(savedData == testData)
+            XCTAssertTrue(NSDictionary(dictionary: savedData).isEqual(to: testData))
         }
     }
 

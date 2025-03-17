@@ -118,7 +118,7 @@ public struct TealiumTrackRequest: TealiumRequest, Codable, Comparable {
     }
 
     public static func == (lhs: TealiumTrackRequest, rhs: TealiumTrackRequest) -> Bool {
-        lhs.trackDictionary == rhs.trackDictionary
+        NSDictionary(dictionary: lhs.trackDictionary).isEqual(to: rhs.trackDictionary)
     }
 
     public var uuid: String {
