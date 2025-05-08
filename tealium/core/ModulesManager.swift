@@ -182,34 +182,40 @@ public class ModulesManager {
         }
     }
 
+    @inline(never)
     private func refreshSettings() {
         if self.config.shouldUseRemotePublishSettings == true {
             self.remotePublishSettingsRetriever?.refresh()
         }
     }
 
+    @inline(never)
     private func enrichRequest(_ request: TealiumTrackRequest) -> TealiumTrackRequest {
         let requestData = gatherTrackData(for: request.trackDictionary)
         let newRequest = TealiumTrackRequest(data: requestData)
         return newRequest
     }
 
+    @inline(never)
     private func updateCachedTrackData(_ request: TealiumTrackRequest) {
         cachedTrackData = request.trackDictionary
     }
 
+    @inline(never)
     private func enrichAndTrack(_ request: TealiumTrackRequest) {
         let newRequest = enrichRequest(request)
         dispatchManager?.processTrack(newRequest)
         updateCachedTrackData(newRequest)
     }
 
+    @inline(never)
     func sendTrack(_ request: TealiumTrackRequest) {
         refreshSettings()
         guard config.isEnabled != false else { return }
         enrichAndTrack(request)
     }
 
+    @inline(never)
     func allTrackData(retrieveCachedData: Bool) -> [String: Any] {
         if retrieveCachedData, let cachedData = self.cachedTrackData {
             return cachedData
@@ -220,6 +226,7 @@ public class ModulesManager {
         return request.trackDictionary
     }
 
+    @inline(never)
     func gatherTrackData(for data: [String: Any]?) -> [String: Any] {
         var allData = [String: Any]()
         self.collectors.forEach {
