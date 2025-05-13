@@ -272,8 +272,8 @@ public protocol TealiumDispatch {
 }
 
 public struct TealiumEvent: TealiumDispatch {
-    internal var eventName: String
-    internal var dataLayer: [String: Any]?
+    let eventName: String
+    let dataLayer: [String: Any]?
 
     public init(_ eventName: String,
                 dataLayer: [String: Any]? = nil) {
@@ -290,8 +290,8 @@ public struct TealiumEvent: TealiumDispatch {
 }
 
 public struct TealiumView: TealiumDispatch {
-    internal var viewName: String
-    internal var dataLayer: [String: Any]?
+    let viewName: String
+    let dataLayer: [String: Any]?
 
     public init(_ viewName: String,
                 dataLayer: [String: Any]? = nil) {

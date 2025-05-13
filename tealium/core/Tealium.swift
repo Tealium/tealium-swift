@@ -89,12 +89,13 @@ public class Tealium {
     ///
     /// - Parameter dispatch: `TealiumDispatch` containing the event/view name and the data layer object for this event
     public func track(_ dispatch: TealiumDispatch) {
+        // Try to avoid similar crashes to this: https://github.com/swiftlang/swift/issues/73477
+        let trackRequest = dispatch.trackRequest
         TealiumQueues.backgroundSerialQueue.async { [weak self] in
             guard let self = self else {
                 return
             }
-            self.zz_internal_modulesManager?.sendTrack(dispatch.trackRequest)
-
+            self.zz_internal_modulesManager?.sendTrack(trackRequest)
         }
     }
 
