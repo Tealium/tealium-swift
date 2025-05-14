@@ -7,7 +7,7 @@
 
 #if os(iOS)
 import Foundation
-import WebKit
+@preconcurrency import WebKit
 #if tagmanagement
 import TealiumCore
 #endif
