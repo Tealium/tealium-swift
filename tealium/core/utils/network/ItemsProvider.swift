@@ -49,7 +49,7 @@ open class ItemsProvider<Item: Codable & Equatable> {
     public init(id: String,
                 location: ItemsFileLocation,
                 bundle: Bundle,
-                urlSession: URLSessionProtocol = URLSession(configuration: .ephemeral),
+                urlSession: URLSessionProtocol? = nil,
                 diskStorage: TealiumDiskStorageProtocol,
                 logger: TealiumLoggerProtocol?) {
 
@@ -59,7 +59,7 @@ open class ItemsProvider<Item: Codable & Equatable> {
                   let url = URL(string: urlString) else {
                 return nil
             }
-            let resourceRetriever = ResourceRetriever<Resource>(urlSession: urlSession) { data, etag in
+            let resourceRetriever = ResourceRetriever<Resource>(urlSession: urlSession ?? URLSession(configuration: .ephemeral)) { data, etag in
                 guard let items = try? JSONDecoder().decode([Item].self, from: data) else {
                     return nil
                 }
@@ -135,6 +135,11 @@ open class ItemsProvider<Item: Codable & Equatable> {
                                            message: message, info: nil,
                                            logLevel: .debug, category: .general)
         logger?.log(logRequest)
+    }
+
+    deinit {
+        resourceRefresher?.resourceRetriever.stop()
+        resourceRefresher?.resourceRetriever.urlSession?.finishTealiumTasksAndInvalidate()
     }
 }
 

@@ -36,7 +36,7 @@ public enum TealiumResourceRetrieverError: TealiumErrorEnum, Equatable {
  * Automatically handles retries with an exponential backoff and adds `if-none-match` header if `etag` is provided.
  */
 public class ResourceRetriever<Resource: Codable> {
-    let urlSession: URLSessionProtocol
+    private(set) var urlSession: URLSessionProtocol?
     public typealias ResourceBuilder = (_ data: Data, _ etag: String?) -> Resource?
     let resourceBuilder: ResourceBuilder
     var maxRetries = 5
@@ -96,6 +96,10 @@ public class ResourceRetriever<Resource: Codable> {
     }
 
     private func sendRequest(_ request: URLRequest, completion: @escaping (Result<Resource, TealiumResourceRetrieverError>) -> Void) {
+        guard let urlSession else {
+            completion(.failure(.unknown))
+            return
+        }
         urlSession.tealiumDataTask(with: request) { data, response, error in
             TealiumQueues.backgroundSerialQueue.async {
                 guard let response = response as? HTTPURLResponse, error == nil else {
@@ -117,5 +121,10 @@ public class ResourceRetriever<Resource: Codable> {
                 completion(.success(resource))
             }
         }.resume()
+    }
+
+    /// Stops this instance. After stopping, this instance can not be reused anymore.
+    public func stop() {
+        urlSession = nil
     }
 }
