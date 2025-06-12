@@ -87,7 +87,9 @@ class TealiumPublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol, 
     }
 
     deinit {
-        resourceRefresher?.resourceRetriever.stop()
-        resourceRefresher?.resourceRetriever.urlSession?.finishTealiumTasksAndInvalidate()
+        if let session = resourceRefresher?.resourceRetriever.urlSession {
+            resourceRefresher?.resourceRetriever.stop()
+            session.finishTealiumTasksAndInvalidate()
+        }
     }
 }
