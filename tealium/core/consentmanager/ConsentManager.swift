@@ -103,7 +103,7 @@ public class ConsentManager {
     /// - Parameter preferences: `UserConsentPreferences?`
     func trackUserConsentPreferences() {
         // this track call must only be sent if "Log Consent Changes" is enabled and user has consented
-        if consentLoggingEnabled, currentPolicy.shouldLogConsentStatus {
+        if consentLoggingEnabled, currentPolicy.shouldLogConsentStatus, userConsentStatus != .unknown {
             delegate?.requestTrack(TealiumEvent(currentPolicy.consentTrackingEventName).trackRequest)
         }
     }
@@ -163,6 +163,5 @@ public extension ConsentManager {
         consentPreferencesStorage?.preferences = nil
         currentPolicy.preferences.resetConsentCategories()
         currentPolicy.preferences.setConsentStatus(.unknown)
-        trackUserConsentPreferences()
     }
 }
