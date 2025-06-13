@@ -10,7 +10,7 @@ import Foundation
 class TealiumPersistentDispatchQueue {
 
     var diskStorage: TealiumDiskStorageProtocol!
-    public var currentEvents: Int = 0
+    public private(set) var currentEvents: Int = 0
 
     public init(diskStorage: TealiumDiskStorageProtocol) {
         self.diskStorage = diskStorage
@@ -94,9 +94,17 @@ class TealiumPersistentDispatchQueue {
         }
     }
 
-    func clearQueue() {
-        currentEvents = 0
-        diskStorage.delete(completion: nil)
+    func clearNonAuditEvents() {
+        guard let requests = peek(), requests.count > 0 else {
+            return
+        }
+        let auditEvents = requests.filter { $0.containsAuditEvent }
+        if auditEvents.count > 0 {
+            saveAndOverwrite(auditEvents)
+        } else {
+            currentEvents = 0
+            diskStorage.delete(completion: nil)
+        }
     }
 
 }
