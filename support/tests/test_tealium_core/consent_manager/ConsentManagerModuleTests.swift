@@ -371,6 +371,25 @@ class ConsentManagerModuleTests: XCTestCase {
         XCTAssertNotNil(trackInfo["custom_consent_key"] as? String)
     }
 
+    func testGdprConsentPolicyReturnsPartialConsentIfCategoriesAreNilOrNotFull() {
+        let policyType = TealiumConsentPolicy.gdpr
+        var policy = ConsentPolicyFactory.create(policyType, preferences: UserConsentPreferences(consentStatus: .unknown, consentCategories: nil))
+        XCTAssertEqual(policy.consentTrackingEventName, "grant_partial_consent")
+        policy.preferences = UserConsentPreferences(consentStatus: .consented, consentCategories: [.affiliates])
+        XCTAssertEqual(policy.consentTrackingEventName, "grant_partial_consent")
+    }
+
+    func testGdprConsentPolicyReturnsFullConsentIfCategoriesAreFull() {
+        let policyType = TealiumConsentPolicy.gdpr
+        var policy = ConsentPolicyFactory.create(policyType, preferences: UserConsentPreferences(consentStatus: .consented, consentCategories: TealiumConsentCategories.all))
+        XCTAssertEqual(policy.consentTrackingEventName, "grant_full_consent")
+    }
+
+    func testGdprConsentPolicyReturnsDeclinedIfStatusNotConsented() {
+        let policyType = TealiumConsentPolicy.gdpr
+        var policy = ConsentPolicyFactory.create(policyType, preferences: UserConsentPreferences(consentStatus: .notConsented, consentCategories: TealiumConsentCategories.all))
+        XCTAssertEqual(policy.consentTrackingEventName, "decline_consent")
+    }
 }
 
 extension ConsentManagerModuleTests: ModuleDelegate {

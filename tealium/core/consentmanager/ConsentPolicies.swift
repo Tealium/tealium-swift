@@ -121,14 +121,13 @@ public extension GDPRConsentPolicyCreatable {
     var shouldLogConsentStatus: Bool { true }
 
     var consentTrackingEventName: String {
-        if preferences.consentStatus == .notConsented {
+        guard preferences.consentStatus != .notConsented else {
             return ConsentKey.consentDeclinedEventName
         }
-        if let currentCategories = preferences.consentCategories?.count, currentCategories < TealiumConsentCategories.all.count {
+        guard let currentCategories = preferences.consentCategories, currentCategories.count >= TealiumConsentCategories.all.count else {
             return ConsentKey.consentPartialEventName
-        } else {
-            return ConsentKey.consentGrantedEventName
         }
+        return ConsentKey.consentGrantedEventName
     }
 
     var shouldUpdateConsentCookie: Bool { true }
