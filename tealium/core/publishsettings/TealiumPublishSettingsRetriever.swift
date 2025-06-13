@@ -85,4 +85,11 @@ class TealiumPublishSettingsRetriever: TealiumPublishSettingsRetrieverProtocol, 
         refresher.setRefreshInterval(resource.minutesBetweenRefresh * 60)
         delegate?.didUpdate(resource)
     }
+
+    deinit {
+        if let session = resourceRefresher?.resourceRetriever.urlSession {
+            resourceRefresher?.resourceRetriever.stop()
+            session.finishTealiumTasksAndInvalidate()
+        }
+    }
 }

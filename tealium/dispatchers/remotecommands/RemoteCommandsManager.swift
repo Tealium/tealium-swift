@@ -202,6 +202,7 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
     }
 
     deinit {
+        resourceRetriever.stop()
         urlSession.finishTealiumTasksAndInvalidate()
     }
 }

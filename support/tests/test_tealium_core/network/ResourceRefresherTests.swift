@@ -230,7 +230,16 @@ final class ResourceRefresherTests: XCTestCase {
             waitForExpectations(timeout: 1.0)
         }
     }
-    
+
+    func testRefreshDoesntCaptureSelfDuringRefresh() {
+        mockUrlSession.result = .success(withData: nil, statusCode: 408)
+        weak var weakRefresher = refresher
+        refresher.requestRefresh()
+        XCTAssertNotNil(weakRefresher)
+        refresher = getRefresher()
+        XCTAssertNil(weakRefresher)
+    }
+
     class RefresherDelegate: ResourceRefresherDelegate {
         typealias Resource = CustomObject
         @ToAnyObservable<TealiumReplaySubject<CustomObject>>(TealiumReplaySubject<CustomObject>())

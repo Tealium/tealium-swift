@@ -12,7 +12,7 @@ else
     echo "Couldn't match the library version, exiting"
     exit 1
 fi
-echo Version Constant $versionConstant
+echo Version Constant "$versionConstant"
 
 podspecFile=$(<tealium-swift.podspec)
 podspecRegex="^.*s.version[[:space:]]*\= \"([0-9\.]*)\""
@@ -24,17 +24,17 @@ else
     echo "Couldn't match the podspec version, exiting"
     exit 1
 fi
-echo Podspec Version  $podspecVersion
+echo Podspec Version  "$podspecVersion"
 
-if [ $podspecVersion != $versionConstant ]
+if [ "$podspecVersion" != "$versionConstant" ]
 then
-  echo "The podspec version \"${podspecVersion}\" is different from the version constant \"${versionConstant}\".\nDid you forget to update one of the two?"
+  printf "The podspec version \"%s\" is different from the version constant \"%s\".\nDid you forget to update one of the two?\n" "$podspecVersion" "$versionConstant"
   exit 1
 fi
 
 branch_name="$(git rev-parse --abbrev-ref HEAD)"
-echo Current branch $branch_name
-if [ $branch_name != "main" ]
+echo Current branch "$branch_name"
+if [ "$branch_name" != "main" ]
 then 
   echo "Check out to main branch before trying to publish. Current branch: ${branch_name}"
   exit 1
@@ -49,10 +49,10 @@ fi
 
 latestTag=$(git describe --tags --abbrev=0)
 
-echo Latest tag $latestTag
-if [ $latestTag != $versionConstant ]
+echo Latest tag "$latestTag"
+if [ "$latestTag" != "$versionConstant" ]
 then
-  echo "The latest published tag \"${latestTag}\" is different from the version constant \"${versionConstant}\".\nDid you forget to add the tag to the release or did you forget to update the Constant?"
+  printf "The latest published tag \"%s\" is different from the version constant \"%s\".\nDid you forget to add the tag to the release or did you forget to update the Constant?" "$latestTag" "$versionConstant"
   exit 1
 fi
 
