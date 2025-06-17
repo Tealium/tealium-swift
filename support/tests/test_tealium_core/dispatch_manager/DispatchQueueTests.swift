@@ -77,7 +77,7 @@ class DispatchQueueTests: XCTestCase {
         persistentQueue?.diskStorage.append(track, completion: nil)
         var data = persistentQueue?.diskStorage.retrieve(as: [TealiumTrackRequest].self)
         XCTAssertEqual(data!.count, 2)
-        persistentQueue?.clearQueue()
+        persistentQueue?.clearNonAuditEvents()
         XCTAssertEqual(persistentQueue?.currentEvents, 0)
         data = persistentQueue?.diskStorage.retrieve(as: [TealiumTrackRequest].self)
         XCTAssertEqual(data!.count, 0)

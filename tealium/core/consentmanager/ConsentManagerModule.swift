@@ -121,7 +121,7 @@ class ConsentManagerModule: DispatchValidator {
 
 }
 
-fileprivate extension TealiumTrackRequest {
+extension TealiumTrackRequest {
     private static let auditEvents = [ConsentKey.consentPartialEventName,
                                       ConsentKey.consentGrantedEventName,
                                       ConsentKey.consentDeclinedEventName,

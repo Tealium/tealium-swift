@@ -280,38 +280,33 @@ extension DispatchManager {
     }
 
     func clearQueue() {
-        persistentQueue.clearQueue()
+        persistentQueue.clearNonAuditEvents()
     }
 
     func handleDequeueRequest(reason: String) {
-        self.connectivityManager.checkIsConnected { result in
-            switch result {
-            case .success:
-                // dummy request to check if queueing active
-                var request = TealiumTrackRequest(data: ["release_request": true])
-
-                guard let dispatchers = self.dispatchers, !dispatchers.isEmpty else {
-                    return
-                }
-
-                guard !self.checkShouldQueue(request: &request),
-                      !self.checkShouldDrop(request: request),
-                      !self.checkShouldPurge(request: request) else {
-                    return
-                }
-
-                if let count = self.persistentQueue.peek()?.count, count > 0 {
-                    let logRequest = TealiumLogRequest(title: "Dispatch Manager",
-                                                       message: "Releasing queued dispatches. Reason: \(reason)",
-                                                       info: nil,
-                                                       logLevel: .info,
-                                                       category: .track)
-                    self.logger?.log(logRequest)
-
-                    self.dequeue()
-                }
-            case .failure:
+        self.connectivityManager.checkIsConnected { [weak self] result in
+            guard let self,
+                  case .success = result,
+                  let dispatchers,
+                  !dispatchers.isEmpty else {
                 return
+            }
+            var request = TealiumTrackRequest(data: ["release_request": true])
+            guard !checkShouldQueue(request: &request) else {
+                return
+            }
+            if checkShouldPurge(request: request) {
+                clearQueue()
+            }
+            if persistentQueue.currentEvents > 0 {
+                let logRequest = TealiumLogRequest(title: "Dispatch Manager",
+                                                   message: "Releasing queued dispatches. Reason: \(reason)",
+                                                   info: nil,
+                                                   logLevel: .info,
+                                                   category: .track)
+                logger?.log(logRequest)
+
+                dequeue()
             }
         }
     }
@@ -444,31 +439,6 @@ extension DispatchManager {
 
 // Dispatch Validator Checks
 extension DispatchManager {
-
-    func checkShouldQueue(request: inout TealiumBatchTrackRequest) -> Bool {
-        guard let dispatchValidators = dispatchValidators else {
-            return false
-        }
-        let uuid = request.uuid
-        return dispatchValidators.filter {
-            let response = $0.shouldQueue(request: request)
-            if response.0 == true,
-               let data = response.1 {
-                request = TealiumBatchTrackRequest(trackRequests: request.trackRequests.map { request in
-                    let singleRequestUUID = request.uuid
-                    var newData = request.trackDictionary
-                    newData += data
-                    var newRequest = TealiumTrackRequest(data: newData)
-                    newRequest.uuid = singleRequestUUID
-                    return newRequest
-                })
-                request.uuid = uuid
-                let logRequest = TealiumLogRequest(title: "Dispatch Manager", message: "Track request enqueued by Dispatch Validator: \($0.id)", info: data, logLevel: .info, category: .track)
-                self.logger?.log(logRequest)
-            }
-            return response.0
-        }.count > 0
-    }
 
     func checkShouldDrop(request: TealiumRequest) -> Bool {
         guard let dispatchValidators = dispatchValidators else {
