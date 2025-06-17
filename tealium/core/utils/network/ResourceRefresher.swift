@@ -84,7 +84,8 @@ public class ResourceRefresher<Resource: Codable & EtagResource> {
 
     private func refresh() {
         fetching = true
-        resourceRetriever.getResource(url: parameters.url, etag: lastEtag) { result in
+        resourceRetriever.getResource(url: parameters.url, etag: lastEtag) { [weak self] result in
+            guard let self else { return }
             switch result {
             case .success(let resource):
                 self.saveResource(resource)

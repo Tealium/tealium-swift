@@ -179,6 +179,20 @@ class TealiumUtilsTests: XCTestCase {
         }
     }
 
+    private struct Container: Equatable {
+        let dict: [String: Obj]
+    }
+    private struct Obj: Equatable {
+        let str: String
+    }
+    func testEquatableDictionary() {
+        // Fails if custom `==` is implemented on [String: Any] with NSDictionary.isEqual on iOS <= 17
+        let obj = Obj(str: "someValue")
+        let dict = ["someKey": obj]
+        XCTAssertTrue(dict == dict)
+        let container = Container(dict: dict)
+        XCTAssertEqual(container, container)
+    }
 }
 
 func generateTestDict() -> [String: Any] {

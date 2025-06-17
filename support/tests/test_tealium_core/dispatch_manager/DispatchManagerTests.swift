@@ -48,7 +48,6 @@ class DispatchQueueModuleTests: XCTestCase {
     }
 
     func testTrack() {
-
         let config = TestTealiumHelper().getConfig()
         config.batchingEnabled = true
         dispatchManager = DispatchManager(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: DispatchQueueModuleTests.connectivity, config: config, diskStorage: DispatchQueueMockDiskStorage())
@@ -143,6 +142,21 @@ class DispatchQueueModuleTests: XCTestCase {
         XCTAssertEqual(dispatchManager.persistentQueue.currentEvents, 2)
         dispatchManager.clearQueue()
         XCTAssertEqual(dispatchManager.persistentQueue.currentEvents, 0)
+    }
+
+    func testClearQueueDoesntClearAuditEvent() {
+        let config = TestTealiumHelper().getConfig()
+        config.logLevel = .silent
+        dispatchManager = DispatchManager(dispatchers: nil, dispatchValidators: nil, dispatchListeners: nil, connectivityManager: DispatchQueueModuleTests.connectivity, config: config, diskStorage: DispatchQueueMockDiskStorage())
+        dispatchManager.clearQueue()
+        let trackRequest = TealiumTrackRequest(data: ["tealium_event": "event"])
+        let auditRequest = TealiumTrackRequest(data: ["tealium_event": "decline_consent"])
+        dispatchManager.enqueue(trackRequest, reason: nil)
+        dispatchManager.enqueue(auditRequest, reason: nil)
+        XCTAssertEqual(dispatchManager.persistentQueue.currentEvents, 2)
+        dispatchManager.clearQueue()
+        XCTAssertEqual(dispatchManager.persistentQueue.currentEvents, 1)
+        XCTAssertEqual(dispatchManager.persistentQueue.peek()?.map { $0.event }, ["decline_consent"])
     }
 
     func testCanQueueRequest() {

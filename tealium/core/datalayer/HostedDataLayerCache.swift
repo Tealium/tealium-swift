@@ -10,7 +10,7 @@ import Foundation
 struct HostedDataLayerCacheItem: Codable, Equatable {
     static func == (lhs: HostedDataLayerCacheItem, rhs: HostedDataLayerCacheItem) -> Bool {
         if let lhsData = lhs.data, let rhsData = rhs.data {
-            return lhs.id == rhs.id && lhsData == rhsData
+            return lhs.id == rhs.id && (lhsData as NSDictionary).isEqual(to: rhsData)
         } else {
             return lhs.id == rhs.id
         }

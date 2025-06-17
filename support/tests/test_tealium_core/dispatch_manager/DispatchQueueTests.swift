@@ -67,7 +67,7 @@ class DispatchQueueTests: XCTestCase {
         savedTrackData.forEach {
             let savedData = $0.trackDictionary
             let testData = track.trackDictionary
-            XCTAssertTrue(savedData == testData)
+            XCTAssertTrue((savedData as NSDictionary).isEqual(to: testData))
         }
     }
 
@@ -77,7 +77,7 @@ class DispatchQueueTests: XCTestCase {
         persistentQueue?.diskStorage.append(track, completion: nil)
         var data = persistentQueue?.diskStorage.retrieve(as: [TealiumTrackRequest].self)
         XCTAssertEqual(data!.count, 2)
-        persistentQueue?.clearQueue()
+        persistentQueue?.clearNonAuditEvents()
         XCTAssertEqual(persistentQueue?.currentEvents, 0)
         data = persistentQueue?.diskStorage.retrieve(as: [TealiumTrackRequest].self)
         XCTAssertEqual(data!.count, 0)
