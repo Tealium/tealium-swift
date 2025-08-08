@@ -345,25 +345,27 @@ class PubSubTests: XCTestCase {
 
 }
 
-
-class RetaiCycleHelper<P: TealiumPublisherProtocol> {
-    
-    
-    let anyPublisher: P
+class DeinitTester {
     var onDeinit: (() -> ())
+    init(onDeinit: @escaping () -> ()) {
+        self.onDeinit = onDeinit
+    }
+
+    deinit {
+        onDeinit()
+    }
+
+}
+
+class RetaiCycleHelper<P: TealiumPublisherProtocol>: DeinitTester {
+    let anyPublisher: P
     var subscription: TealiumSubscription<P.Element>?
     
     init(publisher: P, onDeinit: @escaping () -> ()) {
         self.anyPublisher = publisher
-        self.onDeinit = onDeinit
-        
+        super.init(onDeinit: onDeinit)
         self.subscription = publisher.asObservable().subscribe { elem in
             print(self)
         }
     }
-    
-    deinit {
-        onDeinit()
-    }
-    
 }
