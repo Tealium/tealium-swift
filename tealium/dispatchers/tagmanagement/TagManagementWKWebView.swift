@@ -74,7 +74,8 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
             setWebViewDelegates(delegates)
         }
         if let completion = completion {
-            enableCompletion = { success, error in
+            enableCompletion = { [weak self] success, error in
+                self?.enableCompletion = nil
                 TealiumQueues.backgroundSerialQueue.async {
                     completion(success, error)
                 }
@@ -276,11 +277,7 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
         let success = state == .loadSuccess
         self.currentState = success ? .isLoaded : .didFailToLoad
         let finalError = success ? nil : error
-
-        if let enableCompletion = enableCompletion {
-            self.enableCompletion = nil
-            enableCompletion(success, finalError)
-        }
+        enableCompletion?(success, finalError)
         if let reloadHandler = self.reloadHandler {
             self.reloadHandler = nil
             TealiumQueues.backgroundSerialQueue.async {
