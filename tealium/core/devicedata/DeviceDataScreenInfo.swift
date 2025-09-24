@@ -29,7 +29,7 @@ public extension DeviceData {
         let stringRes = String(format: "%.0fx%.0f", width, height)
         return stringRes
         #else
-        let res = UIScreen.main.bounds
+        let res = UIScreen.main.fixedCoordinateSpace.bounds
         let scale = UIScreen.main.scale
         let width = res.width * scale
         let height = res.height * scale
@@ -46,13 +46,13 @@ public extension DeviceData {
         let stringRes = String(format: "%.0fx%.0f", res.width, res.height)
         return stringRes
         #else
-        let res = UIScreen.main.bounds
+        let res = UIScreen.main.fixedCoordinateSpace.bounds
         let stringRes = String(format: "%.0fx%.0f", res.width, res.height)
         return stringRes
         #endif
     }
 
-    /// - Returns: `[String: Stirng]` containing the device's physical and UI orientation
+    /// - Returns: `[String: String]` containing the device's physical and UI orientation
     var orientation: [String: String] {
         // UIDevice.current.orientation is available on iOS only
         #if os(iOS)
