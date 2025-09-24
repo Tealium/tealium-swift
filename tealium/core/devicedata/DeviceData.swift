@@ -45,7 +45,6 @@ public class DeviceData: DeviceDataCollection {
     class var batteryPercent: String {
         // only available on iOS
         #if os(iOS)
-        UIDevice.current.isBatteryMonitoringEnabled = true
         return String(describing: (UIDevice.current.batteryLevel * 100))
         #else
         return TealiumValue.unknown
@@ -56,7 +55,6 @@ public class DeviceData: DeviceDataCollection {
     class var isCharging: String {
         // only available on iOS
         #if os(iOS)
-        UIDevice.current.isBatteryMonitoringEnabled = true
         let state = UIDevice.current.batteryState
         switch state {
         case .charging:

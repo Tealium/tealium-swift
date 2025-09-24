@@ -47,6 +47,13 @@ public class DeviceDataModule: Collector {
         self.config = context.config
         deviceDataCollection = DeviceData()
         cachedData = enableTimeData
+        #if os(iOS)
+        if config.batteryReportingEnabled {
+            TealiumQueues.secureMainThreadExecution {
+                UIDevice.current.isBatteryMonitoringEnabled = true
+            }
+        }
+        #endif
         completion((.success(true), nil))
     }
 
