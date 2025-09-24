@@ -32,7 +32,22 @@ class TealiumDeviceDataTests: XCTestCase {
         let context = TestTealiumHelper.context(with: config)
         return DeviceDataModule(context: context, delegate: nil, diskStorage: nil, completion: { result in })
     }
-    
+
+    var deviceDataCollectorScreenDisabled: DeviceDataModule {
+        let config = testTealiumConfig.copy
+        config.screenReportingEnabled = false
+        let context = TestTealiumHelper.context(with: config)
+        return DeviceDataModule(context: context, delegate: nil, diskStorage: nil, completion: { result in })
+    }
+
+    var deviceDataCollectorBatteryDisabled: DeviceDataModule {
+        let config = testTealiumConfig.copy
+        config.batteryReportingEnabled = false
+        let context = TestTealiumHelper.context(with: config)
+        return DeviceDataModule(context: context, delegate: nil, diskStorage: nil, completion: { result in })
+    }
+
+
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -91,7 +106,7 @@ class TealiumDeviceDataTests: XCTestCase {
         #if os(OSX)
         XCTAssertEqual(resolution, TealiumValue.unknown)
         #else
-        let res = UIScreen.main.bounds
+        let res = UIScreen.main.fixedCoordinateSpace.bounds
         let scale = UIScreen.main.scale
         let width = res.width * scale
         let height = res.height * scale
@@ -105,7 +120,7 @@ class TealiumDeviceDataTests: XCTestCase {
         #if os(OSX)
         XCTAssertEqual(resolution, TealiumValue.unknown)
         #else
-        let res = UIScreen.main.bounds
+        let res = UIScreen.main.fixedCoordinateSpace.bounds
         let width = res.width
         let height = res.height
         let stringRes = String(format: "%.0fx%.0f", width, height)
@@ -291,5 +306,37 @@ class TealiumDeviceDataTests: XCTestCase {
         XCTAssertNil(data["memory_compressed"])
         XCTAssertNil(data["memory_physical"])
         XCTAssertNil(data["app_memory_usage"])
+    }
+
+    func testDeviceDataCollectorScreenDisabled() {
+        let collector = deviceDataCollectorScreenDisabled
+        let data = collector.data as! [String: String]
+        XCTAssertNil(data["device_orientation"])
+        XCTAssertNil(data["device_orientation_extended"])
+        XCTAssertNil(data["device_resolution"])
+        XCTAssertNil(data["device_logical_resolution"])
+    }
+
+    func testDeviceDataCollectorScreenEnabled() {
+        let collector = deviceDataCollector
+        let data = collector.data as! [String: String]
+        XCTAssertNotEqual(data["device_orientation"]!, "")
+        XCTAssertNotEqual(data["device_orientation_extended"]!, "")
+        XCTAssertNotEqual(data["device_resolution"]!, "")
+        XCTAssertNotEqual(data["device_logical_resolution"]!, "")
+    }
+
+    func testDeviceDataCollectorBatteryDisabled() {
+        let collector = deviceDataCollectorBatteryDisabled
+        let data = collector.data as! [String: String]
+        XCTAssertNil(data["device_battery_percent"])
+        XCTAssertNil(data["device_ischarging"])
+    }
+
+    func testDeviceDataCollectorBatteryEnabled() {
+        let collector = deviceDataCollector
+        let data = collector.data as! [String: String]
+        XCTAssertNotEqual(data["device_battery_percent"]!, "")
+        XCTAssertNotEqual(data["device_ischarging"]!, "")
     }
 }
