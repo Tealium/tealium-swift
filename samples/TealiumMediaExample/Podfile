@@ -2,6 +2,7 @@
 # platform :ios, '9.0'
 
 target 'TealiumMediaExample' do
+  platform :ios, '14.0'
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 

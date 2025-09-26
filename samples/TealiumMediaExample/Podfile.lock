@@ -1,7 +1,7 @@
 PODS:
-  - tealium-swift (2.16.0):
-    - tealium-swift/TealiumFull (= 2.16.0)
-  - tealium-swift/TealiumFull (2.16.0)
+  - tealium-swift (2.18.1):
+    - tealium-swift/TealiumFull (= 2.18.1)
+  - tealium-swift/TealiumFull (2.18.1)
 
 DEPENDENCIES:
   - tealium-swift (from `../../`)
@@ -11,8 +11,8 @@ EXTERNAL SOURCES:
     :path: "../../"
 
 SPEC CHECKSUMS:
-  tealium-swift: f359f1f7c2747e21906f83783c7031a5d9bf7812
+  tealium-swift: 7ed9213029e95f3b4207fae3640d9e6cf5746ba7
 
-PODFILE CHECKSUM: 9f7c4052f5026295b89589ca935de017625dcaf3
+PODFILE CHECKSUM: 8edd441286fdf7ade98fba7aefe902fa9f08e5a3
 
 COCOAPODS: 1.16.2
