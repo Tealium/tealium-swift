@@ -63,5 +63,4 @@ class TealiumInstanceManagerTests: XCTestCase {
             XCTAssertEqual(url.absoluteString, dataLayerUrl)
         }
     }
-
 }

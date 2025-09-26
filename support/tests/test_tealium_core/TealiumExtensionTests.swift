@@ -369,4 +369,20 @@ class TealiumExtensionTests: XCTestCase {
         let queryItems = [URLQueryItem(name: "key1", value: "value1"), URLQueryItem(name: "key2", value: "value2")]
         XCTAssertTrue(URLComponents(url: url!.appendingQueryItems(queryItems), resolvingAgainstBaseURL: false)!.queryItems!.elementsEqual(queryItems))
     }
+
+    func test_after_completion_captured_objects_deallocate() {
+        let deinitCalled = expectation(description: "Deinit is called")
+        let config = testTealiumConfig.copy
+        var deinitHelper: DeinitTester? = DeinitTester {
+            deinitCalled.fulfill()
+        }
+        _ = Tealium(config: config) { [deinitHelper] _ in
+            _ = deinitHelper
+        }
+        deinitHelper = nil
+        waitOnTealiumSerialQueue {
+            waitForExpectations(timeout: 0.1)
+        }
+    }
+
 }

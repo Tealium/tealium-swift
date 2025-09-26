@@ -46,27 +46,32 @@ class TagManagementModuleTests: XCTestCase {
         let track = TealiumTrackRequest(data: ["test": "track"])
         let batch = TealiumBatchTrackRequest(trackRequests: [track, track, track])
         let remote = TealiumRemoteAPIRequest(trackRequest: track)
-
-        module.enqueue(track, completion: nil)
-        XCTAssertEqual(module.pendingTrackRequests.count, 1)
-        if let request = module.pendingTrackRequests[0].0 as? TealiumTrackRequest {
-            XCTAssertEqual(request.trackDictionary["test"] as! String, "track")
+        TealiumQueues.backgroundSerialQueue.sync {
+            module.enqueue(track, completion: nil)
+            XCTAssertEqual(module.pendingTrackRequests.count, 1)
+            if let request = module.pendingTrackRequests[0].0 as? TealiumTrackRequest {
+                XCTAssertEqual(request.trackDictionary["test"] as! String, "track")
+            }
         }
+
 
         module = TagManagementModule(context: context, delegate: self, tagManagement: mockTagmanagement)
 
-        module.enqueue(batch, completion: nil)
-        XCTAssertEqual(module.pendingTrackRequests.count, 1)
-        if let request = module.pendingTrackRequests[0].0 as? TealiumTrackRequest {
-            XCTAssertEqual(request.trackDictionary["test"] as! String, "track")
+        TealiumQueues.backgroundSerialQueue.sync {
+            module.enqueue(batch, completion: nil)
+            XCTAssertEqual(module.pendingTrackRequests.count, 1)
+            if let request = module.pendingTrackRequests[0].0 as? TealiumTrackRequest {
+                XCTAssertEqual(request.trackDictionary["test"] as! String, "track")
+            }
         }
-
         module = TagManagementModule(context: context, delegate: self, tagManagement: mockTagmanagement)
 
-        module.enqueue(remote, completion: nil)
-        XCTAssertEqual(module.pendingTrackRequests.count, 1)
-        if let request = module.pendingTrackRequests[0].0 as? TealiumTrackRequest {
-            XCTAssertEqual(request.trackDictionary["test"] as! String, "track")
+        TealiumQueues.backgroundSerialQueue.sync {
+            module.enqueue(remote, completion: nil)
+            XCTAssertEqual(module.pendingTrackRequests.count, 1)
+            if let request = module.pendingTrackRequests[0].0 as? TealiumTrackRequest {
+                XCTAssertEqual(request.trackDictionary["test"] as! String, "track")
+            }
         }
     }
 

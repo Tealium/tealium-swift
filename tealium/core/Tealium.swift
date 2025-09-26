@@ -10,7 +10,6 @@ import Foundation
 ///  Public interface for the Tealium library.
 public class Tealium {
 
-    var enableCompletion: ((_ result: Result<Bool, Error>) -> Void)?
     public static let lifecycleListeners = TealiumLifecycleListeners()
     public var dataLayer: DataLayerManagerProtocol
     // swiftlint:disable identifier_name
@@ -33,7 +32,6 @@ public class Tealium {
                 enableCompletion?(.success(true))
             }
         }
-        self.enableCompletion = enableCompletion
         self.dataLayer = dataLayer ?? DataLayer(config: config)
         self.migrator = migrator ?? Migrator(config: config)
         if config.shouldMigratePersistentData {
