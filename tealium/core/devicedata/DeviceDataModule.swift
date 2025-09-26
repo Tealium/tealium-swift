@@ -47,6 +47,13 @@ public class DeviceDataModule: Collector {
         self.config = context.config
         deviceDataCollection = DeviceData()
         cachedData = enableTimeData
+        #if os(iOS)
+        if config.batteryReportingEnabled {
+            TealiumQueues.secureMainThreadExecution {
+                UIDevice.current.isBatteryMonitoringEnabled = true
+            }
+        }
+        #endif
         completion((.success(true), nil))
     }
 
@@ -64,8 +71,11 @@ public class DeviceDataModule: Collector {
         result[TealiumDataKey.osVersion] = DeviceData.oSVersion
         result[TealiumDataKey.osName] = DeviceData.oSName
         result[TealiumDataKey.platform] = (result[TealiumDataKey.osName] as? String ?? "").lowercased()
-        result[TealiumDataKey.resolution] = DeviceData.resolution
-        result[TealiumDataKey.logicalResolution] = DeviceData.logicalResolution
+
+        if config.screenReportingEnabled {
+            result[TealiumDataKey.resolution] = DeviceData.resolution
+            result[TealiumDataKey.logicalResolution] = DeviceData.logicalResolution
+        }
         return result
     }
 
@@ -74,14 +84,17 @@ public class DeviceDataModule: Collector {
     /// - Returns: `[String: Any]` of track-time device data.
     var trackTimeData: [String: Any] {
         var result = [String: Any]()
-
-        result[TealiumDataKey.batteryPercent] = DeviceData.batteryPercent
-        result[TealiumDataKey.isCharging] = DeviceData.isCharging
+        if config.batteryReportingEnabled {
+            result[TealiumDataKey.batteryPercent] = DeviceData.batteryPercent
+            result[TealiumDataKey.isCharging] = DeviceData.isCharging
+        }
         result[TealiumDataKey.language] = DeviceData.iso639Language
         if isMemoryReportingEnabled {
             result += deviceDataCollection.memoryUsage
         }
-        result += deviceDataCollection.orientation
+        if config.screenReportingEnabled {
+            result += deviceDataCollection.orientation
+        }
         result += DeviceData.carrierInfo
         return result
     }
