@@ -143,8 +143,11 @@ extension URLRequest {
 public extension String {
 
     /// Adds the key _cb= to the end of the url with a random number to clear the cached file from the CDN
+    @available(*, deprecated, message: "Do not use. This is going to be removed in a future release.")
     var cacheBuster: String {
-        return ("\(self)?_cb=\(Int.random(in: 1...10_000))")
+        URL(string: self)?.appendingQueryItems([
+            URLQueryItem(name: "_cb", value: "\(Int.random(in: 1...10_000))")
+        ]).absoluteString ?? self
     }
 }
 #endif

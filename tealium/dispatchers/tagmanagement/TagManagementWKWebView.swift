@@ -242,7 +242,7 @@ class TagManagementWKWebView: NSObject, TagManagementProtocol, LoggingDataToStri
     /// - Parameters:
     ///     - jsString: `String` containing the JavaScript call to be executed in the webview
     ///     - completion: Optional completion block to be called after the JavaScript call completes
-    func evaluateJavascript (_ jsString: String, _ completion: (([String: Any]) -> Void)?) {
+    func evaluateJavascript(_ jsString: String, _ completion: (([String: Any]) -> Void)?) {
         // webview js evaluation must be on main thread
         TealiumQueues.secureMainThreadExecution { [weak self] in
             guard let self = self else {

@@ -472,11 +472,11 @@ extension DispatchManager {
 // Logging
 extension DispatchManager {
 
-    func logModuleResponse (for module: String,
-                            request: TealiumRequest,
-                            info: [String: Any]?,
-                            success: Bool,
-                            error: Error?) {
+    func logModuleResponse(for module: String,
+                           request: TealiumRequest,
+                           info: [String: Any]?,
+                           success: Bool,
+                           error: Error?) {
         let message = success ? "Successful Track" : "Failed with error: \(error?.localizedDescription ?? "")"
         let logLevel: TealiumLogLevel = success ? .info : .error
         var uuid: String?

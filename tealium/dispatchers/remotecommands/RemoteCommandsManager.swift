@@ -97,7 +97,7 @@ public class RemoteCommandsManager: NSObject, RemoteCommandsManagerProtocol {
             }
         case .remote(let urlString):
             jsonCommands.append(remoteCommand)
-            guard let url = URL(string: urlString.cacheBuster) else {
+            guard let url = URL(string: urlString) else {
                 return
             }
             let parameters = RefreshParameters<RemoteCommandConfig>(id: remoteCommand.commandId,

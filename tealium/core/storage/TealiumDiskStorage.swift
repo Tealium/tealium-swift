@@ -95,7 +95,7 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
     /// Generates a file path for the data to be saved.
     ///
     /// - Parameter name: `String` containing
-    func filePath (_ name: String) -> String {
+    func filePath(_ name: String) -> String {
         return "\(filePath)\(name)"
     }
 

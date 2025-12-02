@@ -60,9 +60,16 @@ class RemoteCommandExtensionsTests: XCTestCase {
         XCTAssertFalse(anotherInvalidURLString.isValidUrl)
     }
 
+    @available(*, deprecated)
     func testCacheBuster() {
         let urlString = "https://www.tealium.com"
         XCTAssertTrue(urlString.cacheBuster.starts(with: "https://www.tealium.com?_cb="))
+    }
+
+    @available(*, deprecated)
+    func testCacheBusterWithQueryParameters() {
+        let urlString = "https://www.tealium.com?some=value"
+        XCTAssertTrue(urlString.cacheBuster.starts(with: "https://www.tealium.com?some=value&_cb="))
     }
 
     func testRemoteCommandsErrorLocalizedDescription() {

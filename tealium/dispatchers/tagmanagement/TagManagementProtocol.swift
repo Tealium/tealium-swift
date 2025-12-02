@@ -22,10 +22,10 @@ protocol TagManagementProtocol {
     ///     - delegates: `[AnyObject]?` Array of delegates, downcast from AnyObject to account for any future potential changes in WebView APIs
     ///     - view: `UIView? `- required `WKWebView`, if one is not provided we attach to the window object
     ///     - completion: completion block to be called when the webview has finished loading
-    func enable (webviewURL: URL?,
-                 delegates: [WKNavigationDelegate]?,
-                 view: UIView?,
-                 completion: ((Bool, Error?) -> Void)?)
+    func enable(webviewURL: URL?,
+                delegates: [WKNavigationDelegate]?,
+                view: UIView?,
+                completion: ((Bool, Error?) -> Void)?)
 
     /// Called when the module needs to disable the webview.
     func disable()
@@ -69,7 +69,7 @@ protocol TagManagementProtocol {
     /// - Parameters:
     ///     - jsString: `String` containing the JavaScript call to be executed in the webview
     ///     - completion: Optional completion block to be called after the JavaScript call completes
-    func evaluateJavascript (_ jsString: String, _ completion: (([String: Any]) -> Void)?)
+    func evaluateJavascript(_ jsString: String, _ completion: (([String: Any]) -> Void)?)
 
     /// Adds optional delegates to the WebView instance.
     /// ￼
