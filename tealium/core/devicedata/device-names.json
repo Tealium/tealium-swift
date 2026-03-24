@@ -1,28 +1,4 @@
 {
-  "iPhone1,1": {
-    "model_name": "iPhone",
-    "model_variant": ""
-  },
-  "iPhone1,2": {
-    "model_name": "iPhone 3G",
-    "model_variant": ""
-  },
-  "iPhone2,1": {
-    "model_name": "iPhone 3GS",
-    "model_variant": ""
-  },
-  "iPhone3,1": {
-    "model_name": "iPhone 4",
-    "model_variant": "GSM"
-  },
-  "iPhone3,2": {
-    "model_name": "iPhone 4 (GSM, 2012)",
-    "model_variant": ""
-  },
-  "iPhone3,3": {
-    "model_name": "iPhone 4",
-    "model_variant": "CDMA"
-  },
   "iPhone4,1": {
     "model_name": "iPhone 4S",
     "model_variant": ""
@@ -255,30 +231,6 @@
     "model_name": "virtual machine for iPhone Research Environment",
     "model_variant": ""
   },
-  "iPod1,1": {
-    "model_name": "iPod touch",
-    "model_variant": "1st generation"
-  },
-  "iPod2,1": {
-    "model_name": "iPod touch",
-    "model_variant": "2nd generation"
-  },
-  "iPod2,2": {
-    "model_name": "Unreleased iPod touch",
-    "model_variant": "2nd generation, Rev. A"
-  },
-  "iPod3,1": {
-    "model_name": "iPod touch",
-    "model_variant": "3rd generation"
-  },
-  "iPod4,1": {
-    "model_name": "iPod touch",
-    "model_variant": "4th generation"
-  },
-  "iPod4,2": {
-    "model_name": "Unreleased iPod touch",
-    "model_variant": ""
-  },
   "iPod5,1": {
     "model_name": "iPod Touch 5th Generation",
     "model_variant": ""
@@ -289,10 +241,6 @@
   },
   "iPod9,1": {
     "model_name": "iPod Touch 7th Generation",
-    "model_variant": ""
-  },
-  "iPad1,1": {
-    "model_name": "iPad",
     "model_variant": ""
   },
   "iPad2,1": {
@@ -398,22 +346,6 @@
   "iPad5,4": {
     "model_name": "iPad Air 2",
     "model_variant": "Wifi + Cellular (model A1567)"
-  },
-  "iPad5,5": {
-    "model_name": "Unreleased iPad Pro",
-    "model_variant": ""
-  },
-  "iPad5,6": {
-    "model_name": "Unreleased iPad Pro",
-    "model_variant": ""
-  },
-  "iPad6,1": {
-    "model_name": "Unreleased iPad mini",
-    "model_variant": ""
-  },
-  "iPad6,2": {
-    "model_name": "Unreleased iPad mini",
-    "model_variant": ""
   },
   "iPad6,3": {
     "model_name": "iPad Pro 12.9\"",
@@ -607,14 +539,6 @@
     "model_name": "iPad 10th Gen",
     "model_variant": ""
   },
-  "iPad13,20": {
-    "model_name": "Unreleased iPad",
-    "model_variant": ""
-  },
-  "iPad13,21": {
-    "model_name": "Unreleased iPad",
-    "model_variant": ""
-  },
   "iPad14,1": {
     "model_name": "iPad mini 6th Gen",
     "model_variant": "WiFi"
@@ -735,10 +659,6 @@
     "model_name": "iPad Pro 13-inch Wi-Fi + Cellular",
     "model_variant": "M5"
   },
-  "AppleTV1,1": {
-    "model_name": "Apple TV",
-    "model_variant": "1st generation"
-  },
   "AppleTV2,1": {
     "model_name": "Apple TV 2nd Generation",
     "model_variant": ""
@@ -767,14 +687,6 @@
     "model_name": "Apple TV 4K (3rd generation) Wi-Fi + Ethernet",
     "model_variant": ""
   },
-  "AppleTV14,4": {
-    "model_name": "Unreleased Apple TV",
-    "model_variant": ""
-  },
-  "AppleTV14,5": {
-    "model_name": "Unreleased Apple TV",
-    "model_variant": ""
-  },
   "Watch1,1": {
     "model_name": "Apple Watch 1st Generation",
     "model_variant": "38mm"
@@ -782,14 +694,6 @@
   "Watch1,2": {
     "model_name": "Apple Watch 1st Generation",
     "model_variant": "42mm"
-  },
-  "Watch2,1": {
-    "model_name": "Unreleased Apple Watch Series 2",
-    "model_variant": "Cellular, 38mm"
-  },
-  "Watch2,2": {
-    "model_name": "Unreleased Apple Watch Series 2",
-    "model_variant": "Cellular, 42mm"
   },
   "Watch2,3": {
     "model_name": "Apple Watch Series 2",
@@ -1051,41 +955,17 @@
     "model_name": "Mac mini (Late 2012, Core i7)",
     "model_variant": ""
   },
-  "Macmini6,3": {
-    "model_name": "Unreleased Mac mini",
-    "model_variant": ""
-  },
   "Macmini7,1": {
     "model_name": "Mac mini (Late 2014)",
-    "model_variant": ""
-  },
-  "Macmini7,2": {
-    "model_name": "Unreleased Mac mini",
-    "model_variant": ""
-  },
-  "Macmini7,3": {
-    "model_name": "Unreleased Mac mini",
     "model_variant": ""
   },
   "Macmini8,1": {
     "model_name": "Mac mini (2018)",
     "model_variant": ""
   },
-  "Macmini8,2": {
-    "model_name": "Unreleased Mac mini",
-    "model_variant": ""
-  },
   "Macmini9,1": {
     "model_name": "Mac mini (M1, 2020)",
     "model_variant": ""
-  },
-  "Macmini10,1": {
-    "model_name": "Unreleased Mac mini",
-    "model_variant": "M1 Pro"
-  },
-  "Macmini10,2": {
-    "model_name": "Unreleased Mac mini",
-    "model_variant": "M1 Max"
   },
   "iMacPro1,1": {
     "model_name": "iMac Pro (2017)",
@@ -1259,220 +1139,68 @@
     "model_name": "Mac Pro (2019)",
     "model_variant": ""
   },
-  "MacBookAir10,1": {
-    "model_name": "MacBook Air (M1, 2020)",
-    "model_variant": ""
-  },
-  "MacBookAir9,1": {
-    "model_name": "MacBook Air (Retina, 13-inch, 2020)",
-    "model_variant": ""
-  },
-  "MacBookAir8,2": {
-    "model_name": "MacBook Air (Retina, 13-inch, 2019)",
-    "model_variant": ""
-  },
-  "MacBookAir8,1": {
-    "model_name": "MacBook Air (Retina, 13-inch, 2018)",
-    "model_variant": ""
-  },
-  "MacBookAir7,2": {
-    "model_name": "MacBook Air (13-inch, 2017)",
-    "model_variant": ""
-  },
-  "MacBookAir7,1": {
-    "model_name": "MacBook Air (11-inch, Early 2015)",
-    "model_variant": ""
-  },
-  "MacBookAir6,2": {
-    "model_name": "MacBook Air (13-inch, Early 2014)",
-    "model_variant": ""
-  },
-  "MacBookAir6,1": {
-    "model_name": "MacBook Air (11-inch, Early 2014)",
-    "model_variant": ""
-  },
-  "MacBookAir5,2": {
-    "model_name": "MacBook Air (13-inch, Mid 2012)",
-    "model_variant": ""
-  },
-  "MacBookAir5,1": {
-    "model_name": "MacBook Air (11-inch, Mid 2012)",
-    "model_variant": ""
-  },
-  "MacBookAir4,2": {
-    "model_name": "MacBook Air (13-inch, Mid 2011)",
-    "model_variant": ""
-  },
-  "MacBookAir4,1": {
-    "model_name": "MacBook Air (11-inch, Mid 2011)",
-    "model_variant": ""
-  },
-  "MacBookAir3,2": {
-    "model_name": "MacBook Air (13-inch, Late 2010)",
-    "model_variant": ""
-  },
-  "MacBookAir3,1": {
-    "model_name": "MacBook Air (11-inch, Late 2010)",
+  "MacBookAir1,1": {
+    "model_name": "MacBook Air (Early 2008)",
     "model_variant": ""
   },
   "MacBookAir2,1": {
     "model_name": "MacBook Air (Mid 2009)",
     "model_variant": ""
   },
-  "MacBookPro18,3": {
-    "model_name": "MacBook Pro (14-inch, 2021)",
+  "MacBookAir3,1": {
+    "model_name": "MacBook Air (11-inch, Late 2010)",
     "model_variant": ""
   },
-  "MacBookPro18,4": {
-    "model_name": "MacBook Pro (14-inch, 2021)",
+  "MacBookAir3,2": {
+    "model_name": "MacBook Air (13-inch, Late 2010)",
     "model_variant": ""
   },
-  "MacBookPro18,1": {
-    "model_name": "MacBook Pro (16-inch, 2021)",
+  "MacBookAir4,1": {
+    "model_name": "MacBook Air (11-inch, Mid 2011)",
     "model_variant": ""
   },
-  "MacBookPro18,2": {
-    "model_name": "MacBook Pro (16-inch, 2021)",
+  "MacBookAir4,2": {
+    "model_name": "MacBook Air (13-inch, Mid 2011)",
     "model_variant": ""
   },
-  "MacBookPro17,1 ": {
-    "model_name": "MacBook Pro (13-inch, M1, 2020)",
+  "MacBookAir5,1": {
+    "model_name": "MacBook Air (11-inch, Mid 2012)",
     "model_variant": ""
   },
-  "MacBookPro16,3": {
-    "model_name": "MacBook Pro (13-inch, 2020, Two Thunderbolt 3 ports)",
+  "MacBookAir5,2": {
+    "model_name": "MacBook Air (13-inch, Mid 2012)",
     "model_variant": ""
   },
-  "MacBookPro16,2": {
-    "model_name": "MacBook Pro (13-inch, 2020, Four Thunderbolt 3 ports)",
+  "MacBookAir6,1": {
+    "model_name": "MacBook Air (11-inch, Early 2014)",
     "model_variant": ""
   },
-  "MacBookPro16,1": {
-    "model_name": "MacBook Pro (16-inch, 2019)",
+  "MacBookAir6,2": {
+    "model_name": "MacBook Air (13-inch, Early 2014)",
     "model_variant": ""
   },
-  "MacBookPro16,4": {
-    "model_name": "MacBook Pro (16-inch, 2019)",
+  "MacBookAir7,1": {
+    "model_name": "MacBook Air (11-inch, Early 2015)",
     "model_variant": ""
   },
-  "MacBookPro15,4": {
-    "model_name": "MacBook Pro (13-inch, 2019, Two Thunderbolt 3 ports)",
+  "MacBookAir7,2": {
+    "model_name": "MacBook Air (13-inch, 2017)",
     "model_variant": ""
   },
-  "MacBookPro15,1": {
-    "model_name": "MacBook Pro (15-inch, 2019)",
+  "MacBookAir8,1": {
+    "model_name": "MacBook Air (Retina, 13-inch, 2018)",
     "model_variant": ""
   },
-  "MacBookPro15,2": {
-    "model_name": "MacBook Pro (13-inch, 2019, Four Thunderbolt 3 ports)",
+  "MacBookAir8,2": {
+    "model_name": "MacBook Air (Retina, 13-inch, 2019)",
     "model_variant": ""
   },
-  "MacBookPro14,3": {
-    "model_name": "MacBook Pro (15-inch, 2017)",
+  "MacBookAir9,1": {
+    "model_name": "MacBook Air (Retina, 13-inch, 2020)",
     "model_variant": ""
   },
-  "MacBookPro14,2": {
-    "model_name": "MacBook Pro (13-inch, 2017, Four Thunderbolt 3 ports)",
-    "model_variant": ""
-  },
-  "MacBookPro14,1": {
-    "model_name": "MacBook Pro (13-inch, 2017, Two Thunderbolt 3 ports)",
-    "model_variant": ""
-  },
-  "MacBookPro13,3": {
-    "model_name": "MacBook Pro (15-inch, 2016)",
-    "model_variant": ""
-  },
-  "MacBookPro13,2": {
-    "model_name": "MacBook Pro (13-inch, 2016, Four Thunderbolt 3 ports)",
-    "model_variant": ""
-  },
-  "MacBookPro13,1": {
-    "model_name": "MacBook Pro (13-inch, 2016, Two Thunderbolt 3 ports)",
-    "model_variant": ""
-  },
-  "MacBookPro11,4": {
-    "model_name": "MacBook Pro (Retina, 15-inch, Mid 2015)",
-    "model_variant": ""
-  },
-  "MacBookPro11,5": {
-    "model_name": "MacBook Pro (Retina, 15-inch, Mid 2015)",
-    "model_variant": ""
-  },
-  "MacBookPro12,1": {
-    "model_name": "MacBook Pro (Retina, 13-inch, Early 2015)",
-    "model_variant": ""
-  },
-  "MacBookPro11,2": {
-    "model_name": "MacBook Pro (Retina, 15-inch, Mid 2014)",
-    "model_variant": ""
-  },
-  "MacBookPro11,1": {
-    "model_name": "MacBook Pro (Retina, 13-inch, Mid 2014)",
-    "model_variant": ""
-  },
-  "MacBookPro10,1": {
-    "model_name": "MacBook Pro (Retina, 15-inch, Early 2013)",
-    "model_variant": ""
-  },
-  "MacBookPro10,2": {
-    "model_name": "MacBook Pro (Retina, 13-inch, Early 2013)",
-    "model_variant": ""
-  },
-  "MacBookPro9,1": {
-    "model_name": "MacBook Pro (15-inch, Mid 2012)",
-    "model_variant": ""
-  },
-  "MacBookPro9,2": {
-    "model_name": "MacBook Pro (13-inch, Mid 2012)",
-    "model_variant": ""
-  },
-  "MacBookPro8,3": {
-    "model_name": "MacBook Pro (17-inch, Late 2011)",
-    "model_variant": ""
-  },
-  "MacBookPro8,2": {
-    "model_name": "MacBook Pro (15-inch, Late 2011)",
-    "model_variant": ""
-  },
-  "MacBookPro8,1": {
-    "model_name": "MacBook Pro (13-inch, Late 2011)",
-    "model_variant": ""
-  },
-  "MacBookPro6,1": {
-    "model_name": "MacBook Pro (17-inch, Mid 2010)",
-    "model_variant": ""
-  },
-  "MacBookPro6,2": {
-    "model_name": "MacBook Pro (15-inch, Mid 2010)",
-    "model_variant": ""
-  },
-  "MacBookPro7,1": {
-    "model_name": "MacBook Pro (13-inch, Mid 2010)",
-    "model_variant": ""
-  },
-  "MacBookPro5,2": {
-    "model_name": "MacBook Pro (17-inch, Mid 2009)",
-    "model_variant": ""
-  },
-  "MacBookPro5,3": {
-    "model_name": "MacBook Pro (15-inch, Mid 2009)",
-    "model_variant": ""
-  },
-  "MacBookPro5,5": {
-    "model_name": "MacBook Pro (13-inch, Mid 2009)",
-    "model_variant": ""
-  },
-  "MacBookPro5,1": {
-    "model_name": "MacBook Pro (15-inch, Late 2008)",
-    "model_variant": ""
-  },
-  "MacBookPro4,1": {
-    "model_name": "MacBook Pro (17-inch, Early 2008)",
-    "model_variant": ""
-  },
-  "MacBookAir1,1": {
-    "model_name": "MacBook Air (Early 2008)",
+  "MacBookAir10,1": {
+    "model_name": "MacBook Air (M1, 2020)",
     "model_variant": ""
   },
   "MacBookPro1,1": {
@@ -1481,18 +1209,6 @@
   },
   "MacBookPro1,2": {
     "model_name": "MacBook Pro (17-inch, Early 2006)",
-    "model_variant": ""
-  },
-  "MacBookPro11,3": {
-    "model_name": "MacBook Pro (Retina, 15-inch, Mid 2014, Dedicated graphics)",
-    "model_variant": ""
-  },
-  "MacBookPro15,3": {
-    "model_name": "MacBook Pro (15-inch, 2019, Radeon Pro Vega Graphics)",
-    "model_variant": ""
-  },
-  "MacBookPro17,1": {
-    "model_name": "MacBook Pro (13-inch, M1, 2020)",
     "model_variant": ""
   },
   "MacBookPro2,1": {
@@ -1507,8 +1223,172 @@
     "model_name": "MacBook Pro (17-inch, Mid 2007)",
     "model_variant": ""
   },
+  "MacBookPro4,1": {
+    "model_name": "MacBook Pro (17-inch, Early 2008)",
+    "model_variant": ""
+  },
+  "MacBookPro5,1": {
+    "model_name": "MacBook Pro (15-inch, Late 2008)",
+    "model_variant": ""
+  },
+  "MacBookPro5,2": {
+    "model_name": "MacBook Pro (17-inch, Mid 2009)",
+    "model_variant": ""
+  },
+  "MacBookPro5,3": {
+    "model_name": "MacBook Pro (15-inch, Mid 2009)",
+    "model_variant": ""
+  },
   "MacBookPro5,4": {
     "model_name": "MacBook Pro (15-inch, Mid 2009, Integrated Graphics)",
+    "model_variant": ""
+  },
+  "MacBookPro5,5": {
+    "model_name": "MacBook Pro (13-inch, Mid 2009)",
+    "model_variant": ""
+  },
+  "MacBookPro6,1": {
+    "model_name": "MacBook Pro (17-inch, Mid 2010)",
+    "model_variant": ""
+  },
+  "MacBookPro6,2": {
+    "model_name": "MacBook Pro (15-inch, Mid 2010)",
+    "model_variant": ""
+  },
+  "MacBookPro7,1": {
+    "model_name": "MacBook Pro (13-inch, Mid 2010)",
+    "model_variant": ""
+  },
+  "MacBookPro8,1": {
+    "model_name": "MacBook Pro (13-inch, Late 2011)",
+    "model_variant": ""
+  },
+  "MacBookPro8,2": {
+    "model_name": "MacBook Pro (15-inch, Late 2011)",
+    "model_variant": ""
+  },
+  "MacBookPro8,3": {
+    "model_name": "MacBook Pro (17-inch, Late 2011)",
+    "model_variant": ""
+  },
+  "MacBookPro9,1": {
+    "model_name": "MacBook Pro (15-inch, Mid 2012)",
+    "model_variant": ""
+  },
+  "MacBookPro9,2": {
+    "model_name": "MacBook Pro (13-inch, Mid 2012)",
+    "model_variant": ""
+  },
+  "MacBookPro10,1": {
+    "model_name": "MacBook Pro (Retina, 15-inch, Early 2013)",
+    "model_variant": ""
+  },
+  "MacBookPro10,2": {
+    "model_name": "MacBook Pro (Retina, 13-inch, Early 2013)",
+    "model_variant": ""
+  },
+  "MacBookPro11,1": {
+    "model_name": "MacBook Pro (Retina, 13-inch, Mid 2014)",
+    "model_variant": ""
+  },
+  "MacBookPro11,2": {
+    "model_name": "MacBook Pro (Retina, 15-inch, Mid 2014)",
+    "model_variant": ""
+  },
+  "MacBookPro11,3": {
+    "model_name": "MacBook Pro (Retina, 15-inch, Mid 2014, Dedicated graphics)",
+    "model_variant": ""
+  },
+  "MacBookPro11,4": {
+    "model_name": "MacBook Pro (Retina, 15-inch, Mid 2015)",
+    "model_variant": ""
+  },
+  "MacBookPro11,5": {
+    "model_name": "MacBook Pro (Retina, 15-inch, Mid 2015)",
+    "model_variant": ""
+  },
+  "MacBookPro12,1": {
+    "model_name": "MacBook Pro (Retina, 13-inch, Early 2015)",
+    "model_variant": ""
+  },
+  "MacBookPro13,1": {
+    "model_name": "MacBook Pro (13-inch, 2016, Two Thunderbolt 3 ports)",
+    "model_variant": ""
+  },
+  "MacBookPro13,2": {
+    "model_name": "MacBook Pro (13-inch, 2016, Four Thunderbolt 3 ports)",
+    "model_variant": ""
+  },
+  "MacBookPro13,3": {
+    "model_name": "MacBook Pro (15-inch, 2016)",
+    "model_variant": ""
+  },
+  "MacBookPro14,1": {
+    "model_name": "MacBook Pro (13-inch, 2017, Two Thunderbolt 3 ports)",
+    "model_variant": ""
+  },
+  "MacBookPro14,2": {
+    "model_name": "MacBook Pro (13-inch, 2017, Four Thunderbolt 3 ports)",
+    "model_variant": ""
+  },
+  "MacBookPro14,3": {
+    "model_name": "MacBook Pro (15-inch, 2017)",
+    "model_variant": ""
+  },
+  "MacBookPro15,1": {
+    "model_name": "MacBook Pro (15-inch, 2019)",
+    "model_variant": ""
+  },
+  "MacBookPro15,2": {
+    "model_name": "MacBook Pro (13-inch, 2019, Four Thunderbolt 3 ports)",
+    "model_variant": ""
+  },
+  "MacBookPro15,3": {
+    "model_name": "MacBook Pro (15-inch, 2019, Radeon Pro Vega Graphics)",
+    "model_variant": ""
+  },
+  "MacBookPro15,4": {
+    "model_name": "MacBook Pro (13-inch, 2019, Two Thunderbolt 3 ports)",
+    "model_variant": ""
+  },
+  "MacBookPro16,1": {
+    "model_name": "MacBook Pro (16-inch, 2019)",
+    "model_variant": ""
+  },
+  "MacBookPro16,2": {
+    "model_name": "MacBook Pro (13-inch, 2020, Four Thunderbolt 3 ports)",
+    "model_variant": ""
+  },
+  "MacBookPro16,3": {
+    "model_name": "MacBook Pro (13-inch, 2020, Two Thunderbolt 3 ports)",
+    "model_variant": ""
+  },
+  "MacBookPro16,4": {
+    "model_name": "MacBook Pro (16-inch, 2019)",
+    "model_variant": ""
+  },
+  "MacBookPro17,1 ": {
+    "model_name": "MacBook Pro (13-inch, M1, 2020)",
+    "model_variant": ""
+  },
+  "MacBookPro17,1": {
+    "model_name": "MacBook Pro (13-inch, M1, 2020)",
+    "model_variant": ""
+  },
+  "MacBookPro18,1": {
+    "model_name": "MacBook Pro (16-inch, 2021)",
+    "model_variant": ""
+  },
+  "MacBookPro18,2": {
+    "model_name": "MacBook Pro (16-inch, 2021)",
+    "model_variant": ""
+  },
+  "MacBookPro18,3": {
+    "model_name": "MacBook Pro (14-inch, 2021)",
+    "model_variant": ""
+  },
+  "MacBookPro18,4": {
+    "model_name": "MacBook Pro (14-inch, 2021)",
     "model_variant": ""
   },
   "MacBook1,1": {
@@ -1609,14 +1489,6 @@
   },
   "Mac14,15": {
     "model_name": "MacBook Air (15-inch, M2, 2023)",
-    "model_variant": ""
-  },
-  "Mac15,1": {
-    "model_name": "Unreleased MacBook Air",
-    "model_variant": ""
-  },
-  "Mac15,2": {
-    "model_name": "Unreleased MacBook Air",
     "model_variant": ""
   },
   "Mac15,3": {

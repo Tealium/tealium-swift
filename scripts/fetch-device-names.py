@@ -4,7 +4,7 @@
 Only adds new entries — existing ones are never overwritten.
 
 Usage:
-    python3 scripts/device-names-skrypt.py
+    python3 scripts/fetch-device-names.py
 """
 
 import gzip
@@ -16,6 +16,7 @@ import requests
 
 APPLEDB_URL = "https://api.appledb.dev/device/main.json.gz"
 OUTPUT = Path(__file__).parent.parent / "tealium/core/devicedata/device-names.json"
+PACKAGE_SWIFT = Path(__file__).parent.parent / "Package.swift"
 
 # Identifier prefixes that are relevant to this project.
 # All other Apple products (AirPods, Beats, accessories...) are ignored.
@@ -37,7 +38,7 @@ SIMULATOR_ENTRIES = {
 FAMILY_ORDER = [
     "iPhone", "iPod", "iPad",
     "AppleTV", "Watch",
-    "Macmini", "iMac", "iMacPro", "MacPro", "MacBook", "MacBookAir", "MacBookPro", "Mac",
+    "Macmini", "iMacPro", "iMac", "MacPro", "MacBookAir", "MacBookPro", "MacBook", "Mac",
 ]
 
 # Checked longest-first to avoid "Wi-Fi" matching before "Wi-Fi + Cellular".
@@ -48,6 +49,41 @@ CONNECTIVITY_SUFFIXES = [
     "CDMA",
     "GSM",
 ]
+
+# Oldest device identifier (major, minor) per family for each major OS version.
+# Devices with an identifier below this threshold do not support the OS and are excluded.
+# Extend this table when Package.swift deployment targets are raised.
+_OS_TO_MIN_DEVICE: dict[str, dict[int, dict[str, tuple[int, int]]]] = {
+    "iOS": {
+        12: {"iPhone": (6, 1), "iPad": (4, 1), "iPod": (7, 1)},  # iPhone 5s / iPad Air / iPod touch 6th gen
+        13: {"iPhone": (8, 1), "iPad": (5, 1), "iPod": (9, 1)},  # iPhone 6s / iPad mini 4 / iPod touch 7th gen
+        14: {"iPhone": (8, 1), "iPad": (5, 1), "iPod": (9, 1)},
+        15: {"iPhone": (8, 1), "iPad": (5, 1), "iPod": (9, 1)},
+        16: {"iPhone": (10, 1), "iPad": (6, 11)},                 # iPhone 8 / iPad 5th gen
+        17: {"iPhone": (11, 2), "iPad": (7, 5)},                  # iPhone XS / iPad 6th gen
+        18: {"iPhone": (11, 2), "iPad": (7, 5)},
+    },
+    "tvOS": {
+        12: {"AppleTV": (6, 2)},   # Apple TV HD is the oldest model supporting tvOS 12+
+        13: {"AppleTV": (6, 2)},
+        14: {"AppleTV": (6, 2)},
+        15: {"AppleTV": (6, 2)},
+        16: {"AppleTV": (6, 2)},
+        17: {"AppleTV": (6, 2)},
+        18: {"AppleTV": (6, 2)},
+    },
+    "watchOS": {
+        4: {"Watch": (1, 1)},   # All Apple Watches
+        5: {"Watch": (2, 3)},   # Dropped Series 0 (Watch1,x); Watch2,3 is the lowest >= Series 1
+        6: {"Watch": (2, 3)},   # Same minimum as watchOS 5
+        7: {"Watch": (3, 1)},   # Dropped Series 1 and 2
+        8: {"Watch": (3, 1)},   # Minimum = Series 3
+        9: {"Watch": (4, 1)},   # Dropped Series 3
+        10: {"Watch": (4, 1)},
+        11: {"Watch": (4, 1)},
+    },
+    # macOS identifiers do not follow a simple numeric progression, so no floor is applied.
+}
 
 
 def parse_name(name: str) -> tuple[str, str]:
@@ -90,10 +126,62 @@ def sort_key(identifier: str) -> tuple:
     return (len(FAMILY_ORDER), 0, 0)
 
 
+def parse_deployment_targets() -> dict[str, tuple[int, int]]:
+    """Parse minimum deployment targets from Package.swift.
+
+    Returns a dict mapping platform name to (major, minor), e.g.
+    {"iOS": (12, 0), "tvOS": (12, 0), "watchOS": (4, 0), "macOS": (10, 14)}.
+    """
+    text = PACKAGE_SWIFT.read_text(encoding="utf-8")
+    result: dict[str, tuple[int, int]] = {}
+    for m in re.finditer(r'\.(iOS|tvOS|watchOS|macOS)\(\.v(\d+)(?:_(\d+))?\)', text):
+        platform = m.group(1)
+        major = int(m.group(2))
+        minor = int(m.group(3)) if m.group(3) else 0
+        result[platform] = (major, minor)
+    return result
+
+
+def build_min_device_floor() -> dict[str, tuple[int, int]]:
+    """Derive per-family minimum identifier from Package.swift deployment targets.
+
+    Devices with an identifier below the returned floor do not support the SDK's
+    minimum OS and are excluded from the output file.
+    """
+    targets = parse_deployment_targets()
+    floor: dict[str, tuple[int, int]] = {}
+    for platform, (major, _) in targets.items():
+        entries = _OS_TO_MIN_DEVICE.get(platform, {}).get(major)
+        if entries:
+            floor.update(entries)
+        elif platform != "macOS":
+            print(f"Warning: no device floor defined for {platform} {major} — update _OS_TO_MIN_DEVICE.")
+    return floor
+
+
+def is_too_old(identifier: str, floor: dict[str, tuple[int, int]]) -> bool:
+    """Return True if identifier predates the minimum supported version for its family."""
+    for family in FAMILY_ORDER:
+        if identifier.startswith(family):
+            rest = identifier[len(family):]
+            m = re.match(r"(\d+),(\d+)", rest)
+            if m and family in floor:
+                return (int(m.group(1)), int(m.group(2))) < floor[family]
+            return False
+    return False
+
+
 def fetch_devices() -> list[dict]:
     print(f"Fetching {APPLEDB_URL} ...")
-    data = gzip.decompress(requests.get(APPLEDB_URL, timeout=30).content)
-    return json.loads(data)
+    try:
+        response = requests.get(APPLEDB_URL, timeout=30)
+        response.raise_for_status()
+        data = gzip.decompress(response.content)
+        return json.loads(data)
+    except requests.RequestException as exc:
+        raise RuntimeError(f"Failed to fetch device data from {APPLEDB_URL}: {exc}") from exc
+    except (OSError, json.JSONDecodeError) as exc:
+        raise RuntimeError(f"Failed to decode device data from {APPLEDB_URL}") from exc
 
 
 def main() -> None:
@@ -103,16 +191,21 @@ def main() -> None:
             existing = json.load(f)
 
     devices = fetch_devices()
+    min_versions = build_min_device_floor()
 
     new_entries: dict[str, dict] = {}
     count_unchanged = 0
     count_would_update = 0
+    count_skipped_old = 0
 
     for device in devices:
         identifiers = device.get("identifier", [])
         name = device.get("name", "")
 
         if not identifiers or not name:
+            continue
+
+        if "Unreleased" in name:
             continue
 
         if isinstance(identifiers, str):
@@ -123,6 +216,10 @@ def main() -> None:
 
         for identifier in identifiers:
             if not any(identifier.startswith(prefix) for prefix in IDENTIFIER_PREFIXES):
+                continue
+
+            if is_too_old(identifier, min_versions):
+                count_skipped_old += 1
                 continue
 
             if identifier in existing:
@@ -153,6 +250,7 @@ def main() -> None:
     print(f"New entries added : {len(new_entries)}")
     print(f"Unchanged         : {count_unchanged}")
     print(f"Could be updated  : {count_would_update} (skipped — existing entries are preserved)")
+    print(f"Skipped (too old) : {count_skipped_old}")
     print(f"Total in file     : {len(result)}")
     print(f"(Entries sorted by device family and version number)")
 
