@@ -14,7 +14,8 @@ from pathlib import Path
 
 import requests
 
-APPLEDB_URL = "https://api.appledb.dev/device/main.json.gz"
+APPLEDB_DEVICE_URL = "https://api.appledb.dev/device/main.json.gz"
+APPLEDB_OS_URL = "https://api.appledb.dev/ios/{os_str}/main.json.gz"
 OUTPUT = Path(__file__).parent.parent / "tealium/core/devicedata/device-names.json"
 PACKAGE_SWIFT = Path(__file__).parent.parent / "Package.swift"
 
@@ -50,40 +51,6 @@ CONNECTIVITY_SUFFIXES = [
     "GSM",
 ]
 
-# Oldest device identifier (major, minor) per family for each major OS version.
-# Devices with an identifier below this threshold do not support the OS and are excluded.
-# Extend this table when Package.swift deployment targets are raised.
-_OS_TO_MIN_DEVICE: dict[str, dict[int, dict[str, tuple[int, int]]]] = {
-    "iOS": {
-        12: {"iPhone": (6, 1), "iPad": (4, 1), "iPod": (7, 1)},  # iPhone 5s / iPad Air / iPod touch 6th gen
-        13: {"iPhone": (8, 1), "iPad": (5, 1), "iPod": (9, 1)},  # iPhone 6s / iPad mini 4 / iPod touch 7th gen
-        14: {"iPhone": (8, 1), "iPad": (5, 1), "iPod": (9, 1)},
-        15: {"iPhone": (8, 1), "iPad": (5, 1), "iPod": (9, 1)},
-        16: {"iPhone": (10, 1), "iPad": (6, 11)},                 # iPhone 8 / iPad 5th gen
-        17: {"iPhone": (11, 2), "iPad": (7, 5)},                  # iPhone XS / iPad 6th gen
-        18: {"iPhone": (11, 2), "iPad": (7, 5)},
-    },
-    "tvOS": {
-        12: {"AppleTV": (6, 2)},   # Apple TV HD is the oldest model supporting tvOS 12+
-        13: {"AppleTV": (6, 2)},
-        14: {"AppleTV": (6, 2)},
-        15: {"AppleTV": (6, 2)},
-        16: {"AppleTV": (6, 2)},
-        17: {"AppleTV": (6, 2)},
-        18: {"AppleTV": (6, 2)},
-    },
-    "watchOS": {
-        4: {"Watch": (1, 1)},   # All Apple Watches
-        5: {"Watch": (2, 3)},   # Dropped Series 0 (Watch1,x); Watch2,3 is the lowest >= Series 1
-        6: {"Watch": (2, 3)},   # Same minimum as watchOS 5
-        7: {"Watch": (3, 1)},   # Dropped Series 1 and 2
-        8: {"Watch": (3, 1)},   # Minimum = Series 3
-        9: {"Watch": (4, 1)},   # Dropped Series 3
-        10: {"Watch": (4, 1)},
-        11: {"Watch": (4, 1)},
-    },
-    # macOS identifiers do not follow a simple numeric progression, so no floor is applied.
-}
 
 
 def parse_name(name: str) -> tuple[str, str]:
@@ -142,46 +109,52 @@ def parse_deployment_targets() -> dict[str, tuple[int, int]]:
     return result
 
 
-def build_min_device_floor() -> dict[str, tuple[int, int]]:
-    """Derive per-family minimum identifier from Package.swift deployment targets.
+def _fetch_gz(url: str) -> list[dict]:
+    try:
+        response = requests.get(url, timeout=30)
+        response.raise_for_status()
+        return json.loads(gzip.decompress(response.content))
+    except requests.RequestException as exc:
+        raise RuntimeError(f"Failed to fetch {url}: {exc}") from exc
+    except (OSError, json.JSONDecodeError) as exc:
+        raise RuntimeError(f"Failed to decode data from {url}") from exc
 
-    Devices with an identifier below the returned floor do not support the SDK's
-    minimum OS and are excluded from the output file.
+
+def build_supported_identifiers(
+    deployment_targets: dict[str, tuple[int, int]],
+    key_to_identifiers: dict[str, list[str]],
+) -> set[str]:
+    """Return all device identifiers that appear in OS builds at or above the deployment targets.
+
+    appledb OS builds carry a deviceMap listing every device key that supports that release.
+    A device is considered supported if it appears in any non-beta build of the minimum OS
+    version or later, meaning it can run at least the SDK's minimum deployment target.
     """
-    targets = parse_deployment_targets()
-    floor: dict[str, tuple[int, int]] = {}
-    for platform, (major, _) in targets.items():
-        entries = _OS_TO_MIN_DEVICE.get(platform, {}).get(major)
-        if entries:
-            floor.update(entries)
-        elif platform != "macOS":
-            print(f"Warning: no device floor defined for {platform} {major} — update _OS_TO_MIN_DEVICE.")
-    return floor
-
-
-def is_too_old(identifier: str, floor: dict[str, tuple[int, int]]) -> bool:
-    """Return True if identifier predates the minimum supported version for its family."""
-    for family in FAMILY_ORDER:
-        if identifier.startswith(family):
-            rest = identifier[len(family):]
-            m = re.match(r"(\d+),(\d+)", rest)
-            if m and family in floor:
-                return (int(m.group(1)), int(m.group(2))) < floor[family]
-            return False
-    return False
+    supported: set[str] = set()
+    for platform, (major, minor) in deployment_targets.items():
+        print(f"Fetching {platform} build list ...")
+        builds = _fetch_gz(APPLEDB_OS_URL.format(os_str=platform))
+        for build in builds:
+            if build.get("internal") or build.get("beta") or build.get("rc"):
+                continue
+            version = build.get("version", "")
+            parts = version.split(".")
+            try:
+                v = (int(parts[0]), int(parts[1]) if len(parts) > 1 else 0)
+            except ValueError:
+                continue
+            if v < (major, minor):
+                continue
+            for key in build.get("deviceMap", []):
+                identifiers = key_to_identifiers.get(key)
+                if identifiers:
+                    supported.update(identifiers)
+    return supported
 
 
 def fetch_devices() -> list[dict]:
-    print(f"Fetching {APPLEDB_URL} ...")
-    try:
-        response = requests.get(APPLEDB_URL, timeout=30)
-        response.raise_for_status()
-        data = gzip.decompress(response.content)
-        return json.loads(data)
-    except requests.RequestException as exc:
-        raise RuntimeError(f"Failed to fetch device data from {APPLEDB_URL}: {exc}") from exc
-    except (OSError, json.JSONDecodeError) as exc:
-        raise RuntimeError(f"Failed to decode device data from {APPLEDB_URL}") from exc
+    print(f"Fetching {APPLEDB_DEVICE_URL} ...")
+    return _fetch_gz(APPLEDB_DEVICE_URL)
 
 
 def main() -> None:
@@ -191,7 +164,22 @@ def main() -> None:
             existing = json.load(f)
 
     devices = fetch_devices()
-    min_versions = build_min_device_floor()
+
+    # Build key→identifiers mapping so OS build deviceMaps can be resolved to real identifiers.
+    # macOS devices use variant keys like "MacBookAir6,1-2013" that differ from their identifier.
+    key_to_identifiers: dict[str, list[str]] = {}
+    for device in devices:
+        key = device.get("key")
+        if not key:
+            continue
+        identifiers = device.get("identifier", [])
+        if isinstance(identifiers, str):
+            identifiers = [identifiers]
+        if identifiers:
+            key_to_identifiers[key] = identifiers
+
+    deployment_targets = parse_deployment_targets()
+    supported_identifiers = build_supported_identifiers(deployment_targets, key_to_identifiers)
 
     new_entries: dict[str, dict] = {}
     count_unchanged = 0
@@ -218,7 +206,7 @@ def main() -> None:
             if not any(identifier.startswith(prefix) for prefix in IDENTIFIER_PREFIXES):
                 continue
 
-            if is_too_old(identifier, min_versions):
+            if identifier not in supported_identifiers:
                 count_skipped_old += 1
                 continue
 
