@@ -21,4 +21,5 @@ builder/build/
 veracode/
 builder/veracode/
 logs/.*\.json
+scripts/__pycache__/
 

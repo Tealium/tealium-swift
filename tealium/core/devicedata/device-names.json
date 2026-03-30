@@ -227,10 +227,6 @@
     "model_name": "iPhone 17e",
     "model_variant": ""
   },
-  "iPhone99,11": {
-    "model_name": "virtual machine for iPhone Research Environment",
-    "model_variant": ""
-  },
   "iPod5,1": {
     "model_name": "iPod Touch 5th Generation",
     "model_variant": ""
@@ -305,7 +301,7 @@
   },
   "iPad4,3": {
     "model_name": "iPad Air",
-    "model_variant": "Wifi + Cellular (model A1476)"
+    "model_variant": "WiFi + Cellular (TD-LTE)"
   },
   "iPad4,4": {
     "model_name": "iPad Mini 2",
@@ -317,7 +313,7 @@
   },
   "iPad4,6": {
     "model_name": "iPad Mini 2",
-    "model_variant": "Wifi + Cellular (model A1491)"
+    "model_variant": "WiFi + Cellular (TD-LTE)"
   },
   "iPad4,7": {
     "model_name": "iPad Mini 3",
@@ -329,7 +325,7 @@
   },
   "iPad4,9": {
     "model_name": "iPad Mini 3",
-    "model_variant": "Wifi + Cellular (model A1601)"
+    "model_variant": "WiFi + Cellular (TD-LTE)"
   },
   "iPad5,1": {
     "model_name": "iPad Mini 4",
@@ -404,52 +400,52 @@
     "model_variant": "WiFi + Cellular (models A2200, A2198)"
   },
   "iPad8,1": {
-    "model_name": "iPad Pro 3rd Gen 11\"",
+    "model_name": "iPad Pro 11-inch (1st generation)",
     "model_variant": "WiFi"
   },
   "iPad8,2": {
-    "model_name": "iPad Pro 3rd Gen 11\"",
+    "model_name": "iPad Pro 11-inch (1st generation)",
     "model_variant": "WiFi 1TB"
   },
   "iPad8,3": {
-    "model_name": "iPad Pro 3rd Gen 11\"",
+    "model_name": "iPad Pro 11-inch (1st generation)",
     "model_variant": "WiFi + Cellular"
   },
   "iPad8,4": {
-    "model_name": "iPad Pro 3rd Gen 11\"",
+    "model_name": "iPad Pro 11-inch (1st generation)",
     "model_variant": "WiFi + Cellular 1TB"
   },
   "iPad8,5": {
-    "model_name": "iPad Pro 3rd Gen 12.9\"",
+    "model_name": "iPad Pro 12.9-inch (3rd generation)",
     "model_variant": "WiFi"
   },
   "iPad8,6": {
-    "model_name": "iPad Pro 3rd Gen 12.9\"",
+    "model_name": "iPad Pro 12.9-inch (3rd generation)",
     "model_variant": "WiFi 1TB"
   },
   "iPad8,7": {
-    "model_name": "iPad Pro 3rd Gen 12.9\"",
+    "model_name": "iPad Pro 12.9-inch (3rd generation)",
     "model_variant": "WiFi + Cellular"
   },
   "iPad8,8": {
-    "model_name": "iPad Pro 3rd Gen 12.9\"",
+    "model_name": "iPad Pro 12.9-inch (3rd generation)",
     "model_variant": "WiFi + Cellular 1TB"
   },
   "iPad8,9": {
     "model_name": "iPad Pro 11-inch (2nd generation)",
-    "model_variant": "Wi-Fi"
+    "model_variant": "WiFi"
   },
   "iPad8,10": {
     "model_name": "iPad Pro 11-inch (2nd generation)",
-    "model_variant": "Wi-Fi + Cellular"
+    "model_variant": "WiFi + Cellular"
   },
   "iPad8,11": {
     "model_name": "iPad Pro 12.9-inch (4th generation)",
-    "model_variant": "Wi-Fi"
+    "model_variant": "WiFi"
   },
   "iPad8,12": {
     "model_name": "iPad Pro 12.9-inch (4th generation)",
-    "model_variant": "Wi-Fi + Cellular"
+    "model_variant": "WiFi + Cellular"
   },
   "iPad11,1": {
     "model_name": "iPad Mini 5th Gen",
@@ -497,7 +493,7 @@
   },
   "iPad13,5": {
     "model_name": "iPad Pro 11\" 3rd Gen",
-    "model_variant": ""
+    "model_variant": "WiFi (1 or 2 TB)"
   },
   "iPad13,6": {
     "model_name": "iPad Pro 11\" 3rd Gen",
@@ -505,7 +501,7 @@
   },
   "iPad13,7": {
     "model_name": "iPad Pro 11\" 3rd Gen",
-    "model_variant": ""
+    "model_variant": "WiFi + Cellular (1 or 2 TB)"
   },
   "iPad13,8": {
     "model_name": "iPad Pro 12.9\" 5th Gen",
@@ -513,7 +509,7 @@
   },
   "iPad13,9": {
     "model_name": "iPad Pro 12.9\" 5th Gen",
-    "model_variant": ""
+    "model_variant": "WiFi (1 or 2 TB)"
   },
   "iPad13,10": {
     "model_name": "iPad Pro 12.9\" 5th Gen",
@@ -521,7 +517,7 @@
   },
   "iPad13,11": {
     "model_name": "iPad Pro 12.9\" 5th Gen",
-    "model_variant": ""
+    "model_variant": "WiFi + Cellular (1 or 2 TB)"
   },
   "iPad13,16": {
     "model_name": "iPad Air 5th Gen",
@@ -565,99 +561,99 @@
   },
   "iPad14,8": {
     "model_name": "iPad Air 11-inch (M2)",
-    "model_variant": "Wi-Fi"
+    "model_variant": "WiFi"
   },
   "iPad14,9": {
     "model_name": "iPad Air 11-inch (M2)",
-    "model_variant": "Wi-Fi + Cellular"
+    "model_variant": "WiFi + Cellular"
   },
   "iPad14,10": {
     "model_name": "iPad Air 13-inch (M2)",
-    "model_variant": "Wi-Fi"
+    "model_variant": "WiFi"
   },
   "iPad14,11": {
     "model_name": "iPad Air 13-inch (M2)",
-    "model_variant": "Wi-Fi + Cellular"
+    "model_variant": "WiFi + Cellular"
   },
   "iPad15,3": {
     "model_name": "iPad Air 11-inch (M3)",
-    "model_variant": "Wi-Fi"
+    "model_variant": "WiFi"
   },
   "iPad15,4": {
     "model_name": "iPad Air 11-inch (M3)",
-    "model_variant": "Wi-Fi + Cellular"
+    "model_variant": "WiFi + Cellular"
   },
   "iPad15,5": {
     "model_name": "iPad Air 13-inch (M3)",
-    "model_variant": "Wi-Fi"
+    "model_variant": "WiFi"
   },
   "iPad15,6": {
     "model_name": "iPad Air 13-inch (M3)",
-    "model_variant": "Wi-Fi + Cellular"
+    "model_variant": "WiFi + Cellular"
   },
   "iPad15,7": {
     "model_name": "iPad (A16)",
-    "model_variant": "Wi-Fi"
+    "model_variant": "WiFi"
   },
   "iPad15,8": {
     "model_name": "iPad (A16)",
-    "model_variant": "Wi-Fi + Cellular"
+    "model_variant": "WiFi + Cellular"
   },
   "iPad16,1": {
     "model_name": "iPad mini (A17 Pro)",
-    "model_variant": "Wi-Fi"
+    "model_variant": "WiFi"
   },
   "iPad16,2": {
     "model_name": "iPad mini (A17 Pro)",
-    "model_variant": "Wi-Fi + Cellular"
+    "model_variant": "WiFi + Cellular"
   },
   "iPad16,3": {
     "model_name": "iPad Pro 11-inch (M4)",
-    "model_variant": "Wi-Fi"
+    "model_variant": "WiFi"
   },
   "iPad16,4": {
     "model_name": "iPad Pro 11-inch (M4)",
-    "model_variant": "Wi-Fi + Cellular"
+    "model_variant": "WiFi + Cellular"
   },
   "iPad16,5": {
     "model_name": "iPad Pro 13-inch (M4)",
-    "model_variant": "Wi-Fi"
+    "model_variant": "WiFi"
   },
   "iPad16,6": {
     "model_name": "iPad Pro 13-inch (M4)",
-    "model_variant": "Wi-Fi + Cellular"
+    "model_variant": "WiFi + Cellular"
   },
   "iPad16,8": {
     "model_name": "iPad Air 11-inch (M4)",
-    "model_variant": "Wi-Fi"
+    "model_variant": "WiFi"
   },
   "iPad16,9": {
     "model_name": "iPad Air 11-inch (M4)",
-    "model_variant": "Wi-Fi + Cellular"
+    "model_variant": "WiFi + Cellular"
   },
   "iPad16,10": {
     "model_name": "iPad Air 13-inch (M4)",
-    "model_variant": "Wi-Fi"
+    "model_variant": "WiFi"
   },
   "iPad16,11": {
     "model_name": "iPad Air 13-inch (M4)",
-    "model_variant": "Wi-Fi + Cellular"
+    "model_variant": "WiFi + Cellular"
   },
   "iPad17,1": {
-    "model_name": "iPad Pro 11-inch Wi-Fi",
-    "model_variant": "M5"
+    "model_name": "iPad Pro 11-inch (M5)",
+    "model_variant": "WiFi"
   },
   "iPad17,2": {
-    "model_name": "iPad Pro 11-inch Wi-Fi + Cellular",
-    "model_variant": "M5"
+    "model_name": "iPad Pro 11-inch (M5)",
+    "model_variant": "WiFi + Cellular"
   },
   "iPad17,3": {
-    "model_name": "iPad Pro 13-inch Wi-Fi",
-    "model_variant": "M5"
+    "model_name": "iPad Pro 13-inch (M5)",
+    "model_variant": "WiFi"
   },
   "iPad17,4": {
-    "model_name": "iPad Pro 13-inch Wi-Fi + Cellular",
-    "model_variant": "M5"
+    "model_name": "iPad Pro 13-inch (M5)",
+    "model_variant": "WiFi + Cellular"
   },
   "AppleTV2,1": {
     "model_name": "Apple TV 2nd Generation",
@@ -684,8 +680,8 @@
     "model_variant": ""
   },
   "AppleTV14,1": {
-    "model_name": "Apple TV 4K (3rd generation) Wi-Fi + Ethernet",
-    "model_variant": ""
+    "model_name": "Apple TV 4K (3rd generation)",
+    "model_variant": "WiFi + Ethernet"
   },
   "Watch1,1": {
     "model_name": "Apple Watch 1st Generation",
@@ -702,10 +698,6 @@
   "Watch2,4": {
     "model_name": "Apple Watch Series 2",
     "model_variant": "42mm"
-  },
-  "Watch2,5": {
-    "model_name": "T1",
-    "model_variant": ""
   },
   "Watch2,6": {
     "model_name": "Apple Watch Series 1",
@@ -849,19 +841,19 @@
   },
   "Watch7,1": {
     "model_name": "Apple Watch Series 9",
-    "model_variant": "GPS, 41mm"
+    "model_variant": "41mm"
   },
   "Watch7,2": {
     "model_name": "Apple Watch Series 9",
-    "model_variant": "GPS, 45mm"
+    "model_variant": "45mm"
   },
   "Watch7,3": {
     "model_name": "Apple Watch Series 9",
-    "model_variant": "GPS + Cellular, 41mm"
+    "model_variant": "41mm Cellular"
   },
   "Watch7,4": {
     "model_name": "Apple Watch Series 9",
-    "model_variant": "GPS + Cellular, 45mm"
+    "model_variant": "45mm Cellular"
   },
   "Watch7,5": {
     "model_name": "Apple Watch Ultra 2",
@@ -869,19 +861,19 @@
   },
   "Watch7,8": {
     "model_name": "Apple Watch Series 10",
-    "model_variant": "GPS, 42mm"
+    "model_variant": "42mm"
   },
   "Watch7,9": {
     "model_name": "Apple Watch Series 10",
-    "model_variant": "GPS, 46mm"
+    "model_variant": "46mm"
   },
   "Watch7,10": {
     "model_name": "Apple Watch Series 10",
-    "model_variant": "GPS + Cellular, 42mm"
+    "model_variant": "42mm Cellular"
   },
   "Watch7,11": {
     "model_name": "Apple Watch Series 10",
-    "model_variant": "GPS + Cellular, 46mm"
+    "model_variant": "46mm Cellular"
   },
   "Watch7,12": {
     "model_name": "Apple Watch Ultra 3",
@@ -889,43 +881,35 @@
   },
   "Watch7,13": {
     "model_name": "Apple Watch SE 3",
-    "model_variant": "GPS, 40mm"
+    "model_variant": "40mm"
   },
   "Watch7,14": {
     "model_name": "Apple Watch SE 3",
-    "model_variant": "GPS, 44mm"
+    "model_variant": "44mm"
   },
   "Watch7,15": {
     "model_name": "Apple Watch SE 3",
-    "model_variant": "GPS + Cellular, 40mm"
+    "model_variant": "40mm Cellular"
   },
   "Watch7,16": {
     "model_name": "Apple Watch SE 3",
-    "model_variant": "GPS + Cellular, 44mm"
+    "model_variant": "44mm Cellular"
   },
   "Watch7,17": {
     "model_name": "Apple Watch Series 11",
-    "model_variant": "GPS, 42mm"
+    "model_variant": "42mm"
   },
   "Watch7,18": {
     "model_name": "Apple Watch Series 11",
-    "model_variant": "GPS, 46mm"
+    "model_variant": "46mm"
   },
   "Watch7,19": {
     "model_name": "Apple Watch Series 11",
-    "model_variant": "GPS + Cellular, 42mm"
+    "model_variant": "42mm Cellular"
   },
   "Watch7,20": {
     "model_name": "Apple Watch Series 11",
-    "model_variant": "GPS + Cellular, 46mm"
-  },
-  "Macmini1,1": {
-    "model_name": "Mac mini (Late 2006)",
-    "model_variant": ""
-  },
-  "Macmini2,1": {
-    "model_name": "Mac mini (Mid 2007)",
-    "model_variant": ""
+    "model_variant": "46mm Cellular"
   },
   "Macmini3,1": {
     "model_name": "Mac mini (Late 2009)",
@@ -941,10 +925,6 @@
   },
   "Macmini5,2": {
     "model_name": "Mac mini (Mid 2011)",
-    "model_variant": ""
-  },
-  "Macmini5,3": {
-    "model_name": "Mac mini (Mid 2011, Server)",
     "model_variant": ""
   },
   "Macmini6,1": {
@@ -971,48 +951,12 @@
     "model_name": "iMac Pro (2017)",
     "model_variant": ""
   },
-  "iMac,1": {
-    "model_name": "iMac",
-    "model_variant": "1999"
-  },
-  "iMac4,1": {
-    "model_name": "iMac (20-inch, Early 2006)",
-    "model_variant": ""
-  },
-  "iMac4,2": {
-    "model_name": "iMac (17-inch, Mid 2006)",
-    "model_variant": ""
-  },
-  "iMac5,1": {
-    "model_name": "iMac (20-inch, Late 2006)",
-    "model_variant": ""
-  },
-  "iMac5,2": {
-    "model_name": "iMac (17-inch, Late 2006, Integrated Graphics)",
-    "model_variant": ""
-  },
-  "iMac6,1": {
-    "model_name": "iMac (24-inch, Late 2006)",
-    "model_variant": ""
-  },
-  "iMac7,1": {
-    "model_name": "iMac (24-inch, Mid 2007)",
-    "model_variant": ""
-  },
-  "iMac8,1": {
-    "model_name": "iMac (24-inch, Early 2008)",
-    "model_variant": ""
-  },
   "iMac9,1": {
     "model_name": "iMac (24-inch, Early 2009)",
     "model_variant": ""
   },
   "iMac10,1": {
     "model_name": "iMac (27-inch, Late 2009)",
-    "model_variant": ""
-  },
-  "iMac11,1": {
-    "model_name": "iMac (27-inch, Late 2009, Core i5/i7)",
     "model_variant": ""
   },
   "iMac11,2": {
@@ -1111,18 +1055,6 @@
     "model_name": "iMac (24-inch, M1, 2021, Two Ports)",
     "model_variant": ""
   },
-  "MacPro1,1": {
-    "model_name": "Mac Pro (Mid 2006)",
-    "model_variant": ""
-  },
-  "MacPro2,1": {
-    "model_name": "Mac Pro (Early 2007)",
-    "model_variant": ""
-  },
-  "MacPro3,1": {
-    "model_name": "Mac Pro (Early 2008)",
-    "model_variant": ""
-  },
   "MacPro4,1": {
     "model_name": "Mac Pro (Early 2009)",
     "model_variant": ""
@@ -1137,10 +1069,6 @@
   },
   "MacPro7,1": {
     "model_name": "Mac Pro (2019)",
-    "model_variant": ""
-  },
-  "MacBookAir1,1": {
-    "model_name": "MacBook Air (Early 2008)",
     "model_variant": ""
   },
   "MacBookAir2,1": {
@@ -1203,26 +1131,6 @@
     "model_name": "MacBook Air (M1, 2020)",
     "model_variant": ""
   },
-  "MacBookPro1,1": {
-    "model_name": "MacBook Pro (15-inch, Early 2006)",
-    "model_variant": ""
-  },
-  "MacBookPro1,2": {
-    "model_name": "MacBook Pro (17-inch, Early 2006)",
-    "model_variant": ""
-  },
-  "MacBookPro2,1": {
-    "model_name": "MacBook Pro (17-inch, Late 2006)",
-    "model_variant": ""
-  },
-  "MacBookPro2,2": {
-    "model_name": "MacBook Pro (15-inch, Late 2006)",
-    "model_variant": ""
-  },
-  "MacBookPro3,1": {
-    "model_name": "MacBook Pro (17-inch, Mid 2007)",
-    "model_variant": ""
-  },
   "MacBookPro4,1": {
     "model_name": "MacBook Pro (17-inch, Early 2008)",
     "model_variant": ""
@@ -1237,10 +1145,6 @@
   },
   "MacBookPro5,3": {
     "model_name": "MacBook Pro (15-inch, Mid 2009)",
-    "model_variant": ""
-  },
-  "MacBookPro5,4": {
-    "model_name": "MacBook Pro (15-inch, Mid 2009, Integrated Graphics)",
     "model_variant": ""
   },
   "MacBookPro5,5": {
@@ -1367,6 +1271,10 @@
     "model_name": "MacBook Pro (16-inch, 2019)",
     "model_variant": ""
   },
+  "MacBookPro17,1 ": {
+    "model_name": "MacBook Pro (13-inch, M1, 2020)",
+    "model_variant": ""
+  },
   "MacBookPro17,1": {
     "model_name": "MacBook Pro (13-inch, M1, 2020)",
     "model_variant": ""
@@ -1385,26 +1293,6 @@
   },
   "MacBookPro18,4": {
     "model_name": "MacBook Pro (14-inch, 2021)",
-    "model_variant": ""
-  },
-  "MacBook1,1": {
-    "model_name": "MacBook (13-inch, Mid 2006)",
-    "model_variant": ""
-  },
-  "MacBook2,1": {
-    "model_name": "MacBook (13-inch, Mid 2007)",
-    "model_variant": ""
-  },
-  "MacBook3,1": {
-    "model_name": "MacBook (13-inch, Late 2007)",
-    "model_variant": ""
-  },
-  "MacBook4,1": {
-    "model_name": "MacBook (13-inch, Late 2008)",
-    "model_variant": ""
-  },
-  "MacBook5,1": {
-    "model_name": "MacBook (13-inch, Aluminum, Late 2008)",
     "model_variant": ""
   },
   "MacBook5,2": {
@@ -1588,32 +1476,32 @@
     "model_variant": "M5"
   },
   "Mac17,3": {
-    "model_name": "MacBook Air",
-    "model_variant": "13-inch, M5"
+    "model_name": "MacBook Air (13-inch, M5)",
+    "model_variant": ""
   },
   "Mac17,4": {
-    "model_name": "MacBook Air",
-    "model_variant": "15-inch, M5"
+    "model_name": "MacBook Air (15-inch, M5)",
+    "model_variant": ""
   },
   "Mac17,5": {
     "model_name": "MacBook Neo",
     "model_variant": ""
   },
   "Mac17,6": {
-    "model_name": "MacBook Pro",
-    "model_variant": "16-inch, M5 Max"
+    "model_name": "MacBook Pro (16-inch, M5 Max)",
+    "model_variant": ""
   },
   "Mac17,7": {
-    "model_name": "MacBook Pro",
-    "model_variant": "14-inch, M5 Max"
+    "model_name": "MacBook Pro (14-inch, M5 Max)",
+    "model_variant": ""
   },
   "Mac17,8": {
-    "model_name": "MacBook Pro",
-    "model_variant": "16-inch, M5 Pro"
+    "model_name": "MacBook Pro (16-inch, M5 Pro)",
+    "model_variant": ""
   },
   "Mac17,9": {
-    "model_name": "MacBook Pro",
-    "model_variant": "14-inch, M5 Pro"
+    "model_name": "MacBook Pro (14-inch, M5 Pro)",
+    "model_variant": ""
   },
   "i386": {
     "model_name": "Simulator",
