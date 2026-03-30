@@ -301,7 +301,7 @@
   },
   "iPad4,3": {
     "model_name": "iPad Air",
-    "model_variant": "WiFi + Cellular (TD-LTE)"
+    "model_variant": "Wifi + Cellular (model A1476)"
   },
   "iPad4,4": {
     "model_name": "iPad Mini 2",
@@ -313,7 +313,7 @@
   },
   "iPad4,6": {
     "model_name": "iPad Mini 2",
-    "model_variant": "WiFi + Cellular (TD-LTE)"
+    "model_variant": "Wifi + Cellular (model A1491)"
   },
   "iPad4,7": {
     "model_name": "iPad Mini 3",
@@ -325,7 +325,7 @@
   },
   "iPad4,9": {
     "model_name": "iPad Mini 3",
-    "model_variant": "WiFi + Cellular (TD-LTE)"
+    "model_variant": "Wifi + Cellular (model A1601)"
   },
   "iPad5,1": {
     "model_name": "iPad Mini 4",
@@ -400,35 +400,35 @@
     "model_variant": "WiFi + Cellular (models A2200, A2198)"
   },
   "iPad8,1": {
-    "model_name": "iPad Pro 11-inch (1st generation)",
+    "model_name": "iPad Pro 3rd Gen 11\"",
     "model_variant": "WiFi"
   },
   "iPad8,2": {
-    "model_name": "iPad Pro 11-inch (1st generation)",
+    "model_name": "iPad Pro 3rd Gen 11\"",
     "model_variant": "WiFi 1TB"
   },
   "iPad8,3": {
-    "model_name": "iPad Pro 11-inch (1st generation)",
+    "model_name": "iPad Pro 3rd Gen 11\"",
     "model_variant": "WiFi + Cellular"
   },
   "iPad8,4": {
-    "model_name": "iPad Pro 11-inch (1st generation)",
+    "model_name": "iPad Pro 3rd Gen 11\"",
     "model_variant": "WiFi + Cellular 1TB"
   },
   "iPad8,5": {
-    "model_name": "iPad Pro 12.9-inch (3rd generation)",
+    "model_name": "iPad Pro 3rd Gen 12.9\"",
     "model_variant": "WiFi"
   },
   "iPad8,6": {
-    "model_name": "iPad Pro 12.9-inch (3rd generation)",
+    "model_name": "iPad Pro 3rd Gen 12.9\"",
     "model_variant": "WiFi 1TB"
   },
   "iPad8,7": {
-    "model_name": "iPad Pro 12.9-inch (3rd generation)",
+    "model_name": "iPad Pro 3rd Gen 12.9\"",
     "model_variant": "WiFi + Cellular"
   },
   "iPad8,8": {
-    "model_name": "iPad Pro 12.9-inch (3rd generation)",
+    "model_name": "iPad Pro 3rd Gen 12.9\"",
     "model_variant": "WiFi + Cellular 1TB"
   },
   "iPad8,9": {
