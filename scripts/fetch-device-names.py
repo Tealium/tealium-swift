@@ -3,6 +3,28 @@
 
 Only adds new entries — existing ones are never overwritten.
 
+Dependencies:
+    This script requires the 'requests' library. Install it using one of:
+
+    Option A — system-wide (quick):
+        pip3 install requests
+
+    Option B — isolated virtual environment (recommended):
+        # 1. Create the virtual environment (one-time setup, run from repo root):
+        python3 -m venv scripts/.venv
+
+        # 2. Activate the virtual environment:
+        source scripts/.venv/bin/activate
+
+        # 3. Install dependencies (once per venv):
+        pip install requests
+
+        # 4. Run the script:
+        python3 scripts/fetch-device-names.py
+
+        # 5. Deactivate when done:
+        deactivate
+
 Usage:
     python3 scripts/fetch-device-names.py
 
@@ -106,9 +128,9 @@ import gzip
 import json
 import re
 import sys
-import urllib.error
-import urllib.request
 from pathlib import Path
+
+import requests
 
 APPLEDB_DEVICE_URL = "https://api.appledb.dev/device/main.json.gz"
 APPLEDB_OS_URL = "https://api.appledb.dev/ios/{os_str}/main.json.gz"
@@ -261,9 +283,10 @@ def parse_deployment_targets() -> dict[str, tuple[int, int]]:
 
 def _fetch_gz(url: str) -> list[dict]:
     try:
-        with urllib.request.urlopen(url, timeout=30) as response:
-            return json.loads(gzip.decompress(response.read()))
-    except urllib.error.URLError as exc:
+        response = requests.get(url, timeout=30)
+        response.raise_for_status()
+        return json.loads(gzip.decompress(response.content))
+    except requests.RequestException as exc:
         raise RuntimeError(f"Failed to fetch {url}: {exc}") from exc
     except (OSError, json.JSONDecodeError) as exc:
         raise RuntimeError(f"Failed to decode data from {url}") from exc
