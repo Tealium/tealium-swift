@@ -67,16 +67,12 @@ Exit codes:
 #   major      — product generation within the family. Higher = newer.
 #                NOT related to iOS/macOS version numbers.
 #   minor      — hardware variant within one generation (1-based).
-#                Typically 1 = Wi-Fi / GPS-only, 2 = Cellular, higher = region variants.
-#
-#   Families that use non-standard prefixes in appledb vs. Apple's own naming:
-#     appledb "Mac14,2"     → Apple calls it "MacBook Air (M2, 2022)"  (no MacBook prefix)
-#     appledb "Macmini9,1"  → "Mac mini (M1, 2020)"  (lowercase 'm' in Macmini)
+#                Exact meaning varies by device family.
 #
 # HOW parse_name() MAPS appledb NAMES TO (model_name, model_variant)
 #
-#   appledb encodes variants directly in the product name string. The rules below
-#   describe what parse_name() expects. If appledb changes its naming convention,
+#   The rules below describe what parse_name() expects from appledb names.
+#   If appledb changes its naming convention,
 #   the script emits a WARNING instead of silently producing wrong output.
 #
 #   Rule 1 — CHIP IN PARENS at end of string, connectivity in the base:
@@ -104,9 +100,13 @@ Exit codes:
 #              Generation (if present) is promoted into model_name.
 #
 #   Rule 4 — OTHER PARENS CONTENT at end of string:
-#              Treated as model_variant.
-#              e.g.  "iPhone 7 (CDMA)"        → ("iPhone 7", "CDMA")
-#                    "iPad (2nd generation)"   → ("iPad", "2nd generation")
+#              Treated as model_variant. If the base still ends with a connectivity
+#              suffix (e.g. "(TD-LTE)" or "(1TB)" after a "Wi-Fi" token), that suffix
+#              is stripped from model_name and prepended to model_variant.
+#              e.g.  "iPhone 7 (CDMA)"                                    → ("iPhone 7", "CDMA")
+#                    "iPad (2nd generation)"                               → ("iPad", "2nd generation")
+#                    "iPad Air Wi-Fi + Cellular (TD-LTE)"                  → ("iPad Air", "WiFi + Cellular (TD-LTE)")
+#                    "iPad Pro 11-inch (3rd generation) Wi-Fi (1 or 2 TB)" → ("iPad Pro 11-inch (3rd generation)", "WiFi (1 or 2 TB)")
 #
 #   Rule 5 — TRAILING CONNECTIVITY SUFFIX (no parens at end of string):
 #              The string does not end with ")" so Rules 1-4 are skipped.
@@ -118,10 +118,6 @@ Exit codes:
 # KNOWN LIMITATIONS (require manual fix if encountered):
 #   - Names like "iPad 2 Wi-Fi + 3G (GSM)" — "Wi-Fi + 3G" is not in CONNECTIVITY_SUFFIXES.
 #     The script will warn about this; a human must decide the correct model_variant.
-#   - Carrier/region specifiers in parens, e.g. "(VZ)", "(TD-LTE)", "(MM)" — the script
-#     extracts the carrier as model_variant but connectivity stays in model_name.
-#     These are very old devices (pre-iOS 12) and will not appear in the output because
-#     they are filtered out by the deployment target check, but the warning is still emitted.
 # =============================================================================
 
 import gzip
@@ -191,6 +187,29 @@ _WATCH_VARIANT_RE = re.compile(
 # Chip names (M-series, A-series, S-series) belong in model_name, not model_variant.
 _CHIP_RE = re.compile(r"^[MAS]\d+(\s+(Pro|Max|Ultra))?$", re.IGNORECASE)
 
+# Storage qualifiers (e.g. "1 or 2 TB", "1TB") are dropped from model_variant —
+# they encode a hardware tier, not a variant meaningful for analytics.
+_STORAGE_RE = re.compile(r"^\d.*TB\b", re.IGNORECASE)
+
+# Matches a connectivity prefix optionally followed by a storage qualifier.
+# Used to strip storage from both new (via parse_name) and existing entries.
+_CONNECTIVITY_WITH_STORAGE_RE = re.compile(
+    r"^(WiFi(?:\s\+\s(?:Cellular|Ethernet))?)\s+\(?(.*?)\)?$",
+    re.IGNORECASE,
+)
+
+
+def _normalize_existing_variant(variant: str) -> str:
+    """Strip storage qualifiers from an existing model_variant value.
+
+    Handles both parenthesized ("WiFi (1 or 2 TB)") and bare ("WiFi 1TB") forms.
+    Returns the normalized value, or the original if no storage qualifier is found.
+    """
+    m = _CONNECTIVITY_WITH_STORAGE_RE.match(variant)
+    if m and _STORAGE_RE.match(m.group(2)):
+        return m.group(1)
+    return variant
+
 # Valid model_variant values for newly parsed entries (not applied to existing entries).
 # Anything not matching this pattern is flagged in the FORMAT WARNINGS section.
 _VALID_VARIANT_RE = re.compile(
@@ -241,6 +260,15 @@ def parse_name(name: str) -> tuple[str, str]:
             return model_name, model_variant
 
         # Rule 4 — other parens content becomes model_variant.
+        # If the base still ends with a connectivity suffix, strip it and fold it
+        # into model_variant (e.g. "Wi-Fi (TD-LTE)" → variant "WiFi (TD-LTE)").
+        for suffix in CONNECTIVITY_SUFFIXES:
+            if base.endswith(f" {suffix}"):
+                base_without_suffix = base[: -(len(suffix) + 1)].strip()
+                normalized = _VARIANT_NORMALIZE.get(suffix, suffix)
+                if _STORAGE_RE.match(content):
+                    return base_without_suffix, normalized
+                return base_without_suffix, f"{normalized} ({content})"
         return base, content
 
     # Rule 5 — trailing connectivity suffix with no parenthesized content.
@@ -438,6 +466,14 @@ def main() -> None:
         else:
             new_entries[identifier] = entry
 
+    # Normalize storage qualifiers in existing entries (e.g. "WiFi 1TB" → "WiFi").
+    storage_normalized: list[tuple[str, str, str]] = []
+    for identifier, entry in existing.items():
+        normalized = _normalize_existing_variant(entry["model_variant"])
+        if normalized != entry["model_variant"]:
+            storage_normalized.append((identifier, entry["model_variant"], normalized))
+            existing[identifier] = {**entry, "model_variant": normalized}
+
     merged = {**existing, **new_entries}
     result = dict(sorted(merged.items(), key=lambda kv: sort_key(kv[0])))
 
@@ -446,11 +482,20 @@ def main() -> None:
         f.write("\n")
 
     print(f"New entries added : {len(new_entries)}")
+    print(f"Storage stripped  : {len(storage_normalized)} (existing entries auto-normalized)")
     print(f"Unchanged         : {count_unchanged}")
     print(f"Skipped updates   : {len(updates_skipped)} (existing entries are preserved)")
     print(f"Skipped (too old) : {count_skipped_old}")
     print(f"Total in file     : {len(result)}")
     print(f"(Entries sorted by device family and version number)")
+
+    if storage_normalized:
+        print(f"\n{_SEP}")
+        print(f"STORAGE STRIPPED — {len(storage_normalized)} existing entry(ies) auto-normalized.")
+        print(_SEP)
+        max_id = max(len(t[0]) for t in storage_normalized)
+        for identifier, old, new in sorted(storage_normalized, key=lambda t: sort_key(t[0])):
+            print(f"  {identifier:<{max_id}}  {old!r} → {new!r}")
 
     if new_entries:
         print(f"\n{_SEP}")
@@ -488,7 +533,7 @@ def main() -> None:
             print(f"\n  [{identifier}]")
             print(body)
 
-    needs_review = bool(warnings or format_warnings or new_entries or updates_skipped)
+    needs_review = bool(warnings or format_warnings or new_entries or updates_skipped or storage_normalized)
     if needs_review:
         sys.exit(1)
 

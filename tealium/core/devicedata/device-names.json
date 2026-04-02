@@ -405,7 +405,7 @@
   },
   "iPad8,2": {
     "model_name": "iPad Pro 3rd Gen 11\"",
-    "model_variant": "WiFi 1TB"
+    "model_variant": "WiFi"
   },
   "iPad8,3": {
     "model_name": "iPad Pro 3rd Gen 11\"",
@@ -413,7 +413,7 @@
   },
   "iPad8,4": {
     "model_name": "iPad Pro 3rd Gen 11\"",
-    "model_variant": "WiFi + Cellular 1TB"
+    "model_variant": "WiFi + Cellular"
   },
   "iPad8,5": {
     "model_name": "iPad Pro 3rd Gen 12.9\"",
@@ -421,7 +421,7 @@
   },
   "iPad8,6": {
     "model_name": "iPad Pro 3rd Gen 12.9\"",
-    "model_variant": "WiFi 1TB"
+    "model_variant": "WiFi"
   },
   "iPad8,7": {
     "model_name": "iPad Pro 3rd Gen 12.9\"",
@@ -429,7 +429,7 @@
   },
   "iPad8,8": {
     "model_name": "iPad Pro 3rd Gen 12.9\"",
-    "model_variant": "WiFi + Cellular 1TB"
+    "model_variant": "WiFi + Cellular"
   },
   "iPad8,9": {
     "model_name": "iPad Pro 11-inch (2nd generation)",
@@ -493,7 +493,7 @@
   },
   "iPad13,5": {
     "model_name": "iPad Pro 11\" 3rd Gen",
-    "model_variant": "WiFi (1 or 2 TB)"
+    "model_variant": "WiFi"
   },
   "iPad13,6": {
     "model_name": "iPad Pro 11\" 3rd Gen",
@@ -501,7 +501,7 @@
   },
   "iPad13,7": {
     "model_name": "iPad Pro 11\" 3rd Gen",
-    "model_variant": "WiFi + Cellular (1 or 2 TB)"
+    "model_variant": "WiFi + Cellular"
   },
   "iPad13,8": {
     "model_name": "iPad Pro 12.9\" 5th Gen",
@@ -509,7 +509,7 @@
   },
   "iPad13,9": {
     "model_name": "iPad Pro 12.9\" 5th Gen",
-    "model_variant": "WiFi (1 or 2 TB)"
+    "model_variant": "WiFi"
   },
   "iPad13,10": {
     "model_name": "iPad Pro 12.9\" 5th Gen",
@@ -517,7 +517,7 @@
   },
   "iPad13,11": {
     "model_name": "iPad Pro 12.9\" 5th Gen",
-    "model_variant": "WiFi + Cellular (1 or 2 TB)"
+    "model_variant": "WiFi + Cellular"
   },
   "iPad13,16": {
     "model_name": "iPad Air 5th Gen",
@@ -1269,6 +1269,10 @@
   },
   "MacBookPro16,4": {
     "model_name": "MacBook Pro (16-inch, 2019)",
+    "model_variant": ""
+  },
+  "MacBookPro17,1 ": {
+    "model_name": "MacBook Pro (13-inch, M1, 2020)",
     "model_variant": ""
   },
   "MacBookPro17,1": {
