@@ -83,7 +83,7 @@
     "model_name": "iPhone 8 Plus",
     "model_variant": ""
   },
-  "iPhone10,6": { 
+  "iPhone10,6": {
     "model_name": "iPhone X",
     "model_variant": ""
   },
@@ -569,91 +569,91 @@
   },
   "iPad14,10": {
     "model_name": "iPad Air 13\" (M2)",
-    "model_variant": "Wifi"
+    "model_variant": "WiFi"
   },
   "iPad14,11": {
     "model_name": "iPad Air 13\" (M2)",
-    "model_variant": "Wifi + Cellular"
+    "model_variant": "WiFi + Cellular"
   },
   "iPad15,3": {
     "model_name": "iPad Air 11\" (M3)",
-    "model_variant": "Wifi"
+    "model_variant": "WiFi"
   },
   "iPad15,4": {
     "model_name": "iPad Air 11\" (M3)",
-    "model_variant": "Wifi + Cellular"
+    "model_variant": "WiFi + Cellular"
   },
   "iPad15,5": {
     "model_name": "iPad Air 13\" (M3)",
-    "model_variant": "Wifi"
+    "model_variant": "WiFi"
   },
   "iPad15,6": {
     "model_name": "iPad Air 13\" (M3)",
-    "model_variant": "Wifi + Cellular"
+    "model_variant": "WiFi + Cellular"
   },
   "iPad15,7": {
     "model_name": "iPad (A16)",
-    "model_variant": "Wifi"
+    "model_variant": "WiFi"
   },
   "iPad15,8": {
     "model_name": "iPad (A16)",
-    "model_variant": "Wifi + Cellular"
+    "model_variant": "WiFi + Cellular"
   },
   "iPad16,1": {
     "model_name": "iPad mini (A17 Pro)",
-    "model_variant": "Wifi"
+    "model_variant": "WiFi"
   },
   "iPad16,2": {
     "model_name": "iPad mini (A17 Pro)",
-    "model_variant": "Wifi + Cellular"
+    "model_variant": "WiFi + Cellular"
   },
   "iPad16,3": {
     "model_name": "iPad Pro 11\" (M4)",
-    "model_variant": "Wifi"
+    "model_variant": "WiFi"
   },
   "iPad16,4": {
     "model_name": "iPad Pro 11\" (M4)",
-    "model_variant": "Wifi + Cellular"
+    "model_variant": "WiFi + Cellular"
   },
   "iPad16,5": {
     "model_name": "iPad Pro 13\" (M4)",
-    "model_variant": "Wifi"
+    "model_variant": "WiFi"
   },
   "iPad16,6": {
     "model_name": "iPad Pro 13\" (M4)",
-    "model_variant": "Wifi + Cellular"
+    "model_variant": "WiFi + Cellular"
   },
   "iPad16,8": {
     "model_name": "iPad Air 11\" (M4)",
-    "model_variant": "Wifi"
+    "model_variant": "WiFi"
   },
   "iPad16,9": {
     "model_name": "iPad Air 11\" (M4)",
-    "model_variant": "Wifi + Cellular"
+    "model_variant": "WiFi + Cellular"
   },
   "iPad16,10": {
     "model_name": "iPad Air 13\" (M4)",
-    "model_variant": "Wifi"
+    "model_variant": "WiFi"
   },
   "iPad16,11": {
     "model_name": "iPad Air 13\" (M4)",
-    "model_variant": "Wifi + Cellular"
+    "model_variant": "WiFi + Cellular"
   },
   "iPad17,1": {
     "model_name": "iPad Pro 11\" (M5)",
-    "model_variant": "Wifi"
+    "model_variant": "WiFi"
   },
   "iPad17,2": {
     "model_name": "iPad Pro 11\" (M5)",
-    "model_variant": "Wifi + Cellular"
+    "model_variant": "WiFi + Cellular"
   },
   "iPad17,3": {
     "model_name": "iPad Pro 13\" (M5)",
-    "model_variant": "Wifi"
+    "model_variant": "WiFi"
   },
   "iPad17,4": {
     "model_name": "iPad Pro 13\" (M5)",
-    "model_variant": "Wifi + Cellular"
+    "model_variant": "WiFi + Cellular"
   },
   "AppleTV2,1": {
     "model_name": "Apple TV 2nd Generation",
@@ -680,12 +680,8 @@
     "model_variant": "A2169"
   },
   "AppleTV14,1": {
-    "model_name": "Apple TV 4K (3rd generation)",
+    "model_name": "Apple TV 4K 3rd generation",
     "model_variant": "A2737"
-  },
-  "AppleTV14,2": {
-    "model_name": "Apple TV 4K (3rd generation)",
-    "model_variant": "A2843"
   },
   "Watch1,1": {
     "model_name": "Apple Watch 1st Generation",
