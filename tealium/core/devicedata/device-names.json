@@ -1468,35 +1468,35 @@
     "model_variant": ""
   },
   "Mac17,2": {
-    "model_name": "MacBook Pro (14-inch, 2025)",
+    "model_name": "MacBook Pro (14-inch, M5, 2025)",
     "model_variant": ""
   },
   "Mac17,3": {
-    "model_name": "MacBook Air (13-inch, M5)",
+    "model_name": "MacBook Air (13-inch, M5, 2026)",
     "model_variant": ""
   },
   "Mac17,4": {
-    "model_name": "MacBook Air (15-inch, M5)",
+    "model_name": "MacBook Air (15-inch, M5, 2026)",
     "model_variant": ""
   },
   "Mac17,5": {
-    "model_name": "MacBook Neo",
+    "model_name": "MacBook Neo (13-inch, A18 Pro, 2026)",
     "model_variant": ""
   },
   "Mac17,6": {
-    "model_name": "MacBook Pro (16-inch, M5 Max)",
+    "model_name": "MacBook Pro (16-inch, M5 Max, 2026)",
     "model_variant": ""
   },
   "Mac17,7": {
-    "model_name": "MacBook Pro (14-inch, M5 Max)",
+    "model_name": "MacBook Pro (14-inch, M5 Max, 2026)",
     "model_variant": ""
   },
   "Mac17,8": {
-    "model_name": "MacBook Pro (16-inch, M5 Pro)",
+    "model_name": "MacBook Pro (16-inch, M5 Pro, 2026)",
     "model_variant": ""
   },
   "Mac17,9": {
-    "model_name": "MacBook Pro (14-inch, M5 Pro)",
+    "model_name": "MacBook Pro (14-inch, M5 Pro, 2026)",
     "model_variant": ""
   },
   "i386": {
