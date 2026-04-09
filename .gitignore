@@ -21,4 +21,6 @@ builder/build/
 veracode/
 builder/veracode/
 logs/.*\.json
+scripts/__pycache__/
+scripts/.venv/
 
