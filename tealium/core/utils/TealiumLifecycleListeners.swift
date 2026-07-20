@@ -25,7 +25,7 @@ public class TealiumLifecycleListeners {
     public var onBackgroundStateChange: TealiumObservable<BackgroundState>
 
     var wakeNotificationObserver: NSObjectProtocol?
-    var sleepNotificationObserser: NSObjectProtocol?
+    var sleepNotificationObserver: NSObjectProtocol?
 
     public init() {
         addListeners()
@@ -60,7 +60,7 @@ public class TealiumLifecycleListeners {
                 self?.wake()
             }
 
-        sleepNotificationObserser = NotificationCenter.default
+        sleepNotificationObserver = NotificationCenter.default
             .addObserver(forName: notificationNameApplicationWillResignActive,
                          asyncOn: TealiumQueues.backgroundSerialQueue) { [weak self] _ in
                 self?.sleep()
@@ -72,7 +72,7 @@ public class TealiumLifecycleListeners {
     }
 
     deinit {
-        sleepNotificationObserser = nil
+        sleepNotificationObserver = nil
         wakeNotificationObserver = nil
     }
 
