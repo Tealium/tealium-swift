@@ -60,7 +60,7 @@ class MockLocationManager: LocationManagerProtocol {
         requestAlwaysAuthorizationCount += 1
     }
 
-    func requestTemporaryFullAccuracyAuthorization(withPurposeKey purposeKey: String, completion: (@Sendable  (Error?) -> Void)?) {
+    func requestTemporaryFullAccuracyAuthorization(withPurposeKey purposeKey: String, completion: (@Sendable (Error?) -> Void)?) {
         requestTemporaryFullAccuracyAuthorizationCount += 1
     }
 

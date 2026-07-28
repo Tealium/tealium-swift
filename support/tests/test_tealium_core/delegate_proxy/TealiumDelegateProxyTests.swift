@@ -22,11 +22,19 @@ class BaseProxyTests: XCTestCase {
         return config
     }
 
+    @MainActor
     private func createTealium() async -> Tealium {
         await withCheckedContinuation { continuation in
             var tealium: Tealium?
             tealium = Tealium(config: config, dataLayer: mockDataLayer, modulesManager: nil) { _ in
-                continuation.resume(returning: tealium!)
+                DispatchQueue.main.async {
+                    if let tealium {
+                        continuation.resume(returning: tealium)
+                    } else {
+                        fatalError("Tealium not initialized at completion time, should never happen.")
+                    }
+                }
+
             }
         }
     }
