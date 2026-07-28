@@ -134,11 +134,10 @@ private extension TealiumDelegateProxy {
     // This is required otherwise if AppDelegate/SceneDelegate don't implement those methods it won't work!
     // Setting the delegate again probably causes the system to check again for the presence of those methods that were missing before.
     static func reassignDelegate() {
-        guard #available(iOS 13.0, *),
-                let sharedApplication else {
+        guard let sharedApplication else {
             return
         }
-        if sceneEnabled {
+        if #available(iOS 13.0, *), sceneEnabled {
             guard let scene = sharedApplication.connectedScenes.first else {
                 return
             }
