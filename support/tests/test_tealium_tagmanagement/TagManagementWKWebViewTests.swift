@@ -54,7 +54,11 @@ class TagManagementWKWebViewTests: XCTestCase {
         let config = testTealiumConfig.copy
         config.dispatchers = [Dispatchers.TagManagement]
         var tagManagementWV: TagManagementWKWebView? = TagManagementWKWebView(config: config, delegate: nil)
+        #if compiler(>=6.2.3)
+        weak let weakRef = tagManagementWV
+        #else
         weak var weakRef = tagManagementWV
+        #endif
         let view = UIView()
         tagManagementWV?.enable(webviewURL: testURL, delegates: nil, view: view, completion: nil)
         XCTAssertEqual(view, tagManagementWV?.webview?.superview)
@@ -68,7 +72,11 @@ class TagManagementWKWebViewTests: XCTestCase {
         let config = testTealiumConfig.copy
         config.dispatchers = [Dispatchers.TagManagement]
         var tagManagementWV: TagManagementWKWebView? = TagManagementWKWebView(config: config, delegate: nil)
+        #if compiler(>=6.2.3)
+        weak let weakRef = tagManagementWV
+        #else
         weak var weakRef = tagManagementWV
+        #endif
         let view = UIView()
         tagManagementWV?.enable(webviewURL: testURL, delegates: nil, view: view, completion: nil)
         XCTAssertEqual(view, tagManagementWV?.webview?.superview)

@@ -233,7 +233,12 @@ final class ResourceRefresherTests: XCTestCase {
 
     func testRefreshDoesntCaptureSelfDuringRefresh() {
         mockUrlSession.result = .success(withData: nil, statusCode: 408)
+        #if compiler(>=6.2.3)
+        weak let weakRefresher = refresher
+        #else
         weak var weakRefresher = refresher
+        #endif
+
         refresher.requestRefresh()
         XCTAssertNotNil(weakRefresher)
         refresher = getRefresher()
