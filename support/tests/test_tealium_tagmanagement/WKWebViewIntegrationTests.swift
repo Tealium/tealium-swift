@@ -45,7 +45,9 @@ class WKWebViewIntegrationTests: XCTestCase {
             XCTAssertNotNil(self.tagManagementWKWebView.webview, "Webview instance was unexpectedly nil")
             expectation.fulfill()
         }
-        self.wait(for: [expectation], timeout: 5.0)
+        // `enable` completes only once the real remote webview reaches a terminal load state, which
+        // can be slow on a loaded CI runner; the timeout is a generous safety net, not the assertion.
+        self.wait(for: [expectation], timeout: 30.0)
     }
     
     func testEnableWebViewWithProcessPool() {
@@ -60,7 +62,7 @@ class WKWebViewIntegrationTests: XCTestCase {
                 expectation.fulfill()
             }
         }
-        self.wait(for: [expectation], timeout: 10.0)
+        self.wait(for: [expectation], timeout: 30.0)
     }
     
     func testEnableWebViewWithoutProcessPool() {
@@ -74,7 +76,7 @@ class WKWebViewIntegrationTests: XCTestCase {
                 expectation.fulfill()
             }
         }
-        self.wait(for: [expectation], timeout: 10.0)
+        self.wait(for: [expectation], timeout: 30.0)
     }
     
     func testEnableWebViewWithConfig() {
@@ -92,7 +94,7 @@ class WKWebViewIntegrationTests: XCTestCase {
                 expectation.fulfill()
             }
         }
-        self.wait(for: [expectation], timeout: 10.0)
+        self.wait(for: [expectation], timeout: 30.0)
     }
     
     func testEnableWebViewWithoutConfig() {
@@ -108,7 +110,7 @@ class WKWebViewIntegrationTests: XCTestCase {
                 expectation.fulfill()
             }
         }
-        self.wait(for: [expectation], timeout: 10.0)
+        self.wait(for: [expectation], timeout: 30.0)
     }
 
     func testDisableWebView() {
@@ -134,7 +136,7 @@ class WKWebViewIntegrationTests: XCTestCase {
                 expectation.fulfill()
             }
         }
-        self.wait(for: [expectation], timeout: 5.0)
+        self.wait(for: [expectation], timeout: 30.0)
     }
 
     func testWebViewStateDidChange() {
@@ -147,7 +149,7 @@ class WKWebViewIntegrationTests: XCTestCase {
             expectation.fulfill()
         }
 
-        self.wait(for: [expectation], timeout: 5.0)
+        self.wait(for: [expectation], timeout: 30.0)
     }
 
     func testJavaScriptTrackCall() throws {
@@ -177,7 +179,9 @@ class WKWebViewIntegrationTests: XCTestCase {
             })
         })
         
-        wait(for: [expectation], timeout: 5.0)
+        // The module init loads the real remote webview before dispatching, which can be slow on
+        // a loaded CI runner; the timeout is a generous safety net, not the assertion.
+        wait(for: [expectation], timeout: 30.0)
     }
 
     func testDispatchTrackCreatesBatchTrackRequest() {
@@ -196,9 +200,11 @@ class WKWebViewIntegrationTests: XCTestCase {
                 }
             })
         })
-        wait(for: [expectation], timeout: 10.0)
+        // The module init loads the real remote webview before dispatching the batch, which can be
+        // slow on a loaded CI runner (this test has timed out at 10s); generous safety-net timeout.
+        wait(for: [expectation], timeout: 30.0)
     }
-    
+
     func testModuleWithQueryParamProviderChangesUrl() {
         let expectation = expectation(description: "Enable complete")
         let config = self.config.copy
@@ -211,7 +217,7 @@ class WKWebViewIntegrationTests: XCTestCase {
             }
             expectation.fulfill()
         })
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: 30.0)
     }
 
 }
