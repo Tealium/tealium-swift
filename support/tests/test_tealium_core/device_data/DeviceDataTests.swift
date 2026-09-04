@@ -250,49 +250,52 @@ class TealiumDeviceDataTests: XCTestCase {
     
     func testGetMemoryUsage() {
         let memoryUsage = deviceData.memoryUsage
-        XCTAssertNotEqual(memoryUsage["memory_free"]!, "")
-        XCTAssertNotEqual(memoryUsage["memory_inactive"]!, "")
-        
-        XCTAssertNotEqual(memoryUsage["memory_wired"]!, "")
-        XCTAssertNotEqual(memoryUsage["memory_active"]!, "")
-        
-        XCTAssertNotEqual(memoryUsage["memory_compressed"]!, "")
-        XCTAssertNotEqual(memoryUsage["memory_physical"]!, "")
-        
-        XCTAssertNotEqual(memoryUsage["app_memory_usage"]!, "")
+        XCTAssertNotNil(memoryUsage["memory_free"])
+        XCTAssertNotNil(memoryUsage["memory_inactive"])
+
+        XCTAssertNotNil(memoryUsage["memory_wired"])
+        XCTAssertNotNil(memoryUsage["memory_active"])
+
+        XCTAssertNotNil(memoryUsage["memory_compressed"])
+        XCTAssertNotNil(memoryUsage["memory_physical"])
+
+        XCTAssertNotNil(memoryUsage["app_memory_usage"])
     }
     
     func testDeviceDataCollectorMemoryEnabled() {
         let collector = deviceDataCollector
-        let data = collector.data as! [String: String]
-        XCTAssertNotEqual(data["memory_free"]!, "")
-        XCTAssertNotEqual(data["memory_inactive"]!, "")
-        XCTAssertNotEqual(data["memory_wired"]!, "")
-        XCTAssertNotEqual(data["memory_active"]!, "")
-        XCTAssertNotEqual(data["memory_compressed"]!, "")
-        XCTAssertNotEqual(data["memory_physical"]!, "")
-        XCTAssertNotEqual(data["app_memory_usage"]!, "")
-        XCTAssertNotEqual(data["device_architecture"]!, "")
-        XCTAssertNotEqual(data["device_os_build"]!, "")
-        XCTAssertNotEqual(data["device_cputype"]!, "")
-        XCTAssertNotEqual(data["device_manufacturer"]!, "")
-        XCTAssertNotEqual(data["device_type"]!, "")
-        XCTAssertNotEqual(data["model_name"]!, "")
-        XCTAssertNotEqual(data["device"]!, "")
-        XCTAssertNotEqual(data["device_os_version"]!, "")
-        XCTAssertNotEqual(data["os_name"]!, "")
-        XCTAssertNotEqual(data["platform"]!, "")
-        XCTAssertNotEqual(data["device_resolution"]!, "")
-        XCTAssertNotEqual(data["device_logical_resolution"]!, "")
-        XCTAssertNotEqual(data["device_battery_percent"]!, "")
-        XCTAssertNotEqual(data["device_language"]!, "")
-        XCTAssertNotEqual(data["device_orientation"]!, "")
-        XCTAssertNotEqual(data["device_orientation_extended"]!, "")
+        guard let data = collector.data else {
+            XCTFail("Collector data should not be nil")
+            return
+        }
+        XCTAssertNotNil(data["memory_free"] as? Int)
+        XCTAssertNotNil(data["memory_inactive"] as? Int)
+        XCTAssertNotNil(data["memory_wired"] as? Int)
+        XCTAssertNotNil(data["memory_active"] as? Int)
+        XCTAssertNotNil(data["memory_compressed"] as? Int)
+        XCTAssertNotNil(data["memory_physical"] as? Int)
+        XCTAssertNotNil(data["app_memory_usage"] as? Int)
+        XCTAssertNotEqual(data["device_architecture"] as? String, "")
+        XCTAssertNotEqual(data["device_os_build"] as? String, "")
+        XCTAssertNotEqual(data["device_cputype"] as? String, "")
+        XCTAssertNotEqual(data["device_manufacturer"] as? String, "")
+        XCTAssertNotEqual(data["device_type"] as? String, "")
+        XCTAssertNotEqual(data["model_name"] as? String, "")
+        XCTAssertNotEqual(data["device"] as? String, "")
+        XCTAssertNotEqual(data["device_os_version"] as? String, "")
+        XCTAssertNotEqual(data["os_name"] as? String, "")
+        XCTAssertNotEqual(data["platform"] as? String, "")
+        XCTAssertNotEqual(data["device_resolution"] as? String, "")
+        XCTAssertNotEqual(data["device_logical_resolution"] as? String, "")
+        XCTAssertNotEqual(data["device_battery_percent"] as? String, "")
+        XCTAssertNotEqual(data["device_language"] as? String, "")
+        XCTAssertNotEqual(data["device_orientation"] as? String, "")
+        XCTAssertNotEqual(data["device_orientation_extended"] as? String, "")
         #if os(iOS)
-        XCTAssertNotEqual(data["carrier_mnc"]!, "")
-        XCTAssertNotEqual(data["carrier_mcc"]!, "")
-        XCTAssertNotEqual(data["carrier_iso"]!, "")
-        XCTAssertNotEqual(data["carrier"]!, "")
+        XCTAssertNotEqual(data["carrier_mnc"] as? String, "")
+        XCTAssertNotEqual(data["carrier_mcc"] as? String, "")
+        XCTAssertNotEqual(data["carrier_iso"] as? String, "")
+        XCTAssertNotEqual(data["carrier"] as? String, "")
         #endif
     }
     
@@ -319,11 +322,14 @@ class TealiumDeviceDataTests: XCTestCase {
 
     func testDeviceDataCollectorScreenEnabled() {
         let collector = deviceDataCollector
-        let data = collector.data as! [String: String]
-        XCTAssertNotEqual(data["device_orientation"]!, "")
-        XCTAssertNotEqual(data["device_orientation_extended"]!, "")
-        XCTAssertNotEqual(data["device_resolution"]!, "")
-        XCTAssertNotEqual(data["device_logical_resolution"]!, "")
+        guard let data = collector.data else {
+            XCTFail("Collector data should not be nil")
+            return
+        }
+        XCTAssertNotEqual(data["device_orientation"] as? String, "")
+        XCTAssertNotEqual(data["device_orientation_extended"] as? String, "")
+        XCTAssertNotEqual(data["device_resolution"] as? String, "")
+        XCTAssertNotEqual(data["device_logical_resolution"] as? String, "")
     }
 
     func testDeviceDataCollectorBatteryDisabled() {
@@ -335,8 +341,11 @@ class TealiumDeviceDataTests: XCTestCase {
 
     func testDeviceDataCollectorBatteryEnabled() {
         let collector = deviceDataCollector
-        let data = collector.data as! [String: String]
-        XCTAssertNotEqual(data["device_battery_percent"]!, "")
-        XCTAssertNotEqual(data["device_ischarging"]!, "")
+        guard let data = collector.data else {
+            XCTFail("Collector data should not be nil")
+            return
+        }
+        XCTAssertNotEqual(data["device_battery_percent"] as? String, "")
+        XCTAssertNotEqual(data["device_ischarging"] as? String, "")
     }
 }

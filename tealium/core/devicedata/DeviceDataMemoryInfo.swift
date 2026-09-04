@@ -24,15 +24,15 @@ public extension DeviceData {
     }
 
     // enabled/disabled via config object (default disabled)
-    /// - Returns: `[String: String]` containing current memory usage info
-    var memoryUsage: [String: String] {
+    /// - Returns: `[String: Int]` containing current memory usage info, in whole megabytes
+    var memoryUsage: [String: Int] {
         // total physical memory in megabytes
         let physical = Double(ProcessInfo.processInfo.physicalMemory) / Unit.megabyte.rawValue
 
-        // current memory used by this process/app
+        // current memory used by this process/app, in whole megabytes
         var info = mach_task_basic_info()
         var count = mach_msg_type_number_t(MemoryLayout<mach_task_basic_info>.size) / 4
-        var appMemoryUsed = ""
+        var appMemoryUsed = 0
 
         let kerr: kern_return_t = withUnsafeMutablePointer(to: &info) {
             $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
@@ -44,9 +44,7 @@ public extension DeviceData {
         }
 
         if kerr == KERN_SUCCESS {
-            appMemoryUsed = String(format: "%0.2fMB", Double(info.resident_size) / Unit.megabyte.rawValue)
-        } else {
-            appMemoryUsed = TealiumValue.unknown
+            appMemoryUsed = Int(Double(info.resident_size) / Unit.megabyte.rawValue)
         }
 
         // summary of used system memory
@@ -75,12 +73,12 @@ public extension DeviceData {
             / Unit.megabyte.rawValue
 
         return [
-            TealiumDataKey.memoryFree: String(format: "%0.2fMB", free),
-            TealiumDataKey.memoryInactive: String(format: "%0.2fMB", inactive),
-            TealiumDataKey.memoryWired: String(format: "%0.2fMB", wired),
-            TealiumDataKey.memoryActive: String(format: "%0.2fMB", active),
-            TealiumDataKey.memoryCompressed: String(format: "%0.2fMB", compressed),
-            TealiumDataKey.physicalMemory: String(format: "%0.2fMB", physical),
+            TealiumDataKey.memoryFree: Int(free),
+            TealiumDataKey.memoryInactive: Int(inactive),
+            TealiumDataKey.memoryWired: Int(wired),
+            TealiumDataKey.memoryActive: Int(active),
+            TealiumDataKey.memoryCompressed: Int(compressed),
+            TealiumDataKey.physicalMemory: Int(physical),
             TealiumDataKey.appMemoryUsage: appMemoryUsed
         ]
     }
