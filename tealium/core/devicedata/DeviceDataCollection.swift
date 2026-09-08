@@ -8,7 +8,7 @@
 import Foundation
 
 public protocol DeviceDataCollection {
-    var memoryUsage: [String: Int] { get }
+    var memoryUsage: [String: Int64] { get }
 
     var orientation: [String: String] { get }
 

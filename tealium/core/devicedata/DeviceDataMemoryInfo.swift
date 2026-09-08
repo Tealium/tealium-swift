@@ -15,7 +15,7 @@ private let HOST_VM_INFO64_COUNT: mach_msg_type_number_t =
 
 public extension DeviceData {
 
-    enum Unit: Double {
+    enum Unit: Int64 {
         // For going from byte to -
         case byte = 1
         case kilobyte = 1024
@@ -25,14 +25,14 @@ public extension DeviceData {
 
     // enabled/disabled via config object (default disabled)
     /// - Returns: `[String: Int]` containing current memory usage info, in whole megabytes
-    var memoryUsage: [String: Int] {
+    var memoryUsage: [String: Int64] {
         // total physical memory in megabytes
-        let physical = Double(ProcessInfo.processInfo.physicalMemory) / Unit.megabyte.rawValue
+        let physical = Int64(ProcessInfo.processInfo.physicalMemory) / Unit.megabyte.rawValue
 
         // current memory used by this process/app, in whole megabytes
         var info = mach_task_basic_info()
         var count = mach_msg_type_number_t(MemoryLayout<mach_task_basic_info>.size) / 4
-        var appMemoryUsed = 0
+        var appMemoryUsed: Int64 = 0
 
         let kerr: kern_return_t = withUnsafeMutablePointer(to: &info) {
             $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
@@ -44,7 +44,7 @@ public extension DeviceData {
         }
 
         if kerr == KERN_SUCCESS {
-            appMemoryUsed = Int(Double(info.resident_size) / Unit.megabyte.rawValue)
+            appMemoryUsed = Int64(info.resident_size) / Unit.megabyte.rawValue
         }
 
         // summary of used system memory
@@ -60,25 +60,25 @@ public extension DeviceData {
         let data = hostInfo.move()
         hostInfo.deallocate()
 
-        let free = Double(data.free_count) * Double(pageSize)
+        let free = Int64(data.free_count) * Int64(pageSize)
             / Unit.megabyte.rawValue
-        let active = Double(data.active_count) * Double(pageSize)
+        let active = Int64(data.active_count) * Int64(pageSize)
             / Unit.megabyte.rawValue
-        let inactive = Double(data.inactive_count) * Double(pageSize)
+        let inactive = Int64(data.inactive_count) * Int64(pageSize)
             / Unit.megabyte.rawValue
-        let wired = Double(data.wire_count) * Double(pageSize)
+        let wired = Int64(data.wire_count) * Int64(pageSize)
             / Unit.megabyte.rawValue
         // Result of the compression. This is what you see in Activity Monitor
-        let compressed = Double(data.compressor_page_count) * Double(pageSize)
+        let compressed = Int64(data.compressor_page_count) * Int64(pageSize)
             / Unit.megabyte.rawValue
 
         return [
-            TealiumDataKey.memoryFree: Int(free),
-            TealiumDataKey.memoryInactive: Int(inactive),
-            TealiumDataKey.memoryWired: Int(wired),
-            TealiumDataKey.memoryActive: Int(active),
-            TealiumDataKey.memoryCompressed: Int(compressed),
-            TealiumDataKey.physicalMemory: Int(physical),
+            TealiumDataKey.memoryFree: free,
+            TealiumDataKey.memoryInactive: inactive,
+            TealiumDataKey.memoryWired: wired,
+            TealiumDataKey.memoryActive: active,
+            TealiumDataKey.memoryCompressed: compressed,
+            TealiumDataKey.physicalMemory: physical,
             TealiumDataKey.appMemoryUsage: appMemoryUsed
         ]
     }
