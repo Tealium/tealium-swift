@@ -43,7 +43,7 @@ public protocol LocationManagerProtocol {
     func requestWhenInUseAuthorization()
     @available(iOS 14, *)
     func requestTemporaryFullAccuracyAuthorization(withPurposeKey purposeKey: String,
-                                                   completion: ((Error?) -> Void)?)
+                                                   completion: (@Sendable (Error?) -> Void)?)
     func startUpdatingLocation()
     func stopUpdatingLocation()
     func startMonitoringSignificantLocationChanges()

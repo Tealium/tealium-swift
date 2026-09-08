@@ -675,6 +675,7 @@ class TealiumLocationTests: XCTestCase {
         }
     }
 
+    @available(*, deprecated, message: "The method this is testing is deprecated")
     func testModuleCreatedGeofences() {
         locationModule?.tealiumLocationManager = mockTealiumLocationManager
         _ = locationModule?.createdGeofences
@@ -687,6 +688,7 @@ class TealiumLocationTests: XCTestCase {
         XCTAssertEqual(self.mockTealiumLocationManager.createdGeofencesCallCount, 1)
     }
 
+    @available(*, deprecated, message: "The method this is testing is deprecated")
     func testModuleLastLocation() {
         locationModule?.tealiumLocationManager = mockTealiumLocationManager
         _ = locationModule?.lastLocation
@@ -699,6 +701,7 @@ class TealiumLocationTests: XCTestCase {
         XCTAssertEqual(self.mockTealiumLocationManager.lastLocationCallCount, 1)
     }
 
+    @available(*, deprecated, message: "The method this is testing is deprecated")
     func testModuleMonitoredGeofences() {
         locationModule?.tealiumLocationManager = mockTealiumLocationManager
         _ = locationModule?.monitoredGeofences

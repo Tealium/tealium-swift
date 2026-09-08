@@ -381,13 +381,13 @@ class ConsentManagerModuleTests: XCTestCase {
 
     func testGdprConsentPolicyReturnsFullConsentIfCategoriesAreFull() {
         let policyType = TealiumConsentPolicy.gdpr
-        var policy = ConsentPolicyFactory.create(policyType, preferences: UserConsentPreferences(consentStatus: .consented, consentCategories: TealiumConsentCategories.all))
+        let policy = ConsentPolicyFactory.create(policyType, preferences: UserConsentPreferences(consentStatus: .consented, consentCategories: TealiumConsentCategories.all))
         XCTAssertEqual(policy.consentTrackingEventName, "grant_full_consent")
     }
 
     func testGdprConsentPolicyReturnsDeclinedIfStatusNotConsented() {
         let policyType = TealiumConsentPolicy.gdpr
-        var policy = ConsentPolicyFactory.create(policyType, preferences: UserConsentPreferences(consentStatus: .notConsented, consentCategories: TealiumConsentCategories.all))
+        let policy = ConsentPolicyFactory.create(policyType, preferences: UserConsentPreferences(consentStatus: .notConsented, consentCategories: TealiumConsentCategories.all))
         XCTAssertEqual(policy.consentTrackingEventName, "decline_consent")
     }
 }

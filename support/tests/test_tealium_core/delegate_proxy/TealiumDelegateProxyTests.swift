@@ -11,7 +11,6 @@ import XCTest
 
 class BaseProxyTests: XCTestCase {
     let mockDataLayer = DummyDataManagerAppDelegate()
-    var semaphore: DispatchSemaphore!
     static var testNumber = 0
 
     var config: TealiumConfig {
@@ -22,19 +21,28 @@ class BaseProxyTests: XCTestCase {
         config.batchingEnabled = false
         return config
     }
-    var testTealium: Tealium {
-        let tealium = Tealium(config: config, dataLayer: mockDataLayer, modulesManager: nil) { [weak self] _ in
-            self?.semaphore.signal()
+
+    @MainActor
+    private func createTealium() async -> Tealium {
+        await withCheckedContinuation { continuation in
+            var tealium: Tealium?
+            tealium = Tealium(config: config, dataLayer: mockDataLayer, modulesManager: nil) { _ in
+                DispatchQueue.main.async {
+                    if let tealium {
+                        continuation.resume(returning: tealium)
+                    } else {
+                        fatalError("Tealium not initialized at completion time, should never happen.")
+                    }
+                }
+
+            }
         }
-        return tealium
     }
 
     var tealium: Tealium!
 
-    override func setUpWithError() throws {
-        self.semaphore = DispatchSemaphore(value: 0)
-        self.tealium = testTealium
-        self.semaphore.wait()
+    override func setUp() async throws {
+        self.tealium = await createTealium()
         continueAfterFailure = true
     }
 
@@ -44,12 +52,16 @@ class BaseProxyTests: XCTestCase {
         tealium = nil
     }
 
-    func waitOnTealiumSerialQueue(_ block: () -> ()) {
-        TealiumQueues.backgroundSerialQueue.sync {
-            block()
+    func waitOnTealiumSerialQueue(block: @escaping () -> Void) async {
+        await withCheckedContinuation { continuation in
+            TealiumQueues.backgroundSerialQueue.async {
+                block()
+                continuation.resume(returning: ())
+            }
         }
     }
-    
+
+    @MainActor
     func sendOpenUrlEvent(url: URL) {
         if #available(iOS 13.0, *), TealiumDelegateProxy.sceneEnabled {
             let scene = UIApplication.shared.connectedScenes.first!
@@ -62,7 +74,8 @@ class BaseProxyTests: XCTestCase {
             _ = appDelegate.application?(UIApplication.shared, open: url, options: [:])
         }
     }
-    
+
+    @MainActor
     func sendContinueUserActivityEvent(url: URL) {
         let activity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
         activity.webpageURL = url
@@ -77,53 +90,53 @@ class BaseProxyTests: XCTestCase {
 
 class TealiumDelegateProxyTests: BaseProxyTests {
 
-    func testOpenURL() {
+    func testOpenURL() async {
         let teal = tealium!
         let url = URL(string: "https://my-test-app.com/?test_param=true")!
-        sendOpenUrlEvent(url: url)
-        waitOnTealiumSerialQueue {
+        await sendOpenUrlEvent(url: url)
+        await waitOnTealiumSerialQueue {
             XCTAssertEqual(teal.dataLayer.all["deep_link_param_test_param"] as! String, "true")
             XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://my-test-app.com/?test_param=true")
         }
     }
 
-    func testOpenURLWithTraceId() {
+    func testOpenURLWithTraceId() async {
         let teal = tealium!
         let url = URL(string: "https://my-test-app.com/?test_param=true&tealium_trace_id=23456")!
-        sendOpenUrlEvent(url: url)
-        waitOnTealiumSerialQueue {
+        await sendOpenUrlEvent(url: url)
+        await waitOnTealiumSerialQueue {
             XCTAssertEqual(teal.dataLayer.all["deep_link_param_test_param"] as! String, "true")
             XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://my-test-app.com/?test_param=true&tealium_trace_id=23456")
             XCTAssertEqual(teal.dataLayer.all["cp.trace_id"] as! String, "23456")
         }
     }
 
-    func testUniversalLink() {
+    func testUniversalLink() async {
         let teal = tealium!
         let url = URL(string: "https://www.tealium.com/universalLink/?universal_link=true")!
-        sendContinueUserActivityEvent(url: url)
-        waitOnTealiumSerialQueue {
+        await sendContinueUserActivityEvent(url: url)
+        await waitOnTealiumSerialQueue {
             XCTAssertEqual(teal.dataLayer.all["deep_link_param_universal_link"] as! String, "true")
             XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://www.tealium.com/universalLink/?universal_link=true")
         }
     }
 
-    func testUniversalLinkWithTraceId() {
+    func testUniversalLinkWithTraceId() async {
         let teal = tealium!
         let url = URL(string: "https://www.tealium.com/universalLink/?universal_link=true&tealium_trace_id=12345")!
-        sendContinueUserActivityEvent(url: url)
-        waitOnTealiumSerialQueue {
+        await sendContinueUserActivityEvent(url: url)
+        await waitOnTealiumSerialQueue {
             XCTAssertEqual(teal.dataLayer.all["cp.trace_id"] as! String, "12345")
             XCTAssertEqual(teal.dataLayer.all["deep_link_url"] as! String, "https://www.tealium.com/universalLink/?universal_link=true&tealium_trace_id=12345")
         }
     }
     
-    func testRemovingContext() {
+    func testRemovingContext() async {
         let context = tealium.context!
         XCTAssertTrue(TealiumDelegateProxy.contexts!.contains(context))
         tealium?.disable()
         tealium = nil
-        waitOnTealiumSerialQueue {
+        await waitOnTealiumSerialQueue {
             XCTAssertFalse(TealiumDelegateProxy.contexts!.contains(context))
         }
     }
