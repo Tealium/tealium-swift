@@ -186,13 +186,16 @@ class TagManagementWKWebViewTests: XCTestCase {
         tagManagementWV.enable(webviewURL: testURL, delegates: nil, view: view) { _, error in
             enableComplete.fulfill()
         }
-        waitForExpectations(timeout: 5)
+        // `enable` completes only once the real remote webview reaches a terminal load state, and
+        // `trackMultiple` runs JS on the main thread; both can be slow on a loaded CI runner, so the
+        // timeouts are generous safety nets (they only extend the failure case, not the success case).
+        waitForExpectations(timeout: 30)
         let expectation = expectation(description: "TrackMultiple complete")
         tagManagementWV.trackMultiple([["something":"value"], ["somethingelse": "value"]]) { _, _, _ in
             dispatchPrecondition(condition: .onQueueAsBarrier(TealiumQueues.backgroundSerialQueue))
             expectation.fulfill()
         }
-        waitForExpectations(timeout: 3)
+        waitForExpectations(timeout: 10)
     }
     
     @available(iOS 10.0, *)
