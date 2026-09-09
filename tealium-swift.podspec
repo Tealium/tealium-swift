@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 
   s.name         = "tealium-swift"
   s.module_name  = "TealiumSwift"
-  s.version      = "2.18.4"
+  s.version      = "2.19.0"
   s.summary      = "Tealium Swift Integration Library"
 
   # This description is used to generate tags and improve search results.
@@ -54,7 +54,7 @@ Pod::Spec.new do |s|
   s.authors            = { "Tealium Inc." => "tealium@tealium.com",
                            "craigrouse"   => "craig.rouse@tealium.com",
                            "christinasund"   => "christina.sund@tealium.com" }
-  s.social_media_url   = "http://twitter.com/tealium"
+  s.social_media_url   = "https://x.com/tealium"
 
   # ――― Platform Specifics ――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
