@@ -60,10 +60,11 @@ open class ItemsProvider<Item: Codable & Equatable> {
                 return nil
             }
             let resourceRetriever = ResourceRetriever<Resource>(urlSession: urlSession ?? URLSession(configuration: .ephemeral)) { data, etag in
-                guard let items = try? JSONDecoder().decode([Item].self, from: data) else {
+                guard let decoded = try? JSONDecoder().decode(LossyItems<Item>.self, from: data) else {
                     return nil
                 }
-                return ItemsFile(etag: etag, items: items)
+                ItemsProvider.logDroppedItems(decoded, id: id, logger: logger)
+                return ItemsFile(etag: etag, items: decoded.items)
             }
             let parameters = RefreshParameters<Resource>(id: id,
                                                          url: url,
@@ -104,8 +105,9 @@ open class ItemsProvider<Item: Codable & Equatable> {
     }
     private func loadLocalItems(file: String) {
         do {
-            let items: [Item] = try JSONLoader.fromFile(file, bundle: bundle, logger: logger)
-            reportLoadedItems(items: items)
+            let decoded: LossyItems<Item> = try JSONLoader.fromFile(file, bundle: bundle, logger: logger)
+            ItemsProvider.logDroppedItems(decoded, id: id, logger: logger)
+            reportLoadedItems(items: decoded.items)
         } catch {
             reportFailedToLoad(error: error)
         }
@@ -119,6 +121,17 @@ open class ItemsProvider<Item: Codable & Equatable> {
         logInfo(message: "\(String(describing: items.count)) \(id) Created")
         delegate?.didLoadItems(items)
     }
+    private static func logDroppedItems(_ decoded: LossyItems<Item>, id: String, logger: TealiumLoggerProtocol?) {
+        guard decoded.droppedCount > 0 else {
+            return
+        }
+        logger?.log(TealiumLogRequest(title: "Tealium \(id)",
+                                      message: "Dropped \(decoded.droppedCount) invalid \(id) items",
+                                      info: nil,
+                                      logLevel: .error,
+                                      category: .general))
+    }
+
     /// Logs verbose information about an error
     /// - Parameter message: `String` message to log to the console
     private func logError(message: String) {
@@ -142,6 +155,38 @@ open class ItemsProvider<Item: Codable & Equatable> {
             resourceRefresher?.resourceRetriever.stop()
             session.finishTealiumTasksAndInvalidate()
         }
+    }
+}
+
+/// An array that decodes each item on its own, dropping the items that fail to decode instead of failing the whole array.
+struct LossyItems<Item: Codable>: Codable {
+    private struct Skipped: Decodable {
+        init(from decoder: Decoder) {}
+    }
+
+    let items: [Item]
+    let droppedCount: Int
+
+    init(from decoder: Decoder) throws {
+        var container = try decoder.unkeyedContainer()
+        var items = [Item]()
+        var droppedCount = 0
+        while !container.isAtEnd {
+            if let item = try? container.decode(Item.self) {
+                items.append(item)
+            } else {
+                if try !container.decodeNil() {
+                    _ = try container.decode(Skipped.self)
+                }
+                droppedCount += 1
+            }
+        }
+        self.items = items
+        self.droppedCount = droppedCount
+    }
+
+    func encode(to encoder: Encoder) throws {
+        try items.encode(to: encoder)
     }
 }
 

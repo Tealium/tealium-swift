@@ -773,4 +773,104 @@ class TealiumLocationTests: XCTestCase {
         XCTAssertEqual(self.mockTealiumLocationManager.stopMonitoringCallCount, 1)
     }
 
+    // MARK: Geofence Selection Tests
+    func geofence(_ name: String, latitude: Double, longitude: Double = 0.0) -> Geofence {
+        Geofence(name: name, latitude: latitude, longitude: longitude, radius: 100, triggerOnEnter: true, triggerOnExit: true)
+    }
+
+    func fix(latitude: Double, longitude: Double = 0.0) -> CLLocation {
+        CLLocation(latitude: latitude, longitude: longitude)
+    }
+
+    func testDidUpdateLocationsReadsMonitoredRegionsOnceAndOnlyAppliesChanges() {
+        config.geofenceFileName = "validGeofences"
+        let near = (1...3).map { geofence("Geofence \($0)", latitude: 10.0 + Double($0) * 0.001) }
+        let far = (4...10).map { geofence("Geofence \($0)", latitude: 20.0 + Double($0)) }
+        locationManager.geofences = near + far
+        mockManager.monitoredRegions = [near[0].region, far[0].region]
+        mockManager.monitoredRegionsReadCount = 0
+        mockManager.startMonitoringCount = 0
+        mockManager.stopMonitoringCount = 0
+
+        locationManager.locationManager(CLLocationManager(), didUpdateLocations: [fix(latitude: 10.0)])
+
+        XCTAssertEqual(mockManager.monitoredRegionsReadCount, 1)
+        XCTAssertEqual(mockManager.startMonitoringCount, 2)
+        XCTAssertEqual(mockManager.stopMonitoringCount, 1)
+        XCTAssertEqual(Set(mockManager.monitoredRegions.map { $0.identifier }), ["Geofence 1", "Geofence 2", "Geofence 3"])
+    }
+
+    func testDidUpdateLocationsMonitorsOnlyNearestGeofencesUpToRegionLimit() {
+        config.geofenceFileName = "validGeofences"
+        let geofences = (1...25).map { geofence("Geofence \($0)", latitude: 10.0 + Double($0) * 0.0001) }
+        locationManager.geofences = geofences.reversed()
+
+        locationManager.locationManager(CLLocationManager(), didUpdateLocations: [fix(latitude: 10.0)])
+
+        XCTAssertEqual(mockManager.startMonitoringCount, 20)
+        XCTAssertEqual(Set(mockManager.monitoredRegions.map { $0.identifier }), Set(geofences.prefix(20).map { $0.name }))
+    }
+
+    func testDidUpdateLocationsLeavesRoomForRegionsMonitoredElsewhere() {
+        config.geofenceFileName = "validGeofences"
+        let geofences = (1...25).map { geofence("Geofence \($0)", latitude: 10.0 + Double($0) * 0.0001) }
+        locationManager.geofences = geofences
+        let otherRegions = (1...2).map {
+            CLCircularRegion(center: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0), radius: 100, identifier: "Other Region \($0)")
+        }
+        mockManager.monitoredRegions = Set(otherRegions.map { $0 as CLRegion })
+
+        locationManager.locationManager(CLLocationManager(), didUpdateLocations: [fix(latitude: 10.0)])
+
+        XCTAssertEqual(mockManager.startMonitoringCount, 18)
+        XCTAssertEqual(mockManager.monitoredRegions.count, 20)
+        XCTAssertTrue(otherRegions.allSatisfy { mockManager.monitoredRegions.contains($0) })
+    }
+
+    func testMonitoringDidFailIsLogged() {
+        let logger = MockLocationLogger(config: config)
+        config.logger = logger
+        let region = geofence("Geofence 1", latitude: 10.0).region
+        let delegate: CLLocationManagerDelegate = locationManager
+
+        delegate.locationManager?(CLLocationManager(), monitoringDidFailFor: region, withError: CLError(.regionMonitoringFailure))
+
+        XCTAssertTrue(logger.errors.contains { $0.contains("Geofence 1") })
+    }
+
+    // MARK: Region Events Before Load Tests
+    func testRegionEventBeforeGeofencesLoadIsDeliveredAfterLoad() {
+        config.geofenceFileName = "validGeofences"
+        let delivered = expectation(description: "event delivered after geofences load")
+        let delegate = MockLocationDelegate(didEnter: { data in
+            XCTAssertEqual(data[TealiumDataKey.geofenceName] as? String, "Tealium_Reading")
+            delivered.fulfill()
+        })
+        locationManager.locationDelegate = delegate
+        XCTAssertTrue(locationManager.geofences.isEmpty)
+        let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: 51.4610304, longitude: -0.9707625),
+                                      radius: 100,
+                                      identifier: "Tealium_Reading")
+        region.notifyOnEntry = true
+
+        locationManager.locationManager(CLLocationManager(), didDetermineState: .inside, for: region)
+
+        waitForExpectations(timeout: 3.0)
+    }
+
+}
+
+class MockLocationLogger: TealiumLoggerProtocol {
+    var config: TealiumConfig?
+    var errors = [String]()
+
+    required init(config: TealiumConfig) {
+        self.config = config
+    }
+
+    func log(_ request: TealiumLogRequest) {
+        if request.logLevel == .error {
+            errors.append(contentsOf: request.messages)
+        }
+    }
 }
