@@ -164,16 +164,7 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
             self.lastLocation = lastLocation
             logInfo(message: "🌎🌎 Location updated: \(String(describing: lastLocation.coordinate)) 🌎🌎")
         }
-        geofences.regions.forEach {
-            let geofenceLocation = CLLocation(latitude: $0.center.latitude, longitude: $0.center.longitude)
-
-            guard let distance = lastLocation?.distance(from: geofenceLocation),
-                  distance.isLess(than: config.updateDistance) else {
-                stopMonitoring(geofence: $0)
-                return
-            }
-            startMonitoring(geofence: $0)
-        }
+        updateMonitoredGeofences()
     }
 
     /// CLLocationManagerDelegate method
@@ -191,16 +182,30 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     }
 
     /// CLLocationManagerDelegate method
+    /// Logs regions that could not be monitored, e.g. when the app's region limit is reached
+    ///
+    /// - parameter manager: `CLLocationManager` instance
+    /// - parameter region: `CLRegion` that failed to be monitored
+    /// - parameter error: `error` the reason monitoring failed
+    public func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
+        logError(message: "🌎🌎 Failed to monitor \(region?.identifier ?? "region"): \(error.localizedDescription) 🌎🌎")
+    }
+
+    /// CLLocationManagerDelegate method
     /// Calls for the sending of a Tealium tracking calls on geofence enter and exit event
+    /// Events received before the geofences are loaded, e.g. on a background relaunch, are sent once they are loaded
     ///
     /// - parameter manager: `CLLocationManager` instance
     /// - parameter state: `CLRegionState` state of the device with reference to a region.
     /// - parameter region: `CLRegion` that was entered
     public func locationManager(_ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
-        if state == .inside && region.notifyOnEntry {
-            sendGeofenceTrackingEvent(region: region, triggeredTransition: LocationKey.entered)
-        } else if state == .outside && region.notifyOnExit {
-            sendGeofenceTrackingEvent(region: region, triggeredTransition: LocationKey.exited)
+        onReady.subscribeOnce { [weak self] in
+            guard let self = self else { return }
+            if state == .inside && region.notifyOnEntry {
+                self.sendGeofenceTrackingEvent(region: region, triggeredTransition: LocationKey.entered)
+            } else if state == .outside && region.notifyOnExit {
+                self.sendGeofenceTrackingEvent(region: region, triggeredTransition: LocationKey.exited)
+            }
         }
     }
 
@@ -228,11 +233,13 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
     /// - parameter triggeredTransition: `String` Type of transition that occurred
     public func sendGeofenceTrackingEvent(region: CLRegion, triggeredTransition: String) {
         guard geofenceTrackingEnabled else {
+            logInfo(message: "🌎🌎 Geofence tracking disabled or no geofences loaded, \(region.identifier) event not sent 🌎🌎")
             return
         }
 
         // Check we are actively monitoring for this geofence and it didn't come from another SDK
         guard isMonitoredByModule(region: region) else {
+            logInfo(message: "🌎🌎 \(region.identifier) is not a loaded geofence, event not sent 🌎🌎")
             return
         }
 
@@ -373,6 +380,37 @@ public class TealiumLocationManager: NSObject, CLLocationManagerDelegate, Tealiu
         TealiumQueues.secureMainThreadExecution {
             self.geofences = geofences
             self._onReady.publish()
+        }
+    }
+}
+
+extension TealiumLocationManager {
+    /// Monitors the geofences nearest to the last location, within `config.updateDistance`,
+    /// up to the number of regions still available to the app, and stops monitoring the others.
+    /// Reads the monitored regions only once, as each read is a costly call into Core Location.
+    func updateMonitoredGeofences() {
+        let monitoredIdentifiers = Set(locationManager.monitoredRegions.map { $0.identifier })
+        let geofenceNames = Set(geofences.map { $0.name })
+        let regionsMonitoredElsewhere = monitoredIdentifiers.subtracting(geofenceNames).count
+        var wantedNames = Set<String>()
+        if geofenceTrackingEnabled, let lastLocation = lastLocation {
+            let availableRegions = max(0, LocationKey.maximumMonitoredRegions - regionsMonitoredElsewhere)
+            let nearest = geofences
+                .map { (name: $0.name, distance: lastLocation.distance(from: CLLocation(latitude: $0.latitude, longitude: $0.longitude))) }
+                .filter { $0.distance < config.updateDistance }
+                .sorted { $0.distance < $1.distance }
+                .prefix(availableRegions)
+            wantedNames = Set(nearest.map { $0.name })
+        }
+        geofences.forEach {
+            let isMonitored = monitoredIdentifiers.contains($0.name)
+            if wantedNames.contains($0.name) && !isMonitored {
+                locationManager.startMonitoring(for: $0.region)
+                logInfo(message: "🌎🌎 \($0.name) Added to monitored client 🌎🌎")
+            } else if !wantedNames.contains($0.name) && isMonitored {
+                locationManager.stopMonitoring(for: $0.region)
+                logInfo(message: "🌎🌎 \($0.name) Removed from monitored client 🌎🌎")
+            }
         }
     }
 }

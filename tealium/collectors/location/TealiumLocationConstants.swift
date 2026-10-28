@@ -30,6 +30,8 @@ public enum LocationKey {
     static let entered = "geofence_entered"
     static let exited = "geofence_exited"
     static let additionRange = 500.0
+    /// iOS allows an app to monitor at most 20 regions at a time
+    static let maximumMonitoredRegions = 20
     static let highAccuracy = "high"
     static let lowAccuracy = "low"
 }

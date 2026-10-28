@@ -39,8 +39,14 @@ public extension TealiumConfig {
 
     /// The desired accuracy of the user's location collection
     ///
-    /// - `LocationAccuracy` Default is `.reduced` in order to keep the user's privacy uppermost in mind. If using the geofence feature it would be beneficial to set to a higher accuracy level.
-    /// Usage: `config.desiredAccuracy = .high`
+    /// - `LocationAccuracy` Default is `.reduced` in order to keep the user's privacy uppermost in mind.
+    /// Applies to standard location updates (`useHighAccuracy = true`, the default when geofencing is enabled), not to significant location changes.
+    /// With `.reduced`, iOS reports locations that are usually 1 to 20 km from the actual location, at most a few times per hour.
+    /// Geofences are selected for monitoring by their distance from the last location, so with `.reduced` the wrong geofences may be monitored.
+    /// If using the geofence feature, set `.nearestHundredMeters` or better. Higher accuracy uses more battery,
+    /// and the more precise location is also added to every tracked event.
+    /// Region monitoring is unavailable when the user grants only approximate location.
+    /// Usage: `config.desiredAccuracy = .nearestHundredMeters`
     var desiredAccuracy: LocationAccuracy {
         get {
             options[TealiumConfigKey.desiredAccuracy] as? LocationAccuracy ?? .reduced
