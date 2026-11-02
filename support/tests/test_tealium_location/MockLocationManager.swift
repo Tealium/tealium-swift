@@ -28,7 +28,17 @@ class MockLocationManager: LocationManagerProtocol {
     var desiredAccuracy: CLLocationAccuracy = 1
     var distanceFilter: Double
     static var enableLocationServices = false
-    var monitoredRegions: Set<CLRegion> = Set<CLRegion>()
+    var monitoredRegionsReadCount = 0
+    private var _monitoredRegions = Set<CLRegion>()
+    var monitoredRegions: Set<CLRegion> {
+        get {
+            monitoredRegionsReadCount += 1
+            return _monitoredRegions
+        }
+        set {
+            _monitoredRegions = newValue
+        }
+    }
     var pausesLocationUpdatesAutomatically: Bool = true
     var allowsBackgroundLocationUpdates: Bool = false
     init?(config: TealiumConfig, delegateClass: CLLocationManagerDelegate?) {
@@ -82,12 +92,12 @@ class MockLocationManager: LocationManagerProtocol {
 
     func stopMonitoring(for region: CLRegion) {
         stopMonitoringCount += 1
-        monitoredRegions.remove(region)
+        _monitoredRegions.remove(region)
     }
 
     func startMonitoring(for region: CLRegion) {
         startMonitoringCount += 1
-        monitoredRegions.insert(region)
+        _monitoredRegions.insert(region)
     }
 
 }

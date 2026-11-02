@@ -47,11 +47,13 @@ public extension Array where Element == Geofence {
 }
 
 class GeofenceProvider: ItemsProvider<Geofence> {
+    private let logger: TealiumLoggerProtocol?
 
     init(config: TealiumConfig,
          bundle: Bundle,
          urlSession: URLSessionProtocol = URLSession(configuration: .ephemeral),
          diskStorage: TealiumDiskStorageProtocol) {
+        self.logger = config.logger
         super.init(id: "geofences",
                    location: ItemsFileLocation(geofenceConfiguration: config),
                    bundle: bundle,
@@ -61,7 +63,23 @@ class GeofenceProvider: ItemsProvider<Geofence> {
     }
 
     override func reportLoadedItems(items: [Geofence]) {
-        super.reportLoadedItems(items: filter(geofences: items))
+        super.reportLoadedItems(items: removeDuplicateNames(geofences: filter(geofences: items)))
+    }
+
+    /// Keeps the first geofence for each name, as names identify the monitored regions
+    private func removeDuplicateNames(geofences: [Geofence]) -> [Geofence] {
+        var names = Set<String>()
+        return geofences.filter {
+            guard names.insert($0.name).inserted else {
+                logger?.log(TealiumLogRequest(title: "Tealium Location",
+                                              message: "🌎🌎 Duplicate geofence name \($0.name) dropped 🌎🌎",
+                                              info: nil,
+                                              logLevel: .error,
+                                              category: .general))
+                return false
+            }
+            return true
+        }
     }
 
     private func filter(geofences: [Geofence]) -> [Geofence] {

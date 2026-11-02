@@ -73,6 +73,44 @@ final class GeofenceProviderTests: XCTestCase {
         }
     }
 
+    func testDuplicateGeofenceNamesAreDropped() {
+        let geofencesLoaded = expectation(description: "geofences loaded")
+        let duplicate = Geofence(name: "123", latitude: 30, longitude: 30, radius: 30, triggerOnEnter: true, triggerOnExit: true)
+        urlSession.result = .success(with: Self.geofences + [duplicate], statusCode: 200)
+        let delegate = MockProviderDelegate()
+        delegate.$geofences.subscribe { result in
+            XCTAssertEqual(result, Self.geofences)
+            geofencesLoaded.fulfill()
+        }
+        provider.loadItems(delegate: delegate)
+        waitOnTealiumSerialQueue {
+            waitForExpectations(timeout: 0.1)
+        }
+    }
+
+    func testMalformedGeofencesAreDroppedIndividually() {
+        let geofencesLoaded = expectation(description: "geofences loaded")
+        let json = """
+        [
+            {"name": "123", "latitude": 12, "longitude": 12, "radius": 12, "trigger_on_enter": true, "trigger_on_exit": true},
+            {"name": "Missing Exit", "latitude": 10, "longitude": 10, "radius": 10, "trigger_on_enter": true},
+            {"name": "String Latitude", "latitude": "10", "longitude": 10, "radius": 10, "trigger_on_enter": true, "trigger_on_exit": true},
+            null,
+            {"name": "456", "latitude": 45, "longitude": 45, "radius": 45, "trigger_on_enter": false, "trigger_on_exit": false}
+        ]
+        """
+        urlSession.result = .success(withData: json.data(using: .utf8), statusCode: 200)
+        let delegate = MockProviderDelegate()
+        delegate.$geofences.subscribe { result in
+            XCTAssertEqual(result, Self.geofences)
+            geofencesLoaded.fulfill()
+        }
+        provider.loadItems(delegate: delegate)
+        waitOnTealiumSerialQueue {
+            waitForExpectations(timeout: 0.1)
+        }
+    }
+
     func testGeofencesLoadedEmptyWhenRequestFails() {
         let geofencesLoaded = expectation(description: "geofences loaded")
 

@@ -60,10 +60,10 @@ open class ItemsProvider<Item: Codable & Equatable> {
                 return nil
             }
             let resourceRetriever = ResourceRetriever<Resource>(urlSession: urlSession ?? URLSession(configuration: .ephemeral)) { data, etag in
-                guard let items = try? JSONDecoder().decode([Item].self, from: data) else {
+                guard let decoded = try? JSONDecoder().decode([DecodableResult<Item>].self, from: data) else {
                     return nil
                 }
-                return ItemsFile(etag: etag, items: items)
+                return ItemsFile(etag: etag, items: ItemsProvider.validItems(from: decoded, id: id, logger: logger))
             }
             let parameters = RefreshParameters<Resource>(id: id,
                                                          url: url,
@@ -104,8 +104,8 @@ open class ItemsProvider<Item: Codable & Equatable> {
     }
     private func loadLocalItems(file: String) {
         do {
-            let items: [Item] = try JSONLoader.fromFile(file, bundle: bundle, logger: logger)
-            reportLoadedItems(items: items)
+            let decoded: [DecodableResult<Item>] = try JSONLoader.decodableFromFile(file, bundle: bundle, logger: logger)
+            reportLoadedItems(items: ItemsProvider.validItems(from: decoded, id: id, logger: logger))
         } catch {
             reportFailedToLoad(error: error)
         }
@@ -119,6 +119,35 @@ open class ItemsProvider<Item: Codable & Equatable> {
         logInfo(message: "\(String(describing: items.count)) \(id) Created")
         delegate?.didLoadItems(items)
     }
+    private static func validItems(from results: [DecodableResult<Item>], id: String, logger: TealiumLoggerProtocol?) -> [Item] {
+        var items = [Item]()
+        var errors = [Error]()
+        for result in results {
+            switch result {
+            case .success(let item):
+                items.append(item)
+            case .failure(let error):
+                errors.append(error)
+            }
+        }
+        guard !errors.isEmpty else {
+            return items
+        }
+        logger?.log(TealiumLogRequest(title: "Tealium \(id)",
+                                      message: "Dropped \(errors.count) invalid \(id) items",
+                                      info: nil,
+                                      logLevel: .error,
+                                      category: .general))
+        errors.forEach { error in
+            logger?.log(TealiumLogRequest(title: "Tealium \(id)",
+                                          message: "Dropped invalid \(id) item: \(error)",
+                                          info: nil,
+                                          logLevel: .debug,
+                                          category: .general))
+        }
+        return items
+    }
+
     /// Logs verbose information about an error
     /// - Parameter message: `String` message to log to the console
     private func logError(message: String) {
@@ -141,6 +170,20 @@ open class ItemsProvider<Item: Codable & Equatable> {
         if let session = resourceRefresher?.resourceRetriever.urlSession {
             resourceRefresher?.resourceRetriever.stop()
             session.finishTealiumTasksAndInvalidate()
+        }
+    }
+}
+
+/// Wraps the result of decoding a single value, so that a failure doesn't fail the whole container it belongs to.
+enum DecodableResult<Success: Decodable>: Decodable {
+    case success(Success)
+    case failure(Error)
+
+    init(from decoder: Decoder) throws {
+        do {
+            self = .success(try Success(from: decoder))
+        } catch {
+            self = .failure(error)
         }
     }
 }
