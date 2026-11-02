@@ -49,6 +49,12 @@ public class JSONLoader {
     public static func fromFile<T: Codable>(_ file: String,
                                             bundle: Bundle,
                                             logger: TealiumLoggerProtocol? = nil) throws -> T {
+        try decodableFromFile(file, bundle: bundle, logger: logger)
+    }
+
+    static func decodableFromFile<T: Decodable>(_ file: String,
+                                                bundle: Bundle,
+                                                logger: TealiumLoggerProtocol? = nil) throws -> T {
 
         guard let path = bundle.path(forResource: file.replacingOccurrences(of: ".json", with: ""),
                                      ofType: "json") else {
