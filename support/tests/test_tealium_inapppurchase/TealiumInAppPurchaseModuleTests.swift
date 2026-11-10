@@ -47,7 +47,7 @@ class InAppPurchaseModuleTests: XCTestCase {
         session.disableDialogs = true
         session.clearTransactions()
         module = makeModule(storage: MockTealiumDiskStorage())
-        // ponytail: Settle delay for the unstructured Task that subscribes to Transaction.updates, replace with a ready signal if it ever flakes.
+        // Settle delay for the unstructured Task that subscribes to Transaction.updates, replace with a ready signal if it ever flakes.
         try await Task.sleep(nanoseconds: 200_000_000)
     }
 
@@ -64,15 +64,15 @@ class InAppPurchaseModuleTests: XCTestCase {
     }
 
     func testAutotrackedPurchase() async throws {
-        let tracked = expectation(description: "Autotracked purchase")
-        tracked.assertForOverFulfill = false
-        expectation = tracked
         // StoreKit has no signal for when the Transaction.updates subscription is live, and on a cold process the first event can be
         // emitted before it is. Buy again until one arrives, so the test checks the tracking and not the subscription timing.
+        // Polls instead of waiting on an expectation, because a timed-out wait fails the test even when a later attempt succeeds.
         var bought = [Transaction]()
         for _ in 0..<5 where trackedRequests.isEmpty {
             bought.append(try await session.buyProduct(identifier: productId))
-            await fulfillment(of: [tracked], timeout: 2.0)
+            for _ in 0..<20 where trackedRequests.isEmpty {
+                try await Task.sleep(nanoseconds: 100_000_000)
+            }
         }
         let transaction = try XCTUnwrap(bought.first { String($0.id) == trackedRequests.first?.trackDictionary["purchase_order_id"] as? String })
 

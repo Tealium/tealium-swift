@@ -17,7 +17,7 @@ final class InAppPurchaseManager {
     weak var delegate: ModuleDelegate?
     private var updatesTask: Task<Void, Never>?
     private let diskStorage: TealiumDiskStorageProtocol
-    // ponytail: Keeps only the 100 most recent ids, which is plenty for crash-before-finish re-deliveries. Raise it if older duplicates show up.
+    // Keeps only the 100 most recent ids, which is plenty for crash-before-finish re-deliveries. Raise it if older duplicates show up.
     private let maxTrackedIds = 100
     // Guards trackedIds, because track(_:autotracked:) is called from the updates Task and from the app's thread.
     private let lock = NSLock()
@@ -44,15 +44,18 @@ final class InAppPurchaseManager {
         }
     }
 
-    // Unverified results may be tampered with. Revoked and upgraded transactions are no longer revenue, and family-shared ones belong to another user's purchase.
+    // Unverified results may be tampered with.
     static func purchase(from result: VerificationResult<Transaction>) -> Transaction? {
-        guard case let .verified(transaction) = result,
-              transaction.revocationDate == nil,
-              !transaction.isUpgraded,
-              transaction.ownershipType != .familyShared else {
+        guard case let .verified(transaction) = result, isPurchase(transaction) else {
             return nil
         }
         return transaction
+    }
+
+    // Revoked and upgraded transactions are no longer revenue, and family-shared ones belong to another user's purchase.
+    // Also checked in track(_:autotracked:), because the public manual track(_:) doesn't go through purchase(from:).
+    static func isPurchase(_ transaction: Transaction) -> Bool {
+        transaction.revocationDate == nil && !transaction.isUpgraded && transaction.ownershipType != .familyShared
     }
 
     deinit {
@@ -60,7 +63,10 @@ final class InAppPurchaseManager {
     }
 
     func track(_ transaction: Transaction, autotracked: Bool) {
+        guard Self.isPurchase(transaction) else { return }
         // The app may crash between a manual track(_:) and finish(), and StoreKit then re-delivers the unfinished transaction via Transaction.updates.
+        // The id is persisted before the event is durable, so a crash in that short window drops the event instead of
+        // double-counting it. Closing the window needs a delivery acknowledgement from the dispatch pipeline.
         lock.lock()
         guard !trackedIds.contains(transaction.id) else {
             lock.unlock()
