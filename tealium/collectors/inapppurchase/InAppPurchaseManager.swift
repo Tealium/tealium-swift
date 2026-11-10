@@ -16,7 +16,10 @@ final class InAppPurchaseManager {
 
     weak var delegate: ModuleDelegate?
     private var updatesTask: Task<Void, Never>?
+    // Internal so tests can wait for the startup pass over Transaction.unfinished before they make purchases of their own.
+    private(set) var unfinishedTask: Task<Void, Never>?
     private let diskStorage: TealiumDiskStorageProtocol
+    private let logger: TealiumLoggerProtocol?
     // Keeps only the 100 most recent ids, which is plenty for crash-before-finish re-deliveries. Raise it if older duplicates show up.
     private let maxTrackedIds = 100
     // Guards trackedIds, because track(_:autotracked:) is called from the updates Task and from the app's thread.
@@ -26,22 +29,37 @@ final class InAppPurchaseManager {
     init(delegate: ModuleDelegate?, diskStorage: TealiumDiskStorageProtocol, logger: TealiumLoggerProtocol?) {
         self.delegate = delegate
         self.diskStorage = diskStorage
+        self.logger = logger
         self.trackedIds = diskStorage.retrieve(as: [UInt64].self) ?? []
-        // Transaction.updates doesn't emit the result of Product.purchase() calls made by this app. Those are tracked via the module's track(_:).
+        // StoreKit returns purchases made on this device to the app's purchase call and doesn't promise to emit them here,
+        // so those are also tracked via the module's track(_:). The dedup in track(_:autotracked:) keeps it to one event.
         updatesTask = Task { [weak self] in
             for await result in Transaction.updates {
-                if case let .unverified(transaction, error) = result {
-                    let log = TealiumLogRequest(title: "Tealium InAppPurchase",
-                                                message: "Skipping unverified transaction \(transaction.id): \(error)",
-                                                info: nil,
-                                                logLevel: .info,
-                                                category: .general)
-                    logger?.log(log)
-                }
-                guard let transaction = Self.purchase(from: result) else { continue }
-                self?.track(transaction, autotracked: true)
+                self?.handle(result)
             }
         }
+        // Transaction.updates delivers unfinished transactions once, right after app launch, which can be before Tealium starts
+        // the listener above. The ones the app hasn't finished yet are still in Transaction.unfinished. A transaction the app
+        // finishes before this runs can't be seen here.
+        // Overlap with the listener above is removed by the dedup in track(_:autotracked:).
+        unfinishedTask = Task { [weak self] in
+            for await result in Transaction.unfinished {
+                self?.handle(result)
+            }
+        }
+    }
+
+    private func handle(_ result: VerificationResult<Transaction>) {
+        if case let .unverified(transaction, error) = result {
+            let log = TealiumLogRequest(title: "Tealium InAppPurchase",
+                                        message: "Skipping unverified transaction \(transaction.id): \(error)",
+                                        info: nil,
+                                        logLevel: .info,
+                                        category: .general)
+            logger?.log(log)
+        }
+        guard let transaction = Self.purchase(from: result) else { return }
+        track(transaction, autotracked: true)
     }
 
     // Unverified results may be tampered with.
@@ -60,6 +78,7 @@ final class InAppPurchaseManager {
 
     deinit {
         updatesTask?.cancel()
+        unfinishedTask?.cancel()
     }
 
     func track(_ transaction: Transaction, autotracked: Bool) {
