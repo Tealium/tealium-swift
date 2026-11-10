@@ -7,101 +7,177 @@
 
 @testable import TealiumInAppPurchase
 @testable import TealiumCore
+import StoreKit
 import StoreKitTest
 import XCTest
 
-// This test needs to be re enabled for tvOS, it seems Xcode 13.3.1 made this test stop working for tvOS only, the test still works on iOS
-
-@available(iOS 14.0, tvOS 14, *)
+// SKTestSession.buyProduct(identifier:) is only available from iOS 17 / tvOS 17.
+@available(iOS 17, tvOS 17, *)
 class InAppPurchaseModuleTests: XCTestCase {
 
+    let productId = "com.tealium.iOSTealiumTestApp.product1"
     var module: InAppPurchaseModule?
-    var context: TealiumContext!
-    var expectation: XCTestExpectation?
-    var payload: [String: Any]?
     var session: SKTestSession!
-    var expectationRequest = XCTestExpectation(description: "Buy Product")
+    // Written on the test thread and read on the StoreKit Task thread, so always access it through the lock.
+    private var _expectation: XCTestExpectation?
+    private let lock = NSLock()
+    private var tracked = [TealiumTrackRequest]()
 
-    override func setUpWithError() throws {
+    var expectation: XCTestExpectation? {
+        get {
+            lock.lock()
+            defer { lock.unlock() }
+            return _expectation
+        }
+        set {
+            lock.lock()
+            _expectation = newValue
+            lock.unlock()
+        }
+    }
+
+    var trackedRequests: [TealiumTrackRequest] {
+        lock.lock()
+        defer { lock.unlock() }
+        return tracked
+    }
+
+    override func setUp() async throws {
         session = try SKTestSession(configurationFileNamed: "StoreKitTesting")
         session.disableDialogs = true
         session.clearTransactions()
+        module = makeModule(storage: MockTealiumDiskStorage())
+        // ponytail: Settle delay for the unstructured Task that subscribes to Transaction.updates, replace with a ready signal if it ever flakes.
+        try await Task.sleep(nanoseconds: 200_000_000)
+    }
+
+    // In-memory storage keeps persisted transaction ids from leaking across tests, since SKTestSession ids can repeat after clearTransactions().
+    private func makeModule(storage: TealiumDiskStorageProtocol) -> InAppPurchaseModule {
         let config = TestTealiumHelper().getConfig()
         let context = TestTealiumHelper.context(with: config)
-        SKPaymentQueue.default().add(self)
-        module = InAppPurchaseModule(context: context, delegate: self, diskStorage: nil) { _ in
-            
-        }
+        return InAppPurchaseModule(context: context, delegate: self, diskStorage: storage) { _ in }
     }
 
     override func tearDownWithError() throws {
+        module = nil
         session = nil
     }
-    
-    func testStoreKitPurchase() throws {
-        let request = SKProductsRequest(productIdentifiers: ["com.tealium.iOSTealiumTestApp.product1"])
-        request.delegate = self
-        request.start()
-        wait(for: [expectationRequest], timeout: 30.0)
-    }
 
-}
-
-@available(iOS 14.0, tvOS 14, *)
-extension InAppPurchaseModuleTests: SKProductsRequestDelegate, SKPaymentTransactionObserver {
-    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
-        for transaction in transactions {
-            if transaction.transactionState == .purchased {
-                SKPaymentQueue.default().finishTransaction(transaction)
-            }
+    func testAutotrackedPurchase() async throws {
+        let tracked = expectation(description: "Autotracked purchase")
+        tracked.assertForOverFulfill = false
+        expectation = tracked
+        // StoreKit has no signal for when the Transaction.updates subscription is live, and on a cold process the first event can be
+        // emitted before it is. Buy again until one arrives, so the test checks the tracking and not the subscription timing.
+        var bought = [Transaction]()
+        for _ in 0..<5 where trackedRequests.isEmpty {
+            bought.append(try await session.buyProduct(identifier: productId))
+            await fulfillment(of: [tracked], timeout: 2.0)
         }
-    }
-    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
-        SKPaymentQueue.default().add(SKPayment(product: response.products.first!))
+        let transaction = try XCTUnwrap(bought.first { String($0.id) == trackedRequests.first?.trackDictionary["purchase_order_id"] as? String })
+
+        let requests = trackedRequests
+        XCTAssertEqual(requests.count, 1)
+        let data = try XCTUnwrap(requests.first).trackDictionary
+        XCTAssertEqual(requests.first?.event, "in_app_purchase")
+        XCTAssertEqual(data["autotracked"] as? Bool, true)
+        XCTAssertEqual(data["purchase_order_id"] as? String, String(transaction.id))
+        XCTAssertEqual(data["purchase_skus"] as? String, productId)
+        XCTAssertEqual(data["purchase_quantity"] as? Int, 1)
+        XCTAssertEqual(data["purchase_timestamp"] as? Date, transaction.purchaseDate)
     }
 
-    func requestDidFinish(_ request: SKRequest) {
+    func testManuallyTrackedPurchase() async throws {
+        let products = try await Product.products(for: [productId])
+        let product = try XCTUnwrap(products.first)
+        guard case .success(.verified(let transaction)) = try await product.purchase() else {
+            return XCTFail("Purchase did not succeed")
+        }
+        let tracked = expectation(description: "Manually tracked purchase")
+        tracked.assertForOverFulfill = false
+        expectation = tracked
+        module?.track(transaction)
+        await fulfillment(of: [tracked], timeout: 10.0)
+
+        let requests = trackedRequests
+        XCTAssertEqual(requests.count, 1)
+        let data = try XCTUnwrap(requests.first).trackDictionary
+        XCTAssertEqual(data["autotracked"] as? Bool, false)
+        XCTAssertEqual(data["purchase_order_id"] as? String, String(transaction.id))
+        XCTAssertEqual(data["purchase_skus"] as? String, productId)
+        await transaction.finish()
     }
 
-    func request(_ request: SKRequest, didFailWithError error: Error) {
-        XCTFail("Failed to get product information")
-        expectationRequest.fulfill()
+    func testPurchaseFromVerifiedTransactionReturnsIt() async throws {
+        let transaction = try await session.buyProduct(identifier: productId)
+        XCTAssertEqual(InAppPurchaseManager.purchase(from: .verified(transaction))?.id, transaction.id)
+    }
+
+    func testPurchaseFromUnverifiedTransactionReturnsNil() async throws {
+        let transaction = try await session.buyProduct(identifier: productId)
+        XCTAssertNil(InAppPurchaseManager.purchase(from: .unverified(transaction, .invalidSignature)))
+    }
+
+    func testPurchaseFromRevokedTransactionReturnsNil() async throws {
+        let bought = try await session.buyProduct(identifier: productId)
+        try session.refundTransaction(identifier: UInt(bought.id))
+
+        // StoreKit may need a moment before the refund shows up on the latest transaction.
+        var revoked: Transaction?
+        for _ in 0..<20 {
+            if case .verified(let latest)? = await Transaction.latest(for: productId), latest.revocationDate != nil {
+                revoked = latest
+                break
+            }
+            try await Task.sleep(nanoseconds: 100_000_000)
+        }
+        let transaction = try XCTUnwrap(revoked, "Refunded transaction never got a revocationDate")
+        XCTAssertNil(InAppPurchaseManager.purchase(from: .verified(transaction)))
+    }
+
+    func testSameTransactionTrackedTwiceProducesOneEvent() async throws {
+        let products = try await Product.products(for: [productId])
+        let product = try XCTUnwrap(products.first)
+        guard case .success(.verified(let transaction)) = try await product.purchase() else {
+            return XCTFail("Purchase did not succeed")
+        }
+        let tracked = expectation(description: "Manually tracked purchase")
+        tracked.assertForOverFulfill = false
+        expectation = tracked
+        module?.track(transaction)
+        module?.track(transaction)
+        await fulfillment(of: [tracked], timeout: 10.0)
+        XCTAssertEqual(trackedRequests.count, 1)
+        await transaction.finish()
+    }
+
+    func testPreviouslyTrackedTransactionIsNotTrackedAgain() async throws {
+        let products = try await Product.products(for: [productId])
+        let product = try XCTUnwrap(products.first)
+        guard case .success(.verified(let transaction)) = try await product.purchase() else {
+            return XCTFail("Purchase did not succeed")
+        }
+        let storage = MockTealiumDiskStorage()
+        storage.storedData = AnyCodable([transaction.id])
+        module = makeModule(storage: storage)
+
+        module?.track(transaction)
+        XCTAssertTrue(trackedRequests.isEmpty)
+        await transaction.finish()
     }
 }
 
-struct PurchaseEvent: Codable {
-    let tealiumEventType: String
-    let purchaseOrderId: String
-    let purchaseSkus: String
-    let purchaseQuantity: Int
-    let requestUuid: String
-    let autotracked: Bool
-    let tealiumEvent: String
-    let purchaseTimestamp: Date
-}
-
-@available(iOS 14.0, tvOS 14, *)
+@available(iOS 17, tvOS 17, *)
 extension InAppPurchaseModuleTests: ModuleDelegate {
-    func processRemoteCommandRequest(_ request: TealiumRequest) {
-        
-    }
+    func processRemoteCommandRequest(_ request: TealiumRequest) { }
 
     func requestTrack(_ track: TealiumTrackRequest) {
-        // TODO: Info and error callback handling
-        XCTAssertEqual(track.event, "in_app_purchase")
-        guard let purchaseSkus = track.trackDictionary["purchase_skus"] as? String, let quantity = track.trackDictionary["purchase_quantity"] as? Int, let autoTracked = track.trackDictionary["autotracked"] as? Bool, let purchaseDate = track.trackDictionary["purchase_timestamp"] as? Date else {
-            XCTFail("Track data incorrect")
-            expectationRequest.fulfill()
-            return
-        }
-        XCTAssertEqual(purchaseSkus, "com.tealium.iOSTealiumTestApp.product1")
-        XCTAssertEqual(quantity, 1)
-        XCTAssertEqual(autoTracked, true)
-        XCTAssertTrue(Date().timeIntervalSince1970 - purchaseDate.timeIntervalSince1970 < 10000)
-        expectationRequest.fulfill()
+        lock.lock()
+        tracked.append(track)
+        let current = _expectation
+        lock.unlock()
+        current?.fulfill()
     }
 
-    func requestDequeue(reason: String) {
-
-    }
+    func requestDequeue(reason: String) { }
 }

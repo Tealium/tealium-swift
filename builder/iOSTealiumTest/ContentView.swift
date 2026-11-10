@@ -10,63 +10,48 @@ import StoreKit
 import AppTrackingTransparency
 import TealiumAutotracking
 import TealiumCore
+import TealiumInAppPurchase
 import TealiumVisitorService
 
-class IAPHelper: NSObject, ObservableObject, SKProductsRequestDelegate, SKPaymentTransactionObserver {
+// StoreKit 2 Product requires iOS 15, while the demo app deploys to iOS 14.1.
+@available(iOS 15, *)
+@MainActor
+class IAPHelper: ObservableObject {
     static let shared = IAPHelper()
 
-    override init() {
-        super.init()
-        SKPaymentQueue.default().add(self)
-        requestProduct()
-    }
-    
-    func requestProduct() {
-         let request = SKProductsRequest(productIdentifiers: ["com.tealium.iOSTealiumTestApp.product1"])
-         request.delegate = self
-         request.start()
+    @Published var product: Product?
+
+    init() {
+        Task {
+            product = try? await Product.products(for: ["com.tealium.iOSTealiumTestApp.product1"]).first
+        }
     }
 
-    var product: SKProduct? {
-        willSet {
-          DispatchQueue.main.async {
-            self.objectWillChange.send()
-          }
-        }
-      }
-    // Create the SKProductsRequestDelegate protocol method
-    // to receive the array of products.
-    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
-        if !response.products.isEmpty {
-            product = response.products.first!
-        }
-    }
-    
     func buyProduct() {
-        let payment = SKPayment(product: product!)
-        SKPaymentQueue.default().add(payment)
-    }
-    
-    public func paymentQueue(_ queue: SKPaymentQueue,
-                               updatedTransactions transactions: [SKPaymentTransaction]) {
-        for transaction in transactions {
-          switch transaction.transactionState {
-          case .purchased:
-            complete(transaction: transaction)
-            break
-          default:
-              break
-          }
+        guard let product = product else { return }
+        Task {
+            guard case .success(.verified(let transaction)) = try? await product.purchase() else { return }
+            // Transaction.updates doesn't emit purchases made on this device, so they have to be tracked manually.
+            TealiumHelper.shared.tealium?.inAppPurchase?.track(transaction)
+            await transaction.finish()
         }
-      }
-     
-      private func complete(transaction: SKPaymentTransaction) {
-        SKPaymentQueue.default().finishTransaction(transaction)
-      }
+    }
+}
+
+@available(iOS 15, *)
+struct PurchaseButton: View {
+    @ObservedObject var iapHelper = IAPHelper.shared
+
+    var body: some View {
+        if let product = iapHelper.product {
+            TealiumTextButton(title: "Purchase \(product.displayName)") {
+                iapHelper.buyProduct()
+            }
+        }
+    }
 }
 
 struct ContentView: View {
-    @ObservedObject var iapHelper = IAPHelper.shared
     @State private var traceId: String = ""
     @State private var showAlert = false
     @State private var navigateToMoments = false
@@ -137,10 +122,8 @@ struct ContentView: View {
                         }
                     }
                     Group {
-                        if let product = iapHelper.product {
-                            TealiumTextButton(title: "Purchase \(product.localizedTitle)") {
-                                iapHelper.buyProduct()
-                            }
+                        if #available(iOS 15, *) {
+                            PurchaseButton()
                         }
                         TealiumTextField($email, placeholder: "Enter email") {
                             applyEmail()

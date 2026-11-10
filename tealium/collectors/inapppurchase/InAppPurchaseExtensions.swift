@@ -10,25 +10,32 @@ import StoreKit
 import TealiumCore
 #endif
 
-@available(watchOS 6.2, *)
 public extension Collectors {
     static let InAppPurchase = InAppPurchaseModule.self
 }
 
-@available(watchOS 6.2, *)
-extension SKPaymentTransaction {
-    func toTealiumEvent() -> TealiumEvent? {
-        guard let transactionId = transactionIdentifier, let transactionDate = transactionDate else {
-            return nil
-        }
+public extension Tealium {
+
+    /// - Returns: `InAppPurchaseModule` instance, used to manually track purchases via `track(_:)`.
+    /// `nil` until Tealium has finished initializing, or if `Collectors.InAppPurchase` isn't in the config's collectors.
+    var inAppPurchase: InAppPurchaseModule? {
+        zz_internal_modulesManager?.modules.first {
+            type(of: $0) == InAppPurchaseModule.self
+        } as? InAppPurchaseModule
+    }
+
+}
+
+@available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
+extension Transaction {
+    func toTealiumEvent(autotracked: Bool) -> TealiumEvent {
         let data: [String: Any] = [
-            TealiumDataKey.inAppPurchaseAutotracked: true,
-            TealiumDataKey.purchaseOrderId: transactionId,
-            TealiumDataKey.purchaseTimestamp: transactionDate,
-            TealiumDataKey.purchaseQuantity: payment.quantity,
-            TealiumDataKey.purchaseSkus: payment.productIdentifier,
+            TealiumDataKey.inAppPurchaseAutotracked: autotracked,
+            TealiumDataKey.purchaseOrderId: String(id),
+            TealiumDataKey.purchaseTimestamp: purchaseDate,
+            TealiumDataKey.purchaseQuantity: purchasedQuantity,
+            TealiumDataKey.purchaseSkus: productID,
         ]
-        let event = TealiumEvent(InAppPurchaseConstants.eventName, dataLayer: data)
-        return event
+        return TealiumEvent(InAppPurchaseConstants.eventName, dataLayer: data)
     }
 }
