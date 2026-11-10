@@ -30,10 +30,11 @@ class IAPHelper: ObservableObject {
     func buyProduct() {
         guard let product = product else { return }
         Task {
-            guard case .success(.verified(let transaction)) = try? await product.purchase() else { return }
+            guard case .success(let result) = try? await product.purchase(),
+                  case .verified(let transaction) = result else { return }
             // StoreKit returns purchases made on this device to the purchase call and doesn't promise to emit them
             // on Transaction.updates, so they're tracked manually. Tealium sends one event even if both paths see it.
-            TealiumHelper.shared.tealium?.inAppPurchase?.track(transaction)
+            TealiumHelper.shared.tealium?.inAppPurchase?.track(result)
             await transaction.finish()
         }
     }

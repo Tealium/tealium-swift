@@ -32,9 +32,6 @@ class InAppPurchaseModuleTests: XCTestCase {
         session = try SKTestSession(configurationFileNamed: "StoreKitTesting")
         session.disableDialogs = true
         session.clearTransactions()
-        await startModule(storage: MockTealiumDiskStorage())
-        // Settle delay for the unstructured Task that subscribes to Transaction.updates, replace with a ready signal if it ever flakes.
-        try await Task.sleep(nanoseconds: 200_000_000)
     }
 
     // Waits for the module's startup pass over Transaction.unfinished, so the pass can't pick up a purchase the test makes afterwards.
@@ -56,6 +53,11 @@ class InAppPurchaseModuleTests: XCTestCase {
         }
         let transaction = try XCTUnwrap(purchased, "Purchase did not succeed")
         await transaction.finish()
+        // In SKTestSession, Transaction.unfinished can still return the purchase right after finish(), and the startup pass of the
+        // module created next would then autotrack it before the test's manual track. Finishing whatever is left prevents that.
+        for await case .verified(let queued) in Transaction.unfinished {
+            await queued.finish()
+        }
         return transaction
     }
 
@@ -72,6 +74,7 @@ class InAppPurchaseModuleTests: XCTestCase {
     }
 
     func testAutotrackedPurchase() async throws {
+        await startModule(storage: MockTealiumDiskStorage())
         // StoreKit has no signal for when the Transaction.updates subscription is live, and on a cold process the first event can be
         // emitted before it is. Buy again until one arrives, so the test checks the tracking and not the subscription timing.
         // Polls instead of waiting on an expectation, because a timed-out wait fails the test even when a later attempt succeeds.
@@ -84,7 +87,8 @@ class InAppPurchaseModuleTests: XCTestCase {
         }
         let transaction = try XCTUnwrap(bought.first { String($0.id) == trackedRequests.first?.trackDictionary["purchase_order_id"] as? String })
 
-        let requests = trackedRequests
+        // Events from earlier attempts can still arrive late, so only the matched transaction's events are counted.
+        let requests = trackedRequests.filter { $0.trackDictionary["purchase_order_id"] as? String == String(transaction.id) }
         XCTAssertEqual(requests.count, 1)
         let data = try XCTUnwrap(requests.first).trackDictionary
         XCTAssertEqual(requests.first?.event, "in_app_purchase")
@@ -115,7 +119,7 @@ class InAppPurchaseModuleTests: XCTestCase {
     func testManuallyTrackedPurchase() async throws {
         let transaction = try await purchaseWithoutListener()
         await startModule(storage: MockTealiumDiskStorage())
-        module?.track(transaction)
+        module?.track(.verified(transaction))
 
         let requests = trackedRequests
         XCTAssertEqual(requests.count, 1)
@@ -125,18 +129,15 @@ class InAppPurchaseModuleTests: XCTestCase {
         XCTAssertEqual(data["purchase_skus"] as? String, productId)
     }
 
-    func testPurchaseFromVerifiedTransactionReturnsIt() async throws {
-        let transaction = try await session.buyProduct(identifier: productId)
-        XCTAssertEqual(InAppPurchaseManager.purchase(from: .verified(transaction))?.id, transaction.id)
+    func testUnverifiedTransactionIsNotTracked() async throws {
+        let transaction = try await purchaseWithoutListener()
+        await startModule(storage: MockTealiumDiskStorage())
+        module?.track(.unverified(transaction, .invalidSignature))
+        XCTAssertTrue(trackedRequests.isEmpty)
     }
 
-    func testPurchaseFromUnverifiedTransactionReturnsNil() async throws {
-        let transaction = try await session.buyProduct(identifier: productId)
-        XCTAssertNil(InAppPurchaseManager.purchase(from: .unverified(transaction, .invalidSignature)))
-    }
-
-    func testPurchaseFromRevokedTransactionReturnsNil() async throws {
-        let bought = try await session.buyProduct(identifier: productId)
+    func testRevokedTransactionIsNotTracked() async throws {
+        let bought = try await purchaseWithoutListener()
         try session.refundTransaction(identifier: UInt(bought.id))
 
         // StoreKit may need a moment before the refund shows up on the latest transaction.
@@ -149,14 +150,45 @@ class InAppPurchaseModuleTests: XCTestCase {
             try await Task.sleep(nanoseconds: 100_000_000)
         }
         let transaction = try XCTUnwrap(revoked, "Refunded transaction never got a revocationDate")
-        XCTAssertNil(InAppPurchaseManager.purchase(from: .verified(transaction)))
+
+        await startModule(storage: MockTealiumDiskStorage())
+        module?.track(.verified(transaction))
+        XCTAssertTrue(trackedRequests.isEmpty)
+    }
+
+    func testTrackedIdsPersistAcrossModuleRestarts() async throws {
+        let transaction = try await purchaseWithoutListener()
+        let storage = MockTealiumDiskStorage()
+        await startModule(storage: storage)
+        module?.track(.verified(transaction))
+        XCTAssertEqual(trackedRequests.count, 1)
+
+        await startModule(storage: storage)
+        module?.track(.verified(transaction))
+        XCTAssertEqual(trackedRequests.count, 1)
+    }
+
+    func testInAppPurchaseAccessorIsNotNilWhenCollectorIsSet() {
+        let expect = expectation(description: "InAppPurchase not nil")
+        let config = TestTealiumHelper().getConfig()
+        config.collectors = [Collectors.InAppPurchase]
+        var tealium: Tealium?
+        tealium = Tealium(config: config) { _ in
+            XCTAssertNotNil(tealium?.inAppPurchase)
+            expect.fulfill()
+        }
+        TealiumQueues.backgroundSerialQueue.sync {
+            wait(for: [expect], timeout: 1.0)
+        }
+        TealiumInstanceManager.shared.removeInstance(config: config)
+        tealium = nil
     }
 
     func testSameTransactionTrackedTwiceProducesOneEvent() async throws {
         let transaction = try await purchaseWithoutListener()
         await startModule(storage: MockTealiumDiskStorage())
-        module?.track(transaction)
-        module?.track(transaction)
+        module?.track(.verified(transaction))
+        module?.track(.verified(transaction))
         XCTAssertEqual(trackedRequests.count, 1)
     }
 
@@ -166,7 +198,7 @@ class InAppPurchaseModuleTests: XCTestCase {
         storage.storedData = AnyCodable([transaction.id])
         await startModule(storage: storage)
 
-        module?.track(transaction)
+        module?.track(.verified(transaction))
         XCTAssertTrue(trackedRequests.isEmpty)
     }
 }

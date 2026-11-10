@@ -32,10 +32,10 @@ final class InAppPurchaseManager {
         self.logger = logger
         self.trackedIds = diskStorage.retrieve(as: [UInt64].self) ?? []
         // StoreKit returns purchases made on this device to the app's purchase call and doesn't promise to emit them here,
-        // so those are also tracked via the module's track(_:). The dedup in track(_:autotracked:) keeps it to one event.
+        // so those are also tracked by the app via the module's track(_:). The dedup in track(_:autotracked:) keeps it to one event.
         updatesTask = Task { [weak self] in
             for await result in Transaction.updates {
-                self?.handle(result)
+                self?.handle(result, autotracked: true)
             }
         }
         // Transaction.updates delivers unfinished transactions once, right after app launch, which can be before Tealium starts
@@ -44,13 +44,17 @@ final class InAppPurchaseManager {
         // Overlap with the listener above is removed by the dedup in track(_:autotracked:).
         unfinishedTask = Task { [weak self] in
             for await result in Transaction.unfinished {
-                self?.handle(result)
+                self?.handle(result, autotracked: true)
             }
         }
     }
 
-    private func handle(_ result: VerificationResult<Transaction>) {
-        if case let .unverified(transaction, error) = result {
+    func handle(_ result: VerificationResult<Transaction>, autotracked: Bool) {
+        switch result {
+        case .verified(let transaction):
+            track(transaction, autotracked: autotracked)
+        case let .unverified(transaction, error):
+            // Unverified results may be tampered with.
             let log = TealiumLogRequest(title: "Tealium InAppPurchase",
                                         message: "Skipping unverified transaction \(transaction.id): \(error)",
                                         info: nil,
@@ -58,22 +62,12 @@ final class InAppPurchaseManager {
                                         category: .general)
             logger?.log(log)
         }
-        guard let transaction = Self.purchase(from: result) else { return }
-        track(transaction, autotracked: true)
     }
 
-    // Unverified results may be tampered with.
-    static func purchase(from result: VerificationResult<Transaction>) -> Transaction? {
-        guard case let .verified(transaction) = result, isPurchase(transaction) else {
-            return nil
-        }
-        return transaction
-    }
-
-    // Revoked and upgraded transactions are no longer revenue, and family-shared ones belong to another user's purchase.
-    // Also checked in track(_:autotracked:), because the public manual track(_:) doesn't go through purchase(from:).
-    static func isPurchase(_ transaction: Transaction) -> Bool {
-        transaction.revocationDate == nil && !transaction.isUpgraded && transaction.ownershipType != .familyShared
+    // Revoked and upgraded transactions are no longer revenue. Family-shared and assigned (organization seat) ones mirror
+    // someone else's purchase. Requiring .purchased also rejects ownership types added in later OS versions.
+    private static func isPurchase(_ transaction: Transaction) -> Bool {
+        transaction.revocationDate == nil && !transaction.isUpgraded && transaction.ownershipType == .purchased
     }
 
     deinit {

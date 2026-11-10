@@ -28,9 +28,10 @@ public class InAppPurchaseModule: Collector {
         self.config = context.config
         self.delegate = delegate
         if #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) {
+            // The dedup ids must survive relaunches even when config.diskStorageEnabled is false, or unfinished transactions are re-tracked on every launch.
             let storage = diskStorage ?? TealiumDiskStorage(config: context.config,
                                                             forModule: ModuleNames.inapppurchase.lowercased(),
-                                                            isCritical: false)
+                                                            isCritical: true)
             manager = InAppPurchaseManager(delegate: delegate, diskStorage: storage, logger: context.config.logger)
         } else {
             let log = TealiumLogRequest(title: "Tealium InAppPurchase",
@@ -43,19 +44,25 @@ public class InAppPurchaseModule: Collector {
         completion((.success(true), nil))
     }
 
-    /// Tracks a verified transaction returned to the app's own purchase call, such as `Product.purchase()`,
-    /// `purchase(confirmIn:)`, `PurchaseAction`, or a StoreKit view's `onInAppPurchaseCompletion` handler.
+    /// Tracks a purchase made by the app. Pass the `VerificationResult` from the app's own purchase call, such as the value in
+    /// `Product.PurchaseResult.success(_:)`, `purchase(confirmIn:)`, `PurchaseAction`, or a StoreKit view's `onInAppPurchaseCompletion`.
     /// StoreKit returns those purchases to the caller and doesn't promise to emit them through `Transaction.updates`,
     /// so they may not be autotracked. If `Transaction.updates` emits one as well, only one event is sent, and `autotracked`
     /// reflects whichever path tracked it first.
     /// Purchases from StoreKit views without `onInAppPurchaseCompletion` go through `Transaction.updates` and are autotracked.
-    /// Don't pass unverified transactions. The event is `in_app_purchase`, with `autotracked` set to `false` when tracked here.
+    /// Unverified results are skipped and logged. Revoked, upgraded, family-shared and assigned transactions are ignored,
+    /// and so is a transaction already tracked on this device.
+    /// The event is `in_app_purchase`, with `autotracked` set to `false` when tracked here.
+    ///
+    /// Deduplication is per device. `Transaction.updates` also emits purchases the customer made in the app on another device,
+    /// so each device sends its own event with the same `purchase_order_id`. Dedupe on `purchase_order_id` downstream
+    /// when counting revenue.
     ///
     /// Get this module via `tealium.inAppPurchase`. It is `nil` until Tealium has finished initializing,
     /// and `nil` if `Collectors.InAppPurchase` isn't in `config.collectors`.
     /// Tealium never calls `finish()`, so the app still has to after delivering the content.
     @available(iOS 15, macOS 12, tvOS 15, watchOS 8, *)
-    public func track(_ transaction: Transaction) {
-        (manager as? InAppPurchaseManager)?.track(transaction, autotracked: false)
+    public func track(_ result: VerificationResult<Transaction>) {
+        (manager as? InAppPurchaseManager)?.handle(result, autotracked: false)
     }
 }
