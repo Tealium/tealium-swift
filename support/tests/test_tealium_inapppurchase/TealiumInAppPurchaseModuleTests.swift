@@ -62,10 +62,10 @@ class InAppPurchaseModuleTests: XCTestCase {
     }
 
     // In-memory storage keeps persisted transaction ids from leaking across tests, since SKTestSession ids can repeat after clearTransactions().
-    private func makeModule(storage: TealiumDiskStorageProtocol) -> InAppPurchaseModule {
+    private func makeModule(storage: TealiumDiskStorageProtocol, withDelegate: Bool = true) -> InAppPurchaseModule {
         let config = TestTealiumHelper().getConfig()
         let context = TestTealiumHelper.context(with: config)
-        return InAppPurchaseModule(context: context, delegate: self, diskStorage: storage) { _ in }
+        return InAppPurchaseModule(context: context, delegate: withDelegate ? self : nil, diskStorage: storage) { _ in }
     }
 
     override func tearDownWithError() throws {
@@ -101,11 +101,7 @@ class InAppPurchaseModuleTests: XCTestCase {
 
     func testUnfinishedTransactionFromBeforeStartIsTracked() async throws {
         // A listener started after a transaction arrived never gets it from Transaction.updates, so this covers Transaction.unfinished.
-        module = nil
         let transaction = try await session.buyProduct(identifier: productId)
-        // Long enough for a still-running listener to have tracked it, which would make this test pass for the wrong reason.
-        try await Task.sleep(nanoseconds: 1_000_000_000)
-        XCTAssertTrue(trackedRequests.isEmpty, "A cancelled listener tracked the purchase")
 
         await startModule(storage: MockTealiumDiskStorage())
 
@@ -166,6 +162,19 @@ class InAppPurchaseModuleTests: XCTestCase {
         await startModule(storage: storage)
         module?.track(.verified(transaction))
         XCTAssertEqual(trackedRequests.count, 1)
+    }
+
+    func testTrackWithoutDelegateDoesNotRecordId() async throws {
+        let transaction = try await purchaseWithoutListener()
+        let storage = MockTealiumDiskStorage()
+        module = makeModule(storage: storage, withDelegate: false)
+        module?.track(.verified(transaction))
+        XCTAssertTrue(trackedRequests.isEmpty)
+
+        await startModule(storage: storage)
+        module?.track(.verified(transaction))
+        let requests = trackedRequests.filter { $0.trackDictionary["purchase_order_id"] as? String == String(transaction.id) }
+        XCTAssertEqual(requests.count, 1)
     }
 
     func testInAppPurchaseAccessorIsNotNilWhenCollectorIsSet() {

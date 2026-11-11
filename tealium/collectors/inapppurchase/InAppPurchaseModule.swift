@@ -51,7 +51,7 @@ public class InAppPurchaseModule: Collector {
     /// reflects whichever path tracked it first.
     /// Purchases from StoreKit views without `onInAppPurchaseCompletion` go through `Transaction.updates` and are autotracked.
     /// Unverified results are skipped and logged. Revoked, upgraded, family-shared and assigned transactions are ignored,
-    /// and so is a transaction already tracked on this device.
+    /// and so is a transaction among the last 1,000 tracked on this device.
     /// The event is `in_app_purchase`, with `autotracked` set to `false` when tracked here.
     ///
     /// Deduplication is per device. `Transaction.updates` also emits purchases the customer made in the app on another device,

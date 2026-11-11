@@ -20,8 +20,10 @@ final class InAppPurchaseManager {
     private(set) var unfinishedTask: Task<Void, Never>?
     private let diskStorage: TealiumDiskStorageProtocol
     private let logger: TealiumLoggerProtocol?
-    // Keeps only the 100 most recent ids, which is plenty for crash-before-finish re-deliveries. Raise it if older duplicates show up.
-    private let maxTrackedIds = 100
+    // The startup scan re-emits every unfinished transaction on every launch, so this must stay above the number of transactions an app
+    // leaves unfinished. Once they outnumber it, FIFO eviction makes all of them look new again and every one is re-tracked on each launch.
+    // 1000 ids is about 20 KB persisted.
+    private let maxTrackedIds = 1000
     // Guards trackedIds, because track(_:autotracked:) is called from the updates Task and from the app's thread.
     private let lock = NSLock()
     private var trackedIds: [UInt64]
@@ -76,7 +78,8 @@ final class InAppPurchaseManager {
     }
 
     func track(_ transaction: Transaction, autotracked: Bool) {
-        guard Self.isPurchase(transaction) else { return }
+        // Without a delegate no event can be sent, so the id isn't recorded and a later instance can still track the transaction.
+        guard Self.isPurchase(transaction), let delegate = delegate else { return }
         // The app may crash between a manual track(_:) and finish(), and StoreKit then re-delivers the unfinished transaction via Transaction.updates.
         // The id is persisted before the event is durable, so a crash in that short window drops the event instead of
         // double-counting it. Closing the window needs a delivery acknowledgement from the dispatch pipeline.
@@ -90,6 +93,6 @@ final class InAppPurchaseManager {
         // Saved under the lock so a slower, older snapshot can't overwrite a newer one.
         diskStorage.save(trackedIds, completion: nil)
         lock.unlock()
-        delegate?.requestTrack(transaction.toTealiumEvent(autotracked: autotracked).trackRequest)
+        delegate.requestTrack(transaction.toTealiumEvent(autotracked: autotracked).trackRequest)
     }
 }
