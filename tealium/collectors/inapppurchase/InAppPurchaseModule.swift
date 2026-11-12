@@ -50,11 +50,15 @@ public class InAppPurchaseModule: Collector {
     /// so they may not be autotracked. If `Transaction.updates` emits one as well, only one event is sent, and `autotracked`
     /// reflects whichever path tracked it first.
     /// Purchases from StoreKit views without `onInAppPurchaseCompletion` go through `Transaction.updates` and are autotracked.
-    /// Unverified results are skipped and logged. Revoked, upgraded, family-shared and assigned transactions are ignored,
-    /// and so is a transaction already tracked on this device.
+    /// Unverified results are skipped and logged. Revoked, upgraded, family-shared and assigned transactions are ignored.
     /// The event is `in_app_purchase`, with `autotracked` set to `false` when tracked here.
     ///
-    /// Deduplication is per device. `Transaction.updates` also emits purchases the customer made in the app on another device,
+    /// A transaction is ignored if it was already tracked since the module started, or if it was tracked earlier and is still
+    /// unfinished. A finished transaction from an earlier launch is tracked again, so pass only the results of new purchases.
+    /// Don't pass results from `Transaction.currentEntitlements` or `Transaction.all`, even from a handler shared with
+    /// `Transaction.updates`, because they return finished transactions on every launch.
+    ///
+    /// `Transaction.updates` also emits purchases the customer made in the app on another device,
     /// so each device sends its own event with the same `purchase_order_id`. Dedupe on `purchase_order_id` downstream
     /// when counting revenue.
     ///

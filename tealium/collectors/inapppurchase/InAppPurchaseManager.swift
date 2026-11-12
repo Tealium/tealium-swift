@@ -22,12 +22,14 @@ final class InAppPurchaseManager {
     private let logger: TealiumLoggerProtocol?
     // Guards trackedIds and sessionIds, because track(_:autotracked:) is called from the updates Task and from the app's thread.
     private let lock = NSLock()
-    // Ids of the transactions already tracked, persisted as an array. Transaction.updates emits a transaction only when the system
-    // creates or updates it, and updated versions (revoked, upgraded) are filtered out, so only a transaction that is still
-    // unfinished comes back, at launch. Ids that are not unfinished are dropped by pruneIds(keeping:) once the startup scan completes.
+    // Ids of the transactions already tracked, persisted as an array. Ids that are neither unfinished nor in sessionIds are dropped
+    // by pruneIds(keeping:) once the startup scan completes. This assumes a finished transaction doesn't come back: Transaction.updates
+    // emits a transaction when the system creates or updates it, and the documented updates (revoked, upgraded) are filtered out.
+    // Apple doesn't list every kind of update, so an undocumented one to a finished transaction, such as a reversed refund, is tracked again.
     private var trackedIds: Set<UInt64>
-    // Every id recorded since this manager started. The manual track(_:) and Transaction.updates can both report a purchase
-    // after the app has finished it, so these ids are kept until the next launch.
+    // Every id recorded by this manager. The manual track(_:) and Transaction.updates can both report a purchase after the app
+    // has finished it, so these ids are kept for the manager's lifetime. A new manager, after a relaunch or after the module is
+    // recreated, starts with none.
     private var sessionIds = Set<UInt64>()
 
     init(delegate: ModuleDelegate?, diskStorage: TealiumDiskStorageProtocol, logger: TealiumLoggerProtocol?) {
@@ -49,13 +51,11 @@ final class InAppPurchaseManager {
         unfinishedTask = Task { [weak self] in
             var unfinishedIds = Set<UInt64>()
             for await result in Transaction.unfinished {
-                if case .verified(let transaction) = result {
-                    unfinishedIds.insert(transaction.id)
-                }
+                // Unverified ids are kept too. Keeping only stops an id that is already tracked from being pruned, and StoreKit can
+                // still re-deliver the transaction verified later.
+                unfinishedIds.insert(result.unsafePayloadValue.id)
                 self?.handle(result, autotracked: true)
             }
-            // A partial snapshot would drop ids that StoreKit can still re-deliver.
-            guard !Task.isCancelled else { return }
             self?.pruneIds(keeping: unfinishedIds)
         }
     }
