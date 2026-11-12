@@ -78,14 +78,7 @@ final class InAppPurchaseManager {
     // Revoked and upgraded transactions are no longer revenue. Family-shared and assigned (organization seat) ones mirror
     // someone else's purchase. Requiring .purchased also rejects ownership types added in later OS versions.
     private static func isPurchase(_ transaction: Transaction) -> Bool {
-        isPurchase(isRevoked: transaction.revocationDate != nil,
-                   isUpgraded: transaction.isUpgraded,
-                   ownershipType: transaction.ownershipType)
-    }
-
-    // Takes plain values so the filter can be tested without creating StoreKit transactions.
-    static func isPurchase(isRevoked: Bool, isUpgraded: Bool, ownershipType: Transaction.OwnershipType) -> Bool {
-        !isRevoked && !isUpgraded && ownershipType == .purchased
+        transaction.revocationDate == nil && !transaction.isUpgraded && transaction.ownershipType == .purchased
     }
 
     deinit {

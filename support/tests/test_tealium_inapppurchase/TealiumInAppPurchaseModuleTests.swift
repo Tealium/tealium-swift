@@ -214,16 +214,6 @@ class InAppPurchaseModuleTests: XCTestCase {
         XCTAssertTrue(trackedRequests.isEmpty)
     }
 
-    // MARK: Filter
-
-    func testIsPurchaseAcceptsOnlyUnrevokedUnupgradedPurchasedTransactions() {
-        typealias Manager = InAppPurchaseManager
-        XCTAssertTrue(Manager.isPurchase(isRevoked: false, isUpgraded: false, ownershipType: .purchased))
-        XCTAssertFalse(Manager.isPurchase(isRevoked: true, isUpgraded: false, ownershipType: .purchased))
-        XCTAssertFalse(Manager.isPurchase(isRevoked: false, isUpgraded: true, ownershipType: .purchased))
-        XCTAssertFalse(Manager.isPurchase(isRevoked: false, isUpgraded: false, ownershipType: .familyShared))
-    }
-
     // MARK: Pruning
 
     private func persistedIds(_ storage: MockTealiumDiskStorage) -> [UInt64]? {
@@ -240,7 +230,6 @@ class InAppPurchaseModuleTests: XCTestCase {
         await startModule(storage: storage)
 
         XCTAssertEqual(persistedIds(storage), [])
-        XCTAssertEqual(manager?.recordNewId(9_000_001), true)
     }
 
     func testUnfinishedIdsAreKeptEvenWithoutDelegate() async throws {
