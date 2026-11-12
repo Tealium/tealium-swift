@@ -7,101 +7,305 @@
 
 @testable import TealiumInAppPurchase
 @testable import TealiumCore
+import StoreKit
 import StoreKitTest
 import XCTest
 
-// This test needs to be re enabled for tvOS, it seems Xcode 13.3.1 made this test stop working for tvOS only, the test still works on iOS
-
-@available(iOS 14.0, tvOS 14, *)
+// SKTestSession.buyProduct(identifier:) is only available from iOS 17 / tvOS 17.
+@available(iOS 17, tvOS 17, *)
 class InAppPurchaseModuleTests: XCTestCase {
 
+    let productId = "com.tealium.iOSTealiumTestApp.product1"
     var module: InAppPurchaseModule?
-    var context: TealiumContext!
-    var expectation: XCTestExpectation?
-    var payload: [String: Any]?
     var session: SKTestSession!
-    var expectationRequest = XCTestExpectation(description: "Buy Product")
+    // Written on the StoreKit Task thread and read on the test thread, so always access it through the lock.
+    private let lock = NSLock()
+    private var tracked = [TealiumTrackRequest]()
 
-    override func setUpWithError() throws {
+    var trackedRequests: [TealiumTrackRequest] {
+        lock.lock()
+        defer { lock.unlock() }
+        return tracked
+    }
+
+    override func setUp() async throws {
         session = try SKTestSession(configurationFileNamed: "StoreKitTesting")
         session.disableDialogs = true
         session.clearTransactions()
+    }
+
+    private func trackedCount(for transaction: Transaction) -> Int {
+        trackedRequests.filter { $0.trackDictionary["purchase_order_id"] as? String == String(transaction.id) }.count
+    }
+
+    // Waits for the module's startup pass over Transaction.unfinished, so the pass can't pick up a purchase the test makes afterwards.
+    private func startModule(storage: TealiumDiskStorageProtocol) async {
+        module = makeModule(storage: storage)
+        await (module?.manager as? InAppPurchaseManager)?.unfinishedTask?.value
+    }
+
+    // SKTestSession can emit a Product.purchase() result on Transaction.updates as well, and the dedup then drops the manual track.
+    // Buying with no module running and finishing the purchase keeps both the updates listener and the startup pass of a module
+    // created afterwards from tracking it first.
+    private func purchaseWithoutListener() async throws -> Transaction {
+        module = nil
+        let products = try await Product.products(for: [productId])
+        let product = try XCTUnwrap(products.first)
+        var purchased: Transaction?
+        if case .success(.verified(let transaction)) = try await product.purchase() {
+            purchased = transaction
+        }
+        let transaction = try XCTUnwrap(purchased, "Purchase did not succeed")
+        await transaction.finish()
+        // In SKTestSession, Transaction.unfinished can still return the purchase right after finish(), and the startup pass of the
+        // module created next would then autotrack it before the test's manual track. Finishing whatever is left prevents that.
+        for await case .verified(let queued) in Transaction.unfinished {
+            await queued.finish()
+        }
+        return transaction
+    }
+
+    // In-memory storage keeps persisted transaction ids from leaking across tests, since SKTestSession ids can repeat after clearTransactions().
+    private func makeModule(storage: TealiumDiskStorageProtocol, withDelegate: Bool = true) -> InAppPurchaseModule {
         let config = TestTealiumHelper().getConfig()
         let context = TestTealiumHelper.context(with: config)
-        SKPaymentQueue.default().add(self)
-        module = InAppPurchaseModule(context: context, delegate: self, diskStorage: nil) { _ in
-            
-        }
+        return InAppPurchaseModule(context: context, delegate: withDelegate ? self : nil, diskStorage: storage) { _ in }
     }
 
     override func tearDownWithError() throws {
+        module = nil
         session = nil
     }
-    
-    func testStoreKitPurchase() throws {
-        let request = SKProductsRequest(productIdentifiers: ["com.tealium.iOSTealiumTestApp.product1"])
-        request.delegate = self
-        request.start()
-        wait(for: [expectationRequest], timeout: 30.0)
-    }
 
-}
-
-@available(iOS 14.0, tvOS 14, *)
-extension InAppPurchaseModuleTests: SKProductsRequestDelegate, SKPaymentTransactionObserver {
-    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
-        for transaction in transactions {
-            if transaction.transactionState == .purchased {
-                SKPaymentQueue.default().finishTransaction(transaction)
+    func testAutotrackedPurchase() async throws {
+        await startModule(storage: MockTealiumDiskStorage())
+        // StoreKit has no signal for when the Transaction.updates subscription is live, and on a cold process the first event can be
+        // emitted before it is. Buy again until one arrives, so the test checks the tracking and not the subscription timing.
+        // Polls instead of waiting on an expectation, because a timed-out wait fails the test even when a later attempt succeeds.
+        var bought = [Transaction]()
+        for _ in 0..<5 where trackedRequests.isEmpty {
+            bought.append(try await session.buyProduct(identifier: productId))
+            for _ in 0..<20 where trackedRequests.isEmpty {
+                try await Task.sleep(nanoseconds: 100_000_000)
             }
         }
-    }
-    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
-        SKPaymentQueue.default().add(SKPayment(product: response.products.first!))
+        let transaction = try XCTUnwrap(bought.first { String($0.id) == trackedRequests.first?.trackDictionary["purchase_order_id"] as? String })
+
+        // Events from earlier attempts can still arrive late, so only the matched transaction's events are counted.
+        let requests = trackedRequests.filter { $0.trackDictionary["purchase_order_id"] as? String == String(transaction.id) }
+        XCTAssertEqual(requests.count, 1)
+        let data = try XCTUnwrap(requests.first).trackDictionary
+        XCTAssertEqual(requests.first?.event, "in_app_purchase")
+        XCTAssertEqual(data["autotracked"] as? Bool, true)
+        XCTAssertEqual(data["purchase_order_id"] as? String, String(transaction.id))
+        XCTAssertEqual(data["purchase_skus"] as? String, productId)
+        XCTAssertEqual(data["purchase_quantity"] as? Int, 1)
+        XCTAssertEqual(data["purchase_timestamp"] as? Date, transaction.purchaseDate)
     }
 
-    func requestDidFinish(_ request: SKRequest) {
+    func testUnfinishedTransactionFromBeforeStartIsTracked() async throws {
+        // A listener started after a transaction arrived never gets it from Transaction.updates, so this covers Transaction.unfinished.
+        let transaction = try await session.buyProduct(identifier: productId)
+
+        await startModule(storage: MockTealiumDiskStorage())
+
+        let requests = trackedRequests
+        XCTAssertEqual(requests.count, 1)
+        let data = try XCTUnwrap(requests.first).trackDictionary
+        XCTAssertEqual(data["autotracked"] as? Bool, true)
+        XCTAssertEqual(data["purchase_order_id"] as? String, String(transaction.id))
     }
 
-    func request(_ request: SKRequest, didFailWithError error: Error) {
-        XCTFail("Failed to get product information")
-        expectationRequest.fulfill()
+    func testManuallyTrackedPurchase() async throws {
+        let transaction = try await purchaseWithoutListener()
+        await startModule(storage: MockTealiumDiskStorage())
+        module?.track(.verified(transaction))
+
+        let requests = trackedRequests
+        XCTAssertEqual(requests.count, 1)
+        let data = try XCTUnwrap(requests.first).trackDictionary
+        XCTAssertEqual(data["autotracked"] as? Bool, false)
+        XCTAssertEqual(data["purchase_order_id"] as? String, String(transaction.id))
+        XCTAssertEqual(data["purchase_skus"] as? String, productId)
+    }
+
+    func testUnverifiedTransactionIsNotTracked() async throws {
+        let transaction = try await purchaseWithoutListener()
+        await startModule(storage: MockTealiumDiskStorage())
+        module?.track(.unverified(transaction, .invalidSignature))
+        XCTAssertTrue(trackedRequests.isEmpty)
+    }
+
+    func testRevokedTransactionIsNotTracked() async throws {
+        let bought = try await purchaseWithoutListener()
+        try session.refundTransaction(identifier: UInt(bought.id))
+
+        // StoreKit may need a moment before the refund shows up on the latest transaction.
+        var revoked: Transaction?
+        for _ in 0..<20 {
+            if case .verified(let latest)? = await Transaction.latest(for: productId), latest.revocationDate != nil {
+                revoked = latest
+                break
+            }
+            try await Task.sleep(nanoseconds: 100_000_000)
+        }
+        let transaction = try XCTUnwrap(revoked, "Refunded transaction never got a revocationDate")
+
+        await startModule(storage: MockTealiumDiskStorage())
+        module?.track(.verified(transaction))
+        XCTAssertTrue(trackedRequests.isEmpty)
+    }
+
+    func testTrackedIdsPersistAcrossModuleRestarts() async throws {
+        // The transaction stays unfinished, which is the case where StoreKit re-delivers it on the next launch.
+        let transaction = try await session.buyProduct(identifier: productId)
+        let storage = MockTealiumDiskStorage()
+        await startModule(storage: storage)
+        XCTAssertEqual(trackedCount(for: transaction), 1)
+
+        await startModule(storage: storage)
+        module?.track(.verified(transaction))
+        XCTAssertEqual(trackedCount(for: transaction), 1)
+    }
+
+    func testTrackWithoutDelegateDoesNotRecordId() async throws {
+        let transaction = try await purchaseWithoutListener()
+        let storage = MockTealiumDiskStorage()
+        module = makeModule(storage: storage, withDelegate: false)
+        module?.track(.verified(transaction))
+        XCTAssertTrue(trackedRequests.isEmpty)
+
+        await startModule(storage: storage)
+        module?.track(.verified(transaction))
+        let requests = trackedRequests.filter { $0.trackDictionary["purchase_order_id"] as? String == String(transaction.id) }
+        XCTAssertEqual(requests.count, 1)
+    }
+
+    func testInAppPurchaseAccessorIsNotNilWhenCollectorIsSet() {
+        let expect = expectation(description: "InAppPurchase not nil")
+        let config = TestTealiumHelper().getConfig()
+        config.collectors = [Collectors.InAppPurchase]
+        var tealium: Tealium?
+        tealium = Tealium(config: config) { _ in
+            XCTAssertNotNil(tealium?.inAppPurchase)
+            expect.fulfill()
+        }
+        TealiumQueues.backgroundSerialQueue.sync {
+            wait(for: [expect], timeout: 1.0)
+        }
+        TealiumInstanceManager.shared.removeInstance(config: config)
+        tealium = nil
+    }
+
+    func testSameTransactionTrackedTwiceProducesOneEvent() async throws {
+        let transaction = try await purchaseWithoutListener()
+        await startModule(storage: MockTealiumDiskStorage())
+        module?.track(.verified(transaction))
+        module?.track(.verified(transaction))
+        XCTAssertEqual(trackedRequests.count, 1)
+    }
+
+    func testPreviouslyTrackedTransactionIsNotTrackedAgain() async throws {
+        let transaction = try await session.buyProduct(identifier: productId)
+        let storage = MockTealiumDiskStorage()
+        storage.storedData = AnyCodable([transaction.id])
+        await startModule(storage: storage)
+
+        XCTAssertTrue(trackedRequests.isEmpty)
+    }
+
+    // MARK: Pruning
+
+    private func persistedIds(_ storage: MockTealiumDiskStorage) -> [UInt64]? {
+        storage.retrieve(as: [UInt64].self)
+    }
+
+    private var manager: InAppPurchaseManager? {
+        module?.manager as? InAppPurchaseManager
+    }
+
+    func testStaleIdsAreDropped() async throws {
+        let storage = MockTealiumDiskStorage()
+        storage.storedData = AnyCodable([UInt64(9_000_001)])
+        await startModule(storage: storage)
+
+        XCTAssertEqual(persistedIds(storage), [])
+    }
+
+    func testUnfinishedIdsAreKeptEvenWithoutDelegate() async throws {
+        let transaction = try await session.buyProduct(identifier: productId)
+        let storage = MockTealiumDiskStorage()
+        storage.storedData = AnyCodable([transaction.id, UInt64(9_000_001)])
+        module = makeModule(storage: storage, withDelegate: false)
+        await manager?.unfinishedTask?.value
+
+        XCTAssertEqual(persistedIds(storage), [transaction.id])
+    }
+
+    func testSessionIdsSurviveAPrune() async throws {
+        let storage = MockTealiumDiskStorage()
+        await startModule(storage: storage)
+        XCTAssertEqual(manager?.recordNewId(7), true)
+        manager?.pruneIds(keeping: [])
+
+        XCTAssertEqual(persistedIds(storage), [7])
+    }
+
+    // MARK: Real critical storage
+
+    private func makeIsolatedConfig(diskStorageEnabled: Bool) -> TealiumConfig {
+        // The account is immutable, so the unique one is passed at creation to keep the storage away from other tests.
+        let config = TealiumConfig(account: "iap-\(UUID().uuidString)", profile: TealiumTestValue.profile, environment: TealiumTestValue.environment)
+        config.diskStorageEnabled = diskStorageEnabled
+        return config
+    }
+
+    private func makeModule(config: TealiumConfig) -> InAppPurchaseModule {
+        InAppPurchaseModule(context: TestTealiumHelper.context(with: config), delegate: self, diskStorage: nil) { _ in }
+    }
+
+    // Module B's own startup scan would track the transaction again if module A's id wasn't persisted in a place B can read.
+    private func assertTransactionTrackedOnceAcrossModules(config: TealiumConfig) async throws {
+        let transaction = try await session.buyProduct(identifier: productId)
+        let moduleA = makeModule(config: config)
+        await (moduleA.manager as? InAppPurchaseManager)?.unfinishedTask?.value
+        let moduleB = makeModule(config: config)
+        await (moduleB.manager as? InAppPurchaseManager)?.unfinishedTask?.value
+        withExtendedLifetime(moduleA) {}
+        withExtendedLifetime(moduleB) {}
+
+        XCTAssertEqual(trackedCount(for: transaction), 1)
+    }
+
+    func testTrackedIdsPersistInUserDefaultsWhenDiskStorageIsDisabled() async throws {
+        let config = makeIsolatedConfig(diskStorageEnabled: false)
+        let suiteName = TealiumDiskStorage.filePath(forConfig: config, name: ModuleNames.inapppurchase.lowercased())
+        addTeardownBlock { UserDefaults(suiteName: suiteName)?.removePersistentDomain(forName: suiteName) }
+        try await assertTransactionTrackedOnceAcrossModules(config: config)
+    }
+
+    func testTrackedIdsPersistOnDiskWhenDiskStorageIsEnabled() async throws {
+        let config = makeIsolatedConfig(diskStorageEnabled: true)
+        addTeardownBlock {
+            let cleanup = self.expectation(description: "Storage deleted")
+            // Held in a variable because the storage only keeps a weak reference to itself while the deletion runs.
+            let storage = TealiumDiskStorage(config: config, forModule: ModuleNames.inapppurchase.lowercased())
+            storage.delete { _, _, _ in cleanup.fulfill() }
+            self.wait(for: [cleanup], timeout: 5.0)
+        }
+        try await assertTransactionTrackedOnceAcrossModules(config: config)
     }
 }
 
-struct PurchaseEvent: Codable {
-    let tealiumEventType: String
-    let purchaseOrderId: String
-    let purchaseSkus: String
-    let purchaseQuantity: Int
-    let requestUuid: String
-    let autotracked: Bool
-    let tealiumEvent: String
-    let purchaseTimestamp: Date
-}
-
-@available(iOS 14.0, tvOS 14, *)
+@available(iOS 17, tvOS 17, *)
 extension InAppPurchaseModuleTests: ModuleDelegate {
-    func processRemoteCommandRequest(_ request: TealiumRequest) {
-        
-    }
+    func processRemoteCommandRequest(_ request: TealiumRequest) { }
 
     func requestTrack(_ track: TealiumTrackRequest) {
-        // TODO: Info and error callback handling
-        XCTAssertEqual(track.event, "in_app_purchase")
-        guard let purchaseSkus = track.trackDictionary["purchase_skus"] as? String, let quantity = track.trackDictionary["purchase_quantity"] as? Int, let autoTracked = track.trackDictionary["autotracked"] as? Bool, let purchaseDate = track.trackDictionary["purchase_timestamp"] as? Date else {
-            XCTFail("Track data incorrect")
-            expectationRequest.fulfill()
-            return
-        }
-        XCTAssertEqual(purchaseSkus, "com.tealium.iOSTealiumTestApp.product1")
-        XCTAssertEqual(quantity, 1)
-        XCTAssertEqual(autoTracked, true)
-        XCTAssertTrue(Date().timeIntervalSince1970 - purchaseDate.timeIntervalSince1970 < 10000)
-        expectationRequest.fulfill()
+        lock.lock()
+        tracked.append(track)
+        lock.unlock()
     }
 
-    func requestDequeue(reason: String) {
-
-    }
+    func requestDequeue(reason: String) { }
 }
