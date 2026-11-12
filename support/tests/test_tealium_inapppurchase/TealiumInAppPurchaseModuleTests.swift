@@ -34,6 +34,10 @@ class InAppPurchaseModuleTests: XCTestCase {
         session.clearTransactions()
     }
 
+    private func trackedCount(for transaction: Transaction) -> Int {
+        trackedRequests.filter { $0.trackDictionary["purchase_order_id"] as? String == String(transaction.id) }.count
+    }
+
     // Waits for the module's startup pass over Transaction.unfinished, so the pass can't pick up a purchase the test makes afterwards.
     private func startModule(storage: TealiumDiskStorageProtocol) async {
         module = makeModule(storage: storage)
@@ -153,15 +157,15 @@ class InAppPurchaseModuleTests: XCTestCase {
     }
 
     func testTrackedIdsPersistAcrossModuleRestarts() async throws {
-        let transaction = try await purchaseWithoutListener()
+        // The transaction stays unfinished, which is the case where StoreKit re-delivers it on the next launch.
+        let transaction = try await session.buyProduct(identifier: productId)
         let storage = MockTealiumDiskStorage()
         await startModule(storage: storage)
-        module?.track(.verified(transaction))
-        XCTAssertEqual(trackedRequests.count, 1)
+        XCTAssertEqual(trackedCount(for: transaction), 1)
 
         await startModule(storage: storage)
         module?.track(.verified(transaction))
-        XCTAssertEqual(trackedRequests.count, 1)
+        XCTAssertEqual(trackedCount(for: transaction), 1)
     }
 
     func testTrackWithoutDelegateDoesNotRecordId() async throws {
@@ -202,13 +206,105 @@ class InAppPurchaseModuleTests: XCTestCase {
     }
 
     func testPreviouslyTrackedTransactionIsNotTrackedAgain() async throws {
-        let transaction = try await purchaseWithoutListener()
+        let transaction = try await session.buyProduct(identifier: productId)
         let storage = MockTealiumDiskStorage()
         storage.storedData = AnyCodable([transaction.id])
         await startModule(storage: storage)
 
-        module?.track(.verified(transaction))
         XCTAssertTrue(trackedRequests.isEmpty)
+    }
+
+    // MARK: Filter
+
+    func testIsPurchaseAcceptsOnlyUnrevokedUnupgradedPurchasedTransactions() {
+        typealias Manager = InAppPurchaseManager
+        XCTAssertTrue(Manager.isPurchase(isRevoked: false, isUpgraded: false, ownershipType: .purchased))
+        XCTAssertFalse(Manager.isPurchase(isRevoked: true, isUpgraded: false, ownershipType: .purchased))
+        XCTAssertFalse(Manager.isPurchase(isRevoked: false, isUpgraded: true, ownershipType: .purchased))
+        XCTAssertFalse(Manager.isPurchase(isRevoked: false, isUpgraded: false, ownershipType: .familyShared))
+    }
+
+    // MARK: Pruning
+
+    private func persistedIds(_ storage: MockTealiumDiskStorage) -> [UInt64]? {
+        storage.retrieve(as: [UInt64].self)
+    }
+
+    private var manager: InAppPurchaseManager? {
+        module?.manager as? InAppPurchaseManager
+    }
+
+    func testStaleIdsAreDropped() async throws {
+        let storage = MockTealiumDiskStorage()
+        storage.storedData = AnyCodable([UInt64(9_000_001)])
+        await startModule(storage: storage)
+
+        XCTAssertEqual(persistedIds(storage), [])
+        XCTAssertEqual(manager?.recordNewId(9_000_001), true)
+    }
+
+    func testUnfinishedIdsAreKeptEvenWithoutDelegate() async throws {
+        let transaction = try await session.buyProduct(identifier: productId)
+        let storage = MockTealiumDiskStorage()
+        storage.storedData = AnyCodable([transaction.id, UInt64(9_000_001)])
+        module = makeModule(storage: storage, withDelegate: false)
+        await manager?.unfinishedTask?.value
+
+        XCTAssertEqual(persistedIds(storage), [transaction.id])
+    }
+
+    func testSessionIdsSurviveAPrune() async throws {
+        let storage = MockTealiumDiskStorage()
+        await startModule(storage: storage)
+        XCTAssertEqual(manager?.recordNewId(7), true)
+        manager?.pruneIds(keeping: [])
+
+        XCTAssertEqual(persistedIds(storage), [7])
+    }
+
+    // MARK: Real critical storage
+
+    private func makeIsolatedConfig(diskStorageEnabled: Bool) -> TealiumConfig {
+        // The account is immutable, so the unique one is passed at creation to keep the storage away from other tests.
+        let config = TealiumConfig(account: "iap-\(UUID().uuidString)", profile: TealiumTestValue.profile, environment: TealiumTestValue.environment)
+        config.diskStorageEnabled = diskStorageEnabled
+        return config
+    }
+
+    private func makeModule(config: TealiumConfig) -> InAppPurchaseModule {
+        InAppPurchaseModule(context: TestTealiumHelper.context(with: config), delegate: self, diskStorage: nil) { _ in }
+    }
+
+    // Module B's own startup scan would track the transaction again if module A's id wasn't persisted in a place B can read.
+    private func assertTransactionTrackedOnceAcrossModules(config: TealiumConfig) async throws {
+        let transaction = try await session.buyProduct(identifier: productId)
+        let moduleA = makeModule(config: config)
+        await (moduleA.manager as? InAppPurchaseManager)?.unfinishedTask?.value
+        let moduleB = makeModule(config: config)
+        await (moduleB.manager as? InAppPurchaseManager)?.unfinishedTask?.value
+        withExtendedLifetime(moduleA) {}
+        withExtendedLifetime(moduleB) {}
+
+        XCTAssertEqual(trackedCount(for: transaction), 1)
+    }
+
+    func testTrackedIdsPersistInUserDefaultsWhenDiskStorageIsDisabled() async throws {
+        let config = makeIsolatedConfig(diskStorageEnabled: false)
+        let suiteName = TealiumDiskStorage.filePath(forConfig: config, name: ModuleNames.inapppurchase.lowercased())
+        addTeardownBlock { UserDefaults(suiteName: suiteName)?.removePersistentDomain(forName: suiteName) }
+        try await assertTransactionTrackedOnceAcrossModules(config: config)
+    }
+
+    func testTrackedIdsPersistOnDiskWhenDiskStorageIsEnabled() async throws {
+        let config = makeIsolatedConfig(diskStorageEnabled: true)
+        addTeardownBlock {
+            let cleanup = self.expectation(description: "Storage deleted")
+            // Held in a variable because the storage only keeps a weak reference to itself while the deletion runs.
+            let storage = TealiumDiskStorage(config: config, forModule: ModuleNames.inapppurchase.lowercased())
+            storage.delete { _, _, _ in cleanup.fulfill() }
+            self.wait(for: [cleanup], timeout: 5.0)
+        }
+        try await assertTransactionTrackedOnceAcrossModules(config: config)
     }
 }
 

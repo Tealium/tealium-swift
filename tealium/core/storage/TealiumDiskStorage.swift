@@ -319,14 +319,15 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
                 return nil
             }
             guard isDiskStorageEnabled else {
-                let decoder = Tealium.jsonDecoder
-                if let data = self.getFromDefaults(key: self.filePath(fileName)) as? Data,
-                   let decoded = try? decoder.decode(type, from: data) {
-                    return decoded
-                } else {
+                // A missing value is the normal first-launch state, not an error.
+                guard let data = self.getFromDefaults(key: self.filePath(fileName)) as? Data else {
+                    return nil
+                }
+                guard let decoded = try? Tealium.jsonDecoder.decode(type, from: data) else {
                     log(error: DiskStorageErrors.couldNotDecode.rawValue)
                     return nil
                 }
+                return decoded
             }
             do {
                 let data = try Disk.retrieve(self.filePath(fileName), from: self.currentDirectory, as: type)
@@ -349,9 +350,12 @@ public class TealiumDiskStorage: TealiumDiskStorageProtocol {
                 return
             }
             guard self.isDiskStorageEnabled else {
-                let decoder = Tealium.jsonDecoder
-                if let data = self.getFromDefaults(key: self.filePath(fileName)) as? Data,
-                   let decoded = ((try? decoder.decode(AnyCodable.self, from: data).value as? [String: Any]) as [String: Any]??) {
+                // A missing value is the normal first-launch state, not an error.
+                guard let data = self.getFromDefaults(key: self.filePath(fileName)) as? Data else {
+                    completion(false, nil, nil)
+                    return
+                }
+                if let decoded = (try? Tealium.jsonDecoder.decode(AnyCodable.self, from: data))?.value as? [String: Any] {
                     completion(true, decoded, nil)
                 } else {
                     log(error: DiskStorageErrors.couldNotDecode.rawValue)
